@@ -17,4 +17,5 @@ namespace WPE\ContentModel\Settings;
 			<h1>Content Modeling by WP Engine</h1>
 		</div>
 	</div>
+	<div id="root"></div>
 </div>

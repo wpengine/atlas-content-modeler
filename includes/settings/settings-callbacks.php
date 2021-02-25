@@ -30,3 +30,33 @@ function register_admin_menu_page(): void {
 function render_admin_menu_page() {
 	include_once __DIR__ . '/views/admin-menu-page.php';
 }
+
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
+/**
+ * Registers and enqueues admin scripts and styles.
+ *
+ * @param string $hook The current admin page.
+ */
+function enqueue_settings_assets( $hook ) {
+	$plugin = get_plugin_data( WPE_CONTENT_MODEL_FILE );
+
+	wp_register_script(
+		'wpe-content-model-app',
+		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.js',
+		[ 'wp-api-fetch' ],
+		$plugin['Version'],
+		true
+	);
+
+	wp_register_style(
+		'wpe-content-model-app-styles',
+		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.css',
+		[],
+		$plugin['Version']
+	);
+
+	if ( 'toplevel_page_wpe-content-model' === $hook ) {
+		wp_enqueue_script( 'wpe-content-model-app' );
+		wp_enqueue_style( 'wpe-content-model-app-styles' );
+	}
+}
