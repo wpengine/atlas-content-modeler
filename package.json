@@ -1,0 +1,21 @@
+{
+  "name": "wpe-content-model",
+  "version": "1.0.0",
+  "description": "",
+  "main": "includes/settings/js/src/index.js",
+  "scripts": {
+    "build": "parcel build includes/settings/js/src/index.js --out-dir includes/settings/dist --no-source-maps --public-url .",
+    "start": "parcel watch includes/settings/js/src/index.js --out-dir includes/settings/dist --public-url .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.32.8"
+  }
+}
