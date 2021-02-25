@@ -1,12 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './App';
 import '../../scss/index.scss';
-
-function App() {
-	return (
-		<p>This is the App component.</p>
-	);
-}
 
 ReactDOM.render(
 	<App />,
