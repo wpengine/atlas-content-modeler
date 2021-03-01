@@ -23,4 +23,5 @@ deploy.sh
 *composer.json*
 *composer.lock*
 *package-lock.json*
-.zipignore
+*.zipignore
+*.docker/*
