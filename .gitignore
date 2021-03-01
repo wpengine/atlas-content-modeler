@@ -3,6 +3,6 @@
 dist
 node_modules
 /vendor/
-
+.env.testing
 .DS_Store
 Thumbs.db
