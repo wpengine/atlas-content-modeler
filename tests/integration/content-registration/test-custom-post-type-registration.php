@@ -5,9 +5,10 @@
  * @package WPE_Content_Model
  */
 
+use function WPE\ContentModel\ContentRegistration\generate_custom_post_type_args;
 use function \WPE\ContentModel\ContentRegistration\generate_custom_post_type_labels;
-use function \WPE\ContentModel\ContentRegistration\register_content_types;
 use PHPUnit\Runner\Exception as PHPUnitRunnerException;
+use function WPE\ContentModel\ContentRegistration\update_registered_content_types;
 
 /**
  * Post type registration case.
@@ -28,7 +29,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		update_option( 'wpe_content_model_post_types', $this->expected_post_types() );
+		update_registered_content_types( $this->expected_post_types() );
 
 		// @todo why is this not running automatically?
 		do_action( 'init' );
@@ -63,6 +64,8 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		global $wp_rest_server;
 		$wp_rest_server = null;
 		$this->server = null;
+		delete_option( 'wpe_content_model_post_types' );
+		$this->all_registered_post_types = null;
 	}
 
 	public function test_dog_post_type_accessible_via_rest_api(): void {
@@ -146,6 +149,18 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
+	}
+
+	public function test_generate_custom_post_type_args_throws_exception_when_invalid_arguments_passed(): void {
+		self::expectException( \InvalidArgumentException::class );
+		generate_custom_post_type_args( [] );
+	}
+
+	public function test_generate_custom_post_type_args_generates_expected_data(): void {
+		$generated_args = generate_custom_post_type_args( [ 'singular' => 'Dog', 'plural' => 'Dogs' ] );
+		$expected_args = $this->expected_post_types()['dog'];
+		unset( $expected_args['fields'] );
+		self::assertSame( $generated_args, $expected_args );
 	}
 
 	private function expected_post_types(): array {
