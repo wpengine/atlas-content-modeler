@@ -8,7 +8,7 @@ return array (
 		array (
 			'name' => 'Dogs',
 			'singular_name' => 'Dog',
-			'description' => 'A description of dogs',
+			'description' => '',
 			'public' => false,
 			'publicly_queryable' => false,
 			'show_ui' => true,

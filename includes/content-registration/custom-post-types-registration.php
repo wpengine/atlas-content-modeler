@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace WPE\ContentModel\ContentRegistration;
 
 use InvalidArgumentException;
-
 use WPGraphQL\Model\Post;
 use WPGraphQL\Registry\TypeRegistry;
 
@@ -20,6 +19,7 @@ add_action( 'init', __NAMESPACE__ . '\register_content_types' );
  */
 function register_content_types(): void {
 	$content_types = get_option( 'wpe_content_model_post_types', false );
+
 	if ( ! $content_types ) {
 		return;
 	}
@@ -28,13 +28,12 @@ function register_content_types(): void {
 		$fields = $args['fields'] ?? false;
 		unset( $args['fields'] );
 
+		// @todo normalize things to avoid this?
+		$args['singular'] = $args['singular_name'];
+		$args['plural']   = $args['name'];
+
 		try {
-			$args['labels'] = generate_custom_post_type_labels(
-				[
-					'singular' => $args['singular_name'],
-					'plural'   => $args['name'],
-				]
-			);
+			$args = generate_custom_post_type_args( $args );
 		} catch ( InvalidArgumentException $exception ) {
 			// Do nothing and let WP use defaults.
 		}
@@ -126,12 +125,121 @@ function generate_custom_post_type_labels( array $labels ): array {
 }
 
 /**
+ * Generates an array of arguments for use when registering custom post types.
+ *
+ * @param array $args Arguments including the singular and plural name of the post type.
+ *
+ * @throws \InvalidArgumentException When the given arguments are invalid.
+ * @return array
+ */
+function generate_custom_post_type_args( array $args ): array {
+	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
+		throw new InvalidArgumentException(
+			__( 'You must provide both a singular and plural name to register a custom content type.', 'wpe-content-model' )
+		);
+	}
+
+	$singular = $args['singular'];
+	$plural   = $args['plural'];
+	$labels   = generate_custom_post_type_labels(
+		[
+			'singular' => $singular,
+			'plural'   => $plural,
+		]
+	);
+
+	return [
+		'name'                => ucfirst( $plural ),
+		'singular_name'       => ucfirst( $singular ),
+		'description'         => $args['description'] ?? '',
+		'public'              => $args['public'] ?? false,
+		'publicly_queryable'  => $args['publicly_queryable'] ?? false,
+		'show_ui'             => $args['show_ui'] ?? true,
+		'show_in_nav_menus'   => $args['show_in_nav_menus'] ?? true,
+		'delete_with_user'    => $args['delete_with_user'] ?? false,
+		'show_in_rest'        => $args['show_in_rest'] ?? true,
+		'has_archive'         => $args['has_archive'] ?? true,
+		'has_archive_string'  => $args['has_archive_string'] ?? '',
+		'exclude_from_search' => $args['exclude_from_search'] ?? false,
+		'capability_type'     => $args['capability_type'] ?? 'post',
+		'hierarchical'        => $args['hierarchical'] ?? false,
+		'rewrite'             => $args['rewrite'] ?? true,
+		'rewrite_slug'        => $args['rewrite_slug'] ?? '',
+		'rewrite_withfront'   => $args['rewrite_withfront'] ?? true,
+		'query_var'           => $args['query_var'] ?? true,
+		'query_var_slug'      => $args['query_var_slug'] ?? '',
+		'show_in_menu'        => $args['show_in_menu'] ?? true,
+		'supports'            => $args['supports'] ??
+								[
+									'title',
+									'editor',
+									'thumbnail',
+									'custom-fields',
+								],
+		'taxonomies'          => $args['taxonomies'] ?? [],
+		'labels'              => $labels,
+		'show_in_graphql'     => $args['show_in_graphql'] ?? true,
+		'graphql_single_name' => $args['graphql_single_name'] ?? lcfirst( $singular ),
+		'graphql_plural_name' => $args['graphql_plural_name'] ?? lcfirst( $plural ),
+	];
+}
+
+/**
  * Gets all content types registered with this plugin.
  *
  * @return array
  */
 function get_registered_content_types(): array {
 	return get_option( 'wpe_content_model_post_types', array() );
+}
+
+/**
+ * Saves the registered content types to the database.
+ *
+ * This is not a sophisticated function or storage method.
+ * It requires you to pass in the full array of content types.
+ *
+ * @access private This could go away in the future.
+ *
+ * @param array $args All of the content types and their configuration.
+ *
+ * @return bool
+ */
+function update_registered_content_types( array $args ): bool {
+	return update_option( 'wpe_content_model_post_types', $args );
+}
+
+/**
+ * Updates an existing content type with the specified arguments.
+ *
+ * This merges the specified arguments with the existing arguments
+ * and updates the content type definition with the merged values.
+ *
+ * @param string $slug The post type slug.
+ * @param array  $args The post type arguments.
+ *
+ * @return bool
+ */
+function update_registered_content_type( string $slug, array $args ): bool {
+	$types = get_registered_content_types();
+	if ( empty( $types[ $slug ] ) ) {
+		return false;
+	}
+
+	$args = wp_parse_args( $args, $types[ $slug ] );
+
+	/**
+	 * If no changes, return true.
+	 * Why? update_option returns false and does not update
+	 * when the new values match the old values.
+	 */
+	if ( $types[ $slug ] === $args ) {
+		return true;
+	}
+
+	$types[ $slug ] = $args;
+
+	return update_registered_content_types( $types );
 }
 
 /**
