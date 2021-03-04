@@ -49,9 +49,16 @@ function enqueue_settings_assets( $hook ) {
 	);
 
 	wp_register_style(
+		'wpe-content-model-fonts',
+		'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap',
+		[],
+		$plugin['Version']
+	);
+
+	wp_register_style(
 		'wpe-content-model-app-styles',
 		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.css',
-		[],
+		[ 'wpe-content-model-fonts' ],
 		$plugin['Version']
 	);
 
