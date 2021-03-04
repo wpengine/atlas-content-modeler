@@ -1,0 +1,25 @@
+@import 'variables';
+
+.toplevel_page_wpe-content-model {
+	background: #f3f7fa;
+	font-family: $font-family;
+	font-size: 15px;
+	font-weight: 400;
+}
+
+.toplevel_page_wpe-content-model #wpcontent {
+	padding-left: 0;
+}
+
+.wpe-content-model-admin-page.wrap {
+	margin: 0;
+}
+
+p {
+	font-family: $font-family;
+	font-size: 15px;
+}
+
+strong {
+	font-weight: 700;
+}

@@ -1,0 +1,33 @@
+@import 'variables';
+
+.wpe-content-model-admin-page input,
+.wpe-content-model-admin-page textarea {
+	border-radius: $radius;
+	border: 1px solid $color-text;
+	min-width: 360px;
+	padding: 8px 12px;
+}
+
+.wpe-content-model-admin-page input:disabled {
+	background: #f4f7fa;
+	border: 1px solid #cfdde9;
+}
+
+.wpe-content-model-admin-page textarea {
+	min-height: 120px;
+}
+
+.wpe-content-model-admin-page label {
+	font-weight: 700;
+}
+
+.wpe-content-model-admin-page form .limit {
+	font-size: 12px;
+	margin: 8px 0 0;
+	max-width: 360px;
+	text-align: right;
+}
+
+.wpe-content-model-admin-page form div {
+	margin-top: 28px;
+}

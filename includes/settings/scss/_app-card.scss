@@ -1,0 +1,136 @@
+@import 'variables';
+
+.app-card {
+	background: #fff;
+	margin: 20px;
+	padding: 40px;
+}
+
+.app-card h2 {
+	color: $color-text;
+	font-size: 28px;
+	font-weight: bold;
+	line-height: 45px;
+	margin-top: 0;
+}
+
+.app-card h2 a {
+	color: $color-primary;
+	text-decoration: none;
+}
+
+.app-card h2 a:focus,
+.app-card h2 a:hover {
+	text-decoration: underline;
+}
+
+.app-card .heading {
+	display: flex;
+	justify-content: space-between;
+}
+
+.app-card .heading button.options {
+	min-height: 40px;
+	padding: 5px;
+}
+
+.card-content ul {
+	margin-top: 38px;
+}
+
+.card-content li {
+	border-left: 5px solid $color-highlight;
+	border-radius: $radius;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+	line-height: 20px;
+}
+
+.card-content li.empty {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px 15px;
+}
+
+.card-content li.empty span {
+	background: linear-gradient(90deg, rgba(207, 221, 233, 0.75) 0%, rgba(210, 222, 233, 0.25) 100%);
+	border-radius: $radius;
+}
+
+.card-content li.empty span:nth-child(1) {
+	width: 5%;
+}
+
+.card-content li.empty span:nth-child(2) {
+	width: 12%;
+}
+
+.card-content li.empty span:nth-child(3) {
+	width: 72%;
+}
+
+.card-content li.empty span:nth-child(4) {
+	width: 3%;
+}
+
+.model-list li {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.model-list li > a:first-of-type {
+	color: $color-text;
+	display: flex;
+	justify-content: space-between;
+	min-width: 85%;
+	padding: 10px 16px;
+	text-decoration: none;
+}
+
+.model-list li > a:first-of-type:focus,
+.model-list li > a:first-of-type:hover {
+	background-color: lighten($color-gray, 54%);
+}
+
+.model-list li a > span {
+	flex-basis: 9%;
+}
+
+.model-list li span.wide {
+	flex-basis: 15%;
+}
+
+.model-list li span.widest {
+	flex-basis: 30%;
+}
+
+.model-list .label {
+	color: lighten($color-gray, 30%);
+	font-size: 13px;
+	font-weight: 700;
+	margin: 0 0 2px;
+}
+
+.model-list .value {
+	margin: 0;
+}
+
+.model-list .add-item {
+	border: none;
+	box-shadow: none;
+	justify-content: center;
+	margin-bottom: 0;
+	margin-top: -46px;
+}
+
+.model-list .add-item button {
+	background-color: transparent;
+	border: none;
+	height: 64px;
+	padding: 0;
+}
+
+.app-card svg.add:focus,
+.app-card svg.add:hover {
+	opacity: 0.8;
+}
