@@ -1,0 +1,61 @@
+@import 'variables';
+
+button {
+	background: $color-primary;
+	border-radius: $radius;
+	border: 1px solid $color-primary;
+	color: $color-white;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 600;
+	height: 40px;
+	line-height: 20px;
+	padding: 8px 24px;
+}
+
+button.first {
+	margin-right: 20px;
+}
+
+button:focus,
+button:hover {
+	background: lighten($color-primary, 5%);
+	border: 1px solid lighten($color-primary, 5%);
+}
+
+button.secondary {
+	background: $color-text;
+	border: 1px solid $color-text;
+	color: $color-white;
+}
+
+button.secondary:focus,
+button.secondary:hover {
+	background: lighten($color-text, 10%);
+	border: 1px solid lighten($color-text, 10%);
+}
+
+button.tertiary {
+	background: $color-white;
+	border: 1px solid $color-text;
+	color: $color-text;
+}
+
+button.tertiary:focus,
+button.tertiary:hover {
+	color: $color-white;
+	background: $color-text;
+}
+
+button.options {
+	background-color: $color-white;
+	border: none;
+	color: $color-text;
+	height: 100%;
+	padding: 0 30px;
+}
+
+button.options:focus,
+button.options:hover {
+	background-color: lighten($color-gray, 54%);
+}
