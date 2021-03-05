@@ -22,6 +22,21 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
 function register_rest_routes(): void {
 	// @todo Route for updating a single content type.
 
+	// Route for retrieving all content types registered with this plugin.
+	register_rest_route(
+		'wpe',
+		'/content-models',
+		[
+			'methods'             => 'GET',
+			'callback'            => static function() {
+				return rest_ensure_response( get_registered_content_types() );
+			},
+			'permission_callback' => static function () {
+				return current_user_can( 'manage_options' );
+			},
+		]
+	);
+
 	// Route for retrieving a single content type.
 	register_rest_route(
 		'wpe',
