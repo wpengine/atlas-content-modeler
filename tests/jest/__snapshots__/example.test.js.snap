@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Example tests React 1`] = `
-<p>
-  This is the App component.
-</p>
-`;

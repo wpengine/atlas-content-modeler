@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Renders a matching snapshot 1`] = `
+<div
+  className="app"
+>
+  <div
+    className="app-card"
+  >
+    <section
+      className="heading"
+    >
+      <h2>
+        Content Models
+      </h2>
+      <a
+        href="/wp-admin/admin.php?page=wpe-content-model&view=create-model"
+        onClick={[Function]}
+      >
+        <button>
+          Add New
+        </button>
+      </a>
+    </section>
+    <section
+      className="card-content"
+    >
+      <p>
+        Loading...
+      </p>
+      <ul
+        className="model-list"
+      />
+    </section>
+  </div>
+</div>
+`;
