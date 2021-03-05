@@ -53,7 +53,7 @@ export default function CreateContentModel() {
 					<div>
 						<label htmlFor="labelSingular">Singular Name</label><br/>
 						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
-						<input id="labelSingular" name="labelSingular" placeholder="Rabbit" ref={register({ required: true})} onChange={ e => setSingularCount(e.target.value.length)} />
+						<input id="labelSingular" name="labelSingular" placeholder="Rabbit" ref={register({ required: true, maxLength: 50})} onChange={ e => setSingularCount(e.target.value.length)} />
 						<p className="limit">{singularCount}/50</p>
 					</div>
 
@@ -64,7 +64,7 @@ export default function CreateContentModel() {
 							id="labelPlural"
 							name="labelPlural"
 							placeholder="Rabbits"
-							ref={register({ required: true})}
+							ref={register({ required: true, maxLength: 50})}
 							onChange={
 								event => {
 									setValue( 'postTypeSlug', camelcase( event.target.value ) );
