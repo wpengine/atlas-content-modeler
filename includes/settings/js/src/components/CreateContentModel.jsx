@@ -17,7 +17,8 @@ export default function CreateContentModel() {
 			data: {
 				singular: data.labelSingular,
 				plural: data.labelPlural,
-				postTypeSlug: data.postTypeSlug
+				postTypeSlug: data.postTypeSlug,
+				description: data.description
 			},
 		} ).then( res => {
 			if ( res.success ) {
@@ -70,7 +71,7 @@ export default function CreateContentModel() {
 					<div>
 						<label htmlFor="description">Description</label><br/>
 						<p className="help">A hint for content editors and API users.</p>
-						<textarea id="description" />
+						<textarea id="description" name="description" ref={register} />
 						<p className="limit">0/250</p>
 					</div>
 
