@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import camelcase from "camelcase";
 import { Link, useHistory } from "react-router-dom";
@@ -8,7 +8,7 @@ const { apiFetch } = wp;
 export default function CreateContentModel() {
 	const { register, handleSubmit, errors, setValue } = useForm();
 	const history = useHistory();
-
+	const [ descriptionCount, setDescriptionCount ] = useState(0);
 	function apiCreateModel( data ) {
 		apiFetch( {
 			path: '/wpe/content-model',
@@ -71,8 +71,8 @@ export default function CreateContentModel() {
 					<div>
 						<label htmlFor="description">Description</label><br/>
 						<p className="help">A hint for content editors and API users.</p>
-						<textarea id="description" name="description" ref={register} />
-						<p className="limit">0/250</p>
+						<textarea id="description" name="description" ref={register({ maxLength: 250})} onChange={ e => setDescriptionCount(e.target.value.length)} />
+						<p className="limit">{descriptionCount}/250</p>
 					</div>
 
 					<button type="submit" className="primary first">Create</button>
