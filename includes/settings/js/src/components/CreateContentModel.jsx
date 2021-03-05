@@ -16,12 +16,7 @@ export default function CreateContentModel() {
 			path: '/wpe/content-model',
 			method: 'POST',
 			_wpnonce: wpApiSettings.nonce,
-			data: {
-				singular: data.labelSingular,
-				plural: data.labelPlural,
-				postTypeSlug: data.postTypeSlug,
-				description: data.description
-			},
+			data,
 		} ).then( res => {
 			if ( res.success ) {
 				history.push( "/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" + data.postTypeSlug );
@@ -51,18 +46,18 @@ export default function CreateContentModel() {
 			<section className="card-content">
 				<form onSubmit={handleSubmit(apiCreateModel)}>
 					<div>
-						<label htmlFor="labelSingular">Singular Name</label><br/>
+						<label htmlFor="singular">Singular Name</label><br/>
 						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
-						<input id="labelSingular" name="labelSingular" placeholder="Rabbit" ref={register({ required: true, maxLength: 50})} onChange={ e => setSingularCount(e.target.value.length)} />
+						<input id="singular" name="singular" placeholder="Rabbit" ref={register({ required: true, maxLength: 50})} onChange={ e => setSingularCount(e.target.value.length)} />
 						<p className="limit">{singularCount}/50</p>
 					</div>
 
 					<div>
-						<label htmlFor="labelPlural">Plural Name</label><br/>
+						<label htmlFor="plural">Plural Name</label><br/>
 						<p className="help">Plural display name for your content model, e.g. "Rabbits".</p>
 						<input
-							id="labelPlural"
-							name="labelPlural"
+							id="plural"
+							name="plural"
 							placeholder="Rabbits"
 							ref={register({ required: true, maxLength: 50})}
 							onChange={
