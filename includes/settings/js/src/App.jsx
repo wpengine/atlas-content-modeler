@@ -25,6 +25,21 @@ function ViewTemplate() {
 	}
 
 	if ( view === 'edit-model' ) {
+		return ( <p>edit-model goes here.</p> );
+	}
+
+	return <ViewContentModelsList />
+}
+
+function ViewTemplate() {
+	const query = useLocationSearch();
+	const view = query.get( 'view' );
+
+	if ( view === 'create-model' ) {
+		return <CreateContentModel />
+	}
+
+	if ( view === 'edit-model' ) {
 		return <EditContentModel />
 	}
 
