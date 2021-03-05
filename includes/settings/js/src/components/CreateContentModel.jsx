@@ -8,6 +8,8 @@ const { apiFetch } = wp;
 export default function CreateContentModel() {
 	const { register, handleSubmit, errors, setValue } = useForm();
 	const history = useHistory();
+	const [ singularCount, setSingularCount ] = useState(0);
+	const [ pluralCount, setPluralCount ] = useState(0);
 	const [ descriptionCount, setDescriptionCount ] = useState(0);
 	function apiCreateModel( data ) {
 		apiFetch( {
@@ -51,15 +53,24 @@ export default function CreateContentModel() {
 					<div>
 						<label htmlFor="labelSingular">Singular Name</label><br/>
 						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
-						<input id="labelSingular" name="labelSingular" placeholder="Rabbit" ref={register({ required: true})} />
-						<p className="limit">0/50</p>
+						<input id="labelSingular" name="labelSingular" placeholder="Rabbit" ref={register({ required: true})} onChange={ e => setSingularCount(e.target.value.length)} />
+						<p className="limit">{singularCount}/50</p>
 					</div>
 
 					<div>
 						<label htmlFor="labelPlural">Plural Name</label><br/>
 						<p className="help">Plural display name for your content model, e.g. "Rabbits".</p>
-						<input id="labelPlural" name="labelPlural" placeholder="Rabbits" ref={register({ required: true})} onChange={ (event) => setValue( 'postTypeSlug', camelcase( event.target.value ) ) }/>
-						<p className="limit">0/50</p>
+						<input
+							id="labelPlural"
+							name="labelPlural"
+							placeholder="Rabbits"
+							ref={register({ required: true})}
+							onChange={
+								event => {
+									setValue( 'postTypeSlug', camelcase( event.target.value ) );
+									setPluralCount(event.target.value.length)
+								} }/>
+						<p className="limit">{pluralCount}/50</p>
 					</div>
 
 					<div>
