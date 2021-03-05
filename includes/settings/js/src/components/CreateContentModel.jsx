@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import camelcase from "camelcase";
 import { Link, useHistory } from "react-router-dom";
-// import apiFetch from "@wordpress/api-fetch";
+
 const { apiFetch } = wp;
 
 export default function CreateContentModel() {
