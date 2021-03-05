@@ -21,7 +21,7 @@ export default function CreateContentModel() {
 			},
 		} ).then( res => {
 			if ( res.success ) {
-				history.push( "/wp-admin/admin.php?page=wpe-content-model&view=edit-model&model=" + data.postTypeSlug );
+				history.push( "/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" + data.postTypeSlug );
 			}
 
 			// @todo show errors
@@ -38,28 +38,48 @@ export default function CreateContentModel() {
 	}
 
 	return (
-		<form onSubmit={handleSubmit(apiCreateModel)}>
+		<div className="app-card">
+			<section className="heading">
+				<h2>New Content Model</h2>
+				<Link to="/wp-admin/admin.php?page=wpe-content-model">
+					<button className="tertiary">View All Models</button>
+				</Link>
+			</section>
+			<section className="card-content">
+				<form onSubmit={handleSubmit(apiCreateModel)}>
+					<div>
+						<label htmlFor="labelSingular">Singular Name</label><br/>
+						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
+						<input id="labelSingular" name="labelSingular" placeholder="Rabbit" ref={register({ required: true})} />
+						<p className="limit">0/50</p>
+					</div>
 
-			<p><label htmlFor="labels">Singular Name</label></p>
-			<p className="description">Singular display name for your content model, e.g. "Rabbit".</p>
-			<p><input id="labelSingular" name="labelSingular" placeholder="Rabbit" ref={register({ required: true})} /></p>
-			{errors.labelSingular?.type === 'required' && <p>This field is required.</p>}
+					<div>
+						<label htmlFor="labelPlural">Plural Name</label><br/>
+						<p className="help">Plural display name for your content model, e.g. "Rabbits".</p>
+						<input id="labelPlural" name="labelPlural" placeholder="Rabbits" ref={register({ required: true})} onChange={ (event) => setValue( 'postTypeSlug', camelcase( event.target.value ) ) }/>
+						<p className="limit">0/50</p>
+					</div>
 
-			<p><label htmlFor="labels">Plural Name</label></p>
-			<p className="description">Plural display name for your content model, e.g. "Rabbits".</p>
-			<p><input id="labelPlural" name="labelPlural" placeholder="Rabbits" ref={register({ required: true})} onChange={ (event) => setValue( 'postTypeSlug', camelcase( event.target.value ) ) }/></p>
-			{errors.labelPlural?.type === 'required' && <p>This field is required.</p>}
+					<div>
+						<label htmlFor="postTypeSlug">API Identifier</label><br/>
+						<p className="help">Auto-generated and used for API requests.</p>
+						<input id="postTypeSlug" name="postTypeSlug" ref={register({ required: true, maxLength: 20 })} readOnly="readOnly" />
+					</div>
 
-			<p><label htmlFor="postTypeSlug">API Identifier</label></p>
-			<p className="description">Auto-generated and used for accessing this content type via APIs.</p>
-			<p><input id="postTypeSlug" name="postTypeSlug" ref={register({ required: true, maxLength: 20 })} readOnly="readOnly" /></p>
-			{errors.postTypeSlug?.type === 'required' && <p>This field is required.</p>}
-			{errors.postTypeSlug?.type === 'maxLength' && <p>This field is limited to 20 characters.</p>}
+					<div>
+						<label htmlFor="description">Description</label><br/>
+						<p className="help">A hint for content editors and API users.</p>
+						<textarea id="description" />
+						<p className="limit">0/250</p>
+					</div>
 
-			<p className="submit">
-				<input className="button button-primary" type="submit" value="Create"/>
-				<Link className="button button-secondary" to="/wp-admin/admin.php?page=wpe-content-model">Cancel</Link>
-			</p>
-		</form>
-);
+					<button type="submit" className="primary first">Create</button>
+					<Link to="/wp-admin/admin.php?page=wpe-content-model">
+						<button className="tertiary">Cancel</button>
+					</Link>
+				</form>
+			</section>
+		</div>
+	);
 }
