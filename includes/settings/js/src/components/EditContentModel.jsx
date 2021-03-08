@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocationSearch } from "../utils";
 import { AddIcon, OptionsIcon } from "./icons"
-import { Field } from "./fields"
+import Field from "./fields/Field"
 const { apiFetch } = wp;
 
 export default function EditContentModel() {
