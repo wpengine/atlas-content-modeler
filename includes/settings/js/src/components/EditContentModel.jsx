@@ -8,7 +8,7 @@ const { apiFetch } = wp;
 export default function EditContentModel() {
 	const [loading, setLoading] = useState(true);
 	const [model, setModel] = useState(null);
-	const [fields, setFields] = useState([]);
+	const [fields, setFields] = useState({});
 
 	const query = useLocationSearch();
 	const id = query.get('id');
@@ -20,19 +20,30 @@ export default function EditContentModel() {
 		} );
 
 		setModel(model.data);
-		setFields(model?.data?.fields ?? []);
+		// TODO: sort fields by their position key here.
+		setFields(model?.data?.fields ?? {});
 		setLoading(false);
 	}, [] );
 
 	function addField(e) {
 		e.preventDefault();
-		setFields(oldFields => [...oldFields, { type: 'new', position: 0}]);
+		const newId = Date.now();
+		setFields(oldFields => {
+			return { ...oldFields, [newId]: { id: newId, type: 'new', position: 0, open: true } }
+		});
+	}
+
+	// Close the field and update its data.
+	function updateField(data) {
+		setFields(oldFields => {
+			return { ...oldFields, [data.id]: { ...data, open: false } }
+		});
 	}
 
 	function removeField(e) {
 		e.preventDefault();
-		// TODO: remove the specific field.
-		setFields([]);
+		// TODO: remove the specific field by ID.
+		setFields({});
 	}
 
 	if ( loading ) {
@@ -43,6 +54,8 @@ export default function EditContentModel() {
 		);
 	}
 
+	const fieldCount = Object.keys(fields).length;
+
 	return (
 		<div className="app-card">
 			<section className="heading">
@@ -52,13 +65,25 @@ export default function EditContentModel() {
 			</button>
 		</section>
 		<section className="card-content">
-			{ fields.length > 0 ?
+			{ fieldCount > 0 ?
 				(
 					<>
-						<p>{fields.length} {fields.length > 1 ? 'Fields' : 'Field'}.</p>
+						<p>{fieldCount} {fieldCount > 1 ? 'Fields' : 'Field'}.</p>
 						<ul className="model-list">
 							{
-								fields.map( (field) => { return <Field type={field.type} cancelAction={removeField} /> } )
+								Object.keys(fields).map( (id) => {
+									const {type,open=false} = fields[id];
+									return <Field
+											key={id}
+											id={id}
+											type={type}
+											open={open}
+											data={fields[id]}
+											cancelAction={removeField}
+											updateAction={updateField}
+											addAction={addField}
+									/>
+								} )
 							}
 						</ul>
 					</>
