@@ -76,7 +76,7 @@ function TextForm({cancelAction, updateAction, id}) {
 
 			<div className="buttons">
 				<button type="submit" className="primary first">Create</button>
-				<button className="tertiary" onClick={cancelAction}>Cancel</button>
+				<button className="tertiary" onClick={() => cancelAction(id)}>Cancel</button>
 			</div>
 		</form>
 	);

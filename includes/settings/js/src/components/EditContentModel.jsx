@@ -40,10 +40,13 @@ export default function EditContentModel() {
 		});
 	}
 
-	function removeField(e) {
-		e.preventDefault();
-		// TODO: remove the specific field by ID.
-		setFields({});
+	// Remove field with the given ID. Does not persist data.
+	// Used to remove a field that has not yet been saved.
+	function removeField(id) {
+		setFields(oldFields => {
+			delete oldFields[id];
+			return { ...oldFields };
+		});
 	}
 
 	if ( loading ) {
