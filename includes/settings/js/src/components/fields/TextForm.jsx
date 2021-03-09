@@ -16,7 +16,15 @@ function TextForm() {
 			<div>
 				<label htmlFor="name">Name</label><br/>
 				<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
-				<input id="name" name="name" placeholder="Name" ref={register({ required: true, maxLength: 50})} onChange={ e => setNameCount(e.target.value.length)} />
+				<input
+					id="name"
+					name="name"
+					placeholder="Name"
+					ref={register({ required: true, maxLength: 50})}
+					onChange={ e => {
+						setValue( 'fieldSlug', camelcase( e.target.value ) );
+						setNameCount(e.target.value.length);
+					} } />
 				<p className="limit">{nameCount}/50</p>
 			</div>
 
