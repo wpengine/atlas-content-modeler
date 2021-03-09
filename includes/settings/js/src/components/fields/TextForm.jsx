@@ -4,7 +4,9 @@ import {Link} from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
 
-function TextForm({cancelAction}) {
+const { apiFetch } = wp;
+
+function TextForm({cancelAction, updateAction, id}) {
 	const { register, handleSubmit, errors, setValue } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 	const query = useLocationSearch();
@@ -21,6 +23,17 @@ function TextForm({cancelAction}) {
 				updateAction(data);
 			}
 
+			// @todo show errors
+			if ( ! res.success && res.errors ) {
+				res.errors.forEach( ( currentValue ) => {
+					if ( typeof currentValue === 'object' ) {
+						currentValue.errors.forEach( ( val ) => {
+							console.log(val);
+						} );
+					}
+				} );
+			}
+		} );
 	}
 
 	return (
