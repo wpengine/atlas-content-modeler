@@ -63,6 +63,19 @@ function register_rest_routes(): void {
 		]
 	);
 
+	// Route for updating part of a single content type.
+	register_rest_route(
+		'wpe',
+		'/content-model-field',
+		[
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\dispatch_create_content_model_field',
+			'permission_callback' => static function () {
+				return current_user_can( 'manage_options' );
+			},
+		]
+	);
+
 	// Route for deleting a single content type.
 	register_rest_route(
 		'wpe',
@@ -128,6 +141,43 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 	}
 
 	return rest_ensure_response( [ 'success' => true ] );
+}
+
+/**
+ * Handles model field POST requests from the REST API to store a new field.
+ *
+ * @param WP_REST_Request $request The REST API request object.
+ *
+ * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
+ */
+function dispatch_create_content_model_field( WP_REST_Request $request ) {
+	$params        = $request->get_params();
+	$content_types = get_registered_content_types();
+
+	if ( ! isset( $params['model'] ) || empty( $content_types[ $params['model'] ] ) ) {
+		return rest_ensure_response(
+			[
+				'success' => false,
+				'errors'  => esc_html__( 'The specified content model does not exist.', 'wpe-content-model' ),
+			]
+		);
+	}
+
+	$values_to_save = $params;
+	unset( $values_to_save['_locale'] ); // Sent by wp.apiFetch but not needed.
+	unset( $values_to_save['model'] ); // The field is stored in the fields property of its model.
+
+	$content_types[ $params['model'] ]['fields'][ $params['id'] ] = $values_to_save;
+
+	// TODO: update the 'position' value of lower fields if the new one was inserted in the middle of existing fields.
+
+	$updated = update_registered_content_types( $content_types );
+
+	return rest_ensure_response(
+		[
+			'success' => $updated,
+		]
+	);
 }
 
 /**
