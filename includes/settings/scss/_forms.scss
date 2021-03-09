@@ -8,6 +8,11 @@
 	padding: 8px 12px;
 }
 
+.wpe-content-model-admin-page input[type="radio"] {
+	border-radius: 50%;
+	min-width: auto;
+}
+
 .wpe-content-model-admin-page input:disabled {
 	background: #f4f7fa;
 	border: 1px solid #cfdde9;
@@ -17,8 +22,17 @@
 	min-height: 120px;
 }
 
-.wpe-content-model-admin-page label {
+.wpe-content-model-admin-page label,
+.wpe-content-model-admin-page legend {
 	font-weight: 700;
+}
+
+.wpe-content-model-admin-page legend {
+	margin-bottom: 19px;
+}
+
+.wpe-content-model-admin-page label.radio {
+	font-weight: 300;
 }
 
 .wpe-content-model-admin-page form .limit {
