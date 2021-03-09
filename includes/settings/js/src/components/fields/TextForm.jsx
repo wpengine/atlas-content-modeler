@@ -36,10 +36,12 @@ function TextForm() {
 				</fieldset>
 			</div>
 
-			<button type="submit" className="primary first">Create</button>
-			<Link to="/wp-admin/admin.php?page=wpe-content-model">
-				<button className="tertiary">Cancel</button>
-			</Link>
+			<div className="buttons">
+				<button type="submit" className="primary first">Create</button>
+				<Link to="/wp-admin/admin.php?page=wpe-content-model">
+					<button className="tertiary">Cancel</button>
+				</Link>
+			</div>
 		</form>
 	);
 }
