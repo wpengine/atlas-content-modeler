@@ -20,7 +20,6 @@ export default function EditContentModel() {
 		} );
 
 		setModel(model.data);
-		// TODO: sort fields by their position key here.
 		setFields({
 			data: model?.data?.fields ?? {},
 			order: getFieldOrder(model?.data?.fields)

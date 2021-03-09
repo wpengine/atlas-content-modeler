@@ -169,8 +169,6 @@ function dispatch_create_content_model_field( WP_REST_Request $request ) {
 
 	$content_types[ $params['model'] ]['fields'][ $params['id'] ] = $values_to_save;
 
-	// TODO: update the 'position' value of lower fields if the new one was inserted in the middle of existing fields.
-
 	$updated = update_registered_content_types( $content_types );
 
 	return rest_ensure_response(
