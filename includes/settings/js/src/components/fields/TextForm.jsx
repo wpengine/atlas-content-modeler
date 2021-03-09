@@ -6,7 +6,7 @@ import { useLocationSearch } from "../../utils";
 
 const { apiFetch } = wp;
 
-function TextForm({cancelAction, updateAction, id}) {
+function TextForm({cancelAction, updateAction, id, position}) {
 	const { register, handleSubmit, errors, setValue } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 	const query = useLocationSearch();
@@ -41,8 +41,7 @@ function TextForm({cancelAction, updateAction, id}) {
 			<input id="type" name="type" type="hidden" ref={register} value="text" />
 			<input id="id" name="id" type="hidden" ref={register} value={id} />
 			<input id="model" name="model" type="hidden" ref={register} value={model} />
-			{/*TODO: set the real position value here from a position prop, so new fields can be created in between others.*/}
-			<input id="position" name="position" type="hidden" ref={register} value={0} />
+			<input id="position" name="position" type="hidden" ref={register} value={position} />
 			<div>
 				<label htmlFor="name">Name</label><br/>
 				<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>

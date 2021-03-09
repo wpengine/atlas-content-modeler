@@ -21,22 +21,26 @@ export default function EditContentModel() {
 
 		setModel(model.data);
 		// TODO: sort fields by their position key here.
-		setFields(model?.data?.fields ?? {});
+		setFields({
+			data: model?.data?.fields ?? {},
+			order: getFieldOrder(model?.data?.fields)
+		});
 		setLoading(false);
 	}, [] );
 
-	function addField(e) {
-		e.preventDefault();
+	function addField(position) {
 		const newId = Date.now();
 		setFields(oldFields => {
-			return { ...oldFields, [newId]: { id: newId, type: 'new', position: 0, open: true } }
+			const newData = { ...oldFields.data, [newId]: { id: newId, type: 'new', open: true, position } }
+			return { data: newData, order: getFieldOrder(newData) };
 		});
 	}
 
 	// Close the field and update its data.
 	function updateField(data) {
 		setFields(oldFields => {
-			return { ...oldFields, [data.id]: { ...data, open: false } }
+			const newData = { ...oldFields.data, [data.id]: { ...data, open: false } };
+			return { data: newData, order: getFieldOrder(newData) };
 		});
 	}
 
@@ -44,9 +48,54 @@ export default function EditContentModel() {
 	// Used to remove a field that has not yet been saved.
 	function removeField(id) {
 		setFields(oldFields => {
-			delete oldFields[id];
-			return { ...oldFields };
+			delete oldFields.data[id];
+			const newData = {...oldFields.data};
+			return { data: newData, order: getFieldOrder(newData) };
 		});
+	}
+
+	// Gives an array of field IDs in the order they should appear based
+	// on their position property, with the ID of the lowest position first.
+	function getFieldOrder(fields) {
+		if (typeof fields !== 'object') {
+			return [];
+		}
+
+		return Object
+			.keys(fields)
+			.map((key) => {
+				return {
+					position: fields[key]['position'],
+					id: fields[key]['id'],
+				}
+			})
+			.sort((field1, field2) => field1.position - field2.position)
+			.map(field => field.id);
+	}
+
+	// Instead of incrementing field positions by 1, increment with a gap.
+	// This allows new fields to be inserted between others without
+	// affecting the position values of surrounding fields.
+	function getPositionAfter(id) {
+		const POSITION_GAP = 10000;
+
+		const myOrder = fields?.order?.indexOf(id);
+		const myPosition = parseFloat(fields?.data[id]?.position);
+
+		// Last field. Just add the gap.
+		if (myOrder + 1 === Object.keys(fields?.data)?.length) {
+			return myPosition + POSITION_GAP;
+		}
+
+		// Otherwise add half the difference between my position and the next field's position.
+		const nextFieldId = fields?.order[myOrder+1];
+		const nextFieldPosition = parseFloat(fields?.data[nextFieldId]?.position);
+
+		if (nextFieldPosition) {
+			return (myPosition + nextFieldPosition) / 2;
+		}
+
+		return 0;
 	}
 
 	if ( loading ) {
@@ -57,7 +106,7 @@ export default function EditContentModel() {
 		);
 	}
 
-	const fieldCount = Object.keys(fields).length;
+	const fieldCount = Object.keys(fields.data).length;
 
 	return (
 		<div className="app-card">
@@ -74,17 +123,21 @@ export default function EditContentModel() {
 						<p>{fieldCount} {fieldCount > 1 ? 'Fields' : 'Field'}.</p>
 						<ul className="model-list">
 							{
-								Object.keys(fields).map( (id) => {
-									const {type,open=false} = fields[id];
+								fields.order.map( (id) => {
+									const {type, position, open=false} = fields.data[id];
+									const positionAfter = getPositionAfter(id);
+
 									return <Field
 											key={id}
 											id={id}
 											type={type}
 											open={open}
-											data={fields[id]}
+											data={fields?.data[id]}
 											cancelAction={removeField}
 											updateAction={updateField}
 											addAction={addField}
+											position={position}
+											positionAfter={positionAfter}
 									/>
 								} )
 							}
@@ -98,7 +151,7 @@ export default function EditContentModel() {
 						<ul className="model-list">
 							<li className="empty"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></li>
 							<li className="add-item">
-								<button onClick={addField}>
+								<button onClick={() => addField(0)}>
 									<AddIcon/>
 								</button>
 							</li>

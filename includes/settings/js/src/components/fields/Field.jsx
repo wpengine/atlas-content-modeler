@@ -5,14 +5,13 @@ import {AddIcon} from "../icons";
 const BooleanForm = () => <p>I will be the boolean form.</p>;
 const NumberForm = () => <p>I will be the number form.</p>;
 
-function Field({type='text', open=false, cancelAction, id, data={}, addAction, updateAction}) {
+function Field({type='text', position, open=false, cancelAction, id, data={}, addAction, updateAction, positionAfter}) {
 	const [activeForm, setActiveForm] = useState(type);
 
 	useEffect(() => {
 		if ( type === 'new' ) {
 			type = 'text';
 			setActiveForm(type)
-			open = true;
 		}
 	}, [])
 
@@ -30,7 +29,7 @@ function Field({type='text', open=false, cancelAction, id, data={}, addAction, u
 					<span>option icon</span>
 				</li>
 				<li className="add-item">
-					<button onClick={addAction} aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
+					<button onClick={() => addAction(positionAfter)} aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
 						<AddIcon/>
 					</button>
 				</li>
@@ -47,7 +46,7 @@ function Field({type='text', open=false, cancelAction, id, data={}, addAction, u
 				<button onClick={() => setActiveForm('boolean')}>Boolean</button>
 			</div>
 			<h3>New {fieldTitle} Block</h3>
-			{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id}/> }
+			{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
 			{ activeForm === 'boolean' && <BooleanForm /> }
 			{ activeForm === 'number' && <NumberForm /> }
 		</li>
