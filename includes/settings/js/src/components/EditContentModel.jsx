@@ -27,7 +27,12 @@ export default function EditContentModel() {
 	function addField(e) {
 		e.preventDefault();
 		setFields(oldFields => [...oldFields, { type: 'new', position: 0}]);
-		console.log('Adding item…');
+	}
+
+	function removeField(e) {
+		e.preventDefault();
+		// TODO: remove the specific field.
+		setFields([]);
 	}
 
 	if ( loading ) {
@@ -53,7 +58,7 @@ export default function EditContentModel() {
 						<p>{fields.length} {fields.length > 1 ? 'Fields' : 'Field'}.</p>
 						<ul className="model-list">
 							{
-								fields.map( (field) => { return <Field type={field.type} /> } )
+								fields.map( (field) => { return <Field type={field.type} cancelAction={removeField} /> } )
 							}
 						</ul>
 					</>

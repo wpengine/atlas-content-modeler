@@ -3,7 +3,7 @@ import camelcase from "camelcase";
 import {Link} from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-function TextForm() {
+function TextForm({cancelAction}) {
 	const { register, handleSubmit, errors, setValue } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 
@@ -46,9 +46,7 @@ function TextForm() {
 
 			<div className="buttons">
 				<button type="submit" className="primary first">Create</button>
-				<Link to="/wp-admin/admin.php?page=wpe-content-model">
-					<button className="tertiary">Cancel</button>
-				</Link>
+				<button className="tertiary" onClick={cancelAction}>Cancel</button>
 			</div>
 		</form>
 	);
