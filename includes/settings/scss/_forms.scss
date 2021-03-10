@@ -40,11 +40,22 @@
 	line-height: 25px;
 }
 
-.wpe-content-model-admin-page form .limit {
+.wpe-content-model-admin-page form .field-messages {
+	display: flex;
 	font-size: 12px;
+	justify-content: space-between;
 	margin: 8px 0 0;
 	max-width: 360px;
 	text-align: right;
+}
+
+.wpe-content-model-admin-page form .field-messages .error {
+	align-items: center;
+	display: flex;
+}
+
+.wpe-content-model-admin-page form .field-messages .error svg {
+	margin-right: 8px;
 }
 
 .wpe-content-model-admin-page .buttons {
@@ -53,4 +64,15 @@
 
 .wpe-content-model-admin-page form div.field {
 	margin-top: 28px;
+}
+
+span[role="alert"],
+label.alert,
+legend.alert {
+	color: $color-warning;
+}
+
+input[aria-invalid="true"],
+.wpe-content-model-admin-page input.alert:read-only {
+	border-color: $color-warning;
 }
