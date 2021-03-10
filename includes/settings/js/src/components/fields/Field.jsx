@@ -100,7 +100,7 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 				</button>
 			</div>
 			<div className="field-form">
-				<h3>New {fieldTitle} Block</h3>
+				<h3>New {fieldTitle} Field</h3>
 				{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
 				{ activeForm === 'boolean' && <BooleanForm /> }
 				{ activeForm === 'number' && <NumberForm /> }
