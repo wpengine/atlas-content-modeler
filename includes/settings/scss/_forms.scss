@@ -14,9 +14,11 @@
 	margin-right: 5px;
 }
 
-.wpe-content-model-admin-page input:disabled {
+.wpe-content-model-admin-page input:disabled,
+.wpe-content-model-admin-page input:read-only {
 	background: #f4f7fa;
 	border: 1px solid #cfdde9;
+	color: #59767f;
 }
 
 .wpe-content-model-admin-page textarea {
