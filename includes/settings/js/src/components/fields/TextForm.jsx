@@ -41,35 +41,40 @@ function TextForm({cancelAction, updateAction, id, position}) {
 			<input id="id" name="id" type="hidden" ref={register} value={id} />
 			<input id="model" name="model" type="hidden" ref={register} value={model} />
 			<input id="position" name="position" type="hidden" ref={register} value={position} />
-			<div>
-				<label htmlFor="name">Name</label><br/>
-				<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
-				<input
-					id="name"
-					name="name"
-					placeholder="Name"
-					ref={register({ required: true, maxLength: 50})}
-					onChange={ e => {
-						setValue( 'slug', camelcase( e.target.value ) );
-						setNameCount(e.target.value.length);
-					} } />
-				<p className="limit">{nameCount}/50</p>
-			</div>
+			<div className="columns">
+				<div className="left-column">
+					<div className="field">
+						<label htmlFor="name">Name</label><br/>
+						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
+						<input
+							id="name"
+							name="name"
+							placeholder="Name"
+							ref={register({ required: true, maxLength: 50})}
+							onChange={ e => {
+								setValue( 'slug', camelcase( e.target.value ) );
+								setNameCount(e.target.value.length);
+							} } />
+						<p className="limit">{nameCount}/50</p>
+					</div>
+					<div className="field">
+						<legend>Text Length</legend>
+						<fieldset>
+							<input type="radio" id="short" name="textLength" value="short" ref={register} defaultChecked />
+							<label className="radio" htmlFor="short">Short text (maximum 50 characters)</label><br/>
+							<input type="radio" id="long" name="textLength" value="long" ref={register} />
+							<label className="radio" htmlFor="long">Long text (maximum 500 characters)</label>
+						</fieldset>
+					</div>
+				</div>
 
-			<div>
-				<label htmlFor="slug">API Identifier</label><br/>
-				<p className="help">Auto-generated and used for API requests.</p>
-				<input id="slug" name="slug" ref={register({ required: true, maxLength: 20 })} readOnly="readOnly" />
-			</div>
-
-			<div>
-				<legend>Text Length</legend>
-				<fieldset>
-					<input type="radio" id="short" name="textLength" value="short" ref={register} defaultChecked />
-					<label className="radio" htmlFor="short">Short text (maximum 50 characters)</label><br/>
-					<input type="radio" id="long" name="textLength" value="long" ref={register} />
-					<label className="radio" htmlFor="long">Long text (maximum 500 characters)</label>
-				</fieldset>
+				<div className="right-column">
+					<div className="field">
+						<label htmlFor="slug">API Identifier</label><br/>
+						<p className="help">Auto-generated and used for API requests.</p>
+						<input id="slug" name="slug" ref={register({ required: true, maxLength: 20 })} readOnly="readOnly" />
+					</div>
+				</div>
 			</div>
 
 			<div className="buttons">

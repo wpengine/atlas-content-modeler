@@ -11,6 +11,7 @@
 .wpe-content-model-admin-page input[type="radio"] {
 	border-radius: 50%;
 	min-width: auto;
+	margin-right: 5px;
 }
 
 .wpe-content-model-admin-page input:disabled {
@@ -33,6 +34,7 @@
 
 .wpe-content-model-admin-page label.radio {
 	font-weight: 300;
+	line-height: 25px;
 }
 
 .wpe-content-model-admin-page form .limit {
@@ -46,6 +48,6 @@
 	margin: 28px 0;
 }
 
-.wpe-content-model-admin-page form div {
+.wpe-content-model-admin-page form div.field {
 	margin-top: 28px;
 }

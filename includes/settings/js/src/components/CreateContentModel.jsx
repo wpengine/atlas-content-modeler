@@ -45,14 +45,14 @@ export default function CreateContentModel() {
 			</section>
 			<section className="card-content">
 				<form onSubmit={handleSubmit(apiCreateModel)}>
-					<div>
+					<div className="field">
 						<label htmlFor="singular">Singular Name</label><br/>
 						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
 						<input id="singular" name="singular" placeholder="Rabbit" ref={register({ required: true, maxLength: 50})} onChange={ e => setSingularCount(e.target.value.length)} />
 						<p className="limit">{singularCount}/50</p>
 					</div>
 
-					<div>
+					<div className="field">
 						<label htmlFor="plural">Plural Name</label><br/>
 						<p className="help">Plural display name for your content model, e.g. "Rabbits".</p>
 						<input
@@ -68,13 +68,13 @@ export default function CreateContentModel() {
 						<p className="limit">{pluralCount}/50</p>
 					</div>
 
-					<div>
+					<div className="field">
 						<label htmlFor="postTypeSlug">API Identifier</label><br/>
 						<p className="help">Auto-generated and used for API requests.</p>
 						<input id="postTypeSlug" name="postTypeSlug" ref={register({ required: true, maxLength: 20 })} readOnly="readOnly" />
 					</div>
 
-					<div>
+					<div className="field">
 						<label htmlFor="description">Description</label><br/>
 						<p className="help">A hint for content editors and API users.</p>
 						<textarea id="description" name="description" ref={register({ maxLength: 250})} onChange={ e => setDescriptionCount(e.target.value.length)} />
