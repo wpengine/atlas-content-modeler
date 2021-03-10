@@ -120,7 +120,7 @@ export default function EditContentModel() {
 				(
 					<>
 						<p>{fieldCount} {fieldCount > 1 ? 'Fields' : 'Field'}.</p>
-						<ul className="model-list">
+						<ul className="field-list">
 							{
 								fields.order.map( (id) => {
 									const {type, position, open=false} = fields.data[id];
