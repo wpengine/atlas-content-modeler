@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import TextForm from "./TextForm";
 import {AddIcon, OptionsIcon, ReorderIcon, TextIcon, BooleanIcon, NumberIcon} from "../icons";
 
-const BooleanForm = () => <p>I will be the boolean form.</p>;
-const NumberForm = () => <p>I will be the number form.</p>;
+const BooleanForm = () => <p>Boolean form coming soon.</p>;
+const NumberForm = () => <p>Number form coming soon.</p>;
 
 function Field({type='text', position, open=false, cancelAction, id, data={}, addAction, updateAction, positionAfter}) {
 	const [activeForm, setActiveForm] = useState(type);
@@ -24,6 +24,10 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 			case 'text':
 				return <TextIcon/>;
 		}
+	}
+
+	function fieldButtonClass(type) {
+		return (type === activeForm) ? 'tertiary active' : 'tertiary';
 	}
 
 	const fieldTitle = activeForm.charAt(0).toUpperCase() + activeForm.slice(1);
@@ -73,9 +77,27 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 	return (
 		<li className="open-field" key={id}>
 			<div className="field-buttons">
-				<button onClick={() => setActiveForm('text')}>Text</button>
-				<button onClick={() => setActiveForm('number')}>Number</button>
-				<button onClick={() => setActiveForm('boolean')}>Boolean</button>
+				<button
+					className={fieldButtonClass('text')}
+					onClick={() => setActiveForm('text')}
+				>
+					<TextIcon/>
+					Text
+				</button>
+				<button
+					className={fieldButtonClass('number')}
+					onClick={() => setActiveForm('number')}
+				>
+					<NumberIcon/>
+					Number
+				</button>
+				<button
+					className={fieldButtonClass('boolean')}
+					onClick={() => setActiveForm('boolean')}
+				>
+					<BooleanIcon/>
+					Boolean
+				</button>
 			</div>
 			<div className="field-form">
 				<h3>New {fieldTitle} Block</h3>

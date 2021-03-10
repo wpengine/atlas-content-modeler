@@ -4,12 +4,42 @@ li.open-field {
 	display: block;
 }
 
+.field-buttons {
+	display: flex;
+	box-shadow: 0 6px 5px -5px rgba(0, 0, 0, 0.15);
+	padding: 16px 32px;
+}
+
+.field-buttons button {
+	align-items: center;
+	display: flex;
+	margin-right: 8px;
+	padding: 10px 16px;
+}
+
+.field-buttons button svg {
+	margin-right: 9px
+}
+
+.field-buttons button.active svg path,
+.field-buttons button:focus svg path,
+.field-buttons button:hover svg path {
+	 fill: $color-white;
+}
+
+
+.field-buttons button.active {
+	color: $color-white;
+	background: $color-text;
+}
+
 .field-form {
 	padding: 32px;
 }
 
 .field-form h3 {
 	margin-top: 0;
+	font-weight: 700;
 }
 
 .field-form .buttons {
