@@ -7,12 +7,14 @@
 }
 
 .field-list button.edit {
-	color: $color-text;
+	align-items: center;
 	background: transparent;
 	border: none;
+	color: $color-text;
 	display: flex;
 	height: auto;
 	justify-content: space-between;
+	margin-left: -15px;
 	min-width: 85%;
 	padding: 10px 16px;
 	text-align: left;
@@ -33,7 +35,7 @@
 }
 
 .field-list button.edit span.widest {
-	flex-basis: 70%;
+	flex-basis: 85%;
 }
 
 .field-list .label {
@@ -43,8 +45,14 @@
 	margin: 0 0 2px;
 }
 
-.field-list .value {
-	margin: 0;
+.field-list .type {
+	align-items: center;
+	display: flex;
+	vertical-align: middle;
+}
+
+.field-list .type svg {
+	margin-right: 12px;
 }
 
 .field-list .add-item {
