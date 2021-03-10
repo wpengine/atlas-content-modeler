@@ -1,0 +1,86 @@
+@import 'variables';
+
+.field-list li {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.field-list button.edit {
+	align-items: center;
+	background: transparent;
+	border: none;
+	color: $color-text;
+	display: flex;
+	height: auto;
+	justify-content: space-between;
+	margin-left: -15px;
+	min-width: 85%;
+	padding: 10px 16px;
+	text-align: left;
+	text-decoration: none;
+}
+
+.field-list button.edit:focus,
+.field-list button.edit:hover {
+	background-color: lighten($color-gray, 54%);
+}
+
+.field-list button.edit span {
+	flex-basis: 9%;
+}
+
+.field-list button.edit span.wide {
+	flex-basis: 15%;
+}
+
+.field-list button.edit span.widest {
+	flex-basis: 85%;
+}
+
+.field-list .label {
+	color: lighten($color-gray, 30%);
+	font-size: 13px;
+	font-weight: 700;
+	margin: 0 0 2px;
+}
+
+.field-list .type {
+	align-items: center;
+	display: flex;
+	font-weight: 300;
+	vertical-align: middle;
+}
+
+.field-list .type svg {
+	margin-right: 12px;
+}
+
+.field-list .add-item {
+	border: none;
+	box-shadow: none;
+	justify-content: center;
+	margin-bottom: 0;
+	margin-top: -46px;
+	max-height: 48px;
+	padding: 0;
+}
+
+.field-list .add-item button {
+	background-color: transparent;
+	border: none;
+	height: 64px;
+	padding: 0;
+}
+
+.field-list .reorder button {
+	background-color: transparent;
+	padding: 17px 18px 14px 18px;
+	border: none;
+	height: auto;
+}
+
+.field-list .reorder button:focus,
+.field-list .reorder button:hover {
+	background-color: lighten($color-gray, 54%);
+}

@@ -4,30 +4,75 @@
 .wpe-content-model-admin-page textarea {
 	border-radius: $radius;
 	border: 1px solid $color-text;
+	line-height: 23px;
 	min-width: 360px;
 	padding: 8px 12px;
 }
 
-.wpe-content-model-admin-page input:disabled {
+.wpe-content-model-admin-page input[type="radio"] {
+	border-radius: 50%;
+	min-width: auto;
+	margin-right: 5px;
+}
+
+.wpe-content-model-admin-page input:disabled,
+.wpe-content-model-admin-page input:read-only {
 	background: #f4f7fa;
 	border: 1px solid #cfdde9;
+	color: #59767f;
 }
 
 .wpe-content-model-admin-page textarea {
 	min-height: 120px;
 }
 
-.wpe-content-model-admin-page label {
+.wpe-content-model-admin-page label,
+.wpe-content-model-admin-page legend {
 	font-weight: 700;
 }
 
-.wpe-content-model-admin-page form .limit {
+.wpe-content-model-admin-page legend {
+	margin-bottom: 19px;
+}
+
+.wpe-content-model-admin-page label.radio {
+	font-weight: 300;
+	line-height: 25px;
+}
+
+.wpe-content-model-admin-page form .field-messages {
+	display: flex;
 	font-size: 12px;
+	justify-content: space-between;
 	margin: 8px 0 0;
 	max-width: 360px;
 	text-align: right;
 }
 
-.wpe-content-model-admin-page form div {
+.wpe-content-model-admin-page form .field-messages .error {
+	align-items: center;
+	display: flex;
+}
+
+.wpe-content-model-admin-page form .field-messages .error svg {
+	margin-right: 8px;
+}
+
+.wpe-content-model-admin-page .buttons {
+	margin: 28px 0;
+}
+
+.wpe-content-model-admin-page form div.field {
 	margin-top: 28px;
+}
+
+span[role="alert"],
+label.alert,
+legend.alert {
+	color: $color-warning;
+}
+
+input[aria-invalid="true"],
+.wpe-content-model-admin-page input.alert:read-only {
+	border-color: $color-warning;
 }

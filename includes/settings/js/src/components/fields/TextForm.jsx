@@ -1,0 +1,123 @@
+import React, {useState} from 'react';
+import camelcase from "camelcase";
+import { useForm } from "react-hook-form";
+import { useLocationSearch } from "../../utils";
+import { ErrorIcon } from "../icons";
+
+const { apiFetch } = wp;
+
+function TextForm({cancelAction, updateAction, id, position}) {
+	const { register, handleSubmit, errors, setValue, clearErrors } = useForm();
+	const [ nameCount, setNameCount ] = useState(0);
+	const query = useLocationSearch();
+	const model = query.get('id');
+
+	function apiAddField(data) {
+		apiFetch( {
+			path: `/wpe/content-model-field`,
+			method: 'POST',
+			_wpnonce: wpApiSettings.nonce,
+			data,
+		} ).then( res => {
+			if ( res.success ) {
+				updateAction(data);
+			}
+
+			// @todo show errors
+			if ( ! res.success && res.errors ) {
+				res.errors.forEach( ( currentValue ) => {
+					if ( typeof currentValue === 'object' ) {
+						currentValue.errors.forEach( ( val ) => {
+							console.log(val);
+						} );
+					}
+				} );
+			}
+		} );
+	}
+
+	return (
+		<form onSubmit={handleSubmit(apiAddField)}>
+			<input id="type" name="type" type="hidden" ref={register} value="text" />
+			<input id="id" name="id" type="hidden" ref={register} value={id} />
+			<input id="model" name="model" type="hidden" ref={register} value={model} />
+			<input id="position" name="position" type="hidden" ref={register} value={position} />
+			<div className="columns">
+				<div className="left-column">
+					<div className="field">
+						<label
+							className={errors.slug && 'alert'}
+							htmlFor="name"
+						>
+							Name
+						</label><br/>
+						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
+						<input
+							aria-invalid={errors.name ? "true" : "false"}
+							id="name"
+							name="name"
+							placeholder="Name"
+							ref={register({ required: true, maxLength: 50})}
+							onChange={ e => {
+								setValue( 'slug', camelcase( e.target.value ) );
+								setNameCount(e.target.value.length);
+								clearErrors('slug');
+							} } />
+						<p className="field-messages">
+							{errors.name && errors.name.type === "required" && (
+								<span className="error"><ErrorIcon /><span role="alert">This field is required</span></span>
+							)}
+							{errors.name && errors.name.type === "maxLength" && (
+								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length.</span></span>
+							)}
+							<span>&nbsp;</span>
+							<span className="count">{nameCount}/50</span>
+						</p>
+					</div>
+					<div className="field">
+						<legend>Text Length</legend>
+						<fieldset>
+							<input type="radio" id="short" name="textLength" value="short" ref={register} defaultChecked />
+							<label className="radio" htmlFor="short">Short text (maximum 50 characters)</label><br/>
+							<input type="radio" id="long" name="textLength" value="long" ref={register} />
+							<label className="radio" htmlFor="long">Long text (maximum 500 characters)</label>
+						</fieldset>
+					</div>
+				</div>
+
+				<div className="right-column">
+					<div className="field">
+						<label
+							className={errors.slug && 'alert'}
+							htmlFor="slug"
+						>
+							API Identifier
+						</label><br/>
+						<p className="help">Auto-generated and used for API requests.</p>
+						<input
+							id="slug"
+							name="slug"
+							className={errors.slug && 'alert'}
+							ref={register({ required: true, maxLength: 20 })}
+							readOnly="readOnly" />
+						<p className="field-messages">
+							{errors.slug && errors.slug.type === "required" && (
+								<span className="error"><ErrorIcon /><span role="alert">This field is required</span></span>
+							)}
+							{errors.slug && errors.slug.type === "maxLength" && (
+								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length of 20.</span></span>
+							)}
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div className="buttons">
+				<button type="submit" className="primary first">Create</button>
+				<button className="tertiary" onClick={() => cancelAction(id)}>Cancel</button>
+			</div>
+		</form>
+	);
+}
+
+export default TextForm;

@@ -23,3 +23,11 @@ p {
 strong {
 	font-weight: 700;
 }
+
+.columns {
+	display: flex;
+}
+
+.right-column {
+	margin-left: 40px;
+}

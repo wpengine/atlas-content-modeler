@@ -1,0 +1,59 @@
+@import 'variables';
+
+.model-list li {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.model-list li > a:first-of-type {
+	color: $color-text;
+	display: flex;
+	justify-content: space-between;
+	min-width: 85%;
+	padding: 10px 16px;
+	text-decoration: none;
+}
+
+.model-list li > a:first-of-type:focus,
+.model-list li > a:first-of-type:hover {
+	background-color: lighten($color-gray, 54%);
+}
+
+.model-list li a > span {
+	flex-basis: 9%;
+}
+
+.model-list li span.wide {
+	flex-basis: 15%;
+}
+
+.model-list li span.widest {
+	flex-basis: 30%;
+}
+
+.model-list .label {
+	color: lighten($color-gray, 30%);
+	font-size: 13px;
+	font-weight: 700;
+	margin: 0 0 2px;
+}
+
+.model-list .value {
+	margin: 0;
+}
+
+.model-list .add-item {
+	border: none;
+	box-shadow: none;
+	justify-content: center;
+	margin-bottom: 0;
+	margin-top: -46px;
+}
+
+.model-list .add-item button {
+	background-color: transparent;
+	border: none;
+	height: 64px;
+	padding: 0;
+}

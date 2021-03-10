@@ -76,7 +76,7 @@ export default function ViewContentModelsList() {
 
 function ContentModels({ models }) {
 	return Object.keys(models).map((slug) => {
-		const { name, description } = models[slug];
+		const { name, description, fields={} } = models[slug];
 		return (
 			<li key={slug}>
 				<Link
@@ -95,7 +95,7 @@ function ContentModels({ models }) {
 					</span>
 					<span>
 						<p className="label">Fields</p>
-						<p className="value">5</p>
+						<p className="value">{Object.keys(fields).length}</p>
 					</span>
 					<span>
 						<p className="label">Created</p>
