@@ -13,18 +13,22 @@ export default function EditContentModel() {
 	const query = useLocationSearch();
 	const id = query.get('id');
 
-	useEffect(async () => {
-		const model = await apiFetch( {
-			path: `/wpe/content-model/${id}`,
-			_wpnonce: wpApiSettings.nonce,
-		} );
+	useEffect(() => {
+		const getModel = async () => {
+			const model = await apiFetch({
+				path: `/wpe/content-model/${id}`,
+				_wpnonce: wpApiSettings.nonce,
+			});
 
-		setModel(model.data);
-		setFields({
-			data: model?.data?.fields ?? {},
-			order: getFieldOrder(model?.data?.fields)
-		});
-		setLoading(false);
+			setModel(model.data);
+			setFields({
+				data: model?.data?.fields ?? {},
+				order: getFieldOrder(model?.data?.fields)
+			});
+			setLoading(false);
+		}
+
+		getModel();
 	}, [] );
 
 	function addField(position) {
