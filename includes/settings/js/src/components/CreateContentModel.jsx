@@ -49,7 +49,7 @@ export default function CreateContentModel() {
 						<label htmlFor="singular">Singular Name</label><br/>
 						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
 						<input id="singular" name="singular" placeholder="Rabbit" ref={register({ required: true, maxLength: 50})} onChange={ e => setSingularCount(e.target.value.length)} />
-						<p className="limit">{singularCount}/50</p>
+						<p className="field-messages"><span>&nbsp;</span><span className="count">{singularCount}/50</span></p>
 					</div>
 
 					<div className="field">
@@ -65,7 +65,7 @@ export default function CreateContentModel() {
 									setValue( 'postTypeSlug', camelcase( event.target.value ) );
 									setPluralCount(event.target.value.length)
 								} }/>
-						<p className="limit">{pluralCount}/50</p>
+						<p className="field-messages"><span>&nbsp;</span><span className="count">{pluralCount}/50</span></p>
 					</div>
 
 					<div className="field">
@@ -78,7 +78,7 @@ export default function CreateContentModel() {
 						<label htmlFor="description">Description</label><br/>
 						<p className="help">A hint for content editors and API users.</p>
 						<textarea id="description" name="description" ref={register({ maxLength: 250})} onChange={ e => setDescriptionCount(e.target.value.length)} />
-						<p className="limit">{descriptionCount}/250</p>
+						<p className="field-messages"><span>&nbsp;</span><span className="count">{descriptionCount}/250</span></p>
 					</div>
 
 					<button type="submit" className="primary first">Create</button>

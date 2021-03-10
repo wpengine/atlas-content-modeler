@@ -2,11 +2,12 @@ import React, {useState} from 'react';
 import camelcase from "camelcase";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
+import { ErrorIcon } from "../icons";
 
 const { apiFetch } = wp;
 
 function TextForm({cancelAction, updateAction, id, position}) {
-	const { register, handleSubmit, errors, setValue } = useForm();
+	const { register, handleSubmit, errors, setValue, clearErrors } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 	const query = useLocationSearch();
 	const model = query.get('id');
@@ -44,9 +45,15 @@ function TextForm({cancelAction, updateAction, id, position}) {
 			<div className="columns">
 				<div className="left-column">
 					<div className="field">
-						<label htmlFor="name">Name</label><br/>
+						<label
+							className={errors.slug && 'alert'}
+							htmlFor="name"
+						>
+							Name
+						</label><br/>
 						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
 						<input
+							aria-invalid={errors.name ? "true" : "false"}
 							id="name"
 							name="name"
 							placeholder="Name"
@@ -54,8 +61,18 @@ function TextForm({cancelAction, updateAction, id, position}) {
 							onChange={ e => {
 								setValue( 'slug', camelcase( e.target.value ) );
 								setNameCount(e.target.value.length);
+								clearErrors('slug');
 							} } />
-						<p className="limit">{nameCount}/50</p>
+						<p className="field-messages">
+							{errors.name && errors.name.type === "required" && (
+								<span className="error"><ErrorIcon /><span role="alert">This field is required</span></span>
+							)}
+							{errors.name && errors.name.type === "maxLength" && (
+								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length.</span></span>
+							)}
+							<span>&nbsp;</span>
+							<span className="count">{nameCount}/50</span>
+						</p>
 					</div>
 					<div className="field">
 						<legend>Text Length</legend>
@@ -70,9 +87,27 @@ function TextForm({cancelAction, updateAction, id, position}) {
 
 				<div className="right-column">
 					<div className="field">
-						<label htmlFor="slug">API Identifier</label><br/>
+						<label
+							className={errors.slug && 'alert'}
+							htmlFor="slug"
+						>
+							API Identifier
+						</label><br/>
 						<p className="help">Auto-generated and used for API requests.</p>
-						<input id="slug" name="slug" ref={register({ required: true, maxLength: 20 })} readOnly="readOnly" />
+						<input
+							id="slug"
+							name="slug"
+							className={errors.slug && 'alert'}
+							ref={register({ required: true, maxLength: 20 })}
+							readOnly="readOnly" />
+						<p className="field-messages">
+							{errors.slug && errors.slug.type === "required" && (
+								<span className="error"><ErrorIcon /><span role="alert">This field is required</span></span>
+							)}
+							{errors.slug && errors.slug.type === "maxLength" && (
+								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length of 20.</span></span>
+							)}
+						</p>
 					</div>
 				</div>
 			</div>
