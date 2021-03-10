@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import camelcase from "camelcase";
-import {Link} from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
 
