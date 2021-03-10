@@ -71,16 +71,18 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 
 	// Open fields appear as a form to enter or edit data.
 	return (
-		<li key={id}>
-			<div>
+		<li className="open-field" key={id}>
+			<div className="field-buttons">
 				<button onClick={() => setActiveForm('text')}>Text</button>
 				<button onClick={() => setActiveForm('number')}>Number</button>
 				<button onClick={() => setActiveForm('boolean')}>Boolean</button>
 			</div>
-			<h3>New {fieldTitle} Block</h3>
-			{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
-			{ activeForm === 'boolean' && <BooleanForm /> }
-			{ activeForm === 'number' && <NumberForm /> }
+			<div className="field-form">
+				<h3>New {fieldTitle} Block</h3>
+				{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
+				{ activeForm === 'boolean' && <BooleanForm /> }
+				{ activeForm === 'number' && <NumberForm /> }
+			</div>
 		</li>
 	);
 }
