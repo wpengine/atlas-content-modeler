@@ -106,7 +106,7 @@ function TextForm({cancelAction, updateAction, id, position}) {
 								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length of 20.</span></span>
 							)}
 							{errors.slug && errors.slug.type === "idExists" && (
-								<span className="error"><ErrorIcon /><span role="alert">Another field in this model has the same ID.</span></span>
+								<span className="error"><ErrorIcon /><span role="alert">Another field in this model has the same API identifier.</span></span>
 							)}
 						</p>
 					</div>
