@@ -36,7 +36,7 @@ function NumberForm({cancelAction, updateAction, id, position}) {
 
 	return (
 		<form onSubmit={handleSubmit(apiAddField)}>
-			<input id="type" name="type" type="hidden" ref={register} value="text" />
+			<input id="type" name="type" type="hidden" ref={register} value="number" />
 			<input id="id" name="id" type="hidden" ref={register} value={id} />
 			<input id="model" name="model" type="hidden" ref={register} value={model} />
 			<input id="position" name="position" type="hidden" ref={register} value={position} />
