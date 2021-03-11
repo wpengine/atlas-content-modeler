@@ -15,7 +15,7 @@ class CreateContentModelBooleanFieldCest
         $I->click('li.add-item button');
         $I->wait(1);
 
-        $I->click('Boolean', '.field-list .open-field .field-buttons');
+        $I->click('Boolean', '.open-field .field-buttons');
         $I->fillField(['name' => 'name'], 'Accept Terms');
         $I->see('12/50', 'span.count');
         $I->seeInField('#slug','acceptTerms');
