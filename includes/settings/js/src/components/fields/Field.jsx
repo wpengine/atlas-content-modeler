@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import MediaForm from "./MediaForm";
 import TextForm from "./TextForm";
+import NumberForm from "./NumberForm";
 import {AddIcon, OptionsIcon, ReorderIcon, TextIcon, BooleanIcon, NumberIcon, MediaIcon} from "../icons";
 
 const BooleanForm = () => <p>Boolean form coming soon.</p>;
-const NumberForm = () => <p>Number form coming soon.</p>;
 
 function Field({type='text', position, open=false, cancelAction, id, data={}, addAction, updateAction, positionAfter}) {
 	const [activeForm, setActiveForm] = useState(type);
@@ -113,8 +113,8 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 				<h3>New {fieldTitle} Field</h3>
 				{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
 				{ activeForm === 'boolean' && <BooleanForm /> }
+				{ activeForm === 'number' && <NumberForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
 				{ activeForm === 'media' && <MediaForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
-				{ activeForm === 'number' && <NumberForm /> }
 			</div>
 		</li>
 	);
