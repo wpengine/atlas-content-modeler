@@ -51,7 +51,7 @@ function TextForm({cancelAction, updateAction, id, position}) {
 						>
 							Name
 						</label><br/>
-						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
+						<p className="help">Display name for your text field, e.g. "First Name".</p>
 						<input
 							aria-invalid={errors.name ? "true" : "false"}
 							id="name"
