@@ -9,6 +9,17 @@
 	margin-top: 0;
 }
 
+.wpe-content-model-admin-page header a {
+	text-decoration: none;
+}
+
+.wpe-content-model-admin-page header a:focus h1,
+.wpe-content-model-admin-page header a:focus svg,
+.wpe-content-model-admin-page header a:hover h1,
+.wpe-content-model-admin-page header a:hover svg {
+	opacity: 0.85;
+}
+
 .wrap header h1 {
 	color: $color-white;
 	height: 110px;
