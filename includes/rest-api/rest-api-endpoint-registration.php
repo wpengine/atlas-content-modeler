@@ -155,11 +155,10 @@ function dispatch_create_content_model_field( WP_REST_Request $request ) {
 	$content_types = get_registered_content_types();
 
 	if ( ! isset( $params['model'] ) || empty( $content_types[ $params['model'] ] ) ) {
-		return rest_ensure_response(
-			[
-				'success' => false,
-				'errors'  => esc_html__( 'The specified content model does not exist.', 'wpe-content-model' ),
-			]
+		return new WP_Error(
+			'wpe_invalid_content_model',
+			'The specified content model does not exist.',
+			array( 'status' => 400 )
 		);
 	}
 
