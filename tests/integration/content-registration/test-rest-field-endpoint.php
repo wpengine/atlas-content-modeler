@@ -48,9 +48,9 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( 200, $response->get_status() );
-		$this->assertArrayHasKey( 'success', $data );
-		$this->assertEquals( false, $data[ 'success' ] );
+		$this->assertEquals( 404, $response->get_status() );
+		$this->assertArrayHasKey( 'message', $data );
+		$this->assertEquals( 'The specified content model does not exist.', $data[ 'message' ] );
 	}
 
 	public function tearDown() {
