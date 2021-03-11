@@ -302,7 +302,7 @@ function delete_model( string $post_type_slug ) {
  * Checks if a duplicate field identifier (slug) exists in the content model.
  *
  * @param string $slug           The field slug.
- * @param array  $content_models  All stored content models.
+ * @param array  $content_models All stored content models.
  * @return bool
  */
 function content_model_field_exists( string $slug, array $content_models ): bool {
