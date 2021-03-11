@@ -158,7 +158,7 @@ function dispatch_create_content_model_field( WP_REST_Request $request ) {
 		return new WP_Error(
 			'wpe_invalid_content_model',
 			'The specified content model does not exist.',
-			array( 'status' => 404 )
+			array( 'status' => 400 )
 		);
 	}
 
