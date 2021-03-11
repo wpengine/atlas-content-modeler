@@ -163,6 +163,14 @@ function dispatch_create_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
+	if ( content_model_field_exists( $params['slug'], $content_types ) ) {
+		return new WP_Error(
+			'wpe_duplicate_content_model_field_id',
+			'Another field in this model has the same API identifier.',
+			array( 'status' => 400 )
+		);
+	}
+
 	$values_to_save = $params;
 	unset( $values_to_save['_locale'] ); // Sent by wp.apiFetch but not needed.
 	unset( $values_to_save['model'] ); // The field is stored in the fields property of its model.
@@ -288,4 +296,27 @@ function delete_model( string $post_type_slug ) {
 
 	unset( $content_types[ $post_type_slug ] );
 	return update_registered_content_types( $content_types );
+}
+
+/**
+ * Checks if a duplicate field identifier (slug) exists in the content model.
+ *
+ * @param string $slug           The field slug.
+ * @param array  $content_models All stored content models.
+ * @return bool
+ */
+function content_model_field_exists( string $slug, array $content_models ): bool {
+	foreach ( $content_models as $model ) {
+		if ( ! isset( $model['fields'] ) ) {
+			continue;
+		}
+
+		foreach ( $model['fields'] as $field ) {
+			if ( $field['slug'] === $slug ) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

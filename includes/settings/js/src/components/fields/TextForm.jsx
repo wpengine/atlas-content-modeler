@@ -7,7 +7,7 @@ import { ErrorIcon } from "../icons";
 const { apiFetch } = wp;
 
 function TextForm({cancelAction, updateAction, id, position}) {
-	const { register, handleSubmit, errors, setValue, clearErrors } = useForm();
+	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 	const query = useLocationSearch();
 	const model = query.get('id');
@@ -21,19 +21,17 @@ function TextForm({cancelAction, updateAction, id, position}) {
 		} ).then( res => {
 			if ( res.success ) {
 				updateAction(data);
+			} else {
+				console.warn('Unknown error. (200 status but ‘success’ was false.)', res );
 			}
-
-			// @todo show errors
-			if ( ! res.success && res.errors ) {
-				res.errors.forEach( ( currentValue ) => {
-					if ( typeof currentValue === 'object' ) {
-						currentValue.errors.forEach( ( val ) => {
-							console.log(val);
-						} );
-					}
-				} );
+		} ).catch( err => {
+			if ( err.code === 'wpe_duplicate_content_model_field_id' ) {
+				setError("slug", {type: "idExists"});
 			}
-		} );
+			if ( err.code === 'wpe_invalid_content_model' ) {
+				console.error('Attempted to create a field in a model that no longer exists.');
+			}
+		});
 	}
 
 	return (
@@ -106,6 +104,9 @@ function TextForm({cancelAction, updateAction, id, position}) {
 							)}
 							{errors.slug && errors.slug.type === "maxLength" && (
 								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length of 20.</span></span>
+							)}
+							{errors.slug && errors.slug.type === "idExists" && (
+								<span className="error"><ErrorIcon /><span role="alert">Another field in this model has the same API identifier.</span></span>
 							)}
 						</p>
 					</div>
