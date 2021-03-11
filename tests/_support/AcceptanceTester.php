@@ -55,10 +55,11 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * Set a wpe_headless setting value.
+     * Create a Content Model.
      *
-     * @param string $name  The wpe_headless setting name.
-     * @param string $value The wpe_headless setting value.
+     * @param string $singular    Singular content model name.
+     * @param string $plural      Plural content model name.
+     * @param string $description Content model description.
      */
     public function haveContentModel($singular, $plural, $description = '')
     {
