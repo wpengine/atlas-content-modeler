@@ -162,15 +162,6 @@ function dispatch_create_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	if ( ! isset( $params['model'] ) || empty( $content_types[ $params['model'] ] ) ) {
-		return rest_ensure_response(
-			[
-				'success' => false,
-				'errors'  => esc_html__( 'The specified content model does not exist.', 'wpe-content-model' ),
-			]
-		);
-	}
-
 	$values_to_save = $params;
 	unset( $values_to_save['_locale'] ); // Sent by wp.apiFetch but not needed.
 	unset( $values_to_save['model'] ); // The field is stored in the fields property of its model.
