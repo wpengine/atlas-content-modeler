@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
+import MediaForm from "./MediaForm";
 import TextForm from "./TextForm";
 import NumberForm from "./NumberForm";
-import {AddIcon, OptionsIcon, ReorderIcon, TextIcon, BooleanIcon, NumberIcon} from "../icons";
+import {AddIcon, OptionsIcon, ReorderIcon, TextIcon, BooleanIcon, NumberIcon, MediaIcon} from "../icons";
 
 const BooleanForm = () => <p>Boolean form coming soon.</p>;
 
@@ -19,6 +20,8 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 		switch(type) {
 			case 'boolean':
 				return <BooleanIcon/>;
+			case 'media':
+				return <MediaIcon/>;
 			case 'number':
 				return <NumberIcon/>;
 			case 'text':
@@ -98,12 +101,20 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 					<BooleanIcon/>
 					Boolean
 				</button>
+				<button
+					className={fieldButtonClass('media')}
+					onClick={() => setActiveForm('media')}
+				>
+					<MediaIcon/>
+					Media
+				</button>
 			</div>
 			<div className="field-form">
 				<h3>New {fieldTitle} Field</h3>
 				{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
 				{ activeForm === 'boolean' && <BooleanForm /> }
 				{ activeForm === 'number' && <NumberForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
+				{ activeForm === 'media' && <MediaForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
 			</div>
 		</li>
 	);

@@ -6,7 +6,7 @@ import { ErrorIcon } from "../icons";
 
 const { apiFetch } = wp;
 
-function TextForm({cancelAction, updateAction, id, position}) {
+function MediaForm({cancelAction, updateAction, id, position}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 	const query = useLocationSearch();
@@ -36,7 +36,7 @@ function TextForm({cancelAction, updateAction, id, position}) {
 
 	return (
 		<form onSubmit={handleSubmit(apiAddField)}>
-			<input id="type" name="type" type="hidden" ref={register} value="text" />
+			<input id="type" name="type" type="hidden" ref={register} value="media" />
 			<input id="id" name="id" type="hidden" ref={register} value={id} />
 			<input id="model" name="model" type="hidden" ref={register} value={model} />
 			<input id="position" name="position" type="hidden" ref={register} value={position} />
@@ -49,7 +49,7 @@ function TextForm({cancelAction, updateAction, id, position}) {
 						>
 							Name
 						</label><br/>
-						<p className="help">Display name for your text field, e.g. "First Name".</p>
+						<p className="help">Display name for your media field, e.g. "Header Image".</p>
 						<input
 							aria-invalid={errors.name ? "true" : "false"}
 							id="name"
@@ -73,12 +73,12 @@ function TextForm({cancelAction, updateAction, id, position}) {
 						</p>
 					</div>
 					<div className="field">
-						<legend>Text Length</legend>
+						<legend>Upload Type</legend>
 						<fieldset>
-							<input type="radio" id="short" name="textLength" value="short" ref={register} defaultChecked />
-							<label className="radio" htmlFor="short">Short text (maximum 50 characters)</label><br/>
-							<input type="radio" id="long" name="textLength" value="long" ref={register} />
-							<label className="radio" htmlFor="long">Long text (maximum 500 characters)</label>
+							<input type="radio" id="short" name="uploadType" value="short" ref={register} defaultChecked />
+							<label className="radio" htmlFor="short">One file</label><br/>
+							<input type="radio" id="long" name="uploadType" value="long" ref={register} />
+							<label className="radio" htmlFor="long">Many files</label>
 						</fieldset>
 					</div>
 				</div>
@@ -121,4 +121,4 @@ function TextForm({cancelAction, updateAction, id, position}) {
 	);
 }
 
-export default TextForm;
+export default MediaForm;

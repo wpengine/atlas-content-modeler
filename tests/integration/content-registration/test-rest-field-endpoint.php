@@ -53,6 +53,23 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$this->assertEquals( false, $data[ 'success' ] );
 	}
 
+	public function test_posting_duplicate_field_id_gives_error() {
+		wp_set_current_user( 1 );
+		$model   = 'rabbits';
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+
+		// Send the request twice. The second time should fail due to the duplicate field slug.
+		$this->server->dispatch( $request );
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertArrayHasKey( 'message', $data );
+		$this->assertEquals( 'Another field in this model has the same API identifier.', $data[ 'message' ] );
+	}
+
 	public function tearDown() {
 		parent::tearDown();
 		wp_set_current_user( null );
