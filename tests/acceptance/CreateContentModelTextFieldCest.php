@@ -15,8 +15,10 @@ class CreateContentModelTextFieldCest
         $I->click('li.add-item button');
         $I->wait(1);
 
-        $I->click('.field-list button:first-of-type');
+        $I->click('Text', '.open-field .field-buttons');
         $I->fillField(['name' => 'name'], 'Color');
+        $I->see('5/50', 'span.count');
+        $I->seeInField('#slug','color');
         $I->click('.open-field button.primary');
         $I->wait(1);
 
