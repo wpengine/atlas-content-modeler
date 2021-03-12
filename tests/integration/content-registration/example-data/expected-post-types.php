@@ -6,6 +6,7 @@
 return array (
 	'dog' =>
 		array (
+			'slug' => 'dog',
 			'name' => 'Dogs',
 			'singular_name' => 'Dog',
 			'description' => '',
@@ -68,18 +69,21 @@ return array (
 			'graphql_plural_name' => 'dogs',
 			'fields' => array(
 				'dog-test-field' => array(
+					'slug' => 'dog-test-field',
 					'type' => 'string',
 					'description' => 'dog-test-field description',
 					'show_in_rest' => true,
 					'show_in_graphql' => true,
 				),
 				'another-dog-test-field' => array(
+					'slug' => 'another-dog-test-field',
 					'type' => 'string',
 					'description' => 'another-dog-test-field description',
 					'show_in_rest' => false,
 					'show_in_graphql' => false,
 				),
 				'dog-weight' => array(
+					'slug' => 'dog-weight',
 					'type' => 'number',
 					'description' => 'dog-weight description',
 					'show_in_rest' => true,
@@ -89,6 +93,7 @@ return array (
 		),
 	'cat' =>
 		array (
+			'slug' => 'cat',
 			'name' => 'Cats',
 			'singular_name' => 'Cat',
 			'description' => 'A description of cats',
