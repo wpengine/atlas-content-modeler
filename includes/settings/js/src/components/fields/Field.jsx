@@ -75,6 +75,7 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 				</h3>
 				<Form
 					type={activeForm}
+					storedData={data}
 					editing={editing}
 					cancelAction={cancelAction}
 					closeAction={closeAction}

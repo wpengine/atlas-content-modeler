@@ -15,7 +15,7 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({cancelAction, closeAction, updateAction, id, position, type, editing}) {
+function Form({cancelAction, closeAction, updateAction, id, position, type, editing, storedData}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 	const query = useLocationSearch();
@@ -24,8 +24,8 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 
 	function apiAddField(data) {
 		apiFetch( {
-			path: `/wpe/content-model-field`,
-			method: 'POST',
+			path: `/wpe/content-model-field`, // TODO: make this /wpe/content-model-field/[id] if editing.
+			method: 'POST', // TODO: make this 'PUT' if editing.
 			_wpnonce: wpApiSettings.nonce,
 			data,
 		} ).then( res => {
@@ -64,6 +64,7 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 							aria-invalid={errors.name ? "true" : "false"}
 							id="name"
 							name="name"
+							defaultValue={storedData?.name}
 							placeholder="Name"
 							ref={register({ required: true, maxLength: 50})}
 							onChange={ e => {
@@ -97,6 +98,7 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 						<input
 							id="slug"
 							name="slug"
+							defaultValue={storedData?.slug}
 							className={errors.slug && 'alert'}
 							ref={register({ required: true, maxLength: 20 })}
 							readOnly="readOnly" />
