@@ -15,7 +15,7 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({cancelAction, updateAction, id, position, type}) {
+function Form({cancelAction, closeAction, updateAction, id, position, type, editing}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 	const query = useLocationSearch();
@@ -116,8 +116,16 @@ function Form({cancelAction, updateAction, id, position, type}) {
 			</div>
 
 			<div className="buttons">
-				<button type="submit" className="primary first">Create</button>
-				<button className="tertiary" onClick={() => cancelAction(id)}>Cancel</button>
+				<button type="submit" className="primary first">{editing ? 'Update' : 'Create'}</button>
+				<button
+					className="tertiary"
+					onClick={(event) => {
+						event.preventDefault();
+						editing ? closeAction(id) : cancelAction(id)
+					}}
+				>
+					Cancel
+				</button>
 			</div>
 		</form>
 	);
