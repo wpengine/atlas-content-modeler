@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import camelcase from "camelcase";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
-import { ErrorIcon } from "../icons";
+import Icon from "../icons";
 
 const { apiFetch } = wp;
 
@@ -63,10 +63,10 @@ function BooleanForm({cancelAction, updateAction, id, position}) {
 							} } />
 						<p className="field-messages">
 							{errors.name && errors.name.type === "required" && (
-								<span className="error"><ErrorIcon /><span role="alert">This field is required</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
 							)}
 							{errors.name && errors.name.type === "maxLength" && (
-								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length.</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
 							)}
 							<span>&nbsp;</span>
 							<span className="count">{nameCount}/50</span>
@@ -91,13 +91,13 @@ function BooleanForm({cancelAction, updateAction, id, position}) {
 							readOnly="readOnly" />
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
-								<span className="error"><ErrorIcon /><span role="alert">This field is required</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
 							)}
 							{errors.slug && errors.slug.type === "maxLength" && (
-								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length of 20.</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length of 20.</span></span>
 							)}
 							{errors.slug && errors.slug.type === "idExists" && (
-								<span className="error"><ErrorIcon /><span role="alert">Another field in this model has the same API identifier.</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">Another field in this model has the same API identifier.</span></span>
 							)}
 						</p>
 					</div>

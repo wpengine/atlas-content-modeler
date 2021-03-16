@@ -7,13 +7,23 @@ import OptionsIcon from './OptionsIcon';
 import ReorderIcon from './ReorderIcon';
 import TextIcon from './TextIcon';
 
-export {
-	AddIcon,
-	BooleanIcon,
-	ErrorIcon,
-	MediaIcon,
-	NumberIcon,
-	OptionsIcon,
-	ReorderIcon,
-	TextIcon,
-};
+export default function Icon({type}) {
+	switch(type) {
+		case 'add':
+			return <AddIcon/>;
+		case 'boolean':
+			return <BooleanIcon/>;
+		case 'error':
+			return <ErrorIcon/>;
+		case 'media':
+			return <MediaIcon/>;
+		case 'number':
+			return <NumberIcon/>;
+		case 'options':
+			return <OptionsIcon/>;
+		case 'reorder':
+			return <ReorderIcon/>;
+		case 'text':
+			return <TextIcon/>;
+	}
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocationSearch } from "../utils";
-import { AddIcon, OptionsIcon } from "./icons"
+import Icon from "./icons"
 import Field from "./fields/Field"
 const { apiFetch } = wp;
 
@@ -116,7 +116,7 @@ export default function EditContentModel() {
 			<section className="heading">
 			<h2><Link to="/wp-admin/admin.php?page=wpe-content-model">Content Models</Link> / {model?.name}</h2>
 			<button className="options" aria-label={`Options for ${model?.name} content model`}>
-				<OptionsIcon/>
+				<Icon type="options" />
 			</button>
 		</section>
 		<section className="card-content">
@@ -155,7 +155,7 @@ export default function EditContentModel() {
 							<li className="empty"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></li>
 							<li className="add-item">
 								<button onClick={() => addField(0)}>
-									<AddIcon/>
+									<Icon type="add" />
 								</button>
 							</li>
 						</ul>

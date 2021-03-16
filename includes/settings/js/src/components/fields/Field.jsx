@@ -3,36 +3,18 @@ import MediaForm from "./MediaForm";
 import TextForm from "./TextForm";
 import NumberForm from "./NumberForm";
 import BooleanForm from "./BooleanForm";
-import {AddIcon, OptionsIcon, ReorderIcon, TextIcon, BooleanIcon, NumberIcon, MediaIcon} from "../icons";
+import Icon from "../icons";
 
 function Field({type='text', position, open=false, cancelAction, id, data={}, addAction, updateAction, positionAfter}) {
 	const [activeForm, setActiveForm] = useState(type);
+	const supportedFields = ['text', 'number', 'boolean', 'media'];
 
 	useEffect(() => {
 		if ( type === 'new' ) {
 			type = 'text';
 			setActiveForm(type)
 		}
-	}, [])
-
-	function showTypeIcon() {
-		switch(type) {
-			case 'boolean':
-				return <BooleanIcon/>;
-			case 'media':
-				return <MediaIcon/>;
-			case 'number':
-				return <NumberIcon/>;
-			case 'text':
-				return <TextIcon/>;
-		}
-	}
-
-	function fieldButtonClass(type) {
-		return (type === activeForm) ? 'tertiary active' : 'tertiary';
-	}
-
-	const fieldTitle = activeForm.charAt(0).toUpperCase() + activeForm.slice(1);
+	}, []);
 
 	// Closed fields appear as a row with a summary of info.
 	if (!open) {
@@ -45,7 +27,7 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 							onMouseDown={() => alert("Reordering fields is not yet implemented.")}
 							aria-label={`Reorder the ${data.name} field`}
 						>
-							<ReorderIcon />
+							<Icon type="reorder" />
 						</button>
 					</span>
 					<button
@@ -53,7 +35,7 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 						onClick={() => alert("Editing saved fields is not yet implemented.")}
 						aria-label={`Edit the ${data.name} field`}
 					>
-						<span className="type">{showTypeIcon()}{typeLabel}</span>
+						<span className="type"><Icon type={data.type}/>{typeLabel}</span>
 						<span className="widest"><strong>{data.name}</strong></span>
 					</button>
 					<span>
@@ -62,54 +44,41 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 							onClick={() => alert("Field options are not yet implemented.")}
 							aria-label={`Options for the ${data.name} field.`}
 						>
-							<OptionsIcon/>
+							<Icon type="options" />
 						</button>
 					</span>
 				</li>
 				<li className="add-item">
 					<button onClick={() => addAction(positionAfter)} aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
-						<AddIcon/>
+						<Icon type="add" />
 					</button>
 				</li>
 			</>
 		);
 	}
 
+	const formFieldTitle = activeForm.charAt(0).toUpperCase() + activeForm.slice(1);
+
 	// Open fields appear as a form to enter or edit data.
 	return (
 		<li className="open-field" key={id}>
 			<div className="field-buttons">
-				<button
-					className={fieldButtonClass('text')}
-					onClick={() => setActiveForm('text')}
-				>
-					<TextIcon/>
-					Text
-				</button>
-				<button
-					className={fieldButtonClass('number')}
-					onClick={() => setActiveForm('number')}
-				>
-					<NumberIcon/>
-					Number
-				</button>
-				<button
-					className={fieldButtonClass('boolean')}
-					onClick={() => setActiveForm('boolean')}
-				>
-					<BooleanIcon/>
-					Boolean
-				</button>
-				<button
-					className={fieldButtonClass('media')}
-					onClick={() => setActiveForm('media')}
-				>
-					<MediaIcon/>
-					Media
-				</button>
+				{supportedFields.map((field) => {
+					const fieldTitle = field.charAt(0).toUpperCase() + field.slice(1);
+					return (
+						<button
+							key={field}
+							className={field === activeForm ? "tertiary active" : "tertiary"}
+							onClick={() => setActiveForm(field)}
+						>
+							<Icon type={field}/>
+							{fieldTitle}
+						</button>
+					);
+				})}
 			</div>
 			<div className="field-form">
-				<h3>New {fieldTitle} Field</h3>
+				<h3>New {formFieldTitle} Field</h3>
 				{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
 				{ activeForm === 'boolean' && <BooleanForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
 				{ activeForm === 'number' && <NumberForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
