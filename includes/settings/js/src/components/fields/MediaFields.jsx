@@ -8,10 +8,10 @@ const MediaFields = ({register}) => {
 		<div className="field">
 			<legend>Upload Type</legend>
 			<fieldset>
-				<input type="radio" id="short" name="uploadType" value="short" ref={register} defaultChecked />
-				<label className="radio" htmlFor="short">One file</label><br/>
-				<input type="radio" id="long" name="uploadType" value="long" ref={register} />
-				<label className="radio" htmlFor="long">Many files</label>
+				<input type="radio" id="single" name="uploadType" value="single" ref={register} defaultChecked />
+				<label className="radio" htmlFor="single">One file</label><br/>
+				<input type="radio" id="multi" name="uploadType" value="multi" ref={register} />
+				<label className="radio" htmlFor="multi">Many files</label>
 			</fieldset>
 		</div>
 	);
