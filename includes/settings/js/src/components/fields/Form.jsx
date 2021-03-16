@@ -10,9 +10,9 @@ import MediaFields from "./MediaFields";
 const { apiFetch } = wp;
 
 const extraFields = {
-	'text': TextFields,
-	'media': MediaFields,
-	'number': NumberFields,
+	text: TextFields,
+	media: MediaFields,
+	number: NumberFields,
 };
 
 function Form({cancelAction, updateAction, id, position, type}) {
