@@ -34,7 +34,7 @@ export default function EditContentModel() {
 	function addField(position) {
 		const newId = Date.now();
 		setFields(oldFields => {
-			const newData = { ...oldFields.data, [newId]: { id: newId, type: 'new', open: true, position } }
+			const newData = { ...oldFields.data, [newId]: { id: newId, type: 'text', open: true, position } }
 			return { data: newData, order: getFieldOrder(newData) };
 		});
 	}
