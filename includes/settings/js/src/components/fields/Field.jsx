@@ -1,8 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import MediaForm from "./MediaForm";
-import TextForm from "./TextForm";
-import NumberForm from "./NumberForm";
-import BooleanForm from "./BooleanForm";
+import Form from "./Form";
 import Icon from "../icons";
 
 function Field({type='text', position, open=false, cancelAction, id, data={}, addAction, updateAction, positionAfter}) {
@@ -79,10 +76,13 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 			</div>
 			<div className="field-form">
 				<h3>New {formFieldTitle} Field</h3>
-				{ activeForm === 'text' && <TextForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
-				{ activeForm === 'boolean' && <BooleanForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
-				{ activeForm === 'number' && <NumberForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
-				{ activeForm === 'media' && <MediaForm cancelAction={cancelAction} updateAction={updateAction} id={id} position={position}/> }
+				<Form
+					type={activeForm}
+					cancelAction={cancelAction}
+					updateAction={updateAction}
+					id={id}
+					position={position}
+				/>
 			</div>
 		</li>
 	);
