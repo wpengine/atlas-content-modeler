@@ -59,7 +59,7 @@ function Form({cancelAction, updateAction, id, position, type}) {
 						>
 							Name
 						</label><br/>
-						<p className="help">Display name for your text field, e.g. "First Name".</p>
+						<p className="help">Display name for your {type} field.</p>
 						<input
 							aria-invalid={errors.name ? "true" : "false"}
 							id="name"
