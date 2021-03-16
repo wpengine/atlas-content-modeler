@@ -2,15 +2,25 @@ import React, {useState} from 'react';
 import camelcase from "camelcase";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
-import { ErrorIcon } from "../icons";
+import Icon from "../icons";
+import TextFields from "./TextFields";
+import NumberFields from "./NumberFields";
+import MediaFields from "./MediaFields";
 
 const { apiFetch } = wp;
 
-function NumberForm({cancelAction, updateAction, id, position}) {
+const extraFields = {
+	text: TextFields,
+	media: MediaFields,
+	number: NumberFields,
+};
+
+function Form({cancelAction, updateAction, id, position, type}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(0);
 	const query = useLocationSearch();
 	const model = query.get('id');
+	const ExtraFields = extraFields[type] ?? null;
 
 	function apiAddField(data) {
 		apiFetch( {
@@ -36,7 +46,7 @@ function NumberForm({cancelAction, updateAction, id, position}) {
 
 	return (
 		<form onSubmit={handleSubmit(apiAddField)}>
-			<input id="type" name="type" type="hidden" ref={register} value="number" />
+			<input id="type" name="type" type="hidden" ref={register} value={type} />
 			<input id="id" name="id" type="hidden" ref={register} value={id} />
 			<input id="model" name="model" type="hidden" ref={register} value={model} />
 			<input id="position" name="position" type="hidden" ref={register} value={position} />
@@ -49,7 +59,7 @@ function NumberForm({cancelAction, updateAction, id, position}) {
 						>
 							Name
 						</label><br/>
-						<p className="help">Display name for your Number field, e.g. "Rabbit Weight".</p>
+						<p className="help">Display name for your {type} field.</p>
 						<input
 							aria-invalid={errors.name ? "true" : "false"}
 							id="name"
@@ -63,24 +73,16 @@ function NumberForm({cancelAction, updateAction, id, position}) {
 							} } />
 						<p className="field-messages">
 							{errors.name && errors.name.type === "required" && (
-								<span className="error"><ErrorIcon /><span role="alert">This field is required</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
 							)}
 							{errors.name && errors.name.type === "maxLength" && (
-								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length.</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
 							)}
 							<span>&nbsp;</span>
 							<span className="count">{nameCount}/50</span>
 						</p>
 					</div>
-					<div className="field">
-						<legend>Number Type</legend>
-						<fieldset>
-							<input type="radio" id="integer" name="numberType" value="integer" ref={register} defaultChecked />
-							<label className="radio" htmlFor="integer">Integer (1, 2, 3, 5, 8, 13, ...)</label><br/>
-							<input type="radio" id="decimal" name="numberType" value="decimal" ref={register} />
-							<label className="radio" htmlFor="decimal">Decimal (3.14159265389)</label>
-						</fieldset>
-					</div>
+					{ (type in extraFields) && <ExtraFields register={register} /> }
 				</div>
 
 				<div className="right-column">
@@ -100,13 +102,13 @@ function NumberForm({cancelAction, updateAction, id, position}) {
 							readOnly="readOnly" />
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
-								<span className="error"><ErrorIcon /><span role="alert">This field is required</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
 							)}
 							{errors.slug && errors.slug.type === "maxLength" && (
-								<span className="error"><ErrorIcon /><span role="alert">Exceeds max length of 20.</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length of 20.</span></span>
 							)}
 							{errors.slug && errors.slug.type === "idExists" && (
-								<span className="error"><ErrorIcon /><span role="alert">Another field in this model has the same API identifier.</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">Another field in this model has the same API identifier.</span></span>
 							)}
 						</p>
 					</div>
@@ -121,4 +123,4 @@ function NumberForm({cancelAction, updateAction, id, position}) {
 	);
 }
 
-export default NumberForm;
+export default Form;
