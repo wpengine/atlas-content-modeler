@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import MediaForm from "./MediaForm";
 import TextForm from "./TextForm";
 import NumberForm from "./NumberForm";
@@ -7,13 +7,6 @@ import {AddIcon, OptionsIcon, ReorderIcon, TextIcon, BooleanIcon, NumberIcon, Me
 
 function Field({type='text', position, open=false, cancelAction, id, data={}, addAction, updateAction, positionAfter}) {
 	const [activeForm, setActiveForm] = useState(type);
-
-	useEffect(() => {
-		if ( type === 'new' ) {
-			type = 'text';
-			setActiveForm(type)
-		}
-	}, [])
 
 	function showTypeIcon() {
 		switch(type) {
