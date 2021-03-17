@@ -24,8 +24,8 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 
 	function apiAddField(data) {
 		apiFetch( {
-			path: `/wpe/content-model-field`, // TODO: make this /wpe/content-model-field/[id] if editing.
-			method: 'POST', // TODO: make this 'PUT' if editing.
+			path: `/wpe/content-model-field`,
+			method: editing ? 'PUT' : 'POST',
 			_wpnonce: wpApiSettings.nonce,
 			data,
 		} ).then( res => {
