@@ -47,7 +47,7 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 		);
 	}
 
-	const formFieldTitle = activeForm.charAt(0).toUpperCase() + activeForm.slice(1);
+	const formFieldTitle = editing ? `“${data.name}”` : activeForm.charAt(0).toUpperCase() + activeForm.slice(1);
 
 	// Open fields appear as a form to enter or edit data.
 	return (
