@@ -68,8 +68,8 @@ function register_rest_routes(): void {
 		'wpe',
 		'/content-model-field',
 		[
-			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\dispatch_create_content_model_field',
+			'methods'             => [ 'POST', 'PUT' ],
+			'callback'            => __NAMESPACE__ . '\dispatch_update_content_model_field',
 			'permission_callback' => static function () {
 				return current_user_can( 'manage_options' );
 			},
@@ -150,7 +150,7 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
  *
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
-function dispatch_create_content_model_field( WP_REST_Request $request ) {
+function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	$params        = $request->get_params();
 	$content_types = get_registered_content_types();
 
