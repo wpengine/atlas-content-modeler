@@ -188,7 +188,7 @@ const ContentModelDropdown = ({model}) => {
 						setModalIsOpen(false)
 					}}
 				>
-					No
+					Cancel
 				</button>
 			</Modal>
 		</span>
