@@ -43,7 +43,6 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$this->assertArrayHasKey( '123', $models['rabbits']['fields'] );
 	}
 
-
 	public function test_posting_fields_to_unknown_model_gives_error() {
 		wp_set_current_user( 1 );
 		$model   = 'onions';
@@ -65,9 +64,10 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
-
-		// Send the request twice. The second time should fail due to the duplicate field slug.
 		$this->server->dispatch( $request );
+
+		// Send a second request with the same slug but a new ID. It should fail to update because the slugs collide.
+		$request->set_body( "{\"type\":\"text\",\"id\":\"456\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
