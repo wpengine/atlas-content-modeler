@@ -43,7 +43,6 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$this->assertArrayHasKey( '123', $models['rabbits']['fields'] );
 	}
 
-
 	public function test_posting_fields_to_unknown_model_gives_error() {
 		wp_set_current_user( 1 );
 		$model   = 'onions';
@@ -65,15 +64,38 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
-
-		// Send the request twice. The second time should fail due to the duplicate field slug.
 		$this->server->dispatch( $request );
+
+		// Send a second request with the same slug but a new ID. It should fail to update because the slugs collide.
+		$request->set_body( "{\"type\":\"text\",\"id\":\"456\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
 		$this->assertEquals( 400, $response->get_status() );
 		$this->assertArrayHasKey( 'message', $data );
 		$this->assertEquals( 'Another field in this model has the same API identifier.', $data[ 'message' ] );
+	}
+
+	public function test_field_can_be_created_and_updated() {
+		wp_set_current_user( 1 );
+		$model   = 'rabbits';
+
+		// First request to create the field.
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$this->server->dispatch( $request );
+
+		// Second request to update the field name.
+		$request2 = new WP_REST_Request( 'PUT', "/{$this->namespace}/{$this->route}" );
+		$request2->set_header( 'content-type', 'application/json' );
+		$request2->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"New Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+
+		$response = $this->server->dispatch( $request2 );
+		$models   = get_option( 'wpe_content_model_post_types' );
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertEquals( 'New Name', $models['rabbits']['fields']['123']['name'] );
 	}
 
 	public function test_different_models_can_have_fields_with_same_slug() {

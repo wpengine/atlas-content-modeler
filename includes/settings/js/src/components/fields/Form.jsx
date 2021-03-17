@@ -15,9 +15,9 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({cancelAction, updateAction, id, position, type}) {
+function Form({cancelAction, closeAction, updateAction, id, position, type, editing, storedData}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
-	const [ nameCount, setNameCount ] = useState(0);
+	const [ nameCount, setNameCount ] = useState(storedData?.name?.length || 0);
 	const query = useLocationSearch();
 	const model = query.get('id');
 	const ExtraFields = extraFields[type] ?? null;
@@ -25,14 +25,16 @@ function Form({cancelAction, updateAction, id, position, type}) {
 	function apiAddField(data) {
 		apiFetch( {
 			path: `/wpe/content-model-field`,
-			method: 'POST',
+			method: editing ? 'PUT' : 'POST',
 			_wpnonce: wpApiSettings.nonce,
 			data,
 		} ).then( res => {
 			if ( res.success ) {
 				updateAction(data);
 			} else {
-				console.warn('Unknown error. (200 status but ‘success’ was false.)', res );
+				// The user pressed “Update” but no data changed.
+				// Just close the field as if it was updated.
+				closeAction(data.id);
 			}
 		} ).catch( err => {
 			if ( err.code === 'wpe_duplicate_content_model_field_id' ) {
@@ -54,7 +56,7 @@ function Form({cancelAction, updateAction, id, position, type}) {
 				<div className="left-column">
 					<div className="field">
 						<label
-							className={errors.slug && 'alert'}
+							className={errors.name && 'alert'}
 							htmlFor="name"
 						>
 							Name
@@ -64,6 +66,7 @@ function Form({cancelAction, updateAction, id, position, type}) {
 							aria-invalid={errors.name ? "true" : "false"}
 							id="name"
 							name="name"
+							defaultValue={storedData?.name}
 							placeholder="Name"
 							ref={register({ required: true, maxLength: 50})}
 							onChange={ e => {
@@ -82,7 +85,7 @@ function Form({cancelAction, updateAction, id, position, type}) {
 							<span className="count">{nameCount}/50</span>
 						</p>
 					</div>
-					{ (type in extraFields) && <ExtraFields register={register} /> }
+					{ (type in extraFields) && <ExtraFields editing={editing} data={storedData} register={register} /> }
 				</div>
 
 				<div className="right-column">
@@ -97,6 +100,7 @@ function Form({cancelAction, updateAction, id, position, type}) {
 						<input
 							id="slug"
 							name="slug"
+							defaultValue={storedData?.slug}
 							className={errors.slug && 'alert'}
 							ref={register({ required: true, maxLength: 20 })}
 							readOnly="readOnly" />
@@ -116,8 +120,16 @@ function Form({cancelAction, updateAction, id, position, type}) {
 			</div>
 
 			<div className="buttons">
-				<button type="submit" className="primary first">Create</button>
-				<button className="tertiary" onClick={() => cancelAction(id)}>Cancel</button>
+				<button type="submit" className="primary first">{editing ? 'Update' : 'Create'}</button>
+				<button
+					className="tertiary"
+					onClick={(event) => {
+						event.preventDefault();
+						editing ? closeAction(id) : cancelAction(id)
+					}}
+				>
+					Cancel
+				</button>
 			</div>
 		</form>
 	);

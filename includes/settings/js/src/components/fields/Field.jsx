@@ -2,7 +2,20 @@ import React, {useState} from 'react';
 import Form from "./Form";
 import Icon from "../icons";
 
-function Field({type='text', position, open=false, cancelAction, id, data={}, addAction, updateAction, positionAfter}) {
+function Field({
+	addAction,
+	cancelAction,
+	closeAction,
+	data = {},
+	editing,
+	id,
+	open = false,
+	openAction,
+	position,
+	positionAfter,
+	type = "text",
+	updateAction,
+}) {
 	const [activeForm, setActiveForm] = useState(type);
 	const supportedFields = ['text', 'number', 'boolean', 'media'];
 
@@ -22,7 +35,7 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 					</span>
 					<button
 						className="edit"
-						onClick={() => alert("Editing saved fields is not yet implemented.")}
+						onClick={() => openAction(data.id)}
 						aria-label={`Edit the ${data.name} field`}
 					>
 						<span className="type"><Icon type={data.type}/>{typeLabel}</span>
@@ -47,31 +60,38 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 		);
 	}
 
-	const formFieldTitle = activeForm.charAt(0).toUpperCase() + activeForm.slice(1);
+	const formFieldTitle = editing ? `“${data.name}”` : activeForm.charAt(0).toUpperCase() + activeForm.slice(1);
 
 	// Open fields appear as a form to enter or edit data.
 	return (
 		<li className="open-field" key={id}>
-			<div className="field-buttons">
-				{supportedFields.map((field) => {
-					const fieldTitle = field.charAt(0).toUpperCase() + field.slice(1);
-					return (
-						<button
-							key={field}
-							className={field === activeForm ? "tertiary active" : "tertiary"}
-							onClick={() => setActiveForm(field)}
-						>
-							<Icon type={field}/>
-							{fieldTitle}
-						</button>
-					);
-				})}
-			</div>
+			{!editing && (
+				<div className="field-buttons">
+					{supportedFields.map((field) => {
+						const fieldTitle = field.charAt(0).toUpperCase() + field.slice(1);
+						return (
+							<button
+								key={field}
+								className={field === activeForm ? "tertiary active" : "tertiary"}
+								onClick={() => setActiveForm(field)}
+							>
+								<Icon type={field}/>
+								{fieldTitle}
+							</button>
+						);
+					})}
+				</div>
+			)}
 			<div className="field-form">
-				<h3>New {formFieldTitle} Field</h3>
+				<h3>
+					{editing ? `Editing` : `New`} {formFieldTitle} Field
+				</h3>
 				<Form
 					type={activeForm}
+					storedData={data}
+					editing={editing}
 					cancelAction={cancelAction}
+					closeAction={closeAction}
 					updateAction={updateAction}
 					id={id}
 					position={position}

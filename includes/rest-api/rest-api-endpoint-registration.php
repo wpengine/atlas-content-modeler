@@ -63,13 +63,13 @@ function register_rest_routes(): void {
 		]
 	);
 
-	// Route for updating part of a single content type.
+	// Route for creating a content model field (POST) or updating one (PUT).
 	register_rest_route(
 		'wpe',
 		'/content-model-field',
 		[
-			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\dispatch_create_content_model_field',
+			'methods'             => [ 'POST', 'PUT' ],
+			'callback'            => __NAMESPACE__ . '\dispatch_update_content_model_field',
 			'permission_callback' => static function () {
 				return current_user_can( 'manage_options' );
 			},
@@ -150,7 +150,7 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
  *
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
-function dispatch_create_content_model_field( WP_REST_Request $request ) {
+function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	$params        = $request->get_params();
 	$content_types = get_registered_content_types();
 
@@ -162,7 +162,13 @@ function dispatch_create_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	if ( content_model_field_exists( $params['slug'], $content_types[ $params['model'] ] ) ) {
+	if (
+		content_model_field_exists(
+			$params['slug'],
+			$params['id'],
+			$content_types[ $params['model'] ]
+		)
+	) {
 		return new WP_Error(
 			'wpe_duplicate_content_model_field_id',
 			'Another field in this model has the same API identifier.',
@@ -300,16 +306,21 @@ function delete_model( string $post_type_slug ) {
 /**
  * Checks if a duplicate field identifier (slug) exists in the content model.
  *
- * @param string $slug  The field slug.
+ * @param string $slug  The current field slug.
+ * @param string $id    The current field id.
  * @param array  $model The content model to check for duplicate slugs.
  * @return bool
  */
-function content_model_field_exists( string $slug, array $model ): bool {
+function content_model_field_exists( string $slug, string $id, array $model ): bool {
 	if ( ! isset( $model['fields'] ) ) {
 		return false;
 	}
 
 	foreach ( $model['fields'] as $field ) {
+		// Exclude the field being edited from slug collision checks.
+		if ( $field['id'] === $id ) {
+			continue;
+		}
 		if ( $field['slug'] === $slug ) {
 			return true;
 		}

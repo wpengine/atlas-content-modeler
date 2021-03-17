@@ -39,10 +39,26 @@ export default function EditContentModel() {
 		});
 	}
 
+	// Open a field to edit it.
+	function openField(id) {
+		setFields(oldFields => {
+			const newData = { ...oldFields.data, [id]: { ...oldFields.data[id], open: true, editing: true } };
+			return { data: newData, order: oldFields.order };
+		});
+	}
+
+	// Close a field to cancel editing it.
+	function closeField(id) {
+		setFields(oldFields => {
+			const newData = { ...oldFields.data, [id]: { ...oldFields.data[id], open: false, editing: false } };
+			return { data: newData, order: oldFields.order };
+		});
+	}
+
 	// Close the field and update its data.
 	function updateField(data) {
 		setFields(oldFields => {
-			const newData = { ...oldFields.data, [data.id]: { ...data, open: false } };
+			const newData = { ...oldFields.data, [data.id]: { ...data, open: false, editing: false } };
 			return { data: newData, order: getFieldOrder(newData) };
 		});
 	}
@@ -127,7 +143,7 @@ export default function EditContentModel() {
 						<ul className="field-list">
 							{
 								fields.order.map( (id) => {
-									const {type, position, open=false} = fields.data[id];
+									const {type, position, open=false, editing=false} = fields.data[id];
 									const positionAfter = getPositionAfter(id);
 
 									return <Field
@@ -135,7 +151,10 @@ export default function EditContentModel() {
 											id={id}
 											type={type}
 											open={open}
+											editing={editing}
 											data={fields?.data[id]}
+											openAction={openField}
+											closeAction={closeField}
 											cancelAction={removeField}
 											updateAction={updateField}
 											addAction={addField}
