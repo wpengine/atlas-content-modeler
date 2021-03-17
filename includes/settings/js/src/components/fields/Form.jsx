@@ -32,7 +32,9 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 			if ( res.success ) {
 				updateAction(data);
 			} else {
-				console.warn('Unknown error. (200 status but ‘success’ was false.)', res );
+				// The user pressed “Update” but no data changed.
+				// Just close the field as if it was updated.
+				closeAction(data.id);
 			}
 		} ).catch( err => {
 			if ( err.code === 'wpe_duplicate_content_model_field_id' ) {
