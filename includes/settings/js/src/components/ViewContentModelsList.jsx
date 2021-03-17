@@ -180,7 +180,7 @@ const ContentModelDropdown = ({model}) => {
 						setModalIsOpen(false);
 					}}
 				>
-					Yes
+					Delete
 				</button>
 				<button
 					className="tertiary"
