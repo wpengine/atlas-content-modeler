@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import camelcase from "camelcase";
 import { Link, useHistory } from "react-router-dom";
+import { ModelsContext } from "../ModelsContext";
 
 const { apiFetch } = wp;
 
@@ -11,6 +12,8 @@ export default function CreateContentModel() {
 	const [ singularCount, setSingularCount ] = useState(0);
 	const [ pluralCount, setPluralCount ] = useState(0);
 	const [ descriptionCount, setDescriptionCount ] = useState(0);
+	const { refreshModels } = useContext(ModelsContext);
+
 	function apiCreateModel( data ) {
 		apiFetch( {
 			path: '/wpe/content-model',
@@ -19,6 +22,7 @@ export default function CreateContentModel() {
 			data,
 		} ).then( res => {
 			if ( res.success ) {
+				refreshModels();
 				history.push( "/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" + data.postTypeSlug );
 			}
 

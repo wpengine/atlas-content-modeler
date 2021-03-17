@@ -47,6 +47,18 @@ button.tertiary:hover {
 	background: $color-text;
 }
 
+button.warning {
+	background: $color-warning;
+	color: $color-white;
+	border: 1px solid $color-warning;
+}
+
+button.warning:focus,
+button.warning:hover {
+	background: lighten($color-warning, 5%);
+	border: 1px solid lighten($color-warning, 5%);
+}
+
 button.options {
 	background-color: $color-white;
 	border: none;
