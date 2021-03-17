@@ -2,7 +2,20 @@ import React, {useState} from 'react';
 import Form from "./Form";
 import Icon from "../icons";
 
-function Field({type='text', position, open=false, cancelAction, id, data={}, addAction, updateAction, openAction, closeAction, positionAfter, editing}) {
+function Field({
+	addAction,
+	cancelAction,
+	closeAction,
+	data = {},
+	editing,
+	id,
+	open = false,
+	openAction,
+	position,
+	positionAfter,
+	type = "text",
+	updateAction,
+}) {
 	const [activeForm, setActiveForm] = useState(type);
 	const supportedFields = ['text', 'number', 'boolean', 'media'];
 
