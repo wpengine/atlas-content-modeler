@@ -63,7 +63,7 @@ function register_rest_routes(): void {
 		]
 	);
 
-	// Route for updating part of a single content type.
+	// Route for creating a content model field (POST) or updating one (PUT).
 	register_rest_route(
 		'wpe',
 		'/content-model-field',
