@@ -1,5 +1,6 @@
 import AddIcon from './AddIcon';
 import BooleanIcon from './BooleanIcon';
+import DateIcon from './DateIcon';
 import ErrorIcon from './ErrorIcon';
 import MediaIcon from './MediaIcon';
 import NumberIcon from './NumberIcon';
@@ -13,6 +14,8 @@ export default function Icon({type}) {
 			return <AddIcon/>;
 		case 'boolean':
 			return <BooleanIcon/>;
+		case 'date':
+			return <DateIcon/>;
 		case 'error':
 			return <ErrorIcon/>;
 		case 'media':
