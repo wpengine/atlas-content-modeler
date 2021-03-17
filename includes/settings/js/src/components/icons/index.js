@@ -31,5 +31,7 @@ export default function Icon({type}) {
 			return <RichTextIcon/>;
 		case 'text':
 			return <TextIcon/>;
+		default:
+			return '';
 	}
 }
