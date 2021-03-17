@@ -17,7 +17,7 @@ const extraFields = {
 
 function Form({cancelAction, closeAction, updateAction, id, position, type, editing, storedData}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
-	const [ nameCount, setNameCount ] = useState(0);
+	const [ nameCount, setNameCount ] = useState(storedData?.name?.length || 0);
 	const query = useLocationSearch();
 	const model = query.get('id');
 	const ExtraFields = extraFields[type] ?? null;
