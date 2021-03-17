@@ -45,6 +45,11 @@
 	margin: 0 0 2px;
 }
 
+.field-list .read-only.editing label,
+.field-list .read-only.editing legend {
+	color: lighten($color-gray, 20%);
+}
+
 .field-list .type {
 	align-items: center;
 	display: flex;
