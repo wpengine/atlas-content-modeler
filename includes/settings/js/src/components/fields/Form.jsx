@@ -6,6 +6,7 @@ import Icon from "../icons";
 import TextFields from "./TextFields";
 import NumberFields from "./NumberFields";
 import MediaFields from "./MediaFields";
+import supportedFields from "./supportedFields";
 
 const { apiFetch } = wp;
 
@@ -61,7 +62,7 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 						>
 							Name
 						</label><br/>
-						<p className="help">Display name for your {type} field.</p>
+						<p className="help">Display name for your {supportedFields[type]} field.</p>
 						<input
 							aria-invalid={errors.name ? "true" : "false"}
 							id="name"
