@@ -40,9 +40,9 @@ export default function EditContentModel() {
 	}
 
 	// Open a field to edit it.
-	function openField(data) {
+	function openField(id) {
 		setFields(oldFields => {
-			const newData = { ...oldFields.data, [data.id]: { ...data, open: true, editing: true } };
+			const newData = { ...oldFields.data, [id]: { ...oldFields.data[id], open: true, editing: true } };
 			return { data: newData, order: oldFields.order };
 		});
 	}

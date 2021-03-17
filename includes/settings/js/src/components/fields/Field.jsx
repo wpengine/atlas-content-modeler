@@ -22,7 +22,7 @@ function Field({type='text', position, open=false, cancelAction, id, data={}, ad
 					</span>
 					<button
 						className="edit"
-						onClick={() => openAction(data)}
+						onClick={() => openAction(data.id)}
 						aria-label={`Edit the ${data.name} field`}
 					>
 						<span className="type"><Icon type={data.type}/>{typeLabel}</span>
