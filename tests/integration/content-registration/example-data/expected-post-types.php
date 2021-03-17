@@ -6,7 +6,7 @@
 return array (
 	'dog' =>
 		array (
-			'slug' => 'dog',
+			'slug' => 'dogs',
 			'name' => 'Dogs',
 			'singular_name' => 'Dog',
 			'description' => '',
@@ -93,7 +93,7 @@ return array (
 		),
 	'cat' =>
 		array (
-			'slug' => 'cat',
+			'slug' => 'cats',
 			'name' => 'Cats',
 			'singular_name' => 'Cat',
 			'description' => 'A description of cats',
