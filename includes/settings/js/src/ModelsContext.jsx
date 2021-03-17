@@ -30,7 +30,7 @@ export function ModelsContextProvider(props) {
 
 	useEffect(() => {
 		refreshModels();
-	}, [models]);
+	}, []);
 
 	return (
 		<ModelsContext.Provider
