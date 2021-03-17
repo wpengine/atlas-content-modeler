@@ -56,7 +56,7 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 				<div className="left-column">
 					<div className="field">
 						<label
-							className={errors.slug && 'alert'}
+							className={errors.name && 'alert'}
 							htmlFor="name"
 						>
 							Name
