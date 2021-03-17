@@ -17,7 +17,7 @@ function Field({
 	updateAction,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
-	const supportedFields = ['text', 'number', 'boolean', 'media'];
+	const supportedFields = ['text', 'number', 'date', 'media', 'boolean'];
 
 	// Closed fields appear as a row with a summary of info.
 	if (!open) {
