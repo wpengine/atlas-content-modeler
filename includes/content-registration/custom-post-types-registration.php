@@ -149,6 +149,7 @@ function generate_custom_post_type_args( array $args ): array {
 	);
 
 	return [
+		'slug'                => $args['postTypeSlug'] ?? camelcase( $plural ),
 		'name'                => ucfirst( $plural ),
 		'singular_name'       => ucfirst( $singular ),
 		'description'         => $args['description'] ?? '',
@@ -273,7 +274,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 		}
 
 		foreach ( $post_type_args['fields'] as $key => $field ) {
-			if ( empty( $field['show_in_graphql'] ) ) {
+			if ( empty( $field['show_in_graphql'] ) || empty( $field['slug'] ) ) {
 				continue;
 			}
 
@@ -284,13 +285,31 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 
 			$field['type'] = $gql_field_type;
 
-			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $key ) {
-				return get_post_meta( $post->databaseId, $key, true );
+			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field ) {
+				$value = get_post_meta( $post->databaseId, $field['slug'], true );
+
+				/**
+				 * If WPGraphQL expects a float and something else is returned instead
+				 * it causes a runaway PHP process and it eventually dies due to
+				 * to timeout issues. Casting to a float is a temporary fix until
+				 * we get a proper fix upstream or build something more robust here.
+				 *
+				 * @todo
+				 */
+				if ( $field['type'] === 'Float' ) {
+					return (float) $value;
+				}
+
+				return $value;
 			};
 
+			// @todo
+			// WPGraphQL will use 'name' if present. Our 'name' is display friendly. WPGraphQL needs slug friendly.
+			unset( $field['name'] );
+
 			register_graphql_field(
-				$post_type_args['graphql_single_name'],
-				camelcase( $key ),
+				camelcase( $post_type_args['graphql_single_name'] ),
+				camelcase( $field['slug'] ),
 				$field
 			);
 		}

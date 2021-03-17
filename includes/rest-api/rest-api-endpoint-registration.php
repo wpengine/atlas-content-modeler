@@ -176,9 +176,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	$values_to_save = $params;
-	unset( $values_to_save['_locale'] ); // Sent by wp.apiFetch but not needed.
-	unset( $values_to_save['model'] ); // The field is stored in the fields property of its model.
+	$values_to_save = shape_field_args( $params );
 
 	$content_types[ $params['model'] ]['fields'][ $params['id'] ] = $values_to_save;
 
@@ -189,6 +187,27 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			'success' => $updated,
 		]
 	);
+}
+
+/**
+ * Shapes the field arguments array.
+ *
+ * @param array $args The field arguments.
+ *
+ * @return array
+ */
+function shape_field_args( array $args ): array {
+	$defaults = [
+		'show_in_rest'    => true,
+		'show_in_graphql' => true,
+	];
+
+	$merged = array_merge( $defaults, $args );
+
+	unset( $merged['_locale'] ); // Sent by wp.apiFetch but not needed.
+	unset( $merged['model'] ); // The field is stored in the fields property of its model.
+
+	return $merged;
 }
 
 /**
