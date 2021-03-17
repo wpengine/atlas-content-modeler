@@ -3,9 +3,9 @@
  */
 import React from 'react';
 
-const TextFields = ({register, data}) => {
+const TextFields = ({register, data, editing}) => {
 	return (
-		<div className="field">
+		<div className={editing ? 'field read-only editing': 'field'}>
 			<legend>Text Length</legend>
 			<fieldset>
 				<input
@@ -17,6 +17,7 @@ const TextFields = ({register, data}) => {
 					defaultChecked={
 						data?.textLength === "short" || typeof data?.textLength === "undefined"
 					}
+					disabled={editing}
 				/>
 				<label className="radio" htmlFor="short">
 					Short text (maximum 50 characters)
@@ -29,6 +30,7 @@ const TextFields = ({register, data}) => {
 					value="long"
 					ref={register}
 					defaultChecked={data?.textLength === "long"}
+					disabled={editing}
 				/>
 				<label className="radio" htmlFor="long">
 					Long text (maximum 500 characters)

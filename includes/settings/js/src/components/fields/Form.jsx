@@ -83,7 +83,7 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 							<span className="count">{nameCount}/50</span>
 						</p>
 					</div>
-					{ (type in extraFields) && <ExtraFields data={storedData} register={register} /> }
+					{ (type in extraFields) && <ExtraFields editing={editing} data={storedData} register={register} /> }
 				</div>
 
 				<div className="right-column">

@@ -3,9 +3,9 @@
  */
 import React from 'react';
 
-const NumberFields = ({register, data}) => {
+const NumberFields = ({register, data, editing}) => {
 	return (
-		<div className="field">
+		<div className={editing ? 'field read-only editing': 'field'}>
 			<legend>Number Type</legend>
 			<fieldset>
 				<input
@@ -17,6 +17,7 @@ const NumberFields = ({register, data}) => {
 					defaultChecked={
 						data?.numberType === "integer" || typeof data?.numberType === "undefined"
 					}
+					disabled={editing}
 				/>
 				<label className="radio" htmlFor="integer">
 					Integer (1, 2, 3, 5, 8, 13, ...)
@@ -29,6 +30,7 @@ const NumberFields = ({register, data}) => {
 					value="decimal"
 					ref={register}
 					defaultChecked={data?.numberType === "decimal"}
+					disabled={editing}
 				/>
 				<label className="radio" htmlFor="decimal">
 					Decimal (3.14159265389)

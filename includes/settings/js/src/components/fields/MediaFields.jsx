@@ -3,9 +3,9 @@
  */
 import React from 'react';
 
-const MediaFields = ({register, data}) => {
+const MediaFields = ({register, data, editing}) => {
 	return (
-		<div className="field">
+		<div className={editing ? 'field read-only editing': 'field'}>
 			<legend>Upload Type</legend>
 			<fieldset>
 				<input
@@ -17,6 +17,7 @@ const MediaFields = ({register, data}) => {
 					defaultChecked={
 						data?.uploadType === "single" || typeof data?.uploadType === "undefined"
 					}
+					disabled={editing}
 				/>
 				<label className="radio" htmlFor="single">
 					One file
@@ -29,6 +30,7 @@ const MediaFields = ({register, data}) => {
 					value="multi"
 					ref={register}
 					defaultChecked={data?.uploadType === "multi"}
+					disabled={editing}
 				/>
 				<label className="radio" htmlFor="multi">
 					Many files
