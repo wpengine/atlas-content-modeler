@@ -1,6 +1,8 @@
 *.git*
 *.DS_Store*
 *.babelrc*
+*.cache/*
+*.idea/*
 *.eslintignore*
 *.eslintrc.json*
 *.circleci*
@@ -25,3 +27,6 @@ deploy.sh
 *package-lock.json*
 *.zipignore
 *.docker/*
+codeception.dist.yml
+.env.testing.sample
+.env.testing
