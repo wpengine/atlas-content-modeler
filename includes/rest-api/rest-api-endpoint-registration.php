@@ -162,7 +162,13 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	if ( content_model_field_exists( $params['slug'], $content_types[ $params['model'] ] ) ) {
+	if (
+		content_model_field_exists(
+			$params['slug'],
+			$params['id'],
+			$content_types[ $params['model'] ]
+		)
+	) {
 		return new WP_Error(
 			'wpe_duplicate_content_model_field_id',
 			'Another field in this model has the same API identifier.',
@@ -300,16 +306,21 @@ function delete_model( string $post_type_slug ) {
 /**
  * Checks if a duplicate field identifier (slug) exists in the content model.
  *
- * @param string $slug  The field slug.
+ * @param string $slug  The current field slug.
+ * @param string $id    The current field id.
  * @param array  $model The content model to check for duplicate slugs.
  * @return bool
  */
-function content_model_field_exists( string $slug, array $model ): bool {
+function content_model_field_exists( string $slug, string $id, array $model ): bool {
 	if ( ! isset( $model['fields'] ) ) {
 		return false;
 	}
 
 	foreach ( $model['fields'] as $field ) {
+		// Exclude the field being edited from slug collision checks.
+		if ( $field['id'] === $id ) {
+			continue;
+		}
 		if ( $field['slug'] === $slug ) {
 			return true;
 		}
