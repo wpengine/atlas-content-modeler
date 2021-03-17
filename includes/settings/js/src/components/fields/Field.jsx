@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Form from "./Form";
 import Icon from "../icons";
+import supportedFields from "./supportedFields";
 
 function Field({
 	addAction,
@@ -17,11 +18,10 @@ function Field({
 	updateAction,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
-	const supportedFields = ['text', 'number', 'date', 'media', 'boolean'];
 
 	// Closed fields appear as a row with a summary of info.
 	if (!open) {
-		const typeLabel = data.type.charAt(0).toUpperCase() + data.type.slice(1)
+		const typeLabel = supportedFields[data.type];
 		return (
 			<>
 				<li key={id}>
@@ -60,15 +60,15 @@ function Field({
 		);
 	}
 
-	const formFieldTitle = editing ? `“${data.name}”` : activeForm.charAt(0).toUpperCase() + activeForm.slice(1);
+	const formFieldTitle = editing ? `“${data.name}”` : supportedFields[activeForm];
 
 	// Open fields appear as a form to enter or edit data.
 	return (
 		<li className="open-field" key={id}>
 			{!editing && (
 				<div className="field-buttons">
-					{supportedFields.map((field) => {
-						const fieldTitle = field.charAt(0).toUpperCase() + field.slice(1);
+					{Object.keys(supportedFields).map((field) => {
+						const fieldTitle = supportedFields[field];
 						return (
 							<button
 								key={field}
