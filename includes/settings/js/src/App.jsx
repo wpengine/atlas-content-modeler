@@ -5,13 +5,16 @@ import CreateContentModel from './components/CreateContentModel.jsx';
 import ViewContentModelsList from "./components/ViewContentModelsList";
 import EditContentModel from "./components/EditContentModel";
 import { useLocationSearch } from "./utils";
+import { ModelsContextProvider } from "./ModelsContext";
 
 export default function App() {
 	return (
 		<div className="app">
-			<Router>
-				<ViewTemplate/>
-			</Router>
+			<ModelsContextProvider>
+				<Router>
+					<ViewTemplate/>
+				</Router>
+			</ModelsContextProvider>
 		</div>
 	);
 }

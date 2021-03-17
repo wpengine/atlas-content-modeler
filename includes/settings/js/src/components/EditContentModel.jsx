@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocationSearch } from "../utils";
 import Icon from "./icons"
 import Field from "./fields/Field"
+import { ModelsContext } from "../ModelsContext";
 const { apiFetch } = wp;
 
 export default function EditContentModel() {
 	const [loading, setLoading] = useState(true);
 	const [model, setModel] = useState(null);
 	const [fields, setFields] = useState({});
-
+	const { refreshModels } = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const id = query.get('id');
 
@@ -59,6 +60,7 @@ export default function EditContentModel() {
 	function updateField(data) {
 		setFields(oldFields => {
 			const newData = { ...oldFields.data, [data.id]: { ...data, open: false, editing: false } };
+			refreshModels();
 			return { data: newData, order: getFieldOrder(newData) };
 		});
 	}
