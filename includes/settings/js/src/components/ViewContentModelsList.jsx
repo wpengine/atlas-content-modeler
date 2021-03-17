@@ -148,7 +148,7 @@ const ContentModelDropdown = ({model}) => {
 				style={customStyles}
 				model={model}
 			>
-				<h2>Delete Content Model</h2>
+				<h2>Delete the {name} Content Model?</h2>
 				<p>This is an irreversible action. You will have to recreate this model if you delete it.</p>
 				<p>This will NOT delete actual data stored in this model. It only deletes the model definition.</p>
 				<p>{`Are you sure you want to delete the ${name} content model?`}</p>
