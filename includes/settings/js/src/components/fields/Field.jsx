@@ -2,14 +2,17 @@ import React, {useState} from 'react';
 import Form from "./Form";
 import Icon from "../icons";
 import supportedFields from "./supportedFields";
+import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
 
 function Field({
 	addAction,
 	cancelAction,
 	closeAction,
 	data = {},
+	deleteAction,
 	editing,
 	id,
+	model,
 	open = false,
 	openAction,
 	position,
@@ -41,15 +44,7 @@ function Field({
 						<span className="type"><Icon type={data.type}/>{typeLabel}</span>
 						<span className="widest"><strong>{data.name}</strong></span>
 					</button>
-					<span>
-						<button
-							className="options"
-							onClick={() => alert("Field options are not yet implemented.")}
-							aria-label={`Options for the ${data.name} field.`}
-						>
-							<Icon type="options" />
-						</button>
-					</span>
+					<FieldOptionsDropdown field={data} model={model} deleteAction={deleteAction} />
 				</li>
 				<li className="add-item">
 					<button onClick={() => addAction(positionAfter)} aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
