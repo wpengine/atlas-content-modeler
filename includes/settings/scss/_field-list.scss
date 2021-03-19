@@ -45,6 +45,22 @@
 	margin: 0 0 2px;
 }
 
+.field-list-info {
+	align-items: center;
+	display: flex;
+	line-height: 32px;
+	margin: 0;
+}
+
+.field-list-info .info-text {
+	align-items: center;
+	display: flex;
+}
+
+.field-list-info .info-text svg {
+	padding: 0 6px;
+}
+
 .field-list .read-only.editing label,
 .field-list .read-only.editing legend {
 	color: lighten($color-gray, 20%);
