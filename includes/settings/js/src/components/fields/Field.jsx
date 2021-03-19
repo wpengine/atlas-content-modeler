@@ -10,10 +10,14 @@ function Field({
 	data = {},
 	editing,
 	id,
+	nextFieldID,
 	open = false,
 	openAction,
 	position,
 	positionAfter,
+	previousFieldID,
+	setInfoTag,
+	swapAction,
 	type = "text",
 	updateAction,
 }) {
@@ -22,13 +26,37 @@ function Field({
 	// Closed fields appear as a row with a summary of info.
 	if (!open) {
 		const typeLabel = supportedFields[data.type];
+		const reorderInfoText = `Reorder the “${data.name}“ field with the up and down keys. Changes save automatically.`;
+		const reorderInfoTag = (
+			<>
+				Reorder the “{data.name}” field with the <Icon type="downarrow" /> and{" "}
+				<Icon type="uparrow" /> keys. Changes save automatically.
+			</>
+		);
 		return (
 			<>
 				<li key={id}>
 					<span className="reorder">
 						<button
-							onMouseDown={() => alert("Reordering fields is not yet implemented.")}
-							aria-label={`Reorder the ${data.name} field`}
+							onKeyDown={(e) => {
+								if (e.code === 'ArrowUp') {
+									e.preventDefault();
+									if ( previousFieldID !== 0 ) {
+										swapAction(id, previousFieldID);
+									}
+								}
+								if (e.code === 'ArrowDown') {
+									e.preventDefault();
+									if ( nextFieldID !== 0 ) {
+										swapAction(id, nextFieldID);
+									}
+								}
+							}}
+							onFocus={() => {
+								setInfoTag(reorderInfoTag);
+							}}
+							onBlur={() => setInfoTag(null)}
+							aria-label={reorderInfoText}
 						>
 							<Icon type="reorder" />
 						</button>
