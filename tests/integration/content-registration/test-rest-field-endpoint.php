@@ -10,7 +10,13 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 	protected $test_models = [
 		'rabbits' => [ 'name' => 'Rabbits' ],
 		'cats'    => [ 'name' => 'Cats' ],
-		'dogs'    => [ 'name' => 'Dogs', 'fields' => [ '111' => [ 'position' => '0' ] ] ],
+		'dogs'    => [
+			'name' => 'Dogs',
+			'fields' => [
+				'111' => [ 'position' => '0' ],
+				'222' => [ 'position' => '1' ],
+			],
+		],
 	];
 
 	public function setUp() {
@@ -123,11 +129,17 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 	public function test_can_update_multiple_fields() {
 		wp_set_current_user( 1 );
-		$model   = 'dogs';
+		$model          = 'dogs';
+		$new_field_data = [
+			'fields' => [
+				'111' => [ 'position' => '10' ],
+				'222' => [ 'position' => '20' ],
+			],
+		];
+
 		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( json_encode( ['fields' => [ '111' => [ 'position' => '10' ] ] ] ) );
-
+		$request->set_body( json_encode( $new_field_data ) );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 		$models   = get_option( 'wpe_content_model_post_types' );
@@ -135,6 +147,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'success', $data );
 		$this->assertEquals( true, $data[ 'success' ] );
 		$this->assertEquals( 10, $models[$model][ 'fields' ][ '111' ][ 'position' ] );
+		$this->assertEquals( 20, $models[$model][ 'fields' ][ '222' ][ 'position' ] );
 	}
 
 	public function test_cannot_update_fields_without_field_data() {
