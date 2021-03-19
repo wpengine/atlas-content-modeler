@@ -7,18 +7,18 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 	protected $route = 'content-model-field';
 
+	protected $test_models = [
+		'rabbits' => [ 'name' => 'Rabbits' ],
+		'cats'    => [ 'name' => 'Cats' ],
+		'dogs'    => [ 'name' => 'Dogs', 'fields' => [ '111' => [ 'position' => '0' ] ] ],
+	];
+
 	public function setUp() {
 		parent::setUp();
 		global $wp_rest_server;
 		$this->server = $wp_rest_server = new \WP_REST_Server;
 		do_action( 'rest_api_init' );
-		update_option(
-			'wpe_content_model_post_types',
-			[
-				'rabbits' => [ 'name' => 'Rabbits' ],
-				'cats'    => [ 'name' => 'Cats' ],
-			]
-		);
+		update_option('wpe_content_model_post_types', $this->test_models );
 	}
 
 	public function test_content_model_field_route_is_registered() {
@@ -106,7 +106,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
 		$this->server->dispatch( $request );
 
-		$model   = 'cats';
+		$model    = 'cats';
 		$request2 = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request2->set_header( 'content-type', 'application/json' );
 		$request2->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
@@ -119,6 +119,69 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$this->assertEquals( true, $data[ 'success' ] );
 		$this->assertArrayHasKey( '123', $models['rabbits']['fields'] );
 		$this->assertArrayHasKey( '123', $models['cats']['fields'] );
+	}
+
+	public function test_can_update_multiple_fields() {
+		wp_set_current_user( 1 );
+		$model   = 'dogs';
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( ['fields' => [ '111' => [ 'position' => '10' ] ] ] ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+		$models   = get_option( 'wpe_content_model_post_types' );
+
+		$this->assertArrayHasKey( 'success', $data );
+		$this->assertEquals( true, $data[ 'success' ] );
+		$this->assertEquals( 10, $models[$model][ 'fields' ][ '111' ][ 'position' ] );
+	}
+
+	public function test_cannot_update_fields_without_field_data() {
+		wp_set_current_user( 1 );
+		$model   = 'dogs';
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( ['no_field_data' => 'this_should_error' ] ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertArrayHasKey( 'message', $data );
+		$this->assertEquals( 'Expected a fields key with fields to update.', $data[ 'message' ] );
+	}
+
+	public function test_cannot_update_fields_of_invalid_model() {
+		wp_set_current_user( 1 );
+		$model   = 'invalid';
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( ['fields' => [ '111' => [ 'position' => '10' ] ] ] ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertArrayHasKey( 'message', $data );
+		$this->assertEquals( 'The specified content model does not exist.', $data[ 'message' ] );
+	}
+
+	public function test_cannot_update_field_properties_if_field_id_not_present() {
+		wp_set_current_user( 1 );
+		$model   = 'dogs';
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( ['fields' => [ 'invalid-field-id' => [ 'position' => '10' ] ] ] ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+		$models   = get_option( 'wpe_content_model_post_types' );
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertArrayHasKey( 'success', $data );
+		$this->assertEquals( false, $data[ 'success' ] ); // The WP option was not updated.
+		$this->assertEquals( $this->test_models[$model], $models[$model] ); // Data is unaltered.
 	}
 
 	public function tearDown() {
