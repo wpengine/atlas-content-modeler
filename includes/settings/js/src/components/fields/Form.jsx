@@ -16,7 +16,7 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({cancelAction, closeAction, updateAction, id, position, type, editing, storedData}) {
+function Form({cancelAction, closeAction, updateAction, id, position, type, editing, storedData, deleteAction}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(storedData?.name?.length || 0);
 	const query = useLocationSearch();

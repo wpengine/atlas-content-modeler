@@ -76,7 +76,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$this->assertEquals( 'Another field in this model has the same API identifier.', $data[ 'message' ] );
 	}
 
-	public function test_field_can_be_created_and_updated() {
+	public function test_field_can_be_created_and_updated_and_deleted() {
 		wp_set_current_user( 1 );
 		$model   = 'rabbits';
 
@@ -96,6 +96,17 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 'New Name', $models['rabbits']['fields']['123']['name'] );
+
+		// Third request to delete the field.
+		$request3 = new WP_REST_Request( 'DELETE', "/{$this->namespace}/{$this->route}/123" );
+		$request3->set_header( 'content-type', 'application/json' );
+		$request3->set_body( "{\"model\":\"{$model}\" }" );
+
+		$request3_response = $this->server->dispatch( $request3 );
+		$updated_models    = get_option( 'wpe_content_model_post_types' );
+
+		self::assertEquals( 200, $request3_response->get_status() );
+		self::assertArrayNotHasKey( '123', $updated_models[ $model ]['fields'] );
 	}
 
 	public function test_different_models_can_have_fields_with_same_slug() {
@@ -119,6 +130,33 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$this->assertEquals( true, $data[ 'success' ] );
 		$this->assertArrayHasKey( '123', $models['rabbits']['fields'] );
 		$this->assertArrayHasKey( '123', $models['cats']['fields'] );
+	}
+
+	public function test_delete_request_without_model_gives_error(): void {
+		wp_set_current_user( 1 );
+		$model   = 'rabbits';
+
+		// Send a DELETE request without specifying a model.
+		$request = new WP_REST_Request( 'DELETE', "/{$this->namespace}/{$this->route}/123" );
+		$request->set_header( 'content-type', 'application/json' );
+		$response = $this->server->dispatch( $request );
+
+		self::assertEquals( 400, $response->get_status() );
+	}
+
+	public function test_delete_request_with_unknown_model_gives_error(): void {
+		wp_set_current_user( 1 );
+		$model   = 'invalid';
+
+		// Send the DELETE request with an invalid model.
+		$request = new WP_REST_Request( 'DELETE', "/{$this->namespace}/{$this->route}/123" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$response = $this->server->dispatch( $request );
+
+		self::assertEquals( 400, $response->get_status() );
+		self::assertSame( 'wpe_invalid_content_model', $response->get_data()['code'] );
+
 	}
 
 	public function tearDown() {
