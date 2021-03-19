@@ -1,19 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useLocationSearch } from "../utils";
 import Icon from "./icons"
 import Field from "./fields/Field"
 import { ModelsContext } from "../ModelsContext";
-const { apiFetch } = wp;
+const { apiFetch, a11y } = wp;
 
 export default function EditContentModel() {
 	const [loading, setLoading] = useState(true);
 	const [model, setModel] = useState(null);
 	const [fields, setFields] = useState({});
+	const [infoTag, setInfoTag] = useState(null);
+	const [positionsChanged, setPositionsChanged] = useState(false);
 	const { refreshModels } = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const id = query.get('id');
+	const positionUpdateTimer = useRef(0);
+	const positionUpdateDelay = 1000;
 
+	// Fetch fields on initial load.
 	useEffect(() => {
 		const getModel = async () => {
 			const model = await apiFetch({
@@ -31,6 +36,28 @@ export default function EditContentModel() {
 
 		getModel();
 	}, [] );
+
+	// Send updated field positions to the database when the user reorders them.
+	useEffect(() => {
+		if (!positionsChanged) return;
+
+		const idsAndNewPositions = fields?.order?.reduce((result, fieldId) => {
+			result[fieldId] = { position: fields?.data[fieldId].position };
+			return result;
+		}, {});
+
+		const updatePositions = async () => {
+			await apiFetch({
+				path: `/wpe/content-model-fields/${id}`,
+				method: "PATCH",
+				_wpnonce: wpApiSettings.nonce,
+				data: { fields: idsAndNewPositions },
+			});
+		};
+
+		updatePositions().catch(err => console.error(err));
+		setPositionsChanged(false);
+	}, [positionsChanged, fields]);
 
 	function addField(position) {
 		const newId = Date.now();
@@ -75,6 +102,41 @@ export default function EditContentModel() {
 		});
 	}
 
+	// Swap field positions to reorder them in the list.
+	// Triggers database storage after positionUpdateDelay
+	// if no further position changes occur.
+	function swapFieldPositions(id1, id2, speak=true) {
+		// Prevent database updates if the user changes the order quickly.
+		clearTimeout(positionUpdateTimer.current);
+
+		// Invalid IDs should not be swapped.
+		if (id1 === 0 || id2 === 0) {
+			return;
+		}
+
+		setFields((oldFields) => {
+			const newData = {
+				...oldFields.data,
+				[id1]: { ...oldFields.data[id1], position: oldFields.data[id2].position },
+				[id2]: { ...oldFields.data[id2], position: oldFields.data[id1].position },
+			};
+			return { data: newData, order: getFieldOrder(newData) };
+		});
+
+		// Speak list order changes to screen reader users.
+		if ( speak ) {
+			const currentFieldPosition = fields?.order?.indexOf(id2) + 1;
+			const fieldCount = fields?.order?.length;
+			a11y.speak(
+				`${fields?.data[id1]?.name}, new position in list: ${currentFieldPosition} of ${fieldCount}`,
+				"assertive"
+			);
+		}
+
+		// Persist changes to the database after the delay time.
+		positionUpdateTimer.current = setTimeout(() => setPositionsChanged(true), positionUpdateDelay);
+	}
+
 	// Gives an array of field IDs in the order they should appear based
 	// on their position property, with the ID of the lowest position first.
 	function getFieldOrder(fields) {
@@ -92,6 +154,22 @@ export default function EditContentModel() {
 			})
 			.sort((field1, field2) => field1.position - field2.position)
 			.map(field => field.id);
+	}
+
+	// Get next field id without wrapping from last to first. 0 means no next item.
+	function nextFieldId(id) {
+		const myIndex = fields?.order?.indexOf(id);
+		if (myIndex < 0) return 0; // No such id found.
+		if (myIndex === fields?.order?.length - 1) return 0; // No item after last.
+		return fields?.order[myIndex + 1];
+	}
+
+	// Get previous field id without wrapping from first to last. 0 means no previous item.
+	function previousFieldId(id) {
+		const myIndex = fields?.order?.indexOf(id);
+		if (myIndex < 0) return 0; // No such id found.
+		if (myIndex === 0) return 0; // No item before first.
+		return fields?.order[myIndex - 1];
 	}
 
 	// Instead of incrementing field positions by 1, increment with a gap.
@@ -141,7 +219,11 @@ export default function EditContentModel() {
 			{ fieldCount > 0 ?
 				(
 					<>
-						<p>{fieldCount} {fieldCount > 1 ? 'Fields' : 'Field'}.</p>
+						<p className="field-list-info">
+							{fieldCount} {fieldCount > 1 ? 'Fields' : 'Field'}.
+							&nbsp;
+							<span className="info-text">{infoTag}</span>
+						</p>
 						<ul className="field-list">
 							{
 								fields.order.map( (id) => {
@@ -159,6 +241,10 @@ export default function EditContentModel() {
 											closeAction={closeField}
 											cancelAction={removeField}
 											updateAction={updateField}
+											swapAction={swapFieldPositions}
+											setInfoTag={setInfoTag}
+											previousFieldID={previousFieldId(id)}
+											nextFieldID={nextFieldId(id)}
 											addAction={addField}
 											position={position}
 											positionAfter={positionAfter}
