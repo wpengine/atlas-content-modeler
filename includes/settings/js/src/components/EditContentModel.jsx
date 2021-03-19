@@ -137,6 +137,17 @@ export default function EditContentModel() {
 		positionUpdateTimer.current = setTimeout(() => setPositionsChanged(true), positionUpdateDelay);
 	}
 
+	// Delete a field from a model and save to database.
+	function deleteField(id, model) {
+		removeField(id);
+		apiFetch({
+			path: `/wpe/content-model-field/${id}`,
+			method: 'DELETE',
+			body: JSON.stringify( { model } ),
+			_wpnonce: wpApiSettings.nonce,
+		});
+	}
+
 	// Gives an array of field IDs in the order they should appear based
 	// on their position property, with the ID of the lowest position first.
 	function getFieldOrder(fields) {
@@ -233,6 +244,7 @@ export default function EditContentModel() {
 									return <Field
 											key={id}
 											id={id}
+											model={model}
 											type={type}
 											open={open}
 											editing={editing}
@@ -240,6 +252,7 @@ export default function EditContentModel() {
 											openAction={openField}
 											closeAction={closeField}
 											cancelAction={removeField}
+											deleteAction={deleteField}
 											updateAction={updateField}
 											swapAction={swapFieldPositions}
 											setInfoTag={setInfoTag}
