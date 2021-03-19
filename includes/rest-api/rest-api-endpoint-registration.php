@@ -239,6 +239,10 @@ function dispatch_patch_content_model_fields( WP_REST_Request $request ) {
 	// Updates only the field properties passed in the request.
 	foreach ( $params['fields'] as $field_id => $field_properties ) {
 		foreach ( $field_properties as $property => $value ) {
+			if ( empty( $content_types[ $slug ]['fields'][ $field_id ] ) ) {
+				continue;
+			}
+
 			$content_types[ $slug ]['fields'][ $field_id ][ $property ] = $value;
 		}
 	}
