@@ -166,7 +166,14 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 		);
 	}
 
-	return rest_ensure_response( [ 'success' => true ] );
+	$models = get_registered_content_types();
+
+	return rest_ensure_response(
+		[
+			'success' => true,
+			'model'   => $models[ $params['postTypeSlug'] ],
+		]
+	);
 }
 
 /**
