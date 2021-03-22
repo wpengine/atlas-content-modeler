@@ -137,8 +137,7 @@ function Form({id, position, type, editing, storedData, deleteAction}) {
 				>
 					Cancel
 				</button>
-			</div>;
-
+			</div>
 		</form>
 	);
 }
