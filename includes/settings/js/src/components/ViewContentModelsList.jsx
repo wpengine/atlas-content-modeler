@@ -46,8 +46,7 @@ export default function ViewContentModelsList() {
 						</ul>
 					</>
 				)}
-			</section>;
-
+			</section>
 		</div>
 	);
 }
