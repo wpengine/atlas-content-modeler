@@ -34,7 +34,6 @@ export function ModelsContextProvider(props) {
 			value={ {
 				models,
 				dispatch,
-				refreshModels // TODO: remove refreshModels from fields update logic so this can be removed in favour of dispatch.
 			} }
 		>
 			{ props.children }

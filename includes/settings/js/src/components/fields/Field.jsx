@@ -21,7 +21,6 @@ function Field({
 	setInfoTag,
 	swapAction,
 	type = "text",
-	updateAction,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
 	const {dispatch} = useContext(ModelsContext);
@@ -114,7 +113,6 @@ function Field({
 					storedData={data}
 					editing={editing}
 					cancelAction={cancelAction}
-					updateAction={updateAction}
 					id={id}
 					position={position}
 				/>

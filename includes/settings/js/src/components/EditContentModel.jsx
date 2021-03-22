@@ -9,7 +9,7 @@ const { apiFetch, a11y } = wp;
 export default function EditContentModel() {
 	const [infoTag, setInfoTag] = useState(null);
 	const [positionsChanged, setPositionsChanged] = useState(false);
-	const { models, dispatch, refreshModels } = useContext(ModelsContext);
+	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const id = query.get('id');
 	const model = models?.hasOwnProperty(id) ? models[id] : {};
@@ -43,15 +43,6 @@ export default function EditContentModel() {
 		const newId = Date.now();
 		setFields(oldFields => {
 			const newData = { ...oldFields.data, [newId]: { id: newId, type: 'text', open: true, position } }
-			return { data: newData, order: getFieldOrder(newData) };
-		});
-	}
-
-	// Close the field and update its data.
-	function updateField(data) {
-		setFields(oldFields => {
-			const newData = { ...oldFields.data, [data.id]: { ...data, open: false, editing: false } };
-			refreshModels();
 			return { data: newData, order: getFieldOrder(newData) };
 		});
 	}
@@ -219,7 +210,6 @@ export default function EditContentModel() {
 											data={fields[id]}
 											cancelAction={removeField}
 											deleteAction={deleteField}
-											updateAction={updateField}
 											swapAction={swapFieldPositions}
 											setInfoTag={setInfoTag}
 											previousFieldID={previousFieldId(id)}

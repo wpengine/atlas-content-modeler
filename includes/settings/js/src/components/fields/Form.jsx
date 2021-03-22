@@ -17,7 +17,7 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({cancelAction, updateAction, id, position, type, editing, storedData, deleteAction}) {
+function Form({cancelAction, id, position, type, editing, storedData, deleteAction}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(storedData?.name?.length || 0);
 	const {dispatch} = useContext(ModelsContext);
@@ -33,7 +33,7 @@ function Form({cancelAction, updateAction, id, position, type, editing, storedDa
 			data,
 		} ).then( res => {
 			if ( res.success ) {
-				updateAction(data);
+				dispatch({type: 'updateField', data, model})
 			} else {
 				// The user pressed “Update” but no data changed.
 				// Just close the field as if it was updated.

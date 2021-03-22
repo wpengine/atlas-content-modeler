@@ -24,7 +24,8 @@ export function reducer(state, action) {
 			state[action.model]['fields'][action.id].editing = false;
 			return {...state};
 		case "updateField":
-			return { todo: "fill me in" };
+			state[action.model]['fields'][action.data.id] = { ...action.data, open: false, editing: false };
+			return {...state};
 		case "removeField":
 			return { todo: "fill me in" };
 		case "swapFieldPositions":
