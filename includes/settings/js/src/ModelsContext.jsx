@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer } from "react";
+import { reducer } from "./reducer";
 
 export const ModelsContext = React.createContext(null);
 
@@ -16,15 +17,11 @@ function getAllModels() {
 }
 
 export function ModelsContextProvider(props) {
-	const [ models, setModels ] = useState({});
+	const [ models, dispatch ] = useReducer( reducer, null );
 
 	const refreshModels = async () => {
 		await getAllModels().then((models) => {
-			if (Object.keys(models).length === 0) {
-				setModels('none');
-			} else {
-				setModels(models);
-			}
+			dispatch({type: 'updateModels', data: models})
 		});
 	}
 
@@ -36,7 +33,8 @@ export function ModelsContextProvider(props) {
 		<ModelsContext.Provider
 			value={ {
 				models,
-				refreshModels
+				dispatch,
+				refreshModels // TODO: remove refreshModels from fields update logic so this can be removed in favour of dispatch.
 			} }
 		>
 			{ props.children }
