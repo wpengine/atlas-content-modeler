@@ -47,16 +47,6 @@ export default function EditContentModel() {
 		});
 	}
 
-	// Remove field with the given ID. Does not persist data.
-	// Used to remove a field that has not yet been saved.
-	function removeField(id) {
-		setFields(oldFields => {
-			delete oldFields.data[id];
-			const newData = {...oldFields.data};
-			return { data: newData, order: getFieldOrder(newData) };
-		});
-	}
-
 	// Swap field positions to reorder them in the list.
 	// Triggers database storage after positionUpdateDelay
 	// if no further position changes occur.
@@ -94,7 +84,7 @@ export default function EditContentModel() {
 
 	// Delete a field from a model and save to database.
 	function deleteField(id, model) {
-		removeField(id);
+		dispatch({type: 'removeField', id, model})
 		apiFetch({
 			path: `/wpe/content-model-field/${id}`,
 			method: 'DELETE',
@@ -208,7 +198,6 @@ export default function EditContentModel() {
 											open={open}
 											editing={editing}
 											data={fields[id]}
-											cancelAction={removeField}
 											deleteAction={deleteField}
 											swapAction={swapFieldPositions}
 											setInfoTag={setInfoTag}

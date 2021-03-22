@@ -17,7 +17,7 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({cancelAction, id, position, type, editing, storedData, deleteAction}) {
+function Form({id, position, type, editing, storedData, deleteAction}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(storedData?.name?.length || 0);
 	const {dispatch} = useContext(ModelsContext);
@@ -123,17 +123,22 @@ function Form({cancelAction, id, position, type, editing, storedData, deleteActi
 			</div>
 
 			<div className="buttons">
-				<button type="submit" className="primary first">{editing ? 'Update' : 'Create'}</button>
+				<button type="submit" className="primary first">
+					{editing ? "Update" : "Create"}
+				</button>
 				<button
 					className="tertiary"
 					onClick={(event) => {
 						event.preventDefault();
-						editing ? dispatch({type: 'closeField', id, model}) : cancelAction(id)
+						editing
+							? dispatch({ type: "closeField", id, model })
+							: dispatch({ type: "removeField", id, model });
 					}}
 				>
 					Cancel
 				</button>
-			</div>
+			</div>;
+
 		</form>
 	);
 }

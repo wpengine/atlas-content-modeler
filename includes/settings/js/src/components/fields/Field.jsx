@@ -6,7 +6,6 @@ import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
 import {ModelsContext} from "../../ModelsContext";
 
 function Field({
-	cancelAction,
 	data = {},
 	deleteAction,
 	editing,
@@ -113,7 +112,6 @@ function Field({
 					type={activeForm}
 					storedData={data}
 					editing={editing}
-					cancelAction={cancelAction}
 					id={id}
 					position={position}
 				/>
