@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import camelcase from "camelcase";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
@@ -7,6 +7,7 @@ import TextFields from "./TextFields";
 import NumberFields from "./NumberFields";
 import MediaFields from "./MediaFields";
 import supportedFields from "./supportedFields";
+import {ModelsContext} from "../../ModelsContext";
 
 const { apiFetch } = wp;
 
@@ -16,9 +17,10 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({cancelAction, closeAction, updateAction, id, position, type, editing, storedData, deleteAction}) {
+function Form({cancelAction, updateAction, id, position, type, editing, storedData, deleteAction}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(storedData?.name?.length || 0);
+	const {dispatch} = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const model = query.get('id');
 	const ExtraFields = extraFields[type] ?? null;
@@ -35,7 +37,7 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 			} else {
 				// The user pressed “Update” but no data changed.
 				// Just close the field as if it was updated.
-				closeAction(data.id);
+				dispatch({type: 'closeField', id: data.id, model})
 			}
 		} ).catch( err => {
 			if ( err.code === 'wpe_duplicate_content_model_field_id' ) {
@@ -126,7 +128,7 @@ function Form({cancelAction, closeAction, updateAction, id, position, type, edit
 					className="tertiary"
 					onClick={(event) => {
 						event.preventDefault();
-						editing ? closeAction(id) : cancelAction(id)
+						editing ? dispatch({type: 'closeField', id, model}) : cancelAction(id)
 					}}
 				>
 					Cancel

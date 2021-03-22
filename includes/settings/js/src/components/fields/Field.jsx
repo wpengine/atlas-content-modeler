@@ -8,7 +8,6 @@ import {ModelsContext} from "../../ModelsContext";
 function Field({
 	addAction,
 	cancelAction,
-	closeAction,
 	data = {},
 	deleteAction,
 	editing,
@@ -115,7 +114,6 @@ function Field({
 					storedData={data}
 					editing={editing}
 					cancelAction={cancelAction}
-					closeAction={closeAction}
 					updateAction={updateAction}
 					id={id}
 					position={position}
