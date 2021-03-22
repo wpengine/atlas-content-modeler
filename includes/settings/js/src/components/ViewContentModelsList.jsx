@@ -23,8 +23,6 @@ export default function ViewContentModelsList() {
 	const { models } = useContext(ModelsContext);
 	const hasModels = Object.keys(models || {}).length > 0;
 
-
-
 	return (
 		<div className="app-card">
 			<HeaderWithAddNewButton />
