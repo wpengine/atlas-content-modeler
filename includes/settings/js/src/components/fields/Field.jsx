@@ -7,7 +7,6 @@ import {ModelsContext} from "../../ModelsContext";
 
 function Field({
 	data = {},
-	deleteAction,
 	editing,
 	id,
 	model,
@@ -69,7 +68,7 @@ function Field({
 						<span className="type"><Icon type={data.type}/>{typeLabel}</span>
 						<span className="widest"><strong>{data.name}</strong></span>
 					</button>
-					<FieldOptionsDropdown field={data} model={model} deleteAction={deleteAction} />
+					<FieldOptionsDropdown field={data} model={model} />
 				</li>
 				<li className="add-item">
 					<button
