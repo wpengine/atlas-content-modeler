@@ -15,8 +15,9 @@ export function reducer(state, action) {
 			return otherModels;
 		case "addField":
 			const newId = Date.now();
-			state[action.model]['fields'][newId] = {
-				id: newId, type: 'text', open: true, position: action.position
+			state[action.model]['fields'] = {
+				...state[action.model]['fields'],
+				[newId]: { id: newId, type: 'text', open: true, position: action.position}
 			};
 			return {...state};
 		case "openField":
