@@ -7,35 +7,15 @@ import { ModelsContext } from "../ModelsContext";
 const { apiFetch, a11y } = wp;
 
 export default function EditContentModel() {
-	const [loading, setLoading] = useState(true);
-	const [model, setModel] = useState(null);
-	const [fields, setFields] = useState({});
 	const [infoTag, setInfoTag] = useState(null);
 	const [positionsChanged, setPositionsChanged] = useState(false);
-	const { refreshModels } = useContext(ModelsContext);
+	const { models, dispatch, refreshModels } = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const id = query.get('id');
+	const model = models?.hasOwnProperty(id) ? models[id] : {};
+	const fields = model?.fields || {};
 	const positionUpdateTimer = useRef(0);
 	const positionUpdateDelay = 1000;
-
-	// Fetch fields on initial load.
-	useEffect(() => {
-		const getModel = async () => {
-			const model = await apiFetch({
-				path: `/wpe/content-model/${id}`,
-				_wpnonce: wpApiSettings.nonce,
-			});
-
-			setModel(model.data);
-			setFields({
-				data: model?.data?.fields ?? {},
-				order: getFieldOrder(model?.data?.fields)
-			});
-			setLoading(false);
-		}
-
-		getModel();
-	}, [] );
 
 	// Send updated field positions to the database when the user reorders them.
 	useEffect(() => {
@@ -169,18 +149,20 @@ export default function EditContentModel() {
 
 	// Get next field id without wrapping from last to first. 0 means no next item.
 	function nextFieldId(id) {
-		const myIndex = fields?.order?.indexOf(id);
+		const fieldOrder = getFieldOrder(fields);
+		const myIndex = fieldOrder?.indexOf(id);
 		if (myIndex < 0) return 0; // No such id found.
 		if (myIndex === fields?.order?.length - 1) return 0; // No item after last.
-		return fields?.order[myIndex + 1];
+		return fieldOrder[myIndex + 1];
 	}
 
 	// Get previous field id without wrapping from first to last. 0 means no previous item.
 	function previousFieldId(id) {
-		const myIndex = fields?.order?.indexOf(id);
+		const fieldOrder = getFieldOrder(fields);
+		const myIndex = fieldOrder?.indexOf(id);
 		if (myIndex < 0) return 0; // No such id found.
 		if (myIndex === 0) return 0; // No item before first.
-		return fields?.order[myIndex - 1];
+		return fieldOrder[myIndex - 1];
 	}
 
 	// Instead of incrementing field positions by 1, increment with a gap.
@@ -188,18 +170,19 @@ export default function EditContentModel() {
 	// affecting the position values of surrounding fields.
 	function getPositionAfter(id) {
 		const POSITION_GAP = 10000;
+		const fieldOrder = getFieldOrder(fields);
 
-		const myOrder = fields?.order?.indexOf(id);
-		const myPosition = parseFloat(fields?.data[id]?.position);
+		const myOrder = fieldOrder.indexOf(id);
+		const myPosition = parseFloat(fields[id]?.position);
 
 		// Last field. Just add the gap.
-		if (myOrder + 1 === Object.keys(fields?.data)?.length) {
+		if (myOrder + 1 === Object.keys(fieldOrder)?.length) {
 			return myPosition + POSITION_GAP;
 		}
 
 		// Otherwise add half the difference between my position and the next field's position.
-		const nextFieldId = fields?.order[myOrder+1];
-		const nextFieldPosition = parseFloat(fields?.data[nextFieldId]?.position);
+		const nextFieldId = fieldOrder[myOrder+1];
+		const nextFieldPosition = parseFloat(fields[nextFieldId]?.position);
 
 		if (nextFieldPosition) {
 			return (myPosition + nextFieldPosition) / 2;
@@ -208,7 +191,7 @@ export default function EditContentModel() {
 		return 0;
 	}
 
-	if ( loading ) {
+	if ( models === null ) {
 		return (
 			<div className="app-card">
 				<p>Loading…</p>
@@ -216,7 +199,8 @@ export default function EditContentModel() {
 		);
 	}
 
-	const fieldCount = Object.keys(fields.data).length;
+	const fieldCount = Object.keys(fields).length;
+	const fieldOrder = getFieldOrder(fields);
 
 	return (
 		<div className="app-card">
@@ -237,8 +221,8 @@ export default function EditContentModel() {
 						</p>
 						<ul className="field-list">
 							{
-								fields.order.map( (id) => {
-									const {type, position, open=false, editing=false} = fields.data[id];
+								fieldOrder.map( (id) => {
+									const {type, position, open=false, editing=false} = fields[id];
 									const positionAfter = getPositionAfter(id);
 
 									return <Field
@@ -248,7 +232,7 @@ export default function EditContentModel() {
 											type={type}
 											open={open}
 											editing={editing}
-											data={fields?.data[id]}
+											data={fields[id]}
 											openAction={openField}
 											closeAction={closeField}
 											cancelAction={removeField}
