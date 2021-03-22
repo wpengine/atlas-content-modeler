@@ -17,7 +17,7 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({id, position, type, editing, storedData, deleteAction}) {
+function Form({id, position, type, editing, storedData}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(storedData?.name?.length || 0);
 	const {dispatch} = useContext(ModelsContext);
