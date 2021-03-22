@@ -23,19 +23,21 @@ export default function ViewContentModelsList() {
 	const { models } = useContext(ModelsContext);
 	const hasModels = Object.keys(models || {}).length > 0;
 
-	if (models === null) {
-		return "";
-	}
+
 
 	return (
 		<div className="app-card">
 			<HeaderWithAddNewButton />
 			<section className="card-content">
-				{hasModels ? (
+				{ models === null && "Loading…" }
+
+				{ hasModels && models !== null && (
 					<ul className="model-list">
 						<ContentModels models={models} />
 					</ul>
-				) : (
+				)}
+
+				{ !hasModels && models !== null && (
 					<>
 						<p>
 							You have no Content Models. It might be a good idea to create one
