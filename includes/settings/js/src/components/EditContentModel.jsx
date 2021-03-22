@@ -214,7 +214,6 @@ export default function EditContentModel() {
 											setInfoTag={setInfoTag}
 											previousFieldID={previousFieldId(id)}
 											nextFieldID={nextFieldId(id)}
-											addAction={addField}
 											position={position}
 											positionAfter={positionAfter}
 									/>
@@ -230,7 +229,10 @@ export default function EditContentModel() {
 						<ul className="model-list">
 							<li className="empty"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></li>
 							<li className="add-item">
-								<button onClick={() => addField(0)}>
+
+								<button
+									onClick={() => dispatch({type: 'addField', position: 0, model: id})}
+								>
 									<Icon type="add" />
 								</button>
 							</li>

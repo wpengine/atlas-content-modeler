@@ -6,7 +6,6 @@ import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
 import {ModelsContext} from "../../ModelsContext";
 
 function Field({
-	addAction,
 	cancelAction,
 	data = {},
 	deleteAction,
@@ -74,7 +73,9 @@ function Field({
 					<FieldOptionsDropdown field={data} model={model} deleteAction={deleteAction} />
 				</li>
 				<li className="add-item">
-					<button onClick={() => addAction(positionAfter)} aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
+					<button
+						onClick={() => dispatch({type: 'addField', position: positionAfter, model: model.slug})}
+						aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
 						<Icon type="add" />
 					</button>
 				</li>

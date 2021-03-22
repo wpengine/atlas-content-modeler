@@ -14,7 +14,11 @@ export function reducer(state, action) {
 			const { [action.slug]: deleted, ...otherModels } = state;
 			return otherModels;
 		case "addField":
-			return { todo: "fill me in" };
+			const newId = Date.now();
+			state[action.model]['fields'][newId] = {
+				id: newId, type: 'text', open: true, position: action.position
+			};
+			return {...state};
 		case "openField":
 			state[action.model]['fields'][action.id].open = true;
 			state[action.model]['fields'][action.id].editing = true;
