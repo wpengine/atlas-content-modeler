@@ -77,14 +77,6 @@ export default function EditContentModel() {
 		positionUpdateTimer.current = setTimeout(() => setPositionsChanged(true), positionUpdateDelay);
 	}
 
-	if ( models === null ) {
-		return (
-			<div className="app-card">
-				<p>Loading…</p>
-			</div>
-		);
-	}
-
 	const fieldCount = Object.keys(fields).length;
 	const fieldOrder = getFieldOrder(fields);
 

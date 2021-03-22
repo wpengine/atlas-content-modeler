@@ -27,19 +27,14 @@ export default function ViewContentModelsList() {
 		<div className="app-card">
 			<HeaderWithAddNewButton />
 			<section className="card-content">
-				{ models === null && "Loading…" }
-
-				{ hasModels && models !== null && (
+				{hasModels ? (
 					<ul className="model-list">
 						<ContentModels models={models} />
 					</ul>
-				)}
-
-				{ !hasModels && models !== null && (
+				) : (
 					<>
 						<p>
-							You have no Content Models. It might be a good idea to create one
-							now.
+							You have no Content Models. It might be a good idea to create one now.
 						</p>
 						<ul aria-hidden="true">
 							<li className="empty">
@@ -51,7 +46,8 @@ export default function ViewContentModelsList() {
 						</ul>
 					</>
 				)}
-			</section>
+			</section>;
+
 		</div>
 	);
 }
