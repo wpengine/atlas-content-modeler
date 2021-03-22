@@ -4,6 +4,13 @@ import { useLocationSearch } from "../utils";
 import Icon from "./icons"
 import Field from "./fields/Field"
 import { ModelsContext } from "../ModelsContext";
+import {
+	getFieldOrder,
+	getPositionAfter,
+	getNextFieldId,
+	getPreviousFieldId,
+} from "../queries";
+
 const { apiFetch, a11y } = wp;
 
 export default function EditContentModel() {
@@ -49,7 +56,7 @@ export default function EditContentModel() {
 		clearTimeout(positionUpdateTimer.current);
 
 		// Invalid IDs should not be swapped.
-		if (id1 === 0 || id2 === 0) {
+		if (id1 === -1 || id2 === -1) {
 			return;
 		}
 
@@ -68,69 +75,6 @@ export default function EditContentModel() {
 
 		// Persist changes to the database after the delay time.
 		positionUpdateTimer.current = setTimeout(() => setPositionsChanged(true), positionUpdateDelay);
-	}
-
-	// Gives an array of field IDs in the order they should appear based
-	// on their position property, with the ID of the lowest position first.
-	function getFieldOrder(fields) {
-		if (typeof fields !== 'object') {
-			return [];
-		}
-
-		return Object
-			.keys(fields)
-			.map((key) => {
-				return {
-					position: fields[key]['position'],
-					id: fields[key]['id'],
-				}
-			})
-			.sort((field1, field2) => field1.position - field2.position)
-			.map(field => field.id);
-	}
-
-	// Get next field id without wrapping from last to first. 0 means no next item.
-	function nextFieldId(id) {
-		const fieldOrder = getFieldOrder(fields);
-		const myIndex = fieldOrder?.indexOf(id);
-		if (myIndex < 0) return 0; // No such id found.
-		if (myIndex === fields?.order?.length - 1) return 0; // No item after last.
-		return fieldOrder[myIndex + 1];
-	}
-
-	// Get previous field id without wrapping from first to last. 0 means no previous item.
-	function previousFieldId(id) {
-		const fieldOrder = getFieldOrder(fields);
-		const myIndex = fieldOrder?.indexOf(id);
-		if (myIndex < 0) return 0; // No such id found.
-		if (myIndex === 0) return 0; // No item before first.
-		return fieldOrder[myIndex - 1];
-	}
-
-	// Instead of incrementing field positions by 1, increment with a gap.
-	// This allows new fields to be inserted between others without
-	// affecting the position values of surrounding fields.
-	function getPositionAfter(id) {
-		const POSITION_GAP = 10000;
-		const fieldOrder = getFieldOrder(fields);
-
-		const myOrder = fieldOrder.indexOf(id);
-		const myPosition = parseFloat(fields[id]?.position);
-
-		// Last field. Just add the gap.
-		if (myOrder + 1 === Object.keys(fieldOrder)?.length) {
-			return myPosition + POSITION_GAP;
-		}
-
-		// Otherwise add half the difference between my position and the next field's position.
-		const nextFieldId = fieldOrder[myOrder+1];
-		const nextFieldPosition = parseFloat(fields[nextFieldId]?.position);
-
-		if (nextFieldPosition) {
-			return (myPosition + nextFieldPosition) / 2;
-		}
-
-		return 0;
 	}
 
 	if ( models === null ) {
@@ -165,7 +109,7 @@ export default function EditContentModel() {
 							{
 								fieldOrder.map( (id) => {
 									const {type, position, open=false, editing=false} = fields[id];
-									const positionAfter = getPositionAfter(id);
+									const positionAfter = getPositionAfter(id, fields);
 
 									return <Field
 											key={id}
@@ -177,8 +121,8 @@ export default function EditContentModel() {
 											data={fields[id]}
 											swapAction={swapFieldPositions}
 											setInfoTag={setInfoTag}
-											previousFieldID={previousFieldId(id)}
-											nextFieldID={nextFieldId(id)}
+											previousFieldId={getPreviousFieldId(id, fields)}
+											nextFieldId={getNextFieldId(id, fields)}
 											position={position}
 											positionAfter={positionAfter}
 									/>

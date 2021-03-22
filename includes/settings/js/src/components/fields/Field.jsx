@@ -10,11 +10,11 @@ function Field({
 	editing,
 	id,
 	model,
-	nextFieldID,
+	nextFieldId,
 	open = false,
 	position,
 	positionAfter,
-	previousFieldID,
+	previousFieldId,
 	setInfoTag,
 	swapAction,
 	type = "text",
@@ -40,14 +40,14 @@ function Field({
 							onKeyDown={(e) => {
 								if (e.code === 'ArrowUp') {
 									e.preventDefault();
-									if ( previousFieldID !== 0 ) {
-										swapAction(id, previousFieldID);
+									if ( previousFieldId !== -1 ) {
+										swapAction(id, previousFieldId);
 									}
 								}
 								if (e.code === 'ArrowDown') {
 									e.preventDefault();
-									if ( nextFieldID !== 0 ) {
-										swapAction(id, nextFieldID);
+									if ( nextFieldId !== -1 ) {
+										swapAction(id, nextFieldId);
 									}
 								}
 							}}
