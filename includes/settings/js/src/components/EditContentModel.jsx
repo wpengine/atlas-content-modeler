@@ -39,14 +39,6 @@ export default function EditContentModel() {
 		setPositionsChanged(false);
 	}, [positionsChanged, fields]);
 
-	function addField(position) {
-		const newId = Date.now();
-		setFields(oldFields => {
-			const newData = { ...oldFields.data, [newId]: { id: newId, type: 'text', open: true, position } }
-			return { data: newData, order: getFieldOrder(newData) };
-		});
-	}
-
 	// Swap field positions to reorder them in the list.
 	// Triggers database storage after positionUpdateDelay
 	// if no further position changes occur.
