@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace WPE\ContentModel\Settings;
 
+use function WPE\ContentModel\ContentRegistration\get_registered_content_types;
+
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 /**
  * Registers the wp-admin menu page.
@@ -47,6 +49,14 @@ function enqueue_settings_assets( $hook ) {
 		[ 'wp-api', 'wp-api-fetch', 'wp-a11y', 'react' ],
 		$plugin['Version'],
 		true
+	);
+
+	wp_localize_script(
+		'wpe-content-model-app',
+		'wpeContentModel',
+		array(
+			'initialState' => get_registered_content_types(),
+		)
 	);
 
 	wp_register_style(
