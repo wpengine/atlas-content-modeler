@@ -12,7 +12,7 @@ export default function CreateContentModel() {
 	const [ singularCount, setSingularCount ] = useState(0);
 	const [ pluralCount, setPluralCount ] = useState(0);
 	const [ descriptionCount, setDescriptionCount ] = useState(0);
-	const { refreshModels } = useContext(ModelsContext);
+	const { dispatch } = useContext(ModelsContext);
 
 	function apiCreateModel( data ) {
 		apiFetch( {
@@ -22,7 +22,7 @@ export default function CreateContentModel() {
 			data,
 		} ).then( res => {
 			if ( res.success ) {
-				refreshModels();
+				dispatch({type: 'addModel', data: res.model})
 				history.push( "/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" + data.postTypeSlug );
 			}
 
