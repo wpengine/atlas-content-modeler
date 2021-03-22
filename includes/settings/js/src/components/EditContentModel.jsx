@@ -47,14 +47,6 @@ export default function EditContentModel() {
 		});
 	}
 
-	// Open a field to edit it.
-	function openField(id) {
-		setFields(oldFields => {
-			const newData = { ...oldFields.data, [id]: { ...oldFields.data[id], open: true, editing: true } };
-			return { data: newData, order: oldFields.order };
-		});
-	}
-
 	// Close a field to cancel editing it.
 	function closeField(id) {
 		setFields(oldFields => {
@@ -233,7 +225,6 @@ export default function EditContentModel() {
 											open={open}
 											editing={editing}
 											data={fields[id]}
-											openAction={openField}
 											closeAction={closeField}
 											cancelAction={removeField}
 											deleteAction={deleteField}

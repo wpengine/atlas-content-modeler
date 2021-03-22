@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Form from "./Form";
 import Icon from "../icons";
 import supportedFields from "./supportedFields";
 import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
+import {ModelsContext} from "../../ModelsContext";
 
 function Field({
 	addAction,
@@ -15,7 +16,6 @@ function Field({
 	model,
 	nextFieldID,
 	open = false,
-	openAction,
 	position,
 	positionAfter,
 	previousFieldID,
@@ -25,6 +25,7 @@ function Field({
 	updateAction,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
+	const {dispatch} = useContext(ModelsContext);
 
 	// Closed fields appear as a row with a summary of info.
 	if (!open) {
@@ -66,7 +67,7 @@ function Field({
 					</span>
 					<button
 						className="edit"
-						onClick={() => openAction(data.id)}
+						onClick={() => dispatch({type: 'openField', id: data.id, model: model.slug})}
 						aria-label={`Edit the ${data.name} field`}
 					>
 						<span className="type"><Icon type={data.type}/>{typeLabel}</span>

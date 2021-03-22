@@ -16,7 +16,9 @@ export function reducer(state, action) {
 		case "addField":
 			return { todo: "fill me in" };
 		case "openField":
-			return { todo: "fill me in" };
+			state[action.model]['fields'][action.id].open = true;
+			state[action.model]['fields'][action.id].editing = true;
+			return {...state};
 		case "closeField":
 			return { todo: "fill me in" };
 		case "updateField":
