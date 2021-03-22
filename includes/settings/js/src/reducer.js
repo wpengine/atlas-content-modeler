@@ -35,7 +35,13 @@ export function reducer(state, action) {
 			delete state[action.model]['fields'][action.id];
 			return {...state};
 		case "swapFieldPositions":
-			return { todo: "fill me in" };
+			const fields = state[action.model]['fields'];
+			state[action.model]['fields'] = {
+				...fields,
+				[action.id1]: {...fields[action.id1], position: fields[action.id2].position },
+				[action.id2]: {...fields[action.id2], position: fields[action.id1].position },
+			}
+			return {...state};
 		default:
 			throw new Error(`${action.type} not found`);
 	}

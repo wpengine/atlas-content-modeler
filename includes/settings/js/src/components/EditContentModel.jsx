@@ -20,9 +20,9 @@ export default function EditContentModel() {
 	// Send updated field positions to the database when the user reorders them.
 	useEffect(() => {
 		if (!positionsChanged) return;
-
-		const idsAndNewPositions = fields?.order?.reduce((result, fieldId) => {
-			result[fieldId] = { position: fields?.data[fieldId].position };
+		const fieldOrder = getFieldOrder(fields);
+		const idsAndNewPositions = fieldOrder?.reduce((result, fieldId) => {
+			result[fieldId] = { position: fields[fieldId].position };
 			return result;
 		}, {});
 
@@ -39,9 +39,11 @@ export default function EditContentModel() {
 		setPositionsChanged(false);
 	}, [positionsChanged, fields]);
 
-	// Swap field positions to reorder them in the list.
-	// Triggers database storage after positionUpdateDelay
-	// if no further position changes occur.
+	/**
+	 * Swap field positions to reorder them in the list.
+	 * Triggers database storage after positionUpdateDelay
+	 * if no further position changes occur.
+	 */
 	function swapFieldPositions(id1, id2, speak=true) {
 		// Prevent database updates if the user changes the order quickly.
 		clearTimeout(positionUpdateTimer.current);
@@ -51,21 +53,15 @@ export default function EditContentModel() {
 			return;
 		}
 
-		setFields((oldFields) => {
-			const newData = {
-				...oldFields.data,
-				[id1]: { ...oldFields.data[id1], position: oldFields.data[id2].position },
-				[id2]: { ...oldFields.data[id2], position: oldFields.data[id1].position },
-			};
-			return { data: newData, order: getFieldOrder(newData) };
-		});
+		dispatch({type: 'swapFieldPositions', id1, id2, model: id})
 
 		// Speak list order changes to screen reader users.
 		if ( speak ) {
-			const currentFieldPosition = fields?.order?.indexOf(id2) + 1;
-			const fieldCount = fields?.order?.length;
+			const fieldOrder = getFieldOrder(fields);
+			const currentFieldPosition = fieldOrder?.indexOf(id2) + 1;
+			const fieldCount = fieldOrder?.length;
 			a11y.speak(
-				`${fields?.data[id1]?.name}, new position in list: ${currentFieldPosition} of ${fieldCount}`,
+				`${fields[id1]?.name}, new position in list: ${currentFieldPosition} of ${fieldCount}`,
 				"assertive"
 			);
 		}
