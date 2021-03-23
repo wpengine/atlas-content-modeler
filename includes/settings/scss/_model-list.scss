@@ -33,9 +33,9 @@
 }
 
 .model-list .label {
-	color: lighten($color-gray, 30%);
+	color: $color-gray-mid;
 	font-size: 13px;
-	font-weight: 700;
+	font-weight: 400;
 	margin: 0 0 2px;
 }
 
