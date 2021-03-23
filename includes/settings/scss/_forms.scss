@@ -3,7 +3,7 @@
 .wpe-content-model-admin-page input,
 .wpe-content-model-admin-page textarea {
 	border-radius: $radius;
-	border: 1px solid $color-text;
+	border: 1px solid $color-gray-light;
 	line-height: 20px;
 	min-width: 360px;
 	padding: 16px;
@@ -85,3 +85,8 @@ input[type=checkbox],
 input[type=radio] {
 	margin: 0;
 }
+
+.wpe-content-model-admin-page .help {
+	color: $color-gray-mid;
+}
+
