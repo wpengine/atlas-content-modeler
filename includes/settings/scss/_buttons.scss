@@ -67,8 +67,3 @@ button.options {
 	height: 100%;
 	padding: 0 30px;
 }
-
-button.options:focus,
-button.options:hover {
-	background-color: lighten($color-gray, 54%);
-}

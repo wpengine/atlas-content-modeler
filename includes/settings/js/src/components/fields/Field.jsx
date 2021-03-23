@@ -38,7 +38,7 @@ function Field({
 		);
 		return (
 			<>
-				<li key={id}>
+				<li className="closed" key={id}>
 					<span className="reorder">
 						<button
 							onKeyDown={(e) => {
