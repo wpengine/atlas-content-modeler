@@ -80,3 +80,8 @@ input[aria-invalid="true"],
 input[type=radio]:checked::before {
 	background-color: $color-text;
 }
+
+input[type=checkbox],
+input[type=radio] {
+	margin: 0;
+}
