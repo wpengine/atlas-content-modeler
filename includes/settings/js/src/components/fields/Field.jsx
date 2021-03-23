@@ -1,30 +1,26 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Form from "./Form";
 import Icon from "../icons";
 import supportedFields from "./supportedFields";
 import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
+import {ModelsContext} from "../../ModelsContext";
 
 function Field({
-	addAction,
-	cancelAction,
-	closeAction,
 	data = {},
-	deleteAction,
 	editing,
 	id,
 	model,
-	nextFieldID,
+	nextFieldId,
 	open = false,
-	openAction,
 	position,
 	positionAfter,
-	previousFieldID,
+	previousFieldId,
 	setInfoTag,
 	swapAction,
 	type = "text",
-	updateAction,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
+	const {dispatch} = useContext(ModelsContext);
 
 	// Closed fields appear as a row with a summary of info.
 	if (!open) {
@@ -44,14 +40,14 @@ function Field({
 							onKeyDown={(e) => {
 								if (e.code === 'ArrowUp') {
 									e.preventDefault();
-									if ( previousFieldID !== 0 ) {
-										swapAction(id, previousFieldID);
+									if ( previousFieldId !== -1 ) {
+										swapAction(id, previousFieldId);
 									}
 								}
 								if (e.code === 'ArrowDown') {
 									e.preventDefault();
-									if ( nextFieldID !== 0 ) {
-										swapAction(id, nextFieldID);
+									if ( nextFieldId !== -1 ) {
+										swapAction(id, nextFieldId);
 									}
 								}
 							}}
@@ -66,16 +62,18 @@ function Field({
 					</span>
 					<button
 						className="edit"
-						onClick={() => openAction(data.id)}
+						onClick={() => dispatch({type: 'openField', id: data.id, model: model.slug})}
 						aria-label={`Edit the ${data.name} field`}
 					>
 						<span className="type"><Icon type={data.type}/>{typeLabel}</span>
 						<span className="widest"><strong>{data.name}</strong></span>
 					</button>
-					<FieldOptionsDropdown field={data} model={model} deleteAction={deleteAction} />
+					<FieldOptionsDropdown field={data} model={model} />
 				</li>
 				<li className="add-item">
-					<button onClick={() => addAction(positionAfter)} aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
+					<button
+						onClick={() => dispatch({type: 'addField', position: positionAfter, model: model.slug})}
+						aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
 						<Icon type="add" />
 					</button>
 				</li>
@@ -113,9 +111,6 @@ function Field({
 					type={activeForm}
 					storedData={data}
 					editing={editing}
-					cancelAction={cancelAction}
-					closeAction={closeAction}
-					updateAction={updateAction}
 					id={id}
 					position={position}
 				/>

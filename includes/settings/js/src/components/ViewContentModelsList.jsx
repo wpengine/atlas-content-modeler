@@ -8,17 +8,6 @@ const { apiFetch } = wp;
 
 Modal.setAppElement('#root');
 
-function getAllModels() {
-	const allModels = apiFetch({
-		path: "/wpe/content-models",
-		method: "GET",
-		_wpnonce: wpApiSettings.nonce,
-	}).then((res) => {
-		return res;
-	});
-	return allModels;
-}
-
 function HeaderWithAddNewButton() {
 	return (
 		<section className="heading">
@@ -32,16 +21,20 @@ function HeaderWithAddNewButton() {
 
 export default function ViewContentModelsList() {
 	const { models } = useContext(ModelsContext);
+	const hasModels = Object.keys(models || {}).length > 0;
 
 	return (
 		<div className="app-card">
 			<HeaderWithAddNewButton />
 			<section className="card-content">
-				{models === "none" ? (
+				{hasModels ? (
+					<ul className="model-list">
+						<ContentModels models={models} />
+					</ul>
+				) : (
 					<>
 						<p>
-							You have no Content Models. It might be a good idea to create one
-							now.
+							You have no Content Models. It might be a good idea to create one now.
 						</p>
 						<ul aria-hidden="true">
 							<li className="empty">
@@ -52,15 +45,12 @@ export default function ViewContentModelsList() {
 							</li>
 						</ul>
 					</>
-				) : (
-					<ul className="model-list">
-						<ContentModels models={models} />
-					</ul>
 				)}
 			</section>
 		</div>
 	);
 }
+
 
 function ContentModels({ models }) {
 	return Object.keys(models).map((slug) => {
@@ -98,7 +88,7 @@ function ContentModels({ models }) {
 
 const ContentModelDropdown = ({model}) => {
 	const { name, slug } = model;
-	const { refreshModels } = useContext(ModelsContext);
+	const { dispatch } = useContext(ModelsContext);
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const [ modalIsOpen, setModalIsOpen ] = useState(false);
 	const customStyles = {
@@ -157,8 +147,8 @@ const ContentModelDropdown = ({model}) => {
 					onClick={ async () => {
 						// @todo capture and show errors.
 						const deleted = await deleteModel(slug);
-						refreshModels();
 						setModalIsOpen(false);
+						dispatch({type: 'removeModel', slug});
 					}}
 				>
 					Delete

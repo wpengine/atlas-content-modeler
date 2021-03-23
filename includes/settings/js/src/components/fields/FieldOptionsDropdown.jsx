@@ -1,10 +1,14 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import Icon from "../icons";
 import Modal from "react-modal";
+import {ModelsContext} from "../../ModelsContext";
 
-export const FieldOptionsDropdown = ({field, model, deleteAction}) => {
+const { apiFetch } = wp;
+
+export const FieldOptionsDropdown = ({field, model}) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
+	const { dispatch } = useContext(ModelsContext);
 
 	const customStyles = {
 		overlay: {
@@ -59,8 +63,14 @@ export const FieldOptionsDropdown = ({field, model, deleteAction}) => {
 					form={field.id}
 					className="first warning"
 					onClick={async () => {
+						apiFetch({
+							path: `/wpe/content-model-field/${field.id}`,
+							method: 'DELETE',
+							body: JSON.stringify( { model: model.slug } ),
+							_wpnonce: wpApiSettings.nonce,
+						});
 						setModalIsOpen(false);
-						deleteAction(field.id, model.slug);
+						dispatch({type: 'removeField', id: field.id, model: model.slug})
 					}}
 				>
 					Delete
