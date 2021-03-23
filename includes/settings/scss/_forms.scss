@@ -90,3 +90,18 @@ input[type=radio] {
 	color: $color-gray-mid;
 }
 
+.wpe-content-model-admin-page .radio-row {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.wpe-content-model-admin-page .radio-row input[type=radio] {
+	margin-right: 20px;
+}
+
+.wpe-content-model-admin-page .radio-row label span {
+	color: $color-gray-mid;
+	display: block;
+	font-size: 13px;
+}
