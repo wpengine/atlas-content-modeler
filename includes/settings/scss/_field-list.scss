@@ -3,7 +3,7 @@
 .field-list li {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 20px;
+	margin-bottom: 32px;
 }
 
 .field-list li.closed:hover {
@@ -80,9 +80,9 @@
 	border: none;
 	box-shadow: none;
 	justify-content: center;
-	margin-bottom: 0;
-	margin-top: -46px;
-	max-height: 48px;
+	margin-bottom: 27px;
+	margin-top: -60px;
+	max-height: 32px;
 	padding: 0;
 }
 
@@ -91,6 +91,7 @@
 	border: none;
 	height: 64px;
 	padding: 0;
+	width: 64px;
 }
 
 .field-list .reorder button {
