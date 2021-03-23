@@ -271,7 +271,7 @@ export default function EditContentModel() {
 				(
 					<>
 						<p>Your current model {name} has no fields at the moment. It might be a good idea to add some now.</p>
-						<ul className="model-list">
+						<ul className="field-list">
 							<li className="empty"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></li>
 							<li className="add-item">
 								<button onClick={() => addField(0)}>
