@@ -8,9 +8,9 @@ button {
 	cursor: pointer;
 	font-size: 14px;
 	font-weight: 600;
-	height: 40px;
+	height: 52px;
 	line-height: 20px;
-	padding: 8px 24px;
+	padding: 14px 24px;
 }
 
 button.first {
@@ -19,8 +19,8 @@ button.first {
 
 button:focus,
 button:hover {
-	background: lighten($color-primary, 5%);
-	border: 1px solid lighten($color-primary, 5%);
+	background: $color-primary-hover;
+	border: 1px solid $color-primary-hover;
 }
 
 button.secondary {
@@ -43,8 +43,9 @@ button.tertiary {
 
 button.tertiary:focus,
 button.tertiary:hover {
-	color: $color-white;
-	background: $color-text;
+	color: $color-primary;
+	background: $color-white;
+	border: 1px solid $color-primary;
 }
 
 button.warning {
@@ -55,8 +56,12 @@ button.warning {
 
 button.warning:focus,
 button.warning:hover {
-	background: lighten($color-warning, 5%);
-	border: 1px solid lighten($color-warning, 5%);
+	background: $color-warning-hover;
+	border: 1px solid $color-warning-hover;
+}
+
+button.options svg {
+	display: block; // For vertical centering.
 }
 
 button.options {
@@ -65,9 +70,4 @@ button.options {
 	color: $color-text;
 	height: 100%;
 	padding: 0 30px;
-}
-
-button.options:focus,
-button.options:hover {
-	background-color: lighten($color-gray, 54%);
 }

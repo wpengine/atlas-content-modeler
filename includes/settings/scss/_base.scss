@@ -31,3 +31,10 @@ strong {
 .right-column {
 	margin-left: 40px;
 }
+
+:focus,
+a:focus {
+	box-shadow: 0 0 0 2px $color-primary;
+	border-radius: 2px;
+	outline: 1px solid transparent;
+}

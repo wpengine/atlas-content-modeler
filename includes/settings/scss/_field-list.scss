@@ -3,7 +3,11 @@
 .field-list li {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 20px;
+	margin-bottom: 32px;
+}
+
+.field-list li.closed:hover {
+	box-shadow: 0 0 5px 1px rgba(14, 202, 212, 0.75);
 }
 
 .field-list button.edit {
@@ -19,11 +23,6 @@
 	padding: 10px 16px;
 	text-align: left;
 	text-decoration: none;
-}
-
-.field-list button.edit:focus,
-.field-list button.edit:hover {
-	background-color: lighten($color-gray, 54%);
 }
 
 .field-list button.edit span {
@@ -62,7 +61,8 @@
 }
 
 .field-list .read-only.editing label,
-.field-list .read-only.editing legend {
+.field-list .read-only.editing legend,
+.field-list .read-only.editing .radio-row label span {
 	color: lighten($color-gray, 20%);
 }
 
@@ -81,9 +81,9 @@
 	border: none;
 	box-shadow: none;
 	justify-content: center;
-	margin-bottom: 0;
-	margin-top: -46px;
-	max-height: 48px;
+	margin-bottom: 30px;
+	margin-top: -60px;
+	max-height: 32px;
 	padding: 0;
 }
 
@@ -92,6 +92,7 @@
 	border: none;
 	height: 64px;
 	padding: 0;
+	width: 64px;
 }
 
 .field-list .reorder button {
@@ -99,9 +100,4 @@
 	padding: 17px 18px 14px 18px;
 	border: none;
 	height: auto;
-}
-
-.field-list .reorder button:focus,
-.field-list .reorder button:hover {
-	background-color: lighten($color-gray, 54%);
 }

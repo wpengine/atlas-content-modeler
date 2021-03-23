@@ -20,7 +20,9 @@ export const FieldOptionsDropdown = ({field, model}) => {
 			right: 'auto',
 			bottom: 'auto',
 			marginRight: '-50%',
-			transform: 'translate(-50%, -50%)'
+			transform: 'translate(-50%, -50%)',
+			border: 'none',
+			padding: '40px'
 		}
 	};
 
@@ -49,6 +51,7 @@ export const FieldOptionsDropdown = ({field, model}) => {
 			<Modal
 				isOpen={modalIsOpen}
 				contentLabel={`Delete the ${field.name} field from ${model.name}?`}
+				portalClassName="wpe-content-model-delete-field-modal-container"
 				onRequestClose={() => {
 					setModalIsOpen(false)
 				}}

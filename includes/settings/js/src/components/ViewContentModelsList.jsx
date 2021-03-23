@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "./icons";
@@ -9,12 +9,13 @@ const { apiFetch } = wp;
 Modal.setAppElement('#root');
 
 function HeaderWithAddNewButton() {
+	let history = useHistory();
 	return (
 		<section className="heading">
 			<h2>Content Models</h2>
-			<Link to="/wp-admin/admin.php?page=wpe-content-model&view=create-model">
-				<button>Add New</button>
-			</Link>
+			<button onClick={() => history.push("/wp-admin/admin.php?page=wpe-content-model&view=create-model")}>
+				Add New
+			</button>
 		</section>
 	);
 }
@@ -96,12 +97,14 @@ const ContentModelDropdown = ({model}) => {
 			backgroundColor: 'rgba(0, 40, 56, 0.7)'
 		},
 		content : {
-			top                   : '50%',
-			left                  : '50%',
-			right                 : 'auto',
-			bottom                : 'auto',
-			marginRight           : '-50%',
-			transform             : 'translate(-50%, -50%)'
+			top: '50%',
+			left: '50%',
+			right: 'auto',
+			bottom: 'auto',
+			marginRight: '-50%',
+			transform: 'translate(-50%, -50%)',
+			border: 'none',
+			padding: '40px'
 		}
 	};
 
