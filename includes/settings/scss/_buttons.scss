@@ -19,8 +19,8 @@ button.first {
 
 button:focus,
 button:hover {
-	background: lighten($color-primary, 5%);
-	border: 1px solid lighten($color-primary, 5%);
+	background: $color-primary-hover;
+	border: 1px solid $color-primary-hover;
 }
 
 button.secondary {

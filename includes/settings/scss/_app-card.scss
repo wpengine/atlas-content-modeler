@@ -21,7 +21,7 @@
 
 .app-card h2 a:focus,
 .app-card h2 a:hover {
-	text-decoration: underline;
+	color: $color-primary-hover;
 }
 
 .app-card .heading {
@@ -76,8 +76,7 @@
 	width: 3%;
 }
 
-
-.app-card svg.add:focus,
-.app-card svg.add:hover {
-	opacity: 0.8;
+.app-card svg.add:focus circle,
+.app-card svg.add:hover circle {
+	fill: $color-primary-hover;
 }
