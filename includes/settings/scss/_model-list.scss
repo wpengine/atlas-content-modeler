@@ -6,6 +6,11 @@
 	margin-bottom: 20px;
 }
 
+.model-list li:focus,
+.model-list li:hover {
+	box-shadow: 0 0 5px 1px rgba(14, 202, 212, 0.75);
+}
+
 .model-list li > a:first-of-type {
 	color: $color-text;
 	display: flex;
@@ -13,11 +18,6 @@
 	min-width: 85%;
 	padding: 10px 16px;
 	text-decoration: none;
-}
-
-.model-list li > a:first-of-type:focus,
-.model-list li > a:first-of-type:hover {
-	background-color: lighten($color-gray, 54%);
 }
 
 .model-list li a > span {
