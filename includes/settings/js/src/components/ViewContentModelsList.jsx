@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "./icons";
@@ -20,12 +20,13 @@ function getAllModels() {
 }
 
 function HeaderWithAddNewButton() {
+	let history = useHistory();
 	return (
 		<section className="heading">
 			<h2>Content Models</h2>
-			<Link to="/wp-admin/admin.php?page=wpe-content-model&view=create-model">
-				<button>Add New</button>
-			</Link>
+			<button onClick={() => history.push("/wp-admin/admin.php?page=wpe-content-model&view=create-model")}>
+				Add New
+			</button>
 		</section>
 	);
 }
