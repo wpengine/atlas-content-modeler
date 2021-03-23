@@ -4,6 +4,13 @@
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 20px;
+	&:focus {
+		border: 2px solid $color-primary;
+		outline: none;
+	}
+	& > :hover {
+		box-shadow: 0 0 5px 1px rgba(14, 202, 212, 0.75);
+	}
 }
 
 .field-list button.edit {
@@ -92,6 +99,10 @@
 	border: none;
 	height: 64px;
 	padding: 0;
+	&:focus {
+		border: 2px solid $color-primary;
+		outline: none;
+	}
 }
 
 .field-list .reorder button {

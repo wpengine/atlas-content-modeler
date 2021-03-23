@@ -30,8 +30,12 @@
 }
 
 .app-card .heading button.options {
-	min-height: 40px;
+	min-height: 32px;
+	min-width: 32px;
 	padding: 5px;
+	&:focus {
+		border: 2px solid $color-primary;
+	}
 }
 
 .card-content ul {
