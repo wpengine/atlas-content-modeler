@@ -32,9 +32,10 @@ strong {
 	margin-left: 40px;
 }
 
-:focus {
+:focus,
+a:focus {
 	box-shadow: 0 0 0 2px $color-primary;
 	border-radius: 2px;
 	display: inline-block;
-	outline: none;
+	outline: 1px solid transparent;
 }
