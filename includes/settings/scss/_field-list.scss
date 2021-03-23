@@ -4,10 +4,6 @@
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 20px;
-	&:focus {
-		border: 2px solid $color-primary;
-		outline: none;
-	}
 }
 
 .field-list li.closed:hover {
@@ -95,10 +91,6 @@
 	border: none;
 	height: 64px;
 	padding: 0;
-	&:focus {
-		border: 2px solid $color-primary;
-		outline: none;
-	}
 }
 
 .field-list .reorder button {
