@@ -76,3 +76,7 @@ input[aria-invalid="true"],
 .wpe-content-model-admin-page input.alert:read-only {
 	border-color: $color-warning;
 }
+
+input[type=radio]:checked::before {
+	background-color: $color-text;
+}
