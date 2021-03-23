@@ -60,6 +60,10 @@ button.warning:hover {
 	border: 1px solid $color-warning-hover;
 }
 
+button.options svg {
+	display: block; // For vertical centering.
+}
+
 button.options {
 	background-color: $color-white;
 	border: none;
