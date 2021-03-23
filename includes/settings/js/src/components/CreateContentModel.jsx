@@ -88,9 +88,12 @@ export default function CreateContentModel() {
 					</div>
 
 					<button type="submit" className="primary first">Create</button>
-					<Link to="/wp-admin/admin.php?page=wpe-content-model">
-						<button className="tertiary">Cancel</button>
-					</Link>
+					<button
+						className="tertiary"
+						onClick={() => history.push("/wp-admin/admin.php?page=wpe-content-model")}
+					>
+						Cancel
+					</button>
 				</form>
 			</section>
 		</div>
