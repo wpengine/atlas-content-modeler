@@ -92,6 +92,7 @@ const ContentModelDropdown = ({model}) => {
 	const { dispatch } = useContext(ModelsContext);
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const [ modalIsOpen, setModalIsOpen ] = useState(false);
+	const history = useHistory();
 	const customStyles = {
 		overlay: {
 			backgroundColor: 'rgba(0, 40, 56, 0.7)'
@@ -120,8 +121,19 @@ const ContentModelDropdown = ({model}) => {
 				<Icon type="options" />
 			</button>
 			<div className={`dropdown-content ${dropdownOpen ? '' : 'hidden' }`}>
-				<a>Edit</a>
 				<a
+					aria-label={`Edit the ${name} content model`}
+					className="edit"
+					href="#"
+					onClick={(event) => {
+						event.preventDefault();
+						history.push(`/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=${slug}`);
+					} }
+				>
+					Edit
+				</a>
+				<a
+					aria-label={`Delete the ${name} content model`}
 					className="delete"
 					href="#"
 					onClick={ (event) => {

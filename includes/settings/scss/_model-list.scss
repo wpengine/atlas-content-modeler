@@ -81,10 +81,20 @@
 		margin: 5px auto;
 
 		color: $color-primary;
+		text-decoration: none;
+
+		&:focus,
+		&:hover {
+			color: $color-primary-hover;
+		}
 	}
 	a.delete {
 		color: $color-warning;
 		text-decoration: none;
+		&:focus,
+		&:hover {
+			color: $color-warning-hover;
+		}
 	}
 }
 
