@@ -70,7 +70,11 @@ function Field({
 						<span className="widest"><strong>{data.name}</strong></span>
 					</button>
 					<FieldOptionsDropdown field={data} model={model} />
-					{ data.type === 'repeater' && <Repeater fields={{}} />}
+					{
+						data.type === "repeater" && (
+							<Repeater fields={data?.subfields} model={model.slug} parent={id} />
+						)
+					}
 				</li>
 				<li className="add-item">
 					<button
