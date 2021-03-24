@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import Form from "./Form";
 import Icon from "../icons";
 import supportedFields from "./supportedFields";
+import Repeater from "./Repeater";
 import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
 import {ModelsContext} from "../../ModelsContext";
 
@@ -69,6 +70,7 @@ function Field({
 						<span className="widest"><strong>{data.name}</strong></span>
 					</button>
 					<FieldOptionsDropdown field={data} model={model} />
+					{ data.type === 'repeater' && <Repeater fields={{}} />}
 				</li>
 				<li className="add-item">
 					<button
