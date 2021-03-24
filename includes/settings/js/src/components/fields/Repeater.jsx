@@ -56,7 +56,7 @@ const Repeater = ({fields={}, model, parent}) => {
 							<li className="add-item">
 								<button
 									onClick={() =>
-										dispatch({ type: "addField", position: 0, model, parent })
+										dispatch({ type: "addField", position: 0, model: model.slug, parent })
 									}
 								>
 									<Icon type="add" size="small" />

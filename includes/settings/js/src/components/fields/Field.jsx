@@ -73,7 +73,7 @@ function Field({
 					<FieldOptionsDropdown field={data} model={model} />
 					{
 						data.type === "repeater" && (
-							<Repeater fields={data?.subfields} model={model.slug} parent={id} />
+							<Repeater fields={data?.subfields} model={model} parent={id} />
 						)
 					}
 				</li>
