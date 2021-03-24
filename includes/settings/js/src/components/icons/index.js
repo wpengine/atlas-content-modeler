@@ -6,6 +6,7 @@ import ErrorIcon from './ErrorIcon';
 import MediaIcon from './MediaIcon';
 import NumberIcon from './NumberIcon';
 import OptionsIcon from './OptionsIcon';
+import RepeaterIcon from './RepeaterIcon';
 import ReorderIcon from './ReorderIcon';
 import RichTextIcon from './RichTextIcon';
 import TextIcon from './TextIcon';
@@ -29,6 +30,8 @@ export default function Icon({type}) {
 			return <NumberIcon/>;
 		case 'options':
 			return <OptionsIcon/>;
+		case 'repeater':
+			return <RepeaterIcon/>;
 		case 'reorder':
 			return <ReorderIcon/>;
 		case 'richtext':
