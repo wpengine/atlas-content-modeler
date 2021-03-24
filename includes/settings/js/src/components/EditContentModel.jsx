@@ -9,6 +9,7 @@ import {
 	getPositionAfter,
 	getNextFieldId,
 	getPreviousFieldId,
+	getRootFields,
 } from "../queries";
 
 const { apiFetch, a11y } = wp;
@@ -20,7 +21,7 @@ export default function EditContentModel() {
 	const query = useLocationSearch();
 	const id = query.get('id');
 	const model = models?.hasOwnProperty(id) ? models[id] : {};
-	const fields = model?.fields || {};
+	const fields = model?.fields ? getRootFields(model.fields) : {};
 	const positionUpdateTimer = useRef(0);
 	const positionUpdateDelay = 1000;
 
