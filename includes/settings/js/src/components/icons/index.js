@@ -12,10 +12,10 @@ import RichTextIcon from './RichTextIcon';
 import TextIcon from './TextIcon';
 import UpArrow from "./UpArrow";
 
-export default function Icon({type}) {
+export default function Icon({type, size}) {
 	switch(type) {
 		case 'add':
-			return <AddIcon/>;
+			return <AddIcon size={size}/>;
 		case 'boolean':
 			return <BooleanIcon/>;
 		case 'date':
