@@ -22,6 +22,7 @@ export function reducer(state, action) {
 					type: "text",
 					open: true,
 					position: action.position,
+					parent: action?.parent,
 				},
 			};
 			return { ...state };
