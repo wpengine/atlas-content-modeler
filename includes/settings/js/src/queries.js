@@ -117,3 +117,34 @@ export function getPositionAfter(id, fields) {
 
 	return 0;
 }
+
+/**
+ * Takes a flat list of parent and child fields and returns root fields (fields
+ * with no 'parent' property) with child fields moved to a 'subfields' property.
+ *
+ * Used to remove repeater subfields from the main fields object. A repeater
+ * field is a parent field and its subfields are children.
+ *
+ * @param {Object} fields Fields with optional 'parent' properties.
+ */
+export function getRootFields(fields) {
+	if (typeof fields !== 'object') {
+		return {};
+	}
+
+	const createFieldTree = fields => {
+		const hashTable = Object.create(null);
+		fields.forEach(field => hashTable[field.id] = {...field, subfields: {}});
+		const result = {};
+		fields.forEach(field => {
+			if(field.parent) {
+				hashTable[field.parent].subfields[field.id] = hashTable[field.id]
+			} else {
+				result[field.id] = hashTable[field.id];
+			}
+		});
+		return result;
+	};
+
+	return createFieldTree(Object.values(fields));
+}
