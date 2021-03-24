@@ -19,6 +19,7 @@ function Field({
 	setInfoTag,
 	swapAction,
 	type = "text",
+	parent,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
 	const {dispatch} = useContext(ModelsContext);
@@ -78,7 +79,7 @@ function Field({
 				</li>
 				<li className="add-item">
 					<button
-						onClick={() => dispatch({type: 'addField', position: positionAfter, model: model.slug})}
+						onClick={() => dispatch({type: 'addField', position: positionAfter, parent, model: model.slug})}
 						aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
 						<Icon type="add" />
 					</button>
@@ -119,6 +120,7 @@ function Field({
 					editing={editing}
 					id={id}
 					position={position}
+					parent={parent}
 				/>
 			</div>
 		</li>

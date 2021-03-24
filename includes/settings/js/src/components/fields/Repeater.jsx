@@ -39,6 +39,7 @@ const Repeater = ({fields={}, model, parent}) => {
 									nextFieldId={getNextFieldId(id, fields)}
 									position={position}
 									positionAfter={getPositionAfter(id, fields)}
+									parent={parent}
 								/>
 							);
 						})}
