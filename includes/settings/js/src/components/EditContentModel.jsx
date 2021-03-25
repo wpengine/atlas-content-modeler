@@ -9,6 +9,7 @@ import {
 	getPositionAfter,
 	getNextFieldId,
 	getPreviousFieldId,
+	getRootFields,
 } from "../queries";
 
 const { apiFetch, a11y } = wp;
@@ -20,16 +21,15 @@ export default function EditContentModel() {
 	const query = useLocationSearch();
 	const id = query.get('id');
 	const model = models?.hasOwnProperty(id) ? models[id] : {};
-	const fields = model?.fields || {};
+	const fields = model?.fields ? getRootFields(model.fields) : {};
 	const positionUpdateTimer = useRef(0);
 	const positionUpdateDelay = 1000;
 
 	// Send updated field positions to the database when the user reorders them.
 	useEffect(() => {
 		if (!positionsChanged) return;
-		const fieldOrder = getFieldOrder(fields);
-		const idsAndNewPositions = fieldOrder?.reduce((result, fieldId) => {
-			result[fieldId] = { position: fields[fieldId].position };
+		const idsAndNewPositions = Object.values(model?.fields).reduce((result, field) => {
+			result[field.id] = { position: field.position };
 			return result;
 		}, {});
 
@@ -44,7 +44,7 @@ export default function EditContentModel() {
 
 		updatePositions().catch(err => console.error(err));
 		setPositionsChanged(false);
-	}, [positionsChanged, fields]);
+	}, [positionsChanged, model]);
 
 	/**
 	 * Swap field positions to reorder them in the list.

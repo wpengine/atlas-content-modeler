@@ -17,7 +17,7 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({id, position, type, editing, storedData}) {
+function Form({id, position, type, editing, storedData, parent}) {
 	const { register, handleSubmit, errors, setValue, clearErrors, setError } = useForm();
 	const [ nameCount, setNameCount ] = useState(storedData?.name?.length || 0);
 	const {dispatch} = useContext(ModelsContext);
@@ -55,6 +55,7 @@ function Form({id, position, type, editing, storedData}) {
 			<input id="id" name="id" type="hidden" ref={register} value={id} />
 			<input id="model" name="model" type="hidden" ref={register} value={model} />
 			<input id="position" name="position" type="hidden" ref={register} value={position} />
+			{ parent && <input id="parent" name="parent" type="hidden" ref={register} value={parent} /> }
 			<div className="columns">
 				<div className="left-column">
 					<div className="field">

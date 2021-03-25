@@ -2,6 +2,7 @@
 
 .field-list li {
 	display: flex;
+	flex-flow: wrap;
 	justify-content: space-between;
 	margin-bottom: 32px;
 }
@@ -81,18 +82,54 @@
 	border: none;
 	box-shadow: none;
 	justify-content: center;
-	margin-bottom: 30px;
-	margin-top: -60px;
+	margin-bottom: 32px;
+	margin-top: -62px;
 	max-height: 32px;
 	padding: 0;
 }
 
 .field-list .add-item button {
+	align-items: center;
 	background-color: transparent;
 	border: none;
+	display: flex;
+	justify-content: center;
 	height: 64px;
 	padding: 0;
 	width: 64px;
+}
+
+.subfield-list .closed,
+.subfield-list .open-field {
+	margin-top: 35px;
+}
+
+.subfield-list .closed:first-of-type,
+.subfield-list .open-field:first-of-type {
+	margin-top: 0;
+}
+
+.subfield-list .add-item {
+	margin-bottom: -20px;
+	margin-top: -47px;
+}
+
+.subfield-list .add-item button {
+	height: 32px;
+	margin-left: -4px;
+	width: 32px;
+}
+
+.subfield-list .subfield-list .add-item button {
+	margin-left: -8px;
+}
+
+.subfield-list .subfield-list .subfield-list .add-item button {
+	margin-left: -11px;
+}
+
+.subfield-list .subfield-list .subfield-list .add-item button {
+	margin-left: -14px;
 }
 
 .field-list .reorder button {
@@ -100,4 +137,18 @@
 	padding: 17px 18px 14px 18px;
 	border: none;
 	height: auto;
+}
+
+.field-list .break {
+	flex-basis: 100%;
+	height: 0;
+}
+
+.field-list .subfield-list {
+	margin: 32px 0 50px;
+}
+
+.field-list .repeater-fields {
+	width: 95%;
+	margin: 0 2.5%;
 }

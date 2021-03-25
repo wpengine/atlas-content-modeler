@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import Form from "./Form";
 import Icon from "../icons";
 import supportedFields from "./supportedFields";
+import Repeater from "./Repeater";
 import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
 import {ModelsContext} from "../../ModelsContext";
 
@@ -18,6 +19,7 @@ function Field({
 	setInfoTag,
 	swapAction,
 	type = "text",
+	parent,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
 	const {dispatch} = useContext(ModelsContext);
@@ -69,12 +71,22 @@ function Field({
 						<span className="widest"><strong>{data.name}</strong></span>
 					</button>
 					<FieldOptionsDropdown field={data} model={model} />
+					{
+						data.type === "repeater" && (
+							<Repeater
+								fields={data?.subfields}
+								model={model}parent={id}
+								swapAction={swapAction}
+								setInfoTag={setInfoTag}
+							/>
+						)
+					}
 				</li>
 				<li className="add-item">
 					<button
-						onClick={() => dispatch({type: 'addField', position: positionAfter, model: model.slug})}
+						onClick={() => dispatch({type: 'addField', position: positionAfter, parent, model: model.slug})}
 						aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
-						<Icon type="add" />
+						<Icon type="add" size={parent ? 'small' : 'large'} />
 					</button>
 				</li>
 			</>
@@ -113,6 +125,7 @@ function Field({
 					editing={editing}
 					id={id}
 					position={position}
+					parent={parent}
 				/>
 			</div>
 		</li>

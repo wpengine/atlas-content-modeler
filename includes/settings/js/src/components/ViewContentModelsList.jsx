@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "./icons";
+import { getRootFields } from "../queries";
 
 const { apiFetch } = wp;
 
@@ -74,7 +75,7 @@ function ContentModels({ models }) {
 					</span>
 					<span>
 						<p className="label">Fields</p>
-						<p className="value">{Object.keys(fields).length}</p>
+						<p className="value">{Object.keys(getRootFields(fields)).length}</p>
 					</span>
 					<span>
 						<p className="label">Created</p>
