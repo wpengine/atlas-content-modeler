@@ -81,7 +81,7 @@ function Field({
 					<button
 						onClick={() => dispatch({type: 'addField', position: positionAfter, parent, model: model.slug})}
 						aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
-						<Icon type="add" />
+						<Icon type="add" size={parent ? 'small' : 'large'} />
 					</button>
 				</li>
 			</>

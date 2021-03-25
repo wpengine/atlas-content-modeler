@@ -99,6 +99,16 @@
 	width: 64px;
 }
 
+.subfield-list .closed,
+.subfield-list .open-field {
+	margin-top: 35px;
+}
+
+.subfield-list .closed:first-of-type,
+.subfield-list .open-field:first-of-type {
+	margin-top: 0;
+}
+
 .subfield-list .add-item {
 	margin-bottom: -20px;
 	margin-top: -47px;
