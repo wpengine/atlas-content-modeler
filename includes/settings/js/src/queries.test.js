@@ -10,7 +10,8 @@ describe('getRootFields', () => {
 
 		const expected = {
 			123: {
-				id: 123, subfields: {
+				id: 123,
+				subfields: {
 					456: {id: 456, parent: 123, subfields: {}},
 					789: {id: 789, parent: 123, subfields: {}},
 				}
