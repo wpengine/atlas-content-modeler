@@ -17,6 +17,15 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 				'222' => [ 'position' => '1' ],
 			],
 		],
+		'parent' => [
+			'name' => 'Parent',
+			'fields' => [
+				'111' => [ 'id' => '111' ],
+				'222' => [ 'id' => '222', 'type' => 'repeater' ],
+				'333' => [ 'id' => '333', 'parent' => '222', 'type' => 'repeater' ],
+				'444' => [ 'id' => '444', 'parent' => '333' ],
+			],
+		],
 	];
 
 	public function setUp() {
@@ -232,7 +241,25 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 		self::assertEquals( 400, $response->get_status() );
 		self::assertSame( 'wpe_invalid_content_model', $response->get_data()['code'] );
+	}
 
+	public function test_deleting_repeater_field_also_deletes_descendent_fields(): void {
+		wp_set_current_user( 1 );
+		$model = 'parent';
+		$field_to_delete = '222';
+
+		$request = new WP_REST_Request( 'DELETE', "/{$this->namespace}/{$this->route}/{$field_to_delete}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( "{\"model\":\"{$model}\" }" );
+
+		$response       = $this->server->dispatch( $request );
+		$updated_models = get_option( 'wpe_content_model_post_types' );
+
+		self::assertEquals( 200, $response->get_status() );
+		self::assertArrayHasKey( '111', $updated_models[ $model ]['fields'] );
+		self::assertArrayNotHasKey( '222', $updated_models[ $model ]['fields'] );
+		self::assertArrayNotHasKey( '333', $updated_models[ $model ]['fields'] );
+		self::assertArrayNotHasKey( '444', $updated_models[ $model ]['fields'] );
 	}
 
 	public function tearDown() {

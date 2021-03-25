@@ -108,7 +108,7 @@ export function getPositionAfter(id, fields) {
 	}
 
 	// Otherwise add half the difference between my position and the next field's position.
-	const nextFieldId = fieldOrder[myOrder+1];
+	const nextFieldId = fieldOrder[myOrder + 1];
 	const nextFieldPosition = parseFloat(fields[nextFieldId]?.position);
 
 	if (nextFieldPosition) {
@@ -137,7 +137,7 @@ export function getRootFields(fields) {
 		fields.forEach(field => hashTable[field.id] = {...field, subfields: {}});
 		const result = {};
 		fields.forEach(field => {
-			if(field.parent) {
+			if (field.parent) {
 				hashTable[field.parent].subfields[field.id] = hashTable[field.id]
 			} else {
 				result[field.id] = hashTable[field.id];
@@ -147,4 +147,33 @@ export function getRootFields(fields) {
 	};
 
 	return createFieldTree(Object.values(fields));
+}
+
+/**
+ * Get field ids of all descendents of the field with the passed `id`.
+ *
+ * Used when removing descendents of a repeater field.
+ *
+ * @param {Number} id Id of the field to search for children.
+ * @param {Object} fields Fields with id and optional parent property.
+ * @return {[Number]} Ids of descendent fields (children, grandchildren, etc.).
+ */
+export function getChildrenOfField(id, fields = {}) {
+	if (typeof fields !== 'object') {
+		return [];
+	}
+
+	let children = [];
+
+	Object.values(fields).forEach((field) => {
+		if (
+			field.hasOwnProperty('parent')
+			&& field['parent'] === id
+		) {
+			children.push(field['id']);
+			children = children.concat(getChildrenOfField(field['id'], fields));
+		}
+	});
+
+	return children;
 }
