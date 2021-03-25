@@ -73,7 +73,12 @@ function Field({
 					<FieldOptionsDropdown field={data} model={model} />
 					{
 						data.type === "repeater" && (
-							<Repeater fields={data?.subfields} model={model} parent={id} />
+							<Repeater
+								fields={data?.subfields}
+								model={model}parent={id}
+								swapAction={swapAction}
+								setInfoTag={setInfoTag}
+							/>
 						)
 					}
 				</li>

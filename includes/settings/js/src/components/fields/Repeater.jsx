@@ -9,7 +9,7 @@ import {
 	getNextFieldId,
 } from "../../queries";
 
-const Repeater = ({fields={}, model, parent}) => {
+const Repeater = ({fields={}, model, parent, swapAction, setInfoTag}) => {
 	const {dispatch } = useContext(ModelsContext);
 	const hasFields = Object.keys(fields)?.length > 0;
 	const fieldOrder = getFieldOrder(fields);
@@ -32,9 +32,8 @@ const Repeater = ({fields={}, model, parent}) => {
 									open={open}
 									editing={editing}
 									data={fields[id]}
-									// TODO: handle swapAction and setInfoTag when fixing repeater field reordering.
-									// swapAction={swapFieldPositions}
-									// setInfoTag={setInfoTag}
+									swapAction={swapAction}
+									setInfoTag={setInfoTag}
 									previousFieldId={getPreviousFieldId(id, fields)}
 									nextFieldId={getNextFieldId(id, fields)}
 									position={position}
