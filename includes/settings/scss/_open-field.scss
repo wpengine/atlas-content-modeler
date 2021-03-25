@@ -41,6 +41,10 @@ li.open-field {
 	padding: 32px;
 }
 
+.field-form.editing {
+	box-shadow: none;
+}
+
 .field-form h3 {
 	margin: 0;
 	font-weight: 700;

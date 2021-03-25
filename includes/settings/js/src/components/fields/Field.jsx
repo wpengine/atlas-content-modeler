@@ -115,7 +115,7 @@ function Field({
 					})}
 				</div>
 			)}
-			<div className="field-form">
+			<div className={editing ? 'field-form editing' : 'field-form'}>
 				<h3>
 					{editing ? `Editing` : `New`} {formFieldTitle} Field
 				</h3>
