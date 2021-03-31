@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateSidebarMenuItem tests Renders a matching snapshot 1`] = `
+"<li class=\\"wp-has-submenu wp-not-current-submenu menu-top menu-icon-cows\\" id=\\"menu-posts-cows\\">
+				<a href=\\"edit.php?post_type=cows\\" class=\\"wp-has-submenu wp-not-current-submenu menu-top menu-icon-cows\\" aria-haspopup=\\"true\\">
+					<div class=\\"wp-menu-arrow\\">
+						<div></div>
+					</div>
+					<div class=\\"wp-menu-image dashicons-before dashicons-admin-post\\" aria-hidden=\\"true\\"><br/></div>
+					<div class=\\"wp-menu-name\\">Cows</div>
+				</a>
+				<ul class=\\"wp-submenu wp-submenu-wrap\\">
+					<li class=\\"wp-submenu-head\\" aria-hidden=\\"true\\">Cows</li>
+					<li class=\\"wp-first-item\\">
+						<a href=\\"edit.php?post_type=cows\\" class=\\"wp-first-item\\">All Cows</a>
+					</li>
+					<li>
+						<a href=\\"post-new.php?post_type=cows\\">Add New</a>
+					</li>
+				</ul>
+			</li>"
+`;

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import camelcase from "camelcase";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
+import { insertSidebarMenuItem } from "../utils";
 
 const { apiFetch } = wp;
 
@@ -24,6 +25,9 @@ export default function CreateContentModel() {
 			if ( res.success ) {
 				dispatch({type: 'addModel', data: res.model})
 				history.push( "/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" + data.postTypeSlug );
+
+				// Insert the sidebar menu item below the Comments item, to avoid doing a full page refresh.
+				insertSidebarMenuItem(res.model);
 			}
 
 			// @todo show errors
