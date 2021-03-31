@@ -16,9 +16,13 @@ export function useLocationSearch() {
  * @param {Object} model - The content model to be added to the sidebar.
  */
 export function insertSidebarMenuItem(model) {
-	const pagesMenuItem = document.getElementById("menu-comments");
+	const postMenuItems = document.querySelectorAll("[id^='menu-posts-']");
+	let menuItem =
+		postMenuItems.length > 0
+			? postMenuItems[postMenuItems.length - 1]
+			: document.getElementById("menu-comments");
 	const markup = generateSidebarMenuItem(model);
-	pagesMenuItem.insertAdjacentHTML('afterend', markup);
+	menuItem.insertAdjacentHTML("afterend", markup);
 }
 
 /**
