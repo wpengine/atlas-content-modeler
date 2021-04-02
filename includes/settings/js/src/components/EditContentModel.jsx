@@ -9,7 +9,6 @@ import {
 	useSensors,
 } from "@dnd-kit/core";
 import {
-	arrayMove,
 	SortableContext,
 	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
@@ -25,6 +24,7 @@ import {
 	getPreviousFieldId,
 	getRootFields,
 } from "../queries";
+import { handleDragEnd } from "./fields/eventHandlers";
 
 const { apiFetch, a11y } = wp;
 
@@ -97,37 +97,6 @@ export default function EditContentModel() {
 		positionUpdateTimer.current = setTimeout(() => setPositionsChanged(true), positionUpdateDelay);
 	}
 
-	function handleDragEnd(event) {
-		const {active, over} = event;
-		console.log('setting ordered fields');
-
-		if (active.id !== over.id) {
-			const oldIndex = orderedFields.indexOf(active.id);
-			const newIndex = orderedFields.indexOf(over.id);
-			const newOrder = arrayMove(orderedFields, oldIndex, newIndex);
-
-			let pos = 0;
-			const idsAndNewPositions = newOrder.reduce((result, id) => {
-				result[id] = {position: pos};
-				pos += 10000;
-				return result;
-			}, {});
-
-			dispatch({type: 'reorderFields', positions: idsAndNewPositions, model: id});
-
-			const updatePositions = async () => {
-				await apiFetch({
-					path: `/wpe/content-model-fields/${id}`,
-					method: "PATCH",
-					_wpnonce: wpApiSettings.nonce,
-					data: {fields: idsAndNewPositions},
-				});
-			};
-
-			updatePositions().catch(err => console.error(err));
-		}
-	}
-
 	const fieldCount = Object.keys(fields).length;
 	const orderedFields = getFieldOrder(fields);
 
@@ -153,7 +122,7 @@ export default function EditContentModel() {
 							<DndContext
 								sensors={sensors}
 								collisionDetection={closestCenter}
-								onDragEnd={handleDragEnd}
+								onDragEnd={(event) => {handleDragEnd(event, orderedFields, id, dispatch)}}
 							>
 								<SortableContext
 									items={orderedFields}
