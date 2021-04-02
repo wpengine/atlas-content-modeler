@@ -81,10 +81,10 @@
 		margin: 5px auto;
 
 		color: $color-primary;
+		text-decoration: none;
 	}
 	a.delete {
 		color: $color-warning;
-		text-decoration: none;
 	}
 }
 
@@ -101,5 +101,32 @@
 
 	.ReactModal__Content--after-open p:last-of-type {
 		margin-bottom: 40px;
+	}
+}
+
+.wpe-content-model-edit-model-modal-container {
+	.ReactModal__Overlay--after-open {
+		overflow: scroll;
+	}
+
+	.ReactModal__Content--after-open {
+		min-width: 420px;
+
+		input,
+		textarea,
+		.field-messages {
+			min-width: 420px;
+		}
+	}
+
+	form div.field {
+		margin-top: 0;
+	}
+	.help {
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	input {
+		margin: 0;
 	}
 }
