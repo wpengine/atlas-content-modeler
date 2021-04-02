@@ -36,7 +36,7 @@ export default function EditContentModel() {
 	const id = query.get('id');
 	const model = models?.hasOwnProperty(id) ? models[id] : {};
 	const fields = model?.fields ? getRootFields(model.fields) : {};
-	const [orderedFields, setOrderedFields] = useState(getFieldOrder(fields));
+	// const [orderedFields, setOrderedFields] = useState(getFieldOrder(fields));
 	const sensors = useSensors(
 		useSensor(PointerSensor),
 		useSensor(KeyboardSensor, {
@@ -45,34 +45,6 @@ export default function EditContentModel() {
 	);
 	const positionUpdateTimer = useRef(0);
 	const positionUpdateDelay = 1000;
-
-
-	// useEffect(() => {
-	// 	setOrderedFields(getFieldOrder(fields));
-	// }, [fields]);
-
-	useEffect(() => {
-		let pos = 0;
-
-		const idsAndNewPositions = orderedFields.reduce((result, id) => {
-			result[id] = { position: pos };
-			pos += 10000;
-			return result;
-		}, {});
-
-		const updatePositions = async () => {
-			await apiFetch({
-				path: `/wpe/content-model-fields/${id}`,
-				method: "PATCH",
-				_wpnonce: wpApiSettings.nonce,
-				data: { fields: idsAndNewPositions },
-			});
-		};
-
-		console.log('sending PATCH to update positions');
-
-		updatePositions().catch(err => console.error(err));
-	}, [orderedFields]);
 
 	// Send updated field positions to the database when the user reorders them.
 	useEffect(() => {
@@ -128,21 +100,37 @@ export default function EditContentModel() {
 
 	function handleDragEnd(event) {
 		const {active, over} = event;
-
 		console.log('setting ordered fields');
 
 		if (active.id !== over.id) {
-			setOrderedFields((items) => {
-				const oldIndex = items.indexOf(active.id);
-				const newIndex = items.indexOf(over.id);
+			const oldIndex = orderedFields.indexOf(active.id);
+			const newIndex = orderedFields.indexOf(over.id);
+			const newOrder = arrayMove(orderedFields, oldIndex, newIndex);
 
-				return arrayMove(items, oldIndex, newIndex);
-			});
+			let pos = 0;
+			const idsAndNewPositions = newOrder.reduce((result, id) => {
+				result[id] = {position: pos};
+				pos += 10000;
+				return result;
+			}, {});
 
+			dispatch({type: 'reorderFields', positions: idsAndNewPositions, model: id});
+
+			const updatePositions = async () => {
+				await apiFetch({
+					path: `/wpe/content-model-fields/${id}`,
+					method: "PATCH",
+					_wpnonce: wpApiSettings.nonce,
+					data: {fields: idsAndNewPositions},
+				});
+			};
+
+			updatePositions().catch(err => console.error(err));
 		}
 	}
 
 	const fieldCount = Object.keys(fields).length;
+	const orderedFields = getFieldOrder(fields);
 
 	return (
 		<div className="app-card">
