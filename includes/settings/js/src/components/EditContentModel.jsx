@@ -36,7 +36,6 @@ export default function EditContentModel() {
 	const id = query.get('id');
 	const model = models?.hasOwnProperty(id) ? models[id] : {};
 	const fields = model?.fields ? getRootFields(model.fields) : {};
-	// const [orderedFields, setOrderedFields] = useState(getFieldOrder(fields));
 	const sensors = useSensors(
 		useSensor(PointerSensor),
 		useSensor(KeyboardSensor, {

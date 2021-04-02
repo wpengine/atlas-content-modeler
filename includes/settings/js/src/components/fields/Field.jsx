@@ -60,20 +60,6 @@ function Field({
 						<button
 							{...attributes}
 							{...listeners}
-							// onKeyDown={(e) => {
-							// 	if (e.code === 'ArrowUp') {
-							// 		e.preventDefault();
-							// 		if ( previousFieldId !== -1 ) {
-							// 			swapAction(id, previousFieldId);
-							// 		}
-							// 	}
-							// 	if (e.code === 'ArrowDown') {
-							// 		e.preventDefault();
-							// 		if ( nextFieldId !== -1 ) {
-							// 			swapAction(id, nextFieldId);
-							// 		}
-							// 	}
-							// }}
 							onFocus={() => {
 								setInfoTag(reorderInfoTag);
 							}}
@@ -96,7 +82,8 @@ function Field({
 						data.type === "repeater" && (
 							<Repeater
 								fields={data?.subfields}
-								model={model}parent={id}
+								model={model}
+								parent={id}
 								swapAction={swapAction}
 								setInfoTag={setInfoTag}
 							/>
