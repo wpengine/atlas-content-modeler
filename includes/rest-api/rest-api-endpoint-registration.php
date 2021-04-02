@@ -48,6 +48,19 @@ function register_rest_routes(): void {
 		]
 	);
 
+	// Route for updating a single content type.
+	register_rest_route(
+		'wpe',
+		'/content-model/([A-Za-z0-9])\w+/',
+		[
+			'methods'             => 'PATCH',
+			'callback'            => __NAMESPACE__ . '\dispatch_update_content_model',
+			'permission_callback' => static function () {
+				return current_user_can( 'manage_options' );
+			},
+		]
+	);
+
 	// Route for creating a content model field (POST) or updating one (PUT).
 	register_rest_route(
 		'wpe',
@@ -334,6 +347,46 @@ function shape_field_args( array $args ): array {
 }
 
 /**
+ * Handles model PATCH requests from the REST API to update an existing model.
+ *
+ * @param WP_REST_Request $request The REST API request object.
+ *
+ * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
+ */
+function dispatch_update_content_model( WP_REST_Request $request ) {
+	$route         = $request->get_route();
+	$slug          = substr( strrchr( $route, '/' ), 1 );
+	$params        = $request->get_params();
+	$content_types = get_registered_content_types();
+
+	if ( empty( $content_types[ $slug ] ) ) {
+		return new WP_Error(
+			'wpe_invalid_content_model_id',
+			'Invalid content model ID.',
+			[ 'status' => 400 ]
+		);
+	}
+
+	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
+
+	$updated = update_model( $slug, $params );
+
+	if ( is_wp_error( $updated ) ) {
+		return new WP_Error(
+			$updated->get_error_code(),
+			$updated->get_error_message(),
+			[ 'status' => 400 ]
+		);
+	}
+
+	return rest_ensure_response(
+		[
+			'success' => $updated,
+		]
+	);
+}
+
+/**
  * Handles model DELETE requests from the REST API.
  *
  * @param WP_REST_Request $request The REST API request object.
@@ -418,6 +471,56 @@ function create_model( string $post_type_slug, array $args ) {
 
 	if ( ! $created ) {
 		return new WP_Error( 'model-not-created', esc_html__( 'Model not created. Reason unknown.', 'wpe-content-model' ) );
+	}
+
+	return true;
+}
+
+/**
+ * Updates the specified content model.
+ *
+ * @param string $post_type_slug The post type slug.
+ * @param array  $args Model arguments.
+ *
+ * @return bool|WP_Error
+ */
+function update_model( string $post_type_slug, array $args ) {
+	if ( empty( $post_type_slug ) ) {
+		return new WP_Error(
+			'wpe_invalid_content_model_id',
+			'Invalid content model ID.'
+		);
+	}
+
+	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
+		return new WP_Error(
+			'wpe_invalid_content_model_arguments',
+			'Please provide singular and plural labels when creating a content model.'
+		);
+	}
+
+	$content_types = get_registered_content_types();
+	if ( empty( $content_types[ $post_type_slug ] ) ) {
+		return new WP_Error(
+			'wpe_invalid_content_model_id',
+			'Invalid content model ID.'
+		);
+	}
+
+	$args['name']          = $args['plural'];
+	$args['singular_name'] = $args['singular'];
+
+	$new_args = wp_parse_args( $args, $content_types[ $post_type_slug ] );
+
+	$content_types[ $post_type_slug ] = $new_args;
+
+	$updated = update_registered_content_types( $content_types );
+
+	if ( ! $updated ) {
+		return new WP_Error(
+			'model-not-updated',
+			'Model not updated. Reason unknown.'
+		);
 	}
 
 	return true;
