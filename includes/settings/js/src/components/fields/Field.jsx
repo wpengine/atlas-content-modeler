@@ -1,4 +1,6 @@
 import React, {useState, useContext} from 'react';
+import {useSortable} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
 import Form from "./Form";
 import Icon from "../icons";
 import supportedFields from "./supportedFields";
@@ -23,6 +25,18 @@ function Field({
 }) {
 	const [activeForm, setActiveForm] = useState(type);
 	const {dispatch} = useContext(ModelsContext);
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition,
+	} = useSortable({id});
+
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+	};
 
 	// Closed fields appear as a row with a summary of info.
 	if (!open) {
@@ -35,24 +49,26 @@ function Field({
 			</>
 		);
 		return (
-			<>
+			<div ref={setNodeRef} style={style}>
 				<li className="closed" key={id}>
 					<span className="reorder">
 						<button
-							onKeyDown={(e) => {
-								if (e.code === 'ArrowUp') {
-									e.preventDefault();
-									if ( previousFieldId !== -1 ) {
-										swapAction(id, previousFieldId);
-									}
-								}
-								if (e.code === 'ArrowDown') {
-									e.preventDefault();
-									if ( nextFieldId !== -1 ) {
-										swapAction(id, nextFieldId);
-									}
-								}
-							}}
+							{...attributes}
+							{...listeners}
+							// onKeyDown={(e) => {
+							// 	if (e.code === 'ArrowUp') {
+							// 		e.preventDefault();
+							// 		if ( previousFieldId !== -1 ) {
+							// 			swapAction(id, previousFieldId);
+							// 		}
+							// 	}
+							// 	if (e.code === 'ArrowDown') {
+							// 		e.preventDefault();
+							// 		if ( nextFieldId !== -1 ) {
+							// 			swapAction(id, nextFieldId);
+							// 		}
+							// 	}
+							// }}
 							onFocus={() => {
 								setInfoTag(reorderInfoTag);
 							}}
@@ -89,7 +105,7 @@ function Field({
 						<Icon type="add" size={parent ? 'small' : 'large'} />
 					</button>
 				</li>
-			</>
+			</div>
 		);
 	}
 

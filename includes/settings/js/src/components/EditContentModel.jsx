@@ -1,5 +1,19 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import {
+	DndContext,
+	closestCenter,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from "@dnd-kit/core";
+import {
+	arrayMove,
+	SortableContext,
+	sortableKeyboardCoordinates,
+	verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { useLocationSearch } from "../utils";
 import Icon from "./icons"
 import Field from "./fields/Field"
@@ -17,13 +31,48 @@ const { apiFetch, a11y } = wp;
 export default function EditContentModel() {
 	const [infoTag, setInfoTag] = useState(null);
 	const [positionsChanged, setPositionsChanged] = useState(false);
-	const { models, dispatch } = useContext(ModelsContext);
+	const {models, dispatch} = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const id = query.get('id');
 	const model = models?.hasOwnProperty(id) ? models[id] : {};
 	const fields = model?.fields ? getRootFields(model.fields) : {};
+	const [orderedFields, setOrderedFields] = useState(getFieldOrder(fields));
+	const sensors = useSensors(
+		useSensor(PointerSensor),
+		useSensor(KeyboardSensor, {
+			coordinateGetter: sortableKeyboardCoordinates,
+		})
+	);
 	const positionUpdateTimer = useRef(0);
 	const positionUpdateDelay = 1000;
+
+
+	// useEffect(() => {
+	// 	setOrderedFields(getFieldOrder(fields));
+	// }, [fields]);
+
+	useEffect(() => {
+		let pos = 0;
+
+		const idsAndNewPositions = orderedFields.reduce((result, id) => {
+			result[id] = { position: pos };
+			pos += 10000;
+			return result;
+		}, {});
+
+		const updatePositions = async () => {
+			await apiFetch({
+				path: `/wpe/content-model-fields/${id}`,
+				method: "PATCH",
+				_wpnonce: wpApiSettings.nonce,
+				data: { fields: idsAndNewPositions },
+			});
+		};
+
+		console.log('sending PATCH to update positions');
+
+		updatePositions().catch(err => console.error(err));
+	}, [orderedFields]);
 
 	// Send updated field positions to the database when the user reorders them.
 	useEffect(() => {
@@ -77,8 +126,23 @@ export default function EditContentModel() {
 		positionUpdateTimer.current = setTimeout(() => setPositionsChanged(true), positionUpdateDelay);
 	}
 
+	function handleDragEnd(event) {
+		const {active, over} = event;
+
+		console.log('setting ordered fields');
+
+		if (active.id !== over.id) {
+			setOrderedFields((items) => {
+				const oldIndex = items.indexOf(active.id);
+				const newIndex = items.indexOf(over.id);
+
+				return arrayMove(items, oldIndex, newIndex);
+			});
+
+		}
+	}
+
 	const fieldCount = Object.keys(fields).length;
-	const fieldOrder = getFieldOrder(fields);
 
 	return (
 		<div className="app-card">
@@ -97,9 +161,19 @@ export default function EditContentModel() {
 							&nbsp;
 							<span className="info-text">{infoTag}</span>
 						</p>
+
 						<ul className="field-list">
+							<DndContext
+								sensors={sensors}
+								collisionDetection={closestCenter}
+								onDragEnd={handleDragEnd}
+							>
+								<SortableContext
+									items={orderedFields}
+									strategy={verticalListSortingStrategy}
+								>
 							{
-								fieldOrder.map( (id) => {
+								orderedFields.map( (id) => {
 									const {type, position, open=false, editing=false} = fields[id];
 									const positionAfter = getPositionAfter(id, fields);
 
@@ -120,6 +194,8 @@ export default function EditContentModel() {
 									/>
 								} )
 							}
+								</SortableContext>
+							</DndContext>
 						</ul>
 					</>
 				)
