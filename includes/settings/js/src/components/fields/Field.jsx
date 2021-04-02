@@ -33,6 +33,11 @@ function Field({
 		transition,
 	} = useSortable({id});
 
+	// Prevents y-axis distortion when dragging a small field over a larger one.
+	if (transform?.scaleY) {
+		transform.scaleY = 1;
+	}
+
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
