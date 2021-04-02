@@ -7,6 +7,14 @@ export function reducer(state, action) {
 	switch (action.type) {
 		case "updateModels":
 			return action.data;
+		case "updateModel":
+			state[action.data.postTypeSlug] = {
+				...state[action.data.postTypeSlug],
+				...action.data,
+			};
+			state[action.data.postTypeSlug].name = action.data.plural;
+			state[action.data.postTypeSlug].singular_name = action.data.singular;
+			return { ...state };
 		case "addModel":
 			return {
 				...state,

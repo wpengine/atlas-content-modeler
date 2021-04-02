@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "./icons";
 import { getRootFields } from "../queries";
+import { EditModelModal } from "./EditModelModal";
 
 const { apiFetch } = wp;
 
@@ -93,6 +94,8 @@ const ContentModelDropdown = ({model}) => {
 	const { dispatch } = useContext(ModelsContext);
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const [ modalIsOpen, setModalIsOpen ] = useState(false);
+	const [ editModelModalIsOpen, setEditModelModalIsOpen ] = useState(false);
+
 	const customStyles = {
 		overlay: {
 			backgroundColor: 'rgba(0, 40, 56, 0.7)'
@@ -121,7 +124,17 @@ const ContentModelDropdown = ({model}) => {
 				<Icon type="options" />
 			</button>
 			<div className={`dropdown-content ${dropdownOpen ? '' : 'hidden' }`}>
-				<a>Edit</a>
+				<a
+					className="edit"
+					href="#"
+					onClick={ (event) => {
+						event.preventDefault();
+						setDropdownOpen(false);
+						setEditModelModalIsOpen(true);
+					} }
+				>
+					Edit
+				</a>
 				<a
 					className="delete"
 					href="#"
@@ -166,6 +179,7 @@ const ContentModelDropdown = ({model}) => {
 					Cancel
 				</button>
 			</Modal>
+			<EditModelModal model={model} isOpen={editModelModalIsOpen} setIsOpen={setEditModelModalIsOpen} />
 		</span>
 	);
 }
