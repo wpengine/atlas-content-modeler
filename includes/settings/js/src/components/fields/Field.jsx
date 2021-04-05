@@ -1,4 +1,5 @@
 import React, {useState, useContext} from 'react';
+import {Draggable} from "react-beautiful-dnd";
 import Form from "./Form";
 import Icon from "../icons";
 import supportedFields from "./supportedFields";
@@ -6,18 +7,22 @@ import Repeater from "./Repeater";
 import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
 import {ModelsContext} from "../../ModelsContext";
 
+const getItemStyle = (isDragging, draggableStyle) => {
+	return {
+		...draggableStyle
+	}
+};
+
 function Field({
 	data = {},
 	editing,
 	id,
+	index,
 	model,
-	nextFieldId,
 	open = false,
 	position,
 	positionAfter,
-	previousFieldId,
 	setInfoTag,
-	swapAction,
 	type = "text",
 	parent,
 }) {
@@ -27,69 +32,69 @@ function Field({
 	// Closed fields appear as a row with a summary of info.
 	if (!open) {
 		const typeLabel = supportedFields[data.type];
-		const reorderInfoText = `Reorder the “${data.name}“ field with the up and down keys. Changes save automatically.`;
 		const reorderInfoTag = (
 			<>
-				Reorder the “{data.name}” field with the <Icon type="downarrow" /> and{" "}
-				<Icon type="uparrow" /> keys. Changes save automatically.
+				Press space or enter to begin reordering the “{data.name}” field. Use <Icon type="downarrow" /> and{" "}
+				<Icon type="uparrow" /> keys to reorder, then space or enter to finish and save.
 			</>
 		);
 		return (
-			<>
-				<li className="closed" key={id}>
+			<Draggable key={id} draggableId={id} index={index} disableInteractiveElementBlocking={true}>
+				{(provided, snapshot) => (
+					<div
+						className="draggable"
+						ref={provided.innerRef}
+						{...provided.draggableProps}
+						style={getItemStyle(
+							snapshot.isDragging,
+							provided.draggableProps.style
+						)}
+					>
+						<li className="closed" key={id}>
 					<span className="reorder">
 						<button
-							onKeyDown={(e) => {
-								if (e.code === 'ArrowUp') {
-									e.preventDefault();
-									if ( previousFieldId !== -1 ) {
-										swapAction(id, previousFieldId);
-									}
-								}
-								if (e.code === 'ArrowDown') {
-									e.preventDefault();
-									if ( nextFieldId !== -1 ) {
-										swapAction(id, nextFieldId);
-									}
-								}
-							}}
+							{...provided.dragHandleProps}
 							onFocus={() => {
 								setInfoTag(reorderInfoTag);
 							}}
 							onBlur={() => setInfoTag(null)}
-							aria-label={reorderInfoText}
 						>
-							<Icon type="reorder" />
+							<Icon type="reorder"/>
 						</button>
 					</span>
-					<button
-						className="edit"
-						onClick={() => dispatch({type: 'openField', id: data.id, model: model.slug})}
-						aria-label={`Edit the ${data.name} field`}
-					>
-						<span className="type"><Icon type={data.type}/>{typeLabel}</span>
-						<span className="widest"><strong>{data.name}</strong></span>
-					</button>
-					<FieldOptionsDropdown field={data} model={model} />
-					{
-						data.type === "repeater" && (
-							<Repeater
-								fields={data?.subfields}
-								model={model}parent={id}
-								swapAction={swapAction}
-								setInfoTag={setInfoTag}
-							/>
-						)
-					}
-				</li>
-				<li className="add-item">
-					<button
-						onClick={() => dispatch({type: 'addField', position: positionAfter, parent, model: model.slug})}
-						aria-label={`Add a new field below the ${data.name} ${data.type} field`} >
-						<Icon type="add" size={parent ? 'small' : 'large'} />
-					</button>
-				</li>
-			</>
+							<button
+								className="edit"
+								onClick={() => dispatch({type: 'openField', id: data.id, model: model.slug})}
+								aria-label={`Edit the ${data.name} field`}
+							>
+								<span className="type"><Icon type={data.type}/>{typeLabel}</span>
+								<span className="widest"><strong>{data.name}</strong></span>
+							</button>
+							<FieldOptionsDropdown field={data} model={model}/>
+							{
+								data.type === "repeater" && (
+									<Repeater
+										fields={data?.subfields}
+										model={model} parent={id}
+										setInfoTag={setInfoTag}
+									/>
+								)
+							}
+						</li>
+						<li className="add-item">
+							<button
+								onClick={() => dispatch({
+									type: 'addField',
+									position: positionAfter,
+									parent,
+									model: model.slug
+								})}
+								aria-label={`Add a new field below the ${data.name} ${data.type} field`}>
+								<Icon type="add" size={parent ? 'small' : 'large'}/>
+							</button>
+						</li>
+					</div>)}
+			</Draggable>
 		);
 	}
 
