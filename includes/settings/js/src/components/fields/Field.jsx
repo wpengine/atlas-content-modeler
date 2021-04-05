@@ -34,8 +34,8 @@ function Field({
 		const typeLabel = supportedFields[data.type];
 		const reorderInfoTag = (
 			<>
-				Press space or enter to begin reordering the “{data.name}” field. Use <Icon type="downarrow" /> and{" "}
-				<Icon type="uparrow" /> keys to reorder, then space or enter to finish and save.
+				Press space to begin reordering the “{data.name}” field. Use <Icon type="downarrow" /> and{" "}
+				<Icon type="uparrow" /> keys to reorder, then space to finish and save.
 			</>
 		);
 		return (
