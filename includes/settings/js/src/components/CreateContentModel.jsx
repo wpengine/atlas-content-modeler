@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import camelcase from "camelcase";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
+import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 
 const { apiFetch } = wp;
 
@@ -14,6 +14,10 @@ export default function CreateContentModel() {
 	const [ pluralCount, setPluralCount ] = useState(0);
 	const [ descriptionCount, setDescriptionCount ] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
+	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
+		apiFieldId: "postTypeSlug",
+		setValue
+	});
 
 	function apiCreateModel( data ) {
 		apiFetch( {
@@ -72,16 +76,21 @@ export default function CreateContentModel() {
 							ref={register({ required: true, maxLength: 50})}
 							onChange={
 								event => {
-									setValue( 'postTypeSlug', camelcase( event.target.value ) );
-									setPluralCount(event.target.value.length)
+									setApiIdGeneratorInput(event.target.value);
+									setPluralCount(event.target.value.length);
 								} }/>
 						<p className="field-messages"><span>&nbsp;</span><span className="count">{pluralCount}/50</span></p>
 					</div>
 
 					<div className="field">
 						<label htmlFor="postTypeSlug">API Identifier</label><br/>
-						<p className="help">Auto-generated and used for API requests.</p>
-						<input id="postTypeSlug" name="postTypeSlug" ref={register({ required: true, maxLength: 20 })} readOnly="readOnly" />
+						<p className="help">Auto-generated from the plural name and used for API requests.</p>
+						<input
+							id="postTypeSlug"
+							name="postTypeSlug"
+							ref={register({ required: true, maxLength: 20 })}
+							{...apiIdFieldAttributes}
+						/>
 					</div>
 
 					<div className="field">
