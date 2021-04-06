@@ -32,7 +32,8 @@ export function insertSidebarMenuItem(model) {
  * @returns {string} - HTML list item markup for the specified content model.
  */
 export function generateSidebarMenuItem(model) {
-	const {slug, labels: {name}} = model;
+	let {slug, labels: {name}} = model;
+	slug = slug.toLowerCase();
 	return (
 		`<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" id="menu-posts-${slug}">
 				<a href="edit.php?post_type=${slug}" class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" aria-haspopup="true">
