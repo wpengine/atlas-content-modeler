@@ -14,10 +14,6 @@ export function toValidApiId(value) {
 	// Strip leading numbers.
 	value = value.replace(/^[0-9]+/, "");
 
-	// Strip leading white spaces.
-	// So that `toValidApiId(' name')` gives `name` and not `Name`.
-	value = value.trimStart();
-
 	// Turn [space character] into the uppercase character.
 	value = value.replace(/ ([a-z])/g, (match) => match.trim().toUpperCase());
 
