@@ -4,6 +4,7 @@ describe("toValidApiId", () => {
 	const cases = [
 		[",,,#!!!strip_punctuation???$...", "strip_punctuation"],
 		["⚠️⚠️⚠️strip_emoji🐇🐇🐇", "strip_emoji"],
+		["strip accented éîøü", "stripAccented"],
 		["1strip_leading_number", "strip_leading_number"],
 		["123strip_leading_numbers", "strip_leading_numbers"],
 		["     trim_white_space     ", "trim_white_space"],
