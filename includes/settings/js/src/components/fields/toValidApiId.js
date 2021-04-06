@@ -23,6 +23,5 @@ export function toValidApiId(value) {
 	// Lowercase the first letter. Not required by the GraphQL spec, but consistent with common usage.
 	value = value.replace(/^[A-Z]/g, (match) => match.toLowerCase());
 
-	// Return with final stray spaces removed.
-	return value
+	return value;
 }
