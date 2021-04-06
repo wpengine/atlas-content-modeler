@@ -61,7 +61,7 @@ const Repeater = ({fields={}, model, parent, setInfoTag}) => {
 					</ul>
 				) : (
 					<>
-						<ul className="subfield-list">
+						<ul className="subfield-list empty">
 							<li className="empty">
 								<span>&nbsp;</span>
 								<span>&nbsp;</span>
