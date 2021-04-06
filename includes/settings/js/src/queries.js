@@ -4,6 +4,13 @@
  */
 
 /**
+ * Gap between field positions. Instead of incrementing field positions by 1,
+ * increment with a gap. This allows new fields to be inserted between others
+ * without affecting the position values of surrounding fields.
+ */
+export const POSITION_GAP = 10000;
+
+/**
  * Gives an array of field IDs in the order they should appear based on
  * their position property.
  *
@@ -33,56 +40,8 @@ export function getFieldOrder(fields) {
 }
 
 /**
- * Gets the field after `id` without wrapping from last to first.
- *
- * @param {Number} id Id of current field
- * @param {Object} fields Fields with id, position (and other) properties.
- * @return {Number} Id of next field. -1 means no next item.
- * @example
- * ```js
- * let next = getNextFieldId(456, {123: {id: 123, position: 10000}, 456: {id: 456, position: 0}});
- * next === 123;
- * let next2 = getNextFieldId(123, {123: {id: 123, position: 10000}, 456: {id: 456, position: 0}});
- * next2 === -1; // 123 is the last field and has no next field.
- * ```
- */
-export function getNextFieldId(id, fields) {
-	const fieldOrder = getFieldOrder(fields);
-	const myIndex = fieldOrder?.indexOf(id);
-	if (myIndex < 0) return -1; // No such id found.
-	if (myIndex === fieldOrder.length - 1) return -1; // No item after last.
-	return fieldOrder[myIndex + 1];
-}
-
-/**
- * Gets the field before `id` without wrapping from first to last.
- *
- * @param {Number} id Id of current field
- * @param {Object} fields Fields with id, position (and other) properties.
- * @return {Number} Id of next field. -1 means no previous item.
- * @example
- * ```js
- * let previous = getPreviousFieldId(123, {123: {id: 123, position: 10000}, 456: {id: 456, position: 0}});
- * previous === 456;
- * let previous2 = getPreviousFieldId(456, {123: {id: 123, position: 10000}, 456: {id: 456, position: 0}});
- * previous2 === -1; //456 is the first field and has no previous field.
- * ```
- */
-export function getPreviousFieldId(id, fields) {
-	const fieldOrder = getFieldOrder(fields);
-	const myIndex = fieldOrder?.indexOf(id);
-	if (myIndex < 0) return -1; // No such id found.
-	if (myIndex === 0) return -1; // No item before first.
-	return fieldOrder[myIndex - 1];
-}
-
-/**
  * Gets the position a new field would need to have to be placed after the
  * field with `id`. So that new fields can be added between two fields.
- *
- * Instead of incrementing field positions by 1, increment with a gap.
- * This allows new fields to be inserted between others without
- * affecting the position values of surrounding fields.
  *
  * @param {Number} id Id of current field
  * @param {Object} fields Fields with id, position (and other) properties.
@@ -96,7 +55,6 @@ export function getPreviousFieldId(id, fields) {
  * ```
  */
 export function getPositionAfter(id, fields) {
-	const POSITION_GAP = 10000;
 	const fieldOrder = getFieldOrder(fields);
 
 	const myOrder = fieldOrder.indexOf(id);
