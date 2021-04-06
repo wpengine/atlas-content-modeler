@@ -1,5 +1,4 @@
 import React, {useState, useContext} from 'react';
-import camelcase from "camelcase";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
 import Icon from "../icons";
@@ -8,6 +7,7 @@ import NumberFields from "./NumberFields";
 import MediaFields from "./MediaFields";
 import supportedFields from "./supportedFields";
 import {ModelsContext} from "../../ModelsContext";
+import {useApiIdGenerator} from "./useApiIdGenerator";
 
 const { apiFetch } = wp;
 
@@ -24,6 +24,11 @@ function Form({id, position, type, editing, storedData, parent}) {
 	const query = useLocationSearch();
 	const model = query.get('id');
 	const ExtraFields = extraFields[type] ?? null;
+	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
+		setValue,
+		editing,
+		storedData,
+	});
 
 	function apiAddField(data) {
 		apiFetch( {
@@ -74,7 +79,7 @@ function Form({id, position, type, editing, storedData, parent}) {
 							placeholder="Name"
 							ref={register({ required: true, maxLength: 50})}
 							onChange={ e => {
-								setValue( 'slug', camelcase( e.target.value ) );
+								setApiIdGeneratorInput(e.target.value);
 								setNameCount(e.target.value.length);
 								clearErrors('slug');
 							} } />
@@ -106,14 +111,14 @@ function Form({id, position, type, editing, storedData, parent}) {
 							name="slug"
 							defaultValue={storedData?.slug}
 							className={errors.slug && 'alert'}
-							ref={register({ required: true, maxLength: 20 })}
-							readOnly="readOnly" />
+							ref={register({ required: true, maxLength: 50 })}
+							{...apiIdFieldAttributes}/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
 								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
 							)}
 							{errors.slug && errors.slug.type === "maxLength" && (
-								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length of 20.</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length of 50.</span></span>
 							)}
 							{errors.slug && errors.slug.type === "idExists" && (
 								<span className="error"><Icon type="error" /><span role="alert">Another field in this model has the same API identifier.</span></span>
