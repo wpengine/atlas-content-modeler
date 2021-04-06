@@ -88,7 +88,7 @@ export default function CreateContentModel() {
 						<input
 							id="postTypeSlug"
 							name="postTypeSlug"
-							ref={register({ required: true, maxLength: 20 })}
+							ref={register({ required: true, maxLength: 50 })}
 							{...apiIdFieldAttributes}
 						/>
 					</div>

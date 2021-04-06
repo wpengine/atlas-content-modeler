@@ -111,14 +111,14 @@ function Form({id, position, type, editing, storedData, parent}) {
 							name="slug"
 							defaultValue={storedData?.slug}
 							className={errors.slug && 'alert'}
-							ref={register({ required: true, maxLength: 20 })}
+							ref={register({ required: true, maxLength: 50 })}
 							{...apiIdFieldAttributes}/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
 								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
 							)}
 							{errors.slug && errors.slug.type === "maxLength" && (
-								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length of 20.</span></span>
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length of 50.</span></span>
 							)}
 							{errors.slug && errors.slug.type === "idExists" && (
 								<span className="error"><Icon type="error" /><span role="alert">Another field in this model has the same API identifier.</span></span>
