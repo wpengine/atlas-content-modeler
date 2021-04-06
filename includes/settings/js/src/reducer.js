@@ -64,19 +64,10 @@ export function reducer(state, action) {
 			delete state[action.model]["fields"][action.id];
 
 			return { ...state };
-		case "swapFieldPositions":
-			const fields = state[action.model]["fields"];
-			state[action.model]["fields"] = {
-				...fields,
-				[action.id1]: {
-					...fields[action.id1],
-					position: fields[action.id2].position,
-				},
-				[action.id2]: {
-					...fields[action.id2],
-					position: fields[action.id1].position,
-				},
-			};
+		case "reorderFields":
+			Object.keys(action.positions).forEach((fieldId) => {
+				state[action.model]["fields"][fieldId].position = action.positions[fieldId].position;
+			});
 			return { ...state };
 		default:
 			throw new Error(`${action.type} not found`);

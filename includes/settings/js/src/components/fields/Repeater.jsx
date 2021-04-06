@@ -1,15 +1,15 @@
 import React, {useContext} from 'react';
 import Icon from "../icons"
 import Field from "./Field";
+import { onDragEnd } from "./eventHandlers";
 import { ModelsContext } from "../../ModelsContext";
 import {
 	getFieldOrder,
 	getPositionAfter,
-	getPreviousFieldId,
-	getNextFieldId,
 } from "../../queries";
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
 
-const Repeater = ({fields={}, model, parent, swapAction, setInfoTag}) => {
+const Repeater = ({fields={}, model, parent, setInfoTag}) => {
 	const {dispatch } = useContext(ModelsContext);
 	const hasFields = Object.keys(fields)?.length > 0;
 	const fieldOrder = getFieldOrder(fields);
@@ -20,28 +20,44 @@ const Repeater = ({fields={}, model, parent, swapAction, setInfoTag}) => {
 			<div className="repeater-fields">
 				{hasFields ? (
 					<ul className="subfield-list">
-						{fieldOrder.map((id) => {
-							const { type, position, open = false, editing = false } = fields[id];
+						<DragDropContext
+							onDragEnd={(result) =>
+								onDragEnd(result, fieldOrder, model?.slug, dispatch)
+							}
+						>
+							<Droppable droppableId="droppable">
+								{(provided, snapshot) => (
+									<div {...provided.droppableProps} ref={provided.innerRef}>
+										{fieldOrder.map((id, index) => {
+											const {
+												type,
+												position,
+												open = false,
+												editing = false,
+											} = fields[id];
 
-							return (
-								<Field
-									key={id}
-									id={id}
-									model={model}
-									type={type}
-									open={open}
-									editing={editing}
-									data={fields[id]}
-									swapAction={swapAction}
-									setInfoTag={setInfoTag}
-									previousFieldId={getPreviousFieldId(id, fields)}
-									nextFieldId={getNextFieldId(id, fields)}
-									position={position}
-									positionAfter={getPositionAfter(id, fields)}
-									parent={parent}
-								/>
-							);
-						})}
+											return (
+												<Field
+													key={id}
+													id={id}
+													index={index}
+													model={model}
+													type={type}
+													open={open}
+													editing={editing}
+													data={fields[id]}
+													setInfoTag={setInfoTag}
+													position={position}
+													positionAfter={getPositionAfter(id, fields)}
+													parent={parent}
+												/>
+											);
+										})}
+										{provided.placeholder}
+									</div>
+								)}
+							</Droppable>
+						</DragDropContext>
 					</ul>
 				) : (
 					<>
@@ -55,7 +71,12 @@ const Repeater = ({fields={}, model, parent, swapAction, setInfoTag}) => {
 							<li className="add-item">
 								<button
 									onClick={() =>
-										dispatch({ type: "addField", position: 0, model: model.slug, parent })
+										dispatch({
+											type: "addField",
+											position: 0,
+											model: model.slug,
+											parent,
+										})
 									}
 								>
 									<Icon type="add" size="small" />

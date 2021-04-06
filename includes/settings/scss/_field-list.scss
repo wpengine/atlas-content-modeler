@@ -110,8 +110,8 @@
 }
 
 .subfield-list .add-item {
-	margin-bottom: -20px;
-	margin-top: -47px;
+	margin-bottom: 16px;
+	margin-top: -16px;
 }
 
 .subfield-list .add-item button {
@@ -151,4 +151,17 @@
 .field-list .repeater-fields {
 	width: 95%;
 	margin: 0 2.5%;
+}
+
+.draggable {
+	margin-bottom: 32px;
+	user-select: none;
+}
+
+.subfield-list .draggable {
+	margin-bottom: 16px;
+}
+
+.subfield-list .draggable .closed {
+	margin-bottom: 0;
 }
