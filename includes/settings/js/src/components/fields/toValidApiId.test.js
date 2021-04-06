@@ -7,6 +7,7 @@ describe("toValidApiId", () => {
 		["1strip_leading_number", "strip_leading_number"],
 		["123strip_leading_numbers", "strip_leading_numbers"],
 		["     trim_white_space     ", "trim_white_space"],
+		["Lower_case_initial_capitals", "lower_case_initial_capitals"],
 		["camel case    white    spaces", "camelCaseWhiteSpaces"],
 		[
 			"allow numbers after 1st character123",
