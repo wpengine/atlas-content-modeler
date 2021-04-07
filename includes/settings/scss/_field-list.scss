@@ -1,10 +1,19 @@
 @import 'variables';
 
 .field-list li {
+	background: $color-white;
 	display: flex;
 	flex-flow: wrap;
 	justify-content: space-between;
 	margin-bottom: 32px;
+}
+
+.field-list li.dragging {
+	opacity: 0.8;
+}
+
+.field-list li.add-item {
+	background: transparent;
 }
 
 .field-list li.closed:hover {
