@@ -50,18 +50,18 @@ function Field({
 							provided.draggableProps.style
 						)}
 					>
-						<li className="closed" key={id}>
-					<span className="reorder">
-						<button
-							{...provided.dragHandleProps}
-							onFocus={() => {
-								setInfoTag(reorderInfoTag);
-							}}
-							onBlur={() => setInfoTag(null)}
-						>
-							<Icon type="reorder"/>
-						</button>
-					</span>
+						<li key={id} className={snapshot.isDragging ? "closed dragging" : "closed"}>
+							<span className="reorder">
+								<button
+									{...provided.dragHandleProps}
+									onFocus={() => {
+										setInfoTag(reorderInfoTag);
+									}}
+									onBlur={() => setInfoTag(null)}
+								>
+									<Icon type="reorder"/>
+								</button>
+							</span>
 							<button
 								className="edit"
 								onClick={() => dispatch({type: 'openField', id: data.id, model: model.slug})}
@@ -81,7 +81,7 @@ function Field({
 								)
 							}
 						</li>
-						<li className="add-item">
+						<li className={snapshot.isDragging ? "add-item dragging" : "add-item"}>
 							<button
 								onClick={() => dispatch({
 									type: 'addField',
