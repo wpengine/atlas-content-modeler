@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { ToastContainer, Flip } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import CreateContentModel from './components/CreateContentModel.jsx';
 import ViewContentModelsList from "./components/ViewContentModelsList";
@@ -12,6 +14,11 @@ export default function App() {
 		<div className="app">
 			<ModelsContextProvider>
 				<Router>
+					<ToastContainer
+						autoClose={2000}
+						draggable={false}
+						position="top-center"
+						transition={Flip}/>
 					<ViewTemplate/>
 				</Router>
 			</ModelsContextProvider>

@@ -1,5 +1,6 @@
 import AddIcon from './AddIcon';
 import BooleanIcon from './BooleanIcon';
+import CloseIcon from './CloseIcon';
 import DateIcon from './DateIcon';
 import DownArrow from './DownArrow';
 import ErrorIcon from './ErrorIcon';
@@ -10,6 +11,7 @@ import RepeaterIcon from './RepeaterIcon';
 import ReorderIcon from './ReorderIcon';
 import RichTextIcon from './RichTextIcon';
 import TextIcon from './TextIcon';
+import TickIcon from './TickIcon';
 import UpArrow from "./UpArrow";
 
 export default function Icon({type, size}) {
@@ -18,12 +20,14 @@ export default function Icon({type, size}) {
 			return <AddIcon size={size}/>;
 		case 'boolean':
 			return <BooleanIcon/>;
+		case 'close':
+			return <CloseIcon/>;
 		case 'date':
 			return <DateIcon/>;
 		case 'downarrow':
 			return <DownArrow/>;
 		case 'error':
-			return <ErrorIcon/>;
+			return <ErrorIcon size={size}/>;
 		case 'media':
 			return <MediaIcon/>;
 		case 'number':
@@ -38,6 +42,8 @@ export default function Icon({type, size}) {
 			return <RichTextIcon/>;
 		case 'text':
 			return <TextIcon/>;
+		case 'tick':
+			return <TickIcon/>;
 		case 'uparrow':
 			return <UpArrow/>;
 		default:
