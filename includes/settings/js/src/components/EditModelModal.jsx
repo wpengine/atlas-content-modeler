@@ -41,18 +41,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 	const [pluralCount, setPluralCount] = useState(model.name.length);
 	const [descriptionCount, setDescriptionCount] = useState(model.description.length);
 	const {dispatch} = useContext(ModelsContext);
-
-	const {
-		register,
-		handleSubmit,
-	} = useForm({
-		defaultValues: {
-			singular: model.singular_name,
-			plural: model.name,
-			postTypeSlug: model.slug,
-			description: model.description
-		}
-	});
+	const {register, handleSubmit} = useForm();
 
 	const customStyles = {
 		overlay: {
@@ -98,6 +87,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 					<label htmlFor="singular">Singular Name</label>
 					<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
 					<input id="singular" name="singular" placeholder="Rabbit"
+						   defaultValue={model.singular_name}
 						   ref={register({required: true, maxLength: 50})}
 						   onChange={e => setSingularCount(e.target.value.length)}/>
 					<p className="field-messages"><span>&nbsp;</span><span className="count">{singularCount}/50</span>
@@ -110,6 +100,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 					<input
 						id="plural"
 						name="plural"
+						defaultValue={model.name}
 						placeholder="Rabbits"
 						ref={register({required: true, maxLength: 50})}
 						onChange={
@@ -123,6 +114,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 					<label htmlFor="postTypeSlug">API Identifier</label>
 					<p className="help">Auto-generated and used for API requests.</p>
 					<input id="postTypeSlug" name="postTypeSlug" ref={register({required: true, maxLength: 20})}
+						   defaultValue={model.slug}
 						   readOnly="readOnly"/>
 					<p className="field-messages"><span>&nbsp;</span></p>
 				</div>
@@ -131,6 +123,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 					<label htmlFor="description">Description</label>
 					<p className="help">A hint for content editors and API users.</p>
 					<textarea id="description" name="description" ref={register({maxLength: 250})}
+							  defaultValue={model.description}
 							  onChange={e => setDescriptionCount(e.target.value.length)}/>
 					<p className="field-messages"><span>&nbsp;</span><span
 						className="count">{descriptionCount}/250</span></p>
