@@ -1,0 +1,53 @@
+@import "variables";
+
+.Toastify {
+	display: flex;
+	justify-content: center;
+}
+
+.Toastify__toast-container {
+	width: auto;
+}
+
+.Toastify__toast {
+	border-radius: 2px;
+	padding: 0;
+}
+
+.Toastify__toast-body {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	padding: 16px;
+}
+
+.Toastify__toast-body > svg {
+	margin-right: 16px;
+}
+
+.Toastify__toast-body .close {
+	background: transparent;
+	border: none;
+	height: auto;
+	line-height: 1;
+	margin-left: 20px;
+	padding: 4px;
+}
+
+.Toastify__toast-body .close:focus {
+	box-shadow: none;
+}
+
+.Toastify__toast-container--top-center {
+	left: auto;
+	top: 188px;
+	transform: none;
+}
+
+.Toastify__toast--success {
+	background: $color-success;
+}
+
+.Toastify__toast--error {
+	background: $color-warning;
+}
