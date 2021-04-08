@@ -84,8 +84,14 @@
 		color: $color-primary;
 		text-decoration: none;
 	}
+	a:hover {
+		color: $color-primary-hover;
+	}
 	a.delete {
 		color: $color-warning;
+	}
+	a.delete:hover {
+		color: $color-warning-hover;
 	}
 }
 
