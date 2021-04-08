@@ -2,6 +2,7 @@ import React, {useState, useContext} from "react";
 import Icon from "../icons";
 import Modal from "react-modal";
 import {ModelsContext} from "../../ModelsContext";
+import {maybeCloseDropdown} from "../../utils";
 
 const { apiFetch } = wp;
 
@@ -30,6 +31,7 @@ export const FieldOptionsDropdown = ({field, model}) => {
 		<span className="dropdown">
 			<button
 				className="options"
+				onBlur={() => maybeCloseDropdown(setDropdownOpen)}
 				onClick={() => setDropdownOpen(!dropdownOpen)}
 				aria-label={`Options for the ${field.name} field.`}
 			>
@@ -39,6 +41,7 @@ export const FieldOptionsDropdown = ({field, model}) => {
 				<a
 					className="delete"
 					href="#"
+					onBlur={() => maybeCloseDropdown(setDropdownOpen)}
 					onClick={(event) => {
 						event.preventDefault();
 						setDropdownOpen(false);

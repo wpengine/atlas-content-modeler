@@ -55,3 +55,17 @@ export function generateSidebarMenuItem(model) {
 			</li>`
 	);
 }
+
+/**
+ * Closes the options dropdown if dropdown links are not in focus.
+ *
+ * @param {function} setDropdownOpen Call to toggle dropdown state.
+ */
+export const maybeCloseDropdown = (setDropdownOpen) => {
+	setTimeout(() => {
+		const dropDownLinkIsInFocus = document?.activeElement?.parentElement.className.startsWith("dropdown-content");
+		if (!dropDownLinkIsInFocus) {
+			setDropdownOpen(false);
+		}
+	}, 100)
+};

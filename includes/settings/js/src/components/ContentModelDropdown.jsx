@@ -4,6 +4,7 @@ import Icon from "./icons";
 import Modal from "react-modal";
 import {EditModelModal} from "./EditModelModal";
 import {useHistory} from "react-router-dom";
+import {maybeCloseDropdown} from "../utils";
 
 Modal.setAppElement('#root');
 
@@ -57,6 +58,7 @@ export const ContentModelDropdown = ({model}) => {
 				onClick={ () => {
 					setDropdownOpen(!dropdownOpen);
 				} }
+				onBlur={() => maybeCloseDropdown(setDropdownOpen)}
 			>
 				<Icon type="options" />
 			</button>
@@ -64,6 +66,7 @@ export const ContentModelDropdown = ({model}) => {
 				<a
 					className="edit"
 					href="#"
+					onBlur={() => maybeCloseDropdown(setDropdownOpen)}
 					onClick={ (event) => {
 						event.preventDefault();
 						setDropdownOpen(false);
@@ -75,6 +78,7 @@ export const ContentModelDropdown = ({model}) => {
 				<a
 					className="delete"
 					href="#"
+					onBlur={() => maybeCloseDropdown(setDropdownOpen)}
 					onClick={ (event) => {
 						event.preventDefault();
 						setDropdownOpen(false);
