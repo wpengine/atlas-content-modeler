@@ -6,6 +6,11 @@ class EditContentModelCest {
 		$I->haveContentModel('Candy', 'Candies');
 		$I->wait(1);
 
+		// Modal content is too large for default size
+		// which causes modal title to not be visible
+		// and the link in #wpfooter to overlay Save button.
+		$I->resizeWindow(1024, 768);
+
 		// Invoke edit mode.
 		$I->amOnWPEngineContentModelPage();
 		$I->click( '.model-list button.options' );
@@ -17,6 +22,7 @@ class EditContentModelCest {
 		$I->fillField(['name' => 'plural'], 'Cats');
 		$I->fillField(['name' => 'description'], 'Cats are better than candy.');
 		$I->see('27/250', 'span.count');
+
 		$I->click('Save');
 
 		// Verify the updated data.
