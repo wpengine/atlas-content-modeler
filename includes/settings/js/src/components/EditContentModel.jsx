@@ -48,7 +48,7 @@ export default function EditContentModel() {
 						<ul className="field-list">
 							<DragDropContext
 								onDragEnd={(result) =>
-									onDragEnd(result, fieldOrder, model?.slug, dispatch)
+									onDragEnd(result, fieldOrder, model?.slug, dispatch, models)
 								}
 							>
 								<Droppable droppableId="droppable">

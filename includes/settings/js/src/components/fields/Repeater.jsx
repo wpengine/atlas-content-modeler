@@ -10,7 +10,7 @@ import {
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 
 const Repeater = ({fields={}, model, parent, setInfoTag}) => {
-	const {dispatch } = useContext(ModelsContext);
+	const {models, dispatch} = useContext(ModelsContext);
 	const hasFields = Object.keys(fields)?.length > 0;
 	const fieldOrder = getFieldOrder(fields);
 
@@ -22,7 +22,7 @@ const Repeater = ({fields={}, model, parent, setInfoTag}) => {
 					<ul className="subfield-list">
 						<DragDropContext
 							onDragEnd={(result) =>
-								onDragEnd(result, fieldOrder, model?.slug, dispatch)
+								onDragEnd(result, fieldOrder, model?.slug, dispatch, models)
 							}
 						>
 							<Droppable droppableId="droppable">
