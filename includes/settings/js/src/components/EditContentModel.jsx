@@ -6,6 +6,8 @@ import { onDragEnd } from "./fields/eventHandlers";
 import Icon from "./icons"
 import Field from "./fields/Field"
 import { ModelsContext } from "../ModelsContext";
+import { ContentModelDropdown } from "./ContentModelDropdown";
+
 import {
 	getFieldOrder,
 	getPositionAfter,
@@ -31,12 +33,7 @@ export default function EditContentModel() {
 					</Link>{" "}
 					/ {model?.name}
 				</h2>
-				<button
-					className="options"
-					aria-label={`Options for ${model?.name} content model`}
-				>
-					<Icon type="options" />
-				</button>
+				<ContentModelDropdown model={model} />
 			</section>
 			<section className="card-content">
 				{fieldCount > 0 ? (
