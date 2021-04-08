@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
+import { showSuccess } from "../toasts";
 
 const { apiFetch } = wp;
 
@@ -32,6 +33,9 @@ export default function CreateContentModel() {
 
 				// Insert the sidebar menu item below the Comments item, to avoid doing a full page refresh.
 				insertSidebarMenuItem(res.model);
+
+				window.scrollTo(0, 0);
+				showSuccess(`Your new Content Model “${res.model.name}” was created.`);
 			}
 
 			// @todo show errors
