@@ -11,6 +11,7 @@
 	font-size: 28px;
 	font-weight: bold;
 	line-height: 45px;
+	margin-bottom: 0;
 	margin-top: 0;
 }
 
@@ -27,6 +28,7 @@
 .app-card .heading {
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 28px;
 }
 
 .app-card .heading button.options {
