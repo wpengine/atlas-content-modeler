@@ -3,6 +3,7 @@ import {ModelsContext} from "../ModelsContext";
 import Icon from "./icons";
 import Modal from "react-modal";
 import {EditModelModal} from "./EditModelModal";
+import {useHistory} from "react-router-dom";
 
 Modal.setAppElement('#root');
 
@@ -27,6 +28,7 @@ function deleteModel( name = '' ) {
 export const ContentModelDropdown = ({model}) => {
 	const { name, slug } = model;
 	const { dispatch } = useContext(ModelsContext);
+	const history = useHistory();
 	const [ dropdownOpen, setDropdownOpen ] = useState(false);
 	const [ modalIsOpen, setModalIsOpen ] = useState(false);
 	const [ editModelModalIsOpen, setEditModelModalIsOpen ] = useState(false);
@@ -100,6 +102,7 @@ export const ContentModelDropdown = ({model}) => {
 						// @todo capture and show errors.
 						const deleted = await deleteModel(slug);
 						setModalIsOpen(false);
+						history.push( "/wp-admin/admin.php?page=wpe-content-model" );
 						dispatch({type: 'removeModel', slug});
 					}}
 				>
