@@ -116,8 +116,15 @@
 }
 
 .wpe-content-model-edit-model-modal-container {
+	overflow: hidden;
+
 	.ReactModal__Overlay--after-open {
+		width: 100%;
+		height: 100%;
 		overflow: scroll;
+		padding-bottom: 17px;
+		padding-right: 17px;
+		box-sizing: content-box;
 	}
 
 	.ReactModal__Content--after-open {
