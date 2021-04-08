@@ -68,6 +68,7 @@
 	position: absolute;
 	width: 100px;
 	height: auto;
+	margin-left: -11px;
 
 	background: $color-white;
 	box-shadow: 0px 5px 20px rgba(68, 68, 68, 0.15);
@@ -83,9 +84,19 @@
 		color: $color-primary;
 		text-decoration: none;
 	}
+	a:hover {
+		color: $color-primary-hover;
+	}
 	a.delete {
 		color: $color-warning;
 	}
+	a.delete:hover {
+		color: $color-warning-hover;
+	}
+}
+
+.heading .dropdown-content:not(.hidden) {
+	margin-left: -33px;
 }
 
 .ReactModal__Content:focus {
@@ -105,8 +116,15 @@
 }
 
 .wpe-content-model-edit-model-modal-container {
+	overflow: hidden;
+
 	.ReactModal__Overlay--after-open {
+		width: 100%;
+		height: 100%;
 		overflow: scroll;
+		padding-bottom: 17px;
+		padding-right: 17px;
+		box-sizing: content-box;
 	}
 
 	.ReactModal__Content--after-open {
