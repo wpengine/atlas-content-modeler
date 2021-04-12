@@ -37,17 +37,9 @@ export default function CreateContentModel() {
 				window.scrollTo(0, 0);
 				showSuccess(`Your new Content Model “${res.model.name}” was created.`);
 			}
-
+		} ).catch( errors => {
 			// @todo show errors
-			if ( ! res.success && res.errors ) {
-				res.errors.forEach( ( currentValue ) => {
-					if ( typeof currentValue === 'object' ) {
-						currentValue.errors.forEach( ( val ) => {
-							console.log(val);
-						} );
-					}
-				} );
-			}
+			console.log(errors);
 		} );
 	}
 
