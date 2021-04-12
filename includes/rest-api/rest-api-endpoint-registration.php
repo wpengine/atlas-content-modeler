@@ -426,7 +426,6 @@ function dispatch_delete_model( WP_REST_Request $request ) {
  * @return WP_Error|bool
  */
 function create_model( string $post_type_slug, array $args ) {
-
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
 			'wpe_content_model_invalid_id',
@@ -463,7 +462,7 @@ function create_model( string $post_type_slug, array $args ) {
 			[
 				'invalid-args',
 				$exception->getMessage(),
-				[ 'status' => 400 ]
+				[ 'status' => 400 ],
 			]
 		);
 	}
