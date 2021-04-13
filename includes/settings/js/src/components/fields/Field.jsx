@@ -6,6 +6,7 @@ import supportedFields from "./supportedFields";
 import Repeater from "./Repeater";
 import {FieldOptionsDropdown} from "./FieldOptionsDropdown";
 import {ModelsContext} from "../../ModelsContext";
+import FieldButtons from "../FieldButtons";
 
 const getItemStyle = (isDragging, draggableStyle) => {
 	return {
@@ -104,21 +105,7 @@ function Field({
 	return (
 		<li className="open-field" key={id}>
 			{!editing && (
-				<div className="field-buttons">
-					{Object.keys(supportedFields).map((field) => {
-						const fieldTitle = supportedFields[field];
-						return (
-							<button
-								key={field}
-								className={field === activeForm ? "tertiary active" : "tertiary"}
-								onClick={() => setActiveForm(field)}
-							>
-								<Icon type={field}/>
-								{fieldTitle}
-							</button>
-						);
-					})}
-				</div>
+				<FieldButtons activeButton={activeForm} clickAction={setActiveForm} />
 			)}
 			<div className={editing ? 'field-form editing' : 'field-form'}>
 				<h3>

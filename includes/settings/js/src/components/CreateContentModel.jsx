@@ -36,7 +36,7 @@ export default function CreateContentModel() {
 				insertSidebarMenuItem(res.model);
 
 				window.scrollTo(0, 0);
-				showSuccess(`Your new Content Model “${res.model.name}” was created.`);
+				showSuccess(`The “${res.model.name}” model was created. Now add your first field.`);
 			}
 		} ).catch( err => {
 			if ( err.code === "wpe_content_model_already_exists" ) {

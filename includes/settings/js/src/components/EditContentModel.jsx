@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useLocationSearch } from "../utils";
 import { onDragEnd } from "./fields/eventHandlers";
-import Icon from "./icons"
 import Field from "./fields/Field"
 import { ModelsContext } from "../ModelsContext";
 import { ContentModelDropdown } from "./ContentModelDropdown";
@@ -13,6 +12,7 @@ import {
 	getPositionAfter,
 	getRootFields,
 } from "../queries";
+import FieldButtons from "./FieldButtons";
 
 export default function EditContentModel() {
 	const [infoTag, setInfoTag] = useState(null);
@@ -84,25 +84,15 @@ export default function EditContentModel() {
 					</>
 				) : (
 					<>
-						<p>
-							Your current model {name} has no fields at the moment. It might be a
-							good idea to add some now.
+						<p className="field-list-info">
+							Choose your first field for the {model?.name} content model:
 						</p>
 						<ul className="field-list">
-							<li className="empty">
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-							</li>
-							<li className="add-item">
-								<button
-									onClick={() =>
-										dispatch({ type: "addField", position: 0, model: id })
-									}
-								>
-									<Icon type="add" />
-								</button>
+							<li>
+								<FieldButtons
+									clickAction={(fieldType) => {
+										dispatch({ type: "addField", position: 0, model: id, fieldType });
+									}} />
 							</li>
 						</ul>
 					</>

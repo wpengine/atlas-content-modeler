@@ -29,7 +29,7 @@ export function reducer(state, action) {
 				...state[action.model]["fields"],
 				[newId]: {
 					id: newId,
-					type: "text",
+					type: action?.fieldType || "text",
 					open: true,
 					position: action.position,
 					parent: action?.parent,

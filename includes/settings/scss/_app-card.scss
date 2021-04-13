@@ -56,33 +56,6 @@
 	border-left: none;
 }
 
-.card-content li.empty {
-	display: flex;
-	justify-content: space-between;
-	padding: 20px 15px;
-}
-
-.card-content li.empty span {
-	background: linear-gradient(90deg, rgba(207, 221, 233, 0.75) 0%, rgba(210, 222, 233, 0.25) 100%);
-	border-radius: $radius;
-}
-
-.card-content li.empty span:nth-child(1) {
-	width: 5%;
-}
-
-.card-content li.empty span:nth-child(2) {
-	width: 12%;
-}
-
-.card-content li.empty span:nth-child(3) {
-	width: 72%;
-}
-
-.card-content li.empty span:nth-child(4) {
-	width: 3%;
-}
-
 .app-card svg.add:focus circle,
 .app-card svg.add:hover circle {
 	fill: $color-primary-hover;

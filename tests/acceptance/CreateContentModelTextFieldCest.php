@@ -12,11 +12,9 @@ class CreateContentModelTextFieldCest
         $I->amOnWPEngineEditContentModelPage('candies');
         $I->wait(1);
 
-        $I->click('li.add-item button');
-        $I->wait(1);
-
-        $I->click('Text', '.open-field .field-buttons');
-        $I->fillField(['name' => 'name'], 'Color');
+        $I->click('Text', '.field-buttons');
+		$I->wait(1);
+		$I->fillField(['name' => 'name'], 'Color');
         $I->see('5/50', 'span.count');
         $I->seeInField('#slug','color');
         $I->click('.open-field button.primary');
