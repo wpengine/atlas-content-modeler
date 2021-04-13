@@ -35,7 +35,7 @@ export default function CreateContentModel() {
 				insertSidebarMenuItem(res.model);
 
 				window.scrollTo(0, 0);
-				showSuccess(`Your new Content Model “${res.model.name}” was created.`);
+				showSuccess(`The “${res.model.name}” model was created. Now add your first field.`);
 			}
 
 			// @todo show errors
