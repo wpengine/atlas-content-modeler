@@ -12,11 +12,9 @@ class CreateContentModelMediaFieldCest
         $I->amOnWPEngineEditContentModelPage('candies');
         $I->wait(1);
 
-        $I->click('li.add-item button');
-        $I->wait(1);
-
-        $I->click('Media', '.open-field .field-buttons');
-        $I->fillField(['name' => 'name'], 'Product Photo');
+        $I->click('Media', '.field-buttons');
+		$I->wait(1);
+		$I->fillField(['name' => 'name'], 'Product Photo');
         $I->see('13/50', 'span.count');
         $I->seeInField('#slug','productPhoto');
         $I->click('.open-field button.primary');

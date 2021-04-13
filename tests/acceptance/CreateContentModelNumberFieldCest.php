@@ -12,11 +12,9 @@ class CreateContentModelNumberFieldCest
         $I->amOnWPEngineEditContentModelPage('candies');
         $I->wait(1);
 
-        $I->click('li.add-item button');
-        $I->wait(1);
-
-        $I->click('Number', '.open-field .field-buttons');
-        $I->fillField(['name' => 'name'], 'Count');
+        $I->click('Number', '.field-buttons');
+		$I->wait(1);
+		$I->fillField(['name' => 'name'], 'Count');
         $I->see('5/50', 'span.count');
         $I->seeInField('#slug','count');
         $I->click('.open-field button.primary');
