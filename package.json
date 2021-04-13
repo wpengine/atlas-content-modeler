@@ -2,14 +2,14 @@
   "name": "wpe-content-model",
   "version": "1.0.0",
   "description": "",
-  "main": "includes/settings/js/src/index.js",
   "scripts": {
-    "build": "parcel build includes/settings/js/src/index.jsx --out-dir includes/settings/dist --no-source-maps --public-url .",
-    "start": "parcel watch includes/settings/js/src/index.jsx --out-dir includes/settings/dist --public-url .",
+    "build": "parcel build includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --no-source-maps --public-url .",
+    "start": "parcel watch includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --public-url .",
     "test": "jest --watch"
   },
   "author": "",
   "license": "MIT",
+  "browserslist": "> 0.2%",
   "dependencies": {
     "@babel/plugin-syntax-jsx": "^7.12.13",
     "@wordpress/api-fetch": "^3.21.5",
@@ -26,12 +26,12 @@
     "@babel/plugin-transform-runtime": "^7.13.7",
     "@babel/preset-env": "^7.13.5",
     "@babel/preset-react": "^7.12.13",
+    "@parcel/transformer-sass": "^2.0.0-nightly.637",
     "babel-jest": "^26.6.3",
     "jest": "^26.6.3",
     "jest-css-modules-transform": "^4.2.0",
     "jest-transform-css": "^2.1.0",
-    "parcel-bundler": "^1.12.5",
-    "parcel-plugin-externals": "^0.5.2",
+    "parcel": "^2.0.0-nightly.635",
     "postcss": "^8.2.6",
     "react-test-renderer": "^17.0.1",
     "sass": "^1.32.8"
