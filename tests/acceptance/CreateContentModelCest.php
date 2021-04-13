@@ -10,7 +10,7 @@ class CreateContentModelCest
 		$I->loginAsAdmin();
     	$I->amOnWPEngineContentModelPage();
     	$I->wait(1);
-		$I->see('You have no Content Models. It might be a good idea to create one now.');
+		$I->see('have no Content Models');
 	}
 
     /**
