@@ -156,11 +156,10 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 	$model = create_model( $params['postTypeSlug'], $params );
 
 	if ( is_wp_error( $model ) ) {
-		return rest_ensure_response(
-			[
-				'success' => false,
-				'errors'  => $model->get_all_error_data(),
-			]
+		return new WP_Error(
+			$model->get_error_code(),
+			$model->get_error_message(),
+			[ 'status' => 400 ]
 		);
 	}
 
@@ -427,42 +426,45 @@ function dispatch_delete_model( WP_REST_Request $request ) {
  * @return WP_Error|bool
  */
 function create_model( string $post_type_slug, array $args ) {
-	$errors = [];
-
 	if ( empty( $post_type_slug ) ) {
-		$errors[] = [
-			'field'   => 'postTypeSlug',
-			'message' => esc_html__( 'Please provide a postTypeSlug.', 'wpe-content-model' ),
-		];
+		return new WP_Error(
+			'wpe_content_model_invalid_id',
+			'Please provide a valid API Identifier.',
+			[ 'status' => 400 ]
+		);
+	}
+
+	$existing_content_types = get_post_types();
+
+	$content_types = get_registered_content_types();
+
+	if ( ! empty( $content_types[ $post_type_slug ] ) || array_key_exists( $post_type_slug, $existing_content_types ) ) {
+		return new WP_Error(
+			'wpe_content_model_already_exists',
+			'A content model with this API Identifier already exists.',
+			[ 'status' => 400 ]
+		);
 	}
 
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
-		$errors[] = [
-			'field'   => 'labels',
-			'message' => esc_html__( 'Please provide singular and plural labels when creating a content model.', 'wpe-content-model' ),
-		];
-	}
-
-	$content_types = get_registered_content_types();
-	if ( ! empty( $content_types[ $post_type_slug ] ) ) {
-		$errors[] = [
-			'code'    => 'already-exists',
-			'message' => esc_html__( 'Content model already exists. Please update the existing one or delete it and recreate.', 'wpe-content-model' ),
-		];
+		return new WP_Error(
+			'wpe_content_model_invalid_labels',
+			'Please provide singular and plural labels when creating a content model.',
+			[ 'status' => 400 ]
+		);
 	}
 
 	// @todo validate field types
 	try {
 		$args = wp_parse_args( $args, generate_custom_post_type_args( $args ) );
 	} catch ( \InvalidArgumentException $exception ) {
-		$errors[] = [
-			'code'    => 'invalid-args',
-			'message' => $exception->getMessage(),
-		];
-	}
-
-	if ( ! empty( $errors ) ) {
-		return new WP_Error( 'model-not-created', esc_html__( 'Model not created.', 'wpe-content-model' ), [ 'errors' => $errors ] );
+		return new WP_Error(
+			[
+				'invalid-args',
+				$exception->getMessage(),
+				[ 'status' => 400 ],
+			]
+		);
 	}
 
 	$content_types[ $post_type_slug ] = $args;

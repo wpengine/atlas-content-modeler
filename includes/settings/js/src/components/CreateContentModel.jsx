@@ -5,11 +5,12 @@ import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
+import Icon from "./icons";
 
 const { apiFetch } = wp;
 
 export default function CreateContentModel() {
-	const { register, handleSubmit, errors, setValue } = useForm();
+	const { register, handleSubmit, errors, setValue, setError } = useForm();
 	const history = useHistory();
 	const [ singularCount, setSingularCount ] = useState(0);
 	const [ pluralCount, setPluralCount ] = useState(0);
@@ -37,16 +38,9 @@ export default function CreateContentModel() {
 				window.scrollTo(0, 0);
 				showSuccess(`Your new Content Model “${res.model.name}” was created.`);
 			}
-
-			// @todo show errors
-			if ( ! res.success && res.errors ) {
-				res.errors.forEach( ( currentValue ) => {
-					if ( typeof currentValue === 'object' ) {
-						currentValue.errors.forEach( ( val ) => {
-							console.log(val);
-						} );
-					}
-				} );
+		} ).catch( err => {
+			if ( err.code === "wpe_content_model_already_exists" ) {
+				setError("postTypeSlug", {type: "idExists", message: err.message});
 			}
 		} );
 	}
@@ -67,7 +61,16 @@ export default function CreateContentModel() {
 						<label htmlFor="singular">Singular Name</label><br/>
 						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
 						<input id="singular" name="singular" placeholder="Rabbit" ref={register({ required: true, maxLength: 50})} onChange={ e => setSingularCount(e.target.value.length)} />
-						<p className="field-messages"><span>&nbsp;</span><span className="count">{singularCount}/50</span></p>
+						<p className="field-messages">
+							{errors.singular && errors.singular.type === "required" && (
+								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
+							)}
+							{errors.singular && errors.singular.type === "maxLength" && (
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
+							)}
+							<span>&nbsp;</span>
+							<span className="count">{singularCount}/50</span>
+						</p>
 					</div>
 
 					<div className="field">
@@ -83,7 +86,16 @@ export default function CreateContentModel() {
 									setApiIdGeneratorInput(event.target.value);
 									setPluralCount(event.target.value.length);
 								} }/>
-						<p className="field-messages"><span>&nbsp;</span><span className="count">{pluralCount}/50</span></p>
+						<p className="field-messages">
+							{errors.plural && errors.plural.type === "required" && (
+								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
+							)}
+							{errors.plural && errors.plural.type === "maxLength" && (
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
+							)}
+							<span>&nbsp;</span>
+							<span className="count">{pluralCount}/50</span>
+						</p>
 					</div>
 
 					<div className="field">
@@ -95,13 +107,31 @@ export default function CreateContentModel() {
 							ref={register({ required: true, maxLength: 20 })}
 							{...apiIdFieldAttributes}
 						/>
+						<p className="field-messages">
+							{errors.postTypeSlug && errors.postTypeSlug.type === "required" && (
+								<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
+							)}
+							{errors.postTypeSlug && errors.postTypeSlug.type === "maxLength" && (
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length of 20.</span></span>
+							)}
+							{errors.postTypeSlug && errors.postTypeSlug.type === "idExists" && (
+								<span className="error"><Icon type="error" /><span role="alert">{errors.postTypeSlug.message}</span></span>
+							)}
+							<span>&nbsp;</span>
+						</p>
 					</div>
 
-					<div className="field">
+					<div className="field field-description">
 						<label htmlFor="description">Description</label><br/>
 						<p className="help">A hint for content editors and API users.</p>
 						<textarea id="description" name="description" ref={register({ maxLength: 250})} onChange={ e => setDescriptionCount(e.target.value.length)} />
-						<p className="field-messages"><span>&nbsp;</span><span className="count">{descriptionCount}/250</span></p>
+						<p className="field-messages">
+							{errors.description && errors.description.type === "maxLength" && (
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
+							)}
+							<span>&nbsp;</span>
+							<span className="count">{descriptionCount}/250</span>
+						</p>
 					</div>
 
 					<button type="submit" className="primary first">Create</button>

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
+import Icon from "./icons";
 
 const { apiFetch } = wp;
 
@@ -41,7 +42,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 	const [pluralCount, setPluralCount] = useState(model.name.length);
 	const [descriptionCount, setDescriptionCount] = useState(model.description.length);
 	const {dispatch} = useContext(ModelsContext);
-	const {register, handleSubmit} = useForm();
+	const {register, handleSubmit, errors} = useForm();
 
 	const customStyles = {
 		overlay: {
@@ -90,7 +91,15 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 						   defaultValue={model.singular_name}
 						   ref={register({required: true, maxLength: 50})}
 						   onChange={e => setSingularCount(e.target.value.length)}/>
-					<p className="field-messages"><span>&nbsp;</span><span className="count">{singularCount}/50</span>
+					<p className="field-messages">
+						{errors.singular && errors.singular.type === "required" && (
+							<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
+						)}
+						{errors.singular && errors.singular.type === "maxLength" && (
+							<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
+						)}
+						<span>&nbsp;</span>
+						<span className="count">{singularCount}/50</span>
 					</p>
 				</div>
 
@@ -107,7 +116,16 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 							event => {
 								setPluralCount(event.target.value.length)
 							}}/>
-					<p className="field-messages"><span>&nbsp;</span><span className="count">{pluralCount}/50</span></p>
+					<p className="field-messages">
+						{errors.plural && errors.plural.type === "required" && (
+							<span className="error"><Icon type="error" /><span role="alert">This field is required</span></span>
+						)}
+						{errors.plural && errors.plural.type === "maxLength" && (
+							<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
+						)}
+						<span>&nbsp;</span>
+						<span className="count">{pluralCount}/50</span>
+					</p>
 				</div>
 
 				<div className="field">
@@ -119,14 +137,19 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 					<p className="field-messages"><span>&nbsp;</span></p>
 				</div>
 
-				<div className="field">
+				<div className="field field-description">
 					<label htmlFor="description">Description</label>
 					<p className="help">A hint for content editors and API users.</p>
 					<textarea id="description" name="description" ref={register({maxLength: 250})}
 							  defaultValue={model.description}
 							  onChange={e => setDescriptionCount(e.target.value.length)}/>
-					<p className="field-messages"><span>&nbsp;</span><span
-						className="count">{descriptionCount}/250</span></p>
+					<p className="field-messages">
+						{errors.description && errors.description.type === "maxLength" && (
+							<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
+						)}
+						<span>&nbsp;</span>
+						<span className="count">{descriptionCount}/250</span>
+					</p>
 				</div>
 
 				<button type="submit" className="primary first">Save</button>

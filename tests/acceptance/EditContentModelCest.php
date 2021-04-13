@@ -9,7 +9,7 @@ class EditContentModelCest {
 		// Modal content is too large for default size
 		// which causes modal title to not be visible
 		// and the link in #wpfooter to overlay Save button.
-		$I->resizeWindow(1024, 768);
+		$I->resizeWindow(1024, 1024);
 
 		// Invoke edit mode.
 		$I->amOnWPEngineContentModelPage();

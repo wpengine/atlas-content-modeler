@@ -14,6 +14,11 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 			'description'  => 'Rabbits like carrots.'
 		],
 		'cats'    => [ 'name' => 'Cats' ],
+		'attachment' => [
+			'postTypeSlug' => 'attachment',
+			'singular'     => 'Attachment',
+			'plural'       => 'Attachments',
+		]
 	];
 
 	public function setUp(): void {
@@ -27,6 +32,21 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 	public function test_content_model_route_is_registered(): void {
 		$routes = $this->server->get_routes( 'wpe' );
 		self::assertArrayHasKey( "/{$this->namespace}/{$this->route}", $routes );
+	}
+
+	public function test_cannot_create_model_when_slug_conflicts_with_existing_post_type(): void {
+		wp_set_current_user( 1 );
+		$model = 'attachment'; // already exists by default in WP.
+
+		// Attempt to create the model.
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $this->test_models[ $model ] ) );
+		$this->server->dispatch( $request );
+
+		$response = $this->server->dispatch( $request );
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'wpe_content_model_already_exists', $response->data['code'] );
 	}
 
 	public function test_can_update_model(): void {
