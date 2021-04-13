@@ -31,6 +31,15 @@
 	font-weight: 700;
 }
 
+.ReactModal__Content label {
+	display: block;
+	margin-top: 21px;
+}
+
+.ReactModal__Content label[for="description"] {
+	margin-top: 14px;
+}
+
 .wpe-content-model-admin-page legend {
 	margin-bottom: 19px;
 }
