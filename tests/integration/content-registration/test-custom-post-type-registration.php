@@ -56,6 +56,9 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 		update_post_meta( $this->dog_post_id, 'dog-test-field', 'dog-test-field string value' );
 		update_post_meta( $this->dog_post_id, 'dog-weight', '100.25' );
+		update_post_meta( $this->dog_post_id, 'dog-rich-text', 'dog-rich-text string value' );
+		update_post_meta( $this->dog_post_id, 'dog-boolean', 'this string will be cast to a boolean by WPGraphQL' );
+		update_post_meta( $this->dog_post_id, 'dog-repeater', 'dog-repeater string value' );
 	}
 
 	public function tearDown() {
@@ -134,6 +137,9 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 							content
 							dogTestField
 							dogWeight
+							dogRichText
+							dogBoolean
+							dogRepeater
 						}
 					}
 				}
@@ -145,6 +151,15 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'dogWeight', $results['data']['dogs']['nodes'][0] );
 			self::assertSame( $results['data']['dogs']['nodes'][0]['dogWeight'], 100.25 );
+
+			self::assertArrayHasKey( 'dogRichText', $results['data']['dogs']['nodes'][0] );
+			self::assertSame( $results['data']['dogs']['nodes'][0]['dogRichText'], 'dog-rich-text string value' );
+
+			self::assertArrayHasKey( 'dogBoolean', $results['data']['dogs']['nodes'][0] );
+			self::assertTrue( $results['data']['dogs']['nodes'][0]['dogBoolean'] );
+
+			self::assertArrayHasKey( 'dogRepeater', $results['data']['dogs']['nodes'][0] );
+			self::assertSame( $results['data']['dogs']['nodes'][0]['dogRepeater'], 'dog-repeater string value' );
 
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
