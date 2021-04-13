@@ -441,7 +441,7 @@ function create_model( string $post_type_slug, array $args ) {
 	if ( ! empty( $content_types[ $post_type_slug ] ) || array_key_exists( $post_type_slug, $existing_content_types ) ) {
 		return new WP_Error(
 			'wpe_content_model_already_exists',
-			'A content model with that API Identifier already exists.',
+			'A content model with this API Identifier already exists.',
 			[ 'status' => 400 ]
 		);
 	}
