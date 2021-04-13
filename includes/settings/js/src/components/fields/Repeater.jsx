@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import Icon from "../icons"
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import Field from "./Field";
 import { onDragEnd } from "./eventHandlers";
 import { ModelsContext } from "../../ModelsContext";
@@ -7,7 +7,7 @@ import {
 	getFieldOrder,
 	getPositionAfter,
 } from "../../queries";
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import FieldButtons from "../FieldButtons";
 
 const Repeater = ({fields={}, model, parent, setInfoTag}) => {
 	const {models, dispatch} = useContext(ModelsContext);
@@ -62,25 +62,11 @@ const Repeater = ({fields={}, model, parent, setInfoTag}) => {
 				) : (
 					<>
 						<ul className="subfield-list empty">
-							<li className="empty">
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-							</li>
-							<li className="add-item">
-								<button
-									onClick={() =>
-										dispatch({
-											type: "addField",
-											position: 0,
-											model: model.slug,
-											parent,
-										})
-									}
-								>
-									<Icon type="add" size="small" />
-								</button>
+							<li>
+								<FieldButtons
+									clickAction={(fieldType) => {
+										dispatch({ type: "addField", position: 0, model: model.slug, fieldType, parent });
+									}} />
 							</li>
 						</ul>
 					</>
