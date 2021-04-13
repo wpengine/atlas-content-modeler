@@ -91,7 +91,7 @@ export default function EditContentModel() {
 							<li>
 								<FieldButtons
 									clickAction={(fieldType) => {
-										dispatch({ type: "addField", position: 0, model: id, fieldType })
+										dispatch({ type: "addField", position: 0, model: id, fieldType });
 									}} />
 							</li>
 						</ul>
