@@ -121,11 +121,17 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<div className="field">
+					<div className="field field-description">
 						<label htmlFor="description">Description</label><br/>
 						<p className="help">A hint for content editors and API users.</p>
 						<textarea id="description" name="description" ref={register({ maxLength: 250})} onChange={ e => setDescriptionCount(e.target.value.length)} />
-						<p className="field-messages"><span>&nbsp;</span><span className="count">{descriptionCount}/250</span></p>
+						<p className="field-messages">
+							{errors.description && errors.description.type === "maxLength" && (
+								<span className="error"><Icon type="error" /><span role="alert">Exceeds max length.</span></span>
+							)}
+							<span>&nbsp;</span>
+							<span className="count">{descriptionCount}/250</span>
+						</p>
 					</div>
 
 					<button type="submit" className="primary first">Create</button>
