@@ -4,14 +4,22 @@ import { ModelsContext } from "../ModelsContext";
 import { getRootFields } from "../queries";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 
-function HeaderWithAddNewButton() {
+function Header({ showButton = true }) {
 	let history = useHistory();
 	return (
 		<section className="heading">
 			<h2>Content Models</h2>
-			<button onClick={() => history.push("/wp-admin/admin.php?page=wpe-content-model&view=create-model")}>
-				Add New
-			</button>
+			{showButton && (
+				<button
+					onClick={() =>
+						history.push(
+							"/wp-admin/admin.php?page=wpe-content-model&view=create-model"
+						)
+					}
+				>
+					Add New
+				</button>
+			)}
 		</section>
 	);
 }
@@ -19,29 +27,31 @@ function HeaderWithAddNewButton() {
 export default function ViewContentModelsList() {
 	const { models } = useContext(ModelsContext);
 	const hasModels = Object.keys(models || {}).length > 0;
+	const history = useHistory();
 
 	return (
 		<div className="app-card">
-			<HeaderWithAddNewButton />
+			<Header showButton={hasModels} />
 			<section className="card-content">
 				{hasModels ? (
 					<ul className="model-list">
 						<ContentModels models={models} />
 					</ul>
 				) : (
-					<>
+					<div className="model-list-empty">
 						<p>
-							You have no Content Models. It might be a good idea to create one now.
+							You currently have no Content Models.
 						</p>
-						<ul aria-hidden="true">
-							<li className="empty">
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-								<span>&nbsp;</span>
-							</li>
-						</ul>
-					</>
+						<button
+							onClick={() =>
+								history.push(
+									"/wp-admin/admin.php?page=wpe-content-model&view=create-model"
+								)
+							}
+						>
+							Get Started
+						</button>
+					</div>
 				)}
 			</section>
 		</div>
