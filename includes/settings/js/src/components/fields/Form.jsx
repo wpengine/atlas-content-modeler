@@ -63,13 +63,8 @@ function Form({id, position, type, editing, storedData, parent}) {
 			{ parent && <input id="parent" name="parent" type="hidden" ref={register} value={parent} /> }
 			<div className="columns">
 				<div className="left-column">
-					<div className="field">
-						<label
-							className={errors.name && 'alert'}
-							htmlFor="name"
-						>
-							Name
-						</label><br/>
+					<div className={errors.name ? 'field has-error' : 'field'}>
+						<label htmlFor="name">Name</label><br/>
 						<p className="help">Display name for your {supportedFields[type]} field.</p>
 						<input
 							aria-invalid={errors.name ? "true" : "false"}
@@ -98,19 +93,13 @@ function Form({id, position, type, editing, storedData, parent}) {
 				</div>
 
 				<div className="right-column">
-					<div className="field">
-						<label
-							className={errors.slug && 'alert'}
-							htmlFor="slug"
-						>
-							API Identifier
-						</label><br/>
+					<div className={errors.slug ? 'field has-error' : 'field'}>
+						<label htmlFor="slug">API Identifier</label><br/>
 						<p className="help">Auto-generated and used for API requests.</p>
 						<input
 							id="slug"
 							name="slug"
 							defaultValue={storedData?.slug}
-							className={errors.slug && 'alert'}
 							ref={register({ required: true, maxLength: 50 })}
 							{...apiIdFieldAttributes}/>
 						<p className="field-messages">
