@@ -9,6 +9,11 @@
 	padding: 16px;
 }
 
+.wpe-content-model-admin-page .has-error input,
+.wpe-content-model-admin-page .has-error textarea {
+	border-color: $color-warning;
+}
+
 .wpe-content-model-admin-page input[type="radio"] {
 	border-radius: 50%;
 	min-width: auto;
@@ -29,6 +34,11 @@
 .wpe-content-model-admin-page label,
 .wpe-content-model-admin-page legend {
 	font-weight: 700;
+}
+
+.wpe-content-model-admin-page .has-error label,
+.wpe-content-model-admin-page .has-error legend {
+	color: $color-warning;
 }
 
 .ReactModal__Content label {
@@ -79,14 +89,11 @@
 	margin-top: 28px;
 }
 
-span[role="alert"],
-label.alert,
-legend.alert {
+span[role="alert"] {
 	color: $color-warning;
 }
 
-input[aria-invalid="true"],
-.wpe-content-model-admin-page input.alert:read-only {
+input[aria-invalid="true"] {
 	border-color: $color-warning;
 }
 
