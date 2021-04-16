@@ -84,7 +84,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 					})
 				}
 			>
-				<div className="field">
+				<div className={errors.singular ? 'field has-error' : 'field'}>
 					<label htmlFor="singular">Singular Name</label>
 					<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
 					<input id="singular" name="singular" placeholder="Rabbit"
@@ -103,7 +103,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 					</p>
 				</div>
 
-				<div className="field">
+				<div className={errors.plural ? 'field has-error' : 'field'}>
 					<label htmlFor="plural">Plural Name</label>
 					<p className="help">Plural display name for your content model, e.g. "Rabbits".</p>
 					<input
@@ -137,7 +137,7 @@ export function EditModelModal({model, isOpen, setIsOpen}) {
 					<p className="field-messages"><span>&nbsp;</span></p>
 				</div>
 
-				<div className="field field-description">
+				<div className={errors.description ? 'field field-description has-error' : 'field field-description'}>
 					<label htmlFor="description">Description</label>
 					<p className="help">A hint for content editors and API users.</p>
 					<textarea id="description" name="description" ref={register({maxLength: 250})}

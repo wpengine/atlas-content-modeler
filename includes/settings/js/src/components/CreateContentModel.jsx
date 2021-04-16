@@ -57,7 +57,7 @@ export default function CreateContentModel() {
 			</section>
 			<section className="card-content">
 				<form onSubmit={handleSubmit(apiCreateModel)}>
-					<div className="field">
+					<div className={errors.singular ? 'field has-error' : 'field'}>
 						<label htmlFor="singular">Singular Name</label><br/>
 						<p className="help">Singular display name for your content model, e.g. "Rabbit".</p>
 						<input id="singular" name="singular" placeholder="Rabbit" ref={register({ required: true, maxLength: 50})} onChange={ e => setSingularCount(e.target.value.length)} />
@@ -73,7 +73,7 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<div className="field">
+					<div className={errors.plural ? 'field has-error' : 'field'}>
 						<label htmlFor="plural">Plural Name</label><br/>
 						<p className="help">Plural display name for your content model, e.g. "Rabbits".</p>
 						<input
@@ -98,7 +98,7 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<div className="field">
+					<div className={errors.postTypeSlug ? 'field has-error' : 'field'}>
 						<label htmlFor="postTypeSlug">API Identifier</label><br/>
 						<p className="help">Auto-generated from the plural name and used for API requests.</p>
 						<input
@@ -121,7 +121,7 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<div className="field field-description">
+					<div className={errors.description ? 'field field-description has-error' : 'field field-description'}>
 						<label htmlFor="description">Description</label><br/>
 						<p className="help">A hint for content editors and API users.</p>
 						<textarea id="description" name="description" ref={register({ maxLength: 250})} onChange={ e => setDescriptionCount(e.target.value.length)} />
