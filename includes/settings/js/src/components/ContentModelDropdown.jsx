@@ -102,7 +102,6 @@ export const ContentModelDropdown = ({model}) => {
 						// delete model and remove related menu sidebar item
 						await deleteModel(slug).then((res) => {
 							if(res.success) {
-								dispatch({type: 'removeModel', slug});
 								removeSidebarMenuItem(slug);
 							}
 						}).catch(() => {
@@ -111,6 +110,7 @@ export const ContentModelDropdown = ({model}) => {
 
 						setModalIsOpen(false);
 						history.push( "/wp-admin/admin.php?page=wpe-content-model" );
+						dispatch({type: 'removeModel', slug});
 					}}
 				>
 					Delete
