@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import {EditModelModal} from "./EditModelModal";
 import {useHistory} from "react-router-dom";
 import {maybeCloseDropdown, removeSidebarMenuItem} from "../utils";
+import {showError} from "../toasts";
 
 Modal.setAppElement('#root');
 
@@ -106,6 +107,7 @@ export const ContentModelDropdown = ({model}) => {
 							}
 						}).catch(() => {
 							// @todo capture and show errors.
+							showError(`There was an error. The ${slug} model type was not deleted.`);
 						});
 
 						setModalIsOpen(false);
