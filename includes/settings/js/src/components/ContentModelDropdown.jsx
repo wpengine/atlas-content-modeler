@@ -106,7 +106,6 @@ export const ContentModelDropdown = ({model}) => {
 								removeSidebarMenuItem(slug);
 							}
 						}).catch(() => {
-							// @todo capture and show errors.
 							showError(`There was an error. The ${slug} model type was not deleted.`);
 						});
 
