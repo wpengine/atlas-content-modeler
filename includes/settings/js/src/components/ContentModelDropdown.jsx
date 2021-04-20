@@ -4,7 +4,7 @@ import Icon from "./icons";
 import Modal from "react-modal";
 import {EditModelModal} from "./EditModelModal";
 import {useHistory} from "react-router-dom";
-import {maybeCloseDropdown} from "../utils";
+import {maybeCloseDropdown, removeSidebarMenuItem} from "../utils";
 
 Modal.setAppElement('#root');
 
@@ -19,8 +19,6 @@ function deleteModel( name = '' ) {
 		path: `/wpe/content-model/${name}`,
 		method: "DELETE",
 		_wpnonce: wpApiSettings.nonce,
-	}).then((res) => {
-		return res;
 	});
 
 	return deleted;
@@ -104,7 +102,11 @@ export const ContentModelDropdown = ({model}) => {
 					className="first warning"
 					onClick={ async () => {
 						// @todo capture and show errors.
-						const deleted = await deleteModel(slug);
+						const deleted = await deleteModel(slug).then((res) => {
+							console.log(res);
+							console.log(slug);
+							removeSidebarMenuItem(slug);
+						});
 						setModalIsOpen(false);
 						history.push( "/wp-admin/admin.php?page=wpe-content-model" );
 						dispatch({type: 'removeModel', slug});

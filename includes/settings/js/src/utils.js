@@ -26,6 +26,17 @@ export function insertSidebarMenuItem(model) {
 }
 
 /**
+ * Removes the content model list item in the wp-admin sidebar menu.
+ *
+ * @param {String} slug - The content model to be removed from the sidebar.
+ */
+export function removeSidebarMenuItem(slug) {
+	const menuItem = document.querySelector(`[id="menu-posts-${slug}"]`);
+	console.log(menuItem);
+	menuItem.remove();
+}
+
+/**
  * Generates the HTML for the content model menu item.
  *
  * @param {Object} model - The content model.
