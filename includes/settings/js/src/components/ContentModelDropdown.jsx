@@ -15,13 +15,11 @@ function deleteModel( name = '' ) {
 		return;
 	}
 
-	const deleted = apiFetch({
+	return apiFetch({
 		path: `/wpe/content-model/${name}`,
 		method: "DELETE",
 		_wpnonce: wpApiSettings.nonce,
 	});
-
-	return deleted;
 }
 
 export const ContentModelDropdown = ({model}) => {
@@ -101,15 +99,18 @@ export const ContentModelDropdown = ({model}) => {
 				<button
 					className="first warning"
 					onClick={ async () => {
-						// @todo capture and show errors.
-						const deleted = await deleteModel(slug).then((res) => {
-							console.log(res);
-							console.log(slug);
-							removeSidebarMenuItem(slug);
+						// delete model and remove related menu sidebar item
+						await deleteModel(slug).then((res) => {
+							if(res.success) {
+								dispatch({type: 'removeModel', slug});
+								removeSidebarMenuItem(slug);
+							}
+						}).catch(() => {
+							// @todo capture and show errors.
 						});
+
 						setModalIsOpen(false);
 						history.push( "/wp-admin/admin.php?page=wpe-content-model" );
-						dispatch({type: 'removeModel', slug});
 					}}
 				>
 					Delete
