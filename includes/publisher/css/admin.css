@@ -1,0 +1,17 @@
+.wpe-block-field label {
+	font-family: sans-serif;
+	font-size: 21px;
+}
+
+.wpe-block-field input[type=text],
+.wpe-block-field .components-input-control.components-number-control input[type=number] {
+	font-family: sans-serif;
+	font-size: 16px;
+	height: auto;
+	padding: 15px 12px;
+}
+
+.wpe-block-field .components-datetime__timezone {
+	font-size: 16px;
+	padding: 7px 0;
+}

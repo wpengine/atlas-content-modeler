@@ -35,6 +35,14 @@ function enqueue_block_editor_assets(): void {
 		)
 	);
 
+	wp_register_style(
+		'wpe-content-model-publisher-styles',
+		WPE_CONTENT_MODEL_URL . 'includes/publisher/css/admin.css',
+		[ 'wp-components' ],
+		$plugin['Version']
+	);
+
 	// TODO: Restrict this to content model custom post types only?
 	wp_enqueue_script( 'wpe-content-model-publisher-experience' );
+	wp_enqueue_style( 'wpe-content-model-publisher-styles' );
 }
