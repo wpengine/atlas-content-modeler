@@ -30,4 +30,6 @@ function wpe_content_model_loader(): void {
 	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
 	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
 	require_once __DIR__ . '/includes/rest-api/rest-api-endpoint-registration.php';
+	require_once __DIR__ . '/includes/publisher/lib/block-templates.php';
+	require_once __DIR__ . '/includes/publisher/lib/publisher-callbacks.php';
 }
