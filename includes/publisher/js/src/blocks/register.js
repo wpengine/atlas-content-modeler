@@ -1,5 +1,10 @@
 const { registerBlockType } = wp.blocks;
-const { TextControl, DateTimePicker, __experimentalNumberControl } = wp.components;
+const {
+	__experimentalNumberControl,
+	DateTimePicker,
+	TextControl,
+	TextareaControl,
+} = wp.components;
 const NumberControl = __experimentalNumberControl;
 const { useSelect } = wp.data;
 const { useEntityProp } = wp.coreData;
@@ -39,7 +44,7 @@ const registerBlock = (field, modelName, index) => {
 
 			return (
 				<div {...blockProps}>
-					{ (field.type === 'text' || field.type === 'richtext') && (
+					{field.type === "text" && field?.textLength === "short" && (
 						<TextControl
 							label={field.name}
 							value={metaFieldValue}
@@ -47,7 +52,16 @@ const registerBlock = (field, modelName, index) => {
 							tabIndex={100 + index} // TODO: debug this — focus jumps to Block Editor sidebar instead of between fields.
 						/>
 					)}
-					{ field.type === 'date' && (
+					{((field.type === "text" && field?.textLength === "long") ||
+						field.type === "richtext") && (
+						<TextareaControl
+							label={field.name}
+							value={metaFieldValue}
+							onChange={updateMetaValue}
+							tabIndex={100 + index}
+						/>
+					)}
+					{field.type === "date" && (
 						<>
 							<label>{field.name}</label>
 							<DateTimePicker
@@ -58,7 +72,7 @@ const registerBlock = (field, modelName, index) => {
 							/>
 						</>
 					)}
-					{ field.type === 'number' && (
+					{field.type === "number" && (
 						<>
 							<NumberControl
 								label={field.name}
