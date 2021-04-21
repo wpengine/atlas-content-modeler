@@ -1,5 +1,6 @@
 const { registerBlockType } = wp.blocks;
-const { TextControl, DateTimePicker } = wp.components;
+const { TextControl, DateTimePicker, __experimentalNumberControl } = wp.components;
+const NumberControl = __experimentalNumberControl;
 const { useSelect } = wp.data;
 const { useEntityProp } = wp.coreData;
 const { useBlockProps } = wp.blockEditor;
@@ -23,7 +24,9 @@ const registerBlock = (field, modelName, index) => {
 		icon: "editor-textcolor", // TODO: use custom content model icon.
 
 		edit({ setAttributes, attributes }) {
-			const blockProps = useBlockProps();
+			const blockProps = useBlockProps({
+				className: `wpe-block-field wpe-block-field-${field.type}`,
+			});
 			const postType = useSelect(
 				(select) => select("core/editor").getCurrentPostType(),
 				[]
@@ -36,7 +39,6 @@ const registerBlock = (field, modelName, index) => {
 
 			return (
 				<div {...blockProps}>
-					{/* TODO: use other controls based on field type. */}
 					{ (field.type === 'text' || field.type === 'richtext') && (
 						<TextControl
 							label={field.name}
@@ -46,12 +48,25 @@ const registerBlock = (field, modelName, index) => {
 						/>
 					)}
 					{ field.type === 'date' && (
-						<DateTimePicker
-							currentDate={metaFieldValue}
-							onChange={updateMetaValue}
-							is12Hour={true}
-							tabIndex={100 + index}
-						/>
+						<>
+							<label>{field.name}</label>
+							<DateTimePicker
+								currentDate={metaFieldValue}
+								onChange={updateMetaValue}
+								is12Hour={true}
+								tabIndex={100 + index}
+							/>
+						</>
+					)}
+					{ field.type === 'number' && (
+						<>
+							<NumberControl
+								label={field.name}
+								isShiftStepEnabled={false}
+								onChange={updateMetaValue}
+								value={metaFieldValue}
+							/>
+						</>
 					)}
 				</div>
 			);
