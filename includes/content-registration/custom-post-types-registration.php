@@ -89,9 +89,8 @@ function get_field_meta_type( string $type ): string {
 		case 'date':
 		case 'text':
 		case 'richtext':
+		case 'repeater': // TODO: repeater should probably have the array type.
 			return 'string';
-		case 'repeater':
-			return 'array';
 		case 'media':
 			return 'object';
 		default:
