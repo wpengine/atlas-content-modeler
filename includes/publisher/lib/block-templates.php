@@ -49,7 +49,9 @@ function get_block_names( $model ) {
 		usort(
 			$fields,
 			function( $a, $b ) {
-				return (int) $a['position'] > (int) $b['position'];
+				$apos = $a['position'] ?? 0;
+				$bpos = $b['position'] ?? 0;
+				return (int) $apos > (int) $bpos;
 			}
 		);
 
