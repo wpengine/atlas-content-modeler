@@ -1,5 +1,5 @@
 const { registerBlockType } = wp.blocks;
-const { TextControl } = wp.components;
+const { TextControl, DateTimePicker } = wp.components;
 const { useSelect } = wp.data;
 const { useEntityProp } = wp.coreData;
 const { useBlockProps } = wp.blockEditor;
@@ -37,12 +37,22 @@ const registerBlock = (field, modelName, index) => {
 			return (
 				<div {...blockProps}>
 					{/* TODO: use other controls based on field type. */}
-					<TextControl
-						label={field.name}
-						value={metaFieldValue}
-						onChange={updateMetaValue}
-						tabIndex={100 + index} // TODO: debug this — focus jumps to Block Editor sidebar instead of between fields.
-					/>
+					{ (field.type === 'text' || field.type === 'richtext') && (
+						<TextControl
+							label={field.name}
+							value={metaFieldValue}
+							onChange={updateMetaValue}
+							tabIndex={100 + index} // TODO: debug this — focus jumps to Block Editor sidebar instead of between fields.
+						/>
+					)}
+					{ field.type === 'date' && (
+						<DateTimePicker
+							currentDate={metaFieldValue}
+							onChange={updateMetaValue}
+							is12Hour={true}
+							tabIndex={100 + index}
+						/>
+					)}
 				</div>
 			);
 		},

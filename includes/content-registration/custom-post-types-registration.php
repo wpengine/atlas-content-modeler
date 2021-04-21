@@ -86,6 +86,7 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
  */
 function get_field_meta_type( string $type ): string {
 	switch ( $type ) {
+		case 'date':
 		case 'text':
 		case 'richtext':
 			return 'string';
