@@ -56,7 +56,9 @@ function get_block_names( $model ) {
 		);
 
 		foreach ( $fields as $field ) {
-			$names[] = "wpe-content-model/{$model['slug']}-{$field['id']}";
+			if ( ! empty( $model['slug'] ) && ! empty( $field['id'] ) ) {
+				$names[] = "wpe-content-model/{$model['slug']}-{$field['id']}";
+			}
 		}
 	}
 
