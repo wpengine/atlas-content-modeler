@@ -53,9 +53,48 @@ function register_content_types(): void {
  * @param array  $fields Custom fields to be registered with the custom post type.
  */
 function register_meta_types( string $post_type_slug, array $fields ): void {
-	foreach ( $fields as $key => $field ) {
-		$field['object_subtype'] = $post_type_slug;
-		register_meta( 'post', $key, $field );
+	foreach ( $fields as $field ) {
+		// Register only parent fields, not children of repeater fields.
+		if ( isset( $field['parent'] ) ) {
+			continue;
+		}
+
+		$args = [
+			'object_subtype' => $post_type_slug,
+			'show_in_rest'   => true, // TODO: add show_in_rest.schema.items for repeater fields and other array types.
+			'single'         => true, // TODO: make this false for repeater fields and images where 'multiple' is true.
+			'type'           => get_field_meta_type( $field['type'] ),
+			'auth_callback'  => function() {
+				return current_user_can( 'edit_posts' );
+			},
+		];
+
+		register_meta( 'post', '_' . $field['slug'], $args );
+	}
+}
+
+/**
+ * Gets WordPress meta field type from the Content Model field type.
+ *
+ * WordPress supports types of 'string', 'boolean', 'integer', 'number',
+ * 'array' and 'object' as meta fields. Content Model field types need
+ * to be adjusted so that data is stored as a valid type.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_meta/#parameters See 'type' under '$args'.
+ * @param string $type Content Model field type, such as 'repeater' or 'media'.
+ * @return string Meta field type.
+ */
+function get_field_meta_type( string $type ): string {
+	switch ( $type ) {
+		case 'text':
+		case 'richtext':
+			return 'string';
+		case 'repeater':
+			return 'array';
+		case 'media':
+			return 'object';
+		default:
+			return $type; // 'number' and 'boolean' need no adjustment.
 	}
 }
 
