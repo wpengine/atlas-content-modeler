@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fields when given a model, it renders a list of its fields 1`] = `
+Array [
+  <div
+    className="field text"
+  >
+    <label
+      htmlFor="wpe-content-model[geese][firstName]"
+    >
+      First Name
+    </label>
+    <br />
+    <input
+      defaultValue="Lucy"
+      id="wpe-content-model[geese][firstName]"
+      name="wpe-content-model[geese][firstName]"
+      type="text"
+    />
+  </div>,
+  <div
+    className="field text"
+  >
+    <label
+      htmlFor="wpe-content-model[geese][lastName]"
+    >
+      Last Name
+    </label>
+    <br />
+    <input
+      defaultValue="Goosey"
+      id="wpe-content-model[geese][lastName]"
+      name="wpe-content-model[geese][lastName]"
+      type="text"
+    />
+  </div>,
+  <div
+    className="field number"
+  >
+    <label
+      htmlFor="wpe-content-model[geese][age]"
+    >
+      Age
+    </label>
+    <br />
+    <input
+      defaultValue="42"
+      id="wpe-content-model[geese][age]"
+      name="wpe-content-model[geese][age]"
+      type="number"
+    />
+  </div>,
+]
+`;
