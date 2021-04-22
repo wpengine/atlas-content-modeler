@@ -39,6 +39,8 @@
 		<exclude name="WordPress.PHP.YodaConditions" />
 		<exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch" />
 		<exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase" />
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 	</rule>
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
