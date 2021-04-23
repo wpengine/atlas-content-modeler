@@ -325,7 +325,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$field['type'] = $gql_field_type;
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field ) {
-				$value = get_post_meta( $post->databaseId, $field['slug'], true );
+				$value = get_post_meta( $post->databaseId, '_' . $field['slug'], true );
 
 				/**
 				 * If WPGraphQL expects a float and something else is returned instead
