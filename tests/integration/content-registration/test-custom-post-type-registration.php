@@ -54,11 +54,11 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 			'post_type' => 'dog',
 		] );
 
-		update_post_meta( $this->dog_post_id, 'dog-test-field', 'dog-test-field string value' );
-		update_post_meta( $this->dog_post_id, 'dog-weight', '100.25' );
-		update_post_meta( $this->dog_post_id, 'dog-rich-text', 'dog-rich-text string value' );
-		update_post_meta( $this->dog_post_id, 'dog-boolean', 'this string will be cast to a boolean by WPGraphQL' );
-		update_post_meta( $this->dog_post_id, 'dog-repeater', 'dog-repeater string value' );
+		update_post_meta( $this->dog_post_id, '_dog-test-field', 'dog-test-field string value' );
+		update_post_meta( $this->dog_post_id, '_dog-weight', '100.25' );
+		update_post_meta( $this->dog_post_id, '_dog-rich-text', 'dog-rich-text string value' );
+		update_post_meta( $this->dog_post_id, '_dog-boolean', 'this string will be cast to a boolean by WPGraphQL' );
+		update_post_meta( $this->dog_post_id, '_dog-repeater', 'dog-repeater string value' );
 	}
 
 	public function tearDown() {
@@ -84,11 +84,11 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertArrayHasKey( 'dog-test-field', $response_data['meta'] );
-		$this->assertSame( $response_data['meta']['dog-test-field'][0], 'dog-test-field string value' );
+		$this->assertArrayHasKey( '_dog-test-field', $response_data['meta'] );
+		$this->assertSame( $response_data['meta']['_dog-test-field'], 'dog-test-field string value' );
 
-		self::assertArrayHasKey( 'dog-weight', $response_data['meta'] );
-		self::assertEquals( '100.25', $response_data['meta']['dog-weight'][0] );
+		self::assertArrayHasKey( '_dog-weight', $response_data['meta'] );
+		self::assertEquals( '100.25', $response_data['meta']['_dog-weight'] );
 	}
 
 	public function test_post_meta_that_is_configured_to_not_show_in_rest_is_not_accessible(): void {
