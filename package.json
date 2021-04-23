@@ -38,5 +38,10 @@
   },
   "externals": [
     "apiFetch => window.wp.apiFetch"
-  ]
+  ],
+  "alias": {
+    "react": { "global": "React" },
+    "react-dom": { "global": "ReactDOM" },
+    "@wordpress/api-fetch": { "global": "wp.apiFetch" }
+  }
 }
