@@ -12,11 +12,13 @@ const { useEntityProp } = wp.coreData;
 const { useBlockProps } = wp.blockEditor;
 
 export const registerContentModelBlock = (fields, modelName) => {
-	const topLevelFields = Object.values(fields).filter((field) => {
+	let topLevelFields = Object.values(fields).filter((field) => {
 		return field?.parent === undefined;
 	});
 
-	// order top level fields by position.
+	topLevelFields = topLevelFields.sort(
+		(a, b) => (a?.position || 0) - (b?.position || 0)
+	);
 
 	registerBlockType(`wpe-content-model/${modelName}`, {
 		title: modelName + ' Fields',
