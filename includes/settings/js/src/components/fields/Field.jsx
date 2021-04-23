@@ -114,7 +114,7 @@ function Field({
 							{editing ? `Editing` : `New`} {formFieldTitle} Field
 						</h3>
 					</div>
-					<div className="">
+					<div>
 						<FieldOptionsDropdown field={data} model={model} />
 						{
 							data.type === "repeater" && (
