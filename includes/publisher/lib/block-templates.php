@@ -20,6 +20,6 @@ function content_model_templates() {
 
 	foreach ( $models as $id => $model ) {
 		$model_data           = get_post_type_object( $id );
-		$model_data->template = [ [ 'wpe-content-model/' .$id ] ];
+		$model_data->template = [ [ 'wpe-content-model/' . $id ] ];
 	}
 }
