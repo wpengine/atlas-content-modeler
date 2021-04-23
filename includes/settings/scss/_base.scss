@@ -1,21 +1,23 @@
 @import 'variables';
 
-/**
-Flex Generic
- */
+/** Flex Generic */
 .flex-parent {
 	display: flex;
 	width: 100%;
 }
+
 .flex-column {
 	flex-flow: column;
 }
+
 .flex-row {
 	flex-flow: row;
 }
+
 .flex-grow {
 	flex-grow: 1;
 }
+
 .flex-item {
 	flex: 1 1 auto;
 }
