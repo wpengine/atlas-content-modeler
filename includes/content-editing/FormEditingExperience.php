@@ -94,13 +94,15 @@ final class FormEditingExperience {
 		$model  = $models[ $this->current_screen_post_type ];
 
 		// Add existing field values to models data.
-		foreach ( $model['fields'] as $key => $field ) {
-			// @todo wire up repeaters. for now, remove child fields to avoid confusion.
-			if ( ! empty( $field['parent'] ) ) {
-				unset( $models[ $this->current_screen_post_type ]['fields'][ $key ] );
-				continue;
+		if ( ! empty( $model['fields'] ) ) {
+			foreach ( $model['fields'] as $key => $field ) {
+				// @todo wire up repeaters. for now, remove child fields to avoid confusion.
+				if ( ! empty( $field['parent'] ) ) {
+					unset( $models[ $this->current_screen_post_type ]['fields'][ $key ] );
+					continue;
+				}
+				$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
 			}
-			$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
 		}
 
 		wp_localize_script(
