@@ -108,9 +108,25 @@ function Field({
 				<FieldButtons activeButton={activeForm} clickAction={setActiveForm} />
 			)}
 			<div className={editing ? 'field-form editing' : 'field-form'}>
-				<h3>
-					{editing ? `Editing` : `New`} {formFieldTitle} Field
-				</h3>
+				<div className="flex-parent flex-row">
+					<div className="flex-grow">
+						<h3>
+							{editing ? `Editing` : `New`} {formFieldTitle} Field
+						</h3>
+					</div>
+					<div className="">
+						<FieldOptionsDropdown field={data} model={model} />
+						{
+							data.type === "repeater" && (
+								<Repeater
+									fields={data?.subfields}
+									model={model} parent={id}
+									setInfoTag={setInfoTag}
+								/>
+							)
+						}
+					</div>
+				</div>
 				<Form
 					type={activeForm}
 					storedData={data}
