@@ -11,89 +11,90 @@ const { useSelect } = wp.data;
 const { useEntityProp } = wp.coreData;
 const { useBlockProps } = wp.blockEditor;
 
-export const registerContentModelBlocks = (fields, modelName) => {
+export const registerContentModelBlock = (fields, modelName) => {
 	const topLevelFields = Object.values(fields).filter((field) => {
 		return field?.parent === undefined;
 	});
 
-	topLevelFields.forEach((field, index) => {
-		registerBlock(field, modelName, index);
-	});
-};
+	// order top level fields by position.
 
-const registerBlock = (field, modelName, index) => {
-	const blockName = `${modelName}-${field.id}`;
-	const metaKey = `_${field.slug}`;
-
-	registerBlockType(`wpe-content-model/${blockName}`, {
-		title: field.name,
+	registerBlockType(`wpe-content-model/${modelName}`, {
+		title: modelName + ' Fields',
 		icon: "editor-textcolor", // TODO: use custom content model icon.
 
 		edit({ setAttributes, attributes }) {
 			const blockProps = useBlockProps({
-				className: `wpe-block-field wpe-block-field-${field.type}`,
+				className: `wpe-block wpe-block-${modelName}`,
 			});
 			const postType = useSelect(
 				(select) => select("core/editor").getCurrentPostType(),
 				[]
 			);
 			const [meta, setMeta] = useEntityProp("postType", postType, "meta");
-			const metaFieldValue = meta[metaKey];
-			function updateMetaValue(newValue) {
+			function updateMetaValue(newValue, metaKey) {
 				setMeta({ ...meta, [metaKey]: newValue });
 			}
 
 			return (
 				<div {...blockProps}>
-					{field.type === "text" && field?.textLength === "short" && (
-						<TextControl
-							label={field.name}
-							value={metaFieldValue}
-							onChange={updateMetaValue}
-							tabIndex={100 + index} // TODO: debug this — focus jumps to Block Editor sidebar instead of between fields.
-						/>
-					)}
-					{((field.type === "text" && field?.textLength === "long") ||
-						field.type === "richtext") && (
-						<TextareaControl
-							label={field.name}
-							value={metaFieldValue}
-							onChange={updateMetaValue}
-							tabIndex={100 + index}
-						/>
-					)}
-					{field.type === "date" && (
-						<>
-							<label>{field.name}</label>
-							<DateTimePicker
-								currentDate={metaFieldValue}
-								onChange={updateMetaValue}
-								is12Hour={true}
-								tabIndex={100 + index}
-							/>
-						</>
-					)}
-					{field.type === "boolean" && (
-						<>
-							<label>{field.name}</label>
-							<CheckboxControl
-								label={field.name}
-								checked={metaFieldValue}
-								onChange={updateMetaValue}
-								tabIndex={100 + index}
-							/>
-						</>
-					)}
-					{field.type === "number" && (
-						<>
-							<NumberControl
-								label={field.name}
-								isShiftStepEnabled={false}
-								onChange={updateMetaValue}
-								value={metaFieldValue}
-							/>
-						</>
-					)}
+					{ topLevelFields.map((field, index) => {
+						const metaKey = `_${field.slug}`;
+
+						return (
+							<div key={metaKey}>
+								{field.type === "text" && field?.textLength === "short" && (
+									<TextControl
+										label={field.name}
+										value={meta[metaKey]}
+										onChange={(newValue) => updateMetaValue(newValue, metaKey)}
+									/>
+								)}
+
+								{((field.type === "text" && field?.textLength === "long") ||
+									field.type === "richtext") && (
+									<TextareaControl
+										label={field.name}
+										value={meta[metaKey]}
+										onChange={(newValue) => updateMetaValue(newValue, metaKey)}
+									/>
+								)}
+
+								{field.type === "date" && (
+									<>
+										<label>{field.name}</label>
+										<DateTimePicker
+											currentDate={meta[metaKey]}
+											onChange={(newValue) => updateMetaValue(newValue, metaKey)}
+											is12Hour={true}
+										/>
+									</>
+								)}
+
+								{field.type === "boolean" && (
+									<>
+										<label>{field.name}</label>
+										<CheckboxControl
+											label={field.name}
+											checked={meta[metaKey]}
+											onChange={(newValue) => updateMetaValue(newValue, metaKey)}
+										/>
+									</>
+								)}
+
+								{field.type === "number" && (
+									<>
+										<NumberControl
+											label={field.name}
+											value={meta[metaKey]}
+											isShiftStepEnabled={false}
+											onChange={(newValue) => updateMetaValue(newValue, metaKey)}
+										/>
+									</>
+								)}
+							</div>
+						);
+
+					})}
 				</div>
 			);
 		},
