@@ -1,6 +1,7 @@
 const { registerBlockType } = wp.blocks;
 const {
 	__experimentalNumberControl,
+	CheckboxControl,
 	DateTimePicker,
 	TextControl,
 	TextareaControl,
@@ -68,6 +69,17 @@ const registerBlock = (field, modelName, index) => {
 								currentDate={metaFieldValue}
 								onChange={updateMetaValue}
 								is12Hour={true}
+								tabIndex={100 + index}
+							/>
+						</>
+					)}
+					{field.type === "boolean" && (
+						<>
+							<label>{field.name}</label>
+							<CheckboxControl
+								label={field.name}
+								checked={metaFieldValue}
+								onChange={updateMetaValue}
 								tabIndex={100 + index}
 							/>
 						</>
