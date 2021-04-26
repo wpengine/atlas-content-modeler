@@ -165,7 +165,7 @@ final class FormEditingExperience {
 			"Editing {$model['name']}",
 			static function() {
 				wp_nonce_field( 'wpe-content-model-pubex-nonce', 'wpe-content-model-pubex-nonce' );
-				echo '<div id="wpe-content-model-fields-app" class="hidden"></div>';
+				echo '<div id="wpe-content-model-fields-app"></div>';
 			},
 			$post_type,
 			'normal',

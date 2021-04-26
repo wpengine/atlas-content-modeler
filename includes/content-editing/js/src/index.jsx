@@ -38,8 +38,4 @@ window.addEventListener('DOMContentLoaded', (event) => {
 	}
 
 	richTextFields.forEach( field => tinymce.execCommand('mceAddEditor', false, field) );
-
-	setTimeout( () => {
-		document.getElementById('wpe-content-model-fields-app').classList.remove('hidden')
-	}, 500 );
 });
