@@ -46,7 +46,7 @@ function enqueue_settings_assets( $hook ) {
 	wp_register_script(
 		'wpe-content-model-app',
 		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.js',
-		[ 'wp-api', 'wp-api-fetch', 'react' ],
+		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom' ],
 		$plugin['Version'],
 		true
 	);
