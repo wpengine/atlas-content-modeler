@@ -6,7 +6,7 @@
     "build": "parcel build includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --no-source-maps --public-url .",
     "start": "parcel watch includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --public-url .",
     "style": "prettier --check .",
-    "style-fix": "prettier --write .",
+    "style:fix": "prettier --write .",
     "test": "jest --watch"
   },
   "author": "",
