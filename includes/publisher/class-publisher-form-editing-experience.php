@@ -84,7 +84,7 @@ final class FormEditingExperience {
 
 		wp_register_script(
 			'wpe-content-model-form-editing-experience',
-			WPE_CONTENT_MODEL_URL . 'includes/content-editing/dist/index.js',
+			WPE_CONTENT_MODEL_URL . 'includes/publisher/dist/index.js',
 			[ 'react', 'wp-tinymce' ],
 			$plugin['Version'],
 			true
