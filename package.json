@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "run-s build-settings build-publisher-form",
+    "build": "run-s build-settings build-publisher",
     "build-settings": "parcel build includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --no-source-maps --public-url .",
-    "build-publisher": "parcel build includes/publisher/js/src/index.jsx --dist-dir includes/settings/dist --no-source-maps --public-url .",
-    "build-publisher-form": "parcel build includes/content-editing/js/src/index.jsx --dist-dir includes/content-editing/dist --no-source-maps --public-url .",
+    "build-publisher": "parcel build includes/publisher/js/src/index.jsx --dist-dir includes/publisher/dist --no-source-maps --public-url .",
+    "start": "run-p start-settings start-publisher",
     "start-settings": "parcel watch includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --public-url .",
     "start-publisher": "parcel watch includes/publisher/js/src/index.jsx --port 1235 --dist-dir includes/publisher/dist --public-url .",
-    "start-publisher-form": "parcel watch includes/content-editing/js/src/index.jsx --port 1235 --dist-dir includes/content-editing/dist --public-url .",
     "test": "jest --watch"
   },
   "author": "",
