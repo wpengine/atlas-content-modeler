@@ -1,11 +1,11 @@
 /**
  * Additional form fields for the Number field type.
  */
-import React from 'react';
+import React from "react";
 
-const NumberFields = ({register, data, editing}) => {
+const NumberFields = ({ register, data, editing }) => {
 	return (
-		<div className={editing ? 'field read-only editing': 'field'}>
+		<div className={editing ? "field read-only editing" : "field"}>
 			<legend>Number Type</legend>
 			<fieldset>
 				<div className="radio-row">
@@ -16,7 +16,8 @@ const NumberFields = ({register, data, editing}) => {
 						value="integer"
 						ref={register}
 						defaultChecked={
-							data?.numberType === "integer" || typeof data?.numberType === "undefined"
+							data?.numberType === "integer" ||
+							typeof data?.numberType === "undefined"
 						}
 						disabled={editing}
 					/>

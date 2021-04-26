@@ -1,30 +1,30 @@
-import React, {useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import Icon from "../icons";
 import Modal from "react-modal";
-import {ModelsContext} from "../../ModelsContext";
-import {maybeCloseDropdown} from "../../utils";
+import { ModelsContext } from "../../ModelsContext";
+import { maybeCloseDropdown } from "../../utils";
 
 const { apiFetch } = wp;
 
-export const FieldOptionsDropdown = ({field, model}) => {
+export const FieldOptionsDropdown = ({ field, model }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { dispatch } = useContext(ModelsContext);
 
 	const customStyles = {
 		overlay: {
-			backgroundColor: 'rgba(0, 40, 56, 0.7)'
+			backgroundColor: "rgba(0, 40, 56, 0.7)",
 		},
 		content: {
-			top: '50%',
-			left: '50%',
-			right: 'auto',
-			bottom: 'auto',
-			marginRight: '-50%',
-			transform: 'translate(-50%, -50%)',
-			border: 'none',
-			padding: '40px'
-		}
+			top: "50%",
+			left: "50%",
+			right: "auto",
+			bottom: "auto",
+			marginRight: "-50%",
+			transform: "translate(-50%, -50%)",
+			border: "none",
+			padding: "40px",
+		},
 	};
 
 	return (
@@ -35,9 +35,9 @@ export const FieldOptionsDropdown = ({field, model}) => {
 				onClick={() => setDropdownOpen(!dropdownOpen)}
 				aria-label={`Options for the ${field.name} field.`}
 			>
-				<Icon type="options"/>
+				<Icon type="options" />
 			</button>
-			<div className={`dropdown-content ${dropdownOpen ? '' : 'hidden'}`}>
+			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
 				<a
 					className="delete"
 					href="#"
@@ -56,14 +56,22 @@ export const FieldOptionsDropdown = ({field, model}) => {
 				contentLabel={`Delete the ${field.name} field from ${model.name}?`}
 				portalClassName="wpe-content-model-delete-field-modal-container"
 				onRequestClose={() => {
-					setModalIsOpen(false)
+					setModalIsOpen(false);
 				}}
 				field={field}
 				style={customStyles}
 			>
-				<h2>Delete the {field.name} field from {model.name}?</h2>
-				<p>This will not delete actual data stored in this field. It only deletes the field definition.</p>
-				<p>Are you sure you want to delete the {field.name} field from {model.name}?</p>
+				<h2>
+					Delete the {field.name} field from {model.name}?
+				</h2>
+				<p>
+					This will not delete actual data stored in this field. It
+					only deletes the field definition.
+				</p>
+				<p>
+					Are you sure you want to delete the {field.name} field from{" "}
+					{model.name}?
+				</p>
 				<button
 					type="submit"
 					form={field.id}
@@ -71,12 +79,16 @@ export const FieldOptionsDropdown = ({field, model}) => {
 					onClick={async () => {
 						apiFetch({
 							path: `/wpe/content-model-field/${field.id}`,
-							method: 'DELETE',
-							body: JSON.stringify( { model: model.slug } ),
+							method: "DELETE",
+							body: JSON.stringify({ model: model.slug }),
 							_wpnonce: wpApiSettings.nonce,
 						});
 						setModalIsOpen(false);
-						dispatch({type: 'removeField', id: field.id, model: model.slug})
+						dispatch({
+							type: "removeField",
+							id: field.id,
+							model: model.slug,
+						});
 					}}
 				>
 					Delete
@@ -84,7 +96,7 @@ export const FieldOptionsDropdown = ({field, model}) => {
 				<button
 					className="tertiary"
 					onClick={() => {
-						setModalIsOpen(false)
+						setModalIsOpen(false);
 					}}
 				>
 					Cancel
@@ -92,4 +104,4 @@ export const FieldOptionsDropdown = ({field, model}) => {
 			</Modal>
 		</span>
 	);
-}
+};

@@ -12,19 +12,19 @@ export const ModelsContext = React.createContext(null);
  * `settings-callbacks.php` to set initial state without needing a fetch here.
  */
 export function ModelsContextProvider(props) {
-	const [ models, dispatch ] = useReducer(
+	const [models, dispatch] = useReducer(
 		reducer,
 		wpeContentModel?.initialState
 	);
 
 	return (
 		<ModelsContext.Provider
-			value={ {
+			value={{
 				models,
 				dispatch,
-			} }
+			}}
 		>
-			{ props.children }
+			{props.children}
 		</ModelsContext.Provider>
 	);
 }

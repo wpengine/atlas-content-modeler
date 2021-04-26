@@ -1,7 +1,7 @@
 /**
  * Actions to update global content model state.
  */
-import {getChildrenOfField} from "./queries";
+import { getChildrenOfField } from "./queries";
 
 export function reducer(state, action) {
 	switch (action.type) {
@@ -13,7 +13,8 @@ export function reducer(state, action) {
 				...action.data,
 			};
 			state[action.data.postTypeSlug].name = action.data.plural;
-			state[action.data.postTypeSlug].singular_name = action.data.singular;
+			state[action.data.postTypeSlug].singular_name =
+				action.data.singular;
 			return { ...state };
 		case "addModel":
 			return {
@@ -53,8 +54,11 @@ export function reducer(state, action) {
 			return { ...state };
 		case "removeField":
 			// Also remove descendents of repeater fields.
-			if (state[action.model]["fields"][action.id]?.type === 'repeater') {
-				const children = getChildrenOfField(action.id, state[action.model]["fields"]);
+			if (state[action.model]["fields"][action.id]?.type === "repeater") {
+				const children = getChildrenOfField(
+					action.id,
+					state[action.model]["fields"]
+				);
 				children.forEach((subfieldId) => {
 					delete state[action.model]["fields"][subfieldId];
 				});
@@ -66,7 +70,8 @@ export function reducer(state, action) {
 			return { ...state };
 		case "reorderFields":
 			Object.keys(action.positions).forEach((fieldId) => {
-				state[action.model]["fields"][fieldId].position = action.positions[fieldId].position;
+				state[action.model]["fields"][fieldId].position =
+					action.positions[fieldId].position;
 			});
 			return { ...state };
 		default:

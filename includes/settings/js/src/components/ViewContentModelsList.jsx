@@ -39,9 +39,7 @@ export default function ViewContentModelsList() {
 					</ul>
 				) : (
 					<div className="model-list-empty">
-						<p>
-							You currently have no Content Models.
-						</p>
+						<p>You currently have no Content Models.</p>
 						<button
 							onClick={() =>
 								history.push(
@@ -60,7 +58,7 @@ export default function ViewContentModelsList() {
 
 function ContentModels({ models }) {
 	return Object.keys(models).map((slug) => {
-		const { name, description, fields={} } = models[slug];
+		const { name, description, fields = {} } = models[slug];
 		return (
 			<li key={slug}>
 				<Link
@@ -79,7 +77,9 @@ function ContentModels({ models }) {
 					</span>
 					<span>
 						<p className="label">Fields</p>
-						<p className="value">{Object.keys(getRootFields(fields)).length}</p>
+						<p className="value">
+							{Object.keys(getRootFields(fields)).length}
+						</p>
 					</span>
 					<span>
 						<p className="label">Created</p>
