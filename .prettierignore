@@ -1,0 +1,11 @@
+*.lock
+*.md
+*.yml
+*tests/_output
+.cache/
+.idea/
+.parcel-cache/
+/vendor/
+composer.json
+dist
+node_modules
