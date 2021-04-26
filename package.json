@@ -5,6 +5,8 @@
   "scripts": {
     "build": "parcel build includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --no-source-maps --public-url .",
     "start": "parcel watch includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --public-url .",
+    "style": "prettier --check .",
+    "style:fix": "prettier --write .",
     "test": "jest --watch"
   },
   "author": "",
@@ -33,6 +35,7 @@
     "jest-transform-css": "^2.1.0",
     "parcel": "^2.0.0-nightly.635",
     "postcss": "^8.2.6",
+    "prettier": "2.2.1",
     "react-test-renderer": "^17.0.1",
     "sass": "^1.32.8"
   },
