@@ -9,6 +9,8 @@
     "start": "run-p start-settings start-publisher",
     "start-settings": "parcel watch includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --public-url .",
     "start-publisher": "parcel watch includes/publisher/js/src/index.jsx --port 1235 --dist-dir includes/publisher/dist --public-url .",
+    "style": "prettier --check .",
+    "style:fix": "prettier --write .",
     "test": "jest --watch"
   },
   "author": "",
@@ -38,10 +40,13 @@
     "npm-run-all": "^4.1.5",
     "parcel": "^2.0.0-nightly.635",
     "postcss": "^8.2.6",
+    "prettier": "2.2.1",
     "react-test-renderer": "^17.0.1",
     "sass": "^1.32.8"
   },
-  "externals": [
-    "apiFetch => window.wp.apiFetch"
-  ]
+  "alias": {
+    "react": { "global": "React" },
+    "react-dom": { "global": "ReactDOM" },
+    "@wordpress/api-fetch": { "global": "wp.apiFetch" }
+  }
 }
