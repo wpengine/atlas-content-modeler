@@ -101,7 +101,10 @@ final class FormEditingExperience {
 					unset( $models[ $this->current_screen_post_type ]['fields'][ $key ] );
 					continue;
 				}
-				$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+
+				if(isset($post->ID)) {
+					$models[$this->current_screen_post_type]['fields'][$key]['value'] = get_post_meta($post->ID, $field['slug'], true);
+				}
 			}
 		}
 
