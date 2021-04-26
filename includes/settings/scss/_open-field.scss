@@ -43,6 +43,10 @@ li.open-field {
 
 .field-form.editing {
 	box-shadow: none;
+
+	button.options {
+		padding: 0 5px;
+	}
 }
 
 .field-form h3 {
