@@ -1,29 +1,30 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
-export default function Field( props ) {
+export default function Field(props) {
 	const { field, modelSlug } = props;
 	return (
 		<>
 			<div className={`field ${field.type}`}>
-				{ fieldMarkup( field, modelSlug ) }
+				{fieldMarkup(field, modelSlug)}
 			</div>
 		</>
 	);
 }
 
 // @todo wire up to react-hook-form, validate data, display errors.
-function fieldMarkup( field, modelSlug ) {
-	switch ( field.type ) {
-		case 'text':
-		case 'number': // @todo split this out to support mix/max/step/etc.
-		case 'date': // @todo split this out for proper browser and datepicker support
+function fieldMarkup(field, modelSlug) {
+	switch (field.type) {
+		case "text":
+		case "number": // @todo split this out to support mix/max/step/etc.
+		case "date": // @todo split this out for proper browser and datepicker support
 			return (
 				<>
 					<label
-						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>
+						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					>
 						{field.name}
 					</label>
-					<br/>
+					<br />
 					<input
 						type={`${field.type}`}
 						name={`wpe-content-model[${modelSlug}][${field.slug}]`}
@@ -33,14 +34,15 @@ function fieldMarkup( field, modelSlug ) {
 				</>
 			);
 
-		case 'richtext':
+		case "richtext":
 			return (
 				<>
 					<label
-						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>
+						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					>
 						{field.name}
 					</label>
-					<br/>
+					<br />
 					<textarea
 						name={`wpe-content-model[${modelSlug}][${field.slug}]`}
 						id={`wpe-content-model[${modelSlug}][${field.slug}]`}
@@ -49,8 +51,10 @@ function fieldMarkup( field, modelSlug ) {
 				</>
 			);
 
-		case 'boolean':
-			const [ checked, setChecked ] = useState( field.value === 'on' ? true: false );
+		case "boolean":
+			const [checked, setChecked] = useState(
+				field.value === "on" ? true : false
+			);
 			return (
 				<>
 					<input
@@ -61,13 +65,14 @@ function fieldMarkup( field, modelSlug ) {
 						onChange={(event) => setChecked(!checked)}
 					/>
 					<label
-						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>
+						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					>
 						{field.name}
 					</label>
 				</>
 			);
 
 		default:
-			return (`TODO: ${field.type} fields`);
+			return `TODO: ${field.type} fields`;
 	}
 }

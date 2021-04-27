@@ -1,5 +1,5 @@
 import React from "react";
-import {act, create} from 'react-test-renderer';
+import { act, create } from "react-test-renderer";
 import Fields from "../../../includes/content-editing/js/src/components/Fields";
 
 const model = {
@@ -11,7 +11,7 @@ const model = {
 			slug: "firstName",
 			type: "text",
 			value: "Lucy",
-			position: 0
+			position: 0,
 		},
 		2: {
 			id: 2,
@@ -19,7 +19,7 @@ const model = {
 			slug: "lastName",
 			type: "text",
 			value: "Goosey",
-			position: 1
+			position: 1,
 		},
 		3: {
 			id: 3,
@@ -27,16 +27,16 @@ const model = {
 			slug: "age",
 			type: "number",
 			value: "42",
-			position: 2
-		}
-	}
-}
+			position: 2,
+		},
+	},
+};
 
-describe('Fields', () => {
+describe("Fields", () => {
 	let root;
-	it( 'when given a model, it renders a list of its fields', () => {
+	it("when given a model, it renders a list of its fields", () => {
 		act(() => {
-			root = create(<Fields model={model}/>);
+			root = create(<Fields model={model} />);
 		});
 
 		expect(root.toJSON()).toMatchSnapshot();
