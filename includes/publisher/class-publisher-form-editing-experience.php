@@ -110,7 +110,7 @@ final class FormEditingExperience {
 					continue;
 				}
 
-				if(isset($post->ID)) {
+				if( isset( $post->ID ) ) {
 					$models[$this->current_screen_post_type]['fields'][$key]['value'] = get_post_meta($post->ID, $field['slug'], true);
 				}
 			}
