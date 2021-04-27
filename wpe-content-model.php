@@ -30,4 +30,8 @@ function wpe_content_model_loader(): void {
 	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
 	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
 	require_once __DIR__ . '/includes/rest-api/rest-api-endpoint-registration.php';
+	require_once __DIR__ . '/includes/publisher/class-publisher-form-editing-experience.php';
+
+	$form_editing_experience = new \WPE\ContentModel\FormEditingExperience();
+	$form_editing_experience->bootstrap();
 }
