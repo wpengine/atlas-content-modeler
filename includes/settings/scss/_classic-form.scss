@@ -96,7 +96,7 @@
 			}
 		}
 
-		/* On mouse-over, add a grey background color */
+		/* On mouse-over, focus add a purple border color */
 		.check-container:hover input ~ .checkmark {
 			border-color: #7E5CEF !important;
 		}
