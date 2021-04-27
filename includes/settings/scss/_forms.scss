@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 .wpe-content-model-admin-page input,
 .wpe-content-model-admin-page textarea {
@@ -97,12 +97,12 @@ input[aria-invalid="true"] {
 	border-color: $color-warning;
 }
 
-input[type=radio]:checked::before {
+input[type="radio"]:checked::before {
 	background-color: $color-text;
 }
 
-input[type=checkbox],
-input[type=radio] {
+input[type="checkbox"],
+input[type="radio"] {
 	margin: 0;
 }
 
@@ -116,7 +116,7 @@ input[type=radio] {
 	margin-bottom: 10px;
 }
 
-.wpe-content-model-admin-page .radio-row input[type=radio] {
+.wpe-content-model-admin-page .radio-row input[type="radio"] {
 	margin-right: 20px;
 }
 

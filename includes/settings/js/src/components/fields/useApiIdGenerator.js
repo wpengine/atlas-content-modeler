@@ -29,7 +29,9 @@ export function useApiIdGenerator({
 	editing = false,
 	setValue,
 }) {
-	const [input, setApiIdGeneratorInput] = useState(storedData[inputFieldId] || "");
+	const [input, setApiIdGeneratorInput] = useState(
+		storedData[inputFieldId] || ""
+	);
 
 	// The name and API ID fields are “linked” if typing into the name field
 	// should update the value of the API ID field.

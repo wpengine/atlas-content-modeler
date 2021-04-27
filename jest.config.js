@@ -1,6 +1,6 @@
 module.exports = {
 	name: "WPE Content Model",
-	"globals": {
-		wp: {}
+	globals: {
+		wp: {},
 	},
 };

@@ -45,8 +45,14 @@
     "sass": "^1.32.8"
   },
   "alias": {
-    "react": { "global": "React" },
-    "react-dom": { "global": "ReactDOM" },
-    "@wordpress/api-fetch": { "global": "wp.apiFetch" }
+    "react": {
+      "global": "React"
+    },
+    "react-dom": {
+      "global": "ReactDOM"
+    },
+    "@wordpress/api-fetch": {
+      "global": "wp.apiFetch"
+    }
   }
 }

@@ -31,8 +31,10 @@ export function insertSidebarMenuItem(model) {
  * @param {String} slug - The content model item to be removed from the sidebar. Lowercased.
  */
 export function removeSidebarMenuItem(slug) {
-	const menuItem = document.querySelector(`[id="menu-posts-${slug.toLowerCase()}"]`);
-	if(menuItem) {
+	const menuItem = document.querySelector(
+		`[id="menu-posts-${slug.toLowerCase()}"]`
+	);
+	if (menuItem) {
 		menuItem.remove();
 	}
 }
@@ -44,10 +46,12 @@ export function removeSidebarMenuItem(slug) {
  * @returns {string} - HTML list item markup for the specified content model.
  */
 export function generateSidebarMenuItem(model) {
-	let {slug, labels: {name}} = model;
+	let {
+		slug,
+		labels: { name },
+	} = model;
 	slug = slug.toLowerCase();
-	return (
-		`<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" id="menu-posts-${slug}">
+	return `<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" id="menu-posts-${slug}">
 				<a href="edit.php?post_type=${slug}" class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" aria-haspopup="true">
 					<div class="wp-menu-arrow">
 						<div></div>
@@ -64,8 +68,7 @@ export function generateSidebarMenuItem(model) {
 						<a href="post-new.php?post_type=${slug}">Add New</a>
 					</li>
 				</ul>
-			</li>`
-	);
+			</li>`;
 }
 
 /**
@@ -75,9 +78,11 @@ export function generateSidebarMenuItem(model) {
  */
 export const maybeCloseDropdown = (setDropdownOpen) => {
 	setTimeout(() => {
-		const dropDownLinkIsInFocus = document?.activeElement?.parentElement.className.startsWith("dropdown-content");
+		const dropDownLinkIsInFocus = document?.activeElement?.parentElement.className.startsWith(
+			"dropdown-content"
+		);
 		if (!dropDownLinkIsInFocus) {
 			setDropdownOpen(false);
 		}
-	}, 100)
+	}, 100);
 };

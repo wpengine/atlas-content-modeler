@@ -1,11 +1,11 @@
 /**
  * Additional form fields for the Text field type.
  */
-import React from 'react';
+import React from "react";
 
-const TextFields = ({register, data, editing}) => {
+const TextFields = ({ register, data, editing }) => {
 	return (
-		<div className={editing ? 'field read-only editing': 'field'}>
+		<div className={editing ? "field read-only editing" : "field"}>
 			<legend>Text Length</legend>
 			<fieldset>
 				<div className="radio-row">
@@ -16,7 +16,8 @@ const TextFields = ({register, data, editing}) => {
 						value="short"
 						ref={register}
 						defaultChecked={
-							data?.textLength === "short" || typeof data?.textLength === "undefined"
+							data?.textLength === "short" ||
+							typeof data?.textLength === "undefined"
 						}
 						disabled={editing}
 					/>

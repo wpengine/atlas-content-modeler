@@ -1,12 +1,12 @@
 import React from "react";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import Icon from "./components/icons";
 
 export function showSuccess(message) {
 	toast(
 		() => (
 			<>
-				<Icon type="tick"/>
+				<Icon type="tick" />
 				<span>{message}</span>
 			</>
 		),
@@ -20,15 +20,12 @@ export function showSuccess(message) {
 
 export function showError(message) {
 	toast(
-		({closeToast}) => (
+		({ closeToast }) => (
 			<>
 				<Icon type="error" size="large" />
 				<span>{message}</span>
-				<button
-					className="close"
-					onClick={closeToast}
-				>
-					<Icon type="close"/>
+				<button className="close" onClick={closeToast}>
+					<Icon type="close" />
 				</button>
 			</>
 		),

@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 li.open-field {
 	display: block;
@@ -17,13 +17,13 @@ li.open-field {
 }
 
 .field-buttons button svg {
-	margin-right: 9px
+	margin-right: 9px;
 }
 
 .field-buttons button.active svg path,
 .field-buttons button.active:focus svg path,
 .field-buttons button.active:hover svg path {
-	 fill: $color-white;
+	fill: $color-white;
 }
 
 .field-buttons button:focus svg path,
