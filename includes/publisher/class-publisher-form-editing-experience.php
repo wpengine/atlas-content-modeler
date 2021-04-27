@@ -90,6 +90,8 @@ final class FormEditingExperience {
 			true
 		);
 
+		wp_enqueue_style( 'styles', WPE_CONTENT_MODEL_URL . '/includes/settings/dist/index.css',false,'1.1','all');
+
 		$models = get_registered_content_types();
 		$model  = $models[ $this->current_screen_post_type ];
 

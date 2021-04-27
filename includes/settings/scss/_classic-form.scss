@@ -1,0 +1,53 @@
+@import 'variables';
+
+.classic-form {
+	.field {
+		input[type="text"],
+		input[type="password"],
+		input[type="color"],
+		input[type="date"],
+		input[type="datetime"],
+		input[type="datetime-local"],
+		input[type="email"],
+		input[type="month"],
+		input[type="number"],
+		input[type="search"],
+		input[type="tel"],
+		input[type="time"],
+		input[type="url"],
+		input[type="week"],
+		select,
+		textarea {
+			background-color: red;
+		}
+
+
+		/* HTML5 validation styling */
+		input {
+			border: 2px solid;
+			border-radius: 4px;
+			font-size: 1rem;
+			margin: 0.25rem;
+			min-width: 125px;
+			padding: 0.5rem;
+			transition: border-color 0.5s ease-out;
+		}
+		input:optional {
+			border-color: gray;
+		}
+		input:required:valid {
+			border-color: green;
+		}
+		input:invalid {
+			border-color: red;
+		}
+		input:required:focus:valid {
+			background: no-repeat 95% 50% lightgreen;
+			background-size: 25px;
+		}
+		input:focus:invalid {
+			background: no-repeat 95% 50% lightsalmon;
+			background-size: 25px;
+		}
+	}
+}
