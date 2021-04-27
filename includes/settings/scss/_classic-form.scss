@@ -43,7 +43,7 @@
 			margin-bottom: 8px;
 		}
 
-		/* The container */
+		/* checkboxes */
 		.check-container {
 			display: block;
 			position: relative;
@@ -76,6 +76,24 @@
 			background-color: #ffffff;
 			border: 1px solid #59767F;
 			border-radius: 2px;
+
+			&:hover:before {
+				display: inline-block;
+				width: 35px;
+				height: 35px;
+				position: relative;
+				top: -8px;
+				left: -7px;
+				margin-top: 0;
+				z-index: 0;
+				content: "";
+				opacity: 0.5;
+				background-color: #7E5CEF;
+				border-radius: 100%;
+				box-sizing: border-box;
+				transition: box-shadow 0.3s ease;
+				box-shadow: 0 0 0 4px rgba(126, 92, 239, 1);
+			}
 		}
 
 		/* On mouse-over, add a grey background color */
