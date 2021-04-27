@@ -74,7 +74,7 @@
 			height: 20px;
 			width: 20px;
 			background-color: #ffffff;
-			border: 1px solid #59767F;
+			border: 2px solid #59767F;
 			border-radius: 2px;
 
 			&:hover:before {
@@ -101,9 +101,15 @@
 			border-color: #7E5CEF !important;
 		}
 
+		input:focus + .checkmark
+		{
+			border-color: #7E5CEF !important;
+		}
+
 		/* When the checkbox is checked, add a black background */
 		.check-container input:checked ~ .checkmark {
 			background-color: #000;
+			border-color: #000;
 		}
 
 		/* Create the checkmark/indicator (hidden when not checked) */
