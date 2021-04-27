@@ -2,7 +2,7 @@
 
 .classic-form {
 	padding: 10px;
-	
+
 	.field {
 		margin-top: 20px;
 
@@ -25,7 +25,7 @@
 			height: 52px;
 			padding: 16px;
 			border-radius: 2px;
-			border: 1px solid #9DB7D1;
+			border: 1px solid #59767F;
 			margin: .25em 0;
 		}
 
@@ -52,6 +52,11 @@
 
 		/* HTML5 validation styling */
 		input {
+			&:focus {
+				border-color: #7E5CEF !important;
+				border-width: 2px;
+			}
+
 			border: 2px solid;
 			font-size: 1rem;
 			margin: 0.25rem;
@@ -60,13 +65,13 @@
 			transition: border-color 0.5s ease-out;
 		}
 		input:optional {
-			border-color: gray;
+			border-color: #59767F;
 		}
 		input:required:valid {
 			border-color: green;
 		}
 		input:invalid {
-			border-color: red;
+			border-color: #D21B46;
 		}
 	}
 }
