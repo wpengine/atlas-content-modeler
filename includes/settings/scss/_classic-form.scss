@@ -51,7 +51,6 @@
 		/* HTML5 validation styling */
 		input {
 			border: 2px solid;
-			border-radius: 4px;
 			font-size: 1rem;
 			margin: 0.25rem;
 			min-width: 125px;
@@ -66,14 +65,6 @@
 		}
 		input:invalid {
 			border-color: red;
-		}
-		input:required:focus:valid {
-			background: no-repeat 95% 50% lightgreen;
-			background-size: 25px;
-		}
-		input:focus:invalid {
-			background: no-repeat 95% 50% lightsalmon;
-			background-size: 25px;
 		}
 	}
 }
