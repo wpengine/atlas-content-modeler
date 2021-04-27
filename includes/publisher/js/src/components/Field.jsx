@@ -14,6 +14,14 @@ export default function Field(props) {
 // @todo wire up to react-hook-form, validate data, display errors.
 function fieldMarkup(field, modelSlug) {
 	switch (field.type) {
+		case "media":
+			return (
+				<div>
+					<label htmlFor="image_url">Image</label>
+					<input type="text" name="image_url" id="image_url" className="regular-text" />
+					<input type="button" name="upload-btn" id="upload-btn" className="button-secondary" value="Upload Image" />
+				</div>
+			);
 		case "text":
 		case "number": // @todo split this out to support mix/max/step/etc.
 		case "date": // @todo split this out for proper browser and datepicker support
