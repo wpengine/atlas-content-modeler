@@ -16,11 +16,18 @@ function fieldMarkup(field, modelSlug) {
 	switch (field.type) {
 		case "media":
 			return (
-				<div>
-					<label htmlFor="image_url">Image</label>
-					<input type="text" name="image_url" id="image_url" className="regular-text" />
-					<input type="button" name="upload-btn" id="upload-btn" className="button-secondary" value="Upload Image" />
-				</div>
+				<>
+					<label
+						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					>
+						{field.name}
+					</label>
+					<input type="text" className="hidden" name="image_url" id={`image_url_${field.name}`} defaultValue={field.value} />
+					<input type="button" className="button button-primary button-large wpe-upload-btn" name="upload-btn" id={`upload_btn_${field.name}`} value="Upload Media" />
+					{field.value && (
+						<img src={field.value} alt={field.name} />
+					)}
+				</>
 			);
 		case "text":
 		case "number": // @todo split this out to support mix/max/step/etc.

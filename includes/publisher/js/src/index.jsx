@@ -42,14 +42,18 @@ window.addEventListener("DOMContentLoaded", (event) => {
 });
 
 jQuery(document).ready(function($){
-	$('#upload-btn').click(function(e) {
+	$('.wpe-upload-btn').click(function(e) {
 		e.preventDefault();
+		var btnTarget = $(e.target);
 		var image = wp.media({
-			title: 'Upload Image',
-			// mutiple: true if you want to upload multiple files at once
+			title: 'Upload Media',
+			// multiple: true if you want to upload multiple files at once
 			multiple: false
 		}).open()
 			.on('select', function(e){
+				var $target = $(e.target);
+				console.log('button', btnTarget);
+				console.log('on select', $target);
 				// This will return the selected image from the Media Uploader, the result is an object
 				var uploaded_image = image.state().get('selection').first();
 				// We convert uploaded_image to a JSON object to make accessing it easier
@@ -57,7 +61,7 @@ jQuery(document).ready(function($){
 				console.log(uploaded_image);
 				var image_url = uploaded_image.toJSON().url;
 				// Let's assign the url value to the input field
-				$('#image_url').val(image_url);
+				$('').val(image_url);
 			});
 	});
 });
