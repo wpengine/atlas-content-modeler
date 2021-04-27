@@ -51,9 +51,8 @@ jQuery(document).ready(function($){
 			multiple: false
 		}).open()
 			.on('select', function(e){
-				var $target = $(e.target);
 				console.log('button', btnTarget);
-				console.log('on select', $target);
+				console.log('on select', e);
 				// This will return the selected image from the Media Uploader, the result is an object
 				var uploaded_image = image.state().get('selection').first();
 				// We convert uploaded_image to a JSON object to make accessing it easier
