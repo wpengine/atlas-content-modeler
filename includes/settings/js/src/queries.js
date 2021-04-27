@@ -23,20 +23,19 @@ export const POSITION_GAP = 10000;
  * ```
  */
 export function getFieldOrder(fields) {
-	if (typeof fields !== 'object') {
+	if (typeof fields !== "object") {
 		return [];
 	}
 
-	return Object
-		.keys(fields)
+	return Object.keys(fields)
 		.map((key) => {
 			return {
-				position: fields[key]['position'],
-				id: fields[key]['id'],
-			}
+				position: fields[key]["position"],
+				id: fields[key]["id"],
+			};
 		})
 		.sort((field1, field2) => field1.position - field2.position)
-		.map(field => field.id);
+		.map((field) => field.id);
 }
 
 /**
@@ -86,17 +85,20 @@ export function getPositionAfter(id, fields) {
  * @param {Object} fields Fields with optional 'parent' properties.
  */
 export function getRootFields(fields) {
-	if (typeof fields !== 'object') {
+	if (typeof fields !== "object") {
 		return {};
 	}
 
-	const createFieldTree = fields => {
+	const createFieldTree = (fields) => {
 		const hashTable = Object.create(null);
-		fields.forEach(field => hashTable[field.id] = {...field, subfields: {}});
+		fields.forEach(
+			(field) => (hashTable[field.id] = { ...field, subfields: {} })
+		);
 		const result = {};
-		fields.forEach(field => {
+		fields.forEach((field) => {
 			if (field.parent) {
-				hashTable[field.parent].subfields[field.id] = hashTable[field.id]
+				hashTable[field.parent].subfields[field.id] =
+					hashTable[field.id];
 			} else {
 				result[field.id] = hashTable[field.id];
 			}
@@ -117,19 +119,16 @@ export function getRootFields(fields) {
  * @return {[Number]} Ids of descendent fields (children, grandchildren, etc.).
  */
 export function getChildrenOfField(id, fields = {}) {
-	if (typeof fields !== 'object') {
+	if (typeof fields !== "object") {
 		return [];
 	}
 
 	let children = [];
 
 	Object.values(fields).forEach((field) => {
-		if (
-			field.hasOwnProperty('parent')
-			&& field['parent'] === id
-		) {
-			children.push(field['id']);
-			children = children.concat(getChildrenOfField(field['id'], fields));
+		if (field.hasOwnProperty("parent") && field["parent"] === id) {
+			children.push(field["id"]);
+			children = children.concat(getChildrenOfField(field["id"], fields));
 		}
 	});
 

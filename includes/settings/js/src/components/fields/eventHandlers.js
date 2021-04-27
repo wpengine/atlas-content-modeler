@@ -1,9 +1,9 @@
-import {POSITION_GAP} from "../../queries";
-import {toast} from 'react-toastify';
-import {showError} from "../../toasts";
+import { POSITION_GAP } from "../../queries";
+import { toast } from "react-toastify";
+import { showError } from "../../toasts";
 import React from "react";
 
-const {apiFetch} = wp;
+const { apiFetch } = wp;
 
 /**
  * Reorders `list` by moving the item at `startIndex` to `endIndex`.
@@ -36,7 +36,7 @@ const updatePositions = async (model, idsAndPositions) => {
 		path: `/wpe/content-model-fields/${model}`,
 		method: "PATCH",
 		_wpnonce: wpApiSettings.nonce,
-		data: {fields: idsAndPositions},
+		data: { fields: idsAndPositions },
 	});
 };
 
@@ -44,22 +44,22 @@ const updatePositions = async (model, idsAndPositions) => {
  * Updates the model store and WordPress database when fields are reordered.
  */
 export function onDragEnd(result, fields, model, dispatch, models) {
-	const {destination, source} = result;
+	const { destination, source } = result;
 
 	if (!destination) {
 		return;
 	}
 
 	if (
-		destination.droppableId === source.droppableId
-		&& destination.index === source.index
+		destination.droppableId === source.droppableId &&
+		destination.index === source.index
 	) {
 		return;
 	}
 
 	// Store original field order to revert if the position update fails.
 	const idsAndOldPositions = fields.reduce((result, id) => {
-		result[id] = {position: models[model]['fields'][id]?.position };
+		result[id] = { position: models[model]["fields"][id]?.position };
 		return result;
 	}, {});
 
@@ -71,13 +71,17 @@ export function onDragEnd(result, fields, model, dispatch, models) {
 
 	let position = 0;
 	const idsAndNewPositions = newOrder.reduce((result, id) => {
-		result[id] = {position};
+		result[id] = { position };
 		position += POSITION_GAP;
 		return result;
 	}, {});
 
 	// Optimistically update the client-side model store so the new field order is rendered immediately.
-	dispatch({type: 'reorderFields', positions: idsAndNewPositions, model: model});
+	dispatch({
+		type: "reorderFields",
+		positions: idsAndNewPositions,
+		model: model,
+	});
 
 	updatePositions(model, idsAndNewPositions)
 		.then((res) => {
@@ -91,6 +95,10 @@ export function onDragEnd(result, fields, model, dispatch, models) {
 			);
 
 			// Revert local field order so the state is accurate and the user can retry.
-			dispatch({type: 'reorderFields', positions: idsAndOldPositions, model: model});
+			dispatch({
+				type: "reorderFields",
+				positions: idsAndOldPositions,
+				model: model,
+			});
 		});
 }

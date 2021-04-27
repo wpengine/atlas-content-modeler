@@ -3,22 +3,18 @@ import { Link } from "react-router-dom";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useLocationSearch } from "../utils";
 import { onDragEnd } from "./fields/eventHandlers";
-import Field from "./fields/Field"
+import Field from "./fields/Field";
 import { ModelsContext } from "../ModelsContext";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 
-import {
-	getFieldOrder,
-	getPositionAfter,
-	getRootFields,
-} from "../queries";
+import { getFieldOrder, getPositionAfter, getRootFields } from "../queries";
 import FieldButtons from "./FieldButtons";
 
 export default function EditContentModel() {
 	const [infoTag, setInfoTag] = useState(null);
 	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
-	const id = query.get('id');
+	const id = query.get("id");
 	const model = models?.hasOwnProperty(id) ? models[id] : {};
 	const fields = model?.fields ? getRootFields(model.fields) : {};
 	const fieldCount = Object.keys(fields).length;
@@ -39,18 +35,28 @@ export default function EditContentModel() {
 				{fieldCount > 0 ? (
 					<>
 						<p className="field-list-info">
-							{fieldCount} {fieldCount > 1 ? "Fields" : "Field"}. &nbsp;
+							{fieldCount} {fieldCount > 1 ? "Fields" : "Field"}.
+							&nbsp;
 							<span className="info-text">{infoTag}</span>
 						</p>
 						<ul className="field-list">
 							<DragDropContext
 								onDragEnd={(result) =>
-									onDragEnd(result, fieldOrder, model?.slug, dispatch, models)
+									onDragEnd(
+										result,
+										fieldOrder,
+										model?.slug,
+										dispatch,
+										models
+									)
 								}
 							>
 								<Droppable droppableId="droppable">
 									{(provided, snapshot) => (
-										<div {...provided.droppableProps} ref={provided.innerRef}>
+										<div
+											{...provided.droppableProps}
+											ref={provided.innerRef}
+										>
 											{fieldOrder.map((id, index) => {
 												const {
 													type,
@@ -71,7 +77,10 @@ export default function EditContentModel() {
 														data={fields[id]}
 														setInfoTag={setInfoTag}
 														position={position}
-														positionAfter={getPositionAfter(id, fields)}
+														positionAfter={getPositionAfter(
+															id,
+															fields
+														)}
 													/>
 												);
 											})}
@@ -85,14 +94,21 @@ export default function EditContentModel() {
 				) : (
 					<>
 						<p className="field-list-info">
-							Choose your first field for the {model?.name} content model:
+							Choose your first field for the {model?.name}{" "}
+							content model:
 						</p>
 						<ul className="field-list">
 							<li>
 								<FieldButtons
 									clickAction={(fieldType) => {
-										dispatch({ type: "addField", position: 0, model: id, fieldType });
-									}} />
+										dispatch({
+											type: "addField",
+											position: 0,
+											model: id,
+											fieldType,
+										});
+									}}
+								/>
 							</li>
 						</ul>
 					</>

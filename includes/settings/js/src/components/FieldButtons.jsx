@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import supportedFields from "./fields/supportedFields";
 import Icon from "./icons";
 
-const FieldButtons = ({activeButton, clickAction}) => {
+const FieldButtons = ({ activeButton, clickAction }) => {
 	return (
 		<div className="field-buttons">
 			{Object.keys(supportedFields).map((field) => {
@@ -10,10 +10,14 @@ const FieldButtons = ({activeButton, clickAction}) => {
 				return (
 					<button
 						key={field}
-						className={field === activeButton ? "tertiary active" : "tertiary"}
+						className={
+							field === activeButton
+								? "tertiary active"
+								: "tertiary"
+						}
 						onClick={() => clickAction(field)}
 					>
-						<Icon type={field}/>
+						<Icon type={field} />
 						{fieldTitle}
 					</button>
 				);
