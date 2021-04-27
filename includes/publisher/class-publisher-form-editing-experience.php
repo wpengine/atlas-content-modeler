@@ -94,7 +94,7 @@ final class FormEditingExperience {
 		$model  = $models[ $this->current_screen_post_type ];
 
 		// Add existing field values to models data.
-		if ( ! empty( $model['fields'] ) ) {
+		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
 				// @todo wire up repeaters. for now, remove child fields to avoid confusion.
 				if ( ! empty( $field['parent'] ) ) {
