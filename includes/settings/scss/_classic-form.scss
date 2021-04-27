@@ -2,6 +2,8 @@
 
 .classic-form {
 	.field {
+		margin-top: 20px;
+
 		input[type="text"],
 		input[type="password"],
 		input[type="color"],
@@ -18,9 +20,28 @@
 		input[type="week"],
 		select,
 		textarea {
-			background-color: red;
+			height: 52px;
+			padding: 16px;
+			border-radius: 2px;
+			border: 1px solid #9DB7D1;
 		}
 
+		input[type="checkbox"] {
+			height: 20px;
+			width: 20px;
+			min-width: 20px;
+			max-width: 20px;
+		}
+
+		label {
+			font-family: 'Open Sans', sans-serif;
+			height: 20px;
+			color: #002838;
+			line-height: 20px;
+			font-weight: bold;
+			font-size: 14px;
+			margin-bottom: 8px;
+		}
 
 		/* HTML5 validation styling */
 		input {
