@@ -7,7 +7,11 @@ $error-red: #d21b46;
 	Classic Form Styling overrides
  */
 .classic-form {
-	padding: 10px;
+	h3 {
+		&.main-title {
+			font-size: 28px;
+		}
+	}
 
 	.field {
 		margin-top: 20px;
@@ -33,6 +37,7 @@ $error-red: #d21b46;
 			border-radius: 2px;
 			border: 1px solid $form-default-border-gray;
 			margin: 0.25em 0;
+			width: 100%;
 		}
 
 		textarea {

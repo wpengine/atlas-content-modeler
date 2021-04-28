@@ -159,6 +159,7 @@ final class FormEditingExperience {
 		// @todo move to another action
 		remove_post_type_support( $post_type, 'editor' );
 		remove_post_type_support( $post_type, 'title' );
+		remove_post_type_support( $post_type, 'custom-fields' );
 
 		return $use_block_editor;
 	}
