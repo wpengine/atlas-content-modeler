@@ -13,10 +13,14 @@ $error-red: #d21b46;
 		}
 	}
 
+	.action-buttons {
+		margin-top: 20px;
+	}
+
 	button {
 		&.action-button {
 			font-size: 14px;
-			padding: 5px 10px !important;
+			padding: 5px 20px !important;
 		}
 	}
 
