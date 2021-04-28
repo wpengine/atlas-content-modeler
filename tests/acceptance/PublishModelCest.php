@@ -48,7 +48,6 @@ class PublishModelCest
 		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
-		$i->see('Editing Geese');
 
 		$i->fillField(['name' => 'wpe-content-model[geese][color]'], 'Gray');
 		$i->fillField(['name' => 'wpe-content-model[geese][age]'], '100');
