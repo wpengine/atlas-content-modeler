@@ -90,6 +90,14 @@ final class FormEditingExperience {
 			true
 		);
 
+		wp_enqueue_style(
+			'styles',
+			WPE_CONTENT_MODEL_URL . '/includes/publisher/dist/index.css',
+			false,
+			$plugin['Version'],
+			'all'
+		);
+
 		$models = get_registered_content_types();
 		$model  = $models[ $this->current_screen_post_type ];
 
@@ -101,7 +109,10 @@ final class FormEditingExperience {
 					unset( $models[ $this->current_screen_post_type ]['fields'][ $key ] );
 					continue;
 				}
-				$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+
+				if ( isset( $post->ID ) ) {
+					$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+				}
 			}
 		}
 

@@ -1,0 +1,168 @@
+$form-purple: #7e5cef;
+$form-default-border-gray: #59767f;
+$error-red: #d21b46;
+
+
+/**
+	Classic Form Styling overrides
+ */
+.classic-form {
+	padding: 10px;
+
+	.field {
+		margin-top: 20px;
+
+		input[type="text"],
+		input[type="password"],
+		input[type="color"],
+		input[type="date"],
+		input[type="datetime"],
+		input[type="datetime-local"],
+		input[type="email"],
+		input[type="month"],
+		input[type="number"],
+		input[type="search"],
+		input[type="tel"],
+		input[type="time"],
+		input[type="url"],
+		input[type="week"],
+		select,
+		textarea {
+			height: 52px;
+			padding: 16px;
+			border-radius: 2px;
+			border: 1px solid $form-default-border-gray;
+			margin: 0.25em 0;
+		}
+
+		textarea {
+			height: 100px;
+		}
+
+		label {
+			font-family: "Open Sans", sans-serif;
+			height: 20px;
+			color: #002838;
+			line-height: 20px;
+			font-weight: bold;
+			font-size: 14px;
+			margin-bottom: 8px;
+		}
+
+		/* checkboxes */
+		.check-container {
+			display: block;
+			position: relative;
+			padding-left: 35px;
+			margin-bottom: 12px;
+			cursor: pointer;
+			font-size: 14px;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		/* Hide the browser's default checkbox */
+		.check-container input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0;
+		}
+
+		/* Create a custom checkbox */
+		.checkmark {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 20px;
+			width: 20px;
+			background-color: #ffffff;
+			border: 2px solid $form-default-border-gray;
+			border-radius: 2px;
+
+			&:hover:before {
+				display: inline-block;
+				width: 35px;
+				height: 35px;
+				position: relative;
+				top: -8px;
+				left: -7px;
+				margin-top: 0;
+				z-index: 0;
+				content: "";
+				opacity: 0.5;
+				background-color: $form-purple;
+				border-radius: 100%;
+				box-sizing: border-box;
+				transition: box-shadow 0.3s ease;
+				box-shadow: 0 0 0 4px rgba(126, 92, 239, 1);
+			}
+		}
+
+		/* On mouse-over, focus add a purple border color */
+		.check-container:hover input ~ .checkmark {
+			border-color: $form-purple !important;
+		}
+
+		input:focus + .checkmark {
+			border-color: $form-purple !important;
+		}
+
+		/* When the checkbox is checked, add a black background */
+		.check-container input:checked ~ .checkmark {
+			background-color: #000;
+			border-color: #000;
+		}
+
+		/* Create the checkmark/indicator (hidden when not checked) */
+		.checkmark:after {
+			content: "";
+			position: absolute;
+			display: none;
+		}
+
+		/* Show the checkmark when checked */
+		.check-container input:checked ~ .checkmark:after {
+			display: block;
+		}
+
+		/* Style the checkmark/indicator */
+		.check-container .checkmark:after {
+			left: 6px;
+			top: 2px;
+			width: 5px;
+			height: 10px;
+			border: solid white;
+			border-width: 0 3px 3px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+
+		/* HTML5 validation styling */
+		input {
+			&:focus {
+				border-color: $form-purple !important;
+				border-width: 2px;
+			}
+
+			font-size: 1rem;
+			margin: 0.25rem;
+			min-width: 125px;
+			padding: 0.5rem;
+			transition: border-color 0.5s ease-out;
+		}
+		input:optional {
+			border-color: $form-default-border-gray;
+		}
+		input:required:valid {
+			border-color: green;
+		}
+		input:invalid {
+			border-color: $error-red;
+		}
+	}
+}
