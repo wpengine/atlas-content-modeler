@@ -2,6 +2,8 @@ import React from "react";
 import Fields from "./components/Fields";
 
 export default function App({ model, mode }) {
+	const isEditMode = mode === 'edit';
+
 	/**
 	 * Navigate to the post new php file for current slug
 	 * @param e
@@ -15,7 +17,7 @@ export default function App({ model, mode }) {
 	return (
 		<div className="app classic-form">
 			<h3 className="main-title">
-				{mode === 'edit' ? (
+				{isEditMode ? (
 					<span>Edit </span>
 				) : (
 					<span>Add </span>
@@ -23,7 +25,7 @@ export default function App({ model, mode }) {
 				{model.labels.singular_name}
 			</h3>
 
-			{mode === 'edit' && (
+			{isEditMode && (
 				<button
 					className="page-title-action"
 					onClick={(e) => clickHandler(e)}
