@@ -154,7 +154,7 @@ final class FormEditingExperience {
 	/**
 	 * Renders the container used to mount the publisher experience app.
 	 *
-	 * @param WP_Post $post
+	 * @param WP_Post $post The post object being edited.
 	 */
 	public function render_app_container( WP_Post $post ): void {
 		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
