@@ -2,7 +2,10 @@ import React from "react";
 import Fields from "./components/Fields";
 
 export default function App({ model, mode }) {
-console.log(model);
+	/**
+	 * Navigate to the post new php file for current slug
+	 * @param e
+	 */
 	function clickHandler(e) {
 		e.preventDefault();
 		window.location.href =
@@ -22,6 +25,7 @@ console.log(model);
 
 			{mode === 'edit' && (
 				<button
+					className="page-title-action"
 					onClick={(e) => clickHandler(e)}
 				>
 					Add New
