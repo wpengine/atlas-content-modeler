@@ -19,6 +19,11 @@ $error-red: #d21b46;
 
 	button {
 		&.action-button {
+			&:focus,
+			&:hover {
+				border-color: $form-purple;
+			}
+
 			font-size: 14px;
 			padding: 5px 20px !important;
 		}
