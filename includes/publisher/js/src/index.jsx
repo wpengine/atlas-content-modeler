@@ -44,14 +44,15 @@ window.addEventListener("DOMContentLoaded", (event) => {
 jQuery(document).ready(function($){
 	$('.wpe-upload-btn').click(function(e) {
 		e.preventDefault();
-		var btnTarget = $(e.target);
+		var $btnTarget = $(e.target);
+		console.log($btnTarget.data('field'));
 		var image = wp.media({
 			title: 'Upload Media',
 			// multiple: true if you want to upload multiple files at once
 			multiple: false
 		}).open()
 			.on('select', function(e){
-				console.log('button', btnTarget);
+				console.log('button', $btnTarget);
 				console.log('on select', e);
 				// This will return the selected image from the Media Uploader, the result is an object
 				var uploaded_image = image.state().get('selection').first();

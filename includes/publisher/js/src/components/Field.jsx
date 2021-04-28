@@ -22,8 +22,8 @@ function fieldMarkup(field, modelSlug) {
 					>
 						{field.name}
 					</label>
-					<input type="text" className="hidden" name="image_url" id={`image_url_${field.name}`} defaultValue={field.value} />
-					<input type="button" className="button button-primary button-large wpe-upload-btn" name="upload-btn" id={`upload_btn_${field.name}`} value="Upload Media" />
+					<input type="text" className="hidden" name={`wpe-content-model[${modelSlug}][${field.slug}]`} id={`wpe-content-model[${modelSlug}][${field.slug}]`} defaultValue={field.value} />
+					<input type="button" className="button button-primary button-large wpe-upload-btn" data-field={`wpe-content-model[${modelSlug}][${field.slug}]`} name={`upload_btn_${field.slug}`} id={`upload_btn_${field.slug}`} value="Upload Media" />
 					{field.value && (
 						<img src={field.value} alt={field.name} />
 					)}
