@@ -13,6 +13,13 @@ $error-red: #d21b46;
 		}
 	}
 
+	button {
+		&.action-button {
+			font-size: 14px;
+			padding: 5px 10px !important;
+		}
+	}
+
 	.field {
 		margin-top: 20px;
 
