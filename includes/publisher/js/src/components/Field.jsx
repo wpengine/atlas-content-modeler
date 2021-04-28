@@ -23,10 +23,12 @@ function fieldMarkup(field, modelSlug) {
 						{field.name}
 					</label>
 					<input type="text" className="hidden" name={`wpe-content-model-${modelSlug}-${field.slug}`} id={`wpe-content-model-${modelSlug}-${field.slug}`} defaultValue={field.value} />
-					<input type="button" className="button button-primary button-large wpe-upload-btn" data-field={`wpe-content-model-${modelSlug}-${field.slug}`} name={`upload_btn_${field.slug}`} id={`upload_btn_${field.slug}`} value="Upload Media" />
-					{field.value && (
-						<img src={field.value} alt={field.name} />
-					)}
+					<div>
+						<input type="button" className="button button-primary button-large wpe-upload-btn" data-field={`wpe-content-model-${modelSlug}-${field.slug}`} name={`upload_btn_${field.slug}`} id={`upload_btn_${field.slug}`} value="Upload Media" />
+						{field.value && (
+							<img src={field.value} alt={field.name} />
+						)}
+					</div>
 				</>
 			);
 		case "text":
