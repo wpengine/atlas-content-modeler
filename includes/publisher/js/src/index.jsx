@@ -54,12 +54,11 @@ jQuery(document).ready(function($){
 				// This will return the selected image from the Media Uploader, the result is an object
 				var uploaded_image = image.state().get('selection').first();
 				// We convert uploaded_image to a JSON object to make accessing it easier
-				// Output to the console uploaded_image
-				var imageData = uploaded_image.toJSON().url;
 				// Let's assign the url value to the input field
-				var $mediaInput = $(`input#${$btnTarget.data('field')}`);
-				$mediaInput.val(imageData);
-				console.log($mediaInput.val());
+				var input = document.getElementById($btnTarget.data('field'));
+				input.value = uploaded_image.toJSON().url;
+
+				console.log(input.value);
 			});
 	});
 });

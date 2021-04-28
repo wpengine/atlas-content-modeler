@@ -15,6 +15,7 @@ export default function Field(props) {
 function fieldMarkup(field, modelSlug) {
 	switch (field.type) {
 		case "media":
+			console.log(field);
 			return (
 				<>
 					<label
