@@ -59,6 +59,7 @@ jQuery(document).ready(function($){
 				// Let's assign the url value to the input field
 				var $mediaInput = $(`input#${$btnTarget.data('field')}`);
 				$mediaInput.val(imageData);
+				console.log($mediaInput.val());
 			});
 	});
 });
