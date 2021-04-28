@@ -57,15 +57,20 @@ function fieldMarkup(field, modelSlug) {
 			);
 			return (
 				<>
-					<label className="check-container" htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>{field.name}
+					<label
+						className="check-container"
+						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					>
+						{field.name}
 						<input
 							type="checkbox"
 							name={`wpe-content-model[${modelSlug}][${field.slug}]`}
 							id={`wpe-content-model[${modelSlug}][${field.slug}]`}
 							checked={checked}
-							onChange={(event) => setChecked(!checked)}/>
-							{/* span is used for custom checkbox styling purposes */}
-							<span className="checkmark"></span>
+							onChange={(event) => setChecked(!checked)}
+						/>
+						{/* span is used for custom checkbox styling purposes */}
+						<span className="checkmark"></span>
 					</label>
 				</>
 			);

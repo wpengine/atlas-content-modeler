@@ -94,7 +94,7 @@ final class FormEditingExperience {
 			'styles',
 			WPE_CONTENT_MODEL_URL . '/includes/settings/dist/index.css',
 			false,
-			'1.1',
+			$plugin['Version'],
 			'all'
 		);
 
