@@ -92,7 +92,7 @@ final class FormEditingExperience {
 
 		wp_enqueue_style(
 			'styles',
-			WPE_CONTENT_MODEL_URL . '/includes/settings/dist/index.css',
+			WPE_CONTENT_MODEL_URL . '/includes/publisher/dist/index.css',
 			false,
 			$plugin['Version'],
 			'all'
