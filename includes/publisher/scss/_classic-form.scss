@@ -1,3 +1,11 @@
+$form-purple: #7e5cef;
+$form-default-border-gray: #59767f;
+$error-red: #d21b46;
+
+
+/**
+	Classic Form Styling overrides
+ */
 .classic-form {
 	padding: 10px;
 
@@ -23,7 +31,7 @@
 			height: 52px;
 			padding: 16px;
 			border-radius: 2px;
-			border: 1px solid #59767f;
+			border: 1px solid $form-default-border-gray;
 			margin: 0.25em 0;
 		}
 
@@ -72,7 +80,7 @@
 			height: 20px;
 			width: 20px;
 			background-color: #ffffff;
-			border: 2px solid #59767f;
+			border: 2px solid $form-default-border-gray;
 			border-radius: 2px;
 
 			&:hover:before {
@@ -86,7 +94,7 @@
 				z-index: 0;
 				content: "";
 				opacity: 0.5;
-				background-color: #7e5cef;
+				background-color: $form-purple;
 				border-radius: 100%;
 				box-sizing: border-box;
 				transition: box-shadow 0.3s ease;
@@ -96,11 +104,11 @@
 
 		/* On mouse-over, focus add a purple border color */
 		.check-container:hover input ~ .checkmark {
-			border-color: #7e5cef !important;
+			border-color: $form-purple !important;
 		}
 
 		input:focus + .checkmark {
-			border-color: #7e5cef !important;
+			border-color: $form-purple !important;
 		}
 
 		/* When the checkbox is checked, add a black background */
@@ -137,7 +145,7 @@
 		/* HTML5 validation styling */
 		input {
 			&:focus {
-				border-color: #7e5cef !important;
+				border-color: $form-purple !important;
 				border-width: 2px;
 			}
 
@@ -148,13 +156,13 @@
 			transition: border-color 0.5s ease-out;
 		}
 		input:optional {
-			border-color: #59767f;
+			border-color: $form-default-border-gray;
 		}
 		input:required:valid {
 			border-color: green;
 		}
 		input:invalid {
-			border-color: #d21b46;
+			border-color: $error-red;
 		}
 	}
 }
