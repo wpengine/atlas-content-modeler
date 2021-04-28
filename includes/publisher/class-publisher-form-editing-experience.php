@@ -56,7 +56,7 @@ final class FormEditingExperience {
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
-		add_action( 'add_meta_boxes', [ $this, 'meta_boxes' ], 10, 2 );
+		add_action( 'edit_form_after_title', [ $this, 'render_app_container' ] );
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
 	}
 
@@ -152,17 +152,16 @@ final class FormEditingExperience {
 	}
 
 	/**
-	 * Adds the metabox app container to the post edit screen.
+	 * Renders the container used to mount the publisher experience app.
 	 *
-	 * @param string  $post_type The post type being edited.
-	 * @param WP_Post $post      The post object being edited/.
+	 * @param WP_Post $post
 	 */
-	public function meta_boxes( string $post_type, WP_Post $post ): void {
-		if ( ! array_key_exists( $post_type, $this->models ) ) {
+	public function render_app_container( WP_Post $post ): void {
+		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
 			return;
 		}
 
-		$model = $this->models[ $post_type ] ?? false;
+		$model = $this->models[ $post->post_type ] ?? false;
 		if ( ! $model ) {
 			return;
 		}
@@ -171,17 +170,8 @@ final class FormEditingExperience {
 			return;
 		}
 
-		add_meta_box(
-			'wpe-content-model-fields',
-			"Editing {$model['name']}",
-			static function() {
-				wp_nonce_field( 'wpe-content-model-pubex-nonce', 'wpe-content-model-pubex-nonce' );
-				echo '<div id="wpe-content-model-fields-app"></div>';
-			},
-			$post_type,
-			'normal',
-			'high'
-		);
+		wp_nonce_field( 'wpe-content-model-pubex-nonce', 'wpe-content-model-pubex-nonce' );
+		echo '<div id="wpe-content-model-fields-app"></div>';
 	}
 
 	/**
