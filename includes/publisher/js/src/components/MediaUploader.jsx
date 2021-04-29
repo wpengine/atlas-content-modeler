@@ -2,19 +2,17 @@ import React, {useRef, useState} from "react";
 
 export default function MediaUploader({ modelSlug, field }) {
 	const [value, setValue] = useState(field.value);
-	const btnRef = useRef();
 	const inputRef = useRef();
 
 	/**
 	 * Click handler to use wp media uploader
-	 * @param e
+	 * @param e - event
 	 */
 	function clickHandler(e) {
 		e.preventDefault();
 
-		wp.media({
+		const image = wp.media({
 			title: 'Upload Media',
-			// multiple: true if you want to upload multiple files at once
 			multiple: false
 		}).open()
 			.on('select', function(e){
@@ -22,9 +20,9 @@ export default function MediaUploader({ modelSlug, field }) {
 				var uploaded_image = image.state().get('selection').first();
 				// We convert uploaded_image to a JSON object to make accessing it easier
 				// Let's assign the url value to the input field
-				inputRef.current = uploaded_image.toJSON().url;
-				console.log(inputRef.current);
-				// {`wpe-content-model[${modelSlug}][${field.slug}]`}
+				const url = uploaded_image.toJSON().url;
+				setValue(url);
+				inputRef.current = url;
 			});
 	}
 
@@ -44,18 +42,18 @@ export default function MediaUploader({ modelSlug, field }) {
 				   defaultValue={value} />
 
 			<div>
+				{value && (
+					<div style={{marginBottom: '20px'}}>
+						<img style={{maxWidth: '200px', maxHeight: '100px'}} src={value} alt={field.name} />
+					</div>
+				)}
+
 				<input type="button"
-				   	ref={btnRef}
+				   	className="button button-primary button-large"
 					defaultValue="Upload Media"
 					onClick={(e) => clickHandler(e)}
 				/>
 			</div>
-
-			{value && (
-				<div>
-					<img src={value} alt={field.name} />
-				</div>
-			)}
 		</>
 	);
 }
