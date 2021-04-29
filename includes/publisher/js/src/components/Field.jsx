@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MediaUploader from "./MediaUploader";
 
 export default function Field(props) {
 	const { field, modelSlug } = props;
@@ -16,20 +17,7 @@ function fieldMarkup(field, modelSlug) {
 	switch (field.type) {
 		case "media":
 			return (
-				<>
-					<label
-						htmlFor={`wpe-content-model-${modelSlug}-${field.slug}`}
-					>
-						{field.name}
-					</label>
-					<input type="text" className="hidden" name={`wpe-content-model-${modelSlug}-${field.slug}`} id={`wpe-content-model-${modelSlug}-${field.slug}`} defaultValue={field.value} />
-					<div>
-						<input type="button" className="button button-primary button-large wpe-upload-btn" data-field={`wpe-content-model-${modelSlug}-${field.slug}`} name={`upload_btn_${field.slug}`} id={`upload_btn_${field.slug}`} value="Upload Media" />
-						{field.value && (
-							<img src={field.value} alt={field.name} />
-						)}
-					</div>
-				</>
+				<MediaUploader field={field} modelSlug={modelSlug} />
 			);
 		case "text":
 		case "number": // @todo split this out to support mix/max/step/etc.
