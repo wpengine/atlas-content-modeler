@@ -1,9 +1,11 @@
 <?php
-
+use Codeception\Util\Locator;
 class PublishModelCest
 {
 	public function i_can_publish_a_model_entry(AcceptanceTester $i)
 	{
+		$i->maximizeWindow();
+
 		// First we create a model with fields.
 		$i->loginAsAdmin();
 		$i->haveContentModel('goose', 'geese', 'Geese go honk');
@@ -14,31 +16,31 @@ class PublishModelCest
 		$i->click('.open-field button.primary');
 		$i->wait(1);
 
-		$i->click('.add-item');
+		$i->click(Locator::lastElement('.add-item'));
 		$i->click('Rich Text', '.field-buttons');
 		$i->fillField(['name' => 'name'], 'Description');
 		$i->click('.open-field button.primary');
 		$i->wait(1);
 
-		$i->click('.add-item');
+		$i->click(Locator::lastElement('.add-item'));
 		$i->click('Rich Text', '.field-buttons');
 		$i->fillField(['name' => 'name'], 'Another rich text field');
 		$i->click('.open-field button.primary');
 		$i->wait(1);
 
-		$i->click('.add-item');
+		$i->click(Locator::lastElement('.add-item'));
 		$i->click('Number', '.field-buttons');
 		$i->fillField(['name' => 'name'], 'Age');
 		$i->click('.open-field button.primary');
 		$i->wait(1);
 
-		$i->click('.add-item');
+		$i->click(Locator::lastElement('.add-item'));
 		$i->click('Date', '.field-buttons');
 		$i->fillField(['name' => 'name'], 'Date of Birth');
 		$i->click('.open-field button.primary');
 		$i->wait(1);
 
-		$i->click('.add-item');
+		$i->click(Locator::lastElement('.add-item'));
 		$i->click('Boolean', '.field-buttons');
 		$i->fillField(['name' => 'name'], 'Flies south for winter?');
 		$i->click('.open-field button.primary');
@@ -64,15 +66,19 @@ class PublishModelCest
 		$i->fillField('#tinymce', 'I am another rich text field');
 		$i->switchToIFrame(); // switch back to main window
 
+
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
 
 		$i->see('Post published.');
+
 		$i->seeInField('wpe-content-model[geese][color]', 'Gray');
 		$i->seeInField('wpe-content-model[geese][age]', '100');
 		$i->seeInField('wpe-content-model[geese][dateOfBirth]', '2021-01-01');
 		$i->seeCheckboxIsChecked('wpe-content-model[geese][fliesSouthForWinter]');
+		$i->switchToIFrame('#field-description iframe');
 		$i->see('I am a goose'); // Sees the text in the TinyMCE iframe body.
+		$i->switchToIFrame();
 
 		// Show <textarea> elements hidden by TinyMCE so we can see them to check their values directly.
 		$i->executeJS("
