@@ -64,7 +64,7 @@ export default function MediaUploader({ modelSlug, field }) {
 			<div>
 				{value && (
 					<>
-					<div style={{marginBottom: '10px'}}>
+					<div style={{marginBottom: '10px', marginTop: '5px'}}>
 						{imageRegex.test(value) ? (
 							<img onClick={(e) => clickHandler(e)} style={{cursor: 'pointer', maxWidth: '500px', maxHeight: '400px'}} src={value} alt={field.name} />
 						) : (
@@ -74,20 +74,27 @@ export default function MediaUploader({ modelSlug, field }) {
 					</>
 				)}
 
-				<input type="button"
-				   	className="button button-primary button-large"
-					defaultValue={value ? 'Change Media' : 'Upload Media'}
-					onClick={(e) => clickHandler(e)}
-				/>
+				<div className="flex-parent flex-align-v">
+					<div>
+						<input type="button"
+							   style={{marginTop: '5px'}}
+							   className="button button-primary button-large"
+							   defaultValue={value ? 'Change Media' : 'Upload Media'}
+							   onClick={(e) => clickHandler(e)}
+						/>
+					</div>
 
-				{value && (
-					<input type="button"
-					   style={{marginLeft: '10px'}}
-					   className="button button-secondary btn-delete button-large"
-					   defaultValue="Remove"
-					   onClick={(e) => deleteImage(e)}
-					/>
-				)}
+					{value && (
+						<div>
+							<a href="#"
+							   style={{marginLeft: '20px'}}
+							   className="btn-delete"
+							   onClick={(e) => deleteImage(e)}>
+								Remove Media
+							</a>
+						</div>
+					)}
+				</div>
 			</div>
 		</>
 	);
