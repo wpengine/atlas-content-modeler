@@ -41,7 +41,8 @@ export default function MediaUploader({ modelSlug, field }) {
 				   id={`wpe-content-model[${modelSlug}][${field.slug}]`}
 				   ref={inputRef}
 				   className="hidden"
-				   defaultValue={value} />
+				   readOnly={true}
+				   value={value} />
 
 			<div>
 				{value && (
