@@ -134,7 +134,7 @@ final class FormEditingExperience {
 	/**
 	 * Load WordPress media files for uploader
 	 */
-	function load_wp_media_files() {
+	public function load_wp_media_files() {
 		// jquery is a dependency for the media uploader
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_media();
