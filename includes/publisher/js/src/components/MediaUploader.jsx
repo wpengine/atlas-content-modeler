@@ -5,6 +5,15 @@ export default function MediaUploader({ modelSlug, field }) {
 	const inputRef = useRef();
 
 	/**
+	 * Delete input value
+	 */
+	function deleteImage(e) {
+		e.preventDefault();
+		inputRef.current = null;
+		setValue(null);
+	}
+
+	/**
 	 * Click handler to use wp media uploader
 	 * @param e - event
 	 */
@@ -64,6 +73,15 @@ export default function MediaUploader({ modelSlug, field }) {
 					defaultValue={value ? 'Change Media' : 'Upload Media'}
 					onClick={(e) => clickHandler(e)}
 				/>
+
+				{value && (
+					<input type="button"
+						   style={{marginLeft: '10px'}}
+						   className="button button-secondary deletion button-large"
+						   defaultValue="Delete"
+						   onClick={(e) => deleteImage(e)}
+					/>
+				)}
 			</div>
 		</>
 	);
