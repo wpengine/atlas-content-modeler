@@ -2,11 +2,24 @@ $form-purple: #7e5cef;
 $form-default-border-gray: #59767f;
 $error-red: #d21b46;
 
+/**
+	WP Overrides
+ */
+.page-title-action,
+h1.wp-heading-inline {
+	display: none !important;
+}
 
 /**
 	Classic Form Styling overrides
  */
 .classic-form {
+	.page-title-action {
+		display: block !important;
+		margin-top: 27px;
+		margin-left: 15px;
+	}
+
 	h3 {
 		&.main-title {
 			font-size: 28px;

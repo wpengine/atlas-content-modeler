@@ -17,23 +17,29 @@ export default function App({ model, mode }) {
 
 	return (
 		<div className="app classic-form">
-			<h3 className="main-title">
-				{isEditMode ? (
-					<span>Edit </span>
-				) : (
-					<span>Add </span>
-				)}
-				{model.labels.singular_name}
-			</h3>
+			<div className="flex-parent">
+				<div>
+					<h3 className="main-title">
+						{isEditMode ? (
+							<span>Edit </span>
+						) : (
+							<span>Add </span>
+						)}
+						{model.labels.singular_name}
+					</h3>
+				</div>
 
-			{isEditMode && (
-				<button
-					className="page-title-action"
-					onClick={(e) => clickHandler(e)}
-				>
-					Add New
-				</button>
-			)}
+				{isEditMode && (
+					<div>
+						<button
+							className="page-title-action"
+							onClick={(e) => clickHandler(e)}
+						>
+							Add New
+						</button>
+					</div>
+				)}
+			</div>
 
 			<Fields model={model} />
 
