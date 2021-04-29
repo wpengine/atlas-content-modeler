@@ -3,6 +3,7 @@ import React, {useRef, useState} from "react";
 export default function MediaUploader({ modelSlug, field }) {
 	const [value, setValue] = useState(field.value);
 	const inputRef = useRef();
+	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
 
 	/**
 	 * Delete input value
@@ -11,6 +12,15 @@ export default function MediaUploader({ modelSlug, field }) {
 		e.preventDefault();
 		inputRef.current = '';
 		setValue('');
+	}
+
+	/**
+	 * Get file extension
+	 * @param file
+	 * @returns {any}
+	 */
+	function getFileExtension(file) {
+		return file.split('.').pop();
 	}
 
 	/**
@@ -55,14 +65,12 @@ export default function MediaUploader({ modelSlug, field }) {
 				{value && (
 					<>
 					<div style={{marginBottom: '10px'}}>
-						<img onClick={(e) => clickHandler(e)} style={{cursor: 'pointer', maxWidth: '500px', maxHeight: '400px'}} src={value} alt={field.name} />
+						{imageRegex.test(value) ? (
+							<img onClick={(e) => clickHandler(e)} style={{cursor: 'pointer', maxWidth: '500px', maxHeight: '400px'}} src={value} alt={field.name} />
+						) : (
+							<a style={{fontSize: '14px'}} href={value}>[{getFileExtension(value).toUpperCase()}] {value}</a>
+						)}
 					</div>
-
-						{/*<video width="320" height="240" autoPlay muted>*/}
-						{/*	<source src="movie.mp4" type="video/mp4"/>*/}
-						{/*	<source src="movie.ogg" type="video/ogg"/>*/}
-						{/*	Your browser does not support the video tag.*/}
-						{/*</video>*/}
 					</>
 				)}
 
@@ -75,8 +83,8 @@ export default function MediaUploader({ modelSlug, field }) {
 				{value && (
 					<input type="button"
 					   style={{marginLeft: '10px'}}
-					   className="button button-secondary deletion button-large"
-					   defaultValue="Delete"
+					   className="button button-secondary btn-delete button-large"
+					   defaultValue="Remove"
 					   onClick={(e) => deleteImage(e)}
 					/>
 				)}

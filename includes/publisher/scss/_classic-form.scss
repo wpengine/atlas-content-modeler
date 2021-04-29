@@ -35,6 +35,16 @@ h1.wp-heading-inline,
 		margin-top: 40px;
 	}
 
+	.btn-delete {
+		&:hover {
+			color: #fff;
+			background-color: #b3123b !important;
+		}
+
+		background-color: $error-red !important;
+		color: #fff;
+	}
+
 	button {
 		&.action-button {
 			&:focus,
