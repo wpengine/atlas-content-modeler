@@ -46,9 +46,17 @@ export default function MediaUploader({ modelSlug, field }) {
 
 			<div>
 				{value && (
+					<>
 					<div style={{marginBottom: '10px'}}>
-						<img style={{maxWidth: '200px', maxHeight: '100px'}} src={value} alt={field.name} />
+						<img onClick={(e) => clickHandler(e)} style={{cursor: 'pointer', maxWidth: '500px', maxHeight: '400px'}} src={value} alt={field.name} />
 					</div>
+
+						{/*<video width="320" height="240" autoPlay muted>*/}
+						{/*	<source src="movie.mp4" type="video/mp4"/>*/}
+						{/*	<source src="movie.ogg" type="video/ogg"/>*/}
+						{/*	Your browser does not support the video tag.*/}
+						{/*</video>*/}
+					</>
 				)}
 
 				<input type="button"
