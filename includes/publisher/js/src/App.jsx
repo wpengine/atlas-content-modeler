@@ -3,7 +3,7 @@ import Fields from "./components/Fields";
 import ActionButtons from "./components/ActionButtons";
 
 export default function App({ model, mode }) {
-	const isEditMode = mode === 'edit';
+	const isEditMode = mode === "edit";
 
 	/**
 	 * Navigate to the post new php file for current slug
@@ -11,26 +11,24 @@ export default function App({ model, mode }) {
 	 */
 	function clickHandler(e) {
 		e.preventDefault();
-		window.location.href =
-			`/wp-admin/post-new.php?post_type=${model.slug}`;
+		window.location.href = `/wp-admin/post-new.php?post_type=${model.slug}`;
 	}
 
 	return (
-		<div className="app classic-form" style={{marginTop: '20px'}}>
+		<div className="app classic-form" style={{ marginTop: "20px" }}>
 			<div className="flex-parent">
 				<div>
 					<h3 className="main-title">
-						{isEditMode ? (
-							<span>Edit </span>
-						) : (
-							<span>Add </span>
-						)}
+						{isEditMode ? <span>Edit </span> : <span>Add </span>}
 						{model.labels.singular_name}
 					</h3>
 				</div>
 
 				{isEditMode && (
-					<div style={{marginLeft:'20px'}} className="flex-align-v">
+					<div
+						style={{ marginLeft: "20px" }}
+						className="flex-align-v"
+					>
 						<button
 							className="page-title-action"
 							onClick={(e) => clickHandler(e)}

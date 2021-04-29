@@ -16,9 +16,7 @@ export default function Field(props) {
 function fieldMarkup(field, modelSlug) {
 	switch (field.type) {
 		case "media":
-			return (
-				<MediaUploader field={field} modelSlug={modelSlug} />
-			);
+			return <MediaUploader field={field} modelSlug={modelSlug} />;
 		case "text":
 		case "number": // @todo split this out to support mix/max/step/etc.
 		case "date": // @todo split this out for proper browser and datepicker support

@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import './../../scss/index.scss';
+import "./../../scss/index.scss";
 
 const { models, postType } = wpeContentModelFormEditingExperience;
 
@@ -20,7 +20,7 @@ const model = models[postType];
 
 // set mode for form, i.e. edit
 const urlParams = new URLSearchParams(window.location.search);
-const formMode = urlParams.get('action');
+const formMode = urlParams.get("action");
 
 ReactDOM.render(<App mode={formMode} model={model} />, container);
 

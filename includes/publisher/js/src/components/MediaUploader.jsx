@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 
 export default function MediaUploader({ modelSlug, field }) {
 	const [value, setValue] = useState(field.value);
@@ -10,8 +10,8 @@ export default function MediaUploader({ modelSlug, field }) {
 	 */
 	function deleteImage(e) {
 		e.preventDefault();
-		inputRef.current = '';
-		setValue('');
+		inputRef.current = "";
+		setValue("");
 	}
 
 	/**
@@ -20,7 +20,7 @@ export default function MediaUploader({ modelSlug, field }) {
 	 * @returns {any}
 	 */
 	function getFileExtension(file) {
-		return file.split('.').pop();
+		return file.split(".").pop();
 	}
 
 	/**
@@ -30,13 +30,15 @@ export default function MediaUploader({ modelSlug, field }) {
 	function clickHandler(e) {
 		e.preventDefault();
 
-		const image = wp.media({
-			title: value ? 'Change Media' : 'Upload Media',
-			multiple: false
-		}).open()
-			.on('select', function(e){
+		const image = wp
+			.media({
+				title: value ? "Change Media" : "Upload Media",
+				multiple: false,
+			})
+			.open()
+			.on("select", function (e) {
 				// This will return the selected image from the Media Uploader, the result is an object
-				var uploaded_image = image.state().get('selection').first();
+				var uploaded_image = image.state().get("selection").first();
 				// We convert uploaded_image to a JSON object to make accessing it easier
 				// Let's assign the url value to the input field
 				const url = uploaded_image.toJSON().url;
@@ -47,49 +49,66 @@ export default function MediaUploader({ modelSlug, field }) {
 
 	return (
 		<>
-			<label
-				htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
-			>
+			<label htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>
 				{field.name}
 			</label>
 
-			<input type="text"
-				   name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-				   id={`wpe-content-model[${modelSlug}][${field.slug}]`}
-				   ref={inputRef}
-				   className="hidden"
-				   readOnly={true}
-				   value={value} />
+			<input
+				type="text"
+				name={`wpe-content-model[${modelSlug}][${field.slug}]`}
+				id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+				ref={inputRef}
+				className="hidden"
+				readOnly={true}
+				value={value}
+			/>
 
 			<div>
 				{value && (
 					<>
-					<div style={{marginBottom: '10px', marginTop: '5px'}}>
-						{imageRegex.test(value) ? (
-							<img onClick={(e) => clickHandler(e)} style={{cursor: 'pointer', maxWidth: '500px', maxHeight: '400px'}} src={value} alt={field.name} />
-						) : (
-							<a style={{fontSize: '14px'}} href={value}>[{getFileExtension(value).toUpperCase()}] {value}</a>
-						)}
-					</div>
+						<div style={{ marginBottom: "10px", marginTop: "5px" }}>
+							{imageRegex.test(value) ? (
+								<img
+									onClick={(e) => clickHandler(e)}
+									style={{
+										cursor: "pointer",
+										maxWidth: "500px",
+										maxHeight: "400px",
+									}}
+									src={value}
+									alt={field.name}
+								/>
+							) : (
+								<a style={{ fontSize: "14px" }} href={value}>
+									[{getFileExtension(value).toUpperCase()}]{" "}
+									{value}
+								</a>
+							)}
+						</div>
 					</>
 				)}
 
 				<div className="flex-parent flex-align-v">
 					<div>
-						<input type="button"
-							   style={{marginTop: '5px'}}
-							   className="button button-primary button-large"
-							   defaultValue={value ? 'Change Media' : 'Upload Media'}
-							   onClick={(e) => clickHandler(e)}
+						<input
+							type="button"
+							style={{ marginTop: "5px" }}
+							className="button button-primary button-large"
+							defaultValue={
+								value ? "Change Media" : "Upload Media"
+							}
+							onClick={(e) => clickHandler(e)}
 						/>
 					</div>
 
 					{value && (
 						<div>
-							<a href="#"
-							   style={{marginLeft: '20px'}}
-							   className="btn-delete"
-							   onClick={(e) => deleteImage(e)}>
+							<a
+								href="#"
+								style={{ marginLeft: "20px" }}
+								className="btn-delete"
+								onClick={(e) => deleteImage(e)}
+							>
 								Remove Media
 							</a>
 						</div>
