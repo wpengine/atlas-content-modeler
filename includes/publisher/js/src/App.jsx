@@ -40,8 +40,6 @@ export default function App({ model, mode }) {
 			</div>
 
 			<Fields model={model} />
-
-			<ActionButtons isEditMode={isEditMode} />
 		</div>
 	);
 }

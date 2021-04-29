@@ -46,9 +46,11 @@ h1.wp-heading-inline,
 			&:focus,
 			&:hover {
 				border-color: $form-purple;
+				background-color: $form-purple;
 			}
 
 			font-size: 14px;
+			background-color: $form-purple;
 			padding: 10px 40px !important;
 		}
 	}
@@ -128,24 +130,6 @@ h1.wp-heading-inline,
 			background-color: #ffffff;
 			border: 2px solid $form-default-border-gray;
 			border-radius: 2px;
-
-			&:hover:before {
-				display: inline-block;
-				width: 35px;
-				height: 35px;
-				position: relative;
-				top: -8px;
-				left: -7px;
-				margin-top: 0;
-				z-index: 0;
-				content: "";
-				opacity: 0.5;
-				background-color: $form-purple;
-				border-radius: 100%;
-				box-sizing: border-box;
-				transition: box-shadow 0.3s ease;
-				box-shadow: 0 0 0 4px rgba(126, 92, 239, 1);
-			}
 		}
 
 		/* On mouse-over, focus add a purple border color */
