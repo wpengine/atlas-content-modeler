@@ -12,7 +12,7 @@ export default function MediaUploader({ modelSlug, field }) {
 		e.preventDefault();
 
 		const image = wp.media({
-			title: 'Upload Media',
+			title: value ? 'Change Media' : 'Upload Media',
 			multiple: false
 		}).open()
 			.on('select', function(e){
@@ -23,6 +23,8 @@ export default function MediaUploader({ modelSlug, field }) {
 				const url = uploaded_image.toJSON().url;
 				setValue(url);
 				inputRef.current = url;
+				console.log('url', url);
+				console.log('inputRef current', inputRef.current);
 			});
 	}
 
@@ -43,14 +45,14 @@ export default function MediaUploader({ modelSlug, field }) {
 
 			<div>
 				{value && (
-					<div style={{marginBottom: '20px'}}>
+					<div style={{marginBottom: '10px'}}>
 						<img style={{maxWidth: '200px', maxHeight: '100px'}} src={value} alt={field.name} />
 					</div>
 				)}
 
 				<input type="button"
 				   	className="button button-primary button-large"
-					defaultValue="Upload Media"
+					defaultValue={value ? 'Change Media' : 'Upload Media'}
 					onClick={(e) => clickHandler(e)}
 				/>
 			</div>
