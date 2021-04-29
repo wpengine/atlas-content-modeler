@@ -21,13 +21,13 @@ h1.wp-heading-inline,
 .classic-form {
 	.page-title-action {
 		display: block !important;
-		margin-top: 27px;
-		margin-left: 15px;
 	}
 
 	h3 {
 		&.main-title {
 			font-size: 28px;
+			margin: 0;
+			padding: 0;
 		}
 	}
 

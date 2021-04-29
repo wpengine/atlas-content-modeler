@@ -16,7 +16,7 @@ export default function App({ model, mode }) {
 	}
 
 	return (
-		<div className="app classic-form">
+		<div className="app classic-form" style={{marginTop: '20px'}}>
 			<div className="flex-parent">
 				<div>
 					<h3 className="main-title">
@@ -30,7 +30,7 @@ export default function App({ model, mode }) {
 				</div>
 
 				{isEditMode && (
-					<div>
+					<div style={{marginLeft:'20px'}} className="flex-align-v">
 						<button
 							className="page-title-action"
 							onClick={(e) => clickHandler(e)}
