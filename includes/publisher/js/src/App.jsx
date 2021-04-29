@@ -1,6 +1,5 @@
 import React from "react";
 import Fields from "./components/Fields";
-import ActionButtons from "./components/ActionButtons";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
