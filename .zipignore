@@ -3,6 +3,7 @@
 *.babelrc*
 *.cache/*
 *.idea/*
+*parcel-cache/*
 *.eslintignore*
 *.eslintrc.json*
 *.circleci*
