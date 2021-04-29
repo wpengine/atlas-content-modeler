@@ -6,8 +6,12 @@ $error-red: #d21b46;
 	WP Overrides
  */
 .page-title-action,
-h1.wp-heading-inline {
+h1.wp-heading-inline,
+#postimagediv{
 	display: none !important;
+}
+#side-sortables {
+	margin-top: 20px;
 }
 
 /**
