@@ -79,5 +79,16 @@ class UpdateExistingModelEntryCest
 
         $i->seeInField('wpe-content-model[geese][color]', 'Green');
         $i->see('I am a green goose');
+
+        // Cause an update failure and check error message.
+        $i->executeJS("
+            var field = document.getElementsByName('wpe-content-model-pubex-nonce');
+            field[0].setAttribute('type', 'text');
+        ");
+        $i->fillField(['name' => 'wpe-content-model-pubex-nonce'], 'broken nonce');
+        $i->fillField(['name' => 'wpe-content-model[geese][color]'], 'Green');
+        $i->click('Update', '#publishing-action');
+        $i->wait(2);
+        $i->see('Nonce verification failed when saving your content. Please try again.');
     }
 }
