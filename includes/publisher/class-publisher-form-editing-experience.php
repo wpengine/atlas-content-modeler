@@ -127,7 +127,7 @@ final class FormEditingExperience {
 
 		wp_enqueue_script( 'wpe-content-model-form-editing-experience' );
 
-		// UPLOAD ENGINE
+		// UPLOAD ENGINE.
 		add_action( 'admin_enqueue_scripts', [ $this, 'load_wp_media_files' ], 10, 2 );
 	}
 
@@ -135,7 +135,7 @@ final class FormEditingExperience {
 	 * Load WordPress media files for uploader
 	 */
 	public function load_wp_media_files() {
-		// jquery is a dependency for the media uploader
+		// jquery is a dependency for the media uploader.
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_media();
 	}
