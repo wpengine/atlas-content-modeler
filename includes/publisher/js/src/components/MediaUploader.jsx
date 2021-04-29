@@ -74,10 +74,10 @@ export default function MediaUploader({ modelSlug, field }) {
 
 				{value && (
 					<input type="button"
-						   style={{marginLeft: '10px'}}
-						   className="button button-secondary deletion button-large"
-						   defaultValue="Delete"
-						   onClick={(e) => deleteImage(e)}
+					   style={{marginLeft: '10px'}}
+					   className="button button-secondary deletion button-large"
+					   defaultValue="Delete"
+					   onClick={(e) => deleteImage(e)}
 					/>
 				)}
 			</div>
