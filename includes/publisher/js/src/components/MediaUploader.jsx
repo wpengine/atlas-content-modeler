@@ -9,8 +9,8 @@ export default function MediaUploader({ modelSlug, field }) {
 	 */
 	function deleteImage(e) {
 		e.preventDefault();
-		inputRef.current = null;
-		setValue(null);
+		inputRef.current = '';
+		setValue('');
 	}
 
 	/**
@@ -32,8 +32,6 @@ export default function MediaUploader({ modelSlug, field }) {
 				const url = uploaded_image.toJSON().url;
 				setValue(url);
 				inputRef.current = url;
-				console.log('url', url);
-				console.log('inputRef current', inputRef.current);
 			});
 	}
 
