@@ -7,6 +7,11 @@ module.exports = {
 	parserOptions: {
 		parser: 'babel-eslint',
 		ecmaVersion: 2018,
+		ecmaFeatures: {
+			"jsx": true,
+			"modules": true,
+			"experimentalObjectRestSpread": true
+		},
 		sourceType: 'module',
 	},
 	extends: ['plugin:react/recommended', 'plugin:prettier/recommended'],
