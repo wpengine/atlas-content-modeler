@@ -14,7 +14,6 @@ export default function MediaUploader({ modelSlug, field }) {
 			.attachment(value)
 			.fetch()
 			.then(() => {
-				console.log(wp.media.attachment(value));
 				setMediaUrl(wp.media.attachment(value).get("url"));
 			});
 	}, []);
