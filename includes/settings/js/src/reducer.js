@@ -52,6 +52,19 @@ export function reducer(state, action) {
 				editing: false,
 			};
 			return { ...state };
+		case "setTitleField":
+			const fields = state[action.model]["fields"];
+			Object.values(fields).forEach((field) => {
+				state[action.model]["fields"][field.id]["isTitle"] = false;
+			});
+			state[action.model]["fields"][action.id]["isTitle"] = true;
+			return { ...state };
+		case "setFieldProperties":
+			action.properties.forEach((property) => {
+				state[action.model]["fields"][action.id][property.name] =
+					property.value;
+			});
+			return { ...state };
 		case "removeField":
 			// Also remove descendents of repeater fields.
 			if (state[action.model]["fields"][action.id]?.type === "repeater") {
