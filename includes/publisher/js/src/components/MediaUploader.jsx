@@ -1,15 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function MediaUploader({ modelSlug, field }) {
+	// state
+	const [mediaUrl, setMediaUrl] = useState("");
 	const [value, setValue] = useState(field.value);
+
+	// local
 	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
 
+	// load media file from wp.media service
+	useEffect(() => {
+		wp.media
+			.attachment(value)
+			.fetch()
+			.then(() => {
+				console.log(wp.media.attachment(value));
+				setMediaUrl(wp.media.attachment(value).get("url"));
+			});
+	}, []);
+
 	/**
-	 * Delete input value
+	 * Reset values
 	 */
 	function deleteImage(e) {
 		e.preventDefault();
 		setValue("");
+		setMediaUrl("");
 	}
 
 	/**
@@ -30,17 +46,14 @@ export default function MediaUploader({ modelSlug, field }) {
 
 		const media = wp
 			.media({
-				title: value ? "Change Media" : "Upload Media",
+				title: mediaUrl ? "Change Media" : "Upload Media",
 				multiple: false,
 			})
 			.open()
-			.on("select", function (e) {
-				// This will return the selected image from the Media Uploader, the result is an object
+			.on("select", function () {
 				const uploadedMedia = media.state().get("selection").first();
-				// We convert uploaded_image to a JSON object to make accessing it easier
-				// Let's assign the url value to the input field
-				const url = uploadedMedia.attributes.url;
-				setValue(url);
+				setValue(uploadedMedia.attributes.id);
+				setMediaUrl(uploadedMedia.attributes.url);
 			});
 	}
 
@@ -60,19 +73,19 @@ export default function MediaUploader({ modelSlug, field }) {
 			/>
 
 			<div>
-				{value && (
+				{mediaUrl && (
 					<>
 						<div className="media-item">
-							{imageRegex.test(value) ? (
+							{imageRegex.test(mediaUrl) ? (
 								<img
 									onClick={(e) => clickHandler(e)}
-									src={value}
+									src={mediaUrl}
 									alt={field.name}
 								/>
 							) : (
-								<a href={value}>
-									[{getFileExtension(value).toUpperCase()}]{" "}
-									{value}
+								<a href={mediaUrl}>
+									[{getFileExtension(mediaUrl).toUpperCase()}]{" "}
+									{mediaUrl}
 								</a>
 							)}
 						</div>
@@ -85,13 +98,13 @@ export default function MediaUploader({ modelSlug, field }) {
 							type="button"
 							className="button button-primary button-large margin-top-5"
 							defaultValue={
-								value ? "Change Media" : "Upload Media"
+								mediaUrl ? "Change Media" : "Upload Media"
 							}
 							onClick={(e) => clickHandler(e)}
 						/>
 					</div>
 
-					{value && (
+					{mediaUrl && (
 						<div>
 							<a
 								href="#"
