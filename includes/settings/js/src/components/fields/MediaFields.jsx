@@ -1,11 +1,11 @@
 /**
  * Additional form fields for the Media field type.
  */
-import React from "react";
+import React from 'react';
 
 const MediaFields = ({ register, data, editing }) => {
 	return (
-		<div className={editing ? "field read-only editing" : "field"}>
+		<div className={editing ? 'field read-only editing' : 'field'}>
 			<legend>Upload Type</legend>
 			<fieldset>
 				<div className="radio-row">
@@ -16,8 +16,8 @@ const MediaFields = ({ register, data, editing }) => {
 						value="single"
 						ref={register}
 						defaultChecked={
-							data?.uploadType === "single" ||
-							typeof data?.uploadType === "undefined"
+							data?.uploadType === 'single' ||
+							typeof data?.uploadType === 'undefined'
 						}
 						disabled={editing}
 					/>
@@ -37,7 +37,7 @@ const MediaFields = ({ register, data, editing }) => {
 						name="uploadType"
 						value="multi"
 						ref={register}
-						defaultChecked={data?.uploadType === "multi"}
+						defaultChecked={data?.uploadType === 'multi'}
 						disabled={editing}
 					/>
 					<label className="radio" htmlFor="multi">

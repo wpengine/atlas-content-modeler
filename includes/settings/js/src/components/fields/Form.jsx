@@ -1,13 +1,13 @@
-import React, { useState, useContext } from "react";
-import { useForm } from "react-hook-form";
-import { useLocationSearch } from "../../utils";
-import Icon from "../icons";
-import TextFields from "./TextFields";
-import NumberFields from "./NumberFields";
-import MediaFields from "./MediaFields";
-import supportedFields from "./supportedFields";
-import { ModelsContext } from "../../ModelsContext";
-import { useApiIdGenerator } from "./useApiIdGenerator";
+import React, { useState, useContext } from 'react';
+import { useForm } from 'react-hook-form';
+import { useLocationSearch } from '../../utils';
+import Icon from '../icons';
+import TextFields from './TextFields';
+import NumberFields from './NumberFields';
+import MediaFields from './MediaFields';
+import supportedFields from './supportedFields';
+import { ModelsContext } from '../../ModelsContext';
+import { useApiIdGenerator } from './useApiIdGenerator';
 
 const { apiFetch } = wp;
 
@@ -29,7 +29,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
 	const { dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
-	const model = query.get("id");
+	const model = query.get('id');
 	const ExtraFields = extraFields[type] ?? null;
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
 		setValue,
@@ -40,26 +40,26 @@ function Form({ id, position, type, editing, storedData, parent }) {
 	function apiAddField(data) {
 		apiFetch({
 			path: `/wpe/content-model-field`,
-			method: editing ? "PUT" : "POST",
+			method: editing ? 'PUT' : 'POST',
 			_wpnonce: wpApiSettings.nonce,
 			data,
 		})
 			.then((res) => {
 				if (res.success) {
-					dispatch({ type: "updateField", data, model });
+					dispatch({ type: 'updateField', data, model });
 				} else {
 					// The user pressed “Update” but no data changed.
 					// Just close the field as if it was updated.
-					dispatch({ type: "closeField", id: data.id, model });
+					dispatch({ type: 'closeField', id: data.id, model });
 				}
 			})
 			.catch((err) => {
-				if (err.code === "wpe_duplicate_content_model_field_id") {
-					setError("slug", { type: "idExists" });
+				if (err.code === 'wpe_duplicate_content_model_field_id') {
+					setError('slug', { type: 'idExists' });
 				}
-				if (err.code === "wpe_invalid_content_model") {
+				if (err.code === 'wpe_invalid_content_model') {
 					console.error(
-						"Attempted to create a field in a model that no longer exists."
+						'Attempted to create a field in a model that no longer exists.'
 					);
 				}
 			});
@@ -100,14 +100,14 @@ function Form({ id, position, type, editing, storedData, parent }) {
 			)}
 			<div className="columns">
 				<div className="left-column">
-					<div className={errors.name ? "field has-error" : "field"}>
+					<div className={errors.name ? 'field has-error' : 'field'}>
 						<label htmlFor="name">Name</label>
 						<br />
 						<p className="help">
 							Display name for your {supportedFields[type]} field.
 						</p>
 						<input
-							aria-invalid={errors.name ? "true" : "false"}
+							aria-invalid={errors.name ? 'true' : 'false'}
 							id="name"
 							name="name"
 							defaultValue={storedData?.name}
@@ -116,11 +116,11 @@ function Form({ id, position, type, editing, storedData, parent }) {
 							onChange={(e) => {
 								setApiIdGeneratorInput(e.target.value);
 								setNameCount(e.target.value.length);
-								clearErrors("slug");
+								clearErrors('slug');
 							}}
 						/>
 						<p className="field-messages">
-							{errors.name && errors.name.type === "required" && (
+							{errors.name && errors.name.type === 'required' && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
@@ -128,7 +128,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 									</span>
 								</span>
 							)}
-							{errors.name && errors.name.type === "maxLength" && (
+							{errors.name && errors.name.type === 'maxLength' && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
@@ -150,7 +150,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 				</div>
 
 				<div className="right-column">
-					<div className={errors.slug ? "field has-error" : "field"}>
+					<div className={errors.slug ? 'field has-error' : 'field'}>
 						<label htmlFor="slug">API Identifier</label>
 						<br />
 						<p className="help">
@@ -164,7 +164,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 							{...apiIdFieldAttributes}
 						/>
 						<p className="field-messages">
-							{errors.slug && errors.slug.type === "required" && (
+							{errors.slug && errors.slug.type === 'required' && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
@@ -172,7 +172,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 									</span>
 								</span>
 							)}
-							{errors.slug && errors.slug.type === "maxLength" && (
+							{errors.slug && errors.slug.type === 'maxLength' && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
@@ -180,7 +180,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 									</span>
 								</span>
 							)}
-							{errors.slug && errors.slug.type === "idExists" && (
+							{errors.slug && errors.slug.type === 'idExists' && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
@@ -196,15 +196,15 @@ function Form({ id, position, type, editing, storedData, parent }) {
 
 			<div className="buttons">
 				<button type="submit" className="primary first">
-					{editing ? "Update" : "Create"}
+					{editing ? 'Update' : 'Create'}
 				</button>
 				<button
 					className="tertiary"
 					onClick={(event) => {
 						event.preventDefault();
 						editing
-							? dispatch({ type: "closeField", id, model })
-							: dispatch({ type: "removeField", id, model });
+							? dispatch({ type: 'closeField', id, model })
+							: dispatch({ type: 'removeField', id, model });
 					}}
 				>
 					Cancel

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 /**
  * Parses query string and returns value.
@@ -20,9 +20,9 @@ export function insertSidebarMenuItem(model) {
 	let menuItem =
 		postMenuItems.length > 0
 			? postMenuItems[postMenuItems.length - 1]
-			: document.getElementById("menu-comments");
+			: document.getElementById('menu-comments');
 	const markup = generateSidebarMenuItem(model);
-	menuItem.insertAdjacentHTML("afterend", markup);
+	menuItem.insertAdjacentHTML('afterend', markup);
 }
 
 /**
@@ -79,7 +79,7 @@ export function generateSidebarMenuItem(model) {
 export const maybeCloseDropdown = (setDropdownOpen) => {
 	setTimeout(() => {
 		const dropDownLinkIsInFocus = document?.activeElement?.parentElement.className.startsWith(
-			"dropdown-content"
+			'dropdown-content'
 		);
 		if (!dropDownLinkIsInFocus) {
 			setDropdownOpen(false);

@@ -1,12 +1,12 @@
-import React, { useState, useContext } from "react";
-import { Draggable } from "react-beautiful-dnd";
-import Form from "./Form";
-import Icon from "../icons";
-import supportedFields from "./supportedFields";
-import Repeater from "./Repeater";
-import { FieldOptionsDropdown } from "./FieldOptionsDropdown";
-import { ModelsContext } from "../../ModelsContext";
-import FieldButtons from "../FieldButtons";
+import React, { useState, useContext } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
+import Form from './Form';
+import Icon from '../icons';
+import supportedFields from './supportedFields';
+import Repeater from './Repeater';
+import { FieldOptionsDropdown } from './FieldOptionsDropdown';
+import { ModelsContext } from '../../ModelsContext';
+import FieldButtons from '../FieldButtons';
 
 const getItemStyle = (isDragging, draggableStyle) => {
 	return {
@@ -24,7 +24,7 @@ function Field({
 	position,
 	positionAfter,
 	setInfoTag,
-	type = "text",
+	type = 'text',
 	parent,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
@@ -35,7 +35,7 @@ function Field({
 		const typeLabel = supportedFields[data.type];
 		const reorderInfoTag = (
 			<>
-				Press space to begin reordering the “{data.name}” field. Use{" "}
+				Press space to begin reordering the “{data.name}” field. Use{' '}
 				<Icon type="downarrow" /> and <Icon type="uparrow" /> keys to
 				reorder, then space to finish and save.
 			</>
@@ -61,8 +61,8 @@ function Field({
 							key={id}
 							className={
 								snapshot.isDragging
-									? "closed dragging"
-									: "closed"
+									? 'closed dragging'
+									: 'closed'
 							}
 						>
 							<span className="reorder">
@@ -80,7 +80,7 @@ function Field({
 								className="edit"
 								onClick={() =>
 									dispatch({
-										type: "openField",
+										type: 'openField',
 										id: data.id,
 										model: model.slug,
 									})
@@ -96,7 +96,7 @@ function Field({
 								</span>
 							</button>
 							<FieldOptionsDropdown field={data} model={model} />
-							{data.type === "repeater" && (
+							{data.type === 'repeater' && (
 								<Repeater
 									fields={data?.subfields}
 									model={model}
@@ -108,14 +108,14 @@ function Field({
 						<li
 							className={
 								snapshot.isDragging
-									? "add-item dragging"
-									: "add-item"
+									? 'add-item dragging'
+									: 'add-item'
 							}
 						>
 							<button
 								onClick={() =>
 									dispatch({
-										type: "addField",
+										type: 'addField',
 										position: positionAfter,
 										parent,
 										model: model.slug,
@@ -125,7 +125,7 @@ function Field({
 							>
 								<Icon
 									type="add"
-									size={parent ? "small" : "large"}
+									size={parent ? 'small' : 'large'}
 								/>
 							</button>
 						</li>
@@ -148,7 +148,7 @@ function Field({
 					clickAction={setActiveForm}
 				/>
 			)}
-			<div className={editing ? "field-form editing" : "field-form"}>
+			<div className={editing ? 'field-form editing' : 'field-form'}>
 				<div className="flex-parent flex-row">
 					<div className="flex-grow">
 						<h3>

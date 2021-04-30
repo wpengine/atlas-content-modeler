@@ -2,7 +2,6 @@ $form-purple: #7e5cef;
 $form-default-border-gray: #59767f;
 $error-red: #d21b46;
 
-
 /**
 	Classic Form Styling overrides
  */
@@ -12,20 +11,20 @@ $error-red: #d21b46;
 	.field {
 		margin-top: 20px;
 
-		input[type="text"],
-		input[type="password"],
-		input[type="color"],
-		input[type="date"],
-		input[type="datetime"],
-		input[type="datetime-local"],
-		input[type="email"],
-		input[type="month"],
-		input[type="number"],
-		input[type="search"],
-		input[type="tel"],
-		input[type="time"],
-		input[type="url"],
-		input[type="week"],
+		input[type='text'],
+		input[type='password'],
+		input[type='color'],
+		input[type='date'],
+		input[type='datetime'],
+		input[type='datetime-local'],
+		input[type='email'],
+		input[type='month'],
+		input[type='number'],
+		input[type='search'],
+		input[type='tel'],
+		input[type='time'],
+		input[type='url'],
+		input[type='week'],
 		select,
 		textarea {
 			height: 52px;
@@ -40,7 +39,7 @@ $error-red: #d21b46;
 		}
 
 		label {
-			font-family: "Open Sans", sans-serif;
+			font-family: 'Open Sans', sans-serif;
 			height: 20px;
 			color: #002838;
 			line-height: 20px;
@@ -92,7 +91,7 @@ $error-red: #d21b46;
 				left: -7px;
 				margin-top: 0;
 				z-index: 0;
-				content: "";
+				content: '';
 				opacity: 0.5;
 				background-color: $form-purple;
 				border-radius: 100%;
@@ -119,7 +118,7 @@ $error-red: #d21b46;
 
 		/* Create the checkmark/indicator (hidden when not checked) */
 		.checkmark:after {
-			content: "";
+			content: '';
 			position: absolute;
 			display: none;
 		}

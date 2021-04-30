@@ -1,13 +1,13 @@
 /**
  * Actions to update global content model state.
  */
-import { getChildrenOfField } from "./queries";
+import { getChildrenOfField } from './queries';
 
 export function reducer(state, action) {
 	switch (action.type) {
-		case "updateModels":
+		case 'updateModels':
 			return action.data;
-		case "updateModel":
+		case 'updateModel':
 			state[action.data.postTypeSlug] = {
 				...state[action.data.postTypeSlug],
 				...action.data,
@@ -16,61 +16,61 @@ export function reducer(state, action) {
 			state[action.data.postTypeSlug].singular_name =
 				action.data.singular;
 			return { ...state };
-		case "addModel":
+		case 'addModel':
 			return {
 				...state,
 				[action.data.postTypeSlug]: action.data,
 			};
-		case "removeModel":
+		case 'removeModel':
 			const { [action.slug]: deleted, ...otherModels } = state;
 			return otherModels;
-		case "addField":
+		case 'addField':
 			const newId = Date.now();
-			state[action.model]["fields"] = {
-				...state[action.model]["fields"],
+			state[action.model]['fields'] = {
+				...state[action.model]['fields'],
 				[newId]: {
 					id: newId,
-					type: action?.fieldType || "text",
+					type: action?.fieldType || 'text',
 					open: true,
 					position: action.position,
 					parent: action?.parent,
 				},
 			};
 			return { ...state };
-		case "openField":
-			state[action.model]["fields"][action.id].open = true;
-			state[action.model]["fields"][action.id].editing = true;
+		case 'openField':
+			state[action.model]['fields'][action.id].open = true;
+			state[action.model]['fields'][action.id].editing = true;
 			return { ...state };
-		case "closeField":
-			state[action.model]["fields"][action.id].open = false;
-			state[action.model]["fields"][action.id].editing = false;
+		case 'closeField':
+			state[action.model]['fields'][action.id].open = false;
+			state[action.model]['fields'][action.id].editing = false;
 			return { ...state };
-		case "updateField":
-			state[action.model]["fields"][action.data.id] = {
+		case 'updateField':
+			state[action.model]['fields'][action.data.id] = {
 				...action.data,
 				open: false,
 				editing: false,
 			};
 			return { ...state };
-		case "removeField":
+		case 'removeField':
 			// Also remove descendents of repeater fields.
-			if (state[action.model]["fields"][action.id]?.type === "repeater") {
+			if (state[action.model]['fields'][action.id]?.type === 'repeater') {
 				const children = getChildrenOfField(
 					action.id,
-					state[action.model]["fields"]
+					state[action.model]['fields']
 				);
 				children.forEach((subfieldId) => {
-					delete state[action.model]["fields"][subfieldId];
+					delete state[action.model]['fields'][subfieldId];
 				});
 			}
 
 			// Remove the deleted field itself.
-			delete state[action.model]["fields"][action.id];
+			delete state[action.model]['fields'][action.id];
 
 			return { ...state };
-		case "reorderFields":
+		case 'reorderFields':
 			Object.keys(action.positions).forEach((fieldId) => {
-				state[action.model]["fields"][fieldId].position =
+				state[action.model]['fields'][fieldId].position =
 					action.positions[fieldId].position;
 			});
 			return { ...state };

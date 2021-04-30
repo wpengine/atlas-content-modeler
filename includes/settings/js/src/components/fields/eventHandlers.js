@@ -1,7 +1,7 @@
-import { POSITION_GAP } from "../../queries";
-import { toast } from "react-toastify";
-import { showError } from "../../toasts";
-import React from "react";
+import { POSITION_GAP } from '../../queries';
+import { toast } from 'react-toastify';
+import { showError } from '../../toasts';
+import React from 'react';
 
 const { apiFetch } = wp;
 
@@ -34,7 +34,7 @@ const reorder = (list, startIndex, endIndex) => {
 const updatePositions = async (model, idsAndPositions) => {
 	await apiFetch({
 		path: `/wpe/content-model-fields/${model}`,
-		method: "PATCH",
+		method: 'PATCH',
 		_wpnonce: wpApiSettings.nonce,
 		data: { fields: idsAndPositions },
 	});
@@ -59,7 +59,7 @@ export function onDragEnd(result, fields, model, dispatch, models) {
 
 	// Store original field order to revert if the position update fails.
 	const idsAndOldPositions = fields.reduce((result, id) => {
-		result[id] = { position: models[model]["fields"][id]?.position };
+		result[id] = { position: models[model]['fields'][id]?.position };
 		return result;
 	}, {});
 
@@ -78,25 +78,25 @@ export function onDragEnd(result, fields, model, dispatch, models) {
 
 	// Optimistically update the client-side model store so the new field order is rendered immediately.
 	dispatch({
-		type: "reorderFields",
+		type: 'reorderFields',
 		positions: idsAndNewPositions,
 		model: model,
 	});
 
 	updatePositions(model, idsAndNewPositions)
 		.then((res) => {
-			toast.dismiss("error");
+			toast.dismiss('error');
 		})
 		.catch((err) => {
 			showError(
 				`Error saving field order: “${
-					err?.message || "Error unknown."
+					err?.message || 'Error unknown.'
 				}” Close this and try again?`
 			);
 
 			// Revert local field order so the state is accurate and the user can retry.
 			dispatch({
-				type: "reorderFields",
+				type: 'reorderFields',
 				positions: idsAndOldPositions,
 				model: model,
 			});

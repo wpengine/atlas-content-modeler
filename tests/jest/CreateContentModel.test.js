@@ -1,9 +1,9 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import { BrowserRouter as Router } from "react-router-dom";
-import CreateContentModel from "../../includes/settings/js/src/components/CreateContentModel";
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { BrowserRouter as Router } from 'react-router-dom';
+import CreateContentModel from '../../includes/settings/js/src/components/CreateContentModel';
 
-describe("CreateContentModel tests", () => {
+describe('CreateContentModel tests', () => {
 	const app = renderer.create(
 		<Router>
 			<CreateContentModel />
@@ -12,7 +12,7 @@ describe("CreateContentModel tests", () => {
 
 	let tree = app.toJSON();
 
-	it("Renders a matching snapshot", () => {
+	it('Renders a matching snapshot', () => {
 		expect(tree).toMatchSnapshot();
 	});
 });

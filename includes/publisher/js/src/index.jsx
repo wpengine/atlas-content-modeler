@@ -1,12 +1,12 @@
 /* global wpeContentModelFormEditingExperience */
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
 import './../../scss/index.scss';
 
 const { models, postType } = wpeContentModelFormEditingExperience;
 
-const container = document.getElementById("wpe-content-model-fields-app");
+const container = document.getElementById('wpe-content-model-fields-app');
 
 if (!container) {
 	return;
@@ -22,7 +22,7 @@ ReactDOM.render(<App model={model} />, container);
 
 // Add TinyMCE to rich text fields.
 // @todo use wp.oldEditor instead of tinymce directly? Move this code to proper script file.
-window.addEventListener("DOMContentLoaded", (event) => {
+window.addEventListener('DOMContentLoaded', (event) => {
 	if (
 		!wpeContentModelFormEditingExperience?.models ||
 		!wpeContentModelFormEditingExperience?.models[
@@ -32,12 +32,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
 		return;
 	}
 
-	const richTextFields = document.querySelectorAll(".richtext textarea");
+	const richTextFields = document.querySelectorAll('.richtext textarea');
 	if (!richTextFields.length > 0) {
 		return;
 	}
 
 	richTextFields.forEach((field) =>
-		tinymce.execCommand("mceAddEditor", false, field)
+		tinymce.execCommand('mceAddEditor', false, field)
 	);
 });
