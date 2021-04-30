@@ -174,7 +174,7 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 }
 
 /**
- * Handles model field POST requests from the REST API to store a new field.
+ * Handles requests from the REST API to create (POST) or update (PUT) a field.
  *
  * @param WP_REST_Request $request The REST API request object.
  *
