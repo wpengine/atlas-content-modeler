@@ -18,7 +18,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 			],
 		],
 		'title'   => [
-			'name' => 'A model with a title',
+			'name' => 'A model with a field with isTitle',
 			'fields' => [
 				'111' => [ 'id' => '111', 'isTitle' => true, 'slug' => 'a' ],
 				'222' => [ 'id' => '222', 'slug' => 'b' ],
