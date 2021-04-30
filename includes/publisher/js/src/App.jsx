@@ -14,7 +14,7 @@ export default function App({ model, mode }) {
 	}
 
 	return (
-		<div className="app classic-form" style={{ marginTop: "20px" }}>
+		<div className="app classic-form margin-top-20">
 			<div className="flex-parent">
 				<div>
 					<h3 className="main-title">
@@ -25,8 +25,7 @@ export default function App({ model, mode }) {
 
 				{isEditMode && (
 					<div
-						style={{ marginLeft: "20px" }}
-						className="flex-align-v"
+						className="flex-align-v margin-left-20"
 					>
 						<button
 							className="page-title-action"

@@ -1,8 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 export default function MediaUploader({ modelSlug, field }) {
 	const [value, setValue] = useState(field.value);
-	const inputRef = useRef();
 	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
 
 	/**
@@ -10,7 +9,6 @@ export default function MediaUploader({ modelSlug, field }) {
 	 */
 	function deleteImage(e) {
 		e.preventDefault();
-		inputRef.current = "";
 		setValue("");
 	}
 
@@ -30,7 +28,7 @@ export default function MediaUploader({ modelSlug, field }) {
 	function clickHandler(e) {
 		e.preventDefault();
 
-		const image = wp
+		const media = wp
 			.media({
 				title: value ? "Change Media" : "Upload Media",
 				multiple: false,
@@ -38,12 +36,11 @@ export default function MediaUploader({ modelSlug, field }) {
 			.open()
 			.on("select", function (e) {
 				// This will return the selected image from the Media Uploader, the result is an object
-				var uploaded_image = image.state().get("selection").first();
+				const uploadedMedia = media.state().get("selection").first();
 				// We convert uploaded_image to a JSON object to make accessing it easier
 				// Let's assign the url value to the input field
-				const url = uploaded_image.toJSON().url;
+				const url = uploadedMedia.attributes.url;
 				setValue(url);
-				inputRef.current = url;
 			});
 	}
 
@@ -57,7 +54,6 @@ export default function MediaUploader({ modelSlug, field }) {
 				type="text"
 				name={`wpe-content-model[${modelSlug}][${field.slug}]`}
 				id={`wpe-content-model[${modelSlug}][${field.slug}]`}
-				ref={inputRef}
 				className="hidden"
 				readOnly={true}
 				value={value}
@@ -66,20 +62,15 @@ export default function MediaUploader({ modelSlug, field }) {
 			<div>
 				{value && (
 					<>
-						<div style={{ marginBottom: "10px", marginTop: "5px" }}>
+						<div className="media-item">
 							{imageRegex.test(value) ? (
 								<img
 									onClick={(e) => clickHandler(e)}
-									style={{
-										cursor: "pointer",
-										maxWidth: "500px",
-										maxHeight: "400px",
-									}}
 									src={value}
 									alt={field.name}
 								/>
 							) : (
-								<a style={{ fontSize: "14px" }} href={value}>
+								<a href={value}>
 									[{getFileExtension(value).toUpperCase()}]{" "}
 									{value}
 								</a>
@@ -92,8 +83,7 @@ export default function MediaUploader({ modelSlug, field }) {
 					<div>
 						<input
 							type="button"
-							style={{ marginTop: "5px" }}
-							className="button button-primary button-large"
+							className="button button-primary button-large margin-top-5"
 							defaultValue={
 								value ? "Change Media" : "Upload Media"
 							}
@@ -105,8 +95,7 @@ export default function MediaUploader({ modelSlug, field }) {
 						<div>
 							<a
 								href="#"
-								style={{ marginLeft: "20px" }}
-								className="btn-delete"
+								className="btn-delete margin-left-20"
 								onClick={(e) => deleteImage(e)}
 							>
 								Remove Media

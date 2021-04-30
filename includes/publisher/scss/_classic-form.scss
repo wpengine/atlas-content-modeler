@@ -16,9 +16,40 @@ h1.wp-heading-inline,
 }
 
 /**
+	Generics
+ */
+.margin-top-5 {
+	margin-top: 5px;
+}
+
+.margin-top-20 {
+	margin-top: 20px;
+}
+
+.margin-left-20 {
+	margin-left: 20px;
+}
+
+/**
 	Classic Form Styling overrides
  */
 .classic-form {
+	.media-item {
+		margin-bottom: 10px;
+		margin-top: 5px;
+
+		img {
+			cursor: pointer;
+			max-width: 500px;
+			max-height: 400px;
+		}
+
+		a {
+			font-size: 14px;
+		}
+	}
+
+
 	.page-title-action {
 		display: block !important;
 	}
