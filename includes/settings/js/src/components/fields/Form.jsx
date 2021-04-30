@@ -145,6 +145,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 							editing={editing}
 							data={storedData}
 							register={register}
+							fieldId={id}
 						/>
 					)}
 				</div>
