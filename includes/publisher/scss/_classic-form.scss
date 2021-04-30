@@ -5,10 +5,12 @@ $error-red: #d21b46;
 /**
 	WP Overrides
  */
-.page-title-action,
-h1.wp-heading-inline,
-#postimagediv {
-	display: none !important;
+.post-php {
+	.page-title-action,
+	h1.wp-heading-inline,
+	#postimagediv {
+		display: none;
+	}
 }
 /* reposition publish sidebar due to removing previous title */
 #side-sortables {
