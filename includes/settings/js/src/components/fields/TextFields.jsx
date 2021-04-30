@@ -15,65 +15,69 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 
 	return (
 		<>
-			<div className="field">
-				<legend>Field Options</legend>
-				<input
-					name="isTitle"
-					type="checkbox"
-					id={`is-title-${fieldId}`}
-					ref={register}
-					checked={data?.isTitle === true}
-					onChange={(event) => {
-						/**
-						 * Unchecks other fields when checking a field.
-						 * Only one field can be the title field.
-						 */
-						if (event.target.checked) {
-							dispatch({
-								type: "setTitleField",
-								id: fieldId,
-								model: currentModel,
-							});
-							return;
-						}
-
-						if (!event.target.checked) {
+			{!data?.parent && (
+				<div className="field">
+					<legend>Field Options</legend>
+					<input
+						name="isTitle"
+						type="checkbox"
+						id={`is-title-${fieldId}`}
+						ref={register}
+						checked={data?.isTitle === true}
+						onChange={(event) => {
 							/**
-							 * When unchecking a field that was not the original
-							 * title, restore isTitle on the original title
-							 * field if there is one. Prevents an issue where
-							 * checking “is title” then unchecking it removes
-							 * isTitle from the original.
+							 * Unchecks other fields when checking a field.
+							 * Only one field can be the title field.
 							 */
-							if (
-								originalTitleFieldId.current &&
-								originalTitleFieldId.current !== fieldId
-							) {
+							if (event.target.checked) {
 								dispatch({
 									type: "setTitleField",
-									id: originalTitleFieldId.current,
+									id: fieldId,
 									model: currentModel,
 								});
 								return;
 							}
 
-							/**
-							 * At this point we're just unchecking the original
-							 * title field.
-							 */
-							dispatch({
-								type: "setFieldProperties",
-								id: fieldId,
-								model: currentModel,
-								properties: [{ name: "isTitle", value: false }],
-							});
-						}
-					}}
-				/>
-				<label htmlFor={`is-title-${fieldId}`} className="checkbox">
-					Use this field as the entry title
-				</label>
-			</div>
+							if (!event.target.checked) {
+								/**
+								 * When unchecking a field that was not the original
+								 * title, restore isTitle on the original title
+								 * field if there is one. Prevents an issue where
+								 * checking “is title” then unchecking it removes
+								 * isTitle from the original.
+								 */
+								if (
+									originalTitleFieldId.current &&
+									originalTitleFieldId.current !== fieldId
+								) {
+									dispatch({
+										type: "setTitleField",
+										id: originalTitleFieldId.current,
+										model: currentModel,
+									});
+									return;
+								}
+
+								/**
+								 * At this point we're just unchecking the original
+								 * title field.
+								 */
+								dispatch({
+									type: "setFieldProperties",
+									id: fieldId,
+									model: currentModel,
+									properties: [
+										{ name: "isTitle", value: false },
+									],
+								});
+							}
+						}}
+					/>
+					<label htmlFor={`is-title-${fieldId}`} className="checkbox">
+						Use this field as the entry title
+					</label>
+				</div>
+			)}
 			<div className={editing ? "field read-only editing" : "field"}>
 				<legend>Text Length</legend>
 				<fieldset>
