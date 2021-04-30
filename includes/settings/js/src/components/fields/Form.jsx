@@ -4,7 +4,6 @@ import { useLocationSearch } from "../../utils";
 import Icon from "../icons";
 import TextFields from "./TextFields";
 import NumberFields from "./NumberFields";
-import MediaFields from "./MediaFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
@@ -13,7 +12,6 @@ const { apiFetch } = wp;
 
 const extraFields = {
 	text: TextFields,
-	media: MediaFields,
 	number: NumberFields,
 };
 
