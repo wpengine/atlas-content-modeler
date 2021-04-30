@@ -43,7 +43,7 @@ export function reducer(state, action) {
 			return { ...state };
 		case "closeField":
 			if (action?.originalState) {
-				state[action.model]['fields'] = action.originalState;
+				state[action.model]["fields"] = action.originalState;
 			}
 			state[action.model]["fields"][action.id].open = false;
 			state[action.model]["fields"][action.id].editing = false;
@@ -70,7 +70,7 @@ export function reducer(state, action) {
 			return { ...state };
 		case "removeField":
 			if (action?.originalState) {
-				state[action.model]['fields'] = action.originalState;
+				state[action.model]["fields"] = action.originalState;
 			}
 			// Also remove descendents of repeater fields.
 			if (state[action.model]["fields"][action.id]?.type === "repeater") {
