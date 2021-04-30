@@ -1,3 +1,4 @@
+import React from 'react';
 import AddIcon from './AddIcon';
 import BooleanIcon from './BooleanIcon';
 import CloseIcon from './CloseIcon';
