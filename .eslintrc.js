@@ -14,5 +14,6 @@ module.exports = {
 	// add your custom rules here
 	rules: {
 		'react/prop-types': 0,
+		'react/no-unescaped-entities': 0
 	},
 };
