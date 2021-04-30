@@ -212,7 +212,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	 */
 	if ( isset( $params['isTitle'] ) && $params['isTitle'] === true ) {
 		foreach ( $content_types[ $params['model'] ]['fields'] as $field_id => $field_properties ) {
-			unset( $content_types[ $params['model'] ]['fields'][ $field_id ][ 'isTitle' ] );
+			unset( $content_types[ $params['model'] ]['fields'][ $field_id ]['isTitle'] );
 		}
 	}
 
