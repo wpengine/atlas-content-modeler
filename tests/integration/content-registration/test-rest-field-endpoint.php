@@ -17,6 +17,13 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 				'222' => [ 'position' => '1' ],
 			],
 		],
+		'title'   => [
+			'name' => 'A model with a title',
+			'fields' => [
+				'111' => [ 'id' => '111', 'isTitle' => true, 'slug' => 'a' ],
+				'222' => [ 'id' => '222', 'slug' => 'b' ],
+			],
+		],
 		'parent' => [
 			'name' => 'Parent',
 			'fields' => [
@@ -215,6 +222,22 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'success', $data );
 		$this->assertEquals( false, $data[ 'success' ] ); // The WP option was not updated.
 		$this->assertEquals( $this->test_models[$model], $models[$model] ); // Data is unaltered.
+	}
+
+	public function test_setting_new_title_field_removes_existing_one() {
+		wp_set_current_user( 1 );
+		$model = 'title';
+
+		$request = new WP_REST_Request( 'PUT', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( ['id' => '222', 'isTitle' => true, 'model' => $model, 'slug' => 'b' ] ) );
+
+		$response = $this->server->dispatch( $request );
+		$models   = get_option( 'wpe_content_model_post_types' );
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertArrayHasKey( 'isTitle', $models[$model]['fields']['222'] );
+		$this->assertArrayNotHasKey( 'isTitle', $models[$model]['fields']['111'] );
 	}
 
 	public function test_delete_request_without_model_gives_error(): void {
