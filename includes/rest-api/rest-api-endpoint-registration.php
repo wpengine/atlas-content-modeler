@@ -206,6 +206,16 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
+	/**
+	 * Remove isTitle from all fields if isTitle is set on this field. Only one
+	 * field can be used as the entry title.
+	 */
+	if ( isset( $params['isTitle'] ) && $params['isTitle'] === true ) {
+		foreach ( $content_types[ $params['model'] ]['fields'] as $field_id => $field_properties ) {
+			unset( $content_types[ $params['model'] ]['fields'][ $field_id ][ 'isTitle' ] );
+		}
+	}
+
 	$values_to_save = shape_field_args( $params );
 
 	$content_types[ $params['model'] ]['fields'][ $params['id'] ] = $values_to_save;
