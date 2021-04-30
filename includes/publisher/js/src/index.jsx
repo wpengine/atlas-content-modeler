@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import './../../scss/index.scss';
+import "./../../scss/index.scss";
 
 const { models, postType } = wpeContentModelFormEditingExperience;
 
@@ -18,7 +18,11 @@ if (!models.hasOwnProperty(postType)) {
 
 const model = models[postType];
 
-ReactDOM.render(<App model={model} />, container);
+// set mode for form, i.e. edit
+const urlParams = new URLSearchParams(window.location.search);
+const formMode = urlParams.get("action");
+
+ReactDOM.render(<App mode={formMode} model={model} />, container);
 
 // Add TinyMCE to rich text fields.
 // @todo use wp.oldEditor instead of tinymce directly? Move this code to proper script file.
