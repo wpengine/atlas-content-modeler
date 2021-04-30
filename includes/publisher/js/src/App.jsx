@@ -1,5 +1,5 @@
-import React from "react";
-import Fields from "./components/Fields";
+import React from 'react';
+import Fields from './components/Fields';
 
 export default function App({ model }) {
 	return (

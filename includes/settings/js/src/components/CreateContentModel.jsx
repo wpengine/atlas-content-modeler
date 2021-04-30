@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
-import { ModelsContext } from "../ModelsContext";
-import { insertSidebarMenuItem } from "../utils";
-import { useApiIdGenerator } from "./fields/useApiIdGenerator";
-import { showSuccess } from "../toasts";
-import Icon from "./icons";
+import React, { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useHistory } from 'react-router-dom';
+import { ModelsContext } from '../ModelsContext';
+import { insertSidebarMenuItem } from '../utils';
+import { useApiIdGenerator } from './fields/useApiIdGenerator';
+import { showSuccess } from '../toasts';
+import Icon from './icons';
 
 const { apiFetch } = wp;
 
@@ -17,22 +17,22 @@ export default function CreateContentModel() {
 	const [descriptionCount, setDescriptionCount] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
-		apiFieldId: "postTypeSlug",
+		apiFieldId: 'postTypeSlug',
 		setValue,
 	});
 
 	function apiCreateModel(data) {
 		apiFetch({
-			path: "/wpe/content-model",
-			method: "POST",
+			path: '/wpe/content-model',
+			method: 'POST',
 			_wpnonce: wpApiSettings.nonce,
 			data,
 		})
 			.then((res) => {
 				if (res.success) {
-					dispatch({ type: "addModel", data: res.model });
+					dispatch({ type: 'addModel', data: res.model });
 					history.push(
-						"/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" +
+						'/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=' +
 							data.postTypeSlug
 					);
 
@@ -46,9 +46,9 @@ export default function CreateContentModel() {
 				}
 			})
 			.catch((err) => {
-				if (err.code === "wpe_content_model_already_exists") {
-					setError("postTypeSlug", {
-						type: "idExists",
+				if (err.code === 'wpe_content_model_already_exists') {
+					setError('postTypeSlug', {
+						type: 'idExists',
 						message: err.message,
 					});
 				}
@@ -63,7 +63,7 @@ export default function CreateContentModel() {
 					className="tertiary"
 					onClick={() =>
 						history.push(
-							"/wp-admin/admin.php?page=wpe-content-model"
+							'/wp-admin/admin.php?page=wpe-content-model'
 						)
 					}
 				>
@@ -74,7 +74,7 @@ export default function CreateContentModel() {
 				<form onSubmit={handleSubmit(apiCreateModel)}>
 					<div
 						className={
-							errors.singular ? "field has-error" : "field"
+							errors.singular ? 'field has-error' : 'field'
 						}
 					>
 						<label htmlFor="singular">Singular Name</label>
@@ -94,7 +94,7 @@ export default function CreateContentModel() {
 						/>
 						<p className="field-messages">
 							{errors.singular &&
-								errors.singular.type === "required" && (
+								errors.singular.type === 'required' && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -103,7 +103,7 @@ export default function CreateContentModel() {
 									</span>
 								)}
 							{errors.singular &&
-								errors.singular.type === "maxLength" && (
+								errors.singular.type === 'maxLength' && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -117,7 +117,7 @@ export default function CreateContentModel() {
 					</div>
 
 					<div
-						className={errors.plural ? "field has-error" : "field"}
+						className={errors.plural ? 'field has-error' : 'field'}
 					>
 						<label htmlFor="plural">Plural Name</label>
 						<br />
@@ -137,7 +137,7 @@ export default function CreateContentModel() {
 						/>
 						<p className="field-messages">
 							{errors.plural &&
-								errors.plural.type === "required" && (
+								errors.plural.type === 'required' && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -146,7 +146,7 @@ export default function CreateContentModel() {
 									</span>
 								)}
 							{errors.plural &&
-								errors.plural.type === "maxLength" && (
+								errors.plural.type === 'maxLength' && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -161,7 +161,7 @@ export default function CreateContentModel() {
 
 					<div
 						className={
-							errors.postTypeSlug ? "field has-error" : "field"
+							errors.postTypeSlug ? 'field has-error' : 'field'
 						}
 					>
 						<label htmlFor="postTypeSlug">API Identifier</label>
@@ -178,7 +178,7 @@ export default function CreateContentModel() {
 						/>
 						<p className="field-messages">
 							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "required" && (
+								errors.postTypeSlug.type === 'required' && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -187,7 +187,7 @@ export default function CreateContentModel() {
 									</span>
 								)}
 							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "maxLength" && (
+								errors.postTypeSlug.type === 'maxLength' && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -196,7 +196,7 @@ export default function CreateContentModel() {
 									</span>
 								)}
 							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "idExists" && (
+								errors.postTypeSlug.type === 'idExists' && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -211,8 +211,8 @@ export default function CreateContentModel() {
 					<div
 						className={
 							errors.description
-								? "field field-description has-error"
-								: "field field-description"
+								? 'field field-description has-error'
+								: 'field field-description'
 						}
 					>
 						<label htmlFor="description">Description</label>
@@ -230,7 +230,7 @@ export default function CreateContentModel() {
 						/>
 						<p className="field-messages">
 							{errors.description &&
-								errors.description.type === "maxLength" && (
+								errors.description.type === 'maxLength' && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -252,7 +252,7 @@ export default function CreateContentModel() {
 						className="tertiary"
 						onClick={() =>
 							history.push(
-								"/wp-admin/admin.php?page=wpe-content-model"
+								'/wp-admin/admin.php?page=wpe-content-model'
 							)
 						}
 					>

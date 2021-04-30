@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { ModelsContext } from "../ModelsContext";
-import { getRootFields } from "../queries";
-import { ContentModelDropdown } from "./ContentModelDropdown";
+import React, { useContext, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { ModelsContext } from '../ModelsContext';
+import { getRootFields } from '../queries';
+import { ContentModelDropdown } from './ContentModelDropdown';
 
 function Header({ showButton = true }) {
 	let history = useHistory();
@@ -13,7 +13,7 @@ function Header({ showButton = true }) {
 				<button
 					onClick={() =>
 						history.push(
-							"/wp-admin/admin.php?page=wpe-content-model&view=create-model"
+							'/wp-admin/admin.php?page=wpe-content-model&view=create-model'
 						)
 					}
 				>
@@ -43,7 +43,7 @@ export default function ViewContentModelsList() {
 						<button
 							onClick={() =>
 								history.push(
-									"/wp-admin/admin.php?page=wpe-content-model&view=create-model"
+									'/wp-admin/admin.php?page=wpe-content-model&view=create-model'
 								)
 							}
 						>

@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
-import Icon from "../icons";
-import Modal from "react-modal";
-import { ModelsContext } from "../../ModelsContext";
-import { maybeCloseDropdown } from "../../utils";
+import React, { useState, useContext } from 'react';
+import Icon from '../icons';
+import Modal from 'react-modal';
+import { ModelsContext } from '../../ModelsContext';
+import { maybeCloseDropdown } from '../../utils';
 
 const { apiFetch } = wp;
 
@@ -13,17 +13,17 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 
 	const customStyles = {
 		overlay: {
-			backgroundColor: "rgba(0, 40, 56, 0.7)",
+			backgroundColor: 'rgba(0, 40, 56, 0.7)',
 		},
 		content: {
-			top: "50%",
-			left: "50%",
-			right: "auto",
-			bottom: "auto",
-			marginRight: "-50%",
-			transform: "translate(-50%, -50%)",
-			border: "none",
-			padding: "40px",
+			top: '50%',
+			left: '50%',
+			right: 'auto',
+			bottom: 'auto',
+			marginRight: '-50%',
+			transform: 'translate(-50%, -50%)',
+			border: 'none',
+			padding: '40px',
 		},
 	};
 
@@ -37,7 +37,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 			>
 				<Icon type="options" />
 			</button>
-			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
+			<div className={`dropdown-content ${dropdownOpen ? '' : 'hidden'}`}>
 				<a
 					className="delete"
 					href="#"
@@ -69,7 +69,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 					only deletes the field definition.
 				</p>
 				<p>
-					Are you sure you want to delete the {field.name} field from{" "}
+					Are you sure you want to delete the {field.name} field from{' '}
 					{model.name}?
 				</p>
 				<button
@@ -79,13 +79,13 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 					onClick={async () => {
 						apiFetch({
 							path: `/wpe/content-model-field/${field.id}`,
-							method: "DELETE",
+							method: 'DELETE',
 							body: JSON.stringify({ model: model.slug }),
 							_wpnonce: wpApiSettings.nonce,
 						});
 						setModalIsOpen(false);
 						dispatch({
-							type: "removeField",
+							type: 'removeField',
 							id: field.id,
 							model: model.slug,
 						});

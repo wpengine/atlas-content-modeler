@@ -1,6 +1,6 @@
-import React from "react";
-import { toast } from "react-toastify";
-import Icon from "./components/icons";
+import React from 'react';
+import { toast } from 'react-toastify';
+import Icon from './components/icons';
 
 export function showSuccess(message) {
 	toast(
@@ -12,8 +12,8 @@ export function showSuccess(message) {
 		),
 		{
 			closeButton: false,
-			toastId: "success",
-			type: "success",
+			toastId: 'success',
+			type: 'success',
 		}
 	);
 }
@@ -32,8 +32,8 @@ export function showError(message) {
 		{
 			autoClose: false,
 			closeButton: false,
-			toastId: "error",
-			type: "error",
+			toastId: 'error',
+			type: 'error',
 		}
 	);
 }
