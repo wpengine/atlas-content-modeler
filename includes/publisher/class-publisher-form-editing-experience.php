@@ -41,6 +41,13 @@ final class FormEditingExperience {
 	private $current_screen_post_type;
 
 	/**
+	 * Error messages related to saving posts.
+	 *
+	 * @var string
+	 */
+	private $error_save_post = '';
+
+	/**
 	 * FormEditingExperience constructor.
 	 */
 	public function __construct() {
@@ -58,6 +65,8 @@ final class FormEditingExperience {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 		add_action( 'edit_form_after_title', [ $this, 'render_app_container' ] );
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
+		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
+		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
 	}
 
 	/**
@@ -197,6 +206,7 @@ final class FormEditingExperience {
 		}
 
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			$this->error_save_post = 'You do not have permission to edit this content.';
 			return;
 		}
 
@@ -208,6 +218,7 @@ final class FormEditingExperience {
 				),
 				'wpe-content-model-pubex-nonce'
 			) ) {
+			$this->error_save_post = 'Nonce verification failed when saving your content. Please try again.';
 			return;
 		}
 
@@ -225,13 +236,76 @@ final class FormEditingExperience {
 
 		foreach ( $all_field_slugs as $slug ) {
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
-				delete_post_meta( $post_id, sanitize_key( $slug ) );
+				$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
+				if ( empty( $existing ) ) {
+					continue;
+				}
+
+				$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
+				if ( ! $deleted ) {
+					$this->error_save_post = sprintf( 'There was an error deleting the %s field data.', $slug );
+				}
 			}
 		}
 
 		// @todo legit data type sanitization. e.g. wp_kses_post is inappropriate for plain text.
 		foreach ( $posted_values as $key => $value ) {
-			update_post_meta( $post_id, sanitize_text_field( $key ), wp_kses_post( $value ) );
+			$value = wp_unslash( $value );
+
+			/**
+			 * Check if an existing value matches the submitted value
+			 * and short-circuit the loop. Otherwise `update_post_meta`
+			 * will return `false`, which we use to indicate a failure.
+			 */
+			$existing = get_post_meta( $post_id, sanitize_text_field( $key ), true );
+			if ( $existing === $value ) {
+				continue;
+			}
+
+			$updated = update_post_meta( $post_id, sanitize_text_field( $key ), wp_kses_post( $value ) );
+			if ( ! $updated ) {
+				$this->error_save_post = sprintf( 'There was an error updating the %s field data.', $key );
+			}
+		}
+	}
+
+	/**
+	 * Adds error messages to the post edit URL
+	 * when saving a post fails.
+	 *
+	 * Runs on the `redirect_post_location` hook.
+	 *
+	 * @param string $location The destination URL.
+	 * @param int    $post_id  The post ID.
+	 *
+	 * @return string
+	 */
+	public function append_error_to_location( $location, $post_id ): string {
+		$post_type = get_post_type( $post_id );
+
+		// Only show errors for post types managed by our plugin.
+		if ( array_key_exists( $post_type, $this->models ) && ! empty( $this->error_save_post ) ) {
+			$location = remove_query_arg( 'wpe-content-model-publisher-save-error', $location );
+			$location = add_query_arg( 'wpe-content-model-publisher-save-error', $this->error_save_post, $location );
+		}
+
+		return $location;
+	}
+
+	/**
+	 * Displays error messages when saving a post fails.
+	 *
+	 * Runs on `admin_notices` hook.
+	 */
+	public function display_save_post_errors(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier.
+		if ( ! empty( $_GET['wpe-content-model-publisher-save-error'] ) ) {
+			?>
+				<div class="error">
+					<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier. ?>
+					<p><?php echo esc_html( sanitize_text_field( wp_unslash( $_GET['wpe-content-model-publisher-save-error'] ) ) ); ?></p>
+				</div>
+			<?php
 		}
 	}
 }
