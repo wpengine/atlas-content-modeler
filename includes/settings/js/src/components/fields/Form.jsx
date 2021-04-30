@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
 import Icon from "../icons";
@@ -10,6 +10,7 @@ import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
 
 const { apiFetch } = wp;
+const { cloneDeep } = lodash;
 
 const extraFields = {
 	text: TextFields,
@@ -27,7 +28,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 		setError,
 	} = useForm();
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
-	const { dispatch } = useContext(ModelsContext);
+	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const model = query.get("id");
 	const ExtraFields = extraFields[type] ?? null;
@@ -36,6 +37,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 		editing,
 		storedData,
 	});
+	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
 
 	function apiAddField(data) {
 		apiFetch({
@@ -204,8 +206,18 @@ function Form({ id, position, type, editing, storedData, parent }) {
 					onClick={(event) => {
 						event.preventDefault();
 						editing
-							? dispatch({ type: "closeField", id, model })
-							: dispatch({ type: "removeField", id, model });
+							? dispatch({
+									type: "closeField",
+									originalState: originalState.current,
+									id,
+									model,
+							  })
+							: dispatch({
+									type: "removeField",
+									originalState: originalState.current,
+									id,
+									model,
+							  });
 					}}
 				>
 					Cancel
