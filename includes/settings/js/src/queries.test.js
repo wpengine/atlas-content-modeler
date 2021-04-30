@@ -80,9 +80,9 @@ describe("getChildrenOfField", () => {
 describe("getTitleFieldId", () => {
 	it("gets the ID of the field set as the entry title", () => {
 		const fields = {
-			123: {id: 123},
-			456: {id: 456},
-			789: {id: 789, isTitle: true},
+			123: { id: 123 },
+			456: { id: 456 },
+			789: { id: 789, isTitle: true },
 		};
 
 		const expected = 789;
@@ -91,9 +91,9 @@ describe("getTitleFieldId", () => {
 	});
 	it("gives an empty string if no field is set as the entry title", () => {
 		const fields = {
-			123: {id: 123},
-			456: {id: 456},
-			789: {id: 789},
+			123: { id: 123 },
+			456: { id: 456 },
+			789: { id: 789 },
 		};
 
 		const expected = "";
