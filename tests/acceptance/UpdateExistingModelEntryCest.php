@@ -4,6 +4,7 @@ class UpdateExistingModelEntryCest
 {
     public function i_can_update_an_existing_model_entry(AcceptanceTester $i)
     {
+        $i->maximizeWindow();
         // First we create a model with fields.
         $i->loginAsAdmin();
         $i->haveContentModel('goose', 'geese', 'Geese go honk');
@@ -48,7 +49,6 @@ class UpdateExistingModelEntryCest
         $i->amOnPage('/wp-admin/edit.php?post_type=geese');
         $i->click('Add New', '.wrap');
         $i->wait(1);
-        $i->see('Editing Geese');
 
         $i->fillField(['name' => 'wpe-content-model[geese][color]'], 'Gray');
         $i->fillField(['name' => 'wpe-content-model[geese][age]'], '100');
@@ -78,7 +78,9 @@ class UpdateExistingModelEntryCest
         $i->wait(2);
 
         $i->seeInField('wpe-content-model[geese][color]', 'Green');
+        $i->switchToIFrame('#field-description iframe');
         $i->see('I am a green goose');
+        $i->switchToIFrame();
 
         // Cause an update failure and check error message.
         $i->executeJS("
