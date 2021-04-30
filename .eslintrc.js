@@ -6,7 +6,7 @@ module.exports = {
 	},
 	parserOptions: {
 		parser: 'babel-eslint',
-		ecmaVersion: 2018,
+		ecmaVersion: 2020,
 		ecmaFeatures: {
 			"jsx": true,
 			"modules": true,
@@ -21,5 +21,6 @@ module.exports = {
 		'react/prop-types': 0,
 		'react/no-unescaped-entities': 0,
 		'react/no-children-prop': 0,
+		'no-unsafe-optional-chaining': 0
 	},
 };
