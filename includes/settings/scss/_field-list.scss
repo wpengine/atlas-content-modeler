@@ -44,7 +44,7 @@
 }
 
 .field-list button.edit span.widest {
-	flex-basis: 85%;
+	flex-basis: 75%;
 }
 
 .field-list .label {
@@ -160,6 +160,12 @@
 .field-list .repeater-fields {
 	width: 95%;
 	margin: 0 2.5%;
+}
+
+.field-list .tags .tag {
+	color: $color-gray-mid;
+	font-weight: normal;
+	padding: 2px 6px;
 }
 
 .draggable {

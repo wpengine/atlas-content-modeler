@@ -27,6 +27,15 @@
 	color: #59767f;
 }
 
+.wpe-content-model-admin-page input[type="checkbox"] {
+	margin-right: 12px;
+	min-width: auto;
+}
+
+.wpe-content-model-admin-page label.checkbox {
+	font-weight: normal;
+}
+
 .wpe-content-model-admin-page textarea {
 	min-height: 120px;
 }
