@@ -58,7 +58,7 @@ final class FormEditingExperience {
 	 * Bootstraps the plugin.
 	 */
 	public function bootstrap(): void {
-		$this->models = get_registered_content_types();
+		$this->models = array_change_key_case( get_registered_content_types(), CASE_LOWER );
 
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
@@ -107,7 +107,7 @@ final class FormEditingExperience {
 			'all'
 		);
 
-		$models = get_registered_content_types();
+		$models = $this->models;
 		$model  = $models[ $this->current_screen_post_type ];
 
 		// Add existing field values to models data.
