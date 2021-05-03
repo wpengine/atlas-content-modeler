@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MediaUploader from "./MediaUploader";
 
 export default function Field(props) {
 	const { field, modelSlug } = props;
@@ -14,6 +15,8 @@ export default function Field(props) {
 // @todo wire up to react-hook-form, validate data, display errors.
 function fieldMarkup(field, modelSlug) {
 	switch (field.type) {
+		case "media":
+			return <MediaUploader field={field} modelSlug={modelSlug} />;
 		case "text":
 		case "number": // @todo split this out to support mix/max/step/etc.
 		case "date": // @todo split this out for proper browser and datepicker support

@@ -174,7 +174,7 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 }
 
 /**
- * Handles model field POST requests from the REST API to store a new field.
+ * Handles requests from the REST API to create (POST) or update (PUT) a field.
  *
  * @param WP_REST_Request $request The REST API request object.
  *
@@ -204,6 +204,16 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			'Another field in this model has the same API identifier.',
 			array( 'status' => 400 )
 		);
+	}
+
+	/**
+	 * Remove isTitle from all fields if isTitle is set on this field. Only one
+	 * field can be used as the entry title.
+	 */
+	if ( isset( $params['isTitle'] ) && $params['isTitle'] === true ) {
+		foreach ( $content_types[ $params['model'] ]['fields'] as $field_id => $field_properties ) {
+			unset( $content_types[ $params['model'] ]['fields'][ $field_id ]['isTitle'] );
+		}
 	}
 
 	$values_to_save = shape_field_args( $params );

@@ -3,10 +3,75 @@ $form-default-border-gray: #59767f;
 $error-red: #d21b46;
 
 /**
+	WP Overrides
+ */
+.post-php {
+	.page-title-action,
+	h1.wp-heading-inline,
+	#postimagediv {
+		display: none;
+	}
+}
+/* reposition publish sidebar due to removing previous title */
+#side-sortables {
+	margin-top: 20px;
+}
+
+/**
 	Classic Form Styling overrides
  */
 .classic-form {
-	padding: 10px;
+	.media-item {
+		margin-bottom: 10px;
+		margin-top: 5px;
+
+		img {
+			cursor: pointer;
+			max-width: 500px;
+			max-height: 400px;
+		}
+
+		a {
+			font-size: 14px;
+		}
+	}
+
+
+	.page-title-action {
+		display: block !important;
+	}
+
+	h3 {
+		&.main-title {
+			font-size: 28px;
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	.action-buttons {
+		margin-top: 40px;
+	}
+
+	a {
+		&.btn-delete {
+			color: $error-red;
+		}
+	}
+
+	button {
+		&.action-button {
+			&:focus,
+			&:hover {
+				border-color: $form-purple;
+				background-color: $form-purple;
+			}
+
+			font-size: 14px;
+			background-color: $form-purple;
+			padding: 10px 40px !important;
+		}
+	}
 
 	.field {
 		margin-top: 20px;
@@ -31,7 +96,8 @@ $error-red: #d21b46;
 			padding: 16px;
 			border-radius: 2px;
 			border: 1px solid $form-default-border-gray;
-			margin: 0.25em 0;
+			margin: 0;
+			width: 100%;
 		}
 
 		textarea {
@@ -45,11 +111,12 @@ $error-red: #d21b46;
 			line-height: 20px;
 			font-weight: bold;
 			font-size: 14px;
-			margin-bottom: 8px;
+			margin-bottom: 15px;
 		}
 
 		/* checkboxes */
 		.check-container {
+			padding-top: 3px;
 			display: block;
 			position: relative;
 			padding-left: 35px;
@@ -81,24 +148,6 @@ $error-red: #d21b46;
 			background-color: #ffffff;
 			border: 2px solid $form-default-border-gray;
 			border-radius: 2px;
-
-			&:hover:before {
-				display: inline-block;
-				width: 35px;
-				height: 35px;
-				position: relative;
-				top: -8px;
-				left: -7px;
-				margin-top: 0;
-				z-index: 0;
-				content: "";
-				opacity: 0.5;
-				background-color: $form-purple;
-				border-radius: 100%;
-				box-sizing: border-box;
-				transition: box-shadow 0.3s ease;
-				box-shadow: 0 0 0 4px rgba(126, 92, 239, 1);
-			}
 		}
 
 		/* On mouse-over, focus add a purple border color */
@@ -149,7 +198,7 @@ $error-red: #d21b46;
 			}
 
 			font-size: 1rem;
-			margin: 0.25rem;
+			margin: 0;
 			min-width: 125px;
 			padding: 0.5rem;
 			transition: border-color 0.5s ease-out;

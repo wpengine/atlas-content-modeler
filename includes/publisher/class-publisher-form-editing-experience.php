@@ -80,10 +80,17 @@ final class FormEditingExperience {
 
 	/**
 	 * Enqueues scripts and styles related to our app.
+	 *
+	 * @param string $hook The current admin page.
 	 */
-	public function enqueue_assets(): void {
+	public function enqueue_assets( string $hook ): void {
 		// Bail if this isn't a model created by our plugin.
 		if ( ! array_key_exists( $this->current_screen_post_type, $this->models ) ) {
+			return;
+		}
+
+		// Only load in the post editor.
+		if ( 'post.php' !== $hook && 'post-new.php' !== $hook ) {
 			return;
 		}
 
@@ -135,6 +142,16 @@ final class FormEditingExperience {
 		);
 
 		wp_enqueue_script( 'wpe-content-model-form-editing-experience' );
+
+		add_action( 'admin_enqueue_scripts', [ $this, 'load_wp_media_files' ], 10, 2 );
+	}
+
+	/**
+	 * Load WordPress media files for uploader
+	 */
+	public function load_wp_media_files() {
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_media();
 	}
 
 	/**
