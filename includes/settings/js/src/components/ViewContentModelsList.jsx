@@ -83,9 +83,7 @@ function ContentModels({ models }) {
 						</p>
 					</span>
 				</Link>
-				<div className="flex-item">
-					<ContentModelDropdown model={models[slug]} />
-				</div>
+				<ContentModelDropdown model={models[slug]} />
 			</li>
 		);
 	});
