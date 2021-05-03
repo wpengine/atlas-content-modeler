@@ -340,11 +340,9 @@ final class FormEditingExperience {
 
 		$fields = $this->models[ $post_type ]['fields'] ?? [];
 
-		// See if the developer set a field as the entry title field.
 		$title_field = get_entry_title_field( $fields );
 
 		if ( ! isset( $title_field['slug'] ) ) {
-			// Try the first text field if no field was set as the title field.
 			$title_field = get_first_field_of_type( $fields, 'text' );
 		}
 
@@ -357,7 +355,7 @@ final class FormEditingExperience {
 			}
 		}
 
-		// Fall back to the post type plus the post ID.
+		// Use a generated title when entry title fields or field data are absent.
 		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'wpe-content-model' );
 		return $post_type_singular . ' ' . $id;
 	}
