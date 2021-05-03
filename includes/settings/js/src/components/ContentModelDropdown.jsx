@@ -47,19 +47,18 @@ export const ContentModelDropdown = ({ model }) => {
 		},
 	};
 
-	useEffect(() => {
-		window.addEventListener('keypress', handleKeyPress);
-	}, []);
-
 	function handleKeyPress(e) {
 		if(dropdownOpen) {
-			console.log(dropdownOpen);
 			if (e.key === 'Escape') {
-				console.log('escaped!');
 				setDropdownOpen(false);
 			}
 		}
 	}
+
+	useEffect(() => {
+		document.addEventListener('keydown', handleKeyPress);
+		// return () => document.removeEventListener('keydown', handleKeyPress);
+	}, [dropdownOpen]);
 
 	return (
 		<span className="dropdown">
