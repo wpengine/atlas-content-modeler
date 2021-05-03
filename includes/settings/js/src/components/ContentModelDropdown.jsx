@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "./icons";
 import Modal from "react-modal";
@@ -46,6 +46,25 @@ export const ContentModelDropdown = ({ model }) => {
 			padding: "40px",
 		},
 	};
+
+	function handleKeyPress(e) {
+		if (dropdownOpen) {
+			if (e.key === "Escape") {
+				setDropdownOpen(false);
+			}
+		}
+	}
+
+	useEffect(() => {
+		let isMounted = true;
+		if (isMounted) {
+			document.addEventListener("keydown", handleKeyPress);
+		}
+		return () => {
+			isMounted = false;
+			document.removeEventListener("keydown", handleKeyPress);
+		};
+	}, [dropdownOpen]);
 
 	return (
 		<span className="dropdown">
