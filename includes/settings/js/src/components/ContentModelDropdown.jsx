@@ -1,24 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ModelsContext } from "../ModelsContext";
-import Icon from "./icons";
-import Modal from "react-modal";
-import { EditModelModal } from "./EditModelModal";
-import { useHistory } from "react-router-dom";
-import { maybeCloseDropdown, removeSidebarMenuItem } from "../utils";
-import { showError } from "../toasts";
+import React, { useContext, useEffect, useState } from 'react';
+import { ModelsContext } from '../ModelsContext';
+import Icon from './icons';
+import Modal from 'react-modal';
+import { EditModelModal } from './EditModelModal';
+import { useHistory } from 'react-router-dom';
+import { maybeCloseDropdown, removeSidebarMenuItem } from '../utils';
+import { showError } from '../toasts';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 const { apiFetch } = wp;
 
-function deleteModel(name = "") {
+function deleteModel(name = '') {
 	if (!name.length) {
 		return;
 	}
 
 	return apiFetch({
 		path: `/wpe/content-model/${name}`,
-		method: "DELETE",
+		method: 'DELETE',
 		_wpnonce: wpApiSettings.nonce,
 	});
 }
@@ -33,31 +33,32 @@ export const ContentModelDropdown = ({ model }) => {
 
 	const customStyles = {
 		overlay: {
-			backgroundColor: "rgba(0, 40, 56, 0.7)",
+			backgroundColor: 'rgba(0, 40, 56, 0.7)',
 		},
 		content: {
-			top: "50%",
-			left: "50%",
-			right: "auto",
-			bottom: "auto",
-			marginRight: "-50%",
-			transform: "translate(-50%, -50%)",
-			border: "none",
-			padding: "40px",
+			top: '50%',
+			left: '50%',
+			right: 'auto',
+			bottom: 'auto',
+			marginRight: '-50%',
+			transform: 'translate(-50%, -50%)',
+			border: 'none',
+			padding: '40px',
 		},
 	};
 
 	function handleKeyPress(e) {
 		if (dropdownOpen) {
-			if (e.key === "Escape") {
+			if (e.key === 'Escape') {
 				setDropdownOpen(false);
 			}
 		}
 	}
 
 	useEffect(() => {
-		document.addEventListener("keydown", handleKeyPress);
-		// return () => document.removeEventListener('keydown', handleKeyPress);
+		console.log('inside content model');
+		document.addEventListener('keydown', handleKeyPress);
+		return () => document.removeEventListener('keydown', handleKeyPress);
 	}, [dropdownOpen]);
 
 	return (
@@ -72,7 +73,7 @@ export const ContentModelDropdown = ({ model }) => {
 			>
 				<Icon type="options" />
 			</button>
-			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
+			<div className={`dropdown-content ${dropdownOpen ? '' : 'hidden'}`}>
 				<a
 					className="edit"
 					href="#"
@@ -136,9 +137,9 @@ export const ContentModelDropdown = ({ model }) => {
 
 						setModalIsOpen(false);
 						history.push(
-							"/wp-admin/admin.php?page=wpe-content-model"
+							'/wp-admin/admin.php?page=wpe-content-model'
 						);
-						dispatch({ type: "removeModel", slug });
+						dispatch({ type: 'removeModel', slug });
 					}}
 				>
 					Delete
