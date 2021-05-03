@@ -80,11 +80,11 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 
 	public function test_get_entry_title_field(): void {
 		$fields = [
-			[ 'id' => 123, 'position' => 0 ],
-			[ 'id' => 456, 'isTitle' => true, 'position' => 1 ],
+			[ 'id' => 123 ],
+			[ 'id' => 456, 'isTitle' => true ],
 		];
 
-		$expected = [ 'id' => 456, 'isTitle' => true, 'position' => 1 ];
+		$expected = [ 'id' => 456, 'isTitle' => true ];
 
 		$this->assertSame(
 			$expected,

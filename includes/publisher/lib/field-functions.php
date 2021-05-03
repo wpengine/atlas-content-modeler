@@ -21,7 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function get_entry_title_field( array $fields ): array {
 	$fields = get_top_level_fields( $fields );
-	$fields = order_fields( $fields );
 
 	foreach ( $fields as $field ) {
 		if ( isset( $field['isTitle'] ) && $field['isTitle'] ) {
