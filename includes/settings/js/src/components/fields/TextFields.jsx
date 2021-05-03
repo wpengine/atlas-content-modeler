@@ -73,7 +73,7 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 							}
 						}}
 					/>
-					<label htmlFor={`is-title-${fieldId}`} className="checkbox">
+					<label htmlFor={`is-title-${fieldId}`} className="checkbox is-title">
 						Use this field as the entry title
 					</label>
 				</div>

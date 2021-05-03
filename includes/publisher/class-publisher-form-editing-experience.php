@@ -58,7 +58,7 @@ final class FormEditingExperience {
 	 * Bootstraps the plugin.
 	 */
 	public function bootstrap(): void {
-		$this->models = get_registered_content_types();
+		$this->models = array_change_key_case( get_registered_content_types(), CASE_LOWER );
 
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
@@ -67,6 +67,7 @@ final class FormEditingExperience {
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
+		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
 	}
 
 	/**
@@ -114,7 +115,7 @@ final class FormEditingExperience {
 			'all'
 		);
 
-		$models = get_registered_content_types();
+		$models = $this->models;
 		$model  = $models[ $this->current_screen_post_type ];
 
 		// Add existing field values to models data.
@@ -314,5 +315,43 @@ final class FormEditingExperience {
 				</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Filters post titles to use the value of the field set as the entry title.
+	 *
+	 * Applies to admin pages as well as WPGraphQL and REST responses.
+	 *
+	 * Uses the post type plus the post ID if there is no field set as the entry
+	 * title, or if that field has no stored value.
+	 *
+	 * @param string $title The original post title.
+	 * @param int    $id    Post ID.
+	 *
+	 * @return string The adjusted post title.
+	 */
+	public function filter_post_titles( string $title, int $id ) {
+		$post_type = get_post_type( $id );
+
+		// Only filter titles for post types created with this plugin.
+		if ( ! array_key_exists( $post_type, $this->models ) ) {
+			return $title;
+		}
+
+		$fields = $this->models[ $post_type ]['fields'] ?? [];
+
+		$title_field = get_entry_title_field( $fields );
+
+		if ( isset( $title_field['slug'] ) ) {
+			$title_value = get_post_meta( $id, $title_field['slug'], true );
+
+			if ( ! empty( $title_value ) ) {
+				return $title_value;
+			}
+		}
+
+		// Use a generated title when entry title fields or field data are absent.
+		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'wpe-content-model' );
+		return $post_type_singular . ' ' . $id;
 	}
 }
