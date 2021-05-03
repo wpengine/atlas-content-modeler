@@ -32,26 +32,6 @@ function get_entry_title_field( array $fields ): array {
 }
 
 /**
- * Gives the first field of the named $type.
- *
- * @param array  $fields Fields to check for a text field.
- * @param string $type The type of field to look for.
- * @return array First text field data or an empty array.
- */
-function get_first_field_of_type( array $fields, string $type ): array {
-	$fields = get_top_level_fields( $fields );
-	$fields = order_fields( $fields );
-
-	foreach ( $fields as $field ) {
-		if ( isset( $field['type'] ) && $field['type'] === $type ) {
-			return $field;
-		}
-	}
-
-	return [];
-}
-
-/**
  * Removes fields with parents to leave top-level fields.
  *
  * @param array $fields All fields.

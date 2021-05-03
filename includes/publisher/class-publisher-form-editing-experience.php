@@ -322,8 +322,8 @@ final class FormEditingExperience {
 	 *
 	 * Applies to admin pages as well as WPGraphQL and REST responses.
 	 *
-	 * Uses the first text field if no entry title field was set, or the post
-	 * type plus the post ID if there are no text fields or stored meta values.
+	 * Uses the post type plus the post ID if there is no field set as the entry
+	 * title, or if that field has no stored value.
 	 *
 	 * @param string $title The original post title.
 	 * @param int    $id    Post ID.
@@ -342,11 +342,6 @@ final class FormEditingExperience {
 
 		$title_field = get_entry_title_field( $fields );
 
-		if ( ! isset( $title_field['slug'] ) ) {
-			$title_field = get_first_field_of_type( $fields, 'text' );
-		}
-
-		// Return post meta for the title field if available.
 		if ( isset( $title_field['slug'] ) ) {
 			$title_value = get_post_meta( $id, $title_field['slug'], true );
 

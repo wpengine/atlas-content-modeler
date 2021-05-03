@@ -7,7 +7,6 @@
 
 use function WPE\ContentModel\order_fields;
 use function WPE\ContentModel\get_top_level_fields;
-use function WPE\ContentModel\get_first_field_of_type;
 use function WPE\ContentModel\get_entry_title_field;
 
 /**
@@ -45,36 +44,6 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 		$this->assertSame(
 			$expected,
 			get_top_level_fields( $fields )
-		);
-	}
-
-	public function test_get_first_field_of_type(): void {
-		$fields = [
-			[ 'id' => 123, 'type' => 'text', 'position' => 2 ],
-			[ 'id' => 456, 'type' => 'text', 'position' => 0 ],
-			[ 'id' => 789, 'type' => 'text', 'position' => 1 ],
-		];
-
-		$expected = [ 'id' => 456, 'type' => 'text', 'position' => 0 ];
-
-		$this->assertSame(
-			$expected,
-			get_first_field_of_type( $fields, 'text' )
-		);
-	}
-
-	public function test_get_first_field_of_type_with_no_such_type(): void {
-		$fields = [
-			[ 'id' => 123, 'type' => 'boolean', 'position' => 2 ],
-			[ 'id' => 456, 'type' => 'boolean', 'position' => 0 ],
-			[ 'id' => 789, 'type' => 'boolean', 'position' => 1 ],
-		];
-
-		$expected = [];
-
-		$this->assertSame(
-			$expected,
-			get_first_field_of_type( $fields, 'text' )
 		);
 	}
 
