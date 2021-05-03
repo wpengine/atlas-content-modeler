@@ -60,7 +60,7 @@ function ContentModels({ models }) {
 	return Object.keys(models).map((slug) => {
 		const { name, description, fields = {} } = models[slug];
 		return (
-			<li key={slug} className="flex-parent">
+			<li key={slug}>
 				<Link
 					to={`/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=${slug}`}
 					aria-label={`Edit ${name} content model`}
