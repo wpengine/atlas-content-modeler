@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function Field(props) {
 	const { field, modelSlug } = props;
@@ -14,9 +14,9 @@ export default function Field(props) {
 // @todo wire up to react-hook-form, validate data, display errors.
 function fieldMarkup(field, modelSlug) {
 	switch (field.type) {
-		case 'text':
-		case 'number': // @todo split this out to support mix/max/step/etc.
-		case 'date': // @todo split this out for proper browser and datepicker support
+		case "text":
+		case "number": // @todo split this out to support mix/max/step/etc.
+		case "date": // @todo split this out for proper browser and datepicker support
 			return (
 				<>
 					<label
@@ -34,7 +34,7 @@ function fieldMarkup(field, modelSlug) {
 				</>
 			);
 
-		case 'richtext':
+		case "richtext":
 			return (
 				<>
 					<label
@@ -51,9 +51,9 @@ function fieldMarkup(field, modelSlug) {
 				</>
 			);
 
-		case 'boolean':
+		case "boolean":
 			const [checked, setChecked] = useState(
-				field.value === 'on' ? true : false
+				field.value === "on" ? true : false
 			);
 			return (
 				<>

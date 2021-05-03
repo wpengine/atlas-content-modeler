@@ -1,13 +1,13 @@
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { ToastContainer, Flip } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ToastContainer, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import CreateContentModel from './components/CreateContentModel.jsx';
-import ViewContentModelsList from './components/ViewContentModelsList';
-import EditContentModel from './components/EditContentModel';
-import { useLocationSearch } from './utils';
-import { ModelsContextProvider } from './ModelsContext';
+import CreateContentModel from "./components/CreateContentModel.jsx";
+import ViewContentModelsList from "./components/ViewContentModelsList";
+import EditContentModel from "./components/EditContentModel";
+import { useLocationSearch } from "./utils";
+import { ModelsContextProvider } from "./ModelsContext";
 
 export default function App() {
 	return (
@@ -29,13 +29,13 @@ export default function App() {
 
 function ViewTemplate() {
 	const query = useLocationSearch();
-	const view = query.get('view');
+	const view = query.get("view");
 
-	if (view === 'create-model') {
+	if (view === "create-model") {
 		return <CreateContentModel />;
 	}
 
-	if (view === 'edit-model') {
+	if (view === "edit-model") {
 		return <EditContentModel />;
 	}
 

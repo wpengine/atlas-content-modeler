@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 .wpe-content-model-admin-page input,
 .wpe-content-model-admin-page textarea {
@@ -14,7 +14,7 @@
 	border-color: $color-warning;
 }
 
-.wpe-content-model-admin-page input[type='radio'] {
+.wpe-content-model-admin-page input[type="radio"] {
 	border-radius: 50%;
 	min-width: auto;
 	margin-right: 5px;
@@ -46,7 +46,7 @@
 	margin-top: 21px;
 }
 
-.ReactModal__Content label[for='description'] {
+.ReactModal__Content label[for="description"] {
 	margin-top: 14px;
 }
 
@@ -89,20 +89,20 @@
 	margin-top: 28px;
 }
 
-span[role='alert'] {
+span[role="alert"] {
 	color: $color-warning;
 }
 
-input[aria-invalid='true'] {
+input[aria-invalid="true"] {
 	border-color: $color-warning;
 }
 
-input[type='radio']:checked::before {
+input[type="radio"]:checked::before {
 	background-color: $color-text;
 }
 
-input[type='checkbox'],
-input[type='radio'] {
+input[type="checkbox"],
+input[type="radio"] {
 	margin: 0;
 }
 
@@ -116,7 +116,7 @@ input[type='radio'] {
 	margin-bottom: 10px;
 }
 
-.wpe-content-model-admin-page .radio-row input[type='radio'] {
+.wpe-content-model-admin-page .radio-row input[type="radio"] {
 	margin-right: 20px;
 }
 

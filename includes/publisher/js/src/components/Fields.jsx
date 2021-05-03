@@ -1,6 +1,6 @@
-import React from 'react';
-import Field from './Field';
-import { getFieldOrder } from '../../../../settings/js/src/queries';
+import React from "react";
+import Field from "./Field";
+import { getFieldOrder } from "../../../../settings/js/src/queries";
 
 export default function Fields(props) {
 	const { model } = props;

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-function AddIcon({ size = 'large' }) {
-	if (size === 'small') {
+function AddIcon({ size = "large" }) {
+	if (size === "small") {
 		return (
 			<svg
 				className="add add-small"

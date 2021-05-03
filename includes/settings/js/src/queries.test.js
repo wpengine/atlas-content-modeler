@@ -1,7 +1,7 @@
-import { getRootFields, getChildrenOfField } from './queries';
+import { getRootFields, getChildrenOfField } from "./queries";
 
-describe('getRootFields', () => {
-	it('moves children to subfields', () => {
+describe("getRootFields", () => {
+	it("moves children to subfields", () => {
 		const fields = {
 			123: { id: 123 },
 			456: { id: 456, parent: 123 },
@@ -21,7 +21,7 @@ describe('getRootFields', () => {
 		expect(getRootFields(fields)).toStrictEqual(expected);
 	});
 
-	it('supports nested children', () => {
+	it("supports nested children", () => {
 		const fields = {
 			123: { id: 123 },
 			456: { id: 456, parent: 123 },
@@ -46,13 +46,13 @@ describe('getRootFields', () => {
 		expect(getRootFields(fields)).toStrictEqual(expected);
 	});
 
-	it('passes empty objects through unchanged', () => {
+	it("passes empty objects through unchanged", () => {
 		expect(getRootFields({})).toStrictEqual({});
 	});
 });
 
-describe('getChildrenOfField', () => {
-	it('finds children and descendents of a parent field', () => {
+describe("getChildrenOfField", () => {
+	it("finds children and descendents of a parent field", () => {
 		const fields = {
 			456: { id: 456, parent: 123 },
 			123: { id: 123 },
@@ -64,7 +64,7 @@ describe('getChildrenOfField', () => {
 		expect(getChildrenOfField(123, fields)).toStrictEqual(expected);
 	});
 
-	it('gives empty array if no children found', () => {
+	it("gives empty array if no children found", () => {
 		const fields = {
 			123: { id: 123 },
 			456: { id: 456 },

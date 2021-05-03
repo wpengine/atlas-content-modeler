@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import Field from './Field';
-import { onDragEnd } from './eventHandlers';
-import { ModelsContext } from '../../ModelsContext';
-import { getFieldOrder, getPositionAfter } from '../../queries';
-import FieldButtons from '../FieldButtons';
+import React, { useContext } from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import Field from "./Field";
+import { onDragEnd } from "./eventHandlers";
+import { ModelsContext } from "../../ModelsContext";
+import { getFieldOrder, getPositionAfter } from "../../queries";
+import FieldButtons from "../FieldButtons";
 
 const Repeater = ({ fields = {}, model, parent, setInfoTag }) => {
 	const { models, dispatch } = useContext(ModelsContext);
@@ -75,7 +75,7 @@ const Repeater = ({ fields = {}, model, parent, setInfoTag }) => {
 								<FieldButtons
 									clickAction={(fieldType) => {
 										dispatch({
-											type: 'addField',
+											type: "addField",
 											position: 0,
 											model: model.slug,
 											fieldType,

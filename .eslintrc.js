@@ -6,11 +6,11 @@ module.exports = {
 	},
 	settings: {
 		react: {
-			version: 'detect',
+			version: "detect",
 		},
 	},
 	parserOptions: {
-		parser: 'babel-eslint',
+		parser: "babel-eslint",
 		ecmaVersion: 2020,
 		ecmaFeatures: {
 			jsx: true,
@@ -18,15 +18,15 @@ module.exports = {
 			experimentalObjectRestSpread: true,
 			globalReturn: true,
 		},
-		sourceType: 'module',
+		sourceType: "module",
 	},
-	extends: ['plugin:react/recommended', 'plugin:prettier/recommended'],
+	extends: ["plugin:react/recommended", "plugin:prettier/recommended"],
 	plugins: [],
 	// add your custom rules here
 	rules: {
-		'react/prop-types': 0,
-		'react/no-unescaped-entities': 0,
-		'react/no-children-prop': 0,
-		'no-unsafe-optional-chaining': 0,
+		"react/prop-types": 0,
+		"react/no-unescaped-entities": 0,
+		"react/no-children-prop": 0,
+		"no-unsafe-optional-chaining": 0,
 	},
 };

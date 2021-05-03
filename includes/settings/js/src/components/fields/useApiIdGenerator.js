@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { toValidApiId } from './toValidApiId';
+import { useState } from "react";
+import { toValidApiId } from "./toValidApiId";
 
 /**
  * Automatically updates the value of the `apiFieldId` field with a valid
@@ -23,14 +23,14 @@ import { toValidApiId } from './toValidApiId';
  *                  should be spread in the API ID input field.
  */
 export function useApiIdGenerator({
-	apiFieldId = 'slug',
-	inputFieldId = 'name',
+	apiFieldId = "slug",
+	inputFieldId = "name",
 	storedData = {},
 	editing = false,
 	setValue,
 }) {
 	const [input, setApiIdGeneratorInput] = useState(
-		storedData[inputFieldId] || ''
+		storedData[inputFieldId] || ""
 	);
 
 	// The name and API ID fields are “linked” if typing into the name field

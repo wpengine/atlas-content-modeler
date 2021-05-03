@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-const ErrorIcon = ({ size = 'small' }) => {
-	if (size === 'large') {
+const ErrorIcon = ({ size = "small" }) => {
+	if (size === "large") {
 		return (
 			<svg
 				width="24"

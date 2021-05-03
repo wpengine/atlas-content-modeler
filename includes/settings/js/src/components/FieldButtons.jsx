@@ -1,6 +1,6 @@
-import React from 'react';
-import supportedFields from './fields/supportedFields';
-import Icon from './icons';
+import React from "react";
+import supportedFields from "./fields/supportedFields";
+import Icon from "./icons";
 
 const FieldButtons = ({ activeButton, clickAction }) => {
 	return (
@@ -12,8 +12,8 @@ const FieldButtons = ({ activeButton, clickAction }) => {
 						key={field}
 						className={
 							field === activeButton
-								? 'tertiary active'
-								: 'tertiary'
+								? "tertiary active"
+								: "tertiary"
 						}
 						onClick={() => clickAction(field)}
 					>

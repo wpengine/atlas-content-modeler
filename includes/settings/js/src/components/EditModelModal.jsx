@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Modal from 'react-modal';
-import { ModelsContext } from '../ModelsContext';
-import Icon from './icons';
+import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import Modal from "react-modal";
+import { ModelsContext } from "../ModelsContext";
+import Icon from "./icons";
 
 const { apiFetch } = wp;
 
@@ -12,14 +12,14 @@ const { apiFetch } = wp;
  * @param slug Model slug.
  * @param data Model data.
  */
-function updateModel(slug = '', data = {}) {
+function updateModel(slug = "", data = {}) {
 	if (!slug.length || Object.keys(data).length === 0) {
 		return;
 	}
 
 	const updated = apiFetch({
 		path: `/wpe/content-model/${slug}`,
-		method: 'PATCH',
+		method: "PATCH",
 		_wpnonce: wpApiSettings.nonce,
 		data,
 	}).then((res) => {
@@ -50,16 +50,16 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 
 	const customStyles = {
 		overlay: {
-			backgroundColor: 'rgba(0, 40, 56, 0.7)',
+			backgroundColor: "rgba(0, 40, 56, 0.7)",
 		},
 		content: {
-			top: '50%',
-			left: '50%',
-			right: 'auto',
-			bottom: 'auto',
-			transform: 'translate(-50%, -50%)',
-			border: 'none',
-			padding: '40px',
+			top: "50%",
+			left: "50%",
+			right: "auto",
+			bottom: "auto",
+			transform: "translate(-50%, -50%)",
+			border: "none",
+			padding: "40px",
 		},
 	};
 
@@ -68,7 +68,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			isOpen={isOpen}
 			contentLabel={`Editing the ${model.name} content model`}
 			parentSelector={() => {
-				return document.getElementById('root');
+				return document.getElementById("root");
 			}}
 			portalClassName="wpe-content-model-edit-model-modal-container"
 			onRequestClose={() => {
@@ -82,11 +82,11 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 				onSubmit={handleSubmit(async (data) => {
 					const mergedData = { ...model, ...data };
 					await updateModel(data.postTypeSlug, mergedData);
-					dispatch({ type: 'updateModel', data: mergedData });
+					dispatch({ type: "updateModel", data: mergedData });
 					setIsOpen(false);
 				})}
 			>
-				<div className={errors.singular ? 'field has-error' : 'field'}>
+				<div className={errors.singular ? "field has-error" : "field"}>
 					<label htmlFor="singular">Singular Name</label>
 					<p className="help">
 						Singular display name for your content model, e.g.
@@ -104,7 +104,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					/>
 					<p className="field-messages">
 						{errors.singular &&
-							errors.singular.type === 'required' && (
+							errors.singular.type === "required" && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
@@ -113,7 +113,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 								</span>
 							)}
 						{errors.singular &&
-							errors.singular.type === 'maxLength' && (
+							errors.singular.type === "maxLength" && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
@@ -126,7 +126,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					</p>
 				</div>
 
-				<div className={errors.plural ? 'field has-error' : 'field'}>
+				<div className={errors.plural ? "field has-error" : "field"}>
 					<label htmlFor="plural">Plural Name</label>
 					<p className="help">
 						Plural display name for your content model, e.g.
@@ -143,13 +143,13 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						}}
 					/>
 					<p className="field-messages">
-						{errors.plural && errors.plural.type === 'required' && (
+						{errors.plural && errors.plural.type === "required" && (
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">This field is required</span>
 							</span>
 						)}
-						{errors.plural && errors.plural.type === 'maxLength' && (
+						{errors.plural && errors.plural.type === "maxLength" && (
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">Exceeds max length.</span>
@@ -180,8 +180,8 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 				<div
 					className={
 						errors.description
-							? 'field field-description has-error'
-							: 'field field-description'
+							? "field field-description has-error"
+							: "field field-description"
 					}
 				>
 					<label htmlFor="description">Description</label>
@@ -199,7 +199,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					/>
 					<p className="field-messages">
 						{errors.description &&
-							errors.description.type === 'maxLength' && (
+							errors.description.type === "maxLength" && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
