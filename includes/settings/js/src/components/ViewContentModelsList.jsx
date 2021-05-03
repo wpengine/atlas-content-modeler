@@ -76,7 +76,7 @@ function ContentModels({ models }) {
 						<p className="label">Description</p>
 						<p className="value">{description}</p>
 					</span>
-					<span className="flex-last-item">
+					<span className="flex-item">
 						<p className="label">Fields</p>
 						<p className="value">
 							{Object.keys(getRootFields(fields)).length}
