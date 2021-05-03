@@ -96,7 +96,7 @@ export default function MediaUploader({ modelSlug, field }) {
 						<input
 							type="button"
 							className="button button-primary button-large"
-							style={{marginTop: '5px'}}
+							style={{ marginTop: "5px" }}
 							defaultValue={
 								mediaUrl ? "Change Media" : "Upload Media"
 							}
@@ -108,7 +108,7 @@ export default function MediaUploader({ modelSlug, field }) {
 						<div>
 							<a
 								href="#"
-								style={{marginLeft: '20px'}}
+								style={{ marginLeft: "20px" }}
 								className="btn-delete"
 								onClick={(e) => deleteImage(e)}
 							>
