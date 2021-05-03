@@ -56,7 +56,6 @@ export const ContentModelDropdown = ({ model }) => {
 	}
 
 	useEffect(() => {
-		console.log('inside content model');
 		document.addEventListener('keydown', handleKeyPress);
 		return () => document.removeEventListener('keydown', handleKeyPress);
 	}, [dropdownOpen]);

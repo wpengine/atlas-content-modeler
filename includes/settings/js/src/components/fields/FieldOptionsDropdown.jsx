@@ -36,7 +36,6 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 	}
 
 	useEffect(() => {
-		console.log('inside field');
 		document.addEventListener('keydown', handleKeyPress);
 		return () => document.removeEventListener('keydown', handleKeyPress);
 	}, [dropdownOpen]);
