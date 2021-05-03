@@ -80,10 +80,17 @@ final class FormEditingExperience {
 
 	/**
 	 * Enqueues scripts and styles related to our app.
+	 *
+	 * @param string $hook The current admin page.
 	 */
-	public function enqueue_assets(): void {
+	public function enqueue_assets( string $hook ): void {
 		// Bail if this isn't a model created by our plugin.
 		if ( ! array_key_exists( $this->current_screen_post_type, $this->models ) ) {
+			return;
+		}
+
+		// Only load in the post editor.
+		if ( 'post.php' !== $hook && 'post-new.php' !== $hook ) {
 			return;
 		}
 
