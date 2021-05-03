@@ -64,26 +64,23 @@ function ContentModels({ models }) {
 				<Link
 					to={`/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=${slug}`}
 					aria-label={`Edit ${name} content model`}
+					className="flex-parent"
 				>
-					<span className="wide">
+					<span className="flex-item">
 						<p className="label">Name</p>
 						<p className="value">
 							<strong>{name}</strong>
 						</p>
 					</span>
-					<span className="widest">
+					<span className="flex-item">
 						<p className="label">Description</p>
 						<p className="value">{description}</p>
 					</span>
-					<span>
+					<span className="flex-item">
 						<p className="label">Fields</p>
 						<p className="value">
 							{Object.keys(getRootFields(fields)).length}
 						</p>
-					</span>
-					<span>
-						<p className="label">Created</p>
-						<p className="value">Jan 24, 2021</p>
 					</span>
 				</Link>
 				<ContentModelDropdown model={models[slug]} />
