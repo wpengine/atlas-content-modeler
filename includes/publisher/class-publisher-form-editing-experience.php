@@ -67,6 +67,7 @@ final class FormEditingExperience {
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
+		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
 	}
 
 	/**
@@ -297,5 +298,50 @@ final class FormEditingExperience {
 				</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Filter post titles to use the value of the field set as the entry title.
+	 *
+	 * Applies to admin pages as well as WPGraphQL and REST responses.
+	 *
+	 * Uses the first text field if no entry title field was set, or the post
+	 * type plus the post ID if there are no text fields or stored meta values.
+	 *
+	 * @param string $title The original post title.
+	 * @param int    $id    Post ID.
+	 *
+	 * @return string The adjusted post title.
+	 */
+	public function filter_post_titles( string $title, int $id ) {
+		$post_type = get_post_type( $id );
+
+		// Only filter titles for post types created with this plugin.
+		if ( ! array_key_exists( $post_type, $this->models ) ) {
+			return $title;
+		}
+
+		$fields = $this->models[ $post_type ]['fields'] ?? [];
+
+		// See if the developer set a field as the entry title field.
+		$title_field = get_entry_title_field( $fields );
+
+		if ( ! isset( $title_field['slug'] ) ) {
+			// Try the first text field if no field was set as the title field.
+			$title_field = get_first_field_of_type( $fields, 'text' );
+		}
+
+		// Return post meta for the title field if available.
+		if ( isset( $title_field['slug'] ) ) {
+			$title_value = get_post_meta( $id, $title_field['slug'], true );
+
+			if ( ! empty( $title_value ) ) {
+				return $title_value;
+			}
+		}
+
+		// Fall back to the post type plus the post ID.
+		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'wpe-content-model' );
+		return $post_type_singular . ' ' . $id;
 	}
 }
