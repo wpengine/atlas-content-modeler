@@ -48,15 +48,15 @@ export const ContentModelDropdown = ({ model }) => {
 	};
 
 	function handleKeyPress(e) {
-		if(dropdownOpen) {
-			if (e.key === 'Escape') {
+		if (dropdownOpen) {
+			if (e.key === "Escape") {
 				setDropdownOpen(false);
 			}
 		}
 	}
 
 	useEffect(() => {
-		document.addEventListener('keydown', handleKeyPress);
+		document.addEventListener("keydown", handleKeyPress);
 		// return () => document.removeEventListener('keydown', handleKeyPress);
 	}, [dropdownOpen]);
 
