@@ -81,10 +81,6 @@ function ContentModels({ models }) {
 							{Object.keys(getRootFields(fields)).length}
 						</p>
 					</span>
-					<span>
-						<p className="label">Created</p>
-						<p className="value">Jan 24, 2021</p>
-					</span>
 				</Link>
 				<ContentModelDropdown model={models[slug]} />
 			</li>
