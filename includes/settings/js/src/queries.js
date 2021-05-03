@@ -134,3 +134,17 @@ export function getChildrenOfField(id, fields = {}) {
 
 	return children;
 }
+
+/**
+ * Gets the field the user ticked “use this field as the entry title” for.
+ *
+ * @param {Object} fields Fields to check for the isTitle property.
+ * @return {String} The id of the title field or an empty string.
+ */
+export function getTitleFieldId(fields = {}) {
+	const fieldWithTitle = Object.values(fields).find(
+		(field) => field?.isTitle === true
+	);
+
+	return fieldWithTitle ? fieldWithTitle.id : "";
+}

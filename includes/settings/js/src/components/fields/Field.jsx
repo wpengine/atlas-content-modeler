@@ -94,6 +94,13 @@ function Field({
 								<span className="widest">
 									<strong>{data.name}</strong>
 								</span>
+								<span className="tags">
+									{data?.isTitle && (
+										<span className="tag tag-title">
+											entry title
+										</span>
+									)}
+								</span>
 							</button>
 							<FieldOptionsDropdown field={data} model={model} />
 							{data.type === "repeater" && (

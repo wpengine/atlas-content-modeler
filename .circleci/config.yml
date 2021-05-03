@@ -315,7 +315,7 @@ jobs:
           name: Run Codeception
           command: |
             vendor/bin/codecept build
-            vendor/bin/codecept run acceptance --xml="tests/_output/results.xml" --no-interaction
+            vendor/bin/codecept -vvv run acceptance --xml="tests/_output/results.xml" --no-interaction
 
       - store_test_results:
           path: wpe-content-model/tests/_output
