@@ -20,6 +20,11 @@
 	flex: 1 1 auto;
 }
 
+.flex-last-item {
+	flex: 1 1 auto;
+	flex-grow: 1;
+}
+
 .flex-align-v {
 	align-items: center;
 }

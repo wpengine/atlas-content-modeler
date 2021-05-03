@@ -60,29 +60,32 @@ function ContentModels({ models }) {
 	return Object.keys(models).map((slug) => {
 		const { name, description, fields = {} } = models[slug];
 		return (
-			<li key={slug}>
+			<li key={slug} className="flex-parent">
 				<Link
 					to={`/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=${slug}`}
 					aria-label={`Edit ${name} content model`}
+					className="flex-parent"
 				>
-					<span className="wide">
+					<span className="flex-item">
 						<p className="label">Name</p>
 						<p className="value">
 							<strong>{name}</strong>
 						</p>
 					</span>
-					<span className="widest">
+					<span className="flex-item">
 						<p className="label">Description</p>
 						<p className="value">{description}</p>
 					</span>
-					<span>
+					<span className="flex-last-item">
 						<p className="label">Fields</p>
 						<p className="value">
 							{Object.keys(getRootFields(fields)).length}
 						</p>
 					</span>
 				</Link>
-				<ContentModelDropdown model={models[slug]} />
+				<div className="flex-item">
+					<ContentModelDropdown model={models[slug]} />
+				</div>
 			</li>
 		);
 	});
