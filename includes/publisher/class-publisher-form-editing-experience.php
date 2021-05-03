@@ -318,7 +318,7 @@ final class FormEditingExperience {
 	}
 
 	/**
-	 * Filter post titles to use the value of the field set as the entry title.
+	 * Filters post titles to use the value of the field set as the entry title.
 	 *
 	 * Applies to admin pages as well as WPGraphQL and REST responses.
 	 *
