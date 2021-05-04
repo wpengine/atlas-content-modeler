@@ -55,7 +55,8 @@ function enqueue_settings_assets( $hook ) {
 		'wpe-content-model-app',
 		'wpeContentModel',
 		array(
-			'initialState' => get_registered_content_types(),
+			'initialState'      => get_registered_content_types(),
+			'isWPGraphQLActive' => is_plugin_active( 'wp-graphql/wp-graphql.php' ),
 		)
 	);
 
