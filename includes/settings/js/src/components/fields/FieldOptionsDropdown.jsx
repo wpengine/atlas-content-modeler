@@ -27,25 +27,18 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 		},
 	};
 
-	function handleKeyPress(e) {
-		if (dropdownOpen) {
+	useEffect(() => {
+		if (!dropdownOpen) {
+			return;
+		}
+
+		function handleKeyPress(e) {
 			if (e.key === "Escape") {
 				setDropdownOpen(false);
 			}
 		}
-	}
-
-	useEffect(() => {
-		let isMounted = true;
-		if (dropdownOpen) {
-			if (isMounted) {
-				document.addEventListener("keydown", handleKeyPress);
-			}
-		}
-		return () => {
-			document.removeEventListener("keydown", handleKeyPress);
-			isMounted = false;
-		};
+		document.addEventListener("keydown", handleKeyPress);
+		return () => document.removeEventListener("keydown", handleKeyPress);
 	}, [dropdownOpen]);
 
 	return (
