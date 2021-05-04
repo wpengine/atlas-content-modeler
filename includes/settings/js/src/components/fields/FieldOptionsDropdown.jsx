@@ -37,7 +37,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 
 	useEffect(() => {
 		let isMounted = true;
-		if (isMounted) {
+		if (dropdownOpen && isMounted) {
 			document.addEventListener("keydown", handleKeyPress);
 		}
 		return () => {
