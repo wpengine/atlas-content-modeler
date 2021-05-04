@@ -38,12 +38,12 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 
 	useEffect(() => {
 		if (dropdownOpen) {
-			window.addEventListener("keydown", handleKeyPress);
+			document.addEventListener("keydown", handleKeyPress);
 		} else {
-			window.removeEventListener("keydown", handleKeyPress);
+			document.removeEventListener("keydown", handleKeyPress);
 		}
 
-		return () => window.removeEventListener("keydown", handleKeyPress);
+		return () => document.removeEventListener("keydown", handleKeyPress);
 	}, [dropdownOpen, handleKeyPress]);
 
 	return (
