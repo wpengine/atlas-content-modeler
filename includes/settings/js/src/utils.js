@@ -86,3 +86,29 @@ export const maybeCloseDropdown = (setDropdownOpen) => {
 		}
 	}, 100);
 };
+
+export const getGraphiQLLink = (modelData) => {
+	const fragmentName = `${modelData.singular.replace(/\s/g, "")}Fields`;
+
+	// TODO: get top-level fields, order, exclude repeaters for now.
+	const fields = Object.values(modelData?.fields || []).map(
+		(field) => field.slug
+	);
+	const query = `
+{
+  ${modelData.slug}(first: 10) {
+    nodes {
+      ...${fragmentName}
+    }
+  }
+}
+
+fragment ${fragmentName} on ${modelData.singular} {
+  ${fields.join("\n  ")}
+}
+`;
+
+	return `/wp-admin/admin.php?page=graphiql-ide&explorerIsOpen=true&query=${encodeURIComponent(
+		query
+	)}`;
+};
