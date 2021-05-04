@@ -63,8 +63,8 @@ export const ContentModelDropdown = ({ model }) => {
 			}
 		}
 		return () => {
-			isMounted = false;
 			document.removeEventListener("keydown", handleKeyPress);
+			isMounted = false;
 		};
 	}, [dropdownOpen]);
 

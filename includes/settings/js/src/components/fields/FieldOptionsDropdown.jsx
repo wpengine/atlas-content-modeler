@@ -43,8 +43,8 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 			}
 		}
 		return () => {
-			isMounted = false;
 			document.removeEventListener("keydown", handleKeyPress);
+			isMounted = false;
 		};
 	}, [dropdownOpen]);
 
