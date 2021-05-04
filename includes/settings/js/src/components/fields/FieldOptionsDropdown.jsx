@@ -37,13 +37,19 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 	);
 
 	useEffect(() => {
-		if (dropdownOpen) {
-			window.addEventListener("keydown", handleKeyPress);
-		} else {
-			window.removeEventListener("keydown", handleKeyPress);
+		let isMounted = true;
+		if (isMounted) {
+			if (dropdownOpen) {
+				window.addEventListener("keydown", handleKeyPress);
+			} else {
+				window.removeEventListener("keydown", handleKeyPress);
+			}
 		}
 
-		return () => window.removeEventListener("keydown", handleKeyPress);
+		return () => {
+			window.removeEventListener("keydown", handleKeyPress);
+			isMounted = false;
+		};
 	}, [dropdownOpen, handleKeyPress]);
 
 	return (
