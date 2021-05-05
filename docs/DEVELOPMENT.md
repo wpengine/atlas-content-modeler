@@ -87,6 +87,7 @@ A running WordPress test site will be needed to run browser tests against. This 
 		- We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
 			1. Install [Docker Desktop](https://www.docker.com/get-started).
 			1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+			1. Run `docker-compose exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin install wp-graphql --activate`
 			1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-content-model --user=www-data wordpress wp db export tests/_data/dump.sql`
 1. Copy `.env.testing.example` to `.env.testing`.
 		- If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
