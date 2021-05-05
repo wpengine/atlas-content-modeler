@@ -89,7 +89,7 @@ export default function MediaUploader({ modelSlug, field }) {
 					</>
 				)}
 
-				<div className="d-flex flex-row align-items-center">
+				<div className="d-flex flex-row align-items-center media-btns">
 					<div>
 						<input
 							type="button"
