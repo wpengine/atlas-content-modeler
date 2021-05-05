@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useRef, useCallback } from "react";
 import Icon from "../icons";
 import Modal from "react-modal";
 import { ModelsContext } from "../../ModelsContext";
@@ -10,6 +10,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { dispatch } = useContext(ModelsContext);
+	const timer = useRef(null);
 
 	const customStyles = {
 		overlay: {
@@ -27,11 +28,34 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 		},
 	};
 
+	const handleKeyPress = useCallback(
+		(e) => {
+			if (e.key === "Escape") {
+				setDropdownOpen(false);
+			}
+		},
+		[setDropdownOpen]
+	);
+
+	useEffect(() => {
+		if (dropdownOpen) {
+			document.addEventListener("keydown", handleKeyPress);
+		} else {
+			document.removeEventListener("keydown", handleKeyPress);
+		}
+
+		return () => document.removeEventListener("keydown", handleKeyPress);
+	}, [dropdownOpen, handleKeyPress]);
+
+	useEffect(() => {
+		return () => clearTimeout(timer.current);
+	}, [timer]);
+
 	return (
 		<span className="dropdown">
 			<button
 				className="options"
-				onBlur={() => maybeCloseDropdown(setDropdownOpen)}
+				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 				onClick={() => setDropdownOpen(!dropdownOpen)}
 				aria-label={`Options for the ${field.name} field.`}
 			>
@@ -41,7 +65,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 				<a
 					className="delete"
 					href="#"
-					onBlur={() => maybeCloseDropdown(setDropdownOpen)}
+					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 					onClick={(event) => {
 						event.preventDefault();
 						setDropdownOpen(false);
