@@ -56,7 +56,9 @@ function enqueue_settings_assets( $hook ) {
 		'wpeContentModel',
 		array(
 			'initialState'      => get_registered_content_types(),
-			'isWPGraphQLActive' => is_plugin_active( 'wp-graphql/wp-graphql.php' ),
+			'isGraphiQLAvailable' => is_plugin_active( 'wp-graphql/wp-graphql.php' )
+				&& function_exists( 'get_graphql_setting' )
+				&& get_graphql_setting( 'graphiql_enabled' ) !== 'off',
 		)
 	);
 

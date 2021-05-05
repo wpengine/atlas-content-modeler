@@ -95,7 +95,7 @@ export const ContentModelDropdown = ({ model }) => {
 				>
 					Edit
 				</a>
-				{wpeContentModel.isWPGraphQLActive && (
+				{wpeContentModel.isGraphiQLAvailable && (
 					<a
 						className="show-in-graphiql"
 						href={getGraphiQLLink(models[slug])}
