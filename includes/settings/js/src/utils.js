@@ -88,12 +88,14 @@ export const maybeCloseDropdown = (setDropdownOpen) => {
 };
 
 export const getGraphiQLLink = (modelData) => {
-	const fragmentName = `${modelData.singular.replace(/\s/g, "")}Fields`;
+	const modelSingular = modelData.singular.replace(/\s/g, "");
+	const fragmentName = `${modelSingular}Fields`;
 
 	// TODO: get top-level fields, order, exclude repeaters for now.
 	const fields = Object.values(modelData?.fields || []).map(
 		(field) => field.slug
 	);
+
 	const query = `
 {
   ${modelData.slug}(first: 10) {
@@ -103,7 +105,7 @@ export const getGraphiQLLink = (modelData) => {
   }
 }
 
-fragment ${fragmentName} on ${modelData.singular} {
+fragment ${fragmentName} on ${modelSingular} {
   ${fields.join("\n  ")}
 }
 `;
