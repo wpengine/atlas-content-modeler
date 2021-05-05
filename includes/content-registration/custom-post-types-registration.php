@@ -180,8 +180,8 @@ function generate_custom_post_type_args( array $args ): array {
 		'taxonomies'          => $args['taxonomies'] ?? [],
 		'labels'              => $labels,
 		'show_in_graphql'     => $args['show_in_graphql'] ?? true,
-		'graphql_single_name' => $args['graphql_single_name'] ?? lcfirst( $singular ),
-		'graphql_plural_name' => $args['graphql_plural_name'] ?? lcfirst( $plural ),
+		'graphql_single_name' => $args['graphql_single_name'] ?? camelcase( $singular ),
+		'graphql_plural_name' => $args['graphql_plural_name'] ?? camelcase( $plural ),
 	];
 }
 
