@@ -74,28 +74,28 @@ _Before running end-2-end tests, ensure you have ran `composer install` from the
 #### 1. Environment Setup
 1. Install [Google Chrome](https://www.google.com/chrome/).
 1. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
-		- The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
-		- Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
-			`mv chromedriver /usr/local/bin`
-		- In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
-		- Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
+    - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
+    - Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
+    `mv chromedriver /usr/local/bin`
+    - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
+    - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
 
 #### 2. End-2-End Testing Site Setup
 A running WordPress test site will be needed to run browser tests against. This test site's database will be reset after each test. Do not use your development site for this.
 
 1. Prepare a test WordPress site.
-		- We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
-			1. Install [Docker Desktop](https://www.docker.com/get-started).
-			1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
-			1. Run `docker-compose exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin install wp-graphql --activate`
-			1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-content-model --user=www-data wordpress wp db export tests/_data/dump.sql`
+    We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
+    1. Install [Docker Desktop](https://www.docker.com/get-started).
+    1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+    1. Run `docker-compose exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin install wp-graphql --activate`
+    1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-content-model --user=www-data wordpress wp db export tests/_data/dump.sql`
 1. Copy `.env.testing.example` to `.env.testing`.
-		- If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
-		- If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
+    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
+    - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
 1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
 #### Browser testing documentation
 - [Codeception Acceptance Tests](https://codeception.com/docs/03-AcceptanceTests)
-	- Base framework for browser testing in php.
+    - Base framework for browser testing in php.
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
-	- WordPress framework wrapping Codeception for browser testing WordPress.
+    - WordPress framework wrapping Codeception for browser testing WordPress.
