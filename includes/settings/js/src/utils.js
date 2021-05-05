@@ -95,7 +95,7 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
  * Prefills the GraphiQL query with a request for the first 10 posts of the
  * `modelData` post type, including all fields in the saved field order.
  *
- * @param modelData The full model data to generate a query from.
+ * @param {object} modelData The full model data to generate a query from.
  * @return {string} The GraphiQL URL with query param prefilled.
  */
 export const getGraphiQLLink = (modelData) => {
