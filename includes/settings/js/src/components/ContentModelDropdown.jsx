@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
+import React, {
+	useContext,
+	useEffect,
+	useState,
+	useRef,
+	useCallback,
+} from "react";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "./icons";
 import Modal from "react-modal";
@@ -106,7 +112,9 @@ export const ContentModelDropdown = ({ model }) => {
 						href={getGraphiQLLink(models[slug])}
 						target="_blank"
 						rel="noopener noreferrer"
-						onBlur={() => maybeCloseDropdown(setDropdownOpen)}
+						onBlur={() =>
+							maybeCloseDropdown(setDropdownOpen, timer)
+						}
 						onClick={() => {
 							setDropdownOpen(false);
 						}}
