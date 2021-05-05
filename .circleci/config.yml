@@ -102,9 +102,6 @@ jobs:
             sudo apt-get update -yq
             sudo apt-get install subversion -yq
       - run:
-          name: Install the WPGraphQL plugin
-          command: wp plugin install wp-graphql --activate
-      - run:
           name: Setup WordPress testing framework
           command: |
             /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
