@@ -24,7 +24,7 @@ npm install
 
 ### PHP Linting, code standards, and unit tests
 
-_Before any performing any of these commands, you should have ran `composer install` during Project Setup._
+_Before performing any of these commands, you should have run `composer install` during Project Setup._
 
 **PHP Code Sniffer**
 [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
