@@ -14,6 +14,7 @@ export default function Field(props) {
 
 // @todo wire up to react-hook-form, validate data, display errors.
 function fieldMarkup(field, modelSlug) {
+	modelSlug = modelSlug.toLowerCase();
 	switch (field.type) {
 		case "media":
 			return <MediaUploader field={field} modelSlug={modelSlug} />;
