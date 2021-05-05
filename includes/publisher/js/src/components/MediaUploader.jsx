@@ -61,7 +61,6 @@ export default function MediaUploader({ modelSlug, field }) {
 			<label htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>
 				{field.name}
 			</label>
-
 			<input
 				type="text"
 				name={`wpe-content-model[${modelSlug}][${field.slug}]`}
@@ -70,7 +69,6 @@ export default function MediaUploader({ modelSlug, field }) {
 				readOnly={true}
 				value={value}
 			/>
-
 			<div>
 				{mediaUrl && (
 					<>
@@ -91,7 +89,7 @@ export default function MediaUploader({ modelSlug, field }) {
 					</>
 				)}
 
-				<div className="flex-parent flex-align-v">
+				<div className="d-flex flex-row align-items-center">
 					<div>
 						<input
 							type="button"

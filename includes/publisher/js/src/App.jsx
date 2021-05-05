@@ -37,8 +37,9 @@ export default function App({ model, mode }) {
 					</div>
 				)}
 			</div>
-
-			<Fields model={model} />
+			<div className="d-flex flex-column">
+				<Fields model={model} />
+			</div>
 		</div>
 	);
 }
