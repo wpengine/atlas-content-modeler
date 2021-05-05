@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
+import React, {
+	useContext,
+	useEffect,
+	useState,
+	useRef,
+	useCallback,
+} from "react";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "./icons";
 import Modal from "react-modal";
