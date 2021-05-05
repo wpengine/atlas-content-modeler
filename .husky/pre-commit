@@ -1,4 +1,21 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run style && npm run lint
+# npm run style && npm run lint && composer lint && composer phpcs
+# Lint staged PHP files
+#php_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.php$' )
+#if [ ! -z "$php_files" ]; then
+#    composer lint $php_files && composer phpcs $php_files
+#    if [ $? != 0 ]; then
+#        # exit 1
+#    fi
+#fi
+
+# Lint staged JS/jsx files
+#js_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.{js,jsx}$' )
+#if [ ! -z "$js_files" ]; then
+#    npm run style $js_files && npm run lint $js_files
+#    if [ $? != 0 ]; then
+#        # exit 1
+#    fi
+#fi
