@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "./icons";
 import Modal from "react-modal";
@@ -34,6 +34,7 @@ export const ContentModelDropdown = ({ model }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [editModelModalIsOpen, setEditModelModalIsOpen] = useState(false);
+	const timer = useRef(null);
 
 	const customStyles = {
 		overlay: {
@@ -70,6 +71,10 @@ export const ContentModelDropdown = ({ model }) => {
 		return () => document.removeEventListener("keydown", handleKeyPress);
 	}, [dropdownOpen, handleKeyPress]);
 
+	useEffect(() => {
+		return () => clearTimeout(timer.current);
+	}, [timer]);
+
 	return (
 		<span className="dropdown">
 			<button
@@ -78,7 +83,7 @@ export const ContentModelDropdown = ({ model }) => {
 				onClick={() => {
 					setDropdownOpen(!dropdownOpen);
 				}}
-				onBlur={() => maybeCloseDropdown(setDropdownOpen)}
+				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 			>
 				<Icon type="options" />
 			</button>
@@ -86,7 +91,7 @@ export const ContentModelDropdown = ({ model }) => {
 				<a
 					className="edit"
 					href="#"
-					onBlur={() => maybeCloseDropdown(setDropdownOpen)}
+					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 					onClick={(event) => {
 						event.preventDefault();
 						setDropdownOpen(false);
@@ -112,7 +117,7 @@ export const ContentModelDropdown = ({ model }) => {
 				<a
 					className="delete"
 					href="#"
-					onBlur={() => maybeCloseDropdown(setDropdownOpen)}
+					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 					onClick={(event) => {
 						event.preventDefault();
 						setDropdownOpen(false);
