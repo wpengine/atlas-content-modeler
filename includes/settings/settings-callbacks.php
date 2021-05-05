@@ -13,7 +13,7 @@ use function WPE\ContentModel\ContentRegistration\get_registered_content_types;
 
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 /**
- * Registers the wp-admin menu page.
+ * Registers the wp-admin menu page - test.
  */
 function register_admin_menu_page(): void {
 	$icon = require __DIR__ . '/views/admin-menu-icon.php';

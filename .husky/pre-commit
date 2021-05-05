@@ -3,9 +3,9 @@
 
 # npm run style && npm run lint && composer lint && composer phpcs
 # Lint staged PHP files
-#php_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.php$' )
+php_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.php$' )
 #if [ ! -z "$php_files" ]; then
-#    composer lint $php_files && composer phpcs $php_files
+#    #composer lint $php_files && composer phpcs $php_files
 #    if [ $? != 0 ]; then
 #        # exit 1
 #    fi
