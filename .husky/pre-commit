@@ -11,11 +11,20 @@
 #    fi
 #fi
 
-# Lint staged JS/jsx files
-js_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.jsx$' )
-if [ ! -z "$js_files" ]; then
-    npm run style $js_files && npm run lint $js_files
+# Lint staged jsx files
+jsx_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.jsx$' )
+if [ ! -z "$jsx_files" ]; then
+    npm run style $jsx_files && npm run lint $jsx_files
     if [ $? != 0 ]; then
         exit 1
     fi
 fi
+
+## Lint staged js files
+#js_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.js$' )
+#if [ ! -z "$js_files" ]; then
+#    npm run style $js_files && npm run lint $js_files
+#    if [ $? != 0 ]; then
+#        exit 1
+#    fi
+#fi
