@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# npm run style && npm run lint && composer lint && composer phpcs
+# Lint staged PHP files
+php_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.php$' )
+if [ ! -z "$php_files" ]; then
+    composer lint $php_files && composer phpcs $php_files
+    if [ $? != 0 ]; then
+        exit 1
+    fi
+fi
+
+# Lint staged jsx files
+jsx_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.jsx$' )
+if [ ! -z "$jsx_files" ]; then
+    npm run style $jsx_files && npm run lint $jsx_files
+    if [ $? != 0 ]; then
+        exit 1
+    fi
+fi
+
+## Lint staged js files
+js_files=$( git diff --diff-filter=d --staged --name-only | grep -E '/*\.js$' )
+if [ ! -z "$js_files" ]; then
+    npm run style $js_files && npm run lint $js_files
+    if [ $? != 0 ]; then
+        exit 1
+    fi
+fi

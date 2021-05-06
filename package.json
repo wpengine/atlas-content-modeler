@@ -13,7 +13,8 @@
     "style:fix": "prettier --write .",
     "test": "jest --watch",
     "lint": "eslint './includes/**/*.{js,jsx}'",
-    "lint:fix": "eslint './includes/**/*.{js,jsx}' --fix"
+    "lint:fix": "eslint './includes/**/*.{js,jsx}' --fix",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "MIT",
@@ -50,7 +51,8 @@
     "postcss": "^8.2.6",
     "prettier": "^2.2.1",
     "react-test-renderer": "^17.0.1",
-    "sass": "^1.32.8"
+    "sass": "^1.32.8",
+    "husky": "^6.0.0"
   },
   "alias": {
     "react": {
