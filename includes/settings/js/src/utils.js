@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import { getFieldOrder, getRootFields } from "./queries";
 
 /**
  * Parses query string and returns value.
@@ -86,4 +87,41 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
 			setDropdownOpen(false);
 		}
 	}, 100);
+};
+
+/**
+ * Generates a link to open WPGraphQL's GraphiQL query editor in WP admin.
+ *
+ * Prefills the GraphiQL query with a request for the first 10 posts of the
+ * `modelData` post type, including all fields in the saved field order.
+ *
+ * @param {object} modelData The full model data to generate a query from.
+ * @return {string} The GraphiQL URL with query param prefilled.
+ */
+export const getGraphiQLLink = (modelData) => {
+	const modelSingular = modelData.singular.replace(/\s/g, "");
+	const fragmentName = `${modelSingular}Fields`;
+
+	const fields = getRootFields(modelData?.fields);
+	const fieldSlugs = getFieldOrder(fields)
+		.filter((id) => fields[id]?.type !== "repeater") // @todo: handle repeater fields.
+		.map((id) => fields[id]?.slug);
+
+	const query = `
+{
+  ${modelData.slug}(first: 10) {
+    nodes {
+      ...${fragmentName}
+    }
+  }
+}
+
+fragment ${fragmentName} on ${modelSingular} {
+  ${fieldSlugs.join("\n  ")}
+}
+`;
+
+	return `/wp-admin/admin.php?page=graphiql-ide&explorerIsOpen=true&query=${encodeURIComponent(
+		query
+	)}`;
 };

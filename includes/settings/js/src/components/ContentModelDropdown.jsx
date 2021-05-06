@@ -10,7 +10,11 @@ import Icon from "./icons";
 import Modal from "react-modal";
 import { EditModelModal } from "./EditModelModal";
 import { useHistory } from "react-router-dom";
-import { maybeCloseDropdown, removeSidebarMenuItem } from "../utils";
+import {
+	getGraphiQLLink,
+	maybeCloseDropdown,
+	removeSidebarMenuItem,
+} from "../utils";
 import { showError } from "../toasts";
 
 Modal.setAppElement("#root");
@@ -31,7 +35,7 @@ function deleteModel(name = "") {
 
 export const ContentModelDropdown = ({ model }) => {
 	const { name, slug } = model;
-	const { dispatch } = useContext(ModelsContext);
+	const { models, dispatch } = useContext(ModelsContext);
 	const history = useHistory();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -102,6 +106,22 @@ export const ContentModelDropdown = ({ model }) => {
 				>
 					Edit
 				</a>
+				{wpeContentModel.isGraphiQLAvailable && (
+					<a
+						className="show-in-graphiql"
+						href={getGraphiQLLink(models[slug])}
+						target="_blank"
+						rel="noopener noreferrer"
+						onBlur={() =>
+							maybeCloseDropdown(setDropdownOpen, timer)
+						}
+						onClick={() => {
+							setDropdownOpen(false);
+						}}
+					>
+						Open in GraphiQL
+					</a>
+				)}
 				<a
 					className="delete"
 					href="#"
