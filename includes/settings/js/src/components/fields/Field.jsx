@@ -156,15 +156,15 @@ function Field({
 				/>
 			)}
 			<div className={editing ? "field-form editing" : "field-form"}>
-				<div className="flex-parent flex-row">
-					<div className="flex-grow">
+				<div className="d-flex flex-row">
+					<div>
 						<h3>
 							{editing ? `Editing` : `New`} {formFieldTitle} Field
 						</h3>
 					</div>
 
 					{editing && (
-						<div>
+						<div className="ml-auto">
 							<FieldOptionsDropdown field={data} model={model} />
 						</div>
 					)}
