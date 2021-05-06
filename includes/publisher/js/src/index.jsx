@@ -7,7 +7,6 @@ import "./../../scss/index.scss";
 const { models, postType } = wpeContentModelFormEditingExperience;
 const container = document.getElementById("wpe-content-model-fields-app");
 
-// test comment
 if (container && models.hasOwnProperty(postType)) {
 	const model = models[postType];
 	ReactDOM.render(<App model={model} />, container);

@@ -73,7 +73,7 @@ export function generateSidebarMenuItem(model) {
 }
 
 /**
- * Closes the options dropdown if dropdown links are not in focus - test.
+ * Closes the options dropdown if dropdown links are not in focus.
  *
  * @param {function} setDropdownOpen Call to toggle dropdown state.
  * @param {object} timer A ref to assign the timeout to. Allows cancellation when the calling component unmounts.
