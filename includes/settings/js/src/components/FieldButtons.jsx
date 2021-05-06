@@ -3,18 +3,18 @@ import supportedFields from "./fields/supportedFields";
 import Icon from "./icons";
 
 const FieldButtons = ({ activeButton, clickAction }) => {
+	function isActive(field) {
+		return field === activeButton ? "active" : "";
+	}
+
 	return (
-		<div className="field-buttons d-flex flex-column d-sm-flex flex-sm-row">
+		<div className="field-buttons flex-wrap d-flex flex-column d-sm-flex flex-sm-row ">
 			{Object.keys(supportedFields).map((field) => {
 				const fieldTitle = supportedFields[field];
 				return (
 					<button
 						key={field}
-						className={
-							field === activeButton
-								? "tertiary active"
-								: "tertiary"
-						}
+						className={`tertiary mb-1 ${isActive(field)}`}
 						onClick={() => clickAction(field)}
 					>
 						<Icon type={field} />
