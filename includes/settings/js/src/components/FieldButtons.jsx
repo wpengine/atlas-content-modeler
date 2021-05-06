@@ -3,6 +3,11 @@ import supportedFields from "./fields/supportedFields";
 import Icon from "./icons";
 
 const FieldButtons = ({ activeButton, clickAction }) => {
+	/**
+	 * Returns if current button is active
+	 * @param field
+	 * @returns {string}
+	 */
 	function isActive(field) {
 		return field === activeButton ? "active" : "";
 	}
