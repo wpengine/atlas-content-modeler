@@ -83,6 +83,7 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
 		const dropDownLinkIsInFocus = document?.activeElement?.parentElement.className.startsWith(
 			"dropdown-content"
 		);
+
 		if (!dropDownLinkIsInFocus) {
 			setDropdownOpen(false);
 		}
