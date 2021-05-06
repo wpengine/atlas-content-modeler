@@ -4,7 +4,7 @@ import Icon from "./icons";
 
 const FieldButtons = ({ activeButton, clickAction }) => {
 	return (
-		<div className="field-buttons">
+		<div className="field-buttons d-flex flex-column d-sm-flex flex-sm-row">
 			{Object.keys(supportedFields).map((field) => {
 				const fieldTitle = supportedFields[field];
 				return (
