@@ -78,7 +78,7 @@ export function generateSidebarMenuItem(model) {
  * @param {function} setDropdownOpen Call to toggle dropdown state.
  * @param {object} timer A ref to assign the timeout to. Allows cancellation when the calling component unmounts.
  */
-export const maybeCloseDropdown = (setDropdownOpen, timer) => {
+export var maybeCloseDropdown = (setDropdownOpen, timer) => {
 	timer.current = setTimeout(() => {
 		const dropDownLinkIsInFocus = document?.activeElement?.parentElement.className.startsWith(
 			"dropdown-content"
