@@ -129,12 +129,14 @@
 	}
 
 	.ReactModal__Content--after-open {
-		min-width: 420px;
+		width: 100%;
+		max-width: 420px;
 
 		input,
 		textarea,
 		.field-messages {
-			min-width: 420px;
+			width: 100%;
+			max-width: 420px;
 		}
 	}
 
