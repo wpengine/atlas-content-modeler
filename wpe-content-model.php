@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name: WPEngine Content Model
+ * Plugin Name: WP Engine Content Model
  * Plugin URI: https://wpengine.com/
  * Description: Plugin for content modeling in WordPress.
  * Author: WPEngine
  * Author URI: https://wpengine.com/
  * Text Domain: wpe-content-model
  * Domain Path: /languages
- * Version: 0.1.0
+ * Version: 0.2.0
  *
  * @package WPE_Content_Model
  */
