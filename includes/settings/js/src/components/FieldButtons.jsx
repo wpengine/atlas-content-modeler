@@ -2,11 +2,17 @@ import React from "react";
 import supportedFields from "./fields/supportedFields";
 import Icon from "./icons";
 
-const FieldButtons = ({ activeButton, clickAction }) => {
+const { cloneDeep } = lodash;
+
+const FieldButtons = ({ activeButton, clickAction, parent }) => {
+	const fields = cloneDeep(supportedFields);
+	if (parent) {
+		delete fields["repeater"];
+	}
 	return (
 		<div className="field-buttons">
-			{Object.keys(supportedFields).map((field) => {
-				const fieldTitle = supportedFields[field];
+			{Object.keys(fields).map((field) => {
+				const fieldTitle = fields[field];
 				return (
 					<button
 						key={field}
