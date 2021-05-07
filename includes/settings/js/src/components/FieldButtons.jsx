@@ -13,7 +13,7 @@ const FieldButtons = ({ activeButton, clickAction }) => {
 	}
 
 	return (
-		<div className="field-buttons flex-wrap d-flex flex-column d-sm-flex flex-sm-row ">
+		<div className="field-buttons flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 			{Object.keys(supportedFields).map((field) => {
 				const fieldTitle = supportedFields[field];
 				return (

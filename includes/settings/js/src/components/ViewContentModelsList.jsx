@@ -7,7 +7,7 @@ import { ContentModelDropdown } from "./ContentModelDropdown";
 function Header({ showButton = true }) {
 	let history = useHistory();
 	return (
-		<section className="heading">
+		<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 			<h2>Content Models</h2>
 			{showButton && (
 				<button
@@ -60,19 +60,19 @@ function ContentModels({ models }) {
 	return Object.keys(models).map((slug) => {
 		const { name, description, fields = {} } = models[slug];
 		return (
-			<li key={slug}>
+			<li key={slug} className="pr-5 pr-md-0">
 				<Link
 					to={`/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=${slug}`}
 					aria-label={`Edit ${name} content model`}
-					className="flex-parent"
+					className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
 				>
-					<span className="flex-item">
+					<span className="flex-item mb-3 mb-sm-0">
 						<p className="label">Name</p>
 						<p className="value">
 							<strong>{name}</strong>
 						</p>
 					</span>
-					<span className="flex-item">
+					<span className="flex-item mb-3 mb-sm-0">
 						<p className="label">Description</p>
 						<p className="value">{description}</p>
 					</span>
