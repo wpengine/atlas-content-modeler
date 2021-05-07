@@ -62,7 +62,7 @@ function Field({
 							className={
 								snapshot.isDragging
 									? "closed dragging"
-									: "closed"
+									: "closed d-flex flex-row"
 							}
 						>
 							<span className="reorder">
