@@ -338,7 +338,7 @@ workflows:
           filename: wpe-content-model.php
           requires:
             - checkout
-          # Enable running this job when a tag is published
+          # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
@@ -346,7 +346,7 @@ workflows:
           slug: wpe-content-model
           requires:
             - plugin-checkout
-          # Enable running this job when a tag is published
+          # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
@@ -354,7 +354,7 @@ workflows:
           slug: wpe-content-model
           requires:
             - plugin-composer
-          # Enable running this job when a tag is published
+          # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
@@ -362,9 +362,17 @@ workflows:
           slug: wpe-content-model
           requires:
             - plugin-test
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-e2e-test:
           requires:
             - plugin-npm-build
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-bundle-zip:
           slug: wpe-content-model
           requires:
