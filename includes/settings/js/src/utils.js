@@ -107,6 +107,10 @@ export const getGraphiQLLink = (modelData) => {
 		.filter((id) => fields[id]?.type !== "repeater") // @todo: handle repeater fields.
 		.map((id) => fields[id]?.slug);
 
+	if (fieldSlugs.length === 0) {
+		fieldSlugs.push("title");
+	}
+
 	const query = `
 {
   ${modelData.slug}(first: 10) {
