@@ -66,13 +66,13 @@ function ContentModels({ models }) {
 					aria-label={`Edit ${name} content model`}
 					className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
 				>
-					<span className="flex-item mb-3 mb-sm-0">
+					<span className="flex-item mb-3 mb-sm-0 pr-1">
 						<p className="label">Name</p>
 						<p className="value">
 							<strong>{name}</strong>
 						</p>
 					</span>
-					<span className="flex-item mb-3 mb-sm-0">
+					<span className="flex-item mb-3 mb-sm-0 pr-1">
 						<p className="label">Description</p>
 						<p className="value">{description}</p>
 					</span>
