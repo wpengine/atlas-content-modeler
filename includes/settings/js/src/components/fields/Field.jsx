@@ -153,6 +153,7 @@ function Field({
 				<FieldButtons
 					activeButton={activeForm}
 					clickAction={setActiveForm}
+					parent={parent}
 				/>
 			)}
 			<div className={editing ? "field-form editing" : "field-form"}>

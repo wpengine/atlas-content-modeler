@@ -2,7 +2,10 @@ import React from "react";
 import supportedFields from "./fields/supportedFields";
 import Icon from "./icons";
 
-const FieldButtons = ({ activeButton, clickAction }) => {
+const FieldButtons = ({ activeButton, clickAction, parent }) => {
+	if (parent) {
+		delete supportedFields["repeater"];
+	}
 	return (
 		<div className="field-buttons">
 			{Object.keys(supportedFields).map((field) => {

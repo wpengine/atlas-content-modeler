@@ -82,6 +82,7 @@ const Repeater = ({ fields = {}, model, parent, setInfoTag }) => {
 											parent,
 										});
 									}}
+									parent={parent}
 								/>
 							</li>
 						</ul>
