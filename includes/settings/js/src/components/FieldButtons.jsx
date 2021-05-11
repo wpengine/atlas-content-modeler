@@ -2,7 +2,9 @@ import React from "react";
 import supportedFields from "./fields/supportedFields";
 import Icon from "./icons";
 
-const FieldButtons = ({ activeButton, clickAction }) => {
+const { cloneDeep } = lodash;
+
+const FieldButtons = ({ activeButton, clickAction, parent }) => {
 	/**
 	 * Returns if current button is active
 	 * @param field
@@ -12,10 +14,16 @@ const FieldButtons = ({ activeButton, clickAction }) => {
 		return field === activeButton ? "active" : "";
 	}
 
+	const fields = cloneDeep(supportedFields);
+
+	if (parent) {
+		delete fields["repeater"];
+	}
+	
 	return (
 		<div className="field-buttons flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
-			{Object.keys(supportedFields).map((field) => {
-				const fieldTitle = supportedFields[field];
+			{Object.keys(fields).map((field) => {
+				const fieldTitle = fields[field];
 				return (
 					<button
 						key={field}
