@@ -65,7 +65,7 @@ function Field({
 									: "closed"
 							} d-flex flex-column d-sm-flex flex-sm-row justify-content-start`}
 						>
-							<div className="reorder order-0 order-sm-0">
+							<div className="reorder order-2 order-sm-0">
 								<button
 									{...provided.dragHandleProps}
 									onFocus={() => {
@@ -77,7 +77,7 @@ function Field({
 								</button>
 							</div>
 							<button
-								className="edit order-sm-2 order-2 d-flex flex-column d-sm-flex flex-sm-row ml-sm-4"
+								className="edit order-sm-2 order-1 d-flex flex-column d-sm-flex flex-sm-row ml-sm-4"
 								onClick={() =>
 									dispatch({
 										type: "openField",
@@ -94,7 +94,7 @@ function Field({
 								<div className="widest mr-sm-4 mr-0 mb-2 mb-sm-0">
 									<strong>{data.name}</strong>
 								</div>
-								<div className="tags text-right mb-4 mb-sm-0">
+								<div className="tags text-right">
 									{data?.isTitle && (
 										<span className="tag tag-title">
 											entry title
@@ -102,7 +102,7 @@ function Field({
 									)}
 								</div>
 							</button>
-							<div className="order-1 text-right text-sm-left order-sm-2 ml-sm-auto">
+							<div className="order-0 my-2 my-sm-0 text-right text-sm-left order-sm-2 ml-sm-auto">
 								<FieldOptionsDropdown
 									field={data}
 									model={model}
