@@ -23,6 +23,10 @@ Headless WordPress content modeling plugin.
 
 == Changelog ==
 
+= Unreleased =
+### Fixed
+- Hide duplicate page title on new entry screens.
+
 = 0.2.0 - 2021-05-07 =
 ### Added
 - Publishers can now enter model entries via a form.
