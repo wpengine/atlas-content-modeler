@@ -63,9 +63,9 @@ function Field({
 								snapshot.isDragging
 									? "closed dragging"
 									: "closed"
-							} flex-wrap d-flex flex-column d-sm-flex flex-sm-row`}
+							} d-flex flex-column d-sm-flex flex-sm-row justify-content-start`}
 						>
-							<div className="reorder">
+							<div className="reorder order-1 order-sm-0">
 								<button
 									{...provided.dragHandleProps}
 									onFocus={() => {
@@ -77,7 +77,7 @@ function Field({
 								</button>
 							</div>
 							<button
-								className="edit"
+								className="edit order-sm-2 order-1 flex-grow-0 d-flex flex-row ml-sm-4"
 								onClick={() =>
 									dispatch({
 										type: "openField",
@@ -87,22 +87,22 @@ function Field({
 								}
 								aria-label={`Edit the ${data.name} field`}
 							>
-								<span className="type">
+								<div className="type mr-sm-2 mr-0">
 									<Icon type={data.type} />
 									{typeLabel}
-								</span>
-								<span className="widest">
+								</div>
+								<div className="widest mr-sm-2 mr-0">
 									<strong>{data.name}</strong>
-								</span>
-								<span className="tags">
+								</div>
+								<div className="tags">
 									{data?.isTitle && (
 										<span className="tag tag-title">
 											entry title
 										</span>
 									)}
-								</span>
+								</div>
 							</button>
-							<div>
+							<div className="order-0 order-sm-2">
 								<FieldOptionsDropdown
 									field={data}
 									model={model}
