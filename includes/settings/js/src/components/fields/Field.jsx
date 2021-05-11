@@ -87,14 +87,14 @@ function Field({
 								}
 								aria-label={`Edit the ${data.name} field`}
 							>
-								<div className="type mr-sm-4 mr-0">
+								<div className="type mr-sm-4 mr-0 mb-2 mb-sm-0">
 									<Icon type={data.type} />
 									{typeLabel}
 								</div>
-								<div className="widest mr-sm-4 mr-0">
+								<div className="widest mr-sm-4 mr-0 mb-2 mb-sm-0">
 									<strong>{data.name}</strong>
 								</div>
-								<div className="tags text-right">
+								<div className="tags text-right mb-4 mb-sm-0">
 									{data?.isTitle && (
 										<span className="tag tag-title">
 											entry title
