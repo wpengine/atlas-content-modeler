@@ -77,7 +77,7 @@ function Field({
 								</button>
 							</div>
 							<button
-								className="edit order-sm-2 order-1 flex-grow-0 d-flex flex-row ml-sm-4"
+								className="edit order-sm-2 order-1 d-flex flex-row ml-sm-4"
 								onClick={() =>
 									dispatch({
 										type: "openField",
@@ -87,11 +87,11 @@ function Field({
 								}
 								aria-label={`Edit the ${data.name} field`}
 							>
-								<div className="type mr-sm-2 mr-0">
+								<div className="type mr-sm-4 mr-0">
 									<Icon type={data.type} />
 									{typeLabel}
 								</div>
-								<div className="widest mr-sm-2 mr-0">
+								<div className="widest mr-sm-4 mr-0">
 									<strong>{data.name}</strong>
 								</div>
 								<div className="tags">
@@ -102,7 +102,7 @@ function Field({
 									)}
 								</div>
 							</button>
-							<div className="order-0 order-sm-2">
+							<div className="order-0 order-sm-2 ml-sm-auto">
 								<FieldOptionsDropdown
 									field={data}
 									model={model}
