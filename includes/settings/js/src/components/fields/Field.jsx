@@ -102,7 +102,7 @@ function Field({
 									)}
 								</div>
 							</button>
-							<div className="order-1 order-sm-2 ml-sm-auto">
+							<div className="order-1 text-right text-sm-left order-sm-2 ml-sm-auto">
 								<FieldOptionsDropdown
 									field={data}
 									model={model}
