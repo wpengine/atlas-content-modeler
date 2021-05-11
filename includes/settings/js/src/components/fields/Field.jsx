@@ -59,13 +59,13 @@ function Field({
 					>
 						<li
 							key={id}
-							className={
+							className={`${
 								snapshot.isDragging
 									? "closed dragging"
-									: "closed d-flex flex-row"
-							}
+									: "closed"
+							} flex-wrap d-flex flex-column d-sm-flex flex-sm-row`}
 						>
-							<span className="reorder">
+							<div className="reorder">
 								<button
 									{...provided.dragHandleProps}
 									onFocus={() => {
@@ -75,7 +75,7 @@ function Field({
 								>
 									<Icon type="reorder" />
 								</button>
-							</span>
+							</div>
 							<button
 								className="edit"
 								onClick={() =>
@@ -102,15 +102,20 @@ function Field({
 									)}
 								</span>
 							</button>
-							<FieldOptionsDropdown field={data} model={model} />
-							{data.type === "repeater" && (
-								<Repeater
-									fields={data?.subfields}
+							<div>
+								<FieldOptionsDropdown
+									field={data}
 									model={model}
-									parent={id}
-									setInfoTag={setInfoTag}
 								/>
-							)}
+								{data.type === "repeater" && (
+									<Repeater
+										fields={data?.subfields}
+										model={model}
+										parent={id}
+										setInfoTag={setInfoTag}
+									/>
+								)}
+							</div>
 						</li>
 						<li
 							className={

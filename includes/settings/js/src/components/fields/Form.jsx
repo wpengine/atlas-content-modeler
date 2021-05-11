@@ -98,9 +98,13 @@ function Form({ id, position, type, editing, storedData, parent }) {
 					value={parent}
 				/>
 			)}
-			<div className="columns">
-				<div className="left-column">
-					<div className={errors.name ? "field has-error" : "field"}>
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div className="d-flex flex-column d-sm-flex flex-sm-row">
+					<div
+						className={`${
+							errors.name ? "field has-error" : "field"
+						} mr-sm-5`}
+					>
 						<label htmlFor="name">Name</label>
 						<br />
 						<p className="help">
@@ -140,17 +144,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 							<span className="count">{nameCount}/50</span>
 						</p>
 					</div>
-					{type in extraFields && (
-						<ExtraFields
-							editing={editing}
-							data={storedData}
-							register={register}
-							fieldId={id}
-						/>
-					)}
-				</div>
 
-				<div className="right-column">
 					<div className={errors.slug ? "field has-error" : "field"}>
 						<label htmlFor="slug">API Identifier</label>
 						<br />
@@ -194,9 +188,19 @@ function Form({ id, position, type, editing, storedData, parent }) {
 					</div>
 				</div>
 			</div>
+			<div>
+				{type in extraFields && (
+					<ExtraFields
+						editing={editing}
+						data={storedData}
+						register={register}
+						fieldId={id}
+					/>
+				)}
+			</div>
 
-			<div className="buttons">
-				<button type="submit" className="primary first">
+			<div className="buttons d-flex flex-row">
+				<button type="submit" className="primary first mr-1 mr-sm-2">
 					{editing ? "Update" : "Create"}
 				</button>
 				<button
