@@ -77,7 +77,7 @@ function Field({
 								</button>
 							</div>
 							<button
-								className="edit order-sm-2 order-1 d-flex flex-row ml-sm-4"
+								className="edit order-sm-2 order-1 d-flex flex-column d-sm-flex flex-sm-row ml-sm-4"
 								onClick={() =>
 									dispatch({
 										type: "openField",
@@ -94,7 +94,7 @@ function Field({
 								<div className="widest mr-sm-4 mr-0">
 									<strong>{data.name}</strong>
 								</div>
-								<div className="tags">
+								<div className="tags text-right">
 									{data?.isTitle && (
 										<span className="tag tag-title">
 											entry title
