@@ -199,7 +199,7 @@ final class FormEditingExperience {
 		}
 
 		wp_nonce_field( 'wpe-content-model-pubex-nonce', 'wpe-content-model-pubex-nonce' );
-		echo '<div id="wpe-content-model-fields-app"></div>';
+		echo '<div id="wpe-content-model-fields-app" class="wpe"></div>';
 	}
 
 	/**
