@@ -60,6 +60,7 @@ final class FormEditingExperience {
 	public function bootstrap(): void {
 		$this->models = array_change_key_case( get_registered_content_types(), CASE_LOWER );
 
+		add_action( 'init', [ $this, 'remove_post_type_supports' ] );
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
@@ -68,6 +69,18 @@ final class FormEditingExperience {
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
 		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
+	}
+
+	/**
+	 * Removes unneeded post type features.
+	 */
+	public function remove_post_type_supports(): void {
+		foreach ( $this->models as $model => $info ) {
+			remove_post_type_support( $model, 'editor' );
+			remove_post_type_support( $model, 'title' );
+			remove_post_type_support( $model, 'custom-fields' );
+			remove_post_type_support( $model, 'thumbnail' );
+		}
 	}
 
 	/**
@@ -161,7 +174,7 @@ final class FormEditingExperience {
 	 * @param bool   $use_block_editor Whether or not to use the block editor.
 	 * @param string $post_type The post type.
 	 *
-	 * @return bool
+	 * @return bool True if the block editor should be used, false otherwise.
 	 */
 	public function disable_block_editor( bool $use_block_editor, string $post_type ): bool {
 		// Bail if this isn't a model created by our plugin.
@@ -169,14 +182,7 @@ final class FormEditingExperience {
 			return $use_block_editor;
 		}
 
-		$use_block_editor = false;
-
-		// @todo move to another action
-		remove_post_type_support( $post_type, 'editor' );
-		remove_post_type_support( $post_type, 'title' );
-		remove_post_type_support( $post_type, 'custom-fields' );
-
-		return $use_block_editor;
+		return false;
 	}
 
 	/**
