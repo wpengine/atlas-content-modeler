@@ -8,3 +8,4 @@ node_modules
 .DS_Store
 Thumbs.db
 .eslintcache
+includes/settings/scss/bootstrap/
