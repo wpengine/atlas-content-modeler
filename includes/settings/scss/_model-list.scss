@@ -58,6 +58,13 @@
 	padding: 0;
 }
 
+/* Using SCSS variables to store breakpoints */
+@media (max-width: $breakpoint-tablet) {
+	.dropdown {
+		margin-left: -136px;
+	}
+}
+
 .dropdown {
 	position: relative;
 }

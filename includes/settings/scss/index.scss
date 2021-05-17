@@ -1,6 +1,9 @@
 /* import bootstrap to set changes */
 @import url(../../shared-assets/css/bootstrap-grid.css);
 @import url(../../shared-assets/css/bootstrap-utilities.css);
+
+$breakpoint-tablet: 850px;
+
 @import "base";
 @import "header";
 @import "buttons";
