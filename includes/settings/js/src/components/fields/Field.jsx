@@ -94,7 +94,7 @@ function Field({
 								<div className="widest mr-sm-4 mr-0 mb-2 mb-sm-0">
 									<strong>{data.name}</strong>
 								</div>
-								<div className="tags text-right">
+								<div className="tags text-end">
 									{data?.isTitle && (
 										<span className="tag tag-title">
 											entry title
@@ -102,7 +102,7 @@ function Field({
 									)}
 								</div>
 							</button>
-							<div className="order-0 my-2 my-sm-0 text-right text-sm-left order-sm-2 ml-sm-auto">
+							<div className="order-0 my-2 my-sm-0 text-end order-sm-2 ms-sm-auto">
 								<FieldOptionsDropdown
 									field={data}
 									model={model}
@@ -170,7 +170,7 @@ function Field({
 					</div>
 
 					{editing && (
-						<div className="ml-auto">
+						<div className="ms-auto">
 							<FieldOptionsDropdown field={data} model={model} />
 						</div>
 					)}

@@ -69,6 +69,7 @@
 
 .dropdown {
 	position: relative;
+	min-height: 20px;
 }
 
 .dropdown-content:not(.hidden) {
