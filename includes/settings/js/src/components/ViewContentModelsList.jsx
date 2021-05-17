@@ -83,7 +83,9 @@ function ContentModels({ models }) {
 						</p>
 					</span>
 				</Link>
-				<ContentModelDropdown model={models[slug]} />
+				<div className="neg-margin-wrapper">
+					<ContentModelDropdown model={models[slug]} />
+				</div>
 			</li>
 		);
 	});
