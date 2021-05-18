@@ -20,7 +20,7 @@ jobs:
       - attach_workspace:
           at: .
       - node/install-packages:
-          app-dir: <<parameters.slug>>
+          app-dir: .
       - run: npm run style
       - run: npm run lint
 
