@@ -289,10 +289,18 @@ jobs:
           background: true
 
       - run:
+          name: GET chromedriver version
+          command: |
+            $cd_version = curl -O https://chromedriver.storage.googleapis.com/LATEST_RELEASE );
+            echo 'export CHROMEDRIVER_VERSION=$cd_version' >> $BASH_ENV
+            source $BASH_ENV
+
+      - run:
+          # https://chromedriver.storage.googleapis.com/LATEST_RELEASE
           name: Install Chromedriver
           command: |
             mkdir bin
-            curl -O https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip
+            curl -O https://chromedriver.storage.googleapis.com/<<parameters.CHROMEDRIVER_VERSION>>/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip
             rm chromedriver_linux64.zip
             mv chromedriver bin/
