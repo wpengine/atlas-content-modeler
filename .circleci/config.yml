@@ -16,6 +16,7 @@ jobs:
     parameters:
       slug:
         type: string
+    working_directory: .
     steps:
       - node/install-packages:
           app-dir: <<parameters.slug>>
