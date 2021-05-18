@@ -372,7 +372,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-npm-build:
+      - lint:
           slug: wpe-content-model
           requires:
             - plugin-test
@@ -380,10 +380,10 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - lint:
+      - plugin-npm-build:
           slug: wpe-content-model
           requires:
-            - plugin-npm-build
+            - lint
           # run this job for any build, any branch
           filters:
             tags:
