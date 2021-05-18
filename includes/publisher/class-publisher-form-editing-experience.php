@@ -203,9 +203,9 @@ final class FormEditingExperience {
 	/**
 	 * Sets the slug for a newly published post to the ID of that post.
 	 *
-	 * @param integer $post_ID
-	 * @param WP_Post $post The post object being edited.
-	 * @param bool $update Whether this is an existing post being updated.
+	 * @param int     $post_ID The currently saving post ID.
+	 * @param WP_Post $post    The post object being edited.
+	 * @param bool    $update  Whether this is an existing post being updated.
 	 * @return void
 	 */
 	public function set_slug( int $post_ID, WP_Post $post, bool $update ): void {
@@ -223,10 +223,12 @@ final class FormEditingExperience {
 		// @todo Add a filter to change the slug format for default model post slug.
 		$model_post_slug = $post_ID;
 
-		wp_update_post( array(
-			'ID' => $post_ID,
-			'post_name' => $model_post_slug
-		   ));	
+		wp_update_post(
+			array(
+				'ID'        => $post_ID,
+				'post_name' => $model_post_slug,
+			)
+		);
 	}
 
 	/**
