@@ -386,10 +386,10 @@ workflows:
           slug: wpe-content-model
           requires:
             - plugin-npm-build
-            # run this job for any build, any branch
-            filters:
-              tags:
-                only: /.*/
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-e2e-test:
           requires:
             - plugin-npm-build
