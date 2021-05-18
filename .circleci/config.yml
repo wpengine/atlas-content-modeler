@@ -17,8 +17,7 @@ jobs:
       slug:
         type: string
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
       - node/install-packages:
           app-dir: <<parameters.slug>>
       - run: npm run style
