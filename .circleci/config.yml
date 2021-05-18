@@ -9,6 +9,22 @@ orbs:
   node: circleci/node@4.1.0
 
 jobs:
+  lint:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      slug:
+        type: string
+    working_directory: <<parameters.slug>>
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages:
+          app-dir: <<parameters.slug>>
+      - run: npm run style
+      - run: npm run lint
+
   checkout:
     executor: wp-product-orb/default
     parameters:
@@ -358,10 +374,18 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-npm-build:
+      - lint:
           slug: wpe-content-model
           requires:
             - plugin-test
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-npm-build:
+          slug: wpe-content-model
+          requires:
+            - lint
           # run this job for any build, any branch
           filters:
             tags:
