@@ -17,7 +17,6 @@ jobs:
       slug:
         type: string
     steps:
-      - checkout
       - node/install-packages:
           app-dir: <<parameters.slug>>
       - run: npm run style
