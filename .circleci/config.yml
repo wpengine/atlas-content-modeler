@@ -16,7 +16,6 @@ jobs:
     parameters:
       slug:
         type: string
-    working_directory: <<parameters.slug>>
     steps:
       - attach_workspace:
           at: .
