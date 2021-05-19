@@ -291,7 +291,7 @@ jobs:
       - run:
           name: GET chromedriver version
           command: |
-            $cd_version = curl -O https://chromedriver.storage.googleapis.com/LATEST_RELEASE );
+            $cd_version = curl -O https://chromedriver.storage.googleapis.com/LATEST_RELEASE;
             echo 'export CHROMEDRIVER_VERSION=$cd_version' >> $BASH_ENV
             source $BASH_ENV
 
