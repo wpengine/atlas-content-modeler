@@ -29,4 +29,16 @@ if (container && models.hasOwnProperty(postType)) {
 			tinymce.execCommand("mceAddEditor", false, field)
 		);
 	});
+
+	/**
+	 * Allows styling of :invalid input fields only when the form was
+	 * submitted. Prevents an issue where error messages appear for
+	 * required fields when the form is first loaded.
+	 */
+	const form = document.querySelector("form#post");
+	const publishButton = document.querySelector("input#publish");
+	const addSubmittedClass = () => form.classList.add("submitted");
+
+	publishButton.addEventListener("click", addSubmittedClass);
+	form.addEventListener("submit", addSubmittedClass);
 }
