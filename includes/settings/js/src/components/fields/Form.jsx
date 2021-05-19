@@ -103,7 +103,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 					<div
 						className={`${
 							errors.name ? "field has-error" : "field"
-						} mr-sm-5`}
+						} me-sm-5`}
 					>
 						<label htmlFor="name">Name</label>
 						<br />
