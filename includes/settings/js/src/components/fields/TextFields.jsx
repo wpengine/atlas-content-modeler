@@ -17,7 +17,7 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 		<>
 			{!data?.parent && (
 				<div className="field">
-					<legend>Field Options</legend>
+					<legend>Title Field</legend>
 					<input
 						name="isTitle"
 						type="checkbox"
