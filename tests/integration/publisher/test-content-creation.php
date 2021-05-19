@@ -12,27 +12,24 @@ use function WPE\ContentModel\FormEditingExperience\set_slug;
  */
 class TestContentCreation extends WP_UnitTestCase {
 
+	/**
+	 * Ensure set_slug() does not manipulate slug in post creation.
+	 *
+	 * @return void
+	 */
 	public function test_regular_post_slug(): void {
-		// Use set_slug() in a regular post creation with a defined slug and ensure it doesn't use custom ID slug.
-		$slug = 'custom_regular_post_slug';
-
+		// 
 		$expected = 'custom_regular_post_slug';
 
+		$slug = 'custom-regular-post-slug';
+		$post = $this->factory()->post->create_and_get([
+			'post_name'   => $slug,
+			'post_status' => 'publish',
+			'post_type'   => 'post',
+		]);
 		$this->assertSame(
 			$expected,
-			$test
-		);
-	}
-
-	public function test_custom_model_post_slug(): void {
-		// Use set_slug() in a custom model post creation and ensure the default ID is a number or a specific number.
-		$slug = '13';
-
-		$expected = '13';
-
-		$this->assertSame(
-			$expected,
-			$test
+			$post->post_name
 		);
 	}
 }
