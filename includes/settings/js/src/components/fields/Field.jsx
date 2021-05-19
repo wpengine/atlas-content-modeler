@@ -77,7 +77,7 @@ function Field({
 								</button>
 							</div>
 							<button
-								className="edit order-sm-2 order-1 d-flex flex-column d-sm-flex flex-sm-row ml-sm-4"
+								className="edit order-sm-2 order-1 d-flex flex-column d-sm-flex flex-sm-row ml-sm-4 flex-grow-1"
 								onClick={() =>
 									dispatch({
 										type: "openField",
@@ -87,19 +87,27 @@ function Field({
 								}
 								aria-label={`Edit the ${data.name} field`}
 							>
-								<div className="type mr-sm-4 mr-0 mb-2 mb-sm-0">
-									<Icon type={data.type} />
-									{typeLabel}
-								</div>
-								<div className="widest mr-sm-4 mr-0 mb-2 mb-sm-0">
-									<strong>{data.name}</strong>
-								</div>
-								<div className="tags text-end">
-									{data?.isTitle && (
-										<span className="tag tag-title">
-											entry title
-										</span>
-									)}
+								<div className="row w-100">
+									<div className="col-sm-3 col-12 text-center text-sm-start">
+										<div className="type mb-2 mb-sm-0">
+											<Icon type={data.type} />
+											{typeLabel}
+										</div>
+									</div>
+									<div className="col-sm-3 col-12 text-center text-sm-start">
+										<div className="mb-2 mb-sm-0">
+											<strong>{data.name}</strong>
+										</div>
+									</div>
+									<div className="col-sm-6 col-12 text-center text-sm-end">
+										<div className="tags">
+											{data?.isTitle && (
+												<span className="tag tag-title">
+													entry title
+												</span>
+											)}
+										</div>
+									</div>
 								</div>
 							</button>
 							<div className="order-0 my-2 my-sm-0 text-end order-sm-2 ms-sm-auto">
