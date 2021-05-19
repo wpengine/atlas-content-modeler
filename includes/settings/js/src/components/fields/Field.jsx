@@ -92,7 +92,7 @@ function Field({
 									style={{ "--bs-gutter-x": "0em" }}
 								>
 									<div className="col-sm-3 col-12 text-center text-sm-start ms-3 ms-sm-0">
-										<div className="type mb-2 mb-sm-0">
+										<div className="type mb-3 mb-sm-0">
 											<Icon type={data.type} />
 											{typeLabel}
 										</div>
