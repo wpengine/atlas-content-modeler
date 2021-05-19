@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import Icon from "../../../../components/icons";
 
-export default function MediaUploader({ modelSlug, field }) {
+export default function MediaUploader({ modelSlug, field, required }) {
 	// state
 	const [mediaUrl, setMediaUrl] = useState("");
 	const [value, setValue] = useState(field.value);
@@ -62,15 +63,6 @@ export default function MediaUploader({ modelSlug, field }) {
 				{field.name}
 			</label>
 
-			<input
-				type="text"
-				name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-				id={`wpe-content-model[${modelSlug}][${field.slug}]`}
-				className="hidden"
-				readOnly={true}
-				value={value}
-			/>
-
 			<div>
 				{mediaUrl && (
 					<>
@@ -117,6 +109,20 @@ export default function MediaUploader({ modelSlug, field }) {
 						</div>
 					)}
 				</div>
+
+				<input
+					type="text"
+					name={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					className="hidden"
+					required={required}
+					onChange={() => {}} // Prevents “You provided a `value` prop to a form field without an `onChange` handler.”
+					value={value} // Using defaultValue here prevents images from updating on save.
+				/>
+				<span className="error">
+					<Icon type="error" />
+					<span role="alert">This field is required</span>
+				</span>
 			</div>
 		</>
 	);
