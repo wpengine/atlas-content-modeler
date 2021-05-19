@@ -17,8 +17,7 @@ class TestContentCreation extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_regular_post_slug(): void {
-		// 
+	public function test_regular_post_slug(): void { 
 		$expected = 'custom_regular_post_slug';
 
 		$slug = 'custom_regular_post_slug';
