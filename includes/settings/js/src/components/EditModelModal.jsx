@@ -60,6 +60,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			transform: "translate(-50%, -50%)",
 			border: "none",
 			padding: "40px",
+			"box-sizing": "border-box",
 		},
 	};
 
