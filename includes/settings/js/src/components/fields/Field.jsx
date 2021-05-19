@@ -87,7 +87,10 @@ function Field({
 								}
 								aria-label={`Edit the ${data.name} field`}
 							>
-								<div className="row w-100">
+								<div
+									className="row w-100"
+									style={{ "--bs-gutter-x": "0em" }}
+								>
 									<div className="col-sm-3 col-12 text-center text-sm-start">
 										<div className="type mb-2 mb-sm-0">
 											<Icon type={data.type} />
