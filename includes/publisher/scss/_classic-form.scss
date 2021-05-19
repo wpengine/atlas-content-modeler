@@ -105,7 +105,6 @@ $error-red: #d21b46;
 
 		label {
 			font-family: "Open Sans", sans-serif;
-			height: 20px;
 			color: #002838;
 			line-height: 20px;
 			font-weight: bold;
@@ -202,14 +201,37 @@ $error-red: #d21b46;
 			padding: 0.5rem;
 			transition: border-color 0.5s ease-out;
 		}
+
 		input:optional {
 			border-color: $form-default-border-gray;
 		}
-		input:required:valid {
-			border-color: green;
+
+		span.error {
+			display: none;
 		}
-		input:invalid {
-			border-color: $error-red;
+
+		.error svg {
+			margin-right: 8px;
 		}
+	}
+}
+
+.post-php .classic-form,
+.post-new-php .submitted .classic-form {
+	input:invalid {
+		border-color: $error-red;
+	}
+
+	input:invalid + span.error,
+	textarea:invalid + span.error {
+		color: $error-red;
+		font-weight: normal;
+		display: flex;
+		margin: 8px 0 0;
+	}
+
+	.field.boolean .error {
+		margin-top: 12px;
+		margin-left: -34px;
 	}
 }
