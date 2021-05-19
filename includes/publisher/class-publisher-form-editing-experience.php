@@ -227,9 +227,17 @@ final class FormEditingExperience {
 			return;
 		}
 
-		// @todo sanitize function for array of varying data types. see: https://github.com/WordPress/WordPress-Coding-Standards/wiki/Sanitizing-array-input-data
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$posted_values = $_POST['wpe-content-model'][ $post->post_type ];
+
+		// Sanitize field values.
+		foreach ( $posted_values as $field_id => &$field_value ) {
+			$field_type  = get_field_type_from_slug(
+				$field_id,
+				$this->models[ $post->post_type ]['fields'] ?? []
+			);
+			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ) );
+		}
 
 		// Delete any meta values missing from the submitted data.
 		$all_field_slugs = array_values(
@@ -253,10 +261,7 @@ final class FormEditingExperience {
 			}
 		}
 
-		// @todo legit data type sanitization. e.g. wp_kses_post is inappropriate for plain text.
 		foreach ( $posted_values as $key => $value ) {
-			$value = wp_unslash( $value );
-
 			/**
 			 * Check if an existing value matches the submitted value
 			 * and short-circuit the loop. Otherwise `update_post_meta`
@@ -267,7 +272,7 @@ final class FormEditingExperience {
 				continue;
 			}
 
-			$updated = update_post_meta( $post_id, sanitize_text_field( $key ), wp_kses_post( $value ) );
+			$updated = update_post_meta( $post_id, sanitize_text_field( $key ), $value );
 			if ( ! $updated ) {
 				$this->error_save_post = sprintf( 'There was an error updating the %s field data.', $key );
 			}

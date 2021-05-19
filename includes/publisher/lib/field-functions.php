@@ -69,3 +69,55 @@ function order_fields( array $fields ): array {
 
 	return $fields;
 }
+
+/**
+ * Gets the field type from the field slug.
+ *
+ * @param string $slug The slug of the field to look for.
+ * @param array  $fields Fields to search for the `$slug`.
+ *
+ * @return string Field type if found, or 'unknown'.
+ */
+function get_field_type_from_slug( string $slug, array $fields ): string {
+	$field_type = 'unknown';
+
+	foreach ( $fields as $field ) {
+		if ( $field['slug'] === $slug ) {
+			$field_type = $field['type'] ?? 'unknown';
+			break;
+		}
+	}
+
+	return $field_type;
+}
+
+/**
+ * Sanitizes field data based on the field type.
+ *
+ * @param string $type The type of field.
+ * @param mixed  $value The unsanitized field value already processed by `wp_unslash()`.
+ *
+ * @return mixed The sanitized field value.
+ */
+function sanitize_field( string $type, $value ) {
+	switch ( $type ) {
+		case 'text':
+			return wp_strip_all_tags( $value );
+		case 'richtext':
+			return wp_kses_post( $value );
+		case 'number':
+			return filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+		case 'date':
+			$y_m_d_format = '/\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/';
+			if ( preg_match( $y_m_d_format, $value ) ) {
+				return $value;
+			}
+			return '';
+		case 'media':
+			return preg_replace( '/\D/', '', $value );
+		case 'boolean':
+			return $value === 'on' ? 'on' : 'off';
+		default:
+			return $value;
+	}
+}
