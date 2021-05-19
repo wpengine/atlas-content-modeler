@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useLocationSearch } from "../../utils";
-import Icon from "../icons";
+import Icon from "../../../../../components/icons";
 import TextFields from "./TextFields";
 import NumberFields from "./NumberFields";
 import supportedFields from "./supportedFields";
