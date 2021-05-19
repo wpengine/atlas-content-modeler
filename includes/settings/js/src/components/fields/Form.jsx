@@ -116,6 +116,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 							name="name"
 							defaultValue={storedData?.name}
 							placeholder="Name"
+							type="text"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(e) => {
 								setApiIdGeneratorInput(e.target.value);
@@ -154,6 +155,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 						<input
 							id="slug"
 							name="slug"
+							type="text"
 							defaultValue={storedData?.slug}
 							ref={register({ required: true, maxLength: 50 })}
 							{...apiIdFieldAttributes}
