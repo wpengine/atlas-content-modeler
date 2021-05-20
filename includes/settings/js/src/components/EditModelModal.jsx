@@ -67,7 +67,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 	return (
 		<Modal
 			isOpen={isOpen}
-			contentLabel={`Editing the ${model.name} content model`}
+			contentLabel={`Editing the ${model.plural} content model`}
 			parentSelector={() => {
 				return document.getElementById("root");
 			}}
@@ -78,7 +78,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			model={model}
 			style={customStyles}
 		>
-			<h2>Edit {model.name}</h2>
+			<h2>Edit {model.plural}</h2>
 			<form
 				onSubmit={handleSubmit(async (data) => {
 					const mergedData = { ...model, ...data };
