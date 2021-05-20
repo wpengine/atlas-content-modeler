@@ -9,6 +9,34 @@ orbs:
   node: circleci/node@4.1.0
 
 jobs:
+  lint:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      slug:
+        type: string
+    working_directory: .
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages:
+          app-dir: <<parameters.slug>>
+      - run:
+          name: NPM style
+          command: |
+            npm run style
+          working_directory: <<parameters.slug>>
+      - run:
+          name: NPM eslint
+          command: |
+            npm run lint
+          working_directory: <<parameters.slug>>
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
   checkout:
     executor: wp-product-orb/default
     parameters:
@@ -292,7 +320,8 @@ jobs:
           name: Install Chromedriver
           command: |
             mkdir bin
-            curl -O https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip
+            CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+            curl -O https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip
             rm chromedriver_linux64.zip
             mv chromedriver bin/
@@ -358,10 +387,18 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-npm-build:
+      - lint:
           slug: wpe-content-model
           requires:
             - plugin-test
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-npm-build:
+          slug: wpe-content-model
+          requires:
+            - lint
           # run this job for any build, any branch
           filters:
             tags:

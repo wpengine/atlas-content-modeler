@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import Form from "./Form";
-import Icon from "../icons";
+import Icon from "../../../../../components/icons";
 import supportedFields from "./supportedFields";
 import Repeater from "./Repeater";
 import { FieldOptionsDropdown } from "./FieldOptionsDropdown";

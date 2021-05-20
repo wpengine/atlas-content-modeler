@@ -16,7 +16,7 @@ class CreateFieldWithIsTitleCest
 		$I->wait(1);
 		$I->fillField(['name' => 'name'], 'Name');
 		$I->seeInField('#slug','name');
-		$I->click('.open-field label.checkbox');
+		$I->click('.open-field label.checkbox.is-title');
 		$I->click('.open-field button.primary');
 		$I->wait(1);
 
