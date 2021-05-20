@@ -18,7 +18,7 @@ add_action( 'init', __NAMESPACE__ . '\register_content_types' );
  * Registers custom content types.
  */
 function register_content_types(): void {
-	$content_types = get_option( 'wpe_content_model_post_types', false );
+	$content_types = get_registered_content_types();
 
 	if ( ! $content_types ) {
 		return;
