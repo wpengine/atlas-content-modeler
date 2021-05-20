@@ -41,7 +41,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 	const [singularCount, setSingularCount] = useState(
 		model.singular.length
 	);
-	const [pluralCount, setPluralCount] = useState(model.name.length);
+	const [pluralCount, setPluralCount] = useState(model.plural.length);
 	const [descriptionCount, setDescriptionCount] = useState(
 		model.description.length
 	);
@@ -136,7 +136,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					<input
 						id="plural"
 						name="plural"
-						defaultValue={model.name}
+						defaultValue={model.plural}
 						placeholder="Rabbits"
 						ref={register({ required: true, maxLength: 50 })}
 						onChange={(event) => {

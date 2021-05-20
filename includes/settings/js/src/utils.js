@@ -49,7 +49,7 @@ export function removeSidebarMenuItem(slug) {
 export function generateSidebarMenuItem(model) {
 	let {
 		slug,
-		labels: { name },
+		plural,
 	} = model;
 	slug = slug.toLowerCase();
 	return `<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" id="menu-posts-${slug}">
@@ -58,12 +58,12 @@ export function generateSidebarMenuItem(model) {
 						<div></div>
 					</div>
 					<div class="wp-menu-image dashicons-before dashicons-admin-post" aria-hidden="true"><br/></div>
-					<div class="wp-menu-name">${name}</div>
+					<div class="wp-menu-name">${plural}</div>
 				</a>
 				<ul class="wp-submenu wp-submenu-wrap">
-					<li class="wp-submenu-head" aria-hidden="true">${name}</li>
+					<li class="wp-submenu-head" aria-hidden="true">${plural}</li>
 					<li class="wp-first-item">
-						<a href="edit.php?post_type=${slug}" class="wp-first-item">All ${name}</a>
+						<a href="edit.php?post_type=${slug}" class="wp-first-item">All ${plural}</a>
 					</li>
 					<li>
 						<a href="post-new.php?post_type=${slug}">Add New</a>

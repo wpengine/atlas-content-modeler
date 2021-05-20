@@ -27,7 +27,7 @@ export default function EditContentModel() {
 					<Link to="/wp-admin/admin.php?page=wpe-content-model">
 						Content Models
 					</Link>{" "}
-					/ {model?.name}
+					/ {model?.plural}
 				</h2>
 				<ContentModelDropdown model={model} />
 			</section>

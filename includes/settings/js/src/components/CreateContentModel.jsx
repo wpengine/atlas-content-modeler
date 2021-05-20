@@ -41,7 +41,7 @@ export default function CreateContentModel() {
 
 					window.scrollTo(0, 0);
 					showSuccess(
-						`The “${res.model.name}” model was created. Now add your first field.`
+						`The “${res.model.plural}” model was created. Now add your first field.`
 					);
 				}
 			})
