@@ -149,7 +149,7 @@ function generate_custom_post_type_args( array $args ): array {
 	);
 
 	return [
-		'slug'                => $args['postTypeSlug'] ?? camelcase( $plural ),
+		'slug'                => $args['slug'] ?? camelcase( $plural ),
 		'name'                => ucfirst( $plural ),
 		'singular_name'       => ucfirst( $singular ),
 		'description'         => $args['description'] ?? '',

@@ -153,7 +153,7 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 	$params = $request->get_params();
 
 	// @todo simplify create_model() signature to single array?
-	$model = create_model( $params['postTypeSlug'], $params );
+	$model = create_model( $params['slug'], $params );
 
 	if ( is_wp_error( $model ) ) {
 		return new WP_Error(
@@ -168,7 +168,7 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		[
 			'success' => true,
-			'model'   => $models[ $params['postTypeSlug'] ],
+			'model'   => $models[ $params['slug'] ],
 		]
 	);
 }

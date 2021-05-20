@@ -17,7 +17,7 @@ export default function CreateContentModel() {
 	const [descriptionCount, setDescriptionCount] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
-		apiFieldId: "postTypeSlug",
+		apiFieldId: "slug",
 		setValue,
 	});
 
@@ -33,7 +33,7 @@ export default function CreateContentModel() {
 					dispatch({ type: "addModel", data: res.model });
 					history.push(
 						"/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" +
-							data.postTypeSlug
+							data.slug
 					);
 
 					// Insert the sidebar menu item below the Comments item, to avoid doing a full page refresh.
@@ -47,7 +47,7 @@ export default function CreateContentModel() {
 			})
 			.catch((err) => {
 				if (err.code === "wpe_content_model_already_exists") {
-					setError("postTypeSlug", {
+					setError("slug", {
 						type: "idExists",
 						message: err.message,
 					});
@@ -163,25 +163,25 @@ export default function CreateContentModel() {
 
 					<div
 						className={
-							errors.postTypeSlug ? "field has-error" : "field"
+							errors.slug ? "field has-error" : "field"
 						}
 					>
-						<label htmlFor="postTypeSlug">API Identifier</label>
+						<label htmlFor="slug">API Identifier</label>
 						<br />
 						<p className="help">
 							Auto-generated from the plural name and used for API
 							requests.
 						</p>
 						<input
-							id="postTypeSlug"
-							name="postTypeSlug"
+							id="slug"
+							name="slug"
 							className="w-100"
 							ref={register({ required: true, maxLength: 20 })}
 							{...apiIdFieldAttributes}
 						/>
 						<p className="field-messages">
-							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "required" && (
+							{errors.slug &&
+								errors.slug.type === "required" && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -189,8 +189,8 @@ export default function CreateContentModel() {
 										</span>
 									</span>
 								)}
-							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "maxLength" && (
+							{errors.slug &&
+								errors.slug.type === "maxLength" && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
@@ -198,12 +198,12 @@ export default function CreateContentModel() {
 										</span>
 									</span>
 								)}
-							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "idExists" && (
+							{errors.slug &&
+								errors.slug.type === "idExists" && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											{errors.postTypeSlug.message}
+											{errors.slug.message}
 										</span>
 									</span>
 								)}

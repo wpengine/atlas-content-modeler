@@ -82,7 +82,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			<form
 				onSubmit={handleSubmit(async (data) => {
 					const mergedData = { ...model, ...data };
-					await updateModel(data.postTypeSlug, mergedData);
+					await updateModel(data.slug, mergedData);
 					dispatch({ type: "updateModel", data: mergedData });
 					setIsOpen(false);
 				})}
@@ -162,13 +162,13 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 				</div>
 
 				<div className="field">
-					<label htmlFor="postTypeSlug">API Identifier</label>
+					<label htmlFor="slug">API Identifier</label>
 					<p className="help">
 						Auto-generated and used for API requests.
 					</p>
 					<input
-						id="postTypeSlug"
-						name="postTypeSlug"
+						id="slug"
+						name="slug"
 						ref={register({ required: true, maxLength: 20 })}
 						defaultValue={model.slug}
 						readOnly="readOnly"
