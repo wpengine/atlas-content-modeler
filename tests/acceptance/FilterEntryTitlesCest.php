@@ -31,12 +31,12 @@ class FilterEntryTitlesCest
 		$i->wait(1);
 
 		// Create an entry for the model.
-		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
-		$i->fillField(['name' => 'wpe-content-model[geese][faveFoods]'], 'Gumdrops');
-		$i->fillField(['name' => 'wpe-content-model[geese][name]'], 'Lucy');
+		$i->fillField(['name' => 'wpe-content-model[goose][faveFoods]'], 'Gumdrops');
+		$i->fillField(['name' => 'wpe-content-model[goose][name]'], 'Lucy');
 
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
@@ -44,7 +44,7 @@ class FilterEntryTitlesCest
 		$i->see('Post published.');
 
 		// Check that the admin page displays the “Lucy” title.
-		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$i->see('Lucy');
 	}
 
@@ -73,12 +73,12 @@ class FilterEntryTitlesCest
 		$i->wait(1);
 
 		// Create an entry for the model.
-		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
-		$i->fillField(['name' => 'wpe-content-model[geese][faveFoods]'], 'Gumdrops');
-		$i->fillField(['name' => 'wpe-content-model[geese][name]'], 'Lucy');
+		$i->fillField(['name' => 'wpe-content-model[goose][faveFoods]'], 'Gumdrops');
+		$i->fillField(['name' => 'wpe-content-model[goose][name]'], 'Lucy');
 
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
@@ -86,8 +86,8 @@ class FilterEntryTitlesCest
 		$i->see('Post published.');
 
 		// Check that the admin page displays a title based on the post type singular name.
-		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
-		$i->see('goose');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
+		$i->see('geese');
 	}
 
 	/**
@@ -111,7 +111,7 @@ class FilterEntryTitlesCest
 		$i->wait(1);
 
 		// Create an entry for the model.
-		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
@@ -127,7 +127,7 @@ class FilterEntryTitlesCest
 		// (The actual title will be 'goose [post ID]', but we can just
 		// check for 'goose' because it does not appear elsewhere on the
 		// entry listings page.)
-		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
-		$i->see('goose');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
+		$i->see('geese');
 	}
 }
