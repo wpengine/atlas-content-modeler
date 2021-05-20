@@ -39,7 +39,7 @@ function updateModel(slug = "", data = {}) {
  */
 export function EditModelModal({ model, isOpen, setIsOpen }) {
 	const [singularCount, setSingularCount] = useState(
-		model.singular_name.length
+		model.singular.length
 	);
 	const [pluralCount, setPluralCount] = useState(model.name.length);
 	const [descriptionCount, setDescriptionCount] = useState(
@@ -97,7 +97,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						id="singular"
 						name="singular"
 						placeholder="Rabbit"
-						defaultValue={model.singular_name}
+						defaultValue={model.singular}
 						ref={register({ required: true, maxLength: 50 })}
 						onChange={(e) =>
 							setSingularCount(e.target.value.length)
