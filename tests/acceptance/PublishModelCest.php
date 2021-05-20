@@ -82,7 +82,7 @@ class PublishModelCest
 
 		// Show <textarea> elements hidden by TinyMCE so we can see them to check their values directly.
 		$i->executeJS("
-			var field = document.getElementsByName('wpe-content-model[geese][description]');
+			var field = document.getElementsByName('wpe-content-model[goose][description]');
 			field[0].removeAttribute('style');
 			var fieldTwo = document.getElementsByName('wpe-content-model[goose][anotherRichTextField]');
 			fieldTwo[0].removeAttribute('style');
