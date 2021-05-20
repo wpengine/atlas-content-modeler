@@ -22,7 +22,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	 */
 	private $server;
 	private $namespace = '/wp/v2';
-	private $dog_route = '/dog';
+	private $dog_route = '/dogs';
 	private $dog_post_id;
 	private $all_registered_post_types;
 
