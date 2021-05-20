@@ -308,7 +308,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			unset( $field['name'] );
 
 			register_graphql_field(
-				camelcase( $post_type_args['graphql_single_name'] ),
+				camelcase( $post_type_args['singular'] ),
 				camelcase( $field['slug'] ),
 				$field
 			);
