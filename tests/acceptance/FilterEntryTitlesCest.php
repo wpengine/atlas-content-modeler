@@ -105,9 +105,9 @@ class FilterEntryTitlesCest
 
 		$i->click('Text', '.field-buttons');
 		$i->fillField(['name' => 'name'], 'Name');
-		$i->click('.open-field button.primary');
 		// Set the 'name' field as the entry title field.
 		$i->click('.open-field .checkbox.is-title');
+		$i->click('.open-field button.primary');
 		$i->wait(1);
 
 		// Create an entry for the model.
