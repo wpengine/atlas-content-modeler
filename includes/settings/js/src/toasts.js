@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "react-toastify";
-import Icon from "./components/icons";
+import Icon from "../../../components/icons";
 
 export function showSuccess(message) {
 	toast(

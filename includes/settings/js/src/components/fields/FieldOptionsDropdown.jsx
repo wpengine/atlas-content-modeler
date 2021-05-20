@@ -5,7 +5,7 @@ import React, {
 	useRef,
 	useCallback,
 } from "react";
-import Icon from "../icons";
+import Icon from "../../../../../components/icons";
 import Modal from "react-modal";
 import { ModelsContext } from "../../ModelsContext";
 import { maybeCloseDropdown } from "../../utils";

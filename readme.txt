@@ -24,6 +24,10 @@ Headless WordPress content modeling plugin.
 == Changelog ==
 
 = Unreleased =
+### Added
+- Developers can now mark fields as required.
+- Publishers will see inline errors prompting them to fill required fields.
+
 ### Fixed
 - Hide duplicate page title on new entry screens.
 

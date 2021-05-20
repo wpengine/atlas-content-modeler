@@ -6,7 +6,7 @@ import React, {
 	useCallback,
 } from "react";
 import { ModelsContext } from "../ModelsContext";
-import Icon from "./icons";
+import Icon from "../../../../components/icons";
 import Modal from "react-modal";
 import { EditModelModal } from "./EditModelModal";
 import { useHistory } from "react-router-dom";

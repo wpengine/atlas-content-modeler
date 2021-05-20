@@ -5,7 +5,7 @@ import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
-import Icon from "./icons";
+import Icon from "../../../../components/icons";
 
 const { apiFetch } = wp;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import supportedFields from "./fields/supportedFields";
-import Icon from "./icons";
+import Icon from "../../../../components/icons";
 
 const { cloneDeep } = lodash;
 
