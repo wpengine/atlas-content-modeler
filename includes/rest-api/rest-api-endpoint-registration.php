@@ -150,6 +150,8 @@ function dispatch_get_content_model( WP_REST_Request $request ) {
 function dispatch_create_content_model( WP_REST_Request $request ) {
 	$params = $request->get_params();
 
+	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
+
 	// @todo simplify create_model() signature to single array?
 	$model = create_model( $params['slug'], $params );
 
