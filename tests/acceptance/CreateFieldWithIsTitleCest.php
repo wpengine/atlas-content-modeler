@@ -20,7 +20,7 @@ class CreateFieldWithIsTitleCest
 		$I->click('.open-field button.primary');
 		$I->wait(1);
 
-		$I->see('Text', '.field-list span.type');
+		$I->see('Text', '.field-list div.type');
 		$I->see('Name', '.field-list span.widest');
 		$I->see('entry title', '.field-list span.tags');
 	}

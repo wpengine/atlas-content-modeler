@@ -20,7 +20,7 @@ class CreateContentModelNumberFieldCest
         $I->click('.open-field button.primary');
         $I->wait(1);
 
-        $I->see('Number', '.field-list span.type');
+        $I->see('Number', '.field-list div.type');
         $I->see('Count', '.field-list span.widest');
     }
 }
