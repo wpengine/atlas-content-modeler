@@ -20,8 +20,6 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
  * Registers custom routes with the WP REST API.
  */
 function register_rest_routes(): void {
-	// @todo Route for updating a single content type.
-
 	// Route for retrieving a single content type.
 	register_rest_route(
 		'wpe',
@@ -518,9 +516,6 @@ function update_model( string $post_type_slug, array $args ) {
 			'Invalid content model ID.'
 		);
 	}
-
-	$args['name']          = $args['plural'];
-	$args['singular_name'] = $args['singular'];
 
 	$new_args = wp_parse_args( $args, $content_types[ $post_type_slug ] );
 

@@ -28,10 +28,6 @@ function register_content_types(): void {
 		$fields = $args['fields'] ?? false;
 		unset( $args['fields'] );
 
-		// @todo normalize things to avoid this?
-		$args['singular'] = $args['singular_name'];
-		$args['plural']   = $args['name'];
-
 		try {
 			$args = generate_custom_post_type_args( $args );
 		} catch ( InvalidArgumentException $exception ) {
