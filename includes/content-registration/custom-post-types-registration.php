@@ -155,6 +155,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'show_in_nav_menus'   => $args['show_in_nav_menus'] ?? true,
 		'delete_with_user'    => $args['delete_with_user'] ?? false,
 		'show_in_rest'        => $args['show_in_rest'] ?? true,
+		'rest_base'           => $args['rest_base'] ?? strtolower( $plural ),
 		'has_archive'         => $args['has_archive'] ?? true,
 		'has_archive_string'  => $args['has_archive_string'] ?? '',
 		'exclude_from_search' => $args['exclude_from_search'] ?? false,

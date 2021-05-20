@@ -89,9 +89,10 @@ export default function CreateContentModel() {
 							placeholder="Rabbit"
 							className="w-100"
 							ref={register({ required: true, maxLength: 50 })}
-							onChange={(e) =>
+							onChange={(e) => {
+								setApiIdGeneratorInput(event.target.value);
 								setSingularCount(e.target.value.length)
-							}
+							}}
 						/>
 						<p className="field-messages">
 							{errors.singular &&
@@ -133,7 +134,6 @@ export default function CreateContentModel() {
 							className="w-100"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(event) => {
-								setApiIdGeneratorInput(event.target.value);
 								setPluralCount(event.target.value.length);
 							}}
 						/>
