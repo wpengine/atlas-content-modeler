@@ -51,7 +51,7 @@ function register_content_types(): void {
 function register_meta_types( string $post_type_slug, array $fields ): void {
 	foreach ( $fields as $key => $field ) {
 		$field['object_subtype'] = $post_type_slug;
-		register_meta( 'post', $key, $field );
+		register_meta( 'post', $field['slug'], $field );
 	}
 }
 
