@@ -9,7 +9,6 @@ class OpenInGraphiQLCest
 	{
 		$I->loginAsAdmin();
 		$I->haveContentModel('Dog', 'Dogs');
-		$I->amOnWPEngineEditContentModelPage('dogs');
 		$I->wait(1);
 
 		$I->click('Text', '.field-buttons');
