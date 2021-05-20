@@ -320,7 +320,8 @@ jobs:
           name: Install Chromedriver
           command: |
             mkdir bin
-            curl -O https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip
+            CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+            curl -O https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip
             rm chromedriver_linux64.zip
             mv chromedriver bin/
