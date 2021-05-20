@@ -34,7 +34,7 @@ function deleteModel(name = "") {
 }
 
 export const ContentModelDropdown = ({ model }) => {
-	const { name, slug } = model;
+	const { plural, slug } = model;
 	const { models, dispatch } = useContext(ModelsContext);
 	const history = useHistory();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -85,7 +85,7 @@ export const ContentModelDropdown = ({ model }) => {
 		<span className="dropdown">
 			<button
 				className="options"
-				aria-label={`Options for ${name} content model`}
+				aria-label={`Options for ${plural} content model`}
 				onClick={() => {
 					setDropdownOpen(!dropdownOpen);
 				}}
@@ -137,7 +137,7 @@ export const ContentModelDropdown = ({ model }) => {
 			</div>
 			<Modal
 				isOpen={modalIsOpen}
-				contentLabel={`Delete the ${name} content model?`}
+				contentLabel={`Delete the ${plural} content model?`}
 				portalClassName="wpe-content-model-delete-model-modal-container"
 				onRequestClose={() => {
 					setModalIsOpen(false);
@@ -145,7 +145,7 @@ export const ContentModelDropdown = ({ model }) => {
 				style={customStyles}
 				model={model}
 			>
-				<h2>Delete the {name} Content Model?</h2>
+				<h2>Delete the {plural} Content Model?</h2>
 				<p>
 					This is an irreversible action. You will have to recreate
 					this model if you delete it.
@@ -154,7 +154,7 @@ export const ContentModelDropdown = ({ model }) => {
 					This will NOT delete actual data stored in this model. It
 					only deletes the model definition.
 				</p>
-				<p>{`Are you sure you want to delete the ${name} content model?`}</p>
+				<p>{`Are you sure you want to delete the ${plural} content model?`}</p>
 				<button
 					className="first warning"
 					onClick={async () => {
