@@ -66,6 +66,7 @@ final class FormEditingExperience {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 		add_action( 'edit_form_after_title', [ $this, 'render_app_container' ] );
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
+		add_action( 'wp_insert_post', [ $this, 'set_slug' ], 10, 3 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
 		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
@@ -197,6 +198,37 @@ final class FormEditingExperience {
 
 		wp_nonce_field( 'wpe-content-model-pubex-nonce', 'wpe-content-model-pubex-nonce' );
 		echo '<div id="wpe-content-model-fields-app"></div>';
+	}
+
+	/**
+	 * Sets the slug for a newly published post to the ID of that post.
+	 *
+	 * @param int     $post_ID The currently saving post ID.
+	 * @param WP_Post $post    The post object being edited.
+	 * @param bool    $update  Whether this is an existing post being updated.
+	 * @return void
+	 */
+	public function set_slug( int $post_ID, WP_Post $post, bool $update ): void {
+		if ( true === $update ) {
+			// @todo Perhaps check that the slug has not been changed outside of the editor.
+			return;
+		}
+
+		// Only enforce this slug on created models.
+		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
+			return;
+		}
+
+		// An object to add more useful info to the slug, perhaps post_type ID.
+		// @todo Add a filter to change the slug format for default model post slug.
+		$model_post_slug = $post_ID;
+
+		wp_update_post(
+			array(
+				'ID'        => $post_ID,
+				'post_name' => $model_post_slug,
+			)
+		);
 	}
 
 	/**
