@@ -98,7 +98,7 @@ function Field({
 										</div>
 									</div>
 									<div className="col-sm-3 col-12 text-center text-sm-start">
-										<div className="mb-2 mb-sm-0">
+										<div className="widest mb-2 mb-sm-0">
 											<strong>{data.name}</strong>
 										</div>
 									</div>

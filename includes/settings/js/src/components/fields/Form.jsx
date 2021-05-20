@@ -173,7 +173,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 					{/*		fieldId={id}*/}
 					{/*	/>*/}
 					{/*)}*/}
-				{/*</div>*/}
+					{/*</div>*/}
 
 					<div className={errors.slug ? "field has-error" : "field"}>
 						<label htmlFor="slug">API Identifier</label>

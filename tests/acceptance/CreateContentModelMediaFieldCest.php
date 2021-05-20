@@ -21,6 +21,6 @@ class CreateContentModelMediaFieldCest
         $I->wait(1);
 
         $I->see('Media', '.field-list div.type');
-        $I->see('Product Photo', '.field-list span.widest');
+        $I->see('Product Photo', '.field-list div.widest');
     }
 }

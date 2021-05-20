@@ -21,6 +21,6 @@ class CreateContentModelNumberFieldCest
         $I->wait(1);
 
         $I->see('Number', '.field-list div.type');
-        $I->see('Count', '.field-list span.widest');
+        $I->see('Count', '.field-list div.widest');
     }
 }

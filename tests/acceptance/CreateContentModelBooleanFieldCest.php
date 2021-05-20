@@ -21,6 +21,6 @@ class CreateContentModelBooleanFieldCest
         $I->wait(1);
 
         $I->see('Boolean', '.field-list div.type');
-        $I->see('Accept Terms', '.field-list span.widest');
+        $I->see('Accept Terms', '.field-list div.widest');
     }
 }
