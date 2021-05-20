@@ -464,18 +464,14 @@ function create_model( string $post_type_slug, array $args ) {
 		);
 	}
 
-	// @todo validate field types
-	try {
-		$args = wp_parse_args( $args, generate_custom_post_type_args( $args ) );
-	} catch ( \InvalidArgumentException $exception ) {
-		return new WP_Error(
-			[
-				'invalid-args',
-				$exception->getMessage(),
-				[ 'status' => 400 ],
-			]
-		);
-	}
+	// @todo maybe remove these defaults, or change them to false for opt-in exposure.
+	// should these only be saved to the model when non-default?
+	$defaults = [
+		'show_in_rest'    => true,
+		'show_in_graphql' => true,
+	];
+
+	$args = wp_parse_args( $args, $defaults );
 
 	$content_types[ $post_type_slug ] = $args;
 
