@@ -27,7 +27,6 @@
 	color: $color-text;
 	height: auto;
 	justify-content: space-between;
-	margin-left: -15px;
 	padding: 10px 16px;
 	text-align: left;
 	text-decoration: none;
@@ -83,6 +82,7 @@
 
 .field-list .type svg {
 	margin-right: 12px;
+	flex-shrink: 0;
 }
 
 .field-list .add-item {
