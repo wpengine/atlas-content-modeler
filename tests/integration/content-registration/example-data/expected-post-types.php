@@ -16,6 +16,7 @@ return array (
 			'show_in_nav_menus' => true,
 			'delete_with_user' => false,
 			'show_in_rest' => true,
+			'rest_base' => 'dogs',
 			'has_archive' => true,
 			'has_archive_string' => '',
 			'exclude_from_search' => false,
