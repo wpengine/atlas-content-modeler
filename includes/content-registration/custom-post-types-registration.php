@@ -284,8 +284,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				continue;
 			}
 
-			$field['originalType'] = $field['type'];
-			$field['type']         = $gql_field_type;
+			$field['type'] = $gql_field_type;
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field ) {
 				$value = get_post_meta( $post->databaseId, $field['slug'], true );
@@ -302,7 +301,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 					return (float) $value;
 				}
 
-				if ( $field['originalType'] === 'media' ) {
+				if ( $field['type'] === 'MediaItem' ) {
 					return DataSource::resolve_post_object( (int) $value, $context );
 				}
 
