@@ -25,6 +25,10 @@ export function reducer(state, action) {
 			const { [action.slug]: deleted, ...otherModels } = state;
 			return otherModels;
 		case "addField":
+			Object.values(state[action.model]["fields"]).forEach((field) => {
+				field.open = false;
+				field.editing = false;
+			});
 			const newId = Date.now();
 			state[action.model]["fields"] = {
 				...state[action.model]["fields"],
@@ -38,10 +42,29 @@ export function reducer(state, action) {
 			};
 			return { ...state };
 		case "openField":
-			state[action.model]["fields"][action.id].open = true;
-			state[action.model]["fields"][action.id].editing = true;
+			Object.values(state[action.model]["fields"]).forEach((field) => {
+				if (field === state[action.model]["fields"][action.id]) {
+					// If parent is undefined it is a new unsaved field.
+					if (!state[action.model]["fields"][action.id]["parent"]) {
+						field.open = true;
+						// We set editing to false so when the cancel button is clicked, it is not interpreted as a saved and editing field.
+						field.editing = false;
+					} else {
+						field.open = true;
+						field.editing = true;
+					}
+				} else {
+					field.open = false;
+					field.editing = false;
+				}
+			});
 			return { ...state };
 		case "closeField":
+			// If the action.id object object does not have a parent, it is a new field.
+			if (!state[action.model]["fields"][action.id]["parent"]) {
+				delete state[action.model]["fields"][action.id];
+			}
+
 			if (action?.originalState) {
 				state[action.model]["fields"] = action.originalState;
 			}
