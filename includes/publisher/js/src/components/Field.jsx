@@ -2,20 +2,49 @@ import React, { useState } from "react";
 import MediaUploader from "./MediaUploader";
 import Icon from "../../../../components/icons";
 
+const defaultError = "This field is required";
+
 export default function Field(props) {
 	const { field, modelSlug } = props;
+	const [errors, setErrors] = useState({});
+
+	/**
+	 * Adjusts the custom error feedback messages displayed below fields based
+	 * on the HTML5 validation failure type.
+	 *
+	 * @param {object} event onChange
+	 * @param {object} field
+	 */
+	function validate(event, field) {
+		if (event.target.validity.valid) {
+			return;
+		}
+
+		let error = defaultError;
+
+		if (field.type === "text") {
+			if (event.target.validity.tooShort) {
+				error = "Text is too short";
+			} else if (event.target.validity.tooLong) {
+				error = "Text is too long";
+			}
+		}
+
+		setErrors({ ...errors, [field.slug]: error });
+	}
+
 	return (
 		<>
 			<div id={`field-${field.slug}`} className={`field ${field.type}`}>
-				{fieldMarkup(field, modelSlug)}
+				{fieldMarkup(field, modelSlug, errors, validate)}
 			</div>
 		</>
 	);
 }
 
-// @todo wire up to react-hook-form, validate data, display errors.
-function fieldMarkup(field, modelSlug) {
+function fieldMarkup(field, modelSlug, errors, validate) {
 	modelSlug = modelSlug.toLowerCase();
+
 	switch (field.type) {
 		case "media":
 			return (
@@ -26,6 +55,31 @@ function fieldMarkup(field, modelSlug) {
 				/>
 			);
 		case "text":
+			return (
+				<>
+					<label
+						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					>
+						{field.name}
+					</label>
+					<br />
+					<input
+						type={`${field.type}`}
+						name={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						defaultValue={field.value}
+						required={field.required}
+						onChange={(event) => validate(event, field)}
+						maxLength={field.textLength === "short" ? 50 : 500}
+					/>
+					<span className="error">
+						<Icon type="error" />
+						<span role="alert">
+							{errors[field.slug] ?? defaultError}
+						</span>
+					</span>
+				</>
+			);
 		case "number": // @todo split this out to support mix/max/step/etc.
 		case "date": // @todo split this out for proper browser and datepicker support
 			return (
@@ -45,7 +99,7 @@ function fieldMarkup(field, modelSlug) {
 					/>
 					<span className="error">
 						<Icon type="error" />
-						<span role="alert">This field is required</span>
+						<span role="alert">{defaultError}</span>
 					</span>
 				</>
 			);
@@ -67,7 +121,7 @@ function fieldMarkup(field, modelSlug) {
 					/>
 					<span className="error">
 						<Icon type="error" />
-						<span role="alert">This field is required</span>
+						<span role="alert">{defaultError}</span>
 					</span>
 				</>
 			);
@@ -91,7 +145,7 @@ function fieldMarkup(field, modelSlug) {
 						/>
 						<span className="error">
 							<Icon type="error" />
-							<span role="alert">This field is required</span>
+							<span role="alert">{defaultError}</span>
 						</span>
 						{/* span is used for custom checkbox styling purposes */}
 						<span className="checkmark"></span>
