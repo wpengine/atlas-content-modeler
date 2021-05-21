@@ -105,7 +105,34 @@ export const getGraphiQLLink = (modelData) => {
 	const fields = getRootFields(modelData?.fields);
 	const fieldSlugs = getFieldOrder(fields)
 		.filter((id) => fields[id]?.type !== "repeater") // @todo: handle repeater fields.
-		.map((id) => fields[id]?.slug);
+		.map((id) => {
+			if (fields[id]?.type === "media") {
+				return `
+${fields[id]?.slug} {
+  mediaItemId
+  mediaItemUrl
+  altText
+  caption
+  description
+  mediaDetails {
+    height
+    width
+    sizes {
+      file
+      fileSize
+      height
+      mimeType
+      name
+      sourceUrl
+      width
+    }
+  }
+}
+`;
+			}
+
+			return fields[id]?.slug;
+		});
 
 	if (fieldSlugs.length === 0) {
 		fieldSlugs.push("title");
