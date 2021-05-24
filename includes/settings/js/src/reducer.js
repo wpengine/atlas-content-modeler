@@ -47,7 +47,7 @@ export function reducer(state, action) {
 		case "openField":
 			Object.values(state[action.model]["fields"]).forEach((field) => {
 				if (field === state[action.model]["fields"][action.id]) {
-					// If parent is undefined it is a new unsaved field.
+					// If name is undefined it is a new unsaved field.
 					if (!state[action.model]["fields"][action.id]["name"]) {
 						field.open = true;
 						// We set editing to false so when the cancel button is clicked, it is not interpreted as a saved and editing field.
