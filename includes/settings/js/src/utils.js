@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { getFieldOrder, getRootFields } from "./queries";
+import { toValidApiId } from "./components/fields/toValidApiId";
 
 /**
  * Parses query string and returns value.
@@ -101,6 +102,7 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
 export const getGraphiQLLink = (modelData) => {
 	const modelSingular = modelData.singular.replace(/\s/g, "");
 	const fragmentName = `${modelSingular}Fields`;
+	const pluralSlug = toValidApiId(modelData.plural);
 
 	const fields = getRootFields(modelData?.fields);
 	const fieldSlugs = getFieldOrder(fields)
@@ -113,7 +115,7 @@ export const getGraphiQLLink = (modelData) => {
 
 	const query = `
 {
-  ${modelData.slug}(first: 10) {
+  ${pluralSlug}(first: 10) {
     nodes {
       ...${fragmentName}
     }
