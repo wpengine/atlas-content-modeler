@@ -45,7 +45,6 @@ export function reducer(state, action) {
 			};
 			return { ...state };
 		case "openField":
-			console.log(state[action.model]["fields"]);
 			Object.values(state[action.model]["fields"]).forEach((field) => {
 				if (field === state[action.model]["fields"][action.id]) {
 					// If parent is undefined it is a new unsaved field.
