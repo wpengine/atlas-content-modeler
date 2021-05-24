@@ -22,6 +22,6 @@ class CreateFieldWithIsTitleCest
 
 		$I->see('Text', '.field-list div.type');
 		$I->see('Name', '.field-list div.widest');
-		$I->see('entry title', '.field-list span.tags');
+		$I->see('entry title', '.field-list div.tags');
 	}
 }
