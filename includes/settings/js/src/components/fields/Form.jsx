@@ -146,35 +146,6 @@ function Form({ id, position, type, editing, storedData, parent }) {
 						</p>
 					</div>
 
-					{/*{!["repeater", "richtext"].includes(type) && (*/}
-					{/*	<div className="field">*/}
-					{/*		<legend>Field Options</legend>*/}
-					{/*		<input*/}
-					{/*			name="required"*/}
-					{/*			type="checkbox"*/}
-					{/*			id={`is-required-${id}`}*/}
-					{/*			ref={register}*/}
-					{/*			defaultChecked={storedData?.required === true}*/}
-					{/*		/>*/}
-					{/*		<label*/}
-					{/*			htmlFor={`is-required-${id}`}*/}
-					{/*			className="checkbox is-required"*/}
-					{/*		>*/}
-					{/*			Make this field required*/}
-					{/*		</label>*/}
-					{/*	</div>*/}
-					{/*)}*/}
-
-					{/*{type in extraFields && (*/}
-					{/*	<ExtraFields*/}
-					{/*		editing={editing}*/}
-					{/*		data={storedData}*/}
-					{/*		register={register}*/}
-					{/*		fieldId={id}*/}
-					{/*	/>*/}
-					{/*)}*/}
-					{/*</div>*/}
-
 					<div className={errors.slug ? "field has-error" : "field"}>
 						<label htmlFor="slug">API Identifier</label>
 						<br />
@@ -219,7 +190,27 @@ function Form({ id, position, type, editing, storedData, parent }) {
 					</div>
 				</div>
 			</div>
+
 			<div>
+				{!["repeater", "richtext"].includes(type) && (
+					<div className="field">
+						<legend>Field Options</legend>
+						<input
+							name="required"
+							type="checkbox"
+							id={`is-required-${id}`}
+							ref={register}
+							defaultChecked={storedData?.required === true}
+						/>
+						<label
+							htmlFor={`is-required-${id}`}
+							className="checkbox is-required"
+						>
+							Make this field required
+						</label>
+					</div>
+				)}
+
 				{type in extraFields && (
 					<ExtraFields
 						editing={editing}
