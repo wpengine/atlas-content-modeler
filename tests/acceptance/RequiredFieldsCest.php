@@ -9,7 +9,6 @@ class RequiredFieldsCest
 		// Create a model with a required 'name' field.
 		$I->loginAsAdmin();
 		$I->haveContentModel('goose', 'geese');
-		$I->amOnWPEngineEditContentModelPage('geese');
 		$I->wait(1);
 
 		$I->click('Text', '.field-buttons');
@@ -21,7 +20,7 @@ class RequiredFieldsCest
 		$I->wait(1);
 
 		// Create an entry for the new model.
-		$I->amOnPage('/wp-admin/edit.php?post_type=geese');
+		$I->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$I->click('Add New', '.wrap');
 		$I->wait(1);
 
@@ -34,12 +33,12 @@ class RequiredFieldsCest
 		$I->see('field is required');
 
 		// Fill the field as prompted.
-		$I->fillField(['name' => 'wpe-content-model[geese][name]'], 'Goosey goose');
+		$I->fillField(['name' => 'wpe-content-model[goose][name]'], 'Goosey goose');
 
 		$I->click('Publish', '#publishing-action');
 		$I->wait(2);
 
 		$I->see('Post published.');
-		$I->seeInField('wpe-content-model[geese][name]', 'Goosey goose');
+		$I->seeInField('wpe-content-model[goose][name]', 'Goosey goose');
 	}
 }
