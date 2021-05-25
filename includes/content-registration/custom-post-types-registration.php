@@ -145,27 +145,13 @@ function generate_custom_post_type_args( array $args ): array {
 	);
 
 	return [
-		'slug'                => $args['slug'] ?? camelcase( $plural ),
 		'name'                => ucfirst( $plural ),
 		'singular_name'       => ucfirst( $singular ),
 		'description'         => $args['description'] ?? '',
-		'public'              => $args['public'] ?? false,
-		'publicly_queryable'  => $args['publicly_queryable'] ?? false,
 		'show_ui'             => $args['show_ui'] ?? true,
-		'show_in_nav_menus'   => $args['show_in_nav_menus'] ?? true,
-		'delete_with_user'    => $args['delete_with_user'] ?? false,
 		'show_in_rest'        => $args['show_in_rest'] ?? true,
-		'rest_base'           => $args['rest_base'] ?? strtolower( $plural ),
-		'has_archive'         => $args['has_archive'] ?? true,
-		'has_archive_string'  => $args['has_archive_string'] ?? '',
-		'exclude_from_search' => $args['exclude_from_search'] ?? false,
+		'rest_base'           => $args['rest_base'] ?? strtolower( str_replace( ' ', '', $plural ) ),
 		'capability_type'     => $args['capability_type'] ?? 'post',
-		'hierarchical'        => $args['hierarchical'] ?? false,
-		'rewrite'             => $args['rewrite'] ?? true,
-		'rewrite_slug'        => $args['rewrite_slug'] ?? '',
-		'rewrite_withfront'   => $args['rewrite_withfront'] ?? true,
-		'query_var'           => $args['query_var'] ?? true,
-		'query_var_slug'      => $args['query_var_slug'] ?? '',
 		'show_in_menu'        => $args['show_in_menu'] ?? true,
 		'supports'            => $args['supports'] ??
 								[
@@ -174,7 +160,6 @@ function generate_custom_post_type_args( array $args ): array {
 									'thumbnail',
 									'custom-fields',
 								],
-		'taxonomies'          => $args['taxonomies'] ?? [],
 		'labels'              => $labels,
 		'show_in_graphql'     => $args['show_in_graphql'] ?? true,
 		'graphql_single_name' => $args['graphql_single_name'] ?? camelcase( $singular ),
