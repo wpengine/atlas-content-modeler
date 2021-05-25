@@ -28,13 +28,17 @@ if (container && models.hasOwnProperty(postType)) {
 		}
 
 		const defaultTinymceSettings = wp.editor.getDefaultSettings();
-		console.log(defaultTinymceSettings);
+		const customSettings = {
+			tinymce: {
+				toolbar1: "bold,italic,bullist,link",
+			},
+		};
 
 		richTextFields.forEach((field) => {
-			wp.editor.initialize(
-				field.getAttribute("id"),
-				defaultTinymceSettings
-			);
+			wp.editor.initialize(field.getAttribute("id"), {
+				...defaultTinymceSettings,
+				...customSettings,
+			});
 		});
 	});
 
