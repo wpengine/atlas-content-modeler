@@ -47,14 +47,13 @@ export function reducer(state, action) {
 			Object.values(state[action.model]["fields"]).forEach((field) => {
 				if (field === state[action.model]["fields"][action.id]) {
 					// If name is undefined it is a new unsaved field.
-					if (!state[action.model]["fields"][action.id]["name"]) {
-						field.open = true;
-						// We set editing to false so when the cancel button is clicked, it is not interpreted as a saved and editing field.
-						field.editing = false;
-					} else {
-						field.open = true;
-						field.editing = true;
-					}
+					field.open = true;
+					// We set editing to false when there is no name so delete succeeds when cancel button is clicked on a new field.
+					field.editing = !state[action.model]["fields"][action.id][
+						"name"
+					]
+						? false
+						: true;
 				} else {
 					field.open = false;
 					field.editing = false;
@@ -62,11 +61,6 @@ export function reducer(state, action) {
 			});
 			return { ...state };
 		case "closeField":
-			// If the action.id object object does not have a parent, it is a new field.
-			if (!state[action.model]["fields"][action.id]["parent"]) {
-				delete state[action.model]["fields"][action.id];
-			}
-
 			if (action?.originalState) {
 				state[action.model]["fields"] = action.originalState;
 			}
