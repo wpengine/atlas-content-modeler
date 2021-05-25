@@ -28,6 +28,7 @@ if (container && models.hasOwnProperty(postType)) {
 		}
 
 		const defaultTinymceSettings = wp.editor.getDefaultSettings();
+		console.log(defaultTinymceSettings);
 
 		richTextFields.forEach((field) => {
 			wp.editor.initialize(
