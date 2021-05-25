@@ -46,7 +46,6 @@ export function reducer(state, action) {
 		case "openField":
 			Object.values(state[action.model]["fields"]).forEach((field) => {
 				if (field === state[action.model]["fields"][action.id]) {
-					// If name is undefined it is a new unsaved field.
 					field.open = true;
 					// We set editing to false when there is no name so delete succeeds when cancel button is clicked on a new field.
 					field.editing = !state[action.model]["fields"][action.id][
