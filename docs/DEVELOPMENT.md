@@ -99,3 +99,24 @@ A running WordPress test site will be needed to run browser tests against. This 
     - Base framework for browser testing in php.
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
     - WordPress framework wrapping Codeception for browser testing WordPress.
+
+## Deployment
+
+Developers with full GitHub repository access can create public releases:
+
+### To release the plugin
+
+1. Create a PR to update the version and changelog. [Example release PR](https://github.com/wpengine/wpe-content-model/pull/100).
+2. When the release PR is approved and merged, tag the commit you wish to publish with the release version in the form `x.y.z`. [Example release tag](https://github.com/wpengine/wpe-content-model/releases/tag/0.2.0).
+
+You can tag in GitHub by creating a release, or via the command line locally:
+
+```shell
+git checkout [commit-hash]
+git tag [x.y.z]
+git push --tags
+```
+
+CircleCI will build and deploy the plugin zip. The latest version is available here:
+
+`https://wp-product-info.wpesvc.net/v1/plugins/wpe-content-model?download`
