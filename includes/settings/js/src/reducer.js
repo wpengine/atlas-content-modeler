@@ -39,7 +39,6 @@ export function reducer(state, action) {
 					type: action?.fieldType || "text",
 					open: true,
 					position: action.position,
-					status: "new",
 					parent: action?.parent,
 				},
 			};
