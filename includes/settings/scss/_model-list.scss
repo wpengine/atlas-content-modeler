@@ -58,8 +58,18 @@
 	padding: 0;
 }
 
+/* Adjust margin on smaller devices */
+@media (max-width: $breakpoint-tablet) {
+	.neg-margin-wrapper {
+		.dropdown {
+			margin-left: -80px;
+		}
+	}
+}
+
 .dropdown {
 	position: relative;
+	min-height: 20px;
 }
 
 .dropdown-content:not(.hidden) {
@@ -129,12 +139,14 @@
 	}
 
 	.ReactModal__Content--after-open {
-		min-width: 420px;
+		width: 100%;
+		max-width: 500px;
 
 		input,
 		textarea,
 		.field-messages {
-			min-width: 420px;
+			width: 100%;
+			max-width: 500px;
 		}
 	}
 

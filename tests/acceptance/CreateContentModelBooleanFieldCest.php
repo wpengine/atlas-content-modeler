@@ -20,7 +20,7 @@ class CreateContentModelBooleanFieldCest
         $I->click('.open-field button.primary');
         $I->wait(1);
 
-        $I->see('Boolean', '.field-list span.type');
-        $I->see('Accept Terms', '.field-list span.widest');
+        $I->see('Boolean', '.field-list div.type');
+        $I->see('Accept Terms', '.field-list div.widest');
     }
 }

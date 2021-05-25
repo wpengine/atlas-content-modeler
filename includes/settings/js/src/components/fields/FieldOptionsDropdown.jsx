@@ -60,7 +60,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 	return (
 		<span className="dropdown">
 			<button
-				className="options"
+				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 				onClick={() => setDropdownOpen(!dropdownOpen)}
 				aria-label={`Options for the ${field.name} field.`}

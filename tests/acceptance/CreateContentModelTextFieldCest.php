@@ -20,7 +20,7 @@ class CreateContentModelTextFieldCest
         $I->click('.open-field button.primary');
         $I->wait(1);
 
-        $I->see('Text', '.field-list span.type');
-        $I->see('Color', '.field-list span.widest');
+        $I->see('Text', '.field-list div.type');
+        $I->see('Color', '.field-list div.widest');
     }
 }

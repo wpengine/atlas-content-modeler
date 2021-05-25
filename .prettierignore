@@ -13,3 +13,4 @@ package-lock.json
 package.json
 includes/publisher/dist
 includes/settings/dist
+includes/settings/scss/bootstrap/

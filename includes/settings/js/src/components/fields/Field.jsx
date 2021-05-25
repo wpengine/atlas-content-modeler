@@ -59,13 +59,13 @@ function Field({
 					>
 						<li
 							key={id}
-							className={
+							className={`${
 								snapshot.isDragging
 									? "closed dragging"
 									: "closed"
-							}
+							} d-flex flex-column d-sm-flex flex-sm-row justify-content-start`}
 						>
-							<span className="reorder">
+							<div className="reorder order-2 order-sm-0">
 								<button
 									{...provided.dragHandleProps}
 									onFocus={() => {
@@ -75,9 +75,9 @@ function Field({
 								>
 									<Icon type="reorder" />
 								</button>
-							</span>
+							</div>
 							<button
-								className="edit"
+								className="edit order-sm-2 order-1 d-flex flex-column d-sm-flex flex-sm-row ml-sm-4 flex-grow-1"
 								onClick={() =>
 									dispatch({
 										type: "openField",
@@ -87,30 +87,46 @@ function Field({
 								}
 								aria-label={`Edit the ${data.name} field`}
 							>
-								<span className="type">
-									<Icon type={data.type} />
-									{typeLabel}
-								</span>
-								<span className="widest">
-									<strong>{data.name}</strong>
-								</span>
-								<span className="tags">
-									{data?.isTitle && (
-										<span className="tag tag-title">
-											entry title
-										</span>
-									)}
-								</span>
+								<div
+									className="row w-100"
+									style={{ "--bs-gutter-x": "0em" }}
+								>
+									<div className="col-sm-3 col-12 text-center text-sm-start ms-3 ms-sm-0">
+										<div className="type mb-3 mb-sm-0">
+											<Icon type={data.type} />
+											{typeLabel}
+										</div>
+									</div>
+									<div className="col-sm-3 col-12 text-center text-sm-start">
+										<div className="widest mb-2 mb-sm-0">
+											<strong>{data.name}</strong>
+										</div>
+									</div>
+									<div className="col-sm-6 col-12 text-center text-sm-end">
+										<div className="tags">
+											{data?.isTitle && (
+												<span className="tag tag-title">
+													entry title
+												</span>
+											)}
+										</div>
+									</div>
+								</div>
 							</button>
-							<FieldOptionsDropdown field={data} model={model} />
-							{data.type === "repeater" && (
-								<Repeater
-									fields={data?.subfields}
+							<div className="order-0 my-2 my-sm-0 text-end order-sm-2 ms-sm-auto">
+								<FieldOptionsDropdown
+									field={data}
 									model={model}
-									parent={id}
-									setInfoTag={setInfoTag}
 								/>
-							)}
+								{data.type === "repeater" && (
+									<Repeater
+										fields={data?.subfields}
+										model={model}
+										parent={id}
+										setInfoTag={setInfoTag}
+									/>
+								)}
+							</div>
 						</li>
 						<li
 							className={
@@ -157,15 +173,15 @@ function Field({
 				/>
 			)}
 			<div className={editing ? "field-form editing" : "field-form"}>
-				<div className="flex-parent flex-row">
-					<div className="flex-grow">
+				<div className="d-flex flex-row">
+					<div>
 						<h3>
 							{editing ? `Editing` : `New`} {formFieldTitle} Field
 						</h3>
 					</div>
 
 					{editing && (
-						<div>
+						<div className="ms-auto">
 							<FieldOptionsDropdown field={data} model={model} />
 						</div>
 					)}

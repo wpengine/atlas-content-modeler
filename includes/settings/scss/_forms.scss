@@ -5,8 +5,42 @@
 	border-radius: $radius;
 	border: 1px solid $color-gray-light;
 	line-height: 20px;
-	min-width: 360px;
+	max-width: 360px;
 	padding: 16px;
+}
+
+.wpe-content-model-admin-page {
+	input[type="color"],
+	input[type="datetime-local"],
+	input[type="email"],
+	input[type="month"],
+	input[type="number"],
+	input[type="url"],
+	input[type="tel"],
+	input[type="search"],
+	input[type="week"],
+	input[type="text"],
+	textarea {
+		width: 100% !important;
+	}
+}
+
+@media screen and (min-width: 782px) {
+	.wpe-content-model-admin-page {
+		input[type="color"],
+		input[type="datetime-local"],
+		input[type="email"],
+		input[type="month"],
+		input[type="number"],
+		input[type="url"],
+		input[type="tel"],
+		input[type="search"],
+		input[type="week"],
+		input[type="text"],
+		textarea {
+			width: 260px !important;
+		}
+	}
 }
 
 .wpe-content-model-admin-page .has-error input,

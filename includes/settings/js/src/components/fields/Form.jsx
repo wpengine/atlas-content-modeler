@@ -98,9 +98,13 @@ function Form({ id, position, type, editing, storedData, parent }) {
 					value={parent}
 				/>
 			)}
-			<div className="columns">
-				<div className="left-column">
-					<div className={errors.name ? "field has-error" : "field"}>
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div className="d-flex flex-column d-sm-flex flex-sm-row">
+					<div
+						className={`${
+							errors.name ? "field has-error" : "field"
+						} me-sm-5`}
+					>
 						<label htmlFor="name">Name</label>
 						<br />
 						<p className="help">
@@ -112,6 +116,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 							name="name"
 							defaultValue={storedData?.name}
 							placeholder="Name"
+							type="text"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(e) => {
 								setApiIdGeneratorInput(e.target.value);
@@ -140,36 +145,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 							<span className="count">{nameCount}/50</span>
 						</p>
 					</div>
-					{!["repeater", "richtext"].includes(type) && (
-						<div className="field">
-							<legend>Field Options</legend>
-							<input
-								name="required"
-								type="checkbox"
-								id={`is-required-${id}`}
-								ref={register}
-								defaultChecked={storedData?.required === true}
-							/>
-							<label
-								htmlFor={`is-required-${id}`}
-								className="checkbox is-required"
-							>
-								Make this field required
-							</label>
-						</div>
-					)}
 
-					{type in extraFields && (
-						<ExtraFields
-							editing={editing}
-							data={storedData}
-							register={register}
-							fieldId={id}
-						/>
-					)}
-				</div>
-
-				<div className="right-column">
 					<div className={errors.slug ? "field has-error" : "field"}>
 						<label htmlFor="slug">API Identifier</label>
 						<br />
@@ -179,6 +155,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 						<input
 							id="slug"
 							name="slug"
+							type="text"
 							defaultValue={storedData?.slug}
 							ref={register({ required: true, maxLength: 50 })}
 							{...apiIdFieldAttributes}
@@ -214,8 +191,38 @@ function Form({ id, position, type, editing, storedData, parent }) {
 				</div>
 			</div>
 
-			<div className="buttons">
-				<button type="submit" className="primary first">
+			<div>
+				{!["repeater", "richtext"].includes(type) && (
+					<div className="field">
+						<legend>Field Options</legend>
+						<input
+							name="required"
+							type="checkbox"
+							id={`is-required-${id}`}
+							ref={register}
+							defaultChecked={storedData?.required === true}
+						/>
+						<label
+							htmlFor={`is-required-${id}`}
+							className="checkbox is-required"
+						>
+							Make this field required
+						</label>
+					</div>
+				)}
+
+				{type in extraFields && (
+					<ExtraFields
+						editing={editing}
+						data={storedData}
+						register={register}
+						fieldId={id}
+					/>
+				)}
+			</div>
+
+			<div className="buttons d-flex flex-row">
+				<button type="submit" className="primary first mr-1 mr-sm-2">
 					{editing ? "Update" : "Create"}
 				</button>
 				<button

@@ -20,7 +20,7 @@ class CreateContentModelMediaFieldCest
         $I->click('.open-field button.primary');
         $I->wait(1);
 
-        $I->see('Media', '.field-list span.type');
-        $I->see('Product Photo', '.field-list span.widest');
+        $I->see('Media', '.field-list div.type');
+        $I->see('Product Photo', '.field-list div.widest');
     }
 }

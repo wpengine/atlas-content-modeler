@@ -25,11 +25,8 @@
 	background: transparent;
 	border: none;
 	color: $color-text;
-	display: flex;
 	height: auto;
 	justify-content: space-between;
-	margin-left: -15px;
-	min-width: 85%;
 	padding: 10px 16px;
 	text-align: left;
 	text-decoration: none;
@@ -85,6 +82,7 @@
 
 .field-list .type svg {
 	margin-right: 12px;
+	flex-shrink: 0;
 }
 
 .field-list .add-item {
@@ -143,7 +141,7 @@
 
 .field-list .reorder button {
 	background-color: transparent;
-	padding: 17px 18px 14px 18px;
+	padding: 18px 18px 12px 18px;
 	border: none;
 	height: auto;
 }

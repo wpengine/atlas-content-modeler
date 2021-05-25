@@ -23,7 +23,7 @@ module.exports = {
 	extends: ["plugin:react/recommended", "plugin:prettier/recommended"],
 	plugins: [],
 	// add your custom rules here
-	ignorePatterns: ["**/dist"],
+	ignorePatterns: ["**/dist", "**/includes/settings/scss/bootstrap"],
 	rules: {
 		"react/prop-types": 0,
 		"react/no-unescaped-entities": 0,

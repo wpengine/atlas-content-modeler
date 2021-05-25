@@ -57,7 +57,7 @@ export default function CreateContentModel() {
 
 	return (
 		<div className="app-card">
-			<section className="heading">
+			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>New Content Model</h2>
 				<button
 					className="tertiary"
@@ -87,6 +87,7 @@ export default function CreateContentModel() {
 							id="singular"
 							name="singular"
 							placeholder="Rabbit"
+							className="w-100"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(e) =>
 								setSingularCount(e.target.value.length)
@@ -129,6 +130,7 @@ export default function CreateContentModel() {
 							id="plural"
 							name="plural"
 							placeholder="Rabbits"
+							className="w-100"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(event) => {
 								setApiIdGeneratorInput(event.target.value);
@@ -173,6 +175,7 @@ export default function CreateContentModel() {
 						<input
 							id="postTypeSlug"
 							name="postTypeSlug"
+							className="w-100"
 							ref={register({ required: true, maxLength: 20 })}
 							{...apiIdFieldAttributes}
 						/>
@@ -223,6 +226,7 @@ export default function CreateContentModel() {
 						<textarea
 							id="description"
 							name="description"
+							className="w-100"
 							ref={register({ maxLength: 250 })}
 							onChange={(e) =>
 								setDescriptionCount(e.target.value.length)
