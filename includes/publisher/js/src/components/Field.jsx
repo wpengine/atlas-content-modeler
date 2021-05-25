@@ -39,7 +39,7 @@ export default function Field(props) {
 				id={`field-${field.slug}`}
 				className={`field d-flex flex-column ${field.type}`}
 			>
-				{fieldMarkup(field, modelSlug)}
+				{fieldMarkup(field, modelSlug, errors, validate)}
 			</div>
 		</>
 	);
