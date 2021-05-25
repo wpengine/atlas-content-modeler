@@ -6,6 +6,7 @@ import "./../../scss/index.scss";
 
 const { models, postType } = wpeContentModelFormEditingExperience;
 const container = document.getElementById("wpe-content-model-fields-app");
+const { wp } = window;
 
 if (container && models.hasOwnProperty(postType)) {
 	const model = models[postType];
@@ -26,12 +27,13 @@ if (container && models.hasOwnProperty(postType)) {
 			return;
 		}
 
+		const defaultTinymceSettings = wp.editor.getDefaultSettings();
+
 		richTextFields.forEach((field) => {
-			tinymce.init({
-				selector: field,
-				menubar: false,
-			});
-			tinymce.execCommand("mceAddEditor", false, field);
+			wp.editor.initialize(
+				field.getAttribute("id"),
+				defaultTinymceSettings
+			);
 		});
 	});
 

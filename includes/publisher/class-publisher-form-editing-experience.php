@@ -129,6 +129,8 @@ final class FormEditingExperience {
 			'all'
 		);
 
+		wp_enqueue_editor();
+
 		$models = $this->models;
 		$model  = $models[ $this->current_screen_post_type ];
 
