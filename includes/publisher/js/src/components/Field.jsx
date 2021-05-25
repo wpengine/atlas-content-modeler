@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import MediaUploader from "./MediaUploader";
+import ClassicEditor from "./ClassicEditor";
 import Icon from "../../../../components/icons";
 
 const defaultError = "This field is required";
@@ -106,24 +107,13 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 
 		case "richtext":
 			return (
-				<>
-					<label
-						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
-					>
-						{field.name}
-					</label>
-					<br />
-					<textarea
-						name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-						id={`wpe-content-model[${modelSlug}][${field.slug}]`}
-						defaultValue={field.value}
-						required={field.required}
-					/>
-					<span className="error">
-						<Icon type="error" />
-						<span role="alert">{defaultError}</span>
-					</span>
-				</>
+				<ClassicEditor
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
 			);
 
 		case "boolean":

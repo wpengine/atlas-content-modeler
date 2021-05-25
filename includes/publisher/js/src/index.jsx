@@ -25,9 +25,14 @@ if (container && models.hasOwnProperty(postType)) {
 		if (!richTextFields.length > 0) {
 			return;
 		}
-		richTextFields.forEach((field) =>
-			tinymce.execCommand("mceAddEditor", false, field)
-		);
+
+		richTextFields.forEach((field) => {
+			tinymce.init({
+				selector: field,
+				menubar: false,
+			});
+			tinymce.execCommand("mceAddEditor", false, field);
+		});
 	});
 
 	/**
