@@ -24,6 +24,12 @@ export function reducer(state, action) {
 			const { [action.slug]: deleted, ...otherModels } = state;
 			return otherModels;
 		case "addField":
+			Object.values(state[action.model]["fields"] ?? {}).forEach(
+				(field) => {
+					field.open = false;
+					field.editing = false;
+				}
+			);
 			const newId = Date.now();
 			state[action.model]["fields"] = {
 				...state[action.model]["fields"],
@@ -37,8 +43,20 @@ export function reducer(state, action) {
 			};
 			return { ...state };
 		case "openField":
-			state[action.model]["fields"][action.id].open = true;
-			state[action.model]["fields"][action.id].editing = true;
+			Object.values(state[action.model]["fields"]).forEach((field) => {
+				if (field === state[action.model]["fields"][action.id]) {
+					field.open = true;
+					// We set editing to false when there is no name so delete succeeds when cancel button is clicked on a new field.
+					field.editing = !state[action.model]["fields"][action.id][
+						"name"
+					]
+						? false
+						: true;
+				} else {
+					field.open = false;
+					field.editing = false;
+				}
+			});
 			return { ...state };
 		case "closeField":
 			if (action?.originalState) {

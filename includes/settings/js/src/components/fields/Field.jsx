@@ -43,7 +43,7 @@ function Field({
 		return (
 			<Draggable
 				key={id}
-				draggableId={id}
+				draggableId={String(id)}
 				index={index}
 				disableInteractiveElementBlocking={true}
 			>
