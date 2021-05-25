@@ -38,9 +38,7 @@ function updateModel(slug = "", data = {}) {
  * @returns {JSX.Element} Modal
  */
 export function EditModelModal({ model, isOpen, setIsOpen }) {
-	const [singularCount, setSingularCount] = useState(
-		model.singular.length
-	);
+	const [singularCount, setSingularCount] = useState(model.singular.length);
 	const [pluralCount, setPluralCount] = useState(model.plural.length);
 	const [descriptionCount, setDescriptionCount] = useState(
 		model.description.length

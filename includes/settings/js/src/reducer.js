@@ -13,8 +13,7 @@ export function reducer(state, action) {
 				...action.data,
 			};
 			state[action.data.slug].name = action.data.plural;
-			state[action.data.slug].singular =
-				action.data.singular;
+			state[action.data.slug].singular = action.data.singular;
 			return { ...state };
 		case "addModel":
 			return {

@@ -91,7 +91,7 @@ export default function CreateContentModel() {
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(e) => {
 								setApiIdGeneratorInput(event.target.value);
-								setSingularCount(e.target.value.length)
+								setSingularCount(e.target.value.length);
 							}}
 						/>
 						<p className="field-messages">
@@ -161,11 +161,7 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<div
-						className={
-							errors.slug ? "field has-error" : "field"
-						}
-					>
+					<div className={errors.slug ? "field has-error" : "field"}>
 						<label htmlFor="slug">API Identifier</label>
 						<br />
 						<p className="help">
@@ -180,33 +176,30 @@ export default function CreateContentModel() {
 							{...apiIdFieldAttributes}
 						/>
 						<p className="field-messages">
-							{errors.slug &&
-								errors.slug.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											This field is required
-										</span>
+							{errors.slug && errors.slug.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										This field is required
 									</span>
-								)}
-							{errors.slug &&
-								errors.slug.type === "maxLength" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											Exceeds max length of 20.
-										</span>
+								</span>
+							)}
+							{errors.slug && errors.slug.type === "maxLength" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										Exceeds max length of 20.
 									</span>
-								)}
-							{errors.slug &&
-								errors.slug.type === "idExists" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{errors.slug.message}
-										</span>
+								</span>
+							)}
+							{errors.slug && errors.slug.type === "idExists" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{errors.slug.message}
 									</span>
-								)}
+								</span>
+							)}
 							<span>&nbsp;</span>
 						</p>
 					</div>
