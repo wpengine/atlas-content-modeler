@@ -12,6 +12,7 @@ namespace WPE\ContentModel\ContentRegistration;
 use InvalidArgumentException;
 use WPGraphQL\Model\Post;
 use WPGraphQL\Registry\TypeRegistry;
+use WPGraphQL\Data\DataSource;
 
 add_action( 'init', __NAMESPACE__ . '\register_content_types' );
 /**
@@ -282,6 +283,10 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 					return (float) $value;
 				}
 
+				if ( $field['type'] === 'MediaItem' ) {
+					return DataSource::resolve_post_object( (int) $value, $context );
+				}
+
 				return $value;
 			};
 
@@ -316,7 +321,6 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'textarea':
 		case 'string':
 		case 'date':
-		case 'media':
 		case 'repeater':
 		case 'richtext':
 			return 'String';
@@ -324,6 +328,8 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 			return 'Float';
 		case 'boolean':
 			return 'Boolean';
+		case 'media':
+			return 'MediaItem';
 		default:
 			return null;
 	}
