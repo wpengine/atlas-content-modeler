@@ -210,7 +210,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	 * Remove isTitle from all fields if isTitle is set on this field. Only one
 	 * field can be used as the entry title.
 	 */
-	if ( isset( $params['isTitle'] ) && $params['isTitle'] === true ) {
+	if ( isset( $params['isTitle'] ) && $params['isTitle'] === true && ! empty( $content_types[ $params['model'] ]['fields'] ) ) {
 		foreach ( $content_types[ $params['model'] ]['fields'] as $field_id => $field_properties ) {
 			unset( $content_types[ $params['model'] ]['fields'][ $field_id ]['isTitle'] );
 		}
