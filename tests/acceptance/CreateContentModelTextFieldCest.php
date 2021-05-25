@@ -9,7 +9,6 @@ class CreateContentModelTextFieldCest
     {
         $I->loginAsAdmin();
         $I->haveContentModel('Candy', 'Candies');
-        $I->amOnWPEngineEditContentModelPage('candies');
         $I->wait(1);
 
         $I->click('Text', '.field-buttons');

@@ -22,14 +22,14 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	 */
 	private $server;
 	private $namespace = '/wp/v2';
-	private $dog_route = '/dog';
+	private $dog_route = '/dogs';
 	private $dog_post_id;
 	private $all_registered_post_types;
 
 	public function setUp() {
 		parent::setUp();
 
-		update_registered_content_types( $this->expected_post_types() );
+		update_registered_content_types( $this->mock_post_types() );
 
 		// @todo why is this not running automatically?
 		do_action( 'init' );
@@ -180,5 +180,70 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 	private function expected_post_types(): array {
 		return include __DIR__ . '/example-data/expected-post-types.php';
+	}
+
+	private function mock_post_types(): array {
+		return [
+			'dog' => [
+				'slug' => 'dog',
+				'singular' => 'Dog',
+				'plural' => 'Dogs',
+				'description' => '',
+				'show_in_rest' => true,
+				'show_in_graphql' => true,
+				'fields' => [
+					'dog-test-field' => [
+						'slug' => 'dog-test-field',
+						'type' => 'string',
+						'description' => 'dog-test-field description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
+					'another-dog-test-field' => [
+						'slug' => 'another-dog-test-field',
+						'type' => 'string',
+						'description' => 'another-dog-test-field description',
+						'show_in_rest' => false,
+						'show_in_graphql' => false,
+					],
+					'dog-weight' => [
+						'slug' => 'dog-weight',
+						'type' => 'number',
+						'description' => 'dog-weight description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
+					'dog-rich-text' => [
+						'slug' => 'dog-rich-text',
+						'type' => 'richtext',
+						'description' => 'dog-rich-text description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
+					'dog-boolean' => [
+						'slug' => 'dog-boolean',
+						'type' => 'boolean',
+						'description' => 'dog-boolean description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
+					'dog-repeater' => [
+						'slug' => 'dog-repeater',
+						'type' => 'repeater',
+						'description' => 'dog-repeater description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
+				],
+			],
+			'cat' => [
+				'slug' => 'cat',
+				'singular' => 'Cat',
+				'plural' => 'Cats',
+				'description' => '',
+				'show_in_graphql' => false,
+				'fields' => [],
+			],
+		];
 	}
 }

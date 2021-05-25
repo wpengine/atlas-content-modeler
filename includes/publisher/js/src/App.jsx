@@ -19,7 +19,7 @@ export default function App({ model, mode }) {
 				<div>
 					<h3 className="main-title">
 						{isEditMode ? <span>Edit </span> : <span>Add </span>}
-						{model.labels.singular_name}
+						{model.singular}
 					</h3>
 				</div>
 

@@ -47,14 +47,14 @@ class PublishModelCest
 		$i->wait(1);
 
 		// Next we create an entry for our new model.
-		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
-		$i->fillField(['name' => 'wpe-content-model[geese][color]'], 'Gray');
-		$i->fillField(['name' => 'wpe-content-model[geese][age]'], '100');
-		$i->fillField(['name' => 'wpe-content-model[geese][dateOfBirth]'], '01/01/2021');
-		$i->checkOption('wpe-content-model[geese][fliesSouthForWinter]');
+		$i->fillField(['name' => 'wpe-content-model[goose][color]'], 'Gray');
+		$i->fillField(['name' => 'wpe-content-model[goose][age]'], '100');
+		$i->fillField(['name' => 'wpe-content-model[goose][dateOfBirth]'], '01/01/2021');
+		$i->checkOption('wpe-content-model[goose][fliesSouthForWinter]');
 
 		// Rich text fields rendered as TinyMCE live in an iframe.
 		$i->switchToIFrame('#field-description iframe');
@@ -72,23 +72,23 @@ class PublishModelCest
 
 		$i->see('Post published.');
 
-		$i->seeInField('wpe-content-model[geese][color]', 'Gray');
-		$i->seeInField('wpe-content-model[geese][age]', '100');
-		$i->seeInField('wpe-content-model[geese][dateOfBirth]', '2021-01-01');
-		$i->seeCheckboxIsChecked('wpe-content-model[geese][fliesSouthForWinter]');
+		$i->seeInField('wpe-content-model[goose][color]', 'Gray');
+		$i->seeInField('wpe-content-model[goose][age]', '100');
+		$i->seeInField('wpe-content-model[goose][dateOfBirth]', '2021-01-01');
+		$i->seeCheckboxIsChecked('wpe-content-model[goose][fliesSouthForWinter]');
 		$i->switchToIFrame('#field-description iframe');
 		$i->see('I am a goose'); // Sees the text in the TinyMCE iframe body.
 		$i->switchToIFrame();
 
 		// Show <textarea> elements hidden by TinyMCE so we can see them to check their values directly.
 		$i->executeJS("
-			var field = document.getElementsByName('wpe-content-model[geese][description]');
+			var field = document.getElementsByName('wpe-content-model[goose][description]');
 			field[0].removeAttribute('style');
-			var fieldTwo = document.getElementsByName('wpe-content-model[geese][anotherRichTextField]');
+			var fieldTwo = document.getElementsByName('wpe-content-model[goose][anotherRichTextField]');
 			fieldTwo[0].removeAttribute('style');
 		");
 
-		$i->seeInField('wpe-content-model[geese][description]', '<p>I am a goose</p>');
-		$i->seeInField('wpe-content-model[geese][anotherRichTextField]', '<p>I am another rich text field</p>');
+		$i->seeInField('wpe-content-model[goose][description]', '<p>I am a goose</p>');
+		$i->seeInField('wpe-content-model[goose][anotherRichTextField]', '<p>I am another rich text field</p>');
 	}
 }

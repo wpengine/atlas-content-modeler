@@ -8,18 +8,17 @@ export function reducer(state, action) {
 		case "updateModels":
 			return action.data;
 		case "updateModel":
-			state[action.data.postTypeSlug] = {
-				...state[action.data.postTypeSlug],
+			state[action.data.slug] = {
+				...state[action.data.slug],
 				...action.data,
 			};
-			state[action.data.postTypeSlug].name = action.data.plural;
-			state[action.data.postTypeSlug].singular_name =
-				action.data.singular;
+			state[action.data.slug].name = action.data.plural;
+			state[action.data.slug].singular = action.data.singular;
 			return { ...state };
 		case "addModel":
 			return {
 				...state,
-				[action.data.postTypeSlug]: action.data,
+				[action.data.slug]: action.data,
 			};
 		case "removeModel":
 			const { [action.slug]: deleted, ...otherModels } = state;

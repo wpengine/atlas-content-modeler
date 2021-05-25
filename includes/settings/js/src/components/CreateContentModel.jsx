@@ -17,7 +17,7 @@ export default function CreateContentModel() {
 	const [descriptionCount, setDescriptionCount] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
-		apiFieldId: "postTypeSlug",
+		apiFieldId: "slug",
 		setValue,
 	});
 
@@ -33,7 +33,7 @@ export default function CreateContentModel() {
 					dispatch({ type: "addModel", data: res.model });
 					history.push(
 						"/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" +
-							data.postTypeSlug
+							data.slug
 					);
 
 					// Insert the sidebar menu item below the Comments item, to avoid doing a full page refresh.
@@ -41,13 +41,13 @@ export default function CreateContentModel() {
 
 					window.scrollTo(0, 0);
 					showSuccess(
-						`The “${res.model.name}” model was created. Now add your first field.`
+						`The “${res.model.plural}” model was created. Now add your first field.`
 					);
 				}
 			})
 			.catch((err) => {
 				if (err.code === "wpe_content_model_already_exists") {
-					setError("postTypeSlug", {
+					setError("slug", {
 						type: "idExists",
 						message: err.message,
 					});
@@ -89,9 +89,10 @@ export default function CreateContentModel() {
 							placeholder="Rabbit"
 							className="w-100"
 							ref={register({ required: true, maxLength: 50 })}
-							onChange={(e) =>
-								setSingularCount(e.target.value.length)
-							}
+							onChange={(e) => {
+								setApiIdGeneratorInput(event.target.value);
+								setSingularCount(e.target.value.length);
+							}}
 						/>
 						<p className="field-messages">
 							{errors.singular &&
@@ -133,7 +134,6 @@ export default function CreateContentModel() {
 							className="w-100"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(event) => {
-								setApiIdGeneratorInput(event.target.value);
 								setPluralCount(event.target.value.length);
 							}}
 						/>
@@ -161,52 +161,45 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<div
-						className={
-							errors.postTypeSlug ? "field has-error" : "field"
-						}
-					>
-						<label htmlFor="postTypeSlug">API Identifier</label>
+					<div className={errors.slug ? "field has-error" : "field"}>
+						<label htmlFor="slug">API Identifier</label>
 						<br />
 						<p className="help">
 							Auto-generated from the plural name and used for API
 							requests.
 						</p>
 						<input
-							id="postTypeSlug"
-							name="postTypeSlug"
+							id="slug"
+							name="slug"
 							className="w-100"
 							ref={register({ required: true, maxLength: 20 })}
 							{...apiIdFieldAttributes}
 						/>
 						<p className="field-messages">
-							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											This field is required
-										</span>
+							{errors.slug && errors.slug.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										This field is required
 									</span>
-								)}
-							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "maxLength" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											Exceeds max length of 20.
-										</span>
+								</span>
+							)}
+							{errors.slug && errors.slug.type === "maxLength" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										Exceeds max length of 20.
 									</span>
-								)}
-							{errors.postTypeSlug &&
-								errors.postTypeSlug.type === "idExists" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{errors.postTypeSlug.message}
-										</span>
+								</span>
+							)}
+							{errors.slug && errors.slug.type === "idExists" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{errors.slug.message}
 									</span>
-								)}
+								</span>
+							)}
 							<span>&nbsp;</span>
 						</p>
 					</div>
