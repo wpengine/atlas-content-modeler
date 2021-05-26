@@ -32,9 +32,7 @@ if (container && models.hasOwnProperty(postType)) {
 				...wp.oldEditor.getDefaultSettings(),
 				tinymce: {
 					toolbar1:
-						"formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,wp_add_media,wp_adv",
-					toolbar2:
-						"strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
+						"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_mediav",
 				},
 				mediaButtons: true,
 				quicktags: false,
