@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: WP Engine Content Model
- * Plugin URI: https://wpengine.com/
- * Description: Plugin for content modeling in WordPress.
- * Author: WPEngine
+ * Plugin Name: Atlas Content Modeler
+ * Plugin URI: https://developers.wpengine.com/
+ * Description: Model content for headless WordPress.
+ * Author: WP Engine
  * Author URI: https://wpengine.com/
  * Text Domain: wpe-content-model
  * Domain Path: /languages
