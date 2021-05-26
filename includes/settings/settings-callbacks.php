@@ -53,7 +53,7 @@ function enqueue_settings_assets( $hook ) {
 
 	wp_localize_script(
 		'atlas-content-modeler-app',
-		'wpeContentModel',
+		'atlasContentModeler',
 		array(
 			'initialState'        => get_registered_content_types(),
 			'isGraphiQLAvailable' => is_plugin_active( 'wp-graphql/wp-graphql.php' )

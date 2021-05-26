@@ -106,7 +106,7 @@ export const ContentModelDropdown = ({ model }) => {
 				>
 					Edit
 				</a>
-				{wpeContentModel.isGraphiQLAvailable && (
+				{atlasContentModeler.isGraphiQLAvailable && (
 					<a
 						className="show-in-graphiql"
 						href={getGraphiQLLink(models[slug])}

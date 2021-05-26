@@ -1,10 +1,10 @@
-/* global wpeContentModelFormEditingExperience */
+/* global atlasContentModelerFormEditingExperience */
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./../../scss/index.scss";
 
-const { models, postType } = wpeContentModelFormEditingExperience;
+const { models, postType } = atlasContentModelerFormEditingExperience;
 const container = document.getElementById("atlas-content-modeler-fields-app");
 
 if (container && models.hasOwnProperty(postType)) {
@@ -14,9 +14,9 @@ if (container && models.hasOwnProperty(postType)) {
 	// @todo use wp.oldEditor instead of tinymce directly? Move this code to proper script file.
 	window.addEventListener("DOMContentLoaded", (event) => {
 		if (
-			!wpeContentModelFormEditingExperience?.models ||
-			!wpeContentModelFormEditingExperience?.models[
-				wpeContentModelFormEditingExperience.postType
+			!atlasContentModelerFormEditingExperience?.models ||
+			!atlasContentModelerFormEditingExperience?.models[
+				atlasContentModelerFormEditingExperience.postType
 			]
 		) {
 			return;
