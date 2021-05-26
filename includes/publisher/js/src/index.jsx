@@ -28,17 +28,17 @@ if (container && models.hasOwnProperty(postType)) {
 		}
 
 		const defaultTinymceSettings = wp.editor.getDefaultSettings();
-		const customSettings = {
-			tinymce: {
-				toolbar1: "bold,italic,bullist,link",
-			},
-		};
+
+		defaultTinymceSettings.tinymce.toolbar1 =
+			"undo redo | styleselect | bold, italic | bullist, numlist | blockquote | alignleft, aligncenter, alignright | link unlink";
+
+		console.log(defaultTinymceSettings);
 
 		richTextFields.forEach((field) => {
-			wp.editor.initialize(field.getAttribute("id"), {
-				...defaultTinymceSettings,
-				...customSettings,
-			});
+			wp.editor.initialize(
+				field.getAttribute("id"),
+				defaultTinymceSettings
+			);
 		});
 	});
 
