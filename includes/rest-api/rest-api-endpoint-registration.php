@@ -438,7 +438,7 @@ function dispatch_delete_model( WP_REST_Request $request ) {
 function create_model( string $post_type_slug, array $args ) {
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
-			'wpe_content_model_invalid_id',
+			'atlas_content_modeler_invalid_id',
 			'Please provide a valid API Identifier.',
 			[ 'status' => 400 ]
 		);
@@ -450,7 +450,7 @@ function create_model( string $post_type_slug, array $args ) {
 
 	if ( ! empty( $content_types[ $post_type_slug ] ) || array_key_exists( $post_type_slug, $existing_content_types ) ) {
 		return new WP_Error(
-			'wpe_content_model_already_exists',
+			'atlas_content_modeler_already_exists',
 			'A content model with this API Identifier already exists.',
 			[ 'status' => 400 ]
 		);
@@ -458,7 +458,7 @@ function create_model( string $post_type_slug, array $args ) {
 
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		return new WP_Error(
-			'wpe_content_model_invalid_labels',
+			'atlas_content_modeler_invalid_labels',
 			'Please provide singular and plural labels when creating a content model.',
 			[ 'status' => 400 ]
 		);

@@ -174,7 +174,7 @@ function generate_custom_post_type_args( array $args ): array {
  * @return array
  */
 function get_registered_content_types(): array {
-	return get_option( 'wpe_content_model_post_types', array() );
+	return get_option( 'atlas_content_modeler_post_types', array() );
 }
 
 /**
@@ -190,7 +190,7 @@ function get_registered_content_types(): array {
  * @return bool
  */
 function update_registered_content_types( array $args ): bool {
-	return update_option( 'wpe_content_model_post_types', $args );
+	return update_option( 'atlas_content_modeler_post_types', $args );
 }
 
 /**

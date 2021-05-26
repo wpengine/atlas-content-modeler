@@ -16,7 +16,7 @@ class SettingsFunctionsTestCases extends WP_UnitTestCase {
 
 	public function tearDown(): void {
 		parent::tearDown();
-		delete_option( 'wpe_content_model_post_types' );
+		delete_option( 'atlas_content_modeler_post_types' );
 	}
 
 	/**

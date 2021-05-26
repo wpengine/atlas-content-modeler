@@ -67,7 +67,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		global $wp_rest_server;
 		$wp_rest_server = null;
 		$this->server = null;
-		delete_option( 'wpe_content_model_post_types' );
+		delete_option( 'atlas_content_modeler_post_types' );
 		$this->all_registered_post_types = null;
 	}
 

@@ -22,11 +22,11 @@ define( 'ATLAS_CONTENT_MODELER_URL', plugin_dir_url( __FILE__ ) );
 define( 'ATLAS_CONTENT_MODELER_PATH', plugin_basename( ATLAS_CONTENT_MODELER_FILE ) );
 define( 'ATLAS_CONTENT_MODELER_SLUG', dirname( plugin_basename( ATLAS_CONTENT_MODELER_FILE ) ) );
 
-add_action( 'plugins_loaded', 'wpe_content_model_loader' );
+add_action( 'plugins_loaded', 'atlas_content_modeler_loader' );
 /**
  * Bootstraps the plugin.
  */
-function wpe_content_model_loader(): void {
+function atlas_content_modeler_loader(): void {
 	require_once __DIR__ . '/includes/publisher/lib/field-functions.php';
 	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
 	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
