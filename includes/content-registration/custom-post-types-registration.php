@@ -335,6 +335,48 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 	}
 }
 
+add_filter( 'is_protected_meta', __NAMESPACE__ . '\is_protected_meta', 10, 3 );
+/**
+ * Designates fields from this plugin as protected to prevent them
+ * from showing in the Custom Fields metabox on other post types.
+ *
+ * @param bool   $protected Whether the key is considered protected.
+ * @param string $meta_key  Metadata key.
+ * @param string $meta_type Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
+ *                          or any other object type with an associated meta table.
+ */
+function is_protected_meta( bool $protected, string $meta_key, string $meta_type ): bool {
+	// Return early if already protected.
+	if ( true === $protected ) {
+		return $protected;
+	}
+
+	if ( 'post' !== $meta_type ) {
+		return $protected;
+	}
+
+	global $post;
+
+	if ( empty( $post->post_type ) ) {
+		return $protected;
+	}
+
+	$models = get_registered_content_types();
+	$models = wp_list_pluck( $models, 'fields' );
+	$slugs  = [];
+
+	array_walk_recursive(
+		$models,
+		static function( $value, $key ) use ( &$slugs ) {
+			if ( $key === 'slug' ) {
+				$slugs[] = $value;
+			}
+		}
+	);
+
+	return in_array( $meta_key, $slugs, true );
+}
+
 /**
  * Converts string to camelCase. Added to ensure that fields are compliant with the GraphQL spec.
  *
