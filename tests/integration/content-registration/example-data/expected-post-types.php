@@ -6,26 +6,13 @@
 return array (
 	'dog' =>
 		array (
-			'slug' => 'dogs',
 			'name' => 'Dogs',
 			'singular_name' => 'Dog',
 			'description' => '',
-			'public' => false,
-			'publicly_queryable' => false,
 			'show_ui' => true,
-			'show_in_nav_menus' => true,
-			'delete_with_user' => false,
 			'show_in_rest' => true,
-			'has_archive' => true,
-			'has_archive_string' => '',
-			'exclude_from_search' => false,
+			'rest_base' => 'dogs',
 			'capability_type' => 'post',
-			'hierarchical' => false,
-			'rewrite' => true,
-			'rewrite_slug' => '',
-			'rewrite_withfront' => true,
-			'query_var' => true,
-			'query_var_slug' => '',
 			'show_in_menu' => true,
 			'supports' =>
 				array (
@@ -33,9 +20,6 @@ return array (
 					'editor',
 					'thumbnail',
 					'custom-fields',
-				),
-			'taxonomies' =>
-				array (
 				),
 			'labels' =>
 				array (
@@ -114,26 +98,13 @@ return array (
 		),
 	'cat' =>
 		array (
-			'slug' => 'cats',
 			'name' => 'Cats',
 			'singular_name' => 'Cat',
 			'description' => 'A description of cats',
-			'public' => false,
-			'publicly_queryable' => false,
 			'show_ui' => true,
-			'show_in_nav_menus' => true,
-			'delete_with_user' => false,
 			'show_in_rest' => true,
-			'has_archive' => true,
-			'has_archive_string' => '',
-			'exclude_from_search' => false,
 			'capability_type' => 'post',
-			'hierarchical' => false,
 			'rewrite' => true,
-			'rewrite_slug' => '',
-			'rewrite_withfront' => true,
-			'query_var' => true,
-			'query_var_slug' => '',
 			'show_in_menu' => true,
 			'supports' =>
 				array (
@@ -141,9 +112,6 @@ return array (
 					'editor',
 					'thumbnail',
 					'custom-fields',
-				),
-			'taxonomies' =>
-				array (
 				),
 			'labels' =>
 				array (

@@ -46,14 +46,14 @@ class UpdateExistingModelEntryCest
         $i->wait(1);
 
         // Next we create an entry for our new model.
-        $i->amOnPage('/wp-admin/edit.php?post_type=geese');
+        $i->amOnPage('/wp-admin/edit.php?post_type=goose');
         $i->click('Add New', '.wrap');
         $i->wait(1);
 
-        $i->fillField(['name' => 'wpe-content-model[geese][color]'], 'Gray');
-        $i->fillField(['name' => 'wpe-content-model[geese][age]'], '100');
-        $i->fillField(['name' => 'wpe-content-model[geese][dateOfBirth]'], '01/01/2021');
-        $i->checkOption('wpe-content-model[geese][fliesSouthForWinter]');
+        $i->fillField(['name' => 'wpe-content-model[goose][color]'], 'Gray');
+        $i->fillField(['name' => 'wpe-content-model[goose][age]'], '100');
+        $i->fillField(['name' => 'wpe-content-model[goose][dateOfBirth]'], '01/01/2021');
+        $i->checkOption('wpe-content-model[goose][fliesSouthForWinter]');
 
         // Rich text fields rendered as TinyMCE live in an iframe.
         $i->switchToIFrame('#field-description iframe');
@@ -69,7 +69,7 @@ class UpdateExistingModelEntryCest
         $i->wait(2);
 
         // Update the entry.
-        $i->fillField(['name' => 'wpe-content-model[geese][color]'], 'Green');
+        $i->fillField(['name' => 'wpe-content-model[goose][color]'], 'Green');
         $i->switchToIFrame('#field-description iframe');
         $i->fillField('#tinymce', 'I am a green goose');
         $i->switchToIFrame(); // switch back to main window
@@ -77,7 +77,7 @@ class UpdateExistingModelEntryCest
         $i->click('Update', '#publishing-action');
         $i->wait(2);
 
-        $i->seeInField('wpe-content-model[geese][color]', 'Green');
+        $i->seeInField('wpe-content-model[goose][color]', 'Green');
         $i->switchToIFrame('#field-description iframe');
         $i->see('I am a green goose');
         $i->switchToIFrame();
@@ -88,7 +88,7 @@ class UpdateExistingModelEntryCest
             field[0].setAttribute('type', 'text');
         ");
         $i->fillField(['name' => 'wpe-content-model-pubex-nonce'], 'broken nonce');
-        $i->fillField(['name' => 'wpe-content-model[geese][color]'], 'Green');
+        $i->fillField(['name' => 'wpe-content-model[goose][color]'], 'Green');
         $i->click('Update', '#publishing-action');
         $i->wait(2);
         $i->see('Nonce verification failed when saving your content. Please try again.');

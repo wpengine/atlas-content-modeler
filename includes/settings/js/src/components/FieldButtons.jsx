@@ -5,22 +5,29 @@ import Icon from "../../../../components/icons";
 const { cloneDeep } = lodash;
 
 const FieldButtons = ({ activeButton, clickAction, parent }) => {
+	/**
+	 * Returns if current button is active
+	 * @param field
+	 * @returns {string}
+	 */
+	function isActive(field) {
+		return field === activeButton ? "active" : "";
+	}
+
 	const fields = cloneDeep(supportedFields);
+
 	if (parent) {
 		delete fields["repeater"];
 	}
+
 	return (
-		<div className="field-buttons">
+		<div className="field-buttons flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 			{Object.keys(fields).map((field) => {
 				const fieldTitle = fields[field];
 				return (
 					<button
 						key={field}
-						className={
-							field === activeButton
-								? "tertiary active"
-								: "tertiary"
-						}
+						className={`tertiary mb-1 ${isActive(field)}`}
 						onClick={() => clickAction(field)}
 					>
 						<Icon type={field} />

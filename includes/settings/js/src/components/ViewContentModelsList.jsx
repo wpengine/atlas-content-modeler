@@ -7,7 +7,7 @@ import { ContentModelDropdown } from "./ContentModelDropdown";
 function Header({ showButton = true }) {
 	let history = useHistory();
 	return (
-		<section className="heading">
+		<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 			<h2>Content Models</h2>
 			{showButton && (
 				<button
@@ -58,21 +58,21 @@ export default function ViewContentModelsList() {
 
 function ContentModels({ models }) {
 	return Object.keys(models).map((slug) => {
-		const { name, description, fields = {} } = models[slug];
+		const { plural, description, fields = {} } = models[slug];
 		return (
 			<li key={slug}>
 				<Link
 					to={`/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=${slug}`}
-					aria-label={`Edit ${name} content model`}
-					className="flex-parent"
+					aria-label={`Edit ${plural} content model`}
+					className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
 				>
-					<span className="flex-item">
+					<span className="flex-item mb-3 mb-sm-0 pr-1">
 						<p className="label">Name</p>
 						<p className="value">
-							<strong>{name}</strong>
+							<strong>{plural}</strong>
 						</p>
 					</span>
-					<span className="flex-item">
+					<span className="flex-item mb-3 mb-sm-0 pr-1">
 						<p className="label">Description</p>
 						<p className="value">{description}</p>
 					</span>
@@ -83,7 +83,9 @@ function ContentModels({ models }) {
 						</p>
 					</span>
 				</Link>
-				<ContentModelDropdown model={models[slug]} />
+				<div className="neg-margin-wrapper">
+					<ContentModelDropdown model={models[slug]} />
+				</div>
 			</li>
 		);
 	});

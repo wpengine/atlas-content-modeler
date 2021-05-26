@@ -18,12 +18,12 @@ class PublishModelSanitizationCest
 		$i->wait(1);
 
 		// Create a new goose.
-		$i->amOnPage('/wp-admin/edit.php?post_type=geese');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
 		// Fill the color field, including HTML tags that should be stripped.
-		$i->fillField(['name' => 'wpe-content-model[geese][color]'], '<em>Gray</em>');
+		$i->fillField(['name' => 'wpe-content-model[goose][color]'], '<em>Gray</em>');
 
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
@@ -31,7 +31,7 @@ class PublishModelSanitizationCest
 		$i->see('Post published.');
 
 		// HTML tags should be stripped in text fields if sanitization is working, with tag content preserved.
-		$i->dontSeeInField('wpe-content-model[geese][color]', '<em>Gray</em>');
-		$i->seeInField('wpe-content-model[geese][color]', 'Gray');
+		$i->dontSeeInField('wpe-content-model[goose][color]', '<em>Gray</em>');
+		$i->seeInField('wpe-content-model[goose][color]', 'Gray');
 	}
 }

@@ -36,7 +36,10 @@ export default function Field(props) {
 
 	return (
 		<>
-			<div id={`field-${field.slug}`} className={`field ${field.type}`}>
+			<div
+				id={`field-${field.slug}`}
+				className={`field d-flex flex-column ${field.type}`}
+			>
 				{fieldMarkup(field, modelSlug, errors, validate)}
 			</div>
 		</>
@@ -90,7 +93,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					<br />
 					<input
 						type={`${field.type}`}
 						name={`wpe-content-model[${modelSlug}][${field.slug}]`}

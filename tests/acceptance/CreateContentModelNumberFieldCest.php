@@ -9,7 +9,6 @@ class CreateContentModelNumberFieldCest
     {
         $I->loginAsAdmin();
         $I->haveContentModel('Candy', 'Candies');
-        $I->amOnWPEngineEditContentModelPage('candies');
         $I->wait(1);
 
         $I->click('Number', '.field-buttons');
@@ -20,7 +19,7 @@ class CreateContentModelNumberFieldCest
         $I->click('.open-field button.primary');
         $I->wait(1);
 
-        $I->see('Number', '.field-list span.type');
-        $I->see('Count', '.field-list span.widest');
+        $I->see('Number', '.field-list div.type');
+        $I->see('Count', '.field-list div.widest');
     }
 }

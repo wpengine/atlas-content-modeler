@@ -20,8 +20,6 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
  * Registers custom routes with the WP REST API.
  */
 function register_rest_routes(): void {
-	// @todo Route for updating a single content type.
-
 	// Route for retrieving a single content type.
 	register_rest_route(
 		'wpe',
@@ -152,8 +150,10 @@ function dispatch_get_content_model( WP_REST_Request $request ) {
 function dispatch_create_content_model( WP_REST_Request $request ) {
 	$params = $request->get_params();
 
+	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
+
 	// @todo simplify create_model() signature to single array?
-	$model = create_model( $params['postTypeSlug'], $params );
+	$model = create_model( $params['slug'], $params );
 
 	if ( is_wp_error( $model ) ) {
 		return new WP_Error(
@@ -168,7 +168,7 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 	return rest_ensure_response(
 		[
 			'success' => true,
-			'model'   => $models[ $params['postTypeSlug'] ],
+			'model'   => $models[ $params['slug'] ],
 		]
 	);
 }
@@ -210,7 +210,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	 * Remove isTitle from all fields if isTitle is set on this field. Only one
 	 * field can be used as the entry title.
 	 */
-	if ( isset( $params['isTitle'] ) && $params['isTitle'] === true ) {
+	if ( isset( $params['isTitle'] ) && $params['isTitle'] === true && ! empty( $content_types[ $params['model'] ]['fields'] ) ) {
 		foreach ( $content_types[ $params['model'] ]['fields'] as $field_id => $field_properties ) {
 			unset( $content_types[ $params['model'] ]['fields'][ $field_id ]['isTitle'] );
 		}
@@ -464,18 +464,14 @@ function create_model( string $post_type_slug, array $args ) {
 		);
 	}
 
-	// @todo validate field types
-	try {
-		$args = wp_parse_args( $args, generate_custom_post_type_args( $args ) );
-	} catch ( \InvalidArgumentException $exception ) {
-		return new WP_Error(
-			[
-				'invalid-args',
-				$exception->getMessage(),
-				[ 'status' => 400 ],
-			]
-		);
-	}
+	// @todo maybe remove these defaults, or change them to false for opt-in exposure.
+	// should these only be saved to the model when non-default?
+	$defaults = [
+		'show_in_rest'    => true,
+		'show_in_graphql' => true,
+	];
+
+	$args = wp_parse_args( $args, $defaults );
 
 	$content_types[ $post_type_slug ] = $args;
 
@@ -518,9 +514,6 @@ function update_model( string $post_type_slug, array $args ) {
 			'Invalid content model ID.'
 		);
 	}
-
-	$args['name']          = $args['plural'];
-	$args['singular_name'] = $args['singular'];
 
 	$new_args = wp_parse_args( $args, $content_types[ $post_type_slug ] );
 

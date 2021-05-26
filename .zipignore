@@ -30,5 +30,6 @@ deploy.sh
 *.docker/*
 *docker-compose.yml
 *codeception.dist.yml
-.env.testing.sample
-.env.testing
+*.env.testing*
+*.prettier*
+*.husky/*

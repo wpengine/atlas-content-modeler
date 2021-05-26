@@ -7,17 +7,17 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 	protected $route = 'content-model';
 
 	protected $test_models = [
-		'rabbits' => [
-			'postTypeSlug' => 'rabbits',
-			'singular'     => 'Rabbit',
-			'plural'       => 'Rabbits',
-			'description'  => 'Rabbits like carrots.'
+		'rabbits'    => [
+			'slug'        => 'rabbits',
+			'singular'    => 'Rabbit',
+			'plural'      => 'Rabbits',
+			'description' => 'Rabbits like carrots.'
 		],
 		'cats'    => [ 'name' => 'Cats' ],
 		'attachment' => [
-			'postTypeSlug' => 'attachment',
-			'singular'     => 'Attachment',
-			'plural'       => 'Attachments',
+			'slug'     => 'attachment',
+			'singular' => 'Attachment',
+			'plural'   => 'Attachments',
 		]
 	];
 

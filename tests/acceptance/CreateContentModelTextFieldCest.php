@@ -9,7 +9,6 @@ class CreateContentModelTextFieldCest
     {
         $I->loginAsAdmin();
         $I->haveContentModel('Candy', 'Candies');
-        $I->amOnWPEngineEditContentModelPage('candies');
         $I->wait(1);
 
         $I->click('Text', '.field-buttons');
@@ -20,7 +19,7 @@ class CreateContentModelTextFieldCest
         $I->click('.open-field button.primary');
         $I->wait(1);
 
-        $I->see('Text', '.field-list span.type');
-        $I->see('Color', '.field-list span.widest');
+        $I->see('Text', '.field-list div.type');
+        $I->see('Color', '.field-list div.widest');
     }
 }

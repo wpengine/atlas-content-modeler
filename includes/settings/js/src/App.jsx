@@ -11,7 +11,7 @@ import { ModelsContextProvider } from "./ModelsContext";
 
 export default function App() {
 	return (
-		<div className="app">
+		<div className="app wpe-content-model">
 			<ModelsContextProvider>
 				<Router>
 					<ToastContainer

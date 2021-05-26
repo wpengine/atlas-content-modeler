@@ -38,10 +38,8 @@ function updateModel(slug = "", data = {}) {
  * @returns {JSX.Element} Modal
  */
 export function EditModelModal({ model, isOpen, setIsOpen }) {
-	const [singularCount, setSingularCount] = useState(
-		model.singular_name.length
-	);
-	const [pluralCount, setPluralCount] = useState(model.name.length);
+	const [singularCount, setSingularCount] = useState(model.singular.length);
+	const [pluralCount, setPluralCount] = useState(model.plural.length);
 	const [descriptionCount, setDescriptionCount] = useState(
 		model.description.length
 	);
@@ -60,13 +58,14 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			transform: "translate(-50%, -50%)",
 			border: "none",
 			padding: "40px",
+			boxSizing: "border-box",
 		},
 	};
 
 	return (
 		<Modal
 			isOpen={isOpen}
-			contentLabel={`Editing the ${model.name} content model`}
+			contentLabel={`Editing the ${model.plural} content model`}
 			parentSelector={() => {
 				return document.getElementById("root");
 			}}
@@ -77,11 +76,11 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			model={model}
 			style={customStyles}
 		>
-			<h2>Edit {model.name}</h2>
+			<h2>Edit {model.plural}</h2>
 			<form
 				onSubmit={handleSubmit(async (data) => {
 					const mergedData = { ...model, ...data };
-					await updateModel(data.postTypeSlug, mergedData);
+					await updateModel(data.slug, mergedData);
 					dispatch({ type: "updateModel", data: mergedData });
 					setIsOpen(false);
 				})}
@@ -96,7 +95,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						id="singular"
 						name="singular"
 						placeholder="Rabbit"
-						defaultValue={model.singular_name}
+						defaultValue={model.singular}
 						ref={register({ required: true, maxLength: 50 })}
 						onChange={(e) =>
 							setSingularCount(e.target.value.length)
@@ -135,7 +134,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					<input
 						id="plural"
 						name="plural"
-						defaultValue={model.name}
+						defaultValue={model.plural}
 						placeholder="Rabbits"
 						ref={register({ required: true, maxLength: 50 })}
 						onChange={(event) => {
@@ -161,13 +160,13 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 				</div>
 
 				<div className="field">
-					<label htmlFor="postTypeSlug">API Identifier</label>
+					<label htmlFor="slug">API Identifier</label>
 					<p className="help">
 						Auto-generated and used for API requests.
 					</p>
 					<input
-						id="postTypeSlug"
-						name="postTypeSlug"
+						id="slug"
+						name="slug"
 						ref={register({ required: true, maxLength: 20 })}
 						defaultValue={model.slug}
 						readOnly="readOnly"

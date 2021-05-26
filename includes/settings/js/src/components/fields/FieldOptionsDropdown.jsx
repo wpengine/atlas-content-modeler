@@ -60,7 +60,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 	return (
 		<span className="dropdown">
 			<button
-				className="options"
+				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 				onClick={() => setDropdownOpen(!dropdownOpen)}
 				aria-label={`Options for the ${field.name} field.`}
@@ -83,7 +83,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 			</div>
 			<Modal
 				isOpen={modalIsOpen}
-				contentLabel={`Delete the ${field.name} field from ${model.name}?`}
+				contentLabel={`Delete the ${field.name} field from ${model.plural}?`}
 				portalClassName="wpe-content-model-delete-field-modal-container"
 				onRequestClose={() => {
 					setModalIsOpen(false);
@@ -92,7 +92,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 				style={customStyles}
 			>
 				<h2>
-					Delete the {field.name} field from {model.name}?
+					Delete the {field.name} field from {model.plural}?
 				</h2>
 				<p>
 					This will not delete actual data stored in this field. It
@@ -100,7 +100,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 				</p>
 				<p>
 					Are you sure you want to delete the {field.name} field from{" "}
-					{model.name}?
+					{model.plural}?
 				</p>
 				<button
 					type="submit"

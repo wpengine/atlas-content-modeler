@@ -8,23 +8,28 @@ export function reducer(state, action) {
 		case "updateModels":
 			return action.data;
 		case "updateModel":
-			state[action.data.postTypeSlug] = {
-				...state[action.data.postTypeSlug],
+			state[action.data.slug] = {
+				...state[action.data.slug],
 				...action.data,
 			};
-			state[action.data.postTypeSlug].name = action.data.plural;
-			state[action.data.postTypeSlug].singular_name =
-				action.data.singular;
+			state[action.data.slug].name = action.data.plural;
+			state[action.data.slug].singular = action.data.singular;
 			return { ...state };
 		case "addModel":
 			return {
 				...state,
-				[action.data.postTypeSlug]: action.data,
+				[action.data.slug]: action.data,
 			};
 		case "removeModel":
 			const { [action.slug]: deleted, ...otherModels } = state;
 			return otherModels;
 		case "addField":
+			Object.values(state[action.model]["fields"] ?? {}).forEach(
+				(field) => {
+					field.open = false;
+					field.editing = false;
+				}
+			);
 			const newId = Date.now();
 			state[action.model]["fields"] = {
 				...state[action.model]["fields"],
@@ -38,8 +43,20 @@ export function reducer(state, action) {
 			};
 			return { ...state };
 		case "openField":
-			state[action.model]["fields"][action.id].open = true;
-			state[action.model]["fields"][action.id].editing = true;
+			Object.values(state[action.model]["fields"]).forEach((field) => {
+				if (field === state[action.model]["fields"][action.id]) {
+					field.open = true;
+					// We set editing to false when there is no name so delete succeeds when cancel button is clicked on a new field.
+					field.editing = !state[action.model]["fields"][action.id][
+						"name"
+					]
+						? false
+						: true;
+				} else {
+					field.open = false;
+					field.editing = false;
+				}
+			});
 			return { ...state };
 		case "closeField":
 			if (action?.originalState) {

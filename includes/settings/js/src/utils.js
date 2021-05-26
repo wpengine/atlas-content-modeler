@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { getFieldOrder, getRootFields } from "./queries";
+import { toValidApiId } from "./components/fields/toValidApiId";
 
 /**
  * Parses query string and returns value.
@@ -47,10 +48,7 @@ export function removeSidebarMenuItem(slug) {
  * @returns {string} - HTML list item markup for the specified content model.
  */
 export function generateSidebarMenuItem(model) {
-	let {
-		slug,
-		labels: { name },
-	} = model;
+	let { slug, plural } = model;
 	slug = slug.toLowerCase();
 	return `<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" id="menu-posts-${slug}">
 				<a href="edit.php?post_type=${slug}" class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" aria-haspopup="true">
@@ -58,12 +56,12 @@ export function generateSidebarMenuItem(model) {
 						<div></div>
 					</div>
 					<div class="wp-menu-image dashicons-before dashicons-admin-post" aria-hidden="true"><br/></div>
-					<div class="wp-menu-name">${name}</div>
+					<div class="wp-menu-name">${plural}</div>
 				</a>
 				<ul class="wp-submenu wp-submenu-wrap">
-					<li class="wp-submenu-head" aria-hidden="true">${name}</li>
+					<li class="wp-submenu-head" aria-hidden="true">${plural}</li>
 					<li class="wp-first-item">
-						<a href="edit.php?post_type=${slug}" class="wp-first-item">All ${name}</a>
+						<a href="edit.php?post_type=${slug}" class="wp-first-item">All ${plural}</a>
 					</li>
 					<li>
 						<a href="post-new.php?post_type=${slug}">Add New</a>
@@ -101,11 +99,39 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
 export const getGraphiQLLink = (modelData) => {
 	const modelSingular = modelData.singular.replace(/\s/g, "");
 	const fragmentName = `${modelSingular}Fields`;
+	const pluralSlug = toValidApiId(modelData.plural);
 
 	const fields = getRootFields(modelData?.fields);
 	const fieldSlugs = getFieldOrder(fields)
 		.filter((id) => fields[id]?.type !== "repeater") // @todo: handle repeater fields.
-		.map((id) => fields[id]?.slug);
+		.map((id) => {
+			if (fields[id]?.type === "media") {
+				return `
+${fields[id]?.slug} {
+  mediaItemId
+  mediaItemUrl
+  altText
+  caption
+  description
+  mediaDetails {
+    height
+    width
+    sizes {
+      file
+      fileSize
+      height
+      mimeType
+      name
+      sourceUrl
+      width
+    }
+  }
+}
+`;
+			}
+
+			return fields[id]?.slug;
+		});
 
 	if (fieldSlugs.length === 0) {
 		fieldSlugs.push("title");
@@ -113,7 +139,7 @@ export const getGraphiQLLink = (modelData) => {
 
 	const query = `
 {
-  ${modelData.slug}(first: 10) {
+  ${pluralSlug}(first: 10) {
     nodes {
       ...${fragmentName}
     }

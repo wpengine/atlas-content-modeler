@@ -3,7 +3,7 @@ import { generateSidebarMenuItem } from "../../includes/settings/js/src/utils";
 describe("generateSidebarMenuItem tests", () => {
 	const mock = {
 		slug: "cows",
-		labels: { name: "Cows" },
+		plural: "Cows",
 	};
 
 	it("Renders a matching snapshot", () => {

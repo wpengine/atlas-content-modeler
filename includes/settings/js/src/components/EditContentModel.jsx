@@ -23,11 +23,11 @@ export default function EditContentModel() {
 	return (
 		<div className="app-card">
 			<section className="heading">
-				<h2>
+				<h2 className="pr-1 pr-sm-0">
 					<Link to="/wp-admin/admin.php?page=wpe-content-model">
 						Content Models
 					</Link>{" "}
-					/ {model?.name}
+					/ {model?.plural}
 				</h2>
 				<ContentModelDropdown model={model} />
 			</section>
