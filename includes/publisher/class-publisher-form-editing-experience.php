@@ -111,11 +111,11 @@ final class FormEditingExperience {
 
 		global $post;
 
-		$plugin = get_plugin_data( WPE_CONTENT_MODEL_FILE );
+		$plugin = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 
 		wp_register_script(
 			'atlas-content-modeler-form-editing-experience',
-			WPE_CONTENT_MODEL_URL . 'includes/publisher/dist/index.js',
+			ATLAS_CONTENT_MODELER_URL . 'includes/publisher/dist/index.js',
 			[ 'react', 'react-dom', 'wp-tinymce' ],
 			$plugin['Version'],
 			true
@@ -123,7 +123,7 @@ final class FormEditingExperience {
 
 		wp_enqueue_style(
 			'styles',
-			WPE_CONTENT_MODEL_URL . '/includes/publisher/dist/index.css',
+			ATLAS_CONTENT_MODELER_URL . '/includes/publisher/dist/index.css',
 			false,
 			$plugin['Version'],
 			'all'

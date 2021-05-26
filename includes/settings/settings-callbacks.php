@@ -41,11 +41,11 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' 
  * @param string $hook The current admin page.
  */
 function enqueue_settings_assets( $hook ) {
-	$plugin = get_plugin_data( WPE_CONTENT_MODEL_FILE );
+	$plugin = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 
 	wp_register_script(
 		'atlas-content-modeler-app',
-		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.js',
+		ATLAS_CONTENT_MODELER_URL . 'includes/settings/dist/index.js',
 		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash' ],
 		$plugin['Version'],
 		true
@@ -71,7 +71,7 @@ function enqueue_settings_assets( $hook ) {
 
 	wp_register_style(
 		'atlas-content-modeler-app-styles',
-		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.css',
+		ATLAS_CONTENT_MODELER_URL . 'includes/settings/dist/index.css',
 		[ 'atlas-content-modeler-fonts' ],
 		$plugin['Version']
 	);

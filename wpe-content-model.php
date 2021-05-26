@@ -16,11 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPE_CONTENT_MODEL_FILE', __FILE__ );
-define( 'WPE_CONTENT_MODEL_DIR', __DIR__ );
-define( 'WPE_CONTENT_MODEL_URL', plugin_dir_url( __FILE__ ) );
-define( 'WPE_CONTENT_MODEL_PATH', plugin_basename( WPE_CONTENT_MODEL_FILE ) );
-define( 'WPE_CONTENT_MODEL_SLUG', dirname( plugin_basename( WPE_CONTENT_MODEL_FILE ) ) );
+define( 'ATLAS_CONTENT_MODELER_FILE', __FILE__ );
+define( 'ATLAS_CONTENT_MODELER_DIR', __DIR__ );
+define( 'ATLAS_CONTENT_MODELER_URL', plugin_dir_url( __FILE__ ) );
+define( 'ATLAS_CONTENT_MODELER_PATH', plugin_basename( ATLAS_CONTENT_MODELER_FILE ) );
+define( 'ATLAS_CONTENT_MODELER_SLUG', dirname( plugin_basename( ATLAS_CONTENT_MODELER_FILE ) ) );
 
 add_action( 'plugins_loaded', 'wpe_content_model_loader' );
 /**
@@ -32,8 +32,8 @@ function wpe_content_model_loader(): void {
 	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
 	require_once __DIR__ . '/includes/rest-api/rest-api-endpoint-registration.php';
 	require_once __DIR__ . '/includes/publisher/class-publisher-form-editing-experience.php';
-	require_once WPE_CONTENT_MODEL_DIR . '/includes/updates/update-functions.php';
-	require_once WPE_CONTENT_MODEL_DIR . '/includes/updates/update-callbacks.php';
+	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/updates/update-functions.php';
+	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/updates/update-callbacks.php';
 
 	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
 	$form_editing_experience->bootstrap();
