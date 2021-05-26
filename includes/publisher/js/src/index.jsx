@@ -27,19 +27,18 @@ if (container && models.hasOwnProperty(postType)) {
 			return;
 		}
 
-		let defaultTinymceSettings = wp.editor.getDefaultSettings();
-
-		defaultTinymceSettings.tinymce.toolbar1 =
-			"undo redo | styleselect | bold, italic | bullist, numlist | blockquote | alignleft, aligncenter, alignright | link unlink";
-
-		console.log(defaultTinymceSettings);
-
 		richTextFields.forEach((field) => {
-			//wp.editor.remove(field.getAttribute("id"));
-			wp.editor.initialize(
-				field.getAttribute("id"),
-				defaultTinymceSettings
-			);
+			wp.oldEditor.initialize(field.getAttribute("id"), {
+				...wp.oldEditor.getDefaultSettings(),
+				tinymce: {
+					toolbar1:
+						"formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,wp_add_media,wp_adv",
+					toolbar2:
+						"strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
+				},
+				mediaButtons: true,
+				quicktags: false,
+			});
 		});
 	});
 

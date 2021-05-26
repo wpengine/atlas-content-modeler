@@ -16,7 +16,7 @@ export default function ClassicEditor({
 			<br />
 			<textarea
 				name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-				id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+				id={`wpe-content-model-${modelSlug}-${field.slug}`}
 				defaultValue={field.value}
 				required={field.required}
 			/>
