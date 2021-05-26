@@ -27,7 +27,7 @@ if (container && models.hasOwnProperty(postType)) {
 			return;
 		}
 
-		const defaultTinymceSettings = wp.editor.getDefaultSettings();
+		let defaultTinymceSettings = wp.editor.getDefaultSettings();
 
 		defaultTinymceSettings.tinymce.toolbar1 =
 			"undo redo | styleselect | bold, italic | bullist, numlist | blockquote | alignleft, aligncenter, alignright | link unlink";
