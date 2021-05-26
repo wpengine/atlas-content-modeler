@@ -69,7 +69,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			parentSelector={() => {
 				return document.getElementById("root");
 			}}
-			portalClassName="wpe-content-model-edit-model-modal-container"
+			portalClassName="atlas-content-modeler-edit-model-modal-container"
 			onRequestClose={() => {
 				setIsOpen(false);
 			}}

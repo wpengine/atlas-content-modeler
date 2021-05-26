@@ -1,22 +1,22 @@
 @import "variables";
 
-.wpe-content-model-admin-page header {
+.atlas-content-modeler-admin-page header {
 	background: linear-gradient(260.31deg, #0ecad4 8.72%, #7e5cef 105.71%);
 	height: 110px;
 }
 
-.wpe-content-model-admin-page header .wrap {
+.atlas-content-modeler-admin-page header .wrap {
 	margin-top: 0;
 }
 
-.wpe-content-model-admin-page header a {
+.atlas-content-modeler-admin-page header a {
 	text-decoration: none;
 }
 
-.wpe-content-model-admin-page header a:focus h1,
-.wpe-content-model-admin-page header a:focus svg,
-.wpe-content-model-admin-page header a:hover h1,
-.wpe-content-model-admin-page header a:hover svg {
+.atlas-content-modeler-admin-page header a:focus h1,
+.atlas-content-modeler-admin-page header a:focus svg,
+.atlas-content-modeler-admin-page header a:hover h1,
+.atlas-content-modeler-admin-page header a:hover svg {
 	opacity: 0.85;
 }
 

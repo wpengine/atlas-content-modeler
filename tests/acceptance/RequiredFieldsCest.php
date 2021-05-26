@@ -33,12 +33,12 @@ class RequiredFieldsCest
 		$I->see('field is required');
 
 		// Fill the field as prompted.
-		$I->fillField(['name' => 'wpe-content-model[goose][name]'], 'Goosey goose');
+		$I->fillField(['name' => 'atlas-content-modeler[goose][name]'], 'Goosey goose');
 
 		$I->click('Publish', '#publishing-action');
 		$I->wait(2);
 
 		$I->see('Post published.');
-		$I->seeInField('wpe-content-model[goose][name]', 'Goosey goose');
+		$I->seeInField('atlas-content-modeler[goose][name]', 'Goosey goose');
 	}
 }

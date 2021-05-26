@@ -50,10 +50,10 @@ class UpdateExistingModelEntryCest
         $i->click('Add New', '.wrap');
         $i->wait(1);
 
-        $i->fillField(['name' => 'wpe-content-model[goose][color]'], 'Gray');
-        $i->fillField(['name' => 'wpe-content-model[goose][age]'], '100');
-        $i->fillField(['name' => 'wpe-content-model[goose][dateOfBirth]'], '01/01/2021');
-        $i->checkOption('wpe-content-model[goose][fliesSouthForWinter]');
+        $i->fillField(['name' => 'atlas-content-modeler[goose][color]'], 'Gray');
+        $i->fillField(['name' => 'atlas-content-modeler[goose][age]'], '100');
+        $i->fillField(['name' => 'atlas-content-modeler[goose][dateOfBirth]'], '01/01/2021');
+        $i->checkOption('atlas-content-modeler[goose][fliesSouthForWinter]');
 
         // Rich text fields rendered as TinyMCE live in an iframe.
         $i->switchToIFrame('#field-description iframe');
@@ -69,7 +69,7 @@ class UpdateExistingModelEntryCest
         $i->wait(2);
 
         // Update the entry.
-        $i->fillField(['name' => 'wpe-content-model[goose][color]'], 'Green');
+        $i->fillField(['name' => 'atlas-content-modeler[goose][color]'], 'Green');
         $i->switchToIFrame('#field-description iframe');
         $i->fillField('#tinymce', 'I am a green goose');
         $i->switchToIFrame(); // switch back to main window
@@ -77,18 +77,18 @@ class UpdateExistingModelEntryCest
         $i->click('Update', '#publishing-action');
         $i->wait(2);
 
-        $i->seeInField('wpe-content-model[goose][color]', 'Green');
+        $i->seeInField('atlas-content-modeler[goose][color]', 'Green');
         $i->switchToIFrame('#field-description iframe');
         $i->see('I am a green goose');
         $i->switchToIFrame();
 
         // Cause an update failure and check error message.
         $i->executeJS("
-            var field = document.getElementsByName('wpe-content-model-pubex-nonce');
+            var field = document.getElementsByName('atlas-content-modeler-pubex-nonce');
             field[0].setAttribute('type', 'text');
         ");
-        $i->fillField(['name' => 'wpe-content-model-pubex-nonce'], 'broken nonce');
-        $i->fillField(['name' => 'wpe-content-model[goose][color]'], 'Green');
+        $i->fillField(['name' => 'atlas-content-modeler-pubex-nonce'], 'broken nonce');
+        $i->fillField(['name' => 'atlas-content-modeler[goose][color]'], 'Green');
         $i->click('Update', '#publishing-action');
         $i->wait(2);
         $i->see('Nonce verification failed when saving your content. Please try again.');

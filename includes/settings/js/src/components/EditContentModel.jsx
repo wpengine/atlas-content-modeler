@@ -24,7 +24,7 @@ export default function EditContentModel() {
 		<div className="app-card">
 			<section className="heading">
 				<h2 className="pr-1 pr-sm-0">
-					<Link to="/wp-admin/admin.php?page=wpe-content-model">
+					<Link to="/wp-admin/admin.php?page=atlas-content-modeler">
 						Content Models
 					</Link>{" "}
 					/ {model?.plural}

@@ -13,7 +13,7 @@ function Header({ showButton = true }) {
 				<button
 					onClick={() =>
 						history.push(
-							"/wp-admin/admin.php?page=wpe-content-model&view=create-model"
+							"/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
 						)
 					}
 				>
@@ -43,7 +43,7 @@ export default function ViewContentModelsList() {
 						<button
 							onClick={() =>
 								history.push(
-									"/wp-admin/admin.php?page=wpe-content-model&view=create-model"
+									"/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
 								)
 							}
 						>
@@ -62,7 +62,7 @@ function ContentModels({ models }) {
 		return (
 			<li key={slug}>
 				<Link
-					to={`/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=${slug}`}
+					to={`/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=${slug}`}
 					aria-label={`Edit ${plural} content model`}
 					className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
 				>

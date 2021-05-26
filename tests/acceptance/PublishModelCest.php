@@ -51,10 +51,10 @@ class PublishModelCest
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
-		$i->fillField(['name' => 'wpe-content-model[goose][color]'], 'Gray');
-		$i->fillField(['name' => 'wpe-content-model[goose][age]'], '100');
-		$i->fillField(['name' => 'wpe-content-model[goose][dateOfBirth]'], '01/01/2021');
-		$i->checkOption('wpe-content-model[goose][fliesSouthForWinter]');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][color]'], 'Gray');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][age]'], '100');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][dateOfBirth]'], '01/01/2021');
+		$i->checkOption('atlas-content-modeler[goose][fliesSouthForWinter]');
 
 		// Rich text fields rendered as TinyMCE live in an iframe.
 		$i->switchToIFrame('#field-description iframe');
@@ -72,23 +72,23 @@ class PublishModelCest
 
 		$i->see('Post published.');
 
-		$i->seeInField('wpe-content-model[goose][color]', 'Gray');
-		$i->seeInField('wpe-content-model[goose][age]', '100');
-		$i->seeInField('wpe-content-model[goose][dateOfBirth]', '2021-01-01');
-		$i->seeCheckboxIsChecked('wpe-content-model[goose][fliesSouthForWinter]');
+		$i->seeInField('atlas-content-modeler[goose][color]', 'Gray');
+		$i->seeInField('atlas-content-modeler[goose][age]', '100');
+		$i->seeInField('atlas-content-modeler[goose][dateOfBirth]', '2021-01-01');
+		$i->seeCheckboxIsChecked('atlas-content-modeler[goose][fliesSouthForWinter]');
 		$i->switchToIFrame('#field-description iframe');
 		$i->see('I am a goose'); // Sees the text in the TinyMCE iframe body.
 		$i->switchToIFrame();
 
 		// Show <textarea> elements hidden by TinyMCE so we can see them to check their values directly.
 		$i->executeJS("
-			var field = document.getElementsByName('wpe-content-model[goose][description]');
+			var field = document.getElementsByName('atlas-content-modeler[goose][description]');
 			field[0].removeAttribute('style');
-			var fieldTwo = document.getElementsByName('wpe-content-model[goose][anotherRichTextField]');
+			var fieldTwo = document.getElementsByName('atlas-content-modeler[goose][anotherRichTextField]');
 			fieldTwo[0].removeAttribute('style');
 		");
 
-		$i->seeInField('wpe-content-model[goose][description]', '<p>I am a goose</p>');
-		$i->seeInField('wpe-content-model[goose][anotherRichTextField]', '<p>I am another rich text field</p>');
+		$i->seeInField('atlas-content-modeler[goose][description]', '<p>I am a goose</p>');
+		$i->seeInField('atlas-content-modeler[goose][anotherRichTextField]', '<p>I am another rich text field</p>');
 	}
 }

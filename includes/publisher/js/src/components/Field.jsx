@@ -61,15 +61,15 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			return (
 				<>
 					<label
-						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 					>
 						{field.name}
 					</label>
 					<br />
 					<input
 						type={`${field.type}`}
-						name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-						id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
 						onChange={(event) => validate(event, field)}
@@ -88,14 +88,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			return (
 				<>
 					<label
-						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 					>
 						{field.name}
 					</label>
 					<input
 						type={`${field.type}`}
-						name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-						id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
 					/>
@@ -110,13 +110,13 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			return (
 				<>
 					<label
-						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 					>
 						{field.name}
 					</label>
 					<textarea
-						name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-						id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
 					/>
@@ -133,13 +133,13 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				<>
 					<label
 						className="check-container"
-						htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}
+						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 					>
 						{field.name}
 						<input
 							type="checkbox"
-							name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-							id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+							name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+							id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 							checked={checked}
 							onChange={(event) => setChecked(!checked)}
 							required={field.required}

@@ -56,7 +56,7 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="wpe-content-model" />
+			<property name="text_domain" type="array" value="atlas-content-modeler" />
 		</properties>
 	</rule>
 

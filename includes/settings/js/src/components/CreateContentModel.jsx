@@ -32,7 +32,7 @@ export default function CreateContentModel() {
 				if (res.success) {
 					dispatch({ type: "addModel", data: res.model });
 					history.push(
-						"/wp-admin/admin.php?page=wpe-content-model&view=edit-model&id=" +
+						"/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=" +
 							data.slug
 					);
 
@@ -63,7 +63,7 @@ export default function CreateContentModel() {
 					className="tertiary"
 					onClick={() =>
 						history.push(
-							"/wp-admin/admin.php?page=wpe-content-model"
+							"/wp-admin/admin.php?page=atlas-content-modeler"
 						)
 					}
 				>
@@ -249,7 +249,7 @@ export default function CreateContentModel() {
 						className="tertiary"
 						onClick={() =>
 							history.push(
-								"/wp-admin/admin.php?page=wpe-content-model"
+								"/wp-admin/admin.php?page=atlas-content-modeler"
 							)
 						}
 					>

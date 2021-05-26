@@ -18,10 +18,10 @@ add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 function register_admin_menu_page(): void {
 	$icon = require __DIR__ . '/views/admin-menu-icon.php';
 	add_menu_page(
-		esc_html__( 'Content Model', 'wpe-content-model' ),
-		esc_html__( 'Content Model', 'wpe-content-model' ),
+		esc_html__( 'Content Model', 'atlas-content-modeler' ),
+		esc_html__( 'Content Model', 'atlas-content-modeler' ),
 		'manage_options',
-		'wpe-content-model',
+		'atlas-content-modeler',
 		__NAMESPACE__ . '\render_admin_menu_page',
 		$icon
 	);
@@ -44,7 +44,7 @@ function enqueue_settings_assets( $hook ) {
 	$plugin = get_plugin_data( WPE_CONTENT_MODEL_FILE );
 
 	wp_register_script(
-		'wpe-content-model-app',
+		'atlas-content-modeler-app',
 		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.js',
 		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash' ],
 		$plugin['Version'],
@@ -52,7 +52,7 @@ function enqueue_settings_assets( $hook ) {
 	);
 
 	wp_localize_script(
-		'wpe-content-model-app',
+		'atlas-content-modeler-app',
 		'wpeContentModel',
 		array(
 			'initialState'        => get_registered_content_types(),
@@ -63,21 +63,21 @@ function enqueue_settings_assets( $hook ) {
 	);
 
 	wp_register_style(
-		'wpe-content-model-fonts',
+		'atlas-content-modeler-fonts',
 		'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap',
 		[],
 		$plugin['Version']
 	);
 
 	wp_register_style(
-		'wpe-content-model-app-styles',
+		'atlas-content-modeler-app-styles',
 		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.css',
-		[ 'wpe-content-model-fonts' ],
+		[ 'atlas-content-modeler-fonts' ],
 		$plugin['Version']
 	);
 
-	if ( 'toplevel_page_wpe-content-model' === $hook ) {
-		wp_enqueue_script( 'wpe-content-model-app' );
-		wp_enqueue_style( 'wpe-content-model-app-styles' );
+	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
+		wp_enqueue_script( 'atlas-content-modeler-app' );
+		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
 	}
 }

@@ -138,7 +138,7 @@ export const ContentModelDropdown = ({ model }) => {
 			<Modal
 				isOpen={modalIsOpen}
 				contentLabel={`Delete the ${plural} content model?`}
-				portalClassName="wpe-content-model-delete-model-modal-container"
+				portalClassName="atlas-content-modeler-delete-model-modal-container"
 				onRequestClose={() => {
 					setModalIsOpen(false);
 				}}
@@ -173,7 +173,7 @@ export const ContentModelDropdown = ({ model }) => {
 
 						setModalIsOpen(false);
 						history.push(
-							"/wp-admin/admin.php?page=wpe-content-model"
+							"/wp-admin/admin.php?page=atlas-content-modeler"
 						);
 						dispatch({ type: "removeModel", slug });
 					}}

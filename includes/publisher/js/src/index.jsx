@@ -5,7 +5,7 @@ import App from "./App";
 import "./../../scss/index.scss";
 
 const { models, postType } = wpeContentModelFormEditingExperience;
-const container = document.getElementById("wpe-content-model-fields-app");
+const container = document.getElementById("atlas-content-modeler-fields-app");
 
 if (container && models.hasOwnProperty(postType)) {
 	const model = models[postType];
