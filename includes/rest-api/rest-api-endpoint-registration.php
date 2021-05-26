@@ -2,7 +2,7 @@
 /**
  * Registers custom REST API endpoints for content modeling.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);

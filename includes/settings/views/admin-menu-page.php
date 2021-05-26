@@ -2,7 +2,7 @@
 /**
  * View for wp-admin page.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);

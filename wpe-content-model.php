@@ -9,7 +9,7 @@
  * Domain Path: /languages
  * Version: 0.2.0
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

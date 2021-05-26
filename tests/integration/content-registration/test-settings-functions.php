@@ -10,7 +10,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\update_registered_conte
 /**
  * Class SettingsFunctionsTestCases
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 class SettingsFunctionsTestCases extends WP_UnitTestCase {
 

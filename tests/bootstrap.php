@@ -2,7 +2,7 @@
 /**
  * WordPress unit tests bootstrap file.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
