@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel;
+namespace WPE\AtlasContentModeler;
 
 use WP_Post;
-use function WPE\ContentModel\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * A convenience class for sharing data across functions that run
  * on different hooks.
  *
- * @package WPE\ContentModel
+ * @package WPE\AtlasContentModeler
  */
 final class FormEditingExperience {
 

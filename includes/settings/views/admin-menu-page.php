@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\Settings;
+namespace WPE\AtlasContentModeler\Settings;
 
 ?>
 

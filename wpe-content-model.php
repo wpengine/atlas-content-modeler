@@ -35,6 +35,6 @@ function wpe_content_model_loader(): void {
 	require_once WPE_CONTENT_MODEL_DIR . '/includes/updates/update-functions.php';
 	require_once WPE_CONTENT_MODEL_DIR . '/includes/updates/update-callbacks.php';
 
-	$form_editing_experience = new \WPE\ContentModel\FormEditingExperience();
+	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
 	$form_editing_experience->bootstrap();
 }

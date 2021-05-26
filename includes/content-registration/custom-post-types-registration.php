@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\ContentRegistration;
+namespace WPE\AtlasContentModeler\ContentRegistration;
 
 use InvalidArgumentException;
 use WPGraphQL\Model\Post;

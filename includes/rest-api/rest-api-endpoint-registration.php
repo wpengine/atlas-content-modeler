@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\REST_API;
+namespace WPE\AtlasContentModeler\REST_API;
 
 use WP_Error;
 use WP_REST_Request;
-use function WPE\ContentModel\ContentRegistration\generate_custom_post_type_args;
-use function WPE\ContentModel\ContentRegistration\get_registered_content_types;
-use function WPE\ContentModel\ContentRegistration\update_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_args;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
 /**
