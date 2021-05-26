@@ -35,6 +35,7 @@ if (container && models.hasOwnProperty(postType)) {
 		console.log(defaultTinymceSettings);
 
 		richTextFields.forEach((field) => {
+			//wp.editor.remove(field.getAttribute("id"));
 			wp.editor.initialize(
 				field.getAttribute("id"),
 				defaultTinymceSettings
