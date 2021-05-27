@@ -59,7 +59,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		update_post_meta( $this->dog_post_id, 'dog-weight', '100.25' );
 		update_post_meta( $this->dog_post_id, 'dog-rich-text', 'dog-rich-text string value' );
 		update_post_meta( $this->dog_post_id, 'dog-boolean', 'this string will be cast to a boolean by WPGraphQL' );
-		update_post_meta( $this->dog_post_id, 'dog-repeater', 'dog-repeater string value' );
 	}
 
 	public function tearDown() {
@@ -140,7 +139,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 							dogWeight
 							dogRichText
 							dogBoolean
-							dogRepeater
 						}
 					}
 				}
@@ -158,9 +156,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'dogBoolean', $results['data']['dogs']['nodes'][0] );
 			self::assertTrue( $results['data']['dogs']['nodes'][0]['dogBoolean'] );
-
-			self::assertArrayHasKey( 'dogRepeater', $results['data']['dogs']['nodes'][0] );
-			self::assertSame( $results['data']['dogs']['nodes'][0]['dogRepeater'], 'dog-repeater string value' );
 
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
@@ -251,13 +246,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 						'slug' => 'dog-boolean',
 						'type' => 'boolean',
 						'description' => 'dog-boolean description',
-						'show_in_rest' => true,
-						'show_in_graphql' => true,
-					],
-					'dog-repeater' => [
-						'slug' => 'dog-repeater',
-						'type' => 'repeater',
-						'description' => 'dog-repeater description',
 						'show_in_rest' => true,
 						'show_in_graphql' => true,
 					],

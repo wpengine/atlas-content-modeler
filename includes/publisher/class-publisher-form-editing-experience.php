@@ -138,12 +138,6 @@ final class FormEditingExperience {
 		// Add existing field values to models data.
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
-				// @todo wire up repeaters. for now, remove child fields to avoid confusion.
-				if ( ! empty( $field['parent'] ) ) {
-					unset( $models[ $this->current_screen_post_type ]['fields'][ $key ] );
-					continue;
-				}
-
 				if ( isset( $post->ID ) ) {
 					$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
 				}

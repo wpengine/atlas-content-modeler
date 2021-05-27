@@ -102,11 +102,9 @@ export const getGraphiQLLink = (modelData) => {
 	const pluralSlug = toValidApiId(modelData.plural);
 
 	const fields = getRootFields(modelData?.fields);
-	const fieldSlugs = getFieldOrder(fields)
-		.filter((id) => fields[id]?.type !== "repeater") // @todo: handle repeater fields.
-		.map((id) => {
-			if (fields[id]?.type === "media") {
-				return `
+	const fieldSlugs = getFieldOrder(fields).map((id) => {
+		if (fields[id]?.type === "media") {
+			return `
 ${fields[id]?.slug} {
   mediaItemId
   mediaItemUrl
@@ -128,10 +126,10 @@ ${fields[id]?.slug} {
   }
 }
 `;
-			}
+		}
 
-			return fields[id]?.slug;
-		});
+		return fields[id]?.slug;
+	});
 
 	if (fieldSlugs.length === 0) {
 		fieldSlugs.push("title");

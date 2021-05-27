@@ -1,7 +1,6 @@
 /**
  * Actions to update global content model state.
  */
-import { getChildrenOfField } from "./queries";
 
 export function reducer(state, action) {
 	switch (action.type) {
@@ -88,16 +87,6 @@ export function reducer(state, action) {
 		case "removeField":
 			if (action?.originalState) {
 				state[action.model]["fields"] = action.originalState;
-			}
-			// Also remove descendents of repeater fields.
-			if (state[action.model]["fields"][action.id]?.type === "repeater") {
-				const children = getChildrenOfField(
-					action.id,
-					state[action.model]["fields"]
-				);
-				children.forEach((subfieldId) => {
-					delete state[action.model]["fields"][subfieldId];
-				});
 			}
 
 			// Remove the deleted field itself.

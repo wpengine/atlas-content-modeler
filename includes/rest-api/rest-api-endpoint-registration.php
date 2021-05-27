@@ -313,18 +313,6 @@ function dispatch_delete_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	// Delete child fields (and descendents) of deleted repeater fields.
-	if (
-		array_key_exists( 'type', $content_types[ $model ]['fields'][ $field_id ] )
-		&& 'repeater' === $content_types[ $model ]['fields'][ $field_id ]['type']
-	) {
-		$child_field_ids = get_children_of_field( (int) $field_id, $content_types[ $model ]['fields'] );
-
-		foreach ( $child_field_ids as $id ) {
-			unset( $content_types[ $model ]['fields'][ $id ] );
-		}
-	}
-
 	unset( $content_types[ $model ]['fields'][ $field_id ] );
 
 	return rest_ensure_response(
@@ -577,28 +565,4 @@ function content_model_field_exists( string $slug, string $id, array $model ): b
 	}
 
 	return false;
-}
-
-/**
- * Gets children (and their descendents) of the field with `$id` so that these
- * can be deleted when a parent field is removed.
- *
- * @param int   $id     The parent id to look for children.
- * @param array $fields Fields to search.
- * @return array The ids of children and descendents.
- */
-function get_children_of_field( int $id, array $fields ): array {
-	$children = [];
-
-	foreach ( $fields as $field_id => $field ) {
-		if (
-			array_key_exists( 'parent', $field )
-			&& (int) $field['parent'] === $id
-		) {
-			$children[] = (int) $field_id;
-			$children   = array_merge( $children, get_children_of_field( $field_id, $fields ) );
-		}
-	}
-
-	return $children;
 }

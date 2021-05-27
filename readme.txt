@@ -29,7 +29,6 @@ Model content for headless WordPress.
 - Improved developer tooling for linting, including pre-commit hooks.
 
 ### Changed
-- Repeater fields can no longer be created inside other repeater fields.
 - The media field is restricted to single file uploads for now.
 
 ### Removed

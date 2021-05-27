@@ -16,7 +16,7 @@ const extraFields = {
 	number: NumberFields,
 };
 
-function Form({ id, position, type, editing, storedData, parent }) {
+function Form({ id, position, type, editing, storedData }) {
 	const {
 		register,
 		handleSubmit,
@@ -89,15 +89,6 @@ function Form({ id, position, type, editing, storedData, parent }) {
 				ref={register}
 				value={position}
 			/>
-			{parent && (
-				<input
-					id="parent"
-					name="parent"
-					type="hidden"
-					ref={register}
-					value={parent}
-				/>
-			)}
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
 				<div className="d-flex flex-column d-sm-flex flex-sm-row">
 					<div
@@ -192,7 +183,7 @@ function Form({ id, position, type, editing, storedData, parent }) {
 			</div>
 
 			<div>
-				{!["repeater", "richtext"].includes(type) && (
+				{!["richtext"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
 						<input

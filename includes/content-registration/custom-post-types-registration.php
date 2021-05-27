@@ -332,7 +332,6 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'textarea':
 		case 'string':
 		case 'date':
-		case 'repeater':
 		case 'richtext':
 			return 'String';
 		case 'number':
