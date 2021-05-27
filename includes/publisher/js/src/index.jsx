@@ -9,7 +9,13 @@ const container = document.getElementById("wpe-content-model-fields-app");
 
 if (container && models.hasOwnProperty(postType)) {
 	const model = models[postType];
-	ReactDOM.render(<App model={model} />, container);
+	const urlParams = new URLSearchParams(window.location.search);
+
+	ReactDOM.render(
+		<App model={model} mode={urlParams.get("action")} />,
+		container
+	);
+
 	// Add TinyMCE to rich text fields.
 	// @todo use wp.oldEditor instead of tinymce directly? Move this code to proper script file.
 	window.addEventListener("DOMContentLoaded", (event) => {
