@@ -355,12 +355,6 @@ function is_protected_meta( bool $protected, string $meta_key, string $meta_type
 		return $protected;
 	}
 
-	global $post;
-
-	if ( empty( $post->post_type ) ) {
-		return $protected;
-	}
-
 	$fields = wp_list_pluck( get_registered_content_types(), 'fields' );
 	$fields = array_merge( ...array_values( $fields ) );
 	$slugs  = wp_list_pluck( $fields, 'slug' );
