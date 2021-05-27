@@ -9,6 +9,7 @@ use function WPE\ContentModel\ContentRegistration\generate_custom_post_type_args
 use function \WPE\ContentModel\ContentRegistration\generate_custom_post_type_labels;
 use PHPUnit\Runner\Exception as PHPUnitRunnerException;
 use function WPE\ContentModel\ContentRegistration\update_registered_content_types;
+use function WPE\ContentModel\ContentRegistration\is_protected_meta;
 
 /**
  * Post type registration case.
@@ -176,6 +177,32 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$expected_args = $this->expected_post_types()['dog'];
 		unset( $expected_args['fields'] );
 		self::assertSame( $generated_args, $expected_args );
+	}
+
+	/**
+	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 */
+	public function test_is_protected_meta_hook(): void {
+		$this->assertSame( 10, has_action( 'is_protected_meta', 'WPE\ContentModel\ContentRegistration\is_protected_meta' ) );
+	}
+
+	/**
+	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 */
+	public function test_model_fields_are_protected(): void {
+		$fields = $this->mock_post_types()['dog']['fields'];
+		$slugs = array_keys( $fields );
+		foreach ( $slugs as $slug ) {
+			self::assertTrue( is_protected_meta( false, $slug, 'post' ) );
+		}
+	}
+
+	/**
+	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 */
+	public function test_fields_not_attached_to_a_model_are_not_affected(): void {
+		self::assertFalse( is_protected_meta( false, 'this-key-is-unprotected-and-not-ours-and-should-remain-unprotected', 'post' ) );
+		self::assertTrue( is_protected_meta( true, 'this-key-is-already-protected-and-should-remain-protected', 'post' ) );
 	}
 
 	private function expected_post_types(): array {
