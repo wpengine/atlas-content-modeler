@@ -1,8 +1,10 @@
+/* global wpeContentModelFormEditingExperience */
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./../../scss/index.scss";
 
+const { models, postType } = wpeContentModelFormEditingExperience;
 const container = document.getElementById("wpe-content-model-fields-app");
 
 if (container && models.hasOwnProperty(postType)) {
