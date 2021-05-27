@@ -6,40 +6,10 @@ import "./../../scss/index.scss";
 
 const { models, postType } = wpeContentModelFormEditingExperience;
 const container = document.getElementById("wpe-content-model-fields-app");
-const { wp } = window;
 
 if (container && models.hasOwnProperty(postType)) {
 	const model = models[postType];
 	ReactDOM.render(<App model={model} />, container);
-	// Add TinyMCE to rich text fields.
-	// @todo use wp.oldEditor instead of tinymce directly? Move this code to proper script file.
-	window.addEventListener("DOMContentLoaded", (event) => {
-		if (
-			!wpeContentModelFormEditingExperience?.models ||
-			!wpeContentModelFormEditingExperience?.models[
-				wpeContentModelFormEditingExperience.postType
-			]
-		) {
-			return;
-		}
-		const richTextFields = document.querySelectorAll(".richtext textarea");
-		if (!richTextFields.length > 0) {
-			return;
-		}
-
-		richTextFields.forEach((field) => {
-			wp.oldEditor.initialize(field.getAttribute("id"), {
-				...wp.oldEditor.getDefaultSettings(),
-				tinymce: {
-					height: "300",
-					toolbar1:
-						"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_media",
-				},
-				mediaButtons: true,
-				quicktags: false,
-			});
-		});
-	});
 
 	/**
 	 * Allows styling of :invalid input fields only when the form was

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import MediaUploader from "./MediaUploader";
-import ClassicEditor from "./ClassicEditor";
+import RichTextEditor from "./RichTextEditor";
 import Icon from "../../../../components/icons";
 
 const defaultError = "This field is required";
@@ -109,7 +109,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 
 		case "richtext":
 			return (
-				<ClassicEditor
+				<RichTextEditor
 					field={field}
 					modelSlug={modelSlug}
 					errors={errors}

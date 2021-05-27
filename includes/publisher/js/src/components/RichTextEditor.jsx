@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Icon from "../../../../components/icons";
+const { wp } = window;
 
-export default function ClassicEditor({
+export default function RichTextEditor({
 	field,
 	modelSlug,
 	errors,
 	validate,
 	defaultError,
 }) {
+	useEffect(() => {
+		console.log(field);
+		wp.oldEditor.initialize(
+			`wpe-content-model-${modelSlug}-${field.slug}`,
+			{
+				...wp.oldEditor.getDefaultSettings(),
+				tinymce: {
+					height: "300",
+					toolbar1:
+						"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_media",
+				},
+				mediaButtons: true,
+				quicktags: false,
+			}
+		);
+	}, []);
+
 	return (
 		<>
 			<label htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>
