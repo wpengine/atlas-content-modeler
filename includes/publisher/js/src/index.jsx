@@ -9,7 +9,12 @@ const container = document.getElementById("wpe-content-model-fields-app");
 
 if (container && models.hasOwnProperty(postType)) {
 	const model = models[postType];
-	ReactDOM.render(<App model={model} />, container);
+	const urlParams = new URLSearchParams(window.location.search);
+
+	ReactDOM.render(
+		<App model={model} mode={urlParams.get("action")} />,
+		container
+	);
 
 	/**
 	 * Allows styling of :invalid input fields only when the form was

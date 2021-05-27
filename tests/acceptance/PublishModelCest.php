@@ -71,6 +71,7 @@ class PublishModelCest
 		$i->wait(2);
 
 		$i->see('Post published.');
+		$i->see('Edit goose'); // Page title should change from “Add goose” when published.
 
 		$i->seeInField('wpe-content-model[goose][color]', 'Gray');
 		$i->seeInField('wpe-content-model[goose][age]', '100');
