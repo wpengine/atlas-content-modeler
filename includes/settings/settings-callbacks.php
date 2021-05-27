@@ -18,8 +18,8 @@ add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 function register_admin_menu_page(): void {
 	$icon = require __DIR__ . '/views/admin-menu-icon.php';
 	add_menu_page(
-		esc_html__( 'Content Model', 'wpe-content-model' ),
-		esc_html__( 'Content Model', 'wpe-content-model' ),
+		esc_html__( 'Content Modeler', 'wpe-content-model' ),
+		esc_html__( 'Content Modeler', 'wpe-content-model' ),
 		'manage_options',
 		'wpe-content-model',
 		__NAMESPACE__ . '\render_admin_menu_page',

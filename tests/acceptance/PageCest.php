@@ -9,6 +9,6 @@ class PageCest
     {
         $I->loginAsAdmin();
         $I->amOnPage('/wp-admin/admin.php?page=wpe-content-model');
-        $I->see('Content Model Creator by WP Engine');
+        $I->see('Atlas Content Modeler by WP Engine');
     }
 }
