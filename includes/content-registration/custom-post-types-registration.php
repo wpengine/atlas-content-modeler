@@ -261,6 +261,12 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				continue;
 			}
 
+			$rich_text = false;
+
+			if ( 'richtext' === $field['type'] ) {
+				$rich_text = true;
+			}
+
 			$gql_field_type = map_html_field_type_to_graphql_field_type( $field['type'] );
 			if ( empty( $gql_field_type ) ) {
 				continue;
@@ -268,7 +274,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 
 			$field['type'] = $gql_field_type;
 
-			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field ) {
+			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
 				$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
 				/**
@@ -285,6 +291,10 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 
 				if ( $field['type'] === 'MediaItem' ) {
 					return DataSource::resolve_post_object( (int) $value, $context );
+				}
+
+				if ( $rich_text ) {
+					return do_shortcode( $value );
 				}
 
 				return $value;
