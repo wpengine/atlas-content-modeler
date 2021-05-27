@@ -361,18 +361,9 @@ function is_protected_meta( bool $protected, string $meta_key, string $meta_type
 		return $protected;
 	}
 
-	$models = get_registered_content_types();
-	$models = wp_list_pluck( $models, 'fields' );
-	$slugs  = [];
-
-	array_walk_recursive(
-		$models,
-		static function( $value, $key ) use ( &$slugs ) {
-			if ( $key === 'slug' ) {
-				$slugs[] = $value;
-			}
-		}
-	);
+	$fields = wp_list_pluck( get_registered_content_types(), 'fields' );
+	$fields = array_merge( ...array_values( $fields ) );
+	$slugs  = wp_list_pluck( $fields, 'slug' );
 
 	return in_array( $meta_key, $slugs, true );
 }
