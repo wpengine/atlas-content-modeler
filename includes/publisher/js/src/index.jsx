@@ -16,26 +16,6 @@ if (container && models.hasOwnProperty(postType)) {
 		container
 	);
 
-	// Add TinyMCE to rich text fields.
-	// @todo use wp.oldEditor instead of tinymce directly? Move this code to proper script file.
-	window.addEventListener("DOMContentLoaded", (event) => {
-		if (
-			!wpeContentModelFormEditingExperience?.models ||
-			!wpeContentModelFormEditingExperience?.models[
-				wpeContentModelFormEditingExperience.postType
-			]
-		) {
-			return;
-		}
-		const richTextFields = document.querySelectorAll(".richtext textarea");
-		if (!richTextFields.length > 0) {
-			return;
-		}
-		richTextFields.forEach((field) =>
-			tinymce.execCommand("mceAddEditor", false, field)
-		);
-	});
-
 	/**
 	 * Allows styling of :invalid input fields only when the form was
 	 * submitted. Prevents an issue where error messages appear for
