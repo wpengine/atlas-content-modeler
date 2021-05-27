@@ -293,6 +293,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 					return DataSource::resolve_post_object( (int) $value, $context );
 				}
 
+				// fixes caption shortcode for graphql output.
 				if ( $rich_text ) {
 					return do_shortcode( $value );
 				}
