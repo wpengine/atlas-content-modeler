@@ -1,6 +1,9 @@
+/* global wpeContentModelFormEditingExperience */
 import React, { useEffect } from "react";
 import Icon from "../../../../components/icons";
 const { wp } = window;
+
+const { models, postType } = wpeContentModelFormEditingExperience;
 
 export default function RichTextEditor({
 	field,
@@ -12,16 +15,23 @@ export default function RichTextEditor({
 	const fieldId = `wpe-content-model-${modelSlug}-${field.slug}`;
 
 	useEffect(() => {
-		wp.oldEditor.initialize(fieldId, {
-			...wp.oldEditor.getDefaultSettings(),
-			tinymce: {
-				height: "300",
-				toolbar1:
-					"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_media",
-			},
-			mediaButtons: true,
-			quicktags: false,
-		});
+		if (
+			wpeContentModelFormEditingExperience?.models ||
+			wpeContentModelFormEditingExperience?.models[
+				wpeContentModelFormEditingExperience.postType
+			]
+		) {
+			wp.oldEditor.initialize(fieldId, {
+				...wp.oldEditor.getDefaultSettings(),
+				tinymce: {
+					height: "300",
+					toolbar1:
+						"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_media",
+				},
+				mediaButtons: true,
+				quicktags: false,
+			});
+		}
 	}, []);
 
 	return (
