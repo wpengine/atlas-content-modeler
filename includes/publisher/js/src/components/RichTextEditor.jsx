@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 import Icon from "../../../../components/icons";
 const { wp } = window;
 
-const { models, postType } = wpeContentModelFormEditingExperience;
-
 export default function RichTextEditor({
 	field,
 	modelSlug,
