@@ -70,6 +70,7 @@ final class FormEditingExperience {
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
 		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
+		add_filter( 'screen_options_show_screen', [ $this, 'hide_screen_options' ], 10, 2 );
 	}
 
 	/**
@@ -387,5 +388,21 @@ final class FormEditingExperience {
 		// Use a generated title when entry title fields or field data are absent.
 		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'wpe-content-model' );
 		return $post_type_singular . ' ' . $id;
+	}
+
+	/**
+	 * Hides the “Screen Options” drop-down on post types registered by this plugin.
+	 *
+	 * @param bool       $show_screen The current state of the screen options dropdown.
+	 * @param \WP_Screen $screen Information about the current screen.
+	 *
+	 * @return bool The new state of the screen options dropdown. (False to disable.)
+	 */
+	public function hide_screen_options( bool $show_screen, $screen ): bool {
+		if ( in_array( $screen->post_type, array_keys( $this->models ), true ) ) {
+			return false;
+		}
+
+		return $show_screen;
 	}
 }
