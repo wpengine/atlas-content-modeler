@@ -76,8 +76,16 @@ function enqueue_settings_assets( $hook ) {
 		$plugin['Version']
 	);
 
+	wp_register_style(
+		'material-icons',
+		'https://fonts.googleapis.com/icon?family=Material+Icons',
+		[],
+		$plugin['Version']
+	);
+
 	if ( 'toplevel_page_wpe-content-model' === $hook ) {
 		wp_enqueue_script( 'wpe-content-model-app' );
 		wp_enqueue_style( 'wpe-content-model-app-styles' );
+		wp_enqueue_style( 'material-icons' );
 	}
 }
