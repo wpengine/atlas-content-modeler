@@ -24,7 +24,7 @@ function wpe_content_model_get_plugin_data( object $args ) {
 		return;
 	}
 
-	$current_plugin_data = get_plugin_data( WPE_CONTENT_MODEL_FILE );
+	$current_plugin_data = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 	$meets_wp_req        = version_compare( get_bloginfo( 'version' ), $product_info->requires_at_least, '>=' );
 
 	$api                        = new stdClass();
@@ -59,7 +59,7 @@ function wpe_content_model_get_plugin_api_error() {
  * @return stdClass
  */
 function wpe_content_model_get_remote_plugin_info() {
-	$current_plugin_data = get_plugin_data( WPE_CONTENT_MODEL_FILE );
+	$current_plugin_data = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 	$response            = get_transient( 'wpe_content_model_product_info' );
 
 	if ( false === $response ) {

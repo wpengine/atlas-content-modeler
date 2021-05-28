@@ -31,13 +31,13 @@ function wpe_content_model_check_for_plugin_updates( $data ) {
 		return $data;
 	}
 
-	$current_plugin_data = get_plugin_data( WPE_CONTENT_MODEL_FILE );
+	$current_plugin_data = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 	$meets_wp_req        = version_compare( get_bloginfo( 'version' ), $response->requires_at_least, '>=' );
 
 	// Only update the response if there's a newer version, otherwise WP shows an update notice for the same version.
 	if ( $meets_wp_req && version_compare( $current_plugin_data['Version'], $response->version, '<' ) ) {
-		$response->plugin                         = plugin_basename( WPE_CONTENT_MODEL_FILE );
-		$data->response[ WPE_CONTENT_MODEL_PATH ] = $response;
+		$response->plugin                             = plugin_basename( ATLAS_CONTENT_MODELER_FILE );
+		$data->response[ ATLAS_CONTENT_MODELER_PATH ] = $response;
 	}
 
 	return $data;
@@ -58,7 +58,7 @@ add_filter( 'plugins_api', 'wpe_content_model_custom_plugin_api_request', 10, 3 
  * @return false|stdClass $response Plugin API arguments.
  */
 function wpe_content_model_custom_plugin_api_request( $api, $action, $args ) {
-	if ( empty( $args->slug ) || WPE_CONTENT_MODEL_SLUG !== $args->slug ) {
+	if ( empty( $args->slug ) || ATLAS_CONTENT_MODELER_SLUG !== $args->slug ) {
 		return $api;
 	}
 
@@ -91,7 +91,7 @@ function wpe_content_model_delegate_plugin_row_notice() {
 		return;
 	}
 
-	$plugin_basename = plugin_basename( WPE_CONTENT_MODEL_FILE );
+	$plugin_basename = plugin_basename( ATLAS_CONTENT_MODELER_FILE );
 
 	remove_action( "after_plugin_row_{$plugin_basename}", 'wp_plugin_update_row' );
 	add_action( "after_plugin_row_{$plugin_basename}", 'wpe_content_model_display_plugin_row_notice', 10, 2 );

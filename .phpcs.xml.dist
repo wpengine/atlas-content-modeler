@@ -48,7 +48,7 @@
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="wpe_content_model" />
-				<element value="WPE_CONTENT_MODEL" />
+				<element value="ATLAS_CONTENT_MODELER" />
 				<element value="WPE\AtlasContentModeler" />
 			</property>
 		</properties>
