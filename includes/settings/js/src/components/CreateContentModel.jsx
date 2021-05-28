@@ -46,7 +46,7 @@ export default function CreateContentModel() {
 				}
 			})
 			.catch((err) => {
-				if (err.code === "wpe_content_model_already_exists") {
+				if (err.code === "atlas_content_modeler_already_exists") {
 					setError("slug", {
 						type: "idExists",
 						message: err.message,

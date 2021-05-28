@@ -47,12 +47,12 @@ composer phpcs:fix
 **WordPress Unit Tests**
 In order to run WordPress unit tests, the test framework needs to be set up.
 ```
-/bin/bash tests/install-wp-tests.sh wpe_content_model_tests db_name db_password
+/bin/bash tests/install-wp-tests.sh atlas_content_modeler_tests db_name db_password
 ```
 
 If you connect to mysql via a sock connection, you can run the following.
 ```
-/bin/bash tests/install-wp-tests.sh wpe_content_model_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
+/bin/bash tests/install-wp-tests.sh atlas_content_modeler_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
 ```
 
 Run `phpunit` directly.
