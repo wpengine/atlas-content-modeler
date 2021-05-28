@@ -7,8 +7,6 @@ Context
 -------
 
 - A model's fields need to be reorderable via drag-and-drop, keyboard controls with screen reader output, and touch controls.
-- In repeater fields, sub-fields should be constrained to the repeater and not draggable into parent contexts.
-- Repeater fields can be nested, and each of their sub-fields should not move into parent repeater fields.
 
 Decision
 --------

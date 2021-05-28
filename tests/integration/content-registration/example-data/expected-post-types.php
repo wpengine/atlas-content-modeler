@@ -87,13 +87,6 @@ return array (
 					'show_in_rest' => true,
 					'show_in_graphql' => true,
 				),
-				'dog-repeater' => array(
-					'slug' => 'dog-repeater',
-					'type' => 'repeater',
-					'description' => 'dog-repeater description',
-					'show_in_rest' => true,
-					'show_in_graphql' => true,
-				),
 			),
 		),
 	'cat' =>

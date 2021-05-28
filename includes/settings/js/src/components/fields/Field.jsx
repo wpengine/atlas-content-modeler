@@ -3,7 +3,6 @@ import { Draggable } from "react-beautiful-dnd";
 import Form from "./Form";
 import Icon from "../../../../../components/icons";
 import supportedFields from "./supportedFields";
-import Repeater from "./Repeater";
 import { FieldOptionsDropdown } from "./FieldOptionsDropdown";
 import { ModelsContext } from "../../ModelsContext";
 import FieldButtons from "../FieldButtons";
@@ -25,7 +24,6 @@ function Field({
 	positionAfter,
 	setInfoTag,
 	type = "text",
-	parent,
 }) {
 	const [activeForm, setActiveForm] = useState(type);
 	const { dispatch } = useContext(ModelsContext);
@@ -118,14 +116,6 @@ function Field({
 									field={data}
 									model={model}
 								/>
-								{data.type === "repeater" && (
-									<Repeater
-										fields={data?.subfields}
-										model={model}
-										parent={id}
-										setInfoTag={setInfoTag}
-									/>
-								)}
 							</div>
 						</li>
 						<li
@@ -140,16 +130,12 @@ function Field({
 									dispatch({
 										type: "addField",
 										position: positionAfter,
-										parent,
 										model: model.slug,
 									})
 								}
 								aria-label={`Add a new field below the ${data.name} ${data.type} field`}
 							>
-								<Icon
-									type="add"
-									size={parent ? "small" : "large"}
-								/>
+								<Icon type="add" size="large" />
 							</button>
 						</li>
 					</div>
@@ -169,7 +155,6 @@ function Field({
 				<FieldButtons
 					activeButton={activeForm}
 					clickAction={setActiveForm}
-					parent={parent}
 				/>
 			)}
 			<div className={editing ? "field-form editing" : "field-form"}>
@@ -192,7 +177,6 @@ function Field({
 					editing={editing}
 					id={id}
 					position={position}
-					parent={parent}
 				/>
 			</div>
 		</li>

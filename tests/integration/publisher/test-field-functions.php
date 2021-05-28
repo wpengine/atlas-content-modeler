@@ -33,22 +33,6 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 		);
 	}
 
-	public function test_get_top_level_fields(): void {
-		$fields = [
-			[ 'id' => 123, 'parent' => 456 ],
-			[ 'id' => 456 ],
-		];
-
-		$expected = [
-			[ 'id' => 456 ]
-		];
-
-		$this->assertSame(
-			$expected,
-			get_top_level_fields( $fields )
-		);
-	}
-
 	public function test_get_entry_title_field(): void {
 		$fields = [
 			[ 'id' => 123 ],

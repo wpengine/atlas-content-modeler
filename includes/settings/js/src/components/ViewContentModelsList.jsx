@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
-import { getRootFields } from "../queries";
+import { sanitizeFields } from "../queries";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 
 function Header({ showButton = true }) {
@@ -79,7 +79,7 @@ function ContentModels({ models }) {
 					<span className="flex-item">
 						<p className="label">Fields</p>
 						<p className="value">
-							{Object.keys(getRootFields(fields)).length}
+							{Object.keys(sanitizeFields(fields)).length}
 						</p>
 					</span>
 				</Link>
