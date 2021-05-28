@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\Settings;
+namespace WPE\AtlasContentModeler\Settings;
 
-use function WPE\ContentModel\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 /**

@@ -5,11 +5,11 @@
  * @package WPE_Content_Model
  */
 
-use function WPE\ContentModel\ContentRegistration\generate_custom_post_type_args;
-use function \WPE\ContentModel\ContentRegistration\generate_custom_post_type_labels;
+use function WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_args;
+use function \WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_labels;
 use PHPUnit\Runner\Exception as PHPUnitRunnerException;
-use function WPE\ContentModel\ContentRegistration\update_registered_content_types;
-use function WPE\ContentModel\ContentRegistration\is_protected_meta;
+use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\is_protected_meta;
 
 /**
  * Post type registration case.
@@ -100,10 +100,10 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::\WPE\ContentModel\ContentRegistration\register_content_types()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\register_content_types()
 	 */
 	public function test_content_registration_init_hook(): void {
-		$this->assertSame( 10, has_action( 'init', 'WPE\ContentModel\ContentRegistration\register_content_types' ) );
+		$this->assertSame( 10, has_action( 'init', 'WPE\AtlasContentModeler\ContentRegistration\register_content_types' ) );
 	}
 
 	public function test_defined_custom_post_types_are_registered(): void {
@@ -175,14 +175,14 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_is_protected_meta_hook(): void {
-		$this->assertSame( 10, has_action( 'is_protected_meta', 'WPE\ContentModel\ContentRegistration\is_protected_meta' ) );
+		$this->assertSame( 10, has_action( 'is_protected_meta', 'WPE\AtlasContentModeler\ContentRegistration\is_protected_meta' ) );
 	}
 
 	/**
-	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_model_fields_are_protected(): void {
 		$fields = $this->mock_post_types()['dog']['fields'];
@@ -193,7 +193,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_fields_not_attached_to_a_model_are_not_affected(): void {
 		self::assertFalse( is_protected_meta( false, 'this-key-is-unprotected-and-not-ours-and-should-remain-unprotected', 'post' ) );

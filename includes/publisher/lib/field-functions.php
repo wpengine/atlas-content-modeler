@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel;
+namespace WPE\AtlasContentModeler;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
