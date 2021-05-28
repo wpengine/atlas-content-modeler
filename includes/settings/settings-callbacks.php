@@ -76,6 +76,7 @@ function enqueue_settings_assets( $hook ) {
 		$plugin['Version']
 	);
 
+	// TODO: remove when final icon is chosen for feedback.
 	wp_register_style(
 		'material-icons',
 		'https://fonts.googleapis.com/icon?family=Material+Icons',
