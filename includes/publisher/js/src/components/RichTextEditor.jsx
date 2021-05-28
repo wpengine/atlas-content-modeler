@@ -1,4 +1,4 @@
-/* global wpeContentModelFormEditingExperience */
+/* global atlasContentModelerFormEditingExperience */
 import React, { useEffect } from "react";
 import Icon from "../../../../components/icons";
 const { wp } = window;
@@ -14,9 +14,9 @@ export default function RichTextEditor({
 
 	useEffect(() => {
 		if (
-			wpeContentModelFormEditingExperience?.models ||
-			wpeContentModelFormEditingExperience?.models[
-				wpeContentModelFormEditingExperience.postType
+			atlasContentModelerFormEditingExperience?.models ||
+			atlasContentModelerFormEditingExperience?.models[
+				atlasContentModelerFormEditingExperience.postType
 			]
 		) {
 			wp.oldEditor.initialize(fieldId, {

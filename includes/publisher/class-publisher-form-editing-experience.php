@@ -146,7 +146,7 @@ final class FormEditingExperience {
 
 		wp_localize_script(
 			'atlas-content-modeler-form-editing-experience',
-			'wpeContentModelFormEditingExperience',
+			'atlasContentModelerFormEditingExperience',
 			[
 				'models'   => $models,
 				'postType' => $this->current_screen_post_type,

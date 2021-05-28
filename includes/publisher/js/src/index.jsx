@@ -1,10 +1,10 @@
-/* global wpeContentModelFormEditingExperience */
+/* global atlasContentModelerFormEditingExperience */
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./../../scss/index.scss";
 
-const { models, postType } = wpeContentModelFormEditingExperience;
+const { models, postType } = atlasContentModelerFormEditingExperience;
 const container = document.getElementById("atlas-content-modeler-fields-app");
 
 if (container && models.hasOwnProperty(postType)) {
