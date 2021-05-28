@@ -111,6 +111,12 @@ function Field({
 									</div>
 								</div>
 							</button>
+							<div className="order-0 my-2 my-sm-0 text-end order-sm-2 ms-sm-auto">
+								<FieldOptionsDropdown
+									field={data}
+									model={model}
+								/>
+							</div>
 						</li>
 						<li
 							className={
@@ -129,7 +135,7 @@ function Field({
 								}
 								aria-label={`Add a new field below the ${data.name} ${data.type} field`}
 							>
-								<Icon type="add" size="small" />
+								<Icon type="add" size="large" />
 							</button>
 						</li>
 					</div>
