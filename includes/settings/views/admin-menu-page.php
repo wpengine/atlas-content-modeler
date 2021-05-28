@@ -9,6 +9,13 @@ declare(strict_types=1);
 
 namespace WPE\ContentModel\Settings;
 
+/**
+ * Get google fonts (temporary)
+ */
+function google_fonts() {
+	wp_enqueue_style( 'google-fonts', 'https://fonts.googleapis.com/icon?family=Material+Icons', false, '1.1' );
+}
+add_action( 'wp_enqueue_scripts', 'google_fonts' );
 ?>
 
 <div class="wrap wpe-content-model-admin-page">
@@ -24,7 +31,7 @@ namespace WPE\ContentModel\Settings;
 					</a>
 				</div>
 				<div class="ms-auto align-self-center">
-					<a href="#" role="button" class="btn btn-primary content-modeler btn-primary btn-lg">Send Feedback</a>
+					<a href="#" role="button" class="btn btn-primary content-modeler btn-primary btn-lg"><span class="material-icons">feedback</span> Send Feedback</a>
 				</div>
 			</div>
 		</div>
