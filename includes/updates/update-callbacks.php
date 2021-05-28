@@ -113,7 +113,7 @@ function wpe_content_model_display_plugin_row_notice( $plugin_file, $plugin_data
 	$error = wpe_content_model_get_plugin_api_error();
 
 	?>
-	<tr class="plugin-update-tr active" id="wpe-content-model-update" data-slug="wpe-content-model" data-plugin="wpe-content-model/wpe-content-model.php">
+	<tr class="plugin-update-tr active" id="atlas-content-modeler-update" data-slug="atlas-content-modeler" data-plugin="atlas-content-modeler/atlas-content-modeler.php">
 		<td colspan="3" class="plugin-update">
 			<div class="update-message notice inline notice-error notice-alt">
 				<p>

@@ -27,7 +27,7 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
  * @return void
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/wpe-content-model.php';
+	require dirname( dirname( __FILE__ ) ) . '/atlas-content-modeler.php';
 	require_once WP_CONTENT_DIR . '/plugins/wp-graphql/wp-graphql.php';
 }
 

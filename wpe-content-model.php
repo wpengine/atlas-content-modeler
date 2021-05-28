@@ -5,7 +5,7 @@
  * Description: Model content for headless WordPress.
  * Author: WP Engine
  * Author URI: https://wpengine.com/
- * Text Domain: wpe-content-model
+ * Text Domain: atlas-content-modeler
  * Domain Path: /languages
  * Version: 0.2.0
  *

@@ -10,7 +10,7 @@ export default function RichTextEditor({
 	validate,
 	defaultError,
 }) {
-	const fieldId = `wpe-content-model-${modelSlug}-${field.slug}`;
+	const fieldId = `atlas-content-modeler-${modelSlug}-${field.slug}`;
 
 	useEffect(() => {
 		if (
@@ -34,12 +34,14 @@ export default function RichTextEditor({
 
 	return (
 		<>
-			<label htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>
+			<label
+				htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+			>
 				{field.name}
 			</label>
 			<br />
 			<textarea
-				name={`wpe-content-model[${modelSlug}][${field.slug}]`}
+				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 				id={fieldId}
 				defaultValue={field.value}
 				required={field.required}

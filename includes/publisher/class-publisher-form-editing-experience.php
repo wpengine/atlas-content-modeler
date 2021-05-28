@@ -115,7 +115,7 @@ final class FormEditingExperience {
 		$plugin = get_plugin_data( WPE_CONTENT_MODEL_FILE );
 
 		wp_register_script(
-			'wpe-content-model-form-editing-experience',
+			'atlas-content-modeler-form-editing-experience',
 			WPE_CONTENT_MODEL_URL . 'includes/publisher/dist/index.js',
 			[ 'react', 'react-dom', 'wp-tinymce' ],
 			$plugin['Version'],
@@ -145,7 +145,7 @@ final class FormEditingExperience {
 		}
 
 		wp_localize_script(
-			'wpe-content-model-form-editing-experience',
+			'atlas-content-modeler-form-editing-experience',
 			'wpeContentModelFormEditingExperience',
 			[
 				'models'   => $models,
@@ -154,7 +154,7 @@ final class FormEditingExperience {
 		);
 
 		wp_enqueue_media();
-		wp_enqueue_script( 'wpe-content-model-form-editing-experience' );
+		wp_enqueue_script( 'atlas-content-modeler-form-editing-experience' );
 	}
 
 	/**
@@ -193,8 +193,8 @@ final class FormEditingExperience {
 			return;
 		}
 
-		wp_nonce_field( 'wpe-content-model-pubex-nonce', 'wpe-content-model-pubex-nonce' );
-		echo '<div id="wpe-content-model-fields-app" class="wpe"></div>';
+		wp_nonce_field( 'atlas-content-modeler-pubex-nonce', 'atlas-content-modeler-pubex-nonce' );
+		echo '<div id="atlas-content-modeler-fields-app" class="wpe"></div>';
 	}
 
 	/**
@@ -235,7 +235,7 @@ final class FormEditingExperience {
 	 * @param WP_Post $post    The post object being saved.
 	 */
 	public function save_post( int $post_id, WP_Post $post ): void {
-		if ( empty( $_POST['wpe-content-model'] ) || empty( $_POST['wpe-content-model'][ $post->post_type ] ) ) {
+		if ( empty( $_POST['atlas-content-modeler'] ) || empty( $_POST['atlas-content-modeler'][ $post->post_type ] ) ) {
 			return;
 		}
 
@@ -245,19 +245,19 @@ final class FormEditingExperience {
 		}
 
 		if (
-			! isset( $_POST['wpe-content-model-pubex-nonce'] ) ||
+			! isset( $_POST['atlas-content-modeler-pubex-nonce'] ) ||
 			! wp_verify_nonce(
 				sanitize_text_field(
-					wp_unslash( $_POST['wpe-content-model-pubex-nonce'] )
+					wp_unslash( $_POST['atlas-content-modeler-pubex-nonce'] )
 				),
-				'wpe-content-model-pubex-nonce'
+				'atlas-content-modeler-pubex-nonce'
 			) ) {
 			$this->error_save_post = 'Nonce verification failed when saving your content. Please try again.';
 			return;
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		$posted_values = $_POST['wpe-content-model'][ $post->post_type ];
+		$posted_values = $_POST['atlas-content-modeler'][ $post->post_type ];
 
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
@@ -324,8 +324,8 @@ final class FormEditingExperience {
 
 		// Only show errors for post types managed by our plugin.
 		if ( array_key_exists( $post_type, $this->models ) && ! empty( $this->error_save_post ) ) {
-			$location = remove_query_arg( 'wpe-content-model-publisher-save-error', $location );
-			$location = add_query_arg( 'wpe-content-model-publisher-save-error', $this->error_save_post, $location );
+			$location = remove_query_arg( 'atlas-content-modeler-publisher-save-error', $location );
+			$location = add_query_arg( 'atlas-content-modeler-publisher-save-error', $this->error_save_post, $location );
 		}
 
 		return $location;
@@ -338,11 +338,11 @@ final class FormEditingExperience {
 	 */
 	public function display_save_post_errors(): void {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier.
-		if ( ! empty( $_GET['wpe-content-model-publisher-save-error'] ) ) {
+		if ( ! empty( $_GET['atlas-content-modeler-publisher-save-error'] ) ) {
 			?>
 				<div class="error">
 					<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier. ?>
-					<p><?php echo esc_html( sanitize_text_field( wp_unslash( $_GET['wpe-content-model-publisher-save-error'] ) ) ); ?></p>
+					<p><?php echo esc_html( sanitize_text_field( wp_unslash( $_GET['atlas-content-modeler-publisher-save-error'] ) ) ); ?></p>
 				</div>
 			<?php
 		}
@@ -382,7 +382,7 @@ final class FormEditingExperience {
 		}
 
 		// Use a generated title when entry title fields or field data are absent.
-		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'wpe-content-model' );
+		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'atlas-content-modeler' );
 		return $post_type_singular . ' ' . $id;
 	}
 

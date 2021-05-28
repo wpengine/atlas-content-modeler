@@ -114,8 +114,8 @@
 	box-shadow: none;
 }
 
-.wpe-content-model-delete-model-modal-container,
-.wpe-content-model-delete-field-modal-container {
+.atlas-content-modeler-delete-model-modal-container,
+.atlas-content-modeler-delete-field-modal-container {
 	h2 {
 		font-size: 24px;
 		margin-top: 0;
@@ -126,7 +126,7 @@
 	}
 }
 
-.wpe-content-model-edit-model-modal-container {
+.atlas-content-modeler-edit-model-modal-container {
 	overflow: hidden;
 
 	.ReactModal__Overlay--after-open {

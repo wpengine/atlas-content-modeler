@@ -110,17 +110,17 @@ function wpe_content_model_get_remote_plugin_info() {
 function wpe_content_model_get_api_error_text( $reason ) {
 	switch ( $reason ) {
 		case 'key-unknown':
-			return __( 'The product you requested information for is unknown. Please contact support.', 'wpe-content-model' );
+			return __( 'The product you requested information for is unknown. Please contact support.', 'atlas-content-modeler' );
 
 		default:
 			/* translators: %1$s: Link to account portal. %2$s: The text that is linked. */
 			return sprintf(
 				__(
 					'There was an unknown error connecting to the update service. This issue could be temporary. Please contact support if this error persists.',
-					'wpe-content-model'
+					'atlas-content-modeler'
 				),
 				'https://my.wpengine.com/products',
-				esc_html__( 'WP Engine Account Portal', 'wpe-content-model' )
+				esc_html__( 'WP Engine Account Portal', 'atlas-content-modeler' )
 			);
 	}
 }
@@ -137,7 +137,7 @@ function wpe_content_model_get_api_error_text( $reason ) {
  */
 function wpe_content_model_request_plugin_updates( $args ) {
 	return wp_remote_get(
-		'https://wp-product-info.wpesvc.net/v1/plugins/wpe-content-model',
+		'https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler',
 		$args
 	);
 }

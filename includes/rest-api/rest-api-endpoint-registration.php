@@ -128,7 +128,7 @@ function dispatch_get_content_model( WP_REST_Request $request ) {
 		return rest_ensure_response(
 			[
 				'success' => false,
-				'errors'  => esc_html__( 'The requested content model does not exist.', 'wpe-content-model' ),
+				'errors'  => esc_html__( 'The requested content model does not exist.', 'atlas-content-modeler' ),
 			]
 		);
 	}
@@ -399,7 +399,7 @@ function dispatch_delete_model( WP_REST_Request $request ) {
 		return rest_ensure_response(
 			[
 				'success' => false,
-				'errors'  => esc_html__( 'The specified content model does not exist.', 'wpe-content-model' ),
+				'errors'  => esc_html__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
 			]
 		);
 	}
@@ -466,7 +466,7 @@ function create_model( string $post_type_slug, array $args ) {
 	$created = update_registered_content_types( $content_types );
 
 	if ( ! $created ) {
-		return new WP_Error( 'model-not-created', esc_html__( 'Model not created. Reason unknown.', 'wpe-content-model' ) );
+		return new WP_Error( 'model-not-created', esc_html__( 'Model not created. Reason unknown.', 'atlas-content-modeler' ) );
 	}
 
 	return true;
@@ -528,13 +528,13 @@ function update_model( string $post_type_slug, array $args ) {
  */
 function delete_model( string $post_type_slug ) {
 	if ( empty( $post_type_slug ) ) {
-		return new WP_Error( 'model-not-deleted', esc_html__( 'Please provide a post-type-slug.', 'wpe-content-model' ) );
+		return new WP_Error( 'model-not-deleted', esc_html__( 'Please provide a post-type-slug.', 'atlas-content-modeler' ) );
 	}
 
 	$content_types = get_registered_content_types();
 
 	if ( empty( $content_types[ $post_type_slug ] ) ) {
-		return new WP_Error( 'model-not-deleted', esc_html__( 'Content type does not exist.', 'wpe-content-model' ) );
+		return new WP_Error( 'model-not-deleted', esc_html__( 'Content type does not exist.', 'atlas-content-modeler' ) );
 	}
 
 	unset( $content_types[ $post_type_slug ] );

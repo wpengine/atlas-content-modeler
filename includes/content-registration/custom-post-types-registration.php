@@ -73,7 +73,7 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 function generate_custom_post_type_labels( array $labels ): array {
 	if ( empty( $labels['singular'] ) || empty( $labels['plural'] ) ) {
 		throw new InvalidArgumentException(
-			__( 'You must provide both singular and plural labels to generate content type labels.', 'wpe-content-model' )
+			__( 'You must provide both singular and plural labels to generate content type labels.', 'atlas-content-modeler' )
 		);
 	}
 
@@ -132,7 +132,7 @@ function generate_custom_post_type_labels( array $labels ): array {
 function generate_custom_post_type_args( array $args ): array {
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		throw new InvalidArgumentException(
-			__( 'You must provide both a singular and plural name to register a custom content type.', 'wpe-content-model' )
+			__( 'You must provide both a singular and plural name to register a custom content type.', 'atlas-content-modeler' )
 		);
 	}
 
