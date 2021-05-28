@@ -1,2 +1,16 @@
+/* import bootstrap dependencies for grid and utilities only */
+
+.wpe-content-model {
+	@import "../../../node_modules/bootstrap/scss/_functions";
+	@import "../../../node_modules/bootstrap/scss/_variables";
+	@import "../../../node_modules/bootstrap/scss/_mixins";
+	@import "../../../node_modules/bootstrap/scss/vendor/_rfs";
+	@import "../../../node_modules/bootstrap/scss/_containers";
+	@import "../../../node_modules/bootstrap/scss/_grid";
+	@import "../../../node_modules/bootstrap/scss/_helpers";
+	@import "../../../node_modules/bootstrap/scss/_utilities";
+	@import "../../../node_modules/bootstrap/scss/utilities/_api";
+}
+
 @import "./classic-form";
 @import "../../settings/scss/_flex";
