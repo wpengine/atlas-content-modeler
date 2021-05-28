@@ -13,7 +13,7 @@ namespace WPE\ContentModel\Settings;
 
 <div class="wrap wpe-content-model-admin-page">
 	<header>
-		<div class="wrap">
+		<div class="wrap wpe-content-model">
 			<div class="d-flex flex-row">
 				<div>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wpe-content-model' ) ); ?>">
@@ -24,7 +24,7 @@ namespace WPE\ContentModel\Settings;
 					</a>
 				</div>
 				<div>
-					<a href="" class="btn btn-primary p-2">Test</a>
+					<a href="#" role="button" class="btn btn-primary btn-lg p-2">Test</a>
 				</div>
 			</div>
 		</div>
