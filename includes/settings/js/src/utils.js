@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { getFieldOrder, getRootFields } from "./queries";
+import { getFieldOrder, sanitizeFields } from "./queries";
 import { toValidApiId } from "./components/fields/toValidApiId";
 
 /**
@@ -101,7 +101,7 @@ export const getGraphiQLLink = (modelData) => {
 	const fragmentName = `${modelSingular}Fields`;
 	const pluralSlug = toValidApiId(modelData.plural);
 
-	const fields = getRootFields(modelData?.fields);
+	const fields = sanitizeFields(modelData?.fields);
 	const fieldSlugs = getFieldOrder(fields).map((id) => {
 		if (fields[id]?.type === "media") {
 			return `

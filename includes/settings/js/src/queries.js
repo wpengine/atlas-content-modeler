@@ -83,7 +83,7 @@ export function getPositionAfter(id, fields) {
  *
  * @param {Object} fields Fields and all their properties.
  */
-export function getRootFields(fields) {
+export function sanitizeFields(fields) {
 	if (typeof fields !== "object") {
 		return {};
 	}

@@ -1,6 +1,6 @@
-import { getRootFields, getTitleFieldId } from "./queries";
+import { sanitizeFields, getTitleFieldId } from "./queries";
 
-describe("getRootFields", () => {
+describe("sanitizeFields", () => {
 	it("moves children to subfields", () => {
 		const fields = {
 			123: { id: 123 },
@@ -14,11 +14,11 @@ describe("getRootFields", () => {
 			789: { id: 789 },
 		};
 
-		expect(getRootFields(fields)).toStrictEqual(expected);
+		expect(sanitizeFields(fields)).toStrictEqual(expected);
 	});
 
 	it("passes empty objects through unchanged", () => {
-		expect(getRootFields({})).toStrictEqual({});
+		expect(sanitizeFields({})).toStrictEqual({});
 	});
 });
 
