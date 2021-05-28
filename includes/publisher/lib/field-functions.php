@@ -2,7 +2,7 @@
 /**
  * Functions to manipulate and query fields from content models.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);

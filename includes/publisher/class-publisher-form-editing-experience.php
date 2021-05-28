@@ -2,7 +2,7 @@
 /**
  * An experiment with form-based publishing.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);

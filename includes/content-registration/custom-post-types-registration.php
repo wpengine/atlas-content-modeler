@@ -2,7 +2,7 @@
 /**
  * Registers custom content types and custom fields.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);

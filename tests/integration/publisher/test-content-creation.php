@@ -2,7 +2,7 @@
 /**
  * Tests Content Creation.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 use function WPE\AtlasContentModeler\FormEditingExperience\set_slug;

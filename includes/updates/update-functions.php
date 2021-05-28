@@ -2,7 +2,7 @@
 /**
  * Plugin updates related functions.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -4,7 +4,7 @@
  *
  * @see https://developer.wordpress.org/reference/functions/add_menu_page/#parameters
  * @see https://stackoverflow.com/a/42265057
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 $wpe_content_model_icon = <<<ICON

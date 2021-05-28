@@ -2,7 +2,7 @@
 /**
  * Settings related callbacks.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);

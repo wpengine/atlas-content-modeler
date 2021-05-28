@@ -2,7 +2,7 @@
 /**
  * Class PostTypeRegistrationTestCases
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 use function WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_args;

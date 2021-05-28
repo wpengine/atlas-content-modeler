@@ -2,7 +2,7 @@
 /**
  * Tests for field functions.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 use function WPE\AtlasContentModeler\order_fields;
