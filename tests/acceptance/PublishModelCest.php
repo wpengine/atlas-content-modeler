@@ -65,6 +65,7 @@ class PublishModelCest
 		$i->switchToIFrame('#field-anotherRichTextField iframe');
 		$i->fillField('#tinymce', 'I am another rich text field');
 		$i->switchToIFrame(); // switch back to main window
+		$i->scrollTo('#submitdiv');
 
 
 		$i->click('Publish', '#publishing-action');
