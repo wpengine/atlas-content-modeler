@@ -138,6 +138,7 @@ function generate_custom_post_type_args( array $args ): array {
 
 	$singular = $args['singular'];
 	$plural   = $args['plural'];
+	$icon     = require ATLAS_CONTENT_MODELER_DIR . '/includes/settings/views/admin-entry-icon.php';
 	$labels   = generate_custom_post_type_labels(
 		[
 			'singular' => $singular,
@@ -165,6 +166,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'show_in_graphql'     => $args['show_in_graphql'] ?? true,
 		'graphql_single_name' => $args['graphql_single_name'] ?? camelcase( $singular ),
 		'graphql_plural_name' => $args['graphql_plural_name'] ?? camelcase( $plural ),
+		'menu_icon'           => $icon,
 	];
 }
 
