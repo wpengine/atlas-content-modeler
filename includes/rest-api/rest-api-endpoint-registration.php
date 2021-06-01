@@ -461,6 +461,10 @@ function create_model( string $post_type_slug, array $args ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
+	if ( empty( $args['fields'] ) ) {
+		$args['fields'] = [];
+	}
+
 	$content_types[ $post_type_slug ] = $args;
 
 	$created = update_registered_content_types( $content_types );
