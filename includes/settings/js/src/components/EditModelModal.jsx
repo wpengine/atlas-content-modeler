@@ -18,7 +18,7 @@ function updateModel(slug = "", data = {}) {
 	}
 
 	const updated = apiFetch({
-		path: `/wpe/content-model/${slug}`,
+		path: `/wpe/atlas/content-model/${slug}`,
 		method: "PATCH",
 		_wpnonce: wpApiSettings.nonce,
 		data,
