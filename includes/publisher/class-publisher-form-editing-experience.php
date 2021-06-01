@@ -370,10 +370,12 @@ final class FormEditingExperience {
 	 * Runs an `admin_notices` hook.
 	 */
 	public function render_feedback_notice(): void {
+		// If transient exists then don't show but otherwise show it.
+		// Transient API.
 		$screen    = get_current_screen();
 		$post_type = $screen->post_type;
 		// Only enforce this slug on created models.
-		if ( ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
+		if ( get_transient( 'hide_feedback_banner' ) || ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
 			return;
 		}
 
