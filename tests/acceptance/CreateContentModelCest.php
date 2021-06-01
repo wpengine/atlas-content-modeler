@@ -27,6 +27,7 @@ class CreateContentModelCest
         $I->fillField(['name' => 'description'], 'My candy content model');
         $I->see('22/250', 'span.count');
         $I->click('.card-content button.primary');
+        $I->wait(1);
 
         $I->amOnWPEngineContentModelPage();
         $I->wait(1);
