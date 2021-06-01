@@ -1,5 +1,5 @@
 {
-    "name": "wpengine/wpe-content-model",
+    "name": "wpengine/atlas-content-modeler",
     "description": "Plugin for content modeling in WordPress.",
     "type": "project",
     "minimum-stability": "stable",

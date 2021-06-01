@@ -14,7 +14,7 @@ exports[`App Renders a matching snapshot 1`] = `
         Content Models
       </h2>
       <a
-        href="/wp-admin/admin.php?page=wpe-content-model&view=create-model"
+        href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
         onClick={[Function]}
       >
         <button>

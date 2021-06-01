@@ -6,15 +6,15 @@ Array [
     className="field text"
   >
     <label
-      htmlFor="wpe-content-model[geese][firstName]"
+      htmlFor="atlas-content-modeler[geese][firstName]"
     >
       First Name
     </label>
     <br />
     <input
       defaultValue="Lucy"
-      id="wpe-content-model[geese][firstName]"
-      name="wpe-content-model[geese][firstName]"
+      id="atlas-content-modeler[geese][firstName]"
+      name="atlas-content-modeler[geese][firstName]"
       type="text"
     />
   </div>,
@@ -22,15 +22,15 @@ Array [
     className="field text"
   >
     <label
-      htmlFor="wpe-content-model[geese][lastName]"
+      htmlFor="atlas-content-modeler[geese][lastName]"
     >
       Last Name
     </label>
     <br />
     <input
       defaultValue="Goosey"
-      id="wpe-content-model[geese][lastName]"
-      name="wpe-content-model[geese][lastName]"
+      id="atlas-content-modeler[geese][lastName]"
+      name="atlas-content-modeler[geese][lastName]"
       type="text"
     />
   </div>,
@@ -38,15 +38,15 @@ Array [
     className="field number"
   >
     <label
-      htmlFor="wpe-content-model[geese][age]"
+      htmlFor="atlas-content-modeler[geese][age]"
     >
       Age
     </label>
     <br />
     <input
       defaultValue="42"
-      id="wpe-content-model[geese][age]"
-      name="wpe-content-model[geese][age]"
+      id="atlas-content-modeler[geese][age]"
+      name="atlas-content-modeler[geese][age]"
       type="number"
     />
   </div>,

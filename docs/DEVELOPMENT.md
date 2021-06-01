@@ -47,12 +47,12 @@ composer phpcs:fix
 **WordPress Unit Tests**
 In order to run WordPress unit tests, the test framework needs to be set up.
 ```
-/bin/bash tests/install-wp-tests.sh wpe_content_model_tests db_name db_password
+/bin/bash tests/install-wp-tests.sh atlas_content_modeler_tests db_name db_password
 ```
 
 If you connect to mysql via a sock connection, you can run the following.
 ```
-/bin/bash tests/install-wp-tests.sh wpe_content_model_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
+/bin/bash tests/install-wp-tests.sh atlas_content_modeler_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
 ```
 
 Run `phpunit` directly.
@@ -88,7 +88,8 @@ A running WordPress test site will be needed to run browser tests against. This 
     1. Install [Docker Desktop](https://www.docker.com/get-started).
     1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
     1. Run `docker-compose exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin install wp-graphql --activate`
-    1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-content-model --user=www-data wordpress wp db export tests/_data/dump.sql`
+    1. Run `docker-compose exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin activate atlas-content-modeler`
+    1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/atlas-content-modeler --user=www-data wordpress wp db export tests/_data/dump.sql`
 1. Copy `.env.testing.example` to `.env.testing`.
     - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
     - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
@@ -106,8 +107,8 @@ Developers with full GitHub repository access can create public releases:
 
 ### To release the plugin
 
-1. Create a PR to update the version and changelog. [Example release PR](https://github.com/wpengine/wpe-content-model/pull/100).
-2. When the release PR is approved and merged, tag the commit you wish to publish with the release version in the form `x.y.z`. [Example release tag](https://github.com/wpengine/wpe-content-model/releases/tag/0.2.0).
+1. Create a PR to update the version and changelog. [Example release PR](https://github.com/wpengine/atlas-content-modeler/pull/100).
+2. When the release PR is approved and merged, tag the commit you wish to publish with the release version in the form `x.y.z`. [Example release tag](https://github.com/wpengine/atlas-content-modeler/releases/tag/0.2.0).
 
 You can tag in GitHub by creating a release, or via the command line locally:
 
@@ -119,4 +120,4 @@ git push --tags
 
 CircleCI will build and deploy the plugin zip. The latest version is available here:
 
-`https://wp-product-info.wpesvc.net/v1/plugins/wpe-content-model?download`
+`https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download`

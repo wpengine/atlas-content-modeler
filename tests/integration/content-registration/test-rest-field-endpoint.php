@@ -31,7 +31,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		global $wp_rest_server;
 		$this->server = $wp_rest_server = new \WP_REST_Server;
 		do_action( 'rest_api_init' );
-		update_option('wpe_content_model_post_types', $this->test_models );
+		update_option('atlas_content_modeler_post_types', $this->test_models );
 	}
 
 	public function test_content_model_field_route_is_registered() {
@@ -48,7 +48,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'success', $data );
@@ -105,7 +105,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request2->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"New Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
 
 		$response = $this->server->dispatch( $request2 );
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 'New Name', $models['rabbits']['fields']['123']['name'] );
@@ -116,7 +116,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request3->set_body( "{\"model\":\"{$model}\" }" );
 
 		$request3_response = $this->server->dispatch( $request3 );
-		$updated_models    = get_option( 'wpe_content_model_post_types' );
+		$updated_models    = get_option( 'atlas_content_modeler_post_types' );
 
 		self::assertEquals( 200, $request3_response->get_status() );
 		self::assertArrayNotHasKey( '123', $updated_models[ $model ]['fields'] );
@@ -137,7 +137,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request2 );
 		$data     = $response->get_data();
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertArrayHasKey( 'success', $data );
 		$this->assertEquals( true, $data[ 'success' ] );
@@ -160,7 +160,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request->set_body( json_encode( $new_field_data ) );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertArrayHasKey( 'success', $data );
 		$this->assertEquals( true, $data[ 'success' ] );
@@ -207,7 +207,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'success', $data );
@@ -224,7 +224,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request->set_body( json_encode( ['id' => '222', 'isTitle' => true, 'model' => $model, 'slug' => 'b' ] ) );
 
 		$response = $this->server->dispatch( $request );
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'isTitle', $models[$model]['fields']['222'] );
@@ -263,6 +263,6 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		global $wp_rest_server;
 		$wp_rest_server = null;
 		$this->server = null;
-		delete_option( 'wpe_content_model_post_types' );
+		delete_option( 'atlas_content_modeler_post_types' );
 	}
 }

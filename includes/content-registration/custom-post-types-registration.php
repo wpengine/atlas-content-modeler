@@ -2,12 +2,12 @@
 /**
  * Registers custom content types and custom fields.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\ContentRegistration;
+namespace WPE\AtlasContentModeler\ContentRegistration;
 
 use InvalidArgumentException;
 use WPGraphQL\Model\Post;
@@ -73,7 +73,7 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 function generate_custom_post_type_labels( array $labels ): array {
 	if ( empty( $labels['singular'] ) || empty( $labels['plural'] ) ) {
 		throw new InvalidArgumentException(
-			__( 'You must provide both singular and plural labels to generate content type labels.', 'wpe-content-model' )
+			__( 'You must provide both singular and plural labels to generate content type labels.', 'atlas-content-modeler' )
 		);
 	}
 
@@ -132,7 +132,7 @@ function generate_custom_post_type_labels( array $labels ): array {
 function generate_custom_post_type_args( array $args ): array {
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		throw new InvalidArgumentException(
-			__( 'You must provide both a singular and plural name to register a custom content type.', 'wpe-content-model' )
+			__( 'You must provide both a singular and plural name to register a custom content type.', 'atlas-content-modeler' )
 		);
 	}
 
@@ -174,7 +174,7 @@ function generate_custom_post_type_args( array $args ): array {
  * @return array
  */
 function get_registered_content_types(): array {
-	return get_option( 'wpe_content_model_post_types', array() );
+	return get_option( 'atlas_content_modeler_post_types', array() );
 }
 
 /**
@@ -190,7 +190,7 @@ function get_registered_content_types(): array {
  * @return bool
  */
 function update_registered_content_types( array $args ): bool {
-	return update_option( 'wpe_content_model_post_types', $args );
+	return update_option( 'atlas_content_modeler_post_types', $args );
 }
 
 /**

@@ -5,15 +5,15 @@ exports[`Field renders a proper number field 1`] = `
   className="field number"
 >
   <label
-    htmlFor="wpe-content-model[geese][age]"
+    htmlFor="atlas-content-modeler[geese][age]"
   >
     Age
   </label>
   <br />
   <input
     defaultValue="100"
-    id="wpe-content-model[geese][age]"
-    name="wpe-content-model[geese][age]"
+    id="atlas-content-modeler[geese][age]"
+    name="atlas-content-modeler[geese][age]"
     type="number"
   />
 </div>
@@ -24,15 +24,15 @@ exports[`Field renders a proper text field 1`] = `
   className="field text"
 >
   <label
-    htmlFor="wpe-content-model[geese][firstName]"
+    htmlFor="atlas-content-modeler[geese][firstName]"
   >
     First Name
   </label>
   <br />
   <input
     defaultValue="John"
-    id="wpe-content-model[geese][firstName]"
-    name="wpe-content-model[geese][firstName]"
+    id="atlas-content-modeler[geese][firstName]"
+    name="atlas-content-modeler[geese][firstName]"
     type="text"
   />
 </div>

@@ -84,7 +84,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 			<Modal
 				isOpen={modalIsOpen}
 				contentLabel={`Delete the ${field.name} field from ${model.plural}?`}
-				portalClassName="wpe-content-model-delete-field-modal-container"
+				portalClassName="atlas-content-modeler-delete-field-modal-container"
 				onRequestClose={() => {
 					setModalIsOpen(false);
 				}}

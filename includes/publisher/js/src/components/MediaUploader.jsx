@@ -59,13 +59,15 @@ export default function MediaUploader({ modelSlug, field, required }) {
 
 	return (
 		<>
-			<label htmlFor={`wpe-content-model[${modelSlug}][${field.slug}]`}>
+			<label
+				htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+			>
 				{field.name}
 			</label>
 			<input
 				type="text"
-				name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-				id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+				id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 				className="hidden"
 				readOnly={true}
 				value={value}
@@ -119,8 +121,8 @@ export default function MediaUploader({ modelSlug, field, required }) {
 
 				<input
 					type="text"
-					name={`wpe-content-model[${modelSlug}][${field.slug}]`}
-					id={`wpe-content-model[${modelSlug}][${field.slug}]`}
+					name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+					id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 					className="hidden"
 					required={required}
 					onChange={() => {}} // Prevents “You provided a `value` prop to a form field without an `onChange` handler.”

@@ -292,10 +292,10 @@ jobs:
             ./wp-cli.phar core install --path=/tmp/wordpress --url=http://localhost:5501 --title="WPE Headless Testing" --admin_user=admin --admin_password=password --admin_email=admin@example.com --skip-email
 
       - run:
-          name: Activate wpe-content-model plugin
+          name: Activate atlas-content-modeler plugin
           command: |
-            ln -s ~/project/wpe-content-model /tmp/wordpress/wp-content/plugins/wpe-content-model
-            ./wp-cli.phar plugin activate --path=/tmp/wordpress wpe-content-model
+            ln -s ~/project/atlas-content-modeler /tmp/wordpress/wp-content/plugins/atlas-content-modeler
+            ./wp-cli.phar plugin activate --path=/tmp/wordpress atlas-content-modeler
 
       - run:
           name: Install WPGraphQL
@@ -303,7 +303,7 @@ jobs:
             ./wp-cli.phar plugin install --path=/tmp/wordpress wp-graphql --activate
 
       - run:
-          working_directory: /home/circleci/project/wpe-content-model
+          working_directory: /home/circleci/project/atlas-content-modeler
           name: Create database dump for Codeception
           command: |
             mkdir -p tests/_data
@@ -333,38 +333,38 @@ jobs:
           background: true
 
       - run:
-          working_directory: /home/circleci/project/wpe-content-model
+          working_directory: /home/circleci/project/atlas-content-modeler
           name: Set up Codeception files
           command: |
             cp .env.testing.circleci .env.testing
             cp tests/acceptance.suite.circleci.yml tests/acceptance.suite.yml
 
       - run:
-          working_directory: /home/circleci/project/wpe-content-model
+          working_directory: /home/circleci/project/atlas-content-modeler
           name: Run Codeception
           command: |
             vendor/bin/codecept build
             vendor/bin/codecept -vvv run acceptance --xml="tests/_output/results.xml" --no-interaction
 
       - store_test_results:
-          path: wpe-content-model/tests/_output
+          path: atlas-content-modeler/tests/_output
 
       - store_artifacts:
-          path: wpe-content-model/tests/_output
+          path: atlas-content-modeler/tests/_output
 
 workflows:
   # Workflows defined for each package and plugin.
-  # tag example for deploying an update for wpe-content-model: 1.0.0
+  # tag example for deploying an update for atlas-content-modeler: 1.0.0
   plugin:
     jobs:
       - checkout:
-          slug: wpe-content-model
+          slug: atlas-content-modeler
           filters:
             tags:
               only: /.*/
       - plugin-checkout:
-          slug: wpe-content-model
-          filename: wpe-content-model.php
+          slug: atlas-content-modeler
+          filename: atlas-content-modeler.php
           requires:
             - checkout
           # run this job for any build, any branch
@@ -372,7 +372,7 @@ workflows:
             tags:
               only: /.*/
       - plugin-composer:
-          slug: wpe-content-model
+          slug: atlas-content-modeler
           requires:
             - plugin-checkout
           # run this job for any build, any branch
@@ -380,7 +380,7 @@ workflows:
             tags:
               only: /.*/
       - plugin-test:
-          slug: wpe-content-model
+          slug: atlas-content-modeler
           requires:
             - plugin-composer
           # run this job for any build, any branch
@@ -388,7 +388,7 @@ workflows:
             tags:
               only: /.*/
       - lint:
-          slug: wpe-content-model
+          slug: atlas-content-modeler
           requires:
             - plugin-test
           # run this job for any build, any branch
@@ -396,7 +396,7 @@ workflows:
             tags:
               only: /.*/
       - plugin-npm-build:
-          slug: wpe-content-model
+          slug: atlas-content-modeler
           requires:
             - lint
           # run this job for any build, any branch
@@ -411,7 +411,7 @@ workflows:
             tags:
               only: /.*/
       - plugin-bundle-zip:
-          slug: wpe-content-model
+          slug: atlas-content-modeler
           requires:
             - plugin-e2e-test
           # Run this job on every commit/PR so the plugin is available as a build artifact
@@ -419,7 +419,7 @@ workflows:
             tags:
               only: /.*/
       - plugin-bundle-json:
-          slug: wpe-content-model
+          slug: atlas-content-modeler
           requires:
             - plugin-test
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
@@ -427,8 +427,8 @@ workflows:
             tags:
               only: /.*/
       - plugin-deploy:
-          name: "Deploy zip to api (staging) wpe-content-model"
-          slug: wpe-content-model
+          name: "Deploy zip to api (staging) atlas-content-modeler"
+          slug: atlas-content-modeler
           requires:
             - plugin-bundle-zip
             - plugin-bundle-json
@@ -443,10 +443,10 @@ workflows:
           auth_url: https://auth-staging.wpengine.io/v1/tokens
           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
       - plugin-deploy:
-          name: "Deploy zip to api (production) wpe-content-model"
-          slug: wpe-content-model
+          name: "Deploy zip to api (production) atlas-content-modeler"
+          slug: atlas-content-modeler
           requires:
-            - "Deploy zip to api (staging) wpe-content-model"
+            - "Deploy zip to api (staging) atlas-content-modeler"
           filters:
             branches:
               ignore: /.*/

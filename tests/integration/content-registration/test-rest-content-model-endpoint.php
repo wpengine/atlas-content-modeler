@@ -26,7 +26,7 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 		global $wp_rest_server;
 		$this->server = $wp_rest_server = new \WP_REST_Server;
 		do_action( 'rest_api_init' );
-		update_option('wpe_content_model_post_types', $this->test_models );
+		update_option('atlas_content_modeler_post_types', $this->test_models );
 	}
 
 	public function test_content_model_route_is_registered(): void {
@@ -46,7 +46,7 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request );
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'wpe_content_model_already_exists', $response->data['code'] );
+		self::assertSame( 'atlas_content_modeler_already_exists', $response->data['code'] );
 	}
 
 	public function test_can_update_model(): void {
@@ -67,7 +67,7 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 		$request2->set_body( json_encode( $new_model ) );
 
 		$response = $this->server->dispatch( $request2 );
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		self::assertSame( 200, $response->get_status() );
 		self::assertSame( 'This is a new description of rabbits', $models['rabbits']['description'] );
