@@ -122,6 +122,14 @@ final class FormEditingExperience {
 			true
 		);
 
+		// TODO: remove when final icon is chosen for feedback.
+		wp_register_style(
+			'material-icons',
+			'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined',
+			[],
+			$plugin['Version']
+		);
+
 		wp_enqueue_style(
 			'styles',
 			WPE_CONTENT_MODEL_URL . '/includes/publisher/dist/index.css',
@@ -160,6 +168,7 @@ final class FormEditingExperience {
 		);
 
 		wp_enqueue_media();
+		wp_enqueue_style( 'material-icons' );
 		wp_enqueue_script( 'wpe-content-model-form-editing-experience' );
 	}
 
