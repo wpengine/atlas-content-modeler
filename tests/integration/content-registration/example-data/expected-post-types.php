@@ -3,6 +3,9 @@
  * Example data for registering custom post types and custom fields.
  *
  */
+
+$atlas_content_modeler_entry_icon = require ATLAS_CONTENT_MODELER_DIR . '/includes/settings/views/admin-entry-icon.php';
+
 return array (
 	'dog' =>
 		array (
@@ -51,6 +54,7 @@ return array (
 			'show_in_graphql' => true,
 			'graphql_single_name' => 'dog',
 			'graphql_plural_name' => 'dogs',
+			'menu_icon'           => $atlas_content_modeler_entry_icon,
 			'fields' => array(
 				'dog-test-field' => array(
 					'slug' => 'dog-test-field',
@@ -136,5 +140,6 @@ return array (
 			'show_in_graphql' => false,
 			'graphql_single_name' => 'cat',
 			'graphql_plural_name' => 'cats',
+			'menu_icon'           => $atlas_content_modeler_entry_icon,
 		),
 );
