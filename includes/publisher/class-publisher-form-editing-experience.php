@@ -376,20 +376,7 @@ final class FormEditingExperience {
 			return;
 		}
 
-		// Check for user roles and proper page location to display notice.
-		$current_user  = wp_get_current_user();
-		$roles         = (array) $current_user->roles;
-		$allowed_roles = array( 'editor', 'administrator' );
-		$show_notice   = false;
-
-		foreach ( $roles as $role ) {
-			if ( in_array( $role, $allowed_roles, true ) ) {
-				$show_notice = true;
-				break;
-			}
-		}
-
-		if ( $show_notice ) {
+		if ( current_user_can( 'edit_pages' ) ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier.
 			?>
 			<div style="background-color: #F2EFFD;" class="wpe-content-model notice notice-info is-dismissible">
