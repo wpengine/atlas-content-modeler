@@ -370,9 +370,10 @@ final class FormEditingExperience {
 	 * Runs an `admin_notices` hook.
 	 */
 	public function render_feedback_notice(): void {
-		$post_type = get_post_type();
+		$screen    = get_current_screen();
+		$post_type = $screen->post_type;
 		// Only enforce this slug on created models.
-		if ( ! array_key_exists( $post_type, $this->models ) ) {
+		if ( ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
 			return;
 		}
 
