@@ -387,7 +387,7 @@ final class FormEditingExperience {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier.
 			?>
 			<div style="background-color: #F2EFFD;" class="wpe-content-model notice notice-info is-dismissible">
-				<div class="d-flex flex-row p-4">
+				<div class="d-flex d-sm-flex flex-sm-row flex-column p-4">
 					<div class="align-self-center">
 						<svg width="76" height="80" viewBox="0 0 76 80" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g clip-path="url(#clip0)">
