@@ -370,6 +370,12 @@ final class FormEditingExperience {
 	 * Runs an `admin_notices` hook.
 	 */
 	public function render_feedback_notice(): void {
+		$post_type = get_post_type();
+		// Only enforce this slug on created models.
+		if ( ! array_key_exists( $post_type, $this->models ) ) {
+			return;
+		}
+
 		// Check for user roles and proper page location to display notice.
 		$current_user  = wp_get_current_user();
 		$roles         = (array) $current_user->roles;
