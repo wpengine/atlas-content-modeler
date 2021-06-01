@@ -376,7 +376,7 @@ final class FormEditingExperience {
 			return;
 		}
 
-		if ( current_user_can( 'edit_pages' ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier.
 			?>
 			<div style="background-color: #F2EFFD;" class="wpe-content-model notice notice-info is-dismissible">
