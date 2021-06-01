@@ -114,10 +114,10 @@ function register_rest_routes(): void {
 	// Route for setting feedback banner transient.
 	register_rest_route(
 		'wpe',
-		'/feedback-transient/',
+		'/feedback-meta/',
 		[
 			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\dispatch_feedback_transient',
+			'callback'            => __NAMESPACE__ . '\dispatch_feedback_meta',
 			'permission_callback' => static function () {
 				return current_user_can( 'manage_options' );
 			},
@@ -447,23 +447,13 @@ function dispatch_delete_model( WP_REST_Request $request ) {
  *
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
-function dispatch_feedback_transient( WP_REST_Request $request ) {
-	$route = $request->get_route();
-	$slug  = substr( strrchr( $route, '/' ), 1 );
-
-	if ( empty( $content_types[ $slug ] ) ) {
-		return rest_ensure_response(
-			[
-				'success' => false,
-				'errors'  => esc_html__( 'The specified content model does not exist.', 'wpe-content-model' ),
-			]
-		);
+function dispatch_feedback_meta( WP_REST_Request $request ) {
+	if ( ! get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true ) ) {
+		$created = update_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', time() );
 	}
 
-	$created = set_transient( 'hide_feedback_banner', true, 5000 );
-
 	if ( ! $created ) {
-		return new WP_Error( 'feedback-banner-not-set', esc_html__( 'Model not created. Reason unknown.', 'wpe-content-model' ) );
+		return new WP_Error( 'feedback-metadata', esc_html__( 'Banner metadata was not set. Reason unknown.', 'wpe-content-model' ) );
 	}
 
 	return rest_ensure_response(

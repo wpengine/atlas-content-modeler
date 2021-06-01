@@ -371,10 +371,11 @@ final class FormEditingExperience {
 	 */
 	public function render_feedback_notice(): void {
 		// Only allow on non edit post pages with models from content modeler.
-		$screen    = get_current_screen();
-		$post_type = $screen->post_type;
+		$screen      = get_current_screen();
+		$post_type   = $screen->post_type;
+		$hide_banner = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
 
-		if ( get_transient( 'hide_feedback_banner' ) || ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
+		if ( $hide_banner || ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
 			return;
 		}
 
