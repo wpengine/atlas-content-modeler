@@ -84,7 +84,7 @@ function enqueue_settings_assets( $hook ) {
 		$plugin['Version']
 	);
 
-	if ( 'toplevel_page_wpe-content-model' === $hook ) {
+	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'wpe-content-model-app' );
 		wp_enqueue_style( 'wpe-content-model-app-styles' );
 		wp_enqueue_style( 'material-icons' );
