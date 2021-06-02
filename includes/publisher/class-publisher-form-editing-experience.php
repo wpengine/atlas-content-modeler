@@ -186,7 +186,6 @@ final class FormEditingExperience {
 				'wpeContentModelFormEditingExperience',
 				[
 					'root'     => esc_url_raw( rest_url() ),
-					'nonce'    => wp_create_nonce( 'wp_rest' ),
 					'models'   => $models,
 					'postType' => $this->current_screen_post_type,
 				]

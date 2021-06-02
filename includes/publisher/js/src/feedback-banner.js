@@ -1,6 +1,7 @@
-const { apiFetch } = window.wp;
+// global wpeContentModelFormEditingExperience
+const { wp } = window;
 
-apiFetch({
+wp.apiFetch({
 	path: "/wpe/feedback-meta",
 	method: "POST",
 	_wpnonce: wpApiSettings.nonce,
