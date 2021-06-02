@@ -168,9 +168,30 @@ final class FormEditingExperience {
 			]
 		);
 
+		wp_register_script(
+			'feedback-banner',
+			WPE_CONTENT_MODEL_URL . 'includes/publisher/js/src/feedback-banner.js',
+			[ 'jquery' ],
+			$plugin['Version'],
+			true
+		);
+
 		wp_enqueue_media();
 		wp_enqueue_style( 'material-icons' );
 		wp_enqueue_script( 'wpe-content-model-form-editing-experience' );
+
+		if ( $this->should_show_feedback_banner() ) {
+			wp_localize_script(
+				'feedback-banner',
+				'wpeContentModelFormEditingExperience',
+				[
+					'root'  => esc_url_raw( rest_url() ),
+					'nonce' => wp_create_nonce( 'wp_rest' ),
+				]
+			);
+
+			wp_enqueue_script( 'feedback-banner' );
+		}
 	}
 
 	/**
@@ -365,21 +386,28 @@ final class FormEditingExperience {
 	}
 
 	/**
-	 * Displays notice for getting user feedback.
-	 *
-	 * Runs an `admin_notices` hook.
+	 * Check to see if feedback form should be shown.
 	 */
-	public function render_feedback_notice(): void {
+	public function should_show_feedback_banner() {
 		// Only allow on non edit post pages with models from content modeler.
 		$screen      = get_current_screen();
 		$post_type   = $screen->post_type;
 		$hide_banner = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
 
-		if ( $hide_banner || ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
-			return;
+		if ( ! current_user_can( 'manage_options' ) || $hide_banner || ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
+			return false;
 		}
 
-		if ( current_user_can( 'manage_options' ) ) {
+		return true;
+	}
+
+	/**
+	 * Displays notice for getting user feedback.
+	 *
+	 * Runs an `admin_notices` hook.
+	 */
+	public function render_feedback_notice(): void {
+		if ( $this->should_show_feedback_banner() ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier.
 			?>
 			<div style="background-color: #F2EFFD;" class="wpe-content-model notice notice-info is-dismissible">

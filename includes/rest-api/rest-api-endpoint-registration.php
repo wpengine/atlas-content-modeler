@@ -114,7 +114,7 @@ function register_rest_routes(): void {
 	// Route for setting feedback banner transient.
 	register_rest_route(
 		'wpe',
-		'/feedback-meta/',
+		'/feedback-meta',
 		[
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\dispatch_feedback_meta',
@@ -441,7 +441,7 @@ function dispatch_delete_model( WP_REST_Request $request ) {
 }
 
 /**
- * Handles feedback transient POST requests from the REST API.
+ * Handles feedback meta POST requests from the REST API.
  *
  * @param WP_REST_Request $request The REST API request object.
  *
@@ -453,7 +453,7 @@ function dispatch_feedback_meta( WP_REST_Request $request ) {
 	}
 
 	if ( ! $created ) {
-		return new WP_Error( 'feedback-metadata', esc_html__( 'Banner metadata was not set. Reason unknown.', 'wpe-content-model' ) );
+		return new WP_Error( 'feedback-metadata', esc_html__( 'Feedback banner metadata was not set. Reason unknown.', 'wpe-content-model' ) );
 	}
 
 	return rest_ensure_response(
