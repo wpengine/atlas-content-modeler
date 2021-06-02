@@ -24,7 +24,7 @@ namespace WPE\ContentModel\Settings;
 					</a>
 				</div>
 				<div class="ms-auto align-self-center">
-					<a href="#" target="_blank" role="button" class="btn btn-primary content-modeler btn-primary btn-lg"><span class="material-icons-outlined">feedback</span> Send Feedback</a>
+					<a href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary content-modeler btn-primary btn-lg"><span class="material-icons-outlined">feedback</span> Send Feedback</a>
 				</div>
 			</div>
 		</div>
