@@ -4,7 +4,7 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 
 	protected $namespace = 'wpe';
 
-	protected $route = 'content-model';
+	protected $route = 'atlas/content-model';
 
 	protected $test_models = [
 		'rabbits'    => [

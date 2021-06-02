@@ -27,7 +27,7 @@ function deleteModel(name = "") {
 	}
 
 	return apiFetch({
-		path: `/wpe/content-model/${name}`,
+		path: `/wpe/atlas/content-model/${name}`,
 		method: "DELETE",
 		_wpnonce: wpApiSettings.nonce,
 	});

@@ -5,7 +5,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 	protected $namespace = 'wpe';
 
-	protected $route = 'content-model-field';
+	protected $route = 'atlas/content-model-field';
 
 	protected $test_models = [
 		'rabbits' => [ 'name' => 'Rabbits' ],
@@ -155,7 +155,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 			],
 		];
 
-		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/atlas/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $new_field_data ) );
 		$response = $this->server->dispatch( $request );
@@ -171,7 +171,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 	public function test_cannot_update_fields_without_field_data() {
 		wp_set_current_user( 1 );
 		$model   = 'dogs';
-		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/atlas/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( ['no_field_data' => 'this_should_error' ] ) );
 
@@ -186,7 +186,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 	public function test_cannot_update_fields_of_invalid_model() {
 		wp_set_current_user( 1 );
 		$model   = 'invalid';
-		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/atlas/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( ['fields' => [ '111' => [ 'position' => '10' ] ] ] ) );
 
@@ -201,7 +201,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 	public function test_cannot_update_field_properties_if_field_id_not_present() {
 		wp_set_current_user( 1 );
 		$model   = 'dogs';
-		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/atlas/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( ['fields' => [ 'invalid-field-id' => [ 'position' => '10' ] ] ] ) );
 

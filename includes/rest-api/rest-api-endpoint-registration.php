@@ -23,7 +23,7 @@ function register_rest_routes(): void {
 	// Route for retrieving a single content type.
 	register_rest_route(
 		'wpe',
-		'/content-model/([A-Za-z])\w+/',
+		'/atlas/content-model/([A-Za-z])\w+/',
 		[
 			'methods'             => 'GET',
 			'callback'            => __NAMESPACE__ . '\dispatch_get_content_model',
@@ -36,7 +36,7 @@ function register_rest_routes(): void {
 	// Route for creating a single content type.
 	register_rest_route(
 		'wpe',
-		'/content-model',
+		'/atlas/content-model',
 		[
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\dispatch_create_content_model',
@@ -49,7 +49,7 @@ function register_rest_routes(): void {
 	// Route for updating a single content type.
 	register_rest_route(
 		'wpe',
-		'/content-model/([A-Za-z0-9])\w+/',
+		'/atlas/content-model/([A-Za-z0-9])\w+/',
 		[
 			'methods'             => 'PATCH',
 			'callback'            => __NAMESPACE__ . '\dispatch_update_content_model',
@@ -62,7 +62,7 @@ function register_rest_routes(): void {
 	// Route for creating a content model field (POST) or updating one (PUT).
 	register_rest_route(
 		'wpe',
-		'/content-model-field',
+		'/atlas/content-model-field',
 		[
 			'methods'             => [ 'POST', 'PUT' ],
 			'callback'            => __NAMESPACE__ . '\dispatch_update_content_model_field',
@@ -75,7 +75,7 @@ function register_rest_routes(): void {
 	// Route for updating the properties of multiple fields in the named model.
 	register_rest_route(
 		'wpe',
-		'/content-model-fields/([A-Za-z])\w+',
+		'/atlas/content-model-fields/([A-Za-z])\w+',
 		[
 			'methods'             => 'PATCH',
 			'callback'            => __NAMESPACE__ . '\dispatch_patch_content_model_fields',
@@ -88,7 +88,7 @@ function register_rest_routes(): void {
 	// Route for deleting a content model field.
 	register_rest_route(
 		'wpe',
-		'/content-model-field/([A-Za-z0-9])\w+/',
+		'/atlas/content-model-field/([A-Za-z0-9])\w+/',
 		[
 			'methods'             => 'DELETE',
 			'callback'            => __NAMESPACE__ . '\dispatch_delete_content_model_field',
@@ -101,7 +101,7 @@ function register_rest_routes(): void {
 	// Route for deleting a single content type.
 	register_rest_route(
 		'wpe',
-		'/content-model/([A-Za-z])\w+/',
+		'/atlas/content-model/([A-Za-z])\w+/',
 		[
 			'methods'             => 'DELETE',
 			'callback'            => __NAMESPACE__ . '\dispatch_delete_model',
@@ -460,6 +460,10 @@ function create_model( string $post_type_slug, array $args ) {
 	];
 
 	$args = wp_parse_args( $args, $defaults );
+
+	if ( empty( $args['fields'] ) ) {
+		$args['fields'] = [];
+	}
 
 	$content_types[ $post_type_slug ] = $args;
 
