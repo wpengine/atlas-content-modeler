@@ -116,7 +116,7 @@ function atlas_content_modeler_get_api_error_text( $reason ) {
 			/* translators: %1$s: Link to account portal. %2$s: The text that is linked. */
 			return sprintf(
 				__(
-					'There was an unknown error connecting to the update service. This issue could be temporary. Please contact support if this error persists.',
+					'Atlas Content Modeler encountered an unknown error connecting to the update service. This issue could be temporary. Please contact support if this error persists.',
 					'atlas-content-modeler'
 				),
 				'https://my.wpengine.com/products',
