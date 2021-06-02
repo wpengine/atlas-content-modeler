@@ -441,7 +441,7 @@ function dispatch_feedback_meta( WP_REST_Request $request ) {
 	}
 
 	if ( ! $created ) {
-		return new WP_Error( 'feedback-metadata', esc_html__( 'Feedback banner metadata was not set. Reason unknown.', 'wpe-content-model' ) );
+		return new WP_Error( 'feedback-metadata', esc_html__( 'Feedback banner metadata was not set. Reason unknown.', 'atlas-content-modeler' ) );
 	}
 
 	return rest_ensure_response(
