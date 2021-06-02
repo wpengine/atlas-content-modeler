@@ -1,9 +1,10 @@
-window.wp
-	.apiFetch({
-		path: "/wpe/feedback-meta",
-		method: "POST",
-		_wpnonce: wpApiSettings.nonce,
-	})
+const { apiFetch } = window.wp;
+
+apiFetch({
+	path: "/wpe/feedback-meta",
+	method: "POST",
+	_wpnonce: wpApiSettings.nonce,
+})
 	.then((res) => {
 		console.log("response", res);
 		if (res.success) {
