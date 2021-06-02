@@ -436,9 +436,7 @@ function dispatch_delete_model( WP_REST_Request $request ) {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_feedback_meta( WP_REST_Request $request ) {
-	if ( ! get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true ) ) {
-		$created = update_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', time() );
-	}
+	$created = update_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', time() );
 
 	if ( ! $created ) {
 		return new WP_Error( 'feedback-metadata', esc_html__( 'Feedback banner metadata was not set. Reason unknown.', 'atlas-content-modeler' ) );

@@ -173,9 +173,8 @@ final class FormEditingExperience {
 		wp_enqueue_media();
 
 		wp_enqueue_style( 'material-icons' );
-		wp_enqueue_script( 'wpe-content-model-form-editing-experience' );
 
-		if ( $this->should_show_feedback_banner() ) {
+		if ( ! $this->should_show_feedback_banner() ) {
 			wp_localize_script(
 				'feedback-banner',
 				'wpeContentModelFormEditingExperience',
