@@ -164,7 +164,7 @@ final class FormEditingExperience {
 
 		wp_register_script(
 			'feedback-banner',
-			WPE_CONTENT_MODEL_URL . 'includes/publisher/js/src/feedback-banner.js',
+			ATLAS_CONTENT_MODELER_URL . 'includes/publisher/js/src/feedback-banner.js',
 			[ 'wp-api-fetch' ],
 			$plugin['Version'],
 			true
