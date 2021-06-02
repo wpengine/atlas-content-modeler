@@ -11,7 +11,7 @@ exports[`CreateContentModel tests Renders a matching snapshot 1`] = `
       New Content Model
     </h2>
     <a
-      href="/wp-admin/admin.php?page=wpe-content-model"
+      href="/wp-admin/admin.php?page=atlas-content-modeler"
       onClick={[Function]}
     >
       <button
@@ -126,7 +126,7 @@ exports[`CreateContentModel tests Renders a matching snapshot 1`] = `
         Create
       </button>
       <a
-        href="/wp-admin/admin.php?page=wpe-content-model"
+        href="/wp-admin/admin.php?page=atlas-content-modeler"
         onClick={[Function]}
       >
         <button

@@ -2,14 +2,14 @@
 /**
  * Plugin updates related callbacks.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'pre_set_site_transient_update_plugins', 'wpe_content_model_check_for_plugin_updates' );
+add_filter( 'pre_set_site_transient_update_plugins', 'atlas_content_modeler_check_for_plugin_updates' );
 /**
  * Callback for WordPress 'pre_set_site_transient_update_plugins' filter.
  *
@@ -21,29 +21,29 @@ add_filter( 'pre_set_site_transient_update_plugins', 'wpe_content_model_check_fo
  *
  * @return object $data An updated object if an update exists, default object if not.
  */
-function wpe_content_model_check_for_plugin_updates( $data ) {
+function atlas_content_modeler_check_for_plugin_updates( $data ) {
 	if ( empty( $data ) ) {
 		return $data;
 	}
 
-	$response = wpe_content_model_get_remote_plugin_info();
+	$response = atlas_content_modeler_get_remote_plugin_info();
 	if ( empty( $response->requires_at_least ) || empty( $response->version ) ) {
 		return $data;
 	}
 
-	$current_plugin_data = get_plugin_data( WPE_CONTENT_MODEL_FILE );
+	$current_plugin_data = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 	$meets_wp_req        = version_compare( get_bloginfo( 'version' ), $response->requires_at_least, '>=' );
 
 	// Only update the response if there's a newer version, otherwise WP shows an update notice for the same version.
 	if ( $meets_wp_req && version_compare( $current_plugin_data['Version'], $response->version, '<' ) ) {
-		$response->plugin                         = plugin_basename( WPE_CONTENT_MODEL_FILE );
-		$data->response[ WPE_CONTENT_MODEL_PATH ] = $response;
+		$response->plugin                             = plugin_basename( ATLAS_CONTENT_MODELER_FILE );
+		$data->response[ ATLAS_CONTENT_MODELER_PATH ] = $response;
 	}
 
 	return $data;
 }
 
-add_filter( 'plugins_api', 'wpe_content_model_custom_plugin_api_request', 10, 3 );
+add_filter( 'plugins_api', 'atlas_content_modeler_custom_plugin_api_request', 10, 3 );
 /**
  * Callback for WordPress 'plugins_api' filter.
  *
@@ -57,12 +57,12 @@ add_filter( 'plugins_api', 'wpe_content_model_custom_plugin_api_request', 10, 3 
  *
  * @return false|stdClass $response Plugin API arguments.
  */
-function wpe_content_model_custom_plugin_api_request( $api, $action, $args ) {
-	if ( empty( $args->slug ) || WPE_CONTENT_MODEL_SLUG !== $args->slug ) {
+function atlas_content_modeler_custom_plugin_api_request( $api, $action, $args ) {
+	if ( empty( $args->slug ) || ATLAS_CONTENT_MODELER_SLUG !== $args->slug ) {
 		return $api;
 	}
 
-	$response = wpe_content_model_get_plugin_data( $args );
+	$response = atlas_content_modeler_get_plugin_data( $args );
 	if ( empty( $response ) || is_wp_error( $response ) ) {
 		return $api;
 	}
@@ -70,7 +70,7 @@ function wpe_content_model_custom_plugin_api_request( $api, $action, $args ) {
 	return $response;
 }
 
-add_action( 'admin_notices', 'wpe_content_model_delegate_plugin_row_notice' );
+add_action( 'admin_notices', 'atlas_content_modeler_delegate_plugin_row_notice' );
 /**
  * Callback for WordPress 'admin_notices' action.
  *
@@ -80,27 +80,27 @@ add_action( 'admin_notices', 'wpe_content_model_delegate_plugin_row_notice' );
  *
  * @return void
  */
-function wpe_content_model_delegate_plugin_row_notice() {
+function atlas_content_modeler_delegate_plugin_row_notice() {
 	$screen = get_current_screen();
 	if ( 'plugins' !== $screen->id ) {
 		return;
 	}
 
-	$error = wpe_content_model_get_plugin_api_error();
+	$error = atlas_content_modeler_get_plugin_api_error();
 	if ( ! $error ) {
 		return;
 	}
 
-	$plugin_basename = plugin_basename( WPE_CONTENT_MODEL_FILE );
+	$plugin_basename = plugin_basename( ATLAS_CONTENT_MODELER_FILE );
 
 	remove_action( "after_plugin_row_{$plugin_basename}", 'wp_plugin_update_row' );
-	add_action( "after_plugin_row_{$plugin_basename}", 'wpe_content_model_display_plugin_row_notice', 10, 2 );
+	add_action( "after_plugin_row_{$plugin_basename}", 'atlas_content_modeler_display_plugin_row_notice', 10, 2 );
 }
 
 /**
  * Callback for WordPress 'after_plugin_row_{plugin_basename}' action.
  *
- * Callback added in wpe_content_model_add_plugin_page_notices().
+ * Callback added in atlas_content_modeler_add_plugin_page_notices().
  *
  * Show a notice in the plugin table row when there is an error present.
  *
@@ -109,15 +109,15 @@ function wpe_content_model_delegate_plugin_row_notice() {
  *
  * @return void
  */
-function wpe_content_model_display_plugin_row_notice( $plugin_file, $plugin_data ) {
-	$error = wpe_content_model_get_plugin_api_error();
+function atlas_content_modeler_display_plugin_row_notice( $plugin_file, $plugin_data ) {
+	$error = atlas_content_modeler_get_plugin_api_error();
 
 	?>
-	<tr class="plugin-update-tr active" id="wpe-content-model-update" data-slug="wpe-content-model" data-plugin="wpe-content-model/wpe-content-model.php">
+	<tr class="plugin-update-tr active" id="atlas-content-modeler-update" data-slug="atlas-content-modeler" data-plugin="atlas-content-modeler/atlas-content-modeler.php">
 		<td colspan="3" class="plugin-update">
 			<div class="update-message notice inline notice-error notice-alt">
 				<p>
-					<?php echo wp_kses_post( wpe_content_model_get_api_error_text( $error ) ); ?>
+					<?php echo wp_kses_post( atlas_content_modeler_get_api_error_text( $error ) ); ?>
 				</p>
 			</div>
 		</td>
@@ -125,7 +125,7 @@ function wpe_content_model_display_plugin_row_notice( $plugin_file, $plugin_data
 	<?php
 }
 
-add_action( 'admin_notices', 'wpe_content_model_display_update_page_notice' );
+add_action( 'admin_notices', 'atlas_content_modeler_display_update_page_notice' );
 /**
  * Callback for WordPress 'admin_notices' action.
  *
@@ -135,13 +135,18 @@ add_action( 'admin_notices', 'wpe_content_model_display_update_page_notice' );
  *
  * @return void
  */
-function wpe_content_model_display_update_page_notice() {
+function atlas_content_modeler_display_update_page_notice() {
 	$screen = get_current_screen();
 	if ( 'update-core' !== $screen->id ) {
 		return;
 	}
 
-	$error = wpe_content_model_get_plugin_api_error();
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only used to avoid displaying messages when inappropriate.
+	if ( ! empty( $_GET['action'] ) && 'do-theme-upgrade' === $_GET['action'] ) {
+		return;
+	}
+
+	$error = atlas_content_modeler_get_plugin_api_error();
 	if ( ! $error ) {
 		return;
 	}
@@ -149,7 +154,7 @@ function wpe_content_model_display_update_page_notice() {
 	?>
 	<div class="error">
 		<p>
-			<?php echo wp_kses_post( wpe_content_model_get_api_error_text( $error ) ); ?>
+			<?php echo wp_kses_post( atlas_content_modeler_get_api_error_text( $error ) ); ?>
 		</p>
 	</div>
 	<?php

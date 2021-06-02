@@ -2,14 +2,14 @@
 /**
  * Settings related callbacks.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\Settings;
+namespace WPE\AtlasContentModeler\Settings;
 
-use function WPE\ContentModel\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 /**
@@ -18,10 +18,10 @@ add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 function register_admin_menu_page(): void {
 	$icon = require __DIR__ . '/views/admin-menu-icon.php';
 	add_menu_page(
-		esc_html__( 'Content Modeler', 'wpe-content-model' ),
-		esc_html__( 'Content Modeler', 'wpe-content-model' ),
+		esc_html__( 'Content Modeler', 'atlas-content-modeler' ),
+		esc_html__( 'Content Modeler', 'atlas-content-modeler' ),
 		'manage_options',
-		'wpe-content-model',
+		'atlas-content-modeler',
 		__NAMESPACE__ . '\render_admin_menu_page',
 		$icon
 	);
@@ -41,19 +41,19 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' 
  * @param string $hook The current admin page.
  */
 function enqueue_settings_assets( $hook ) {
-	$plugin = get_plugin_data( WPE_CONTENT_MODEL_FILE );
+	$plugin = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 
 	wp_register_script(
-		'wpe-content-model-app',
-		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.js',
+		'atlas-content-modeler-app',
+		ATLAS_CONTENT_MODELER_URL . 'includes/settings/dist/index.js',
 		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash' ],
 		$plugin['Version'],
 		true
 	);
 
 	wp_localize_script(
-		'wpe-content-model-app',
-		'wpeContentModel',
+		'atlas-content-modeler-app',
+		'atlasContentModeler',
 		array(
 			'initialState'        => get_registered_content_types(),
 			'isGraphiQLAvailable' => is_plugin_active( 'wp-graphql/wp-graphql.php' )
@@ -63,16 +63,16 @@ function enqueue_settings_assets( $hook ) {
 	);
 
 	wp_register_style(
-		'wpe-content-model-fonts',
+		'atlas-content-modeler-fonts',
 		'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap',
 		[],
 		$plugin['Version']
 	);
 
 	wp_register_style(
-		'wpe-content-model-app-styles',
-		WPE_CONTENT_MODEL_URL . 'includes/settings/dist/index.css',
-		[ 'wpe-content-model-fonts' ],
+		'atlas-content-modeler-app-styles',
+		ATLAS_CONTENT_MODELER_URL . 'includes/settings/dist/index.css',
+		[ 'atlas-content-modeler-fonts' ],
 		$plugin['Version']
 	);
 

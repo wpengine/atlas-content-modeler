@@ -2,12 +2,12 @@
 /**
  * Registers custom content types and custom fields.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\ContentRegistration;
+namespace WPE\AtlasContentModeler\ContentRegistration;
 
 use InvalidArgumentException;
 use WPGraphQL\Model\Post;
@@ -73,7 +73,7 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 function generate_custom_post_type_labels( array $labels ): array {
 	if ( empty( $labels['singular'] ) || empty( $labels['plural'] ) ) {
 		throw new InvalidArgumentException(
-			__( 'You must provide both singular and plural labels to generate content type labels.', 'wpe-content-model' )
+			__( 'You must provide both singular and plural labels to generate content type labels.', 'atlas-content-modeler' )
 		);
 	}
 
@@ -132,12 +132,13 @@ function generate_custom_post_type_labels( array $labels ): array {
 function generate_custom_post_type_args( array $args ): array {
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		throw new InvalidArgumentException(
-			__( 'You must provide both a singular and plural name to register a custom content type.', 'wpe-content-model' )
+			__( 'You must provide both a singular and plural name to register a custom content type.', 'atlas-content-modeler' )
 		);
 	}
 
 	$singular = $args['singular'];
 	$plural   = $args['plural'];
+	$icon     = require ATLAS_CONTENT_MODELER_DIR . '/includes/settings/views/admin-entry-icon.php';
 	$labels   = generate_custom_post_type_labels(
 		[
 			'singular' => $singular,
@@ -165,6 +166,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'show_in_graphql'     => $args['show_in_graphql'] ?? true,
 		'graphql_single_name' => $args['graphql_single_name'] ?? camelcase( $singular ),
 		'graphql_plural_name' => $args['graphql_plural_name'] ?? camelcase( $plural ),
+		'menu_icon'           => $icon,
 	];
 }
 
@@ -174,7 +176,7 @@ function generate_custom_post_type_args( array $args ): array {
  * @return array
  */
 function get_registered_content_types(): array {
-	return get_option( 'wpe_content_model_post_types', array() );
+	return get_option( 'atlas_content_modeler_post_types', array() );
 }
 
 /**
@@ -190,7 +192,7 @@ function get_registered_content_types(): array {
  * @return bool
  */
 function update_registered_content_types( array $args ): bool {
-	return update_option( 'wpe_content_model_post_types', $args );
+	return update_option( 'atlas_content_modeler_post_types', $args );
 }
 
 /**
@@ -332,7 +334,6 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'textarea':
 		case 'string':
 		case 'date':
-		case 'repeater':
 		case 'richtext':
 			return 'String';
 		case 'number':

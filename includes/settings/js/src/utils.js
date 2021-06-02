@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { getFieldOrder, getRootFields } from "./queries";
+import { getFieldOrder, sanitizeFields } from "./queries";
 import { toValidApiId } from "./components/fields/toValidApiId";
 
 /**
@@ -55,7 +55,7 @@ export function generateSidebarMenuItem(model) {
 					<div class="wp-menu-arrow">
 						<div></div>
 					</div>
-					<div class="wp-menu-image dashicons-before dashicons-admin-post" aria-hidden="true"><br/></div>
+					<div class="wp-menu-image svg" style="background-image: url(&quot;data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2E3YWFhZCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxwYXRoIGZpbGw9IiNhN2FhYWQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTYuNTUyOCAzLjEwNTU3QzE2LjgzNDMgMi45NjQ4MSAxNy4xNjU3IDIuOTY0ODEgMTcuNDQ3MiAzLjEwNTU3TDIzLjQ0NzIgNi4xMDU1N0MyMy43ODYgNi4yNzQ5NyAyNCA2LjYyMTIzIDI0IDdDMjQgNy4zNzg3NyAyMy43ODYgNy43MjUwMyAyMy40NDcyIDcuODk0NDNMMTcuNDQ3MiAxMC44OTQ0QzE3LjE2NTcgMTEuMDM1MiAxNi44MzQzIDExLjAzNTIgMTYuNTUyOCAxMC44OTQ0TDE0IDkuNjE4MDNMMTIuMjM2MSAxMC41TDEzLjQ0NzIgMTEuMTA1NkMxMy43ODYgMTEuMjc1IDE0IDExLjYyMTIgMTQgMTJDMTQgMTIuMzc4OCAxMy43ODYgMTIuNzI1IDEzLjQ0NzIgMTIuODk0NEwxMi4yMzYxIDEzLjVMMTQgMTQuMzgyTDE2LjU1MjggMTMuMTA1NkMxNi44MzQzIDEyLjk2NDggMTcuMTY1NyAxMi45NjQ4IDE3LjQ0NzIgMTMuMTA1NkwyMy40NDcyIDE2LjEwNTZDMjMuNzg2IDE2LjI3NSAyNCAxNi42MjEyIDI0IDE3QzI0IDE3LjM3ODggMjMuNzg2IDE3LjcyNSAyMy40NDcyIDE3Ljg5NDRMMTcuNDQ3MiAyMC44OTQ0QzE3LjE2NTcgMjEuMDM1MiAxNi44MzQzIDIxLjAzNTIgMTYuNTUyOCAyMC44OTQ0TDEwLjU1MjggMTcuODk0NEMxMC4yMTQgMTcuNzI1IDEwIDE3LjM3ODggMTAgMTdDMTAgMTYuNjIxMiAxMC4yMTQgMTYuMjc1IDEwLjU1MjggMTYuMTA1NkwxMS43NjM5IDE1LjVMMTAgMTQuNjE4TDcuNDQ3MjIgMTUuODk0NEM3LjE2NTcgMTYuMDM1MiA2LjgzNDMyIDE2LjAzNTIgNi41NTI4IDE1Ljg5NDRMMC41NTI3ODcgMTIuODk0NEMwLjIxNDAwMyAxMi43MjUgMCAxMi4zNzg4IDAgMTJDMCAxMS42MjEyIDAuMjE0MDAzIDExLjI3NSAwLjU1Mjc4NyAxMS4xMDU2TDYuNTUyOCA4LjEwNTU3QzYuODM0MzIgNy45NjQ4MSA3LjE2NTcgNy45NjQ4MSA3LjQ0NzIyIDguMTA1NTdMMTAgOS4zODE5N0wxMS43NjM5IDguNUwxMC41NTI4IDcuODk0NDNDMTAuMjE0IDcuNzI1MDQgMTAgNy4zNzg3NyAxMCA3QzEwIDYuNjIxMjMgMTAuMjE0IDYuMjc0OTYgMTAuNTUyOCA2LjEwNTU3TDE2LjU1MjggMy4xMDU1N1pNMTMuMjM2MSA3TDE3IDguODgxOTdMMjAuNzYzOSA3TDE3IDUuMTE4MDNMMTMuMjM2MSA3Wk0zLjIzNjA3IDEyTDcuMDAwMDEgMTMuODgyTDEwLjc2MzkgMTJMNy4wMDAwMSAxMC4xMThMMy4yMzYwNyAxMlpNMTcgMTUuMTE4TDEzLjIzNjEgMTdMMTcgMTguODgyTDIwLjc2MzkgMTdMMTcgMTUuMTE4WiIgLz4KPC9zdmc+&quot;) !important;" aria-hidden="true"><br></div>
 					<div class="wp-menu-name">${plural}</div>
 				</a>
 				<ul class="wp-submenu wp-submenu-wrap">
@@ -101,12 +101,10 @@ export const getGraphiQLLink = (modelData) => {
 	const fragmentName = `${modelSingular}Fields`;
 	const pluralSlug = toValidApiId(modelData.plural);
 
-	const fields = getRootFields(modelData?.fields);
-	const fieldSlugs = getFieldOrder(fields)
-		.filter((id) => fields[id]?.type !== "repeater") // @todo: handle repeater fields.
-		.map((id) => {
-			if (fields[id]?.type === "media") {
-				return `
+	const fields = sanitizeFields(modelData?.fields);
+	const fieldSlugs = getFieldOrder(fields).map((id) => {
+		if (fields[id]?.type === "media") {
+			return `
 ${fields[id]?.slug} {
   mediaItemId
   mediaItemUrl
@@ -128,10 +126,10 @@ ${fields[id]?.slug} {
   }
 }
 `;
-			}
+		}
 
-			return fields[id]?.slug;
-		});
+		return fields[id]?.slug;
+	});
 
 	if (fieldSlugs.length === 0) {
 		fieldSlugs.push("title");

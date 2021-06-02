@@ -106,39 +106,6 @@
 	width: 64px;
 }
 
-.subfield-list .closed,
-.subfield-list .open-field {
-	margin-top: 35px;
-}
-
-.subfield-list .closed:first-of-type,
-.subfield-list .open-field:first-of-type {
-	margin-top: 0;
-}
-
-.subfield-list .add-item {
-	margin-bottom: 16px;
-	margin-top: -16px;
-}
-
-.subfield-list .add-item button {
-	height: 32px;
-	margin-left: -4px;
-	width: 32px;
-}
-
-.subfield-list .subfield-list .add-item button {
-	margin-left: -8px;
-}
-
-.subfield-list .subfield-list .subfield-list .add-item button {
-	margin-left: -11px;
-}
-
-.subfield-list .subfield-list .subfield-list .add-item button {
-	margin-left: -14px;
-}
-
 .field-list .reorder button {
 	background-color: transparent;
 	padding: 18px 18px 12px 18px;
@@ -151,15 +118,6 @@
 	height: 0;
 }
 
-.field-list .subfield-list {
-	margin: 32px 0 50px;
-}
-
-.field-list .repeater-fields {
-	width: 95%;
-	margin: 0 2.5%;
-}
-
 .field-list .tags .tag {
 	color: $color-gray-mid;
 	font-weight: normal;
@@ -169,12 +127,4 @@
 .draggable {
 	margin-bottom: 32px;
 	user-select: none;
-}
-
-.subfield-list .draggable {
-	margin-bottom: 16px;
-}
-
-.subfield-list .draggable .closed {
-	margin-bottom: 0;
 }

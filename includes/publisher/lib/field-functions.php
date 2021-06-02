@@ -2,12 +2,12 @@
 /**
  * Functions to manipulate and query fields from content models.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel;
+namespace WPE\AtlasContentModeler;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array Entry title field data or an empty array.
  */
 function get_entry_title_field( array $fields ): array {
-	$fields = get_top_level_fields( $fields );
-
 	foreach ( $fields as $field ) {
 		if ( isset( $field['isTitle'] ) && $field['isTitle'] ) {
 			return $field;
@@ -29,23 +27,6 @@ function get_entry_title_field( array $fields ): array {
 	}
 
 	return [];
-}
-
-/**
- * Removes fields with parents to leave top-level fields.
- *
- * @param array $fields All fields.
- * @return array Top-level fields with children omitted.
- */
-function get_top_level_fields( array $fields ): array {
-	$fields = array_filter(
-		$fields,
-		function( $field ) {
-			return ! isset( $field['parent'] );
-		}
-	);
-
-	return array_values( $fields );
 }
 
 /**

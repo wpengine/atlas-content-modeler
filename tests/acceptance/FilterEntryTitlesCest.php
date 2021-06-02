@@ -35,8 +35,8 @@ class FilterEntryTitlesCest
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
-		$i->fillField(['name' => 'wpe-content-model[goose][faveFoods]'], 'Gumdrops');
-		$i->fillField(['name' => 'wpe-content-model[goose][name]'], 'Lucy');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][faveFoods]'], 'Gumdrops');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][name]'], 'Lucy');
 
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
@@ -77,8 +77,8 @@ class FilterEntryTitlesCest
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
-		$i->fillField(['name' => 'wpe-content-model[goose][faveFoods]'], 'Gumdrops');
-		$i->fillField(['name' => 'wpe-content-model[goose][name]'], 'Lucy');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][faveFoods]'], 'Gumdrops');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][name]'], 'Lucy');
 
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);

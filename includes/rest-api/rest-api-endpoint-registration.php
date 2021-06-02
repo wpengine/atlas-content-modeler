@@ -2,18 +2,18 @@
 /**
  * Registers custom REST API endpoints for content modeling.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\REST_API;
+namespace WPE\AtlasContentModeler\REST_API;
 
 use WP_Error;
 use WP_REST_Request;
-use function WPE\ContentModel\ContentRegistration\generate_custom_post_type_args;
-use function WPE\ContentModel\ContentRegistration\get_registered_content_types;
-use function WPE\ContentModel\ContentRegistration\update_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_args;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
 /**
@@ -23,7 +23,7 @@ function register_rest_routes(): void {
 	// Route for retrieving a single content type.
 	register_rest_route(
 		'wpe',
-		'/content-model/([A-Za-z])\w+/',
+		'/atlas/content-model/([A-Za-z])\w+/',
 		[
 			'methods'             => 'GET',
 			'callback'            => __NAMESPACE__ . '\dispatch_get_content_model',
@@ -36,7 +36,7 @@ function register_rest_routes(): void {
 	// Route for creating a single content type.
 	register_rest_route(
 		'wpe',
-		'/content-model',
+		'/atlas/content-model',
 		[
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\dispatch_create_content_model',
@@ -49,7 +49,7 @@ function register_rest_routes(): void {
 	// Route for updating a single content type.
 	register_rest_route(
 		'wpe',
-		'/content-model/([A-Za-z0-9])\w+/',
+		'/atlas/content-model/([A-Za-z0-9])\w+/',
 		[
 			'methods'             => 'PATCH',
 			'callback'            => __NAMESPACE__ . '\dispatch_update_content_model',
@@ -62,7 +62,7 @@ function register_rest_routes(): void {
 	// Route for creating a content model field (POST) or updating one (PUT).
 	register_rest_route(
 		'wpe',
-		'/content-model-field',
+		'/atlas/content-model-field',
 		[
 			'methods'             => [ 'POST', 'PUT' ],
 			'callback'            => __NAMESPACE__ . '\dispatch_update_content_model_field',
@@ -75,7 +75,7 @@ function register_rest_routes(): void {
 	// Route for updating the properties of multiple fields in the named model.
 	register_rest_route(
 		'wpe',
-		'/content-model-fields/([A-Za-z])\w+',
+		'/atlas/content-model-fields/([A-Za-z])\w+',
 		[
 			'methods'             => 'PATCH',
 			'callback'            => __NAMESPACE__ . '\dispatch_patch_content_model_fields',
@@ -88,7 +88,7 @@ function register_rest_routes(): void {
 	// Route for deleting a content model field.
 	register_rest_route(
 		'wpe',
-		'/content-model-field/([A-Za-z0-9])\w+/',
+		'/atlas/content-model-field/([A-Za-z0-9])\w+/',
 		[
 			'methods'             => 'DELETE',
 			'callback'            => __NAMESPACE__ . '\dispatch_delete_content_model_field',
@@ -101,7 +101,7 @@ function register_rest_routes(): void {
 	// Route for deleting a single content type.
 	register_rest_route(
 		'wpe',
-		'/content-model/([A-Za-z])\w+/',
+		'/atlas/content-model/([A-Za-z])\w+/',
 		[
 			'methods'             => 'DELETE',
 			'callback'            => __NAMESPACE__ . '\dispatch_delete_model',
@@ -141,7 +141,7 @@ function dispatch_get_content_model( WP_REST_Request $request ) {
 		return rest_ensure_response(
 			[
 				'success' => false,
-				'errors'  => esc_html__( 'The requested content model does not exist.', 'wpe-content-model' ),
+				'errors'  => esc_html__( 'The requested content model does not exist.', 'atlas-content-modeler' ),
 			]
 		);
 	}
@@ -326,18 +326,6 @@ function dispatch_delete_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	// Delete child fields (and descendents) of deleted repeater fields.
-	if (
-		array_key_exists( 'type', $content_types[ $model ]['fields'][ $field_id ] )
-		&& 'repeater' === $content_types[ $model ]['fields'][ $field_id ]['type']
-	) {
-		$child_field_ids = get_children_of_field( (int) $field_id, $content_types[ $model ]['fields'] );
-
-		foreach ( $child_field_ids as $id ) {
-			unset( $content_types[ $model ]['fields'][ $id ] );
-		}
-	}
-
 	unset( $content_types[ $model ]['fields'][ $field_id ] );
 
 	return rest_ensure_response(
@@ -424,7 +412,7 @@ function dispatch_delete_model( WP_REST_Request $request ) {
 		return rest_ensure_response(
 			[
 				'success' => false,
-				'errors'  => esc_html__( 'The specified content model does not exist.', 'wpe-content-model' ),
+				'errors'  => esc_html__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
 			]
 		);
 	}
@@ -474,7 +462,7 @@ function dispatch_feedback_meta( WP_REST_Request $request ) {
 function create_model( string $post_type_slug, array $args ) {
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
-			'wpe_content_model_invalid_id',
+			'atlas_content_modeler_invalid_id',
 			'Please provide a valid API Identifier.',
 			[ 'status' => 400 ]
 		);
@@ -486,7 +474,7 @@ function create_model( string $post_type_slug, array $args ) {
 
 	if ( ! empty( $content_types[ $post_type_slug ] ) || array_key_exists( $post_type_slug, $existing_content_types ) ) {
 		return new WP_Error(
-			'wpe_content_model_already_exists',
+			'atlas_content_modeler_already_exists',
 			'A content model with this API Identifier already exists.',
 			[ 'status' => 400 ]
 		);
@@ -494,7 +482,7 @@ function create_model( string $post_type_slug, array $args ) {
 
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		return new WP_Error(
-			'wpe_content_model_invalid_labels',
+			'atlas_content_modeler_invalid_labels',
 			'Please provide singular and plural labels when creating a content model.',
 			[ 'status' => 400 ]
 		);
@@ -509,12 +497,16 @@ function create_model( string $post_type_slug, array $args ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
+	if ( empty( $args['fields'] ) ) {
+		$args['fields'] = [];
+	}
+
 	$content_types[ $post_type_slug ] = $args;
 
 	$created = update_registered_content_types( $content_types );
 
 	if ( ! $created ) {
-		return new WP_Error( 'model-not-created', esc_html__( 'Model not created. Reason unknown.', 'wpe-content-model' ) );
+		return new WP_Error( 'model-not-created', esc_html__( 'Model not created. Reason unknown.', 'atlas-content-modeler' ) );
 	}
 
 	return true;
@@ -576,13 +568,13 @@ function update_model( string $post_type_slug, array $args ) {
  */
 function delete_model( string $post_type_slug ) {
 	if ( empty( $post_type_slug ) ) {
-		return new WP_Error( 'model-not-deleted', esc_html__( 'Please provide a post-type-slug.', 'wpe-content-model' ) );
+		return new WP_Error( 'model-not-deleted', esc_html__( 'Please provide a post-type-slug.', 'atlas-content-modeler' ) );
 	}
 
 	$content_types = get_registered_content_types();
 
 	if ( empty( $content_types[ $post_type_slug ] ) ) {
-		return new WP_Error( 'model-not-deleted', esc_html__( 'Content type does not exist.', 'wpe-content-model' ) );
+		return new WP_Error( 'model-not-deleted', esc_html__( 'Content type does not exist.', 'atlas-content-modeler' ) );
 	}
 
 	unset( $content_types[ $post_type_slug ] );
@@ -613,28 +605,4 @@ function content_model_field_exists( string $slug, string $id, array $model ): b
 	}
 
 	return false;
-}
-
-/**
- * Gets children (and their descendents) of the field with `$id` so that these
- * can be deleted when a parent field is removed.
- *
- * @param int   $id     The parent id to look for children.
- * @param array $fields Fields to search.
- * @return array The ids of children and descendents.
- */
-function get_children_of_field( int $id, array $fields ): array {
-	$children = [];
-
-	foreach ( $fields as $field_id => $field ) {
-		if (
-			array_key_exists( 'parent', $field )
-			&& (int) $field['parent'] === $id
-		) {
-			$children[] = (int) $field_id;
-			$children   = array_merge( $children, get_children_of_field( $field_id, $fields ) );
-		}
-	}
-
-	return $children;
 }

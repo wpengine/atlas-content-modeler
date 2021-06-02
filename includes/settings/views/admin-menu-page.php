@@ -2,16 +2,16 @@
 /**
  * View for wp-admin page.
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
 declare(strict_types=1);
 
-namespace WPE\ContentModel\Settings;
+namespace WPE\AtlasContentModeler\Settings;
 
 ?>
 
-<div class="wrap wpe-content-model-admin-page">
+<div class="wrap atlas-content-modeler-admin-page">
 	<header>
 		<div class="wrap wpe-content-model">
 			<div class="d-flex flex-row">

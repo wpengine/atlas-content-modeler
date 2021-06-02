@@ -16,10 +16,6 @@ const FieldButtons = ({ activeButton, clickAction, parent }) => {
 
 	const fields = cloneDeep(supportedFields);
 
-	if (parent) {
-		delete fields["repeater"];
-	}
-
 	return (
 		<div className="field-buttons flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 			{Object.keys(fields).map((field) => {

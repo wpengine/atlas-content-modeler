@@ -47,16 +47,16 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="wpe_content_model" />
-				<element value="WPE_CONTENT_MODEL" />
-				<element value="WPE\ContentModel" />
+				<element value="atlas_content_modeler" />
+				<element value="ATLAS_CONTENT_MODELER" />
+				<element value="WPE\AtlasContentModeler" />
 			</property>
 		</properties>
 	</rule>
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="wpe-content-model" />
+			<property name="text_domain" type="array" value="atlas-content-modeler" />
 		</properties>
 	</rule>
 

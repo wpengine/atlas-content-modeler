@@ -7,7 +7,7 @@ import Field from "./fields/Field";
 import { ModelsContext } from "../ModelsContext";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 
-import { getFieldOrder, getPositionAfter, getRootFields } from "../queries";
+import { getFieldOrder, getPositionAfter, sanitizeFields } from "../queries";
 import FieldButtons from "./FieldButtons";
 
 export default function EditContentModel() {
@@ -16,7 +16,7 @@ export default function EditContentModel() {
 	const query = useLocationSearch();
 	const id = query.get("id");
 	const model = models?.hasOwnProperty(id) ? models[id] : {};
-	const fields = model?.fields ? getRootFields(model.fields) : {};
+	const fields = model?.fields ? sanitizeFields(model.fields) : {};
 	const fieldCount = Object.keys(fields).length;
 	const fieldOrder = getFieldOrder(fields);
 
@@ -24,7 +24,7 @@ export default function EditContentModel() {
 		<div className="app-card">
 			<section className="heading">
 				<h2 className="pr-1 pr-sm-0">
-					<Link to="/wp-admin/admin.php?page=wpe-content-model">
+					<Link to="/wp-admin/admin.php?page=atlas-content-modeler">
 						Content Models
 					</Link>{" "}
 					/ {model?.plural}

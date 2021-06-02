@@ -76,63 +76,29 @@ export function getPositionAfter(id, fields) {
 }
 
 /**
- * Takes a flat list of parent and child fields and returns root fields (fields
- * with no 'parent' property) with child fields moved to a 'subfields' property.
+ * Takes a flat list of all fields and returns root fields (fields
+ * with no lower level fields).
  *
- * Used to remove repeater subfields from the main fields object. A repeater
- * field is a parent field and its subfields are children.
+ * Used to sanitize the main fields object.
  *
- * @param {Object} fields Fields with optional 'parent' properties.
+ * @param {Object} fields Fields and all their properties.
  */
-export function getRootFields(fields) {
+export function sanitizeFields(fields) {
 	if (typeof fields !== "object") {
 		return {};
 	}
 
 	const createFieldTree = (fields) => {
 		const hashTable = Object.create(null);
-		fields.forEach(
-			(field) => (hashTable[field.id] = { ...field, subfields: {} })
-		);
+		fields.forEach((field) => (hashTable[field.id] = { ...field }));
 		const result = {};
 		fields.forEach((field) => {
-			if (field.parent) {
-				hashTable[field.parent].subfields[field.id] =
-					hashTable[field.id];
-			} else {
-				result[field.id] = hashTable[field.id];
-			}
+			result[field.id] = hashTable[field.id];
 		});
 		return result;
 	};
 
 	return createFieldTree(Object.values(fields));
-}
-
-/**
- * Get field ids of all descendents of the field with the passed `id`.
- *
- * Used when removing descendents of a repeater field.
- *
- * @param {Number} id Id of the field to search for children.
- * @param {Object} fields Fields with id and optional parent property.
- * @return {[Number]} Ids of descendent fields (children, grandchildren, etc.).
- */
-export function getChildrenOfField(id, fields = {}) {
-	if (typeof fields !== "object") {
-		return [];
-	}
-
-	let children = [];
-
-	Object.values(fields).forEach((field) => {
-		if (field.hasOwnProperty("parent") && field["parent"] === id) {
-			children.push(field["id"]);
-			children = children.concat(getChildrenOfField(field["id"], fields));
-		}
-	});
-
-	return children;
 }
 
 /**

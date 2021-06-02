@@ -45,7 +45,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function amOnWPEngineContentModelPage($params = '')
     {
-        $path = '/wp-admin/admin.php?page=wpe-content-model';
+        $path = '/wp-admin/admin.php?page=atlas-content-modeler';
 
         if ( $params ) {
             $path .= $params;
@@ -63,7 +63,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function haveContentModel($singular, $plural, $description = '')
     {
-        $this->amOnPage('/wp-admin/admin.php?page=wpe-content-model&view=create-model');
+        $this->amOnPage('/wp-admin/admin.php?page=atlas-content-modeler&view=create-model');
         $this->wait(1);
 
         $this->fillField(['name' => 'singular'], $singular);

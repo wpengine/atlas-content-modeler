@@ -2,14 +2,14 @@
 /**
  * Class PostTypeRegistrationTestCases
  *
- * @package WPE_Content_Model
+ * @package AtlasContentModeler
  */
 
-use function WPE\ContentModel\ContentRegistration\generate_custom_post_type_args;
-use function \WPE\ContentModel\ContentRegistration\generate_custom_post_type_labels;
+use function WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_args;
+use function \WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_labels;
 use PHPUnit\Runner\Exception as PHPUnitRunnerException;
-use function WPE\ContentModel\ContentRegistration\update_registered_content_types;
-use function WPE\ContentModel\ContentRegistration\is_protected_meta;
+use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\is_protected_meta;
 
 /**
  * Post type registration case.
@@ -59,7 +59,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		update_post_meta( $this->dog_post_id, 'dog-weight', '100.25' );
 		update_post_meta( $this->dog_post_id, 'dog-rich-text', 'dog-rich-text string value' );
 		update_post_meta( $this->dog_post_id, 'dog-boolean', 'this string will be cast to a boolean by WPGraphQL' );
-		update_post_meta( $this->dog_post_id, 'dog-repeater', 'dog-repeater string value' );
 	}
 
 	public function tearDown() {
@@ -68,7 +67,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		global $wp_rest_server;
 		$wp_rest_server = null;
 		$this->server = null;
-		delete_option( 'wpe_content_model_post_types' );
+		delete_option( 'atlas_content_modeler_post_types' );
 		$this->all_registered_post_types = null;
 	}
 
@@ -101,10 +100,10 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::\WPE\ContentModel\ContentRegistration\register_content_types()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\register_content_types()
 	 */
 	public function test_content_registration_init_hook(): void {
-		$this->assertSame( 10, has_action( 'init', 'WPE\ContentModel\ContentRegistration\register_content_types' ) );
+		$this->assertSame( 10, has_action( 'init', 'WPE\AtlasContentModeler\ContentRegistration\register_content_types' ) );
 	}
 
 	public function test_defined_custom_post_types_are_registered(): void {
@@ -140,7 +139,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 							dogWeight
 							dogRichText
 							dogBoolean
-							dogRepeater
 						}
 					}
 				}
@@ -158,9 +156,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'dogBoolean', $results['data']['dogs']['nodes'][0] );
 			self::assertTrue( $results['data']['dogs']['nodes'][0]['dogBoolean'] );
-
-			self::assertArrayHasKey( 'dogRepeater', $results['data']['dogs']['nodes'][0] );
-			self::assertSame( $results['data']['dogs']['nodes'][0]['dogRepeater'], 'dog-repeater string value' );
 
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
@@ -180,14 +175,14 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_is_protected_meta_hook(): void {
-		$this->assertSame( 10, has_action( 'is_protected_meta', 'WPE\ContentModel\ContentRegistration\is_protected_meta' ) );
+		$this->assertSame( 10, has_action( 'is_protected_meta', 'WPE\AtlasContentModeler\ContentRegistration\is_protected_meta' ) );
 	}
 
 	/**
-	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_model_fields_are_protected(): void {
 		$fields = $this->mock_post_types()['dog']['fields'];
@@ -198,7 +193,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::\WPE\ContentModel\ContentRegistration\is_protected_meta()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_fields_not_attached_to_a_model_are_not_affected(): void {
 		self::assertFalse( is_protected_meta( false, 'this-key-is-unprotected-and-not-ours-and-should-remain-unprotected', 'post' ) );
@@ -251,13 +246,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 						'slug' => 'dog-boolean',
 						'type' => 'boolean',
 						'description' => 'dog-boolean description',
-						'show_in_rest' => true,
-						'show_in_graphql' => true,
-					],
-					'dog-repeater' => [
-						'slug' => 'dog-repeater',
-						'type' => 'repeater',
-						'description' => 'dog-repeater description',
 						'show_in_rest' => true,
 						'show_in_graphql' => true,
 					],

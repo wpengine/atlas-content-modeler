@@ -5,7 +5,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 	protected $namespace = 'wpe';
 
-	protected $route = 'content-model-field';
+	protected $route = 'atlas/content-model-field';
 
 	protected $test_models = [
 		'rabbits' => [ 'name' => 'Rabbits' ],
@@ -24,15 +24,6 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 				'222' => [ 'id' => '222', 'slug' => 'b' ],
 			],
 		],
-		'parent' => [
-			'name' => 'Parent',
-			'fields' => [
-				'111' => [ 'id' => '111' ],
-				'222' => [ 'id' => '222', 'type' => 'repeater' ],
-				'333' => [ 'id' => '333', 'parent' => '222', 'type' => 'repeater' ],
-				'444' => [ 'id' => '444', 'parent' => '333' ],
-			],
-		],
 	];
 
 	public function setUp() {
@@ -40,7 +31,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		global $wp_rest_server;
 		$this->server = $wp_rest_server = new \WP_REST_Server;
 		do_action( 'rest_api_init' );
-		update_option('wpe_content_model_post_types', $this->test_models );
+		update_option('atlas_content_modeler_post_types', $this->test_models );
 	}
 
 	public function test_content_model_field_route_is_registered() {
@@ -57,7 +48,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'success', $data );
@@ -114,7 +105,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request2->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"New Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
 
 		$response = $this->server->dispatch( $request2 );
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( 'New Name', $models['rabbits']['fields']['123']['name'] );
@@ -125,7 +116,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request3->set_body( "{\"model\":\"{$model}\" }" );
 
 		$request3_response = $this->server->dispatch( $request3 );
-		$updated_models    = get_option( 'wpe_content_model_post_types' );
+		$updated_models    = get_option( 'atlas_content_modeler_post_types' );
 
 		self::assertEquals( 200, $request3_response->get_status() );
 		self::assertArrayNotHasKey( '123', $updated_models[ $model ]['fields'] );
@@ -146,7 +137,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request2 );
 		$data     = $response->get_data();
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertArrayHasKey( 'success', $data );
 		$this->assertEquals( true, $data[ 'success' ] );
@@ -164,12 +155,12 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 			],
 		];
 
-		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/atlas/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $new_field_data ) );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertArrayHasKey( 'success', $data );
 		$this->assertEquals( true, $data[ 'success' ] );
@@ -180,7 +171,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 	public function test_cannot_update_fields_without_field_data() {
 		wp_set_current_user( 1 );
 		$model   = 'dogs';
-		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/atlas/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( ['no_field_data' => 'this_should_error' ] ) );
 
@@ -195,7 +186,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 	public function test_cannot_update_fields_of_invalid_model() {
 		wp_set_current_user( 1 );
 		$model   = 'invalid';
-		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/atlas/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( ['fields' => [ '111' => [ 'position' => '10' ] ] ] ) );
 
@@ -210,13 +201,13 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 	public function test_cannot_update_field_properties_if_field_id_not_present() {
 		wp_set_current_user( 1 );
 		$model   = 'dogs';
-		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/content-model-fields/{$model}" );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/atlas/content-model-fields/{$model}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( ['fields' => [ 'invalid-field-id' => [ 'position' => '10' ] ] ] ) );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'success', $data );
@@ -233,7 +224,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$request->set_body( json_encode( ['id' => '222', 'isTitle' => true, 'model' => $model, 'slug' => 'b' ] ) );
 
 		$response = $this->server->dispatch( $request );
-		$models   = get_option( 'wpe_content_model_post_types' );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'isTitle', $models[$model]['fields']['222'] );
@@ -266,31 +257,12 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		self::assertSame( 'wpe_invalid_content_model', $response->get_data()['code'] );
 	}
 
-	public function test_deleting_repeater_field_also_deletes_descendent_fields(): void {
-		wp_set_current_user( 1 );
-		$model = 'parent';
-		$field_to_delete = '222';
-
-		$request = new WP_REST_Request( 'DELETE', "/{$this->namespace}/{$this->route}/{$field_to_delete}" );
-		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( "{\"model\":\"{$model}\" }" );
-
-		$response       = $this->server->dispatch( $request );
-		$updated_models = get_option( 'wpe_content_model_post_types' );
-
-		self::assertEquals( 200, $response->get_status() );
-		self::assertArrayHasKey( '111', $updated_models[ $model ]['fields'] );
-		self::assertArrayNotHasKey( '222', $updated_models[ $model ]['fields'] );
-		self::assertArrayNotHasKey( '333', $updated_models[ $model ]['fields'] );
-		self::assertArrayNotHasKey( '444', $updated_models[ $model ]['fields'] );
-	}
-
 	public function tearDown() {
 		parent::tearDown();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
 		$this->server = null;
-		delete_option( 'wpe_content_model_post_types' );
+		delete_option( 'atlas_content_modeler_post_types' );
 	}
 }
