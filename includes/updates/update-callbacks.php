@@ -141,7 +141,7 @@ function atlas_content_modeler_display_update_page_notice() {
 		return;
 	}
 
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only used to avoid display messages when inappropriate.
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only used to avoid displaying messages when inappropriate.
 	if ( ! empty( $_GET['action'] ) && 'do-theme-upgrade' === $_GET['action'] ) {
 		return;
 	}
