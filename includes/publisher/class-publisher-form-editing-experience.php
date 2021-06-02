@@ -171,7 +171,7 @@ final class FormEditingExperience {
 		wp_register_script(
 			'feedback-banner',
 			WPE_CONTENT_MODEL_URL . 'includes/publisher/js/src/feedback-banner.js',
-			[ 'jquery' ],
+			[ 'wp-api-fetch' ],
 			$plugin['Version'],
 			true
 		);
@@ -185,8 +185,10 @@ final class FormEditingExperience {
 				'feedback-banner',
 				'wpeContentModelFormEditingExperience',
 				[
-					'root'  => esc_url_raw( rest_url() ),
-					'nonce' => wp_create_nonce( 'wp_rest' ),
+					'root'     => esc_url_raw( rest_url() ),
+					'nonce'    => wp_create_nonce( 'wp_rest' ),
+					'models'   => $models,
+					'postType' => $this->current_screen_post_type,
 				]
 			);
 
@@ -390,11 +392,16 @@ final class FormEditingExperience {
 	 */
 	public function should_show_feedback_banner() {
 		// Only allow on non edit post pages with models from content modeler.
-		$screen      = get_current_screen();
-		$post_type   = $screen->post_type;
-		$hide_banner = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
+		$screen         = get_current_screen();
+		$post_type      = $screen->post_type;
+		$time_dismissed = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
 
-		if ( ! current_user_can( 'manage_options' ) || $hide_banner || ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
+		if ( ! current_user_can( 'manage_options' ) || ! array_key_exists( $post_type, $this->models ) || 'edit' === $screen->base ) {
+			return false;
+		}
+
+		// Check for time elapsed and presence of the meta data.
+		if ( ! empty( $time_dismissed ) && ( $time_dismissed + WEEK_IN_SECONDS * 2 > time() ) ) {
 			return false;
 		}
 
