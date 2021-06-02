@@ -4,6 +4,7 @@ import { useLocationSearch } from "../../utils";
 import Icon from "../../../../../components/icons";
 import TextFields from "./TextFields";
 import NumberFields from "./NumberFields";
+import MultiChoiceFields from "./MultiChoiceFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
@@ -14,6 +15,7 @@ const { cloneDeep } = lodash;
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
+	multi: MultiChoiceFields,
 };
 
 function Form({ id, position, type, editing, storedData }) {

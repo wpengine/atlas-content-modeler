@@ -70,6 +70,10 @@
 	font-weight: normal;
 }
 
+.atlas-content-modeler-admin-page .default-checkbox {
+	align-self:center;
+}
+
 .atlas-content-modeler-admin-page textarea {
 	min-height: 120px;
 }
@@ -157,6 +161,16 @@ input[type="radio"] {
 	display: flex;
 	align-items: center;
 	margin-bottom: 10px;
+}
+.atlas-content-modeler-admin-page .field a{
+	font-weight: bold;
+	color: $color-primary;
+	line-height: 23px;
+}
+
+.atlas-content-modeler-admin-page .field a span{
+	vertical-align: top;
+	margin-top:10px;
 }
 
 .atlas-content-modeler-admin-page .radio-row input[type="radio"] {
