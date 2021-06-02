@@ -13,7 +13,7 @@ namespace WPE\AtlasContentModeler\Settings;
 
 <div class="wrap atlas-content-modeler-admin-page">
 	<header>
-		<div class="wrap wpe-content-model">
+		<div class="wrap atlas-content-modeler">
 			<div class="d-flex flex-row">
 				<div class="align-self-center">
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wpe-content-model' ) ); ?>">

@@ -85,8 +85,8 @@ function enqueue_settings_assets( $hook ) {
 	);
 
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
-		wp_enqueue_script( 'wpe-content-model-app' );
-		wp_enqueue_style( 'wpe-content-model-app-styles' );
+		wp_enqueue_script( 'atlas-content-modeler-app' );
+		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
 		wp_enqueue_style( 'material-icons' );
 	}
 }
