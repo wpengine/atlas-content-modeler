@@ -13,3 +13,14 @@ function feedbackTrigger() {
 		return;
 	});
 }
+
+jQuery(document).ready(function ($) {
+	// on banner button click or dismissal, trigger feedback meta api call
+	$(document).on(
+		"click",
+		"#feedbackBanner .notice-dismiss, #feedbackFormBtn",
+		function () {
+			feedbackTrigger();
+		}
+	);
+});

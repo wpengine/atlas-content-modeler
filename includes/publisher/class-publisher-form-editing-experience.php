@@ -165,7 +165,7 @@ final class FormEditingExperience {
 		wp_register_script(
 			'feedback-banner',
 			ATLAS_CONTENT_MODELER_URL . 'includes/publisher/js/src/feedback-banner.js',
-			[ 'wp-api-fetch' ],
+			[ 'jquery', 'wp-api-fetch' ],
 			$plugin['Version'],
 			true
 		);
@@ -410,7 +410,7 @@ final class FormEditingExperience {
 		if ( $this->should_show_feedback_banner() ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- False positive. Only used to display a message. Nonce checked earlier.
 			?>
-			<div style="background-color: #F2EFFD;" class="atlas-content-modeler notice notice-info is-dismissible">
+			<div id="feedbackBanner" style="background-color: #F2EFFD;" class="atlas-content-modeler notice notice-info is-dismissible">
 				<div class="d-flex d-sm-flex flex-sm-row flex-column p-4">
 					<div class="align-self-center">
 						<svg width="76" height="80" viewBox="0 0 76 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -507,7 +507,7 @@ final class FormEditingExperience {
 						<p>Welcome to our beta. Please send us any feedback or ideas you may have that can improve the overall experience.</p>
 					</div>
 					<div class="ms-auto align-self-end">
-						<a onclick="feedbackTrigger()" href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary content-modeler btn-primary btn-lg"><span class="material-icons-outlined">feedback</span> Send Feedback</a>
+						<a id="feedbackFormBtn" href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary content-modeler btn-primary btn-lg"><span class="material-icons-outlined">feedback</span> Send Feedback</a>
 					</div>
 				</div>
 			</div>
