@@ -5,7 +5,7 @@ const { wp } = window;
  */
 function feedbackTrigger() {
 	wp.apiFetch({
-		path: "/wpe/atlas/feedback-meta",
+		path: "/wpe/atlas/dismiss-feedback-banner",
 		method: "POST",
 		_wpnonce: wpApiSettings.nonce,
 	}).then((res) => {

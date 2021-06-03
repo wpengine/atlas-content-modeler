@@ -167,7 +167,7 @@ final class FormEditingExperience {
 		);
 
 		wp_register_script(
-			'feedback-banner',
+			'atlas-content-modeler-feedback-banner',
 			ATLAS_CONTENT_MODELER_URL . 'includes/shared-assets/js/feedback-banner.js',
 			[ 'jquery', 'wp-api-fetch' ],
 			$plugin['Version'],
@@ -177,7 +177,7 @@ final class FormEditingExperience {
 		wp_enqueue_media();
 
 		if ( $this->should_show_feedback_banner() ) {
-			wp_enqueue_script( 'feedback-banner' );
+			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
 		}
 
 		wp_enqueue_script( 'atlas-content-modeler-form-editing-experience' );

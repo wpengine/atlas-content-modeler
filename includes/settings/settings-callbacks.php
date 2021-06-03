@@ -39,7 +39,7 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' 
 /**
  * Decides if feedback banner scripts should be loaded.
  *
- * @returns bool
+ * @return bool
  */
 function should_show_feedback_banner(): bool {
 	$time_dismissed = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
@@ -90,7 +90,7 @@ function enqueue_settings_assets( $hook ) {
 	);
 
 	wp_register_script(
-		'feedback-banner',
+		'atlas-content-modeler-feedback-banner',
 		ATLAS_CONTENT_MODELER_URL . 'includes/shared-assets/js/feedback-banner.js',
 		[ 'jquery', 'wp-api-fetch' ],
 		$plugin['Version'],
@@ -102,7 +102,7 @@ function enqueue_settings_assets( $hook ) {
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
 
 		if ( should_show_feedback_banner() ) {
-			wp_enqueue_script( 'feedback-banner' );
+			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
 		}
 	}
 }
