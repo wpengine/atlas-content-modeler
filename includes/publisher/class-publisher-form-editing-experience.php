@@ -410,7 +410,7 @@ final class FormEditingExperience {
 		?>
 		<div id="feedbackBanner" style="background-color: #F2EFFD;" class="atlas-content-modeler notice notice-info is-dismissible">
 			<div class="d-flex d-sm-flex flex-sm-row flex-column p-4">
-				<div class="align-self-center">
+				<div class="align-self-start me-sm-4">
 					<svg width="76" height="80" viewBox="0 0 76 80" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g clip-path="url(#clip0)">
 							<path d="M37.2916 70.8948C53.9177 70.8948 67.3959 57.5169 67.3959 41.0143C67.3959 24.5118 53.9177 11.1339 37.2916 11.1339C20.6654 11.1339 7.18729 24.5118 7.18729 41.0143C7.18729 57.5169 20.6654 70.8948 37.2916 70.8948Z" fill="white"/>
@@ -500,7 +500,7 @@ final class FormEditingExperience {
 						</defs>
 					</svg>
 				</div>
-				<div class="ms-auto align-self-center">
+				<div class="align-self-start">
 					<h2>Welcome to WP Engine's Content Modeler!</h2>
 					<p>Welcome to our beta. Please send us any feedback or ideas you may have that can improve the overall experience.</p>
 				</div>
