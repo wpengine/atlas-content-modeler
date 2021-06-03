@@ -84,9 +84,27 @@ function enqueue_settings_assets( $hook ) {
 		$plugin['Version']
 	);
 
+	wp_register_script(
+		'feedback-banner',
+		ATLAS_CONTENT_MODELER_URL . 'includes/shared-assets/js/feedback-banner.js',
+		[ 'jquery', 'wp-api-fetch' ],
+		$plugin['Version'],
+		true
+	);
+
+	// Feedback banner script to hide and set timer.
+	wp_localize_script(
+		'feedback-banner',
+		'wpeContentModelFormEditingExperience',
+		[
+			'root' => esc_url_raw( rest_url() ),
+		]
+	);
+
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'atlas-content-modeler-app' );
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
 		wp_enqueue_style( 'material-icons' );
+		wp_enqueue_script( 'feedback-banner' );
 	}
 }
