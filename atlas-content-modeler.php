@@ -7,7 +7,7 @@
  * Author URI: https://wpengine.com/
  * Text Domain: atlas-content-modeler
  * Domain Path: /languages
- * Version: 0.2.0
+ * Version: 0.3.0
  *
  * @package AtlasContentModeler
  */

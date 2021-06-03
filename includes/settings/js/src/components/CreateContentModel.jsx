@@ -23,7 +23,7 @@ export default function CreateContentModel() {
 
 	function apiCreateModel(data) {
 		apiFetch({
-			path: "/wpe/content-model",
+			path: "/wpe/atlas/content-model",
 			method: "POST",
 			_wpnonce: wpApiSettings.nonce,
 			data,

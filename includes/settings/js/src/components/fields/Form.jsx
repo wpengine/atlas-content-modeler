@@ -41,7 +41,7 @@ function Form({ id, position, type, editing, storedData }) {
 
 	function apiAddField(data) {
 		apiFetch({
-			path: `/wpe/content-model-field`,
+			path: `/wpe/atlas/content-model-field`,
 			method: editing ? "PUT" : "POST",
 			_wpnonce: wpApiSettings.nonce,
 			data,

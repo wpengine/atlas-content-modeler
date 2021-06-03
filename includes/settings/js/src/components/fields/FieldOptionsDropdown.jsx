@@ -108,7 +108,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 					className="first warning"
 					onClick={async () => {
 						apiFetch({
-							path: `/wpe/content-model-field/${field.id}`,
+							path: `/wpe/atlas/content-model-field/${field.id}`,
 							method: "DELETE",
 							body: JSON.stringify({ model: model.slug }),
 							_wpnonce: wpApiSettings.nonce,

@@ -33,7 +33,7 @@ const reorder = (list, startIndex, endIndex) => {
  */
 const updatePositions = async (model, idsAndPositions) => {
 	await apiFetch({
-		path: `/wpe/content-model-fields/${model}`,
+		path: `/wpe/atlas/content-model-fields/${model}`,
 		method: "PATCH",
 		_wpnonce: wpApiSettings.nonce,
 		data: { fields: idsAndPositions },
