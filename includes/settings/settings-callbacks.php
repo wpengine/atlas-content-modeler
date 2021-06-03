@@ -89,14 +89,6 @@ function enqueue_settings_assets( $hook ) {
 		$plugin['Version']
 	);
 
-	// TODO: remove when final icon is chosen for feedback.
-	wp_register_style(
-		'material-icons',
-		'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined',
-		[],
-		$plugin['Version']
-	);
-
 	wp_register_script(
 		'feedback-banner',
 		ATLAS_CONTENT_MODELER_URL . 'includes/shared-assets/js/feedback-banner.js',
@@ -108,7 +100,6 @@ function enqueue_settings_assets( $hook ) {
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'atlas-content-modeler-app' );
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
-		wp_enqueue_style( 'material-icons' );
 
 		if ( should_show_feedback_banner() ) {
 			wp_enqueue_script( 'feedback-banner' );

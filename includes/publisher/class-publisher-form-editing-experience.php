@@ -135,14 +135,6 @@ final class FormEditingExperience {
 			true
 		);
 
-		// TODO: remove when final icon is chosen for feedback.
-		wp_register_style(
-			'material-icons',
-			'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined',
-			[],
-			$plugin['Version']
-		);
-
 		wp_enqueue_style(
 			'styles',
 			ATLAS_CONTENT_MODELER_URL . '/includes/publisher/dist/index.css',
@@ -183,8 +175,6 @@ final class FormEditingExperience {
 		);
 
 		wp_enqueue_media();
-
-		wp_enqueue_style( 'material-icons' );
 
 		if ( $this->should_show_feedback_banner() ) {
 			wp_enqueue_script( 'feedback-banner' );
@@ -515,7 +505,7 @@ final class FormEditingExperience {
 					<p>Welcome to our beta. Please send us any feedback or ideas you may have that can improve the overall experience.</p>
 				</div>
 				<div class="ms-auto align-self-end">
-					<a rel="noopener noreferrer" id="feedbackFormBtn" href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary atlas-content-modeler btn-primary btn-lg"><span class="material-icons-outlined">feedback</span> Send Feedback</a>
+					<a rel="noopener noreferrer" id="feedbackFormBtn" href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary atlas-content-modeler btn-primary btn-lg"><span class="dashicons dashicons-admin-comments"></span> Send Feedback</a>
 				</div>
 			</div>
 		</div>
