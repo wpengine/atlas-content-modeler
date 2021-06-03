@@ -35,6 +35,21 @@ function render_admin_menu_page() {
 }
 
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
+
+/**
+ * Decides if feedback banner should be shown and scripts loaded
+ */
+function should_show_feedback_banner() {
+	$time_dismissed = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
+
+	// Check for time elapsed and presence of the meta data.
+	if ( ! empty( $time_dismissed ) && ( $time_dismissed + WEEK_IN_SECONDS * 2 > time() ) ) {
+		return false;
+	}
+
+	return true;
+}
+
 /**
  * Registers and enqueues admin scripts and styles.
  *
@@ -92,19 +107,13 @@ function enqueue_settings_assets( $hook ) {
 		true
 	);
 
-	// Feedback banner script to hide and set timer.
-	wp_localize_script(
-		'feedback-banner',
-		'wpeContentModelFormEditingExperience',
-		[
-			'root' => esc_url_raw( rest_url() ),
-		]
-	);
-
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'atlas-content-modeler-app' );
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
 		wp_enqueue_style( 'material-icons' );
-		wp_enqueue_script( 'feedback-banner' );
+
+		if ( should_show_feedback_banner() ) {
+			wp_enqueue_script( 'feedback-banner' );
+		}
 	}
 }

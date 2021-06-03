@@ -114,7 +114,7 @@ function register_rest_routes(): void {
 	// Route for setting feedback banner transient.
 	register_rest_route(
 		'wpe',
-		'/feedback-meta',
+		'/atlas/feedback-meta',
 		[
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\dispatch_feedback_meta',

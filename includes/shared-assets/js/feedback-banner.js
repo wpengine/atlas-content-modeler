@@ -1,4 +1,3 @@
-// global wpeContentModelFormEditingExperience
 const { wp } = window;
 
 /**
@@ -6,7 +5,7 @@ const { wp } = window;
  */
 function feedbackTrigger() {
 	wp.apiFetch({
-		path: "/wpe/feedback-meta",
+		path: "/wpe/atlas/feedback-meta",
 		method: "POST",
 		_wpnonce: wpApiSettings.nonce,
 	}).then((res) => {
