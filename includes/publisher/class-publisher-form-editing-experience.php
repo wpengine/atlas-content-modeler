@@ -499,7 +499,7 @@ final class FormEditingExperience {
 						<p>Welcome to our beta. Please send us any feedback or ideas you may have that can improve the overall experience.</p>
 					</div>
 					<div class="ms-auto align-self-end">
-						<a id="feedbackFormBtn" href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary content-modeler btn-primary btn-lg"><span class="material-icons-outlined">feedback</span> Send Feedback</a>
+						<a rel="noopener noreferrer" id="feedbackFormBtn" href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary atlas-content-modeler btn-primary btn-lg"><span class="material-icons-outlined">feedback</span> Send Feedback</a>
 					</div>
 				</div>
 			</div>
