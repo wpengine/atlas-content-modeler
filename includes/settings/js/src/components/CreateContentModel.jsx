@@ -32,7 +32,8 @@ export default function CreateContentModel() {
 				if (res.success) {
 					dispatch({ type: "addModel", data: res.model });
 					history.push(
-						"/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=" +
+						atlasContentModeler.appPath +
+							"&view=edit-model&id=" +
 							data.slug
 					);
 
@@ -61,11 +62,7 @@ export default function CreateContentModel() {
 				<h2>New Content Model</h2>
 				<button
 					className="tertiary"
-					onClick={() =>
-						history.push(
-							"/wp-admin/admin.php?page=atlas-content-modeler"
-						)
-					}
+					onClick={() => history.push(atlasContentModeler.appPath)}
 				>
 					View All Models
 				</button>
@@ -248,9 +245,7 @@ export default function CreateContentModel() {
 					<button
 						className="tertiary"
 						onClick={() =>
-							history.push(
-								"/wp-admin/admin.php?page=atlas-content-modeler"
-							)
+							history.push(atlasContentModeler.appPath)
 						}
 					>
 						Cancel

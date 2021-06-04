@@ -41,7 +41,8 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' 
  * @param string $hook The current admin page.
  */
 function enqueue_settings_assets( $hook ) {
-	$plugin = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
+	$plugin     = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
+	$admin_path = wp_parse_url( esc_url( admin_url() ) )['path'];
 
 	wp_register_script(
 		'atlas-content-modeler-app',
@@ -55,6 +56,7 @@ function enqueue_settings_assets( $hook ) {
 		'atlas-content-modeler-app',
 		'atlasContentModeler',
 		array(
+			'appPath'             => $admin_path . '?page=atlas-content-modeler',
 			'initialState'        => get_registered_content_types(),
 			'isGraphiQLAvailable' => is_plugin_active( 'wp-graphql/wp-graphql.php' )
 				&& function_exists( 'get_graphql_setting' )
