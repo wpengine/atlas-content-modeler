@@ -15,7 +15,7 @@ const { cloneDeep } = lodash;
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
-	multi: MultiChoiceFields,
+	multiOption: MultiChoiceFields,
 };
 
 function Form({ id, position, type, editing, storedData }) {
