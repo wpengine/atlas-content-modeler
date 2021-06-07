@@ -1,8 +1,10 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import Modal from "react-modal";
 import { useLocationSearch } from "../../utils";
 import Icon from "../../../../../components/icons";
 import TextFields from "./TextFields";
+import { TextSettings } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
@@ -16,16 +18,22 @@ const extraFields = {
 	number: NumberFields,
 };
 
+Modal.setAppElement("#root");
+
 function Form({ id, position, type, editing, storedData }) {
 	const {
 		register,
 		handleSubmit,
 		errors,
 		setValue,
+		getValues,
 		clearErrors,
 		setError,
-	} = useForm();
+		reset,
+		trigger,
+	} = useForm({ mode: "onChange" });
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
+	const [optionsModalIsOpen, setOptionsModalIsOpen] = useState(false);
 	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const model = query.get("id");
@@ -36,6 +44,64 @@ function Form({ id, position, type, editing, storedData }) {
 		storedData,
 	});
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
+
+	const advancedSettings = {
+		text: {
+			component: TextSettings,
+			fields: {
+				minChars: {
+					min: 0,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
+				},
+				maxChars: {
+					min: 1,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
+					validate: {
+						maxBelowMin: (v) => {
+							const min = parseInt(getValues("minChars"));
+							const max = parseInt(v);
+							if (isNaN(min) || isNaN(max)) {
+								return true;
+							}
+							return max > min;
+						},
+					},
+				},
+			},
+		},
+	};
+
+	const AdvancedSettings = advancedSettings[type]?.component;
+
+	const modalStyles = {
+		overlay: {
+			backgroundColor: "rgba(0, 40, 56, 0.7)",
+		},
+		content: {
+			top: "50%",
+			left: "50%",
+			right: "auto",
+			bottom: "auto",
+			marginRight: "-50%",
+			transform: "translate(-50%, -50%)",
+			border: "none",
+			padding: "40px",
+		},
+	};
+
+	useEffect(() => {
+		/**
+		 * Register fields that appear in the Advanced Settings modal.
+		 * So that values save if the modal is not opened, and values
+		 * persist if the modal is mounted then unmounted.
+		 */
+		if (type in advancedSettings) {
+			Object.keys(advancedSettings[type]["fields"]).forEach((field) => {
+				register(field, advancedSettings[type]["fields"][field]);
+				setValue(field, storedData[field]);
+			});
+		}
+	}, [register]);
 
 	function apiAddField(data) {
 		apiFetch({
@@ -237,6 +303,74 @@ function Form({ id, position, type, editing, storedData }) {
 				>
 					Cancel
 				</button>
+				{type in advancedSettings && (
+					<>
+						<button
+							className="settings d-flex flex-row"
+							onClick={(event) => {
+								event.preventDefault();
+								setOptionsModalIsOpen(true);
+							}}
+						>
+							<Icon type="settings" />
+							Advanced Settings
+						</button>
+						<Modal
+							isOpen={optionsModalIsOpen}
+							contentLabel="Advanced Settings"
+							portalClassName="atlas-content-modeler-modal atlas-content-modeler-field-settings-modal-container atlas-content-modeler atlas-content-modeler-admin-page"
+							onRequestClose={() => {
+								setOptionsModalIsOpen(false);
+							}}
+							style={modalStyles}
+						>
+							<h2 className="mb-5">Advanced Settings</h2>
+
+							<AdvancedSettings
+								errors={errors}
+								storedData={storedData}
+								setValue={setValue}
+								getValues={getValues}
+								trigger={trigger}
+							/>
+
+							<div className="d-flex flex-row mt-5">
+								<button
+									onClick={async () => {
+										const fieldsAreValid = await trigger(
+											Object.keys(
+												advancedSettings[type]["fields"]
+											)
+										);
+										if (fieldsAreValid) {
+											setOptionsModalIsOpen(false);
+										}
+									}}
+									type="submit"
+									className="primary first mr-1 mr-sm-2"
+								>
+									Done
+								</button>
+								<button
+									onClick={() => {
+										Object.keys(
+											advancedSettings[type]["fields"]
+										).forEach((fieldName) =>
+											reset({
+												[fieldName]:
+													storedData[fieldName],
+											})
+										);
+										setOptionsModalIsOpen(false);
+									}}
+									className="tertiary"
+								>
+									Cancel
+								</button>
+							</div>
+						</Modal>
+					</>
+				)}
 			</div>
 		</form>
 	);
