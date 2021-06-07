@@ -25,9 +25,9 @@ export default function Field(props) {
 
 		if (field.type === "text") {
 			if (event.target.validity.tooShort) {
-				error = "Text is too short";
+				error = `Minimum length is ${event.target.minLength}.`;
 			} else if (event.target.validity.tooLong) {
-				error = "Text is too long";
+				error = `Maximum length is ${event.target.maxLength}.`;
 			}
 		}
 
@@ -74,7 +74,8 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						defaultValue={field.value}
 						required={field.required}
 						onChange={(event) => validate(event, field)}
-						maxLength={field.textLength === "short" ? 50 : 500}
+						minLength={field?.minChars}
+						maxLength={field?.maxChars}
 					/>
 					<span className="error">
 						<Icon type="error" />

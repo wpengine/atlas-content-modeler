@@ -13,7 +13,7 @@ function Header({ showButton = true }) {
 				<button
 					onClick={() =>
 						history.push(
-							"/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
+							atlasContentModeler.appPath + "&view=create-model"
 						)
 					}
 				>
@@ -43,7 +43,8 @@ export default function ViewContentModelsList() {
 						<button
 							onClick={() =>
 								history.push(
-									"/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
+									atlasContentModeler.appPath +
+										"&view=create-model"
 								)
 							}
 						>

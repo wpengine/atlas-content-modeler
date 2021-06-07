@@ -1,3 +1,4 @@
+/* global atlasContentModeler */
 import React, {
 	useContext,
 	useEffect,
@@ -172,9 +173,7 @@ export const ContentModelDropdown = ({ model }) => {
 							});
 
 						setModalIsOpen(false);
-						history.push(
-							"/wp-admin/admin.php?page=atlas-content-modeler"
-						);
+						history.push(atlasContentModeler.appPath);
 						dispatch({ type: "removeModel", slug });
 					}}
 				>

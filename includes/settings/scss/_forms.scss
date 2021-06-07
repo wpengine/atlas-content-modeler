@@ -106,7 +106,7 @@
 	margin-bottom: 21px;
 }
 
-.atlas-content-modeler-admin-page form .field-messages {
+.atlas-content-modeler-admin-page .field-messages {
 	display: flex;
 	font-size: 12px;
 	justify-content: space-between;
@@ -115,12 +115,12 @@
 	text-align: right;
 }
 
-.atlas-content-modeler-admin-page form .field-messages .error {
+.atlas-content-modeler-admin-page .field-messages .error {
 	align-items: center;
 	display: flex;
 }
 
-.atlas-content-modeler-admin-page form .field-messages .error svg {
+.atlas-content-modeler-admin-page .field-messages .error svg {
 	margin-right: 8px;
 }
 
