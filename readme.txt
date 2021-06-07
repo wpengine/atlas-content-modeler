@@ -11,6 +11,10 @@ Model content for headless WordPress.
 
 == Changelog ==
 
+= Unreleased =
+### Added
+- Allow optional character minimum and maximum counts for Text fields.
+
 = 0.3.0 - 2021-06-01 =
 ### Added
 - Developers can now mark fields as required.
