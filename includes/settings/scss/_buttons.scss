@@ -14,7 +14,9 @@ button {
 }
 
 button.disabled {
-	background: lightgray;
+	background: $color-gray-disabled-background;
+	border-color: $color-gray-disabled-border;
+	color: $color-gray-disabled-text;
 }
 
 button.first {
