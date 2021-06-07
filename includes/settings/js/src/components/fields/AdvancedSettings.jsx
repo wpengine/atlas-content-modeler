@@ -4,6 +4,132 @@
 import React from "react";
 import Icon from "../../../../../components/icons";
 
+const NumberSettings = ({
+	errors,
+	storedData,
+	setValue,
+	getValues,
+	trigger,
+}) => {
+	return (
+		<>
+			<h3>Specific Number Range</h3>
+			<p className="mb-4">
+				Define your range here. Only numberic characters can be used.
+			</p>
+
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div
+					className={`${
+						errors.min ? "field has-error" : "field"
+					} me-sm-5`}
+				>
+					<label htmlFor="min">Min Value</label>
+					<br />
+					<input
+						aria-invalid={errors.min ? "true" : "false"}
+						type="number"
+						id="min"
+						name="min"
+						onChange={async (e) => {
+							setValue("min", e.target.value, {
+								shouldValidate: true,
+							});
+							// Validate maxChars in case minChars is now bigger.
+							await trigger("max");
+						}}
+						defaultValue={String(
+							getValues("min") ?? storedData?.min
+						)}
+					/>
+					<p className="field-messages">
+						{errors.min && errors.min.type === "min" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									The minimum value is 0.
+								</span>
+							</span>
+						)}
+					</p>
+				</div>
+
+				<div
+					className={`${
+						errors.max ? "field has-error" : "field"
+					} me-sm-5`}
+				>
+					<label htmlFor="max">Max Value</label>
+					<br />
+					<input
+						aria-invalid={errors.max ? "true" : "false"}
+						type="number"
+						id="max"
+						name="max"
+						onChange={async (e) => {
+							setValue("max", e.target.value, {
+								shouldValidate: true,
+							});
+							// Validate maxChars in case maxChars is now bigger.
+							await trigger("min");
+						}}
+						defaultValue={String(
+							getValues("max") ?? storedData?.max
+						)}
+					/>
+					<p className="field-messages">
+						{errors.max && errors.max.type === "max" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									The maximum value is 999,999.
+								</span>
+							</span>
+						)}
+					</p>
+				</div>
+
+				<div className={errors.step ? "field has-error" : "field"}>
+					<label htmlFor="step">Step</label>
+					<br />
+					<input
+						aria-invalid={errors.step ? "true" : "false"}
+						type="number"
+						id="step"
+						name="step"
+						onChange={(e) => {
+							setValue("step", e.target.value, {
+								shouldValidate: true,
+							});
+						}}
+						defaultValue={String(
+							getValues("step") ?? storedData?.step
+						)}
+					/>
+					<p className="field-messages">
+						{errors.step && errors.step.type === "min" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									The minimum value is 1.
+								</span>
+							</span>
+						)}
+						{errors.step && errors.step.type === "step" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									Must be greater than 0.
+								</span>
+							</span>
+						)}
+					</p>
+				</div>
+			</div>
+		</>
+	);
+};
+
 const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 	return (
 		<>

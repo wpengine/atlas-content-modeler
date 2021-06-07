@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { useLocationSearch } from "../../utils";
 import Icon from "../../../../../components/icons";
 import TextFields from "./TextFields";
-import { TextSettings } from "./AdvancedSettings";
+import { TextSettings, NumberSettings } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
@@ -66,6 +66,33 @@ function Form({ id, position, type, editing, storedData }) {
 							return max > min;
 						},
 					},
+				},
+			},
+		},
+		number: {
+			component: NumberSettings,
+			fields: {
+				min: {
+					min: 0,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
+				},
+				max: {
+					max: 999999,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
+					validate: {
+						maxBelowMin: (v) => {
+							const min = parseInt(getValues("min"));
+							const max = parseInt(v);
+							if (isNaN(min) || isNaN(max)) {
+								return true;
+							}
+							return max > min;
+						},
+					},
+				},
+				step: {
+					step: 0,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
 				},
 			},
 		},
