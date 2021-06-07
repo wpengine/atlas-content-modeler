@@ -7,7 +7,7 @@ import Icon from "../../../../../components/icons";
 const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 	return (
 		<>
-			<h3>Character limit</h3>
+			<h3>Character Limit</h3>
 			<p className="mb-4">
 				Set a minimum and/or maximum character count for this text
 				field.
