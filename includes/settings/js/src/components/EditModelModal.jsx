@@ -43,6 +43,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 	const [descriptionCount, setDescriptionCount] = useState(
 		model.description.length
 	);
+	const [disableButtons, setDisableButtons] = useState(false);
 	const { dispatch } = useContext(ModelsContext);
 	const { register, handleSubmit, errors } = useForm();
 
@@ -79,9 +80,11 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			<h2>Edit {model.plural}</h2>
 			<form
 				onSubmit={handleSubmit(async (data) => {
+					setDisableButtons(true);
 					const mergedData = { ...model, ...data };
 					await updateModel(data.slug, mergedData);
 					dispatch({ type: "updateModel", data: mergedData });
+					setDisableButtons(false);
 					setIsOpen(false);
 				})}
 			>
@@ -211,12 +214,19 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					</p>
 				</div>
 
-				<button type="submit" className="primary first">
+				<button
+					type="submit"
+					disabled={disableButtons}
+					className={`primary first ${
+						disableButtons ? "disabled" : ""
+					}`}
+				>
 					Save
 				</button>
 				<button
 					href="#"
-					className="tertiary"
+					className={`tertiary ${disableButtons ? "disabled" : ""}`}
+					disabled={disableButtons}
 					onClick={(event) => {
 						event.preventDefault();
 						setIsOpen(false);
