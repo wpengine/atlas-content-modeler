@@ -91,14 +91,6 @@ function enqueue_settings_assets( $hook ) {
 		$plugin['Version']
 	);
 
-	wp_register_script(
-		'atlas-content-modeler-feedback-banner',
-		ATLAS_CONTENT_MODELER_URL . 'includes/shared-assets/js/feedback-banner.js',
-		[ 'wp-api-fetch' ],
-		$plugin['Version'],
-		true
-	);
-
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'atlas-content-modeler-app' );
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
