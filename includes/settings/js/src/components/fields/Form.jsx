@@ -91,7 +91,7 @@ function Form({ id, position, type, editing, storedData }) {
 					},
 				},
 				step: {
-					step: 0,
+					min: 0,
 					setValueAs: (v) => (v ? parseInt(v) : ""),
 				},
 			},

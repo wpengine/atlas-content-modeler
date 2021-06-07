@@ -70,7 +70,7 @@ const NumberSettings = ({
 							setValue("max", e.target.value, {
 								shouldValidate: true,
 							});
-							// Validate maxChars in case maxChars is now bigger.
+							// Validate min in case min is now bigger.
 							await trigger("min");
 						}}
 						defaultValue={String(
@@ -78,11 +78,11 @@ const NumberSettings = ({
 						)}
 					/>
 					<p className="field-messages">
-						{errors.max && errors.max.type === "max" && (
+						{errors.max && errors.max.type === "maxBelowMin" && (
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">
-									The maximum value is 999,999.
+									Max must be more than min.
 								</span>
 							</span>
 						)}
@@ -107,19 +107,11 @@ const NumberSettings = ({
 						)}
 					/>
 					<p className="field-messages">
-						{errors.step && errors.step.type === "min" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">
-									The minimum value is 1.
-								</span>
-							</span>
-						)}
 						{errors.step && errors.step.type === "step" && (
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">
-									Must be greater than 0.
+									The minimum value is 0.
 								</span>
 							</span>
 						)}
@@ -217,4 +209,4 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 	);
 };
 
-export { TextSettings };
+export { TextSettings, NumberSettings };
