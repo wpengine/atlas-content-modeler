@@ -82,39 +82,39 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 				</div>
 			)}
 			<div className={editing ? "field read-only editing" : "field"}>
-				<legend>Text Length</legend>
+				<legend>Input Type</legend>
 				<fieldset>
 					<div className="radio-row">
 						<input
 							type="radio"
-							id="short"
-							name="textLength"
-							value="short"
+							id="single"
+							name="inputType"
+							value="single"
 							ref={register}
 							defaultChecked={
-								data?.textLength === "short" ||
-								typeof data?.textLength === "undefined"
+								data?.inputType === "single" ||
+								typeof data?.inputType === "undefined"
 							}
 							disabled={editing}
 						/>
-						<label className="radio" htmlFor="short">
-							Short text
-							<span>Maximum 50 characters</span>
+						<label className="radio" htmlFor="single">
+							Single line
+							<span>Displays an input field</span>
 						</label>
 					</div>
 					<div className="radio-row">
 						<input
 							type="radio"
-							id="long"
-							name="textLength"
-							value="long"
+							id="multi"
+							name="inputType"
+							value="multi"
 							ref={register}
-							defaultChecked={data?.textLength === "long"}
+							defaultChecked={data?.inputType === "multi"}
 							disabled={editing}
 						/>
-						<label className="radio" htmlFor="long">
-							Long text
-							<span>Maximum 500 characters</span>
+						<label className="radio" htmlFor="multi">
+							Multiple lines
+							<span>Displays a textarea field</span>
 						</label>
 					</div>
 				</fieldset>
