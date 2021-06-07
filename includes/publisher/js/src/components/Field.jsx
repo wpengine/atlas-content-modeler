@@ -74,7 +74,8 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						defaultValue={field.value}
 						required={field.required}
 						onChange={(event) => validate(event, field)}
-						maxLength={field.textLength === "short" ? 50 : 500}
+						minLength={field?.minChars}
+						maxLength={field?.maxChars}
 					/>
 					<span className="error">
 						<Icon type="error" />
