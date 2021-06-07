@@ -72,6 +72,7 @@ class PublishModelCest
 		$i->wait(2);
 
 		$i->see('Post published.');
+		$i->wait(1);
 		$i->see('Edit goose'); // Page title should change from “Add goose” when published.
 
 		$i->seeInField('atlas-content-modeler[goose][color]', 'Gray');
