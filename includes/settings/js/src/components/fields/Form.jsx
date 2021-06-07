@@ -349,7 +349,7 @@ function Form({ id, position, type, editing, storedData }) {
 									type="submit"
 									className="primary first mr-1 mr-sm-2"
 								>
-									Save
+									Done
 								</button>
 								<button
 									onClick={() => {
