@@ -15,6 +15,7 @@ export default function CreateContentModel() {
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);
+	const [disableButtons, setDisableButtons] = useState(false);
 	const { dispatch } = useContext(ModelsContext);
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
 		apiFieldId: "slug",
@@ -22,6 +23,8 @@ export default function CreateContentModel() {
 	});
 
 	function apiCreateModel(data) {
+		setDisableButtons(true);
+
 		apiFetch({
 			path: "/wpe/atlas/content-model",
 			method: "POST",
@@ -53,6 +56,9 @@ export default function CreateContentModel() {
 						message: err.message,
 					});
 				}
+			})
+			.finally(() => {
+				setDisableButtons(false);
 			});
 	}
 
@@ -239,11 +245,20 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<button type="submit" className="primary first">
+					<button
+						type="submit"
+						disabled={disableButtons}
+						className={`primary first ${
+							disableButtons ? "disabled" : ""
+						}`}
+					>
 						Create
 					</button>
 					<button
-						className="tertiary"
+						className={`tertiary ${
+							disableButtons ? "disabled" : ""
+						}`}
+						disabled={disableButtons}
 						onClick={() =>
 							history.push(atlasContentModeler.appPath)
 						}
