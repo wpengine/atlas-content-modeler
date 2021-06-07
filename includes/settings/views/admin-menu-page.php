@@ -23,7 +23,7 @@ namespace WPE\AtlasContentModeler\Settings;
 						<h1>Atlas Content Modeler by WP Engine</h1>
 					</a>
 				</div>
-				<div class="ms-auto align-self-center">
+				<div class="ms-auto align-self-center d-none d-sm-block">
 					<a rel="noopener noreferrer" id="feedbackFormBtn" href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary atlas-content-modeler btn-primary btn-lg"><span class="dashicons dashicons-admin-comments"></span> Send Feedback</a>
 				</div>
 			</div>
