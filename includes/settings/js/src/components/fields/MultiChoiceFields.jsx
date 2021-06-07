@@ -9,10 +9,18 @@ import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
 
 function MultiChoiceFields({ register, type, data, editing }) {
-	const { handleSubmit, errors, setValue, clearErrors, control, watch, setError } = useForm({
+	const {
+		handleSubmit,
+		errors,
+		setValue,
+		clearErrors,
+		control,
+		watch,
+		setError,
+	} = useForm({
 		// defaultValues: {
-    //   fieldArray: [{ id: "0", value: "Option 1" }]
-    // }
+		//   fieldArray: [{ id: "0", value: "Option 1" }]
+		// }
 	});
 
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
@@ -24,70 +32,85 @@ function MultiChoiceFields({ register, type, data, editing }) {
 	const { dispatch } = useContext(ModelsContext);
 
 	const { fields, append } = useFieldArray({
-    control,
-    name: "fieldArray"
-  });
+		control,
+		name: "fieldArray",
+	});
 
 	const watchFieldArray = watch("fieldArray");
-  const controlledFields = fields.map((field, index) => {
-    return {
-      ...field,
-      ...watchFieldArray[index]
-    };
-  });
- 
+	const controlledFields = fields.map((field, index) => {
+		return {
+			...field,
+			...watchFieldArray[index],
+		};
+	});
+
 	return (
 		<div className={editing ? "field read-only editing" : "field"}>
 			<fieldset>
-				<div id="multiOptions" className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div
+					id="multiOptions"
+					className="d-flex flex-column d-sm-flex flex-sm-row"
+				>
 					<div className="">
 						<ul>
 							{controlledFields.map((field, index) => {
 								return (
-									<div className="field">
-											<label htmlFor="name">Option {index + 1}</label>
-											<br />
-											<p className="help">
-												Display name for your {supportedFields[type]}{" "}
-												option.
-											</p>
+									<div key={index} className="field">
+										<label htmlFor="name">
+											Option {index + 1}
+										</label>
+										<br />
+										<p className="help">
+											Display name for your{" "}
+											{supportedFields[type]} option.
+										</p>
+										<div
+											className={`${
+												errors.name
+													? "field has-error"
+													: "field"
+											} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
+										>
 											<div
-												className={`${
-													errors.name ? "field has-error" : "field"
-												} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
+												className="me-sm-5"
+												name="multiples"
 											>
-												<div 
-													className="me-sm-5"
-													name="multiples"
-												>
-													<input
-														{...register(`fieldArray.${index}.option`)}
-														name="option"
-														// defaultValue={field.fieldArray[index]}
-														placeholder="Option Name"
-														type="text"
-														onChange={(e) => {
-															setApiIdGeneratorInput(e.target.value);
-															clearErrors("slug");
-														}}
-													/>
-												</div>
-												<div className="me-sm-5 default-checkbox">
-													<input
-														{...register(`fieldArray.${index}.default`)}
-														name="default"
-														type="checkbox"
-														// ref={register}
-														defaultChecked={data.required === true}
-													/>
-													<label
-														// htmlFor={`is-required-${id}`}
-														className="checkbox is-required"
-													>
-														Default Value
-													</label>
-												</div>
+												<input
+													{...register(
+														`fieldArray.${index}.option`
+													)}
+													name="option"
+													// defaultValue={field.fieldArray[index]}
+													placeholder="Option Name"
+													type="text"
+													onChange={(e) => {
+														setApiIdGeneratorInput(
+															e.target.value
+														);
+														clearErrors("slug");
+													}}
+												/>
 											</div>
+											<div className="me-sm-5 default-checkbox">
+												<input
+													{...register(
+														`fieldArray.${index}.default`
+													)}
+													name="default"
+													type="checkbox"
+													// ref={register}
+													defaultChecked={
+														data.required === true
+													}
+												/>
+												<label
+													// htmlFor={`is-required-${id}`}
+													className="checkbox is-required"
+												>
+													Default Value
+												</label>
+											</div>
+										</div>
 									</div>
 								);
 							})}
@@ -97,18 +120,19 @@ function MultiChoiceFields({ register, type, data, editing }) {
 									onClick={(event) => {
 										event.preventDefault();
 										append({
-											name: Date.now()
-										})	
+											name: Date.now(),
+										});
 										dispatch({
 											type: "addOptionField",
 											// position: positionAfter,
 											data: data,
 											id: data.id,
-										})
+										});
 									}}
 								>
 									<a>
-										<AddIcon size="small" /> <span>Add another option</span>
+										<AddIcon size="small" />{" "}
+										<span>Add another option</span>
 									</a>
 								</button>
 							</div>

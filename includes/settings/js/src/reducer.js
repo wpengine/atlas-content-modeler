@@ -42,14 +42,14 @@ export function reducer(state, action) {
 			};
 			return { ...state };
 		case "addOptionField":
-				const newOptionId = Date.now();
-				// let newObject = {
-				// 	id: newOptionId,
-				// 	data: "",
-				// }
-				// action.data.multiOptions.push(newObject);
-				console.log(state);
-				// action.data.multiOptions;
+			const newOptionId = Date.now();
+			// let newObject = {
+			// 	id: newOptionId,
+			// 	data: "",
+			// }
+			// action.data.multiOptions.push(newObject);
+			console.log(state);
+			// action.data.multiOptions;
 			return { ...state };
 		case "openField":
 			Object.values(state[action.model]["fields"]).forEach((field) => {
