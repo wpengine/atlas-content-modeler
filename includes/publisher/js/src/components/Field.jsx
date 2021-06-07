@@ -25,9 +25,9 @@ export default function Field(props) {
 
 		if (field.type === "text") {
 			if (event.target.validity.tooShort) {
-				error = "Text is too short";
+				error = `Minimum length is ${event.target.minLength}.`;
 			} else if (event.target.validity.tooLong) {
-				error = "Text is too long";
+				error = `Maximum length is ${event.target.maxLength}.`;
 			}
 		}
 
