@@ -19,74 +19,76 @@ const NumberSettings = ({
 			</p>
 
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
-				<div
-					className={`${
-						errors.min ? "field has-error" : "field"
-					} me-sm-5`}
-				>
-					<label htmlFor="min">Min Value</label>
-					<br />
-					<input
-						aria-invalid={errors.min ? "true" : "false"}
-						type="number"
-						id="min"
-						name="min"
-						onChange={async (e) => {
-							setValue("min", e.target.value, {
-								shouldValidate: true,
-							});
-							// Validate maxChars in case minChars is now bigger.
-							await trigger("max");
-						}}
-						defaultValue={String(
-							getValues("min") ?? storedData?.min
-						)}
-					/>
-					<p className="field-messages">
-						{errors.min && errors.min.type === "min" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">
-									The minimum value is 0.
+				<div>
+					<div
+						className={`${
+							errors.min ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="min">Min Value</label>
+						<br />
+						<input
+							aria-invalid={errors.min ? "true" : "false"}
+							type="number"
+							id="min"
+							name="min"
+							onChange={async (e) => {
+								setValue("min", e.target.value, {
+									shouldValidate: true,
+								});
+								// Validate maxChars in case minChars is now bigger.
+								await trigger("max");
+							}}
+							defaultValue={String(
+								getValues("min") ?? storedData?.min
+							)}
+						/>
+						<p className="field-messages">
+							{errors.min && errors.min.type === "min" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										The minimum value is 0.
+									</span>
 								</span>
-							</span>
-						)}
-					</p>
-				</div>
+							)}
+						</p>
+					</div>
 
-				<div
-					className={`${
-						errors.max ? "field has-error" : "field"
-					} me-sm-5`}
-				>
-					<label htmlFor="max">Max Value</label>
-					<br />
-					<input
-						aria-invalid={errors.max ? "true" : "false"}
-						type="number"
-						id="max"
-						name="max"
-						onChange={async (e) => {
-							setValue("max", e.target.value, {
-								shouldValidate: true,
-							});
-							// Validate min in case min is now bigger.
-							await trigger("min");
-						}}
-						defaultValue={String(
-							getValues("max") ?? storedData?.max
-						)}
-					/>
-					<p className="field-messages">
-						{errors.max && errors.max.type === "maxBelowMin" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">
-									Max must be more than min.
+					<div
+						className={`${
+							errors.max ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="max">Max Value</label>
+						<br />
+						<input
+							aria-invalid={errors.max ? "true" : "false"}
+							type="number"
+							id="max"
+							name="max"
+							onChange={async (e) => {
+								setValue("max", e.target.value, {
+									shouldValidate: true,
+								});
+								// Validate min in case min is now bigger.
+								await trigger("min");
+							}}
+							defaultValue={String(
+								getValues("max") ?? storedData?.max
+							)}
+						/>
+						<p className="field-messages">
+							{errors.max && errors.max.type === "maxBelowMin" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										Max must be more than min.
+									</span>
 								</span>
-							</span>
-						)}
-					</p>
+							)}
+						</p>
+					</div>
 				</div>
 
 				<div className={errors.step ? "field has-error" : "field"}>
