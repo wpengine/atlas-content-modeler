@@ -72,16 +72,16 @@ function Form({ id, position, type, editing, storedData }) {
 		number: {
 			component: NumberSettings,
 			fields: {
-				minChars: {
+				minValue: {
 					min: 0,
 					setValueAs: (v) => (v ? parseInt(v) : ""),
 				},
-				maxChars: {
+				maxValue: {
 					min: 1,
 					setValueAs: (v) => (v ? parseInt(v) : ""),
 					validate: {
 						maxBelowMin: (v) => {
-							const min = parseInt(getValues("minChars"));
+							const min = parseInt(getValues("minValue"));
 							const max = parseInt(v);
 							if (isNaN(min) || isNaN(max)) {
 								return true;
