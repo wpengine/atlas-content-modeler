@@ -10,12 +10,18 @@ import Icon from "../../../../components/icons";
 const { apiFetch } = wp;
 
 export default function CreateContentModel() {
-	const { register, handleSubmit, errors, setValue, setError } = useForm();
+	const {
+		register,
+		handleSubmit,
+		errors,
+		setValue,
+		setError,
+		formState: { isSubmitting },
+	} = useForm();
 	const history = useHistory();
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);
-	const [disableButtons, setDisableButtons] = useState(false);
 	const { dispatch } = useContext(ModelsContext);
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
 		apiFieldId: "slug",
@@ -23,9 +29,7 @@ export default function CreateContentModel() {
 	});
 
 	function apiCreateModel(data) {
-		setDisableButtons(true);
-
-		apiFetch({
+		return apiFetch({
 			path: "/wpe/atlas/content-model",
 			method: "POST",
 			_wpnonce: wpApiSettings.nonce,
@@ -56,9 +60,6 @@ export default function CreateContentModel() {
 						message: err.message,
 					});
 				}
-			})
-			.finally(() => {
-				setDisableButtons(false);
 			});
 	}
 
@@ -247,18 +248,14 @@ export default function CreateContentModel() {
 
 					<button
 						type="submit"
-						disabled={disableButtons}
-						className={`primary first ${
-							disableButtons ? "disabled" : ""
-						}`}
+						disabled={isSubmitting}
+						className="primary first"
 					>
 						Create
 					</button>
 					<button
-						className={`tertiary ${
-							disableButtons ? "disabled" : ""
-						}`}
-						disabled={disableButtons}
+						className="tertiary"
+						disabled={isSubmitting}
 						onClick={() =>
 							history.push(atlasContentModeler.appPath)
 						}

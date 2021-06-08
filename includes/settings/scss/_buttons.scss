@@ -13,10 +13,11 @@ button {
 	padding: 14px 24px;
 }
 
-button.disabled {
-	background: $color-gray-disabled-background;
-	border-color: $color-gray-disabled-border;
-	color: $color-gray-disabled-text;
+button:disabled,
+button:disabled:hover {
+	background: $color-gray-disabled-background !important;
+	border-color: $color-gray-disabled-border !important;
+	color: $color-gray-disabled-text !important;
 }
 
 button.first {
