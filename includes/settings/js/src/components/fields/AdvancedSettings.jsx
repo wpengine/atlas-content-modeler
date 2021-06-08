@@ -22,29 +22,31 @@ const NumberSettings = ({
 				<div>
 					<div
 						className={`${
-							errors.min ? "field has-error" : "field"
+							errors.minChars ? "field has-error" : "field"
 						} me-sm-5`}
 					>
-						<label htmlFor="min">Min Value</label>
+						<label htmlFor="minChars">
+							Minimum Character Limit
+						</label>
 						<br />
 						<input
-							aria-invalid={errors.min ? "true" : "false"}
+							aria-invalid={errors.minChars ? "true" : "false"}
 							type="number"
-							id="min"
-							name="min"
+							id="minChars"
+							name="minChars"
 							onChange={async (e) => {
-								setValue("min", e.target.value, {
+								setValue("minChars", e.target.value, {
 									shouldValidate: true,
 								});
 								// Validate maxChars in case minChars is now bigger.
-								await trigger("max");
+								await trigger("maxChars");
 							}}
 							defaultValue={String(
-								getValues("min") ?? storedData?.min
+								getValues("minChars") ?? storedData?.minChars
 							)}
 						/>
 						<p className="field-messages">
-							{errors.min && errors.min.type === "min" && (
+							{errors.minChars && errors.minChars.type === "min" && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
@@ -57,36 +59,45 @@ const NumberSettings = ({
 
 					<div
 						className={`${
-							errors.max ? "field has-error" : "field"
+							errors.maxChars ? "field has-error" : "field"
 						} me-sm-5`}
 					>
-						<label htmlFor="max">Max Value</label>
+						<label htmlFor="maxChars">
+							Maximum Character Limit
+						</label>
 						<br />
 						<input
-							aria-invalid={errors.max ? "true" : "false"}
+							aria-invalid={errors.maxChars ? "true" : "false"}
 							type="number"
-							id="max"
-							name="max"
-							onChange={async (e) => {
-								setValue("max", e.target.value, {
+							id="maxChars"
+							name="maxChars"
+							onChange={(e) => {
+								setValue("maxChars", e.target.value, {
 									shouldValidate: true,
 								});
-								// Validate min in case min is now bigger.
-								await trigger("min");
 							}}
 							defaultValue={String(
-								getValues("max") ?? storedData?.max
+								getValues("maxChars") ?? storedData?.maxChars
 							)}
 						/>
 						<p className="field-messages">
-							{errors.max && errors.max.type === "maxBelowMin" && (
+							{errors.maxChars && errors.maxChars.type === "min" && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Max must be more than min.
+										The minimum value is 1.
 									</span>
 								</span>
 							)}
+							{errors.maxChars &&
+								errors.maxChars.type === "maxBelowMin" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											Max must be more than min.
+										</span>
+									</span>
+								)}
 						</p>
 					</div>
 				</div>
@@ -109,7 +120,7 @@ const NumberSettings = ({
 						)}
 					/>
 					<p className="field-messages">
-						{errors.step && errors.step.type === "step" && (
+						{errors.step && errors.step.type === "min" && (
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">
