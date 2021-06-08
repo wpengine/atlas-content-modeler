@@ -1,7 +1,7 @@
 const { wp } = window;
 
 /**
- * Sets the time for the banner metadata
+ * Saves the time a user dismissed the feedback banner.
  */
 function feedbackTrigger() {
 	wp.apiFetch({
