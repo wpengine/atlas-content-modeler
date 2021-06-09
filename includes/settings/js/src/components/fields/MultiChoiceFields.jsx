@@ -20,6 +20,10 @@ function MultiChoiceFields({
 		name: "choices",
 	});
 
+	useEffect(() => {
+		setValue("choices", data?.choices);
+	}, []);
+
 	return (
 		<div className={editing ? "field read-only editing" : "field"}>
 			<fieldset>
