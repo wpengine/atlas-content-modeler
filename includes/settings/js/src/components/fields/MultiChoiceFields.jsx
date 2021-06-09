@@ -1,47 +1,23 @@
 /**
  * Additional form fields for the Multi Choice field type.
  */
-import React, { useContext, useState } from "react";
-import { useForm, useFieldArray, useFormContext } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useFieldArray } from "react-hook-form";
 import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
-import { ModelsContext } from "../../ModelsContext";
-import { useApiIdGenerator } from "./useApiIdGenerator";
 
-function MultiChoiceFields({ register, type, data, editing }) {
-	const {
-		handleSubmit,
-		errors,
-		setValue,
-		clearErrors,
-		control,
-		watch,
-		setError,
-	} = useForm({
-		// defaultValues: {
-		//   fieldArray: [{ id: "0", value: "Option 1" }]
-		// }
-	});
-
-	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
-		setValue,
-		editing,
-		data,
-	});
-
-	const { dispatch } = useContext(ModelsContext);
-
+function MultiChoiceFields({
+	register,
+	type,
+	data,
+	editing,
+	setValue,
+	control,
+	errors,
+}) {
 	const { fields, append } = useFieldArray({
 		control,
-		name: "fieldArray",
-	});
-
-	const watchFieldArray = watch("fieldArray");
-	const controlledFields = fields.map((field, index) => {
-		return {
-			...field,
-			...watchFieldArray[index],
-		};
+		name: "choices",
 	});
 
 	return (
@@ -76,35 +52,25 @@ function MultiChoiceFields({ register, type, data, editing }) {
 												name="multiples"
 											>
 												<input
-													{...register(
-														`fieldArray.${index}.option`
-													)}
-													name="option"
-													// defaultValue={field.fieldArray[index]}
+													ref={register}
+													name={`choices[${index}].name`}
 													placeholder="Option Name"
 													type="text"
-													onChange={(e) => {
-														setApiIdGeneratorInput(
-															e.target.value
-														);
-														clearErrors("slug");
-													}}
+													defaultValue={`${item?.name}`}
 												/>
 											</div>
 											<div className="me-sm-5 default-checkbox">
 												<input
-													{...register(
-														`fieldArray.${index}.default`
-													)}
-													name="default"
+													ref={register}
+													name={`choices[${index}].default`}
+													id={`choices-${index}-default`}
 													type="checkbox"
-													// ref={register}
 													defaultChecked={
-														data.required === true
+														item?.default
 													}
 												/>
 												<label
-													// htmlFor={`is-required-${id}`}
+													htmlFor={`choices-${index}-default`}
 													className="checkbox is-required"
 												>
 													Default Value
@@ -119,15 +85,7 @@ function MultiChoiceFields({ register, type, data, editing }) {
 									className="tertiary"
 									onClick={(event) => {
 										event.preventDefault();
-										append({
-											name: Date.now(),
-										});
-										dispatch({
-											type: "addOptionField",
-											// position: positionAfter,
-											data: data,
-											id: data.id,
-										});
+										append({ name: "", default: false });
 									}}
 								>
 									<a>
