@@ -21,6 +21,7 @@ function MultiChoiceFields({
 		name: "choices",
 	});
 
+	const currentListType = watch("listType");
 	const currentChoices = watch("choices");
 
 	/**
@@ -86,7 +87,10 @@ function MultiChoiceFields({
 													}
 													onClick={(event) => {
 														if (
-															event.target.checked
+															event.target
+																.checked &&
+															currentListType ===
+																"one"
 														) {
 															setDefaultOption(
 																index
