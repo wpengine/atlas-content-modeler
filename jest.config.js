@@ -6,6 +6,6 @@ module.exports = {
 		atlasContentModeler: {},
 	},
 	moduleNameMapper: {
-		"^.+\\.(css|less|scss)$": "identity-obj-proxy",
+		"^.+\\.(css|less|scss)$": "jest-css-modules-transform",
 	},
 };
