@@ -152,7 +152,7 @@ function MultiChoiceFields({ register, type, data, editing }) {
 							ref={register}
 							defaultChecked={
 								data?.listType === "one" ||
-								typeof data?.listType === "multiple"
+								typeof data?.listType === "undefined"
 							}
 							disabled={editing}
 						/>
