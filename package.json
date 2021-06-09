@@ -12,6 +12,7 @@
     "style": "prettier --check .",
     "style:fix": "prettier --write .",
     "test": "jest --watch",
+    "test-no-watch": "jest",
     "lint": "eslint './includes/**/*.{js,jsx}'",
     "lint:fix": "eslint './includes/**/*.{js,jsx}' --fix",
     "prepare": "husky install"
