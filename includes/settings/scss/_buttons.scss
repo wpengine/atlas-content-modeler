@@ -13,6 +13,13 @@ button {
 	padding: 14px 24px;
 }
 
+button:disabled,
+button:disabled:hover {
+	background: $color-gray-disabled-background !important;
+	border-color: $color-gray-disabled-border !important;
+	color: $color-gray-disabled-text !important;
+}
+
 button.first {
 	margin-right: 20px;
 }
