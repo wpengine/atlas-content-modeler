@@ -156,7 +156,7 @@ function MultiChoiceFields({ register, type, data, editing }) {
 							}
 							disabled={editing}
 						/>
-						<label className="radio" htmlFor="integer">
+						<label className="radio" htmlFor="one">
 							Single Select
 							<span>
 								Select this if you need a list of radio buttons
@@ -174,7 +174,7 @@ function MultiChoiceFields({ register, type, data, editing }) {
 							defaultChecked={data?.listType === "multi"}
 							disabled={editing}
 						/>
-						<label className="radio" htmlFor="one">
+						<label className="radio" htmlFor="multi">
 							Multi Select
 							<span>
 								Select this if you need a list of checkboxes
