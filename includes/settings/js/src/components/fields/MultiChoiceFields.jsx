@@ -7,7 +7,7 @@ import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
 
 function MultiChoiceFields({ register, type, data, editing, control, errors }) {
-	const { fields, append } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		control,
 		name: "choices",
 	});
@@ -44,16 +44,16 @@ function MultiChoiceFields({ register, type, data, editing, control, errors }) {
 												name="multiples"
 											>
 												<input
-													ref={register}
+													ref={register()}
 													name={`choices[${index}].name`}
 													placeholder="Option Name"
 													type="text"
-													defaultValue={`${item?.name}`}
+													defaultValue={`${item.name}`}
 												/>
 											</div>
 											<div className="me-sm-5 default-checkbox">
 												<input
-													ref={register}
+													ref={register()}
 													name={`choices[${index}].default`}
 													id={`choices-${index}-default`}
 													type="checkbox"
@@ -67,6 +67,22 @@ function MultiChoiceFields({ register, type, data, editing, control, errors }) {
 												>
 													Default Value
 												</label>
+											</div>
+											<div>
+												<button
+													className="tertiary"
+													onClick={(event) => {
+														event.preventDefault();
+														remove(index);
+													}}
+												>
+													<a>
+														<AddIcon size="small" />{" "}
+														<span>
+															Remove option
+														</span>
+													</a>
+												</button>
 											</div>
 										</div>
 									</div>
