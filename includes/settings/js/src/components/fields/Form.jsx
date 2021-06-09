@@ -24,6 +24,7 @@ function Form({ id, position, type, editing, storedData }) {
 		handleSubmit,
 		errors,
 		setValue,
+		watch,
 		clearErrors,
 		setError,
 		control,
@@ -215,6 +216,8 @@ function Form({ id, position, type, editing, storedData }) {
 						fieldId={id}
 						control={control}
 						errors={errors}
+						setValue={setValue}
+						watch={watch}
 					/>
 				)}
 			</div>

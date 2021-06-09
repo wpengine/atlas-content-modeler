@@ -6,11 +6,35 @@ import { useFieldArray } from "react-hook-form";
 import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
 
-function MultiChoiceFields({ register, type, data, editing, control, errors }) {
+function MultiChoiceFields({
+	register,
+	type,
+	data,
+	editing,
+	control,
+	errors,
+	setValue,
+	watch,
+}) {
 	const { fields, append, remove } = useFieldArray({
 		control,
 		name: "choices",
 	});
+
+	const currentChoices = watch("choices");
+
+	/**
+	 * Unchecks other “default value” fields when checking a new default.
+	 *
+	 * @param newDefaultIndex The choice to make the default.
+	 */
+	const setDefaultOption = (newDefaultIndex) => {
+		const newChoices = currentChoices.map((choice, index) => {
+			choice.default = index === newDefaultIndex;
+			return choice;
+		});
+		setValue("choices", newChoices);
+	};
 
 	return (
 		<div className={editing ? "field read-only editing" : "field"}>
@@ -60,6 +84,15 @@ function MultiChoiceFields({ register, type, data, editing, control, errors }) {
 													defaultChecked={
 														item?.default
 													}
+													onClick={(event) => {
+														if (
+															event.target.checked
+														) {
+															setDefaultOption(
+																index
+															);
+														}
+													}}
 												/>
 												<label
 													htmlFor={`choices-${index}-default`}
