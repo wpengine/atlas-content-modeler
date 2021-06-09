@@ -10,7 +10,14 @@ import Icon from "../../../../components/icons";
 const { apiFetch } = wp;
 
 export default function CreateContentModel() {
-	const { register, handleSubmit, errors, setValue, setError } = useForm();
+	const {
+		register,
+		handleSubmit,
+		errors,
+		setValue,
+		setError,
+		formState: { isSubmitting },
+	} = useForm();
 	const history = useHistory();
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
@@ -22,7 +29,7 @@ export default function CreateContentModel() {
 	});
 
 	function apiCreateModel(data) {
-		apiFetch({
+		return apiFetch({
 			path: "/wpe/atlas/content-model",
 			method: "POST",
 			_wpnonce: wpApiSettings.nonce,
@@ -239,11 +246,16 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<button type="submit" className="primary first">
+					<button
+						type="submit"
+						disabled={isSubmitting}
+						className="primary first"
+					>
 						Create
 					</button>
 					<button
 						className="tertiary"
+						disabled={isSubmitting}
 						onClick={() =>
 							history.push(atlasContentModeler.appPath)
 						}

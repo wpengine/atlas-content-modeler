@@ -44,7 +44,12 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 		model.description.length
 	);
 	const { dispatch } = useContext(ModelsContext);
-	const { register, handleSubmit, errors } = useForm();
+	const {
+		register,
+		handleSubmit,
+		errors,
+		formState: { isSubmitting },
+	} = useForm();
 
 	const customStyles = {
 		overlay: {
@@ -211,12 +216,17 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					</p>
 				</div>
 
-				<button type="submit" className="primary first">
+				<button
+					type="submit"
+					disabled={isSubmitting}
+					className="primary first"
+				>
 					Save
 				</button>
 				<button
 					href="#"
 					className="tertiary"
+					disabled={isSubmitting}
 					onClick={(event) => {
 						event.preventDefault();
 						setIsOpen(false);
