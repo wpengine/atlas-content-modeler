@@ -2,35 +2,36 @@
 
 exports[`App Renders a matching snapshot 1`] = `
 <div
-  className="app"
+  className="app atlas-content-modeler"
 >
+  <div
+    className="Toastify"
+  />
   <div
     className="app-card"
   >
     <section
-      className="heading"
+      className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
     >
       <h2>
         Content Models
       </h2>
-      <a
-        href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
-        onClick={[Function]}
-      >
-        <button>
-          Add New
-        </button>
-      </a>
     </section>
     <section
       className="card-content"
     >
-      <p>
-        Loading...
-      </p>
-      <ul
-        className="model-list"
-      />
+      <div
+        className="model-list-empty"
+      >
+        <p>
+          You currently have no Content Models.
+        </p>
+        <button
+          onClick={[Function]}
+        >
+          Get Started
+        </button>
+      </div>
     </section>
   </div>
 </div>
