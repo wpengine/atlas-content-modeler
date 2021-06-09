@@ -1,28 +1,16 @@
 /**
  * Additional form fields for the Multi Choice field type.
  */
-import React, { useEffect } from "react";
+import React from "react";
 import { useFieldArray } from "react-hook-form";
 import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
 
-function MultiChoiceFields({
-	register,
-	type,
-	data,
-	editing,
-	setValue,
-	control,
-	errors,
-}) {
+function MultiChoiceFields({ register, type, data, editing, control, errors }) {
 	const { fields, append } = useFieldArray({
 		control,
 		name: "choices",
 	});
-
-	useEffect(() => {
-		setValue("choices", data?.choices);
-	}, []);
 
 	return (
 		<div className={editing ? "field read-only editing" : "field"}>

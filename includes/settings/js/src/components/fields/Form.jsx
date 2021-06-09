@@ -27,7 +27,9 @@ function Form({ id, position, type, editing, storedData }) {
 		clearErrors,
 		setError,
 		control,
-	} = useForm();
+	} = useForm({
+		defaultValues: storedData,
+	});
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
 	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
@@ -211,7 +213,6 @@ function Form({ id, position, type, editing, storedData }) {
 						data={storedData}
 						register={register}
 						fieldId={id}
-						setValue={setValue}
 						control={control}
 						errors={errors}
 					/>
