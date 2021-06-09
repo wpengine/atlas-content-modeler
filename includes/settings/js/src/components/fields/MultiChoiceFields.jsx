@@ -53,9 +53,9 @@ function MultiChoiceFields({ register, type, data, editing }) {
 				>
 					<div className="">
 						<ul>
-							{controlledFields.map((field, index) => {
+							{fields.map((item, index) => {
 								return (
-									<div key={index} className="field">
+									<div key={item.id} className="field">
 										<label htmlFor="name">
 											Option {index + 1}
 										</label>
