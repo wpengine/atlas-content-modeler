@@ -3,4 +3,7 @@ module.exports = {
 	globals: {
 		wp: {},
 	},
+	moduleNameMapper: {
+		"^.+\\.(css|less|scss)$": "identity-obj-proxy",
+	},
 };
