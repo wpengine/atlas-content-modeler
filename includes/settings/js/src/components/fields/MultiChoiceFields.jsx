@@ -98,7 +98,11 @@ function MultiChoiceFields({ register, type, data, editing, control, errors }) {
 								>
 									<a>
 										<AddIcon size="small" />{" "}
-										<span>Add another option</span>
+										<span>
+											{fields.length > 0
+												? "Add another option"
+												: "Add an option"}
+										</span>
 									</a>
 								</button>
 							</div>
