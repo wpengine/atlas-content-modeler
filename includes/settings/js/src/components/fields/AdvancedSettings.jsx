@@ -138,7 +138,8 @@ const NumberSettings = ({
 							</span>
 						)}
 						{errors.step &&
-							errors.step.type === "maxBelowStepAndMin" && (
+							errors.step.type ===
+								"minAndStepEqualOrLessThanMax" && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
