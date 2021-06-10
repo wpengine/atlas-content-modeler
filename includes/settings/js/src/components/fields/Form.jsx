@@ -47,6 +47,7 @@ function Form({ id, position, type, editing, storedData }) {
 		storedData,
 	});
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
+	const [previousState, setPreviousState] = useState(storedData);
 
 	const advancedSettings = {
 		text: {
@@ -345,6 +346,7 @@ function Form({ id, position, type, editing, storedData }) {
 											)
 										);
 										if (fieldsAreValid) {
+											setPreviousState(getValues());
 											setOptionsModalIsOpen(false);
 										}
 									}}
@@ -361,7 +363,7 @@ function Form({ id, position, type, editing, storedData }) {
 										).forEach(
 											(fieldName) =>
 												(resetValues[fieldName] =
-													storedData[fieldName])
+													previousState[fieldName])
 										);
 										reset(resetValues);
 										setOptionsModalIsOpen(false);
