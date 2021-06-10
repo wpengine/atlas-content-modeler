@@ -25,9 +25,7 @@ const NumberSettings = ({
 							errors.minValue ? "field has-error" : "field"
 						} me-sm-5`}
 					>
-						<label htmlFor="minValue">
-							Min Value
-						</label>
+						<label htmlFor="minValue">Min Value</label>
 						<br />
 						<input
 							aria-invalid={errors.minValue ? "true" : "false"}
@@ -62,9 +60,7 @@ const NumberSettings = ({
 							errors.maxValue ? "field has-error" : "field"
 						} me-sm-5`}
 					>
-						<label htmlFor="maxValue">
-							Max Value
-						</label>
+						<label htmlFor="maxValue">Max Value</label>
 						<br />
 						<input
 							aria-invalid={errors.maxValue ? "true" : "false"}

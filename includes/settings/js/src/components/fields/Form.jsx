@@ -78,11 +78,11 @@ function Form({ id, position, type, editing, storedData }) {
 			fields: {
 				minValue: {
 					min: 0,
-					setValueAs: (v) => (v ? parseInt(v) : ""),
+					setValueAs: (v) => (v ? parseFloat(v) : ""),
 				},
 				maxValue: {
 					min: 1,
-					setValueAs: (v) => (v ? parseInt(v) : ""),
+					setValueAs: (v) => (v ? parseFloat(v) : ""),
 					validate: {
 						maxBelowMin: (v) => {
 							const min = parseInt(getValues("minValue"));
@@ -96,7 +96,7 @@ function Form({ id, position, type, editing, storedData }) {
 				},
 				step: {
 					min: 0,
-					setValueAs: (v) => (v ? parseInt(v) : ""),
+					setValueAs: (v) => (v ? parseFloat(v) : ""),
 				},
 			},
 		},
