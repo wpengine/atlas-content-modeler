@@ -26,7 +26,7 @@ const NumberSettings = ({
 						} me-sm-5`}
 					>
 						<label htmlFor="minValue">
-							Minimum Character Limit
+							Min Value
 						</label>
 						<br />
 						<input
