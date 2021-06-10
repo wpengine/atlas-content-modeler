@@ -14,6 +14,7 @@ exports[`Field renders a proper number field 1`] = `
     defaultValue="100"
     id="atlas-content-modeler[geese][age]"
     name="atlas-content-modeler[geese][age]"
+    onChange={[Function]}
     type="number"
   />
   <span
