@@ -30,6 +30,7 @@ const NumberSettings = ({
 						<input
 							aria-invalid={errors.minValue ? "true" : "false"}
 							type="number"
+							step="0.1"
 							id="minValue"
 							name="minValue"
 							onChange={async (e) => {
@@ -65,6 +66,7 @@ const NumberSettings = ({
 						<input
 							aria-invalid={errors.maxValue ? "true" : "false"}
 							type="number"
+							step="0.1"
 							id="maxValue"
 							name="maxValue"
 							onChange={(e) => {
@@ -104,6 +106,7 @@ const NumberSettings = ({
 					<input
 						aria-invalid={errors.step ? "true" : "false"}
 						type="number"
+						step="0.1"
 						id="step"
 						name="step"
 						onChange={(e) => {
