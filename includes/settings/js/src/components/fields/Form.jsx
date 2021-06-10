@@ -31,7 +31,10 @@ function Form({ id, position, type, editing, storedData }) {
 		setError,
 		reset,
 		trigger,
-	} = useForm({ mode: "onChange" });
+	} = useForm({
+		mode: "onChange",
+		defaultValues: storedData,
+	});
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
 	const [optionsModalIsOpen, setOptionsModalIsOpen] = useState(false);
 	const { models, dispatch } = useContext(ModelsContext);
@@ -98,10 +101,9 @@ function Form({ id, position, type, editing, storedData }) {
 		if (type in advancedSettings) {
 			Object.keys(advancedSettings[type]["fields"]).forEach((field) => {
 				register(field, advancedSettings[type]["fields"][field]);
-				setValue(field, storedData[field]);
 			});
 		}
-	}, [register]);
+	}, [register, advancedSettings]);
 
 	function apiAddField(data) {
 		apiFetch({
