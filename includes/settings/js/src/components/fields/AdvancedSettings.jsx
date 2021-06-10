@@ -39,6 +39,7 @@ const NumberSettings = ({
 								});
 								// Validate maxValue in case minValue is now bigger.
 								await trigger("maxValue");
+								await trigger("step");
 							}}
 							defaultValue={String(
 								getValues("minValue") ?? storedData?.minValue
@@ -69,10 +70,11 @@ const NumberSettings = ({
 							step="0.1"
 							id="maxValue"
 							name="maxValue"
-							onChange={(e) => {
+							onChange={async (e) => {
 								setValue("maxValue", e.target.value, {
 									shouldValidate: true,
 								});
+								await trigger("step");
 							}}
 							defaultValue={String(
 								getValues("maxValue") ?? storedData?.maxValue
@@ -135,6 +137,16 @@ const NumberSettings = ({
 								</span>
 							</span>
 						)}
+						{errors.step &&
+							errors.step.type === "maxBelowStepAndMin" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										Min Value and Step together can't be
+										larger than max.
+									</span>
+								</span>
+							)}
 					</p>
 				</div>
 			</div>

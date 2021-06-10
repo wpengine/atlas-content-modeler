@@ -106,6 +106,15 @@ function Form({ id, position, type, editing, storedData }) {
 							}
 							return max > step;
 						},
+						maxBelowStepAndMin: () => {
+							const min = parseFloat(getValues("minValue"));
+							const max = parseFloat(getValues("maxValue"));
+							const step = parseFloat(v);
+							if (isNaN(step) || isNaN(max) || isNan(min)) {
+								return true;
+							}
+							return max > min + step;
+						},
 					},
 				},
 			},
