@@ -15,7 +15,7 @@ const NumberSettings = ({
 		<>
 			<h3>Specific Number Range</h3>
 			<p className="mb-4">
-				Define your range here. Only numberic characters can be used.
+				Define your range here. Only numeric characters can be used.
 			</p>
 
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
