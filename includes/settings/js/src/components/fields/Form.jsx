@@ -106,11 +106,11 @@ function Form({ id, position, type, editing, storedData }) {
 							}
 							return max > step;
 						},
-						maxBelowStepAndMin: () => {
+						maxBelowStepAndMin: (v) => {
 							const min = parseFloat(getValues("minValue"));
 							const max = parseFloat(getValues("maxValue"));
 							const step = parseFloat(v);
-							if (isNaN(step) || isNaN(max) || isNan(min)) {
+							if (isNaN(step) || isNaN(max) || isNaN(min)) {
 								return true;
 							}
 							return max > min + step;
