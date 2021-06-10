@@ -63,7 +63,7 @@ const NumberSettings = ({
 						} me-sm-5`}
 					>
 						<label htmlFor="maxValue">
-							Maximum Character Limit
+							Max Value
 						</label>
 						<br />
 						<input
