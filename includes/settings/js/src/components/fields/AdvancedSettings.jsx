@@ -142,8 +142,8 @@ const NumberSettings = ({
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Min Value and Step together can't be
-										larger than max.
+										Min and Step together can't be larger
+										than max.
 									</span>
 								</span>
 							)}
