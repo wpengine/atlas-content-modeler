@@ -82,4 +82,26 @@ class AdvancedSettingsCest
 
 		$I->see('Minimum length is 10');
 	}
+
+	public function i_can_cancel_advanced_settings_edits_without_losing_other_field_changes(\AcceptanceTester $I) {
+		$I->click('Text', '.field-buttons');
+		$I->wait(1);
+		$I->fillField(['name' => 'name'], 'Name');
+		$I->seeInField('#slug','name');
+
+		// Open and fill Advanced Settings.
+		$I->click('button.settings');
+		$I->fillField(['name' => 'minChars'], '1');
+
+		// Cancel the Advanced Settings changes.
+		$I->click('.ReactModal__Content button.tertiary');
+		$I->wait(1);
+
+		// Check the name field still contains the original text.
+		$I->seeInField('#slug','name');
+
+		// Check the minChars field in Advanced Settings is now cleared.
+		$I->click('button.settings');
+		$I->seeInField('#minChars','');
+	}
 }
