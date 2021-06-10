@@ -35,6 +35,19 @@ function render_admin_menu_page() {
 }
 
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
+
+/**
+ * Decides if feedback banner scripts should be loaded.
+ *
+ * @return bool
+ */
+function should_show_feedback_banner(): bool {
+	$time_dismissed = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
+
+	// Check for time elapsed and presence of the meta data.
+	return ! ( ! empty( $time_dismissed ) && ( $time_dismissed + WEEK_IN_SECONDS * 2 > time() ) );
+}
+
 /**
  * Registers and enqueues admin scripts and styles.
  *
@@ -81,5 +94,9 @@ function enqueue_settings_assets( $hook ) {
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'atlas-content-modeler-app' );
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
+
+		if ( should_show_feedback_banner() ) {
+			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
+		}
 	}
 }

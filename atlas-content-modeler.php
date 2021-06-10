@@ -28,6 +28,7 @@ add_action( 'plugins_loaded', 'atlas_content_modeler_loader' );
  */
 function atlas_content_modeler_loader(): void {
 	require_once __DIR__ . '/includes/publisher/lib/field-functions.php';
+	require_once __DIR__ . '/includes/shared-assets/wp_scripts/shared_assets.php';
 	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
 	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
 	require_once __DIR__ . '/includes/rest-api/rest-api-endpoint-registration.php';
