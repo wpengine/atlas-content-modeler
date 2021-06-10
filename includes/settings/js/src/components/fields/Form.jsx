@@ -97,6 +97,16 @@ function Form({ id, position, type, editing, storedData }) {
 				step: {
 					min: 0,
 					setValueAs: (v) => (v ? parseFloat(v) : ""),
+					validate: {
+						maxBelowStep: (v) => {
+							const max = parseFloat(getValues("maxValue"));
+							const step = parseFloat(v);
+							if (isNaN(step) || isNaN(max)) {
+								return true;
+							}
+							return max > step;
+						},
+					},
 				},
 			},
 		},
