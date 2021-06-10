@@ -59,6 +59,17 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "text":
+			const textProps = {
+				type: `${field.type}`,
+				name: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
+				id: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
+				defaultValue: field.value,
+				required: field.required,
+				onChange: (event) => validate(event, field),
+				minLength: field?.minChars,
+				maxLength: field?.maxChars,
+			};
+
 			return (
 				<>
 					<label
@@ -67,16 +78,12 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						{field.name}
 					</label>
 					<br />
-					<input
-						type={`${field.type}`}
-						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						defaultValue={field.value}
-						required={field.required}
-						onChange={(event) => validate(event, field)}
-						minLength={field?.minChars}
-						maxLength={field?.maxChars}
-					/>
+					{field?.inputType === "multi" ? (
+						<textarea {...textProps} />
+					) : (
+						<input {...textProps} />
+					)}
+
 					<span className="error">
 						<Icon type="error" />
 						<span role="alert">

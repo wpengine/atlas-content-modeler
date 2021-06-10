@@ -47,6 +47,7 @@ function Form({ id, position, type, editing, storedData }) {
 		storedData,
 	});
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
+	const [previousState, setPreviousState] = useState(storedData);
 
 	const advancedSettings = {
 		text: {
@@ -372,6 +373,7 @@ function Form({ id, position, type, editing, storedData }) {
 											)
 										);
 										if (fieldsAreValid) {
+											setPreviousState(getValues());
 											setOptionsModalIsOpen(false);
 										}
 									}}
@@ -382,14 +384,15 @@ function Form({ id, position, type, editing, storedData }) {
 								</button>
 								<button
 									onClick={() => {
+										const resetValues = getValues();
 										Object.keys(
 											advancedSettings[type]["fields"]
-										).forEach((fieldName) =>
-											reset({
-												[fieldName]:
-													storedData[fieldName],
-											})
+										).forEach(
+											(fieldName) =>
+												(resetValues[fieldName] =
+													previousState[fieldName])
 										);
+										reset(resetValues);
 										setOptionsModalIsOpen(false);
 									}}
 									className="tertiary"
