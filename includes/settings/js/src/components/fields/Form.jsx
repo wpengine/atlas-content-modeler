@@ -85,8 +85,8 @@ function Form({ id, position, type, editing, storedData }) {
 					setValueAs: (v) => (v ? parseFloat(v) : ""),
 					validate: {
 						maxBelowMin: (v) => {
-							const min = parseInt(getValues("minValue"));
-							const max = parseInt(v);
+							const min = parseFloat(getValues("minValue"));
+							const max = parseFloat(v);
 							if (isNaN(min) || isNaN(max)) {
 								return true;
 							}
