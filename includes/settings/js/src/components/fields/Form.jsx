@@ -353,14 +353,15 @@ function Form({ id, position, type, editing, storedData }) {
 								</button>
 								<button
 									onClick={() => {
+										const resetValues = getValues();
 										Object.keys(
 											advancedSettings[type]["fields"]
-										).forEach((fieldName) =>
-											reset({
-												[fieldName]:
-													storedData[fieldName],
-											})
+										).forEach(
+											(fieldName) =>
+												(resetValues[fieldName] =
+													storedData[fieldName])
 										);
+										reset(resetValues);
 										setOptionsModalIsOpen(false);
 									}}
 									className="tertiary"
