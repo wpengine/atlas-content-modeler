@@ -5,6 +5,8 @@ import React from "react";
 import { useFieldArray } from "react-hook-form";
 import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
+import TrashIcon from "../../../../../components/icons/TrashIcon";
+import Icon from "../../../../../components/icons";
 
 function MultiChoiceFields({
 	register,
@@ -13,6 +15,7 @@ function MultiChoiceFields({
 	editing,
 	control,
 	errors,
+	clearErrors,
 	setValue,
 	watch,
 }) {
@@ -74,6 +77,11 @@ function MultiChoiceFields({
 													placeholder="Option Name"
 													type="text"
 													defaultValue={`${item.name}`}
+													onChange={(event) => {
+														clearErrors(
+															"multiOption"
+														);
+													}}
 												/>
 											</div>
 											<div className="me-sm-5 default-checkbox">
@@ -114,14 +122,25 @@ function MultiChoiceFields({
 													}}
 												>
 													<a>
-														<AddIcon size="small" />{" "}
-														<span>
+														<TrashIcon size="small" />{" "}
+														<span className="delete-option">
 															Remove option
 														</span>
 													</a>
 												</button>
 											</div>
 										</div>
+										{errors.multiOption &&
+											errors.multiOption.type ===
+												"multiOptionNameEmpty" +
+													index && (
+												<span className="error">
+													<Icon type="error" />
+													<span role="alert">
+														Must set a name.
+													</span>
+												</span>
+											)}
 									</div>
 								);
 							})}
@@ -130,6 +149,7 @@ function MultiChoiceFields({
 									className="tertiary"
 									onClick={(event) => {
 										event.preventDefault();
+										clearErrors("multiOption");
 										append({ name: "", default: false });
 									}}
 								>
@@ -142,6 +162,16 @@ function MultiChoiceFields({
 										</span>
 									</a>
 								</button>
+								{errors.multiOption &&
+									errors.multiOption.type ===
+										"multiOptionEmpty" && (
+										<span className="error">
+											<Icon type="error" />
+											<span role="alert">
+												Must create an option first.
+											</span>
+										</span>
+									)}
 							</div>
 						</ul>
 					</div>

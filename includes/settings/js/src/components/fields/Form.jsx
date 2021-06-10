@@ -63,6 +63,16 @@ function Form({ id, position, type, editing, storedData }) {
 				if (err.code === "wpe_duplicate_content_model_field_id") {
 					setError("slug", { type: "idExists" });
 				}
+				if (err.code === "wpe_option_name_undefined") {
+					err.data.problem_index.map((index) => {
+						setError("multiOption", {
+							type: "multiOptionNameEmpty" + index,
+						});
+					});
+				}
+				if (err.code === "wpe_invalid_multi_options") {
+					setError("multiOption", { type: "multiOptionEmpty" });
+				}
 				if (err.code === "wpe_invalid_content_model") {
 					console.error(
 						"Attempted to create a field in a model that no longer exists."
@@ -216,6 +226,7 @@ function Form({ id, position, type, editing, storedData }) {
 						fieldId={id}
 						control={control}
 						errors={errors}
+						clearErrors={clearErrors}
 						setValue={setValue}
 						watch={watch}
 					/>

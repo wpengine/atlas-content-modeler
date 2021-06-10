@@ -16,6 +16,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
+
 /**
  * Registers custom routes with the WP REST API.
  */
@@ -190,6 +191,34 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			'The specified content model does not exist.',
 			array( 'status' => 400 )
 		);
+	}
+
+	if ( $params['type'] === 'multiOption' && ! $params['choices'] ) {
+		return new WP_Error(
+			'wpe_invalid_multi_options',
+			'I cant let you do that, Starfox.',
+			array( 'status' => 400 )
+		);
+	}
+	if ( $params['type'] === 'multiOption' && $params['choices'] ) {
+		$options_index = -1;
+		$problem_index = [];
+		foreach ( $params['choices'] as $choice ) {
+			++$options_index;
+			if ( $choice['name'] === '' ) {
+				$problem_index[] = $options_index;
+			}
+		}
+		if ( $problem_index ) {
+			return new WP_Error(
+				'wpe_option_name_undefined',
+				'I cant let you do that, Starfox.',
+				array(
+					'status'        => 400,
+					'problem_index' => $problem_index,
+				)
+			);
+		}
 	}
 
 	if (
@@ -554,6 +583,32 @@ function delete_model( string $post_type_slug ) {
  * @return bool
  */
 function content_model_field_exists( string $slug, string $id, array $model ): bool {
+	if ( ! isset( $model['fields'] ) ) {
+		return false;
+	}
+
+	foreach ( $model['fields'] as $field ) {
+		// Exclude the field being edited from slug collision checks.
+		if ( $field['id'] === $id ) {
+			continue;
+		}
+		if ( $field['slug'] === $slug ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Checks if a duplicate model identifier (name) exists in the multi option field.
+ *
+ * @param string $slug  The current field slug.
+ * @param string $name  The current field choice name.
+ * @param array  $model The content model to check for duplicate slugs.
+ * @return bool
+ */
+function content_model_multi_option_exists( string $slug, string $name, array $model ): bool {
 	if ( ! isset( $model['fields'] ) ) {
 		return false;
 	}
