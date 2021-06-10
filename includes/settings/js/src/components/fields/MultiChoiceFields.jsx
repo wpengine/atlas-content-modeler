@@ -119,6 +119,7 @@ function MultiChoiceFields({
 													onClick={(event) => {
 														event.preventDefault();
 														remove(index);
+														clearErrors("multiOption");
 													}}
 												>
 													<a>
