@@ -231,6 +231,29 @@ jobs:
           paths:
             - .
 
+  plugin-jest:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      slug:
+        type: string
+    working_directory: .
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages:
+          app-dir: <<parameters.slug>>
+      - run:
+          name: Run Jest tests
+          command: |
+            npm run test-no-watch
+          working_directory: <<parameters.slug>>
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
   plugin-e2e-test:
     docker:
       - image: circleci/php:7.4-node-browsers
@@ -403,9 +426,17 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-e2e-test:
+      - plugin-jest:
+          slug: atlas-content-modeler
           requires:
             - plugin-npm-build
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-e2e-test:
+          requires:
+            - plugin-jest
           # run this job for any build, any branch
           filters:
             tags:
