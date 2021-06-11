@@ -65,8 +65,6 @@ export default function EditContentModel() {
 		});
 	};
 
-	console.log(unsavedChangesModal);
-
 	return (
 		<div className="app-card">
 			<section className="heading">
