@@ -23,6 +23,7 @@ function Field({
 	position,
 	positionAfter,
 	setInfoTag,
+	promptToSaveChanges,
 	type = "text",
 }) {
 	const [activeForm, setActiveForm] = useState(type);
@@ -76,13 +77,15 @@ function Field({
 							</div>
 							<button
 								className="edit order-sm-2 order-1 d-flex flex-column d-sm-flex flex-sm-row ml-sm-4 flex-grow-1"
-								onClick={() =>
-									dispatch({
-										type: "openField",
-										id: data.id,
-										model: model.slug,
-									})
-								}
+								onClick={() => {
+									if (!promptToSaveChanges()) {
+										dispatch({
+											type: "openField",
+											id: data.id,
+											model: model.slug,
+										});
+									}
+								}}
 								aria-label={`Edit the ${data.name} field`}
 							>
 								<div
@@ -126,13 +129,15 @@ function Field({
 							}
 						>
 							<button
-								onClick={() =>
-									dispatch({
-										type: "addField",
-										position: positionAfter,
-										model: model.slug,
-									})
-								}
+								onClick={() => {
+									if (!promptToSaveChanges()) {
+										dispatch({
+											type: "addField",
+											position: positionAfter,
+											model: model.slug,
+										});
+									}
+								}}
 								aria-label={`Add a new field below the ${data.name} ${data.type} field`}
 							>
 								<Icon type="add" size="large" />
