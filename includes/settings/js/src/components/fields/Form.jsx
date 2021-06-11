@@ -101,13 +101,13 @@ function Form({ id, position, type, editing, storedData }) {
 							}
 							return max > min;
 						},
-					},
-					numberType: (v) => {
-						const max = parseNumber(v);
-						if (isNaN(max)) {
-							return true;
-						}
-						return v === max.toString();
+						numberType: (v) => {
+							const max = parseNumber(v);
+							if (isNaN(max)) {
+								return true;
+							}
+							return v === max.toString();
+						},
 					},
 				},
 				step: {
@@ -133,13 +133,13 @@ function Form({ id, position, type, editing, storedData }) {
 							}
 							return min + step <= max;
 						},
-					},
-					numberType: (v) => {
-						const step = parseNumber(v);
-						if (isNaN(step)) {
-							return true;
-						}
-						return v === step.toString();
+						numberType: (v) => {
+							const step = parseNumber(v);
+							if (isNaN(step)) {
+								return true;
+							}
+							return v === step.toString();
+						},
 					},
 				},
 			},
