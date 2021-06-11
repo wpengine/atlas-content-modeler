@@ -95,10 +95,13 @@ function Form({ id, position, type, editing, storedData }) {
 					},
 				},
 				step: {
+					min: 0,
 					setValueAs: (v) => (v ? parseNumber(v) : ""),
 					validate: {
 						maxBelowStep: (v) => {
-							const max = parseNumber(getValues("maxValue"));
+							const max = parseNumber(
+								Math.abs(getValues("maxValue"))
+							);
 							const step = parseNumber(v);
 							if (isNaN(step) || isNaN(max)) {
 								return true;
