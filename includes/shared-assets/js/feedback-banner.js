@@ -15,19 +15,13 @@ function feedbackTrigger() {
 
 // bind to feedback banner buttons to trigger API call
 window.addEventListener("DOMContentLoaded", (event) => {
+	const feedbackDismissBtnClass = "notice-dismiss";
 	const feedbackBtn = document.querySelector("#feedbackFormBtn");
-	const feedbackBanner = document.querySelector("#feedbackBanner");
-	let feedbackDismissBtn = null;
-	if (feedbackBanner) {
-		feedbackDismissBtn = feedbackBanner.getElementsByClassName(
-			"notice-dismiss"
-		);
-	}
 
 	document.addEventListener("click", (event) => {
 		if (
-			event.target === feedbackBtn ||
-			(feedbackDismissBtn && feedbackDismissBtn.length)
+			event.target.id === feedbackBtn.id ||
+			event.target.className === feedbackDismissBtnClass
 		) {
 			feedbackTrigger();
 		}
