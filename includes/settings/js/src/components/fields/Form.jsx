@@ -31,17 +31,18 @@ function Form({ id, position, type, editing, storedData }) {
 		setError,
 		reset,
 		trigger,
+		watch,
 	} = useForm({
 		mode: "onChange",
 		defaultValues: storedData,
 	});
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
-	const [numberParseFn, setNumberParseFn] = useState(storedData?.numberType);
 	const [optionsModalIsOpen, setOptionsModalIsOpen] = useState(false);
 	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const model = query.get("id");
 	const ExtraFields = extraFields[type] ?? null;
+	const currentNumberType = watch("numberType");
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
 		setValue,
 		editing,
@@ -79,15 +80,15 @@ function Form({ id, position, type, editing, storedData }) {
 			fields: {
 				minValue: {
 					min: 0,
-					setValueAs: (v) => (v ? numberParseFn(v) : ""),
+					setValueAs: (v) => (v ? parseNumber(v) : ""),
 				},
 				maxValue: {
 					min: 1,
-					setValueAs: (v) => (v ? numberParseFn(v) : ""),
+					setValueAs: (v) => (v ? parseNumber(v) : ""),
 					validate: {
 						maxBelowMin: (v) => {
-							const min = numberParseFn(getValues("minValue"));
-							const max = numberParseFn(v);
+							const min = parseNumber(getValues("minValue"));
+							const max = parseNumber(v);
 							if (isNaN(min) || isNaN(max)) {
 								return true;
 							}
@@ -97,20 +98,20 @@ function Form({ id, position, type, editing, storedData }) {
 				},
 				step: {
 					min: 0,
-					setValueAs: (v) => (v ? numberParseFn(v) : ""),
+					setValueAs: (v) => (v ? parseNumber(v) : ""),
 					validate: {
 						maxBelowStep: (v) => {
-							const max = numberParseFn(getValues("maxValue"));
-							const step = numberParseFn(v);
+							const max = parseNumber(getValues("maxValue"));
+							const step = parseNumber(v);
 							if (isNaN(step) || isNaN(max)) {
 								return true;
 							}
 							return max > step;
 						},
 						minAndStepEqualOrLessThanMax: (v) => {
-							const min = numberParseFn(getValues("minValue"));
-							const max = numberParseFn(getValues("maxValue"));
-							const step = numberParseFn(v);
+							const min = parseNumber(getValues("minValue"));
+							const max = parseNumber(getValues("maxValue"));
+							const step = parseNumber(v);
 							if (isNaN(step) || isNaN(max) || isNaN(min)) {
 								return true;
 							}
@@ -153,11 +154,11 @@ function Form({ id, position, type, editing, storedData }) {
 		}
 	}, [register, advancedSettings]);
 
-	useEffect(() => {
-		const numberType = storedData?.numberType ? parseFloat : parseInt;
-		setNumberParseFn(numberType);
-		console.log(numberParseFn);
-	}, [storedData?.numberType]);
+	function parseNumber(num) {
+		return currentNumberType === "decimal"
+			? parseFloat(num)
+			: parseInt(num);
+	}
 
 	function apiAddField(data) {
 		apiFetch({
