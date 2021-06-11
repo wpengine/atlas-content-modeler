@@ -29,7 +29,7 @@ class UnsavedChangesCest
 		// Click the first field's edit button before completing the second field.
 		// Offsets are used here to prevent “other element would receive the click”
 		// due to the “add field” button overlapping the edit button in the center.
-		$I->clickWithLeftButton('button.edit', 10, 10); //
+		$I->clickWithLeftButton('button.edit', 10, 10);
 
 		// Confirm that the Unsaved Changes modal appears.
 		$I->see('Unsaved Changes');
