@@ -36,6 +36,7 @@ function Form({ id, position, type, editing, storedData }) {
 		defaultValues: storedData,
 	});
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
+	const [numberParseFn, setNumberParseFn] = useState(storedData?.numberType);
 	const [optionsModalIsOpen, setOptionsModalIsOpen] = useState(false);
 	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
@@ -78,15 +79,15 @@ function Form({ id, position, type, editing, storedData }) {
 			fields: {
 				minValue: {
 					min: 0,
-					setValueAs: (v) => (v ? parseFloat(v) : ""),
+					setValueAs: (v) => (v ? numberParseFn(v) : ""),
 				},
 				maxValue: {
 					min: 1,
-					setValueAs: (v) => (v ? parseFloat(v) : ""),
+					setValueAs: (v) => (v ? numberParseFn(v) : ""),
 					validate: {
 						maxBelowMin: (v) => {
-							const min = parseFloat(getValues("minValue"));
-							const max = parseFloat(v);
+							const min = numberParseFn(getValues("minValue"));
+							const max = numberParseFn(v);
 							if (isNaN(min) || isNaN(max)) {
 								return true;
 							}
@@ -96,20 +97,20 @@ function Form({ id, position, type, editing, storedData }) {
 				},
 				step: {
 					min: 0,
-					setValueAs: (v) => (v ? parseFloat(v) : ""),
+					setValueAs: (v) => (v ? numberParseFn(v) : ""),
 					validate: {
 						maxBelowStep: (v) => {
-							const max = parseFloat(getValues("maxValue"));
-							const step = parseFloat(v);
+							const max = numberParseFn(getValues("maxValue"));
+							const step = numberParseFn(v);
 							if (isNaN(step) || isNaN(max)) {
 								return true;
 							}
 							return max > step;
 						},
 						minAndStepEqualOrLessThanMax: (v) => {
-							const min = parseFloat(getValues("minValue"));
-							const max = parseFloat(getValues("maxValue"));
-							const step = parseFloat(v);
+							const min = numberParseFn(getValues("minValue"));
+							const max = numberParseFn(getValues("maxValue"));
+							const step = numberParseFn(v);
 							if (isNaN(step) || isNaN(max) || isNaN(min)) {
 								return true;
 							}
@@ -151,6 +152,12 @@ function Form({ id, position, type, editing, storedData }) {
 			});
 		}
 	}, [register, advancedSettings]);
+
+	useEffect(() => {
+		const numberType = storedData?.numberType ? parseFloat : parseInt;
+		setNumberParseFn(numberType);
+		console.log(numberParseFn);
+	}, [storedData?.numberType]);
 
 	function apiAddField(data) {
 		apiFetch({
