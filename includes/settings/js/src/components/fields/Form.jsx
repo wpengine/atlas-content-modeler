@@ -80,15 +80,6 @@ function Form({ id, position, type, editing, storedData }) {
 			fields: {
 				minValue: {
 					setValueAs: (v) => (v ? parseNumber(v) : ""),
-					validate: {
-						numberType: (v) => {
-							const min = parseNumber(v);
-							if (isNaN(min)) {
-								return true;
-							}
-							return v === min.toString();
-						},
-					},
 				},
 				maxValue: {
 					setValueAs: (v) => (v ? parseNumber(v) : ""),
@@ -100,13 +91,6 @@ function Form({ id, position, type, editing, storedData }) {
 								return true;
 							}
 							return max > min;
-						},
-						numberType: (v) => {
-							const max = parseNumber(v);
-							if (isNaN(max)) {
-								return true;
-							}
-							return v === max.toString();
 						},
 					},
 				},
@@ -132,13 +116,6 @@ function Form({ id, position, type, editing, storedData }) {
 								return true;
 							}
 							return min + step <= max;
-						},
-						numberType: (v) => {
-							const step = parseNumber(v);
-							if (isNaN(step)) {
-								return true;
-							}
-							return v === step.toString();
 						},
 					},
 				},
