@@ -83,7 +83,7 @@ function Form({ id, position, type, editing, storedData }) {
 					setValueAs: (v) => (v ? parseNumber(v) : ""),
 				},
 				maxValue: {
-					min: 1,
+					min: 0,
 					setValueAs: (v) => (v ? parseNumber(v) : ""),
 					validate: {
 						maxBelowMin: (v) => {
