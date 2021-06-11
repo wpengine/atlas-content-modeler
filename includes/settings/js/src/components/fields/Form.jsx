@@ -79,11 +79,9 @@ function Form({ id, position, type, editing, storedData }) {
 			component: NumberSettings,
 			fields: {
 				minValue: {
-					min: 0,
 					setValueAs: (v) => (v ? parseNumber(v) : ""),
 				},
 				maxValue: {
-					min: 0,
 					setValueAs: (v) => (v ? parseNumber(v) : ""),
 					validate: {
 						maxBelowMin: (v) => {
@@ -97,7 +95,6 @@ function Form({ id, position, type, editing, storedData }) {
 					},
 				},
 				step: {
-					min: 0,
 					setValueAs: (v) => (v ? parseNumber(v) : ""),
 					validate: {
 						maxBelowStep: (v) => {
