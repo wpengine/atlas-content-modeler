@@ -150,9 +150,7 @@ export default function EditContentModel() {
 							isOpen={unsavedChangesModal.open}
 							contentLabel="Unsaved Changes"
 							portalClassName="atlas-content-modeler-unsaved-changes-modal-container"
-							onRequestClose={() => {
-								closeUnsavedChangesModal();
-							}}
+							onRequestClose={closeUnsavedChangesModal}
 							style={customStyles}
 							model={model}
 						>
@@ -164,7 +162,7 @@ export default function EditContentModel() {
 							</p>
 							<button
 								className="first primary"
-								onClick={() => closeUnsavedChangesModal()}
+								onClick={closeUnsavedChangesModal}
 							>
 								Continue Editing
 							</button>
