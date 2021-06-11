@@ -155,11 +155,7 @@ export default function EditContentModel() {
 							model={model}
 						>
 							<h2>Unsaved Changes</h2>
-							<p>
-								Would you like to discard your{" "}
-								{unsavedChangesModal.field?.name}{" "}
-								{unsavedChangesModal.field?.type} field updates?
-							</p>
+							<p>Would you like to discard your field updates?</p>
 							<button
 								className="first primary"
 								onClick={closeUnsavedChangesModal}
