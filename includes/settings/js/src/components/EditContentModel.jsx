@@ -148,7 +148,7 @@ export default function EditContentModel() {
 						</ul>
 						<Modal
 							isOpen={unsavedChangesModal.open}
-							contentLabel={`Unsaved Changes`}
+							contentLabel="Unsaved Changes"
 							portalClassName="atlas-content-modeler-unsaved-changes-modal-container"
 							onRequestClose={() => {
 								closeUnsavedChangesModal();
