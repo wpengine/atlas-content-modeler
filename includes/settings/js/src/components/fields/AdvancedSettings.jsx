@@ -54,6 +54,15 @@ const NumberSettings = ({
 									</span>
 								</span>
 							)}
+							{errors.minValue &&
+								errors.minValue.type === "numberType" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											You entered the wrong number type.
+										</span>
+									</span>
+								)}
 						</p>
 					</div>
 
@@ -95,6 +104,15 @@ const NumberSettings = ({
 										<Icon type="error" />
 										<span role="alert">
 											Max must be more than min.
+										</span>
+									</span>
+								)}
+							{errors.maxValue &&
+								errors.maxValue.type === "numberType" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											You entered the wrong number type.
 										</span>
 									</span>
 								)}
@@ -147,6 +165,14 @@ const NumberSettings = ({
 									</span>
 								</span>
 							)}
+						{errors.step && errors.step.type === "numberType" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									You entered the wrong number type.
+								</span>
+							</span>
+						)}
 					</p>
 				</div>
 			</div>
