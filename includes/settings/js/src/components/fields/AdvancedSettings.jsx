@@ -85,7 +85,7 @@ const NumberSettings = ({
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										The minimum value is 1.
+										The minimum value is 0.
 									</span>
 								</span>
 							)}
