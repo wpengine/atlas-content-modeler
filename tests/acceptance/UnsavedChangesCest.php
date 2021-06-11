@@ -18,6 +18,7 @@ class UnsavedChangesCest
 		$I->wait(1);
 		$I->fillField(['name' => 'name'], 'Name');
 		$I->click('button.primary');
+		$I->wait(1);
 
 		// Start to create a second field.
 		$I->click(Locator::lastElement('.add-item'));
