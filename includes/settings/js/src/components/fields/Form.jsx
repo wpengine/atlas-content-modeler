@@ -106,7 +106,7 @@ function Form({ id, position, type, editing, storedData }) {
 							if (isNaN(step) || isNaN(max)) {
 								return true;
 							}
-							return max > step;
+							return max >= step;
 						},
 						minAndStepEqualOrLessThanMax: (v) => {
 							const min = parseNumber(getValues("minValue"));
