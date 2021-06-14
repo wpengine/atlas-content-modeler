@@ -19,18 +19,20 @@ const MediaSettings = ({
 			</p>
 
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
-				<div>
+				<div className="w-100">
 					<div
 						className={`${
 							errors.allowedTypes ? "field has-error" : "field"
-						} me-sm-5`}
+						} w-100`}
 					>
-						<label htmlFor="minValue">Allowed File Types</label>
+						<label htmlFor="allowedTypes">File Extensions</label>
 						<br />
 						<textarea
+							className="w-100"
 							aria-invalid={
 								errors.allowedTypes ? "true" : "false"
 							}
+							placeholder="jpeg,jpg,png,tiff,tif,pdf"
 							id="allowedTypes"
 							name="allowedTypes"
 							onChange={async (e) => {
@@ -50,8 +52,8 @@ const MediaSettings = ({
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											Allowed Types must be a comma
-											separated list of file extensions.
+											Must be a comma separated list of
+											extensions.
 										</span>
 									</span>
 								)}
