@@ -135,6 +135,18 @@
 .atlas-content-modeler-admin-page form div.field {
 	margin-top: 28px;
 }
+.atlas-content-modeler-admin-page form span.error{
+	line-height: 40px;
+	margin-top: 5px;
+}
+.atlas-content-modeler-admin-page form .error span[role="alert"]{
+	vertical-align: middle;
+}
+
+.atlas-content-modeler-admin-page form .error svg{
+	margin-right: 5px;
+	vertical-align: middle;
+}
 
 span[role="alert"] {
 	color: $color-warning;

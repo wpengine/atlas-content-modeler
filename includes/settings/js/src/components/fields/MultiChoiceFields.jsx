@@ -79,7 +79,12 @@ function MultiChoiceFields({
 													defaultValue={`${item.name}`}
 													onChange={(event) => {
 														clearErrors(
-															"multiOption"
+															"multiOption" +
+																index
+														);
+														clearErrors(
+															"multiOptionName" +
+																index
 														);
 													}}
 												/>
@@ -115,11 +120,18 @@ function MultiChoiceFields({
 											</div>
 											<div>
 												<button
-													className="tertiary"
+													className="tertiary no-border"
 													onClick={(event) => {
 														event.preventDefault();
 														remove(index);
-														clearErrors("multiOption");
+														clearErrors(
+															"multiOption" +
+																index
+														);
+														clearErrors(
+															"multiOptionName" +
+																index
+														);
 													}}
 												>
 													<a>
@@ -131,8 +143,9 @@ function MultiChoiceFields({
 												</button>
 											</div>
 										</div>
-										{errors.multiOption &&
-											errors.multiOption.type ===
+										{errors["multiOption" + index] &&
+											errors["multiOption" + index]
+												.type ===
 												"multiOptionNameEmpty" +
 													index && (
 												<span className="error">
@@ -142,12 +155,25 @@ function MultiChoiceFields({
 													</span>
 												</span>
 											)}
+										{errors["multiOptionName" + index] &&
+											errors["multiOptionName" + index]
+												.type ===
+												"multiOptionNameDuplicate" +
+													index && (
+												<span className="error">
+													<Icon type="error" />
+													<span role="alert">
+														Cannot have duplicate
+														option names.
+													</span>
+												</span>
+											)}
 									</div>
 								);
 							})}
 							<div className="field">
 								<button
-									className="tertiary"
+									className="tertiary no-border"
 									onClick={(event) => {
 										event.preventDefault();
 										clearErrors("multiOption");

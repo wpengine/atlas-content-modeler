@@ -46,6 +46,12 @@ button.tertiary {
 	color: $color-text;
 }
 
+button.no-border {
+	background: $color-white;
+	border: none;
+	color: $color-text;
+}
+
 button.tertiary:focus,
 button.tertiary:hover {
 	color: $color-primary;

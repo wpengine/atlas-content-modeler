@@ -65,8 +65,18 @@ function Form({ id, position, type, editing, storedData }) {
 				}
 				if (err.code === "wpe_option_name_undefined") {
 					err.data.problem_index.map((index) => {
-						setError("multiOption", {
+						setError("multiOption" + index, {
 							type: "multiOptionNameEmpty" + index,
+						});
+					});
+				}
+				if (
+					err.code === "wpe_duplicate_content_model_multi_option_id"
+				) {
+					err.data.problem_name_index.map((index) => {
+						console.log(index);
+						setError("multiOptionName" + index, {
+							type: "multiOptionNameDuplicate" + index,
 						});
 					});
 				}

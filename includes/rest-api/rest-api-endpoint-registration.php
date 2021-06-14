@@ -196,7 +196,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	if ( $params['type'] === 'multiOption' && ! $params['choices'] ) {
 		return new WP_Error(
 			'wpe_invalid_multi_options',
-			'I cant let you do that, Starfox.',
+			'Multi Option update failed. Options need to be created before updating a multi option field.',
 			array( 'status' => 400 )
 		);
 	}
@@ -212,10 +212,31 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		if ( $problem_index ) {
 			return new WP_Error(
 				'wpe_option_name_undefined',
-				'I cant let you do that, Starfox.',
+				'Multi Option update failed, please set a name for your option before saving.',
 				array(
 					'status'        => 400,
 					'problem_index' => $problem_index,
+				)
+			);
+		}
+	}
+
+	if ( $params['type'] === 'multiOption' && $params['choices'] ) {
+		$options_name_index = -1;
+		$problem_name_index = [];
+		foreach ( $params['choices'] as $choice ) {
+			++$options_name_index;
+			if ( content_model_multi_option_exists( $params['choices'], $choice['name'], $options_name_index ) ) {
+				$problem_name_index[] = $options_name_index;
+			}
+		}
+		if ( $problem_name_index ) {
+			return new WP_Error(
+				'wpe_duplicate_content_model_multi_option_id',
+				'Another option in this field has the same API identifier.',
+				array(
+					'status'             => 400,
+					'problem_name_index' => $problem_name_index,
 				)
 			);
 		}
@@ -603,25 +624,27 @@ function content_model_field_exists( string $slug, string $id, array $model ): b
 /**
  * Checks if a duplicate model identifier (name) exists in the multi option field.
  *
- * @param string $slug  The current field slug.
- * @param string $name  The current field choice name.
- * @param array  $model The content model to check for duplicate slugs.
+ * @param array  $names  The available field choice names.
+ * @param string $current_choice  The currently checked field choice name.
+ * @param int    $current_index The content index for the current choice being validated.
  * @return bool
  */
-function content_model_multi_option_exists( string $slug, string $name, array $model ): bool {
-	if ( ! isset( $model['fields'] ) ) {
+function content_model_multi_option_exists( array $names, string $current_choice, int $current_index ): bool {
+	if ( ! isset( $names ) ) {
 		return false;
 	}
-
-	foreach ( $model['fields'] as $field ) {
-		// Exclude the field being edited from slug collision checks.
-		if ( $field['id'] === $id ) {
-			continue;
+	if ( $names ) {
+		if ( $names[ $current_index ] ) {
+			unset( $names[ $current_index ] );
 		}
-		if ( $field['slug'] === $slug ) {
-			return true;
+
+			$problem_options_list = [];
+
+		foreach ( $names as $choice ) {
+			if ( $choice['name'] === $current_choice ) {
+				return true;
+			}
 		}
 	}
-
 	return false;
 }
