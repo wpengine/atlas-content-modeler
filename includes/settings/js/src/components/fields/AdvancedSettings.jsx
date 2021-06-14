@@ -4,6 +4,65 @@
 import React from "react";
 import Icon from "../../../../../components/icons";
 
+const MediaSettings = ({
+	errors,
+	storedData,
+	setValue,
+	getValues,
+	trigger,
+}) => {
+	return (
+		<>
+			<h3>Allowed File Types</h3>
+			<p className="mb-4">
+				Define what file types are allowed to be uploaded.
+			</p>
+
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div>
+					<div
+						className={`${
+							errors.allowedTypes ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="minValue">Allowed File Types</label>
+						<br />
+						<textarea
+							aria-invalid={
+								errors.allowedTypes ? "true" : "false"
+							}
+							id="allowedTypes"
+							name="allowedTypes"
+							onChange={async (e) => {
+								setValue("allowedTypes", e.target.value, {
+									shouldValidate: true,
+								});
+							}}
+							defaultValue={String(
+								getValues("allowedTypes") ??
+									storedData?.allowedTypes
+							)}
+						/>
+						<p className="field-messages">
+							{errors.allowedTypes &&
+								errors.allowedTypes.type ===
+									"formattedCorrectly" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											Allowed Types must be a comma
+											separated list of file extensions.
+										</span>
+									</span>
+								)}
+						</p>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+};
+
 const NumberSettings = ({
 	errors,
 	storedData,
@@ -241,4 +300,4 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 	);
 };
 
-export { TextSettings, NumberSettings };
+export { MediaSettings, TextSettings, NumberSettings };

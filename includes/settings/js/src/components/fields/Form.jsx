@@ -4,7 +4,11 @@ import Modal from "react-modal";
 import { useLocationSearch } from "../../utils";
 import Icon from "../../../../../components/icons";
 import TextFields from "./TextFields";
-import { TextSettings, NumberSettings } from "./AdvancedSettings";
+import {
+	MediaSettings,
+	TextSettings,
+	NumberSettings,
+} from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
@@ -116,6 +120,20 @@ function Form({ id, position, type, editing, storedData }) {
 								return true;
 							}
 							return min + step <= max;
+						},
+					},
+				},
+			},
+		},
+		media: {
+			component: MediaSettings,
+			fields: {
+				allowedTypes: {
+					setValueAs: (v) => (v ? v : ""),
+					validate: {
+						formattedCorrectly: (v) => {
+							const types = v;
+							return min;
 						},
 					},
 				},
