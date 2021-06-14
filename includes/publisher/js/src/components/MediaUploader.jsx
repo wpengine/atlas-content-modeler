@@ -49,7 +49,6 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			title: mediaUrl ? "Change Media" : "Upload Media",
 			multiple: false,
 			frame: "select",
-			// Library wordpress query arguments.
 			library: {
 				order: "DESC",
 				orderby: "date",
