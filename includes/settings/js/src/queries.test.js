@@ -1,4 +1,4 @@
-import { sanitizeFields, getTitleFieldId } from "./queries";
+import { sanitizeFields, getTitleFieldId, getOpenField } from "./queries";
 
 describe("sanitizeFields", () => {
 	it("moves children to subfields", () => {
@@ -44,5 +44,30 @@ describe("getTitleFieldId", () => {
 		const expected = "";
 
 		expect(getTitleFieldId(fields)).toEqual(expected);
+	});
+});
+
+describe("getOpenField", () => {
+	it("returns the open field if there is one", () => {
+		const fields = {
+			123: { id: 123, open: true },
+			456: { id: 456 },
+			789: { id: 789 },
+		};
+
+		const expected = { id: 123, open: true };
+
+		expect(getOpenField(fields)).toEqual(expected);
+	});
+	it("returns an empty object if no field is open", () => {
+		const fields = {
+			123: { id: 123 },
+			456: { id: 456 },
+			789: { id: 789 },
+		};
+
+		const expected = {};
+
+		expect(getOpenField(fields)).toEqual(expected);
 	});
 });
