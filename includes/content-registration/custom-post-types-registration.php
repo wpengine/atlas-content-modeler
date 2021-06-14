@@ -57,9 +57,62 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 }
 
 /**
- * Generates an array of labels for use when registering custom post types.
+ * Processes field values for appropriate REST API returns.
  *
- * @see get_post_type_labels()
+ * @param int    $post_id    The post ID of the model post.
+ * @param string $field_type The field type.
+ * @param string $field_slug The field slug to retrieve.
+ *
+ * @return array|mixed The Field's value accounting for field type.
+ */
+function handle_content_fields_for_rest_api( int $post_id, string $field_type, string $field_slug ) {
+	$meta_value = get_post_meta( $post_id, $field_slug, true );
+
+	switch ( $field_type ) {
+		case 'media':
+			$media_item = get_post( $meta_value );
+			if ( null === $media_item ) {
+				return '';
+			}
+
+			$media_data = array(
+				'mime_type' => $media_item->post_mime_type,
+				'caption'   => $media_item->post_excerpt,
+			);
+
+			$media_meta = wp_get_attachment_metadata( $meta_value );
+
+			if ( wp_attachment_is_image( $meta_value ) ) {
+				$media_data['alt_text'] = get_post_meta( $meta_value, '_wp_attachment_image_alt', true );
+
+				$media_data['sizes']             = array();
+				$media_data['sizes']['original'] = array(
+					'url'    => wp_get_attachment_url( $meta_value ),
+					'width'  => $media_meta['width'],
+					'height' => $media_meta['height'],
+				);
+
+				foreach ( $media_meta['sizes'] as $size => $value ) {
+					$image                        = wp_get_attachment_image_src( $meta_value, $size );
+					$media_data['sizes'][ $size ] = array(
+						'url'    => $image[0],
+						'width'  => $image[1],
+						'height' => $image[2],
+					);
+				}
+			} else {
+				$media_data['url'] = wp_get_attachment_url( $meta_value );
+			}
+
+			return $media_data;
+
+		default:
+			return $meta_value;
+	}
+}
+
+/**
+ * Generates an array of labels for use when registering custom post types.
  *
  * @param array $labels {
  *     Singular and plural labels.
