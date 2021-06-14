@@ -37,6 +37,11 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		return file.split(".").pop();
 	}
 
+	function getAllowedMediaTypes() {
+		var allowedTypes = [];
+		return allowedTypes;
+	}
+
 	/**
 	 * Click handler to use wp media uploader
 	 * @param e - event
@@ -48,6 +53,16 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			.media({
 				title: mediaUrl ? "Change Media" : "Upload Media",
 				multiple: false,
+				frame: "select",
+				// Library wordpress query arguments.
+				library: {
+					order: "DESC",
+					orderby: "date",
+					type: getAllowedMediaTypes(),
+				},
+				button: {
+					text: "Done",
+				},
 			})
 			.open()
 			.on("select", function () {
