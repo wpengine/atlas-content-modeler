@@ -117,20 +117,22 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
 
-		self::assertArrayHasKey( 'dog-test-field', $response_data );
-		self::assertSame( $response_data['dog-test-field'], 'dog-test-field string value' );
+		self::assertArrayHasKey( 'acm_fields', $response_data );
 
-		self::assertArrayHasKey( 'dog-weight', $response_data );
-		self::assertEquals( '100.25', $response_data['dog-weight'] );
+		self::assertArrayHasKey( 'dog-test-field', $response_data['acm_fields'] );
+		self::assertSame( $response_data['acm_fields']['dog-test-field'], 'dog-test-field string value' );
 
-		self::assertArrayHasKey( 'dog-image', $response_data );
-		self::assertArrayHasKey( 'sizes', $response_data['dog-image'] );
-		self::assertEquals( 2, count( $response_data['dog-image']['sizes'] ) );
-		self::assertEquals( 'image/png', $response_data['dog-image']['mime_type'] );
+		self::assertArrayHasKey( 'dog-weight', $response_data['acm_fields'] );
+		self::assertEquals( '100.25', $response_data['acm_fields']['dog-weight'] );
 
-		self::assertArrayHasKey( 'dog-pdf', $response_data );
-		self::assertArrayNotHasKey( 'sizes', $response_data['dog-pdf'] );
-		self::assertEquals( 'application/pdf', $response_data['dog-pdf']['mime_type'] );
+		self::assertArrayHasKey( 'dog-image', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'sizes', $response_data['acm_fields']['dog-image'] );
+		self::assertEquals( 2, count( $response_data['acm_fields']['dog-image']['sizes'] ) );
+		self::assertEquals( 'image/png', $response_data['acm_fields']['dog-image']['mime_type'] );
+
+		self::assertArrayHasKey( 'dog-pdf', $response_data['acm_fields'] );
+		self::assertArrayNotHasKey( 'sizes', $response_data['acm_fields']['dog-pdf'] );
+		self::assertEquals( 'application/pdf', $response_data['acm_fields']['dog-pdf']['mime_type'] );
 
 	}
 
