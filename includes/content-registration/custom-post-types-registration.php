@@ -114,6 +114,8 @@ function handle_content_fields_for_rest_api( int $post_id, string $field_type, s
 /**
  * Generates an array of labels for use when registering custom post types.
  *
+ * @see get_post_type_labels()
+ *
  * @param array $labels {
  *     Singular and plural labels.
  *     @type string $singular Singular name of post type.
