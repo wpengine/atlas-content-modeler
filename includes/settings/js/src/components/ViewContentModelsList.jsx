@@ -10,15 +10,12 @@ function Header({ showButton = true }) {
 		<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 			<h2>Content Models</h2>
 			{showButton && (
-				<button
-					onClick={() =>
-						history.push(
-							atlasContentModeler.appPath + "&view=create-model"
-						)
-					}
+				<a
+					className="page-title-action"
+					href={atlasContentModeler.appPath + "&view=create-model"}
 				>
 					Add New
-				</button>
+				</a>
 			)}
 		</section>
 	);
