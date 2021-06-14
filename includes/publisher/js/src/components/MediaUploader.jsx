@@ -60,7 +60,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 
 		// update default types to only be the allowed types defined
 		if (allowedTypes) {
-			media.options.library.type = allowedTypes;
+			media.options.library.type = allowedTypes.split(",");
 		}
 
 		media.open().on("select", function () {

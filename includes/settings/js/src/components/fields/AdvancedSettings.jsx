@@ -14,8 +14,16 @@ const MediaSettings = ({
 	return (
 		<>
 			<h3>Allowed File Types</h3>
+			<p>Define what file types are allowed to be uploaded.</p>
+
 			<p className="mb-4">
-				Define what file types are allowed to be uploaded.
+				<a
+					href="https://wpengine.com/support/mime-types-wordpress/"
+					target="_blank"
+					rel="noreferrer"
+				>
+					WordPress Allowed Types
+				</a>
 			</p>
 
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
