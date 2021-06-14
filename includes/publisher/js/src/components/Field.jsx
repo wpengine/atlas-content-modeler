@@ -92,7 +92,31 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</span>
 				</>
 			);
-		case "number": // @todo split this out to support mix/max/step/etc.
+		case "number":
+			return (
+				<>
+					<label
+						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+					>
+						{field.name}
+					</label>
+					<input
+						type={`${field.type}`}
+						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						defaultValue={field.value}
+						required={field.required}
+						onChange={(event) => validate(event, field)}
+						min={field?.minValue}
+						max={field?.maxValue}
+						step={field?.step}
+					/>
+					<span className="error">
+						<Icon type="error" />
+						<span role="alert">{defaultError}</span>
+					</span>
+				</>
+			);
 		case "date": // @todo split this out for proper browser and datepicker support
 			return (
 				<>

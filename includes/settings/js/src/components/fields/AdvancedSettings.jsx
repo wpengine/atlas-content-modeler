@@ -4,6 +4,156 @@
 import React from "react";
 import Icon from "../../../../../components/icons";
 
+const NumberSettings = ({
+	errors,
+	storedData,
+	setValue,
+	getValues,
+	trigger,
+}) => {
+	return (
+		<>
+			<h3>Specific Number Range</h3>
+			<p className="mb-4">
+				Define your range here. Only numeric characters can be used.
+			</p>
+
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div>
+					<div
+						className={`${
+							errors.minValue ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="minValue">Min Value</label>
+						<br />
+						<input
+							aria-invalid={errors.minValue ? "true" : "false"}
+							type="number"
+							step="0.1"
+							id="minValue"
+							name="minValue"
+							onChange={async (e) => {
+								setValue("minValue", e.target.value, {
+									shouldValidate: true,
+								});
+								// Validate maxValue in case minValue is now bigger.
+								await trigger("maxValue");
+								await trigger("step");
+							}}
+							defaultValue={String(
+								getValues("minValue") ?? storedData?.minValue
+							)}
+						/>
+						<p className="field-messages">
+							{errors.minValue && errors.minValue.type === "min" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										The minimum value is 0.
+									</span>
+								</span>
+							)}
+						</p>
+					</div>
+
+					<div
+						className={`${
+							errors.maxValue ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="maxValue">Max Value</label>
+						<br />
+						<input
+							aria-invalid={errors.maxValue ? "true" : "false"}
+							type="number"
+							step="0.1"
+							id="maxValue"
+							name="maxValue"
+							onChange={async (e) => {
+								setValue("maxValue", e.target.value, {
+									shouldValidate: true,
+								});
+								await trigger("step");
+							}}
+							defaultValue={String(
+								getValues("maxValue") ?? storedData?.maxValue
+							)}
+						/>
+						<p className="field-messages">
+							{errors.maxValue && errors.maxValue.type === "min" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										The minimum value is 0.
+									</span>
+								</span>
+							)}
+							{errors.maxValue &&
+								errors.maxValue.type === "maxBelowMin" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											Max must be more than min.
+										</span>
+									</span>
+								)}
+						</p>
+					</div>
+				</div>
+
+				<div className={errors.step ? "field has-error" : "field"}>
+					<label htmlFor="step">Step</label>
+					<br />
+					<input
+						aria-invalid={errors.step ? "true" : "false"}
+						type="number"
+						step="0.1"
+						id="step"
+						name="step"
+						onChange={(e) => {
+							setValue("step", e.target.value, {
+								shouldValidate: true,
+							});
+						}}
+						defaultValue={String(
+							getValues("step") ?? storedData?.step
+						)}
+					/>
+					<p className="field-messages">
+						{errors.step && errors.step.type === "min" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									The minimum value is 0.
+								</span>
+							</span>
+						)}
+						{errors.step && errors.step.type === "maxBelowStep" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									Step must be lower than max.
+								</span>
+							</span>
+						)}
+						{errors.step &&
+							errors.step.type ===
+								"minAndStepEqualOrLessThanMax" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										Min plus Step can't be larger than Max.
+									</span>
+								</span>
+							)}
+					</p>
+				</div>
+			</div>
+		</>
+	);
+};
+
 const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 	return (
 		<>
@@ -91,4 +241,4 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 	);
 };
 
-export { TextSettings };
+export { TextSettings, NumberSettings };

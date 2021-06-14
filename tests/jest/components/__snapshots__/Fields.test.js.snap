@@ -93,6 +93,7 @@ Array [
       defaultValue="42"
       id="atlas-content-modeler[geese][age]"
       name="atlas-content-modeler[geese][age]"
+      onChange={[Function]}
       type="number"
     />
     <span
