@@ -25,6 +25,8 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	private $namespace = '/wp/v2';
 	private $dog_route = '/dogs';
 	private $dog_post_id;
+	private $dog_image_id;
+	private $dog_pdf_id;
 	private $all_registered_post_types;
 
 	public function setUp() {
@@ -55,10 +57,40 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 			'post_type' => 'dog',
 		] );
 
+		$this->dog_image_id = $this->factory->attachment->create( array(
+			'post_mime_type' => 'image/png',
+			'post_title' => 'dog_image',
+		) );
+
+		$this->dog_pdf_id = $this->factory->attachment->create( array(
+			'post_mime_type' => 'application/pdf',
+			'post_title' => 'dog_pdf',
+		) );
+
 		update_post_meta( $this->dog_post_id, 'dog-test-field', 'dog-test-field string value' );
 		update_post_meta( $this->dog_post_id, 'dog-weight', '100.25' );
 		update_post_meta( $this->dog_post_id, 'dog-rich-text', 'dog-rich-text string value' );
 		update_post_meta( $this->dog_post_id, 'dog-boolean', 'this string will be cast to a boolean by WPGraphQL' );
+		update_post_meta( $this->dog_post_id, 'dog-image', $this->dog_image_id );
+		update_post_meta( $this->dog_post_id, 'dog-pdf', $this->dog_pdf_id );
+
+		$media_meta = array(
+			'width' => 1000,
+			'height' => 1000,
+			'file' => '2021/06/chris-avatar_PNG-bg.png',
+			'sizes' => array(
+				'medium' => array(
+					'file' => 'chris-avatar_PNG-bg-300x300.png',
+					'width' => 300,
+					'height' => 300,
+					'mime-type' => 'image/png',
+				),
+			),
+		);
+
+		update_post_meta( $this->dog_image_id, '_wp_attachment_metadata', $media_meta );
+		update_post_meta( $this->dog_image_id, '_wp_attachment_image_alt', 'This is alt text' );
+		update_post_meta( $this->dog_image_id, '_wp_attached_file', '2021/06/chris-avatar_PNG-bg.png' );
 	}
 
 	public function tearDown() {
@@ -84,11 +116,22 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertArrayHasKey( 'dog-test-field', $response_data['meta'] );
-		$this->assertSame( $response_data['meta']['dog-test-field'][0], 'dog-test-field string value' );
 
-		self::assertArrayHasKey( 'dog-weight', $response_data['meta'] );
-		self::assertEquals( '100.25', $response_data['meta']['dog-weight'][0] );
+		self::assertArrayHasKey( 'dog-test-field', $response_data );
+		self::assertSame( $response_data['dog-test-field'], 'dog-test-field string value' );
+
+		self::assertArrayHasKey( 'dog-weight', $response_data );
+		self::assertEquals( '100.25', $response_data['dog-weight'] );
+
+		self::assertArrayHasKey( 'dog-image', $response_data );
+		self::assertArrayHasKey( 'sizes', $response_data['dog-image'] );
+		self::assertEquals( 2, count( $response_data['dog-image']['sizes'] ) );
+		self::assertEquals( 'image/png', $response_data['dog-image']['mime_type'] );
+
+		self::assertArrayHasKey( 'dog-pdf', $response_data );
+		self::assertArrayNotHasKey( 'sizes', $response_data['dog-pdf'] );
+		self::assertEquals( 'application/pdf', $response_data['dog-pdf']['mime_type'] );
+
 	}
 
 	public function test_post_meta_that_is_configured_to_not_show_in_rest_is_not_accessible(): void {
@@ -246,6 +289,20 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 						'slug' => 'dog-boolean',
 						'type' => 'boolean',
 						'description' => 'dog-boolean description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
+					'dog-image' => [
+						'slug' => 'dog-image',
+						'type' => 'media',
+						'description' => 'dog-image description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
+					'dog-pdf' => [
+						'slug' => 'dog-pdf',
+						'type' => 'media',
+						'description' => 'dog-pdf description',
 						'show_in_rest' => true,
 						'show_in_graphql' => true,
 					],
