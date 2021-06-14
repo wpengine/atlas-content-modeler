@@ -5,6 +5,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	// state
 	const [mediaUrl, setMediaUrl] = useState("");
 	const [value, setValue] = useState(field.value);
+	const { allowedTypes } = field;
 
 	// local
 	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
@@ -37,11 +38,6 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		return file.split(".").pop();
 	}
 
-	function getAllowedMediaTypes() {
-		var allowedTypes = [];
-		return allowedTypes;
-	}
-
 	/**
 	 * Click handler to use wp media uploader
 	 * @param e - event
@@ -49,27 +45,30 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	function clickHandler(e) {
 		e.preventDefault();
 
-		const media = wp
-			.media({
-				title: mediaUrl ? "Change Media" : "Upload Media",
-				multiple: false,
-				frame: "select",
-				// Library wordpress query arguments.
-				library: {
-					order: "DESC",
-					orderby: "date",
-					type: getAllowedMediaTypes(),
-				},
-				button: {
-					text: "Done",
-				},
-			})
-			.open()
-			.on("select", function () {
-				const uploadedMedia = media.state().get("selection").first();
-				setValue(uploadedMedia.attributes.id);
-				setMediaUrl(uploadedMedia.attributes.url);
-			});
+		const media = wp.media({
+			title: mediaUrl ? "Change Media" : "Upload Media",
+			multiple: false,
+			frame: "select",
+			// Library wordpress query arguments.
+			library: {
+				order: "DESC",
+				orderby: "date",
+			},
+			button: {
+				text: "Done",
+			},
+		});
+
+		// update default types to only be the allowed types defined
+		if (allowedTypes) {
+			media.library.type = allowedTypes;
+		}
+
+		media.open().on("select", function () {
+			const uploadedMedia = media.state().get("selection").first();
+			setValue(uploadedMedia.attributes.id);
+			setMediaUrl(uploadedMedia.attributes.url);
+		});
 	}
 
 	return (
