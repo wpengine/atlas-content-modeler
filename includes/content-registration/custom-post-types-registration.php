@@ -52,7 +52,15 @@ function register_content_types(): void {
 function register_meta_types( string $post_type_slug, array $fields ): void {
 	foreach ( $fields as $key => $field ) {
 		$field['object_subtype'] = $post_type_slug;
-		register_meta( 'post', $field['slug'], $field );
+		register_rest_field(
+			$post_type_slug,
+			$field['slug'],
+			[
+				'get_callback' => function( $post, $attr, $request, $object_type ) use ( $field ) {
+					return handle_content_fields_for_rest_api( $post['id'], $field['type'], $field['slug'] );
+				},
+			]
+		);
 	}
 }
 
