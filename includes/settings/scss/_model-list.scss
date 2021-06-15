@@ -148,6 +148,10 @@
 			width: 100%;
 			max-width: 500px;
 		}
+
+		input[type="radio"] {
+			width: 1rem;
+		}
 	}
 
 	form div.field {

@@ -84,7 +84,7 @@
 	color: $color-warning;
 }
 
-.ReactModal__Content label {
+.ReactModal__Content label:not(.form-check-label) {
 	display: block;
 	margin-top: 21px;
 }
