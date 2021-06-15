@@ -50,9 +50,75 @@ function register_content_types(): void {
  * @param array  $fields Custom fields to be registered with the custom post type.
  */
 function register_meta_types( string $post_type_slug, array $fields ): void {
-	foreach ( $fields as $key => $field ) {
-		$field['object_subtype'] = $post_type_slug;
-		register_meta( 'post', $field['slug'], $field );
+	register_rest_field(
+		$post_type_slug,
+		'acm_fields',
+		[
+			'get_callback' => function( $post, $attr, $request, $object_type ) use ( $fields ) {
+				$acm_fields = array();
+
+				foreach ( $fields as $key => $field ) {
+					$acm_fields[ $field['slug'] ] = handle_content_fields_for_rest_api( $post['id'], $field['type'], $field['slug'] );
+				}
+
+				return $acm_fields;
+			},
+		]
+	);
+}
+
+/**
+ * Processes field values for appropriate REST API returns.
+ *
+ * @param int    $post_id    The post ID of the model post.
+ * @param string $field_type The field type.
+ * @param string $field_slug The field slug to retrieve.
+ *
+ * @return array|mixed The Field's value accounting for field type.
+ */
+function handle_content_fields_for_rest_api( int $post_id, string $field_type, string $field_slug ) {
+	$meta_value = get_post_meta( $post_id, $field_slug, true );
+
+	switch ( $field_type ) {
+		case 'media':
+			$media_item = get_post( $meta_value );
+			if ( null === $media_item ) {
+				return '';
+			}
+
+			$media_data = array(
+				'mime_type' => $media_item->post_mime_type,
+				'caption'   => $media_item->post_excerpt,
+			);
+
+			$media_meta = wp_get_attachment_metadata( $meta_value );
+
+			if ( wp_attachment_is_image( $meta_value ) ) {
+				$media_data['alt_text'] = get_post_meta( $meta_value, '_wp_attachment_image_alt', true );
+
+				$media_data['sizes']             = array();
+				$media_data['sizes']['original'] = array(
+					'url'    => wp_get_attachment_url( $meta_value ),
+					'width'  => $media_meta['width'],
+					'height' => $media_meta['height'],
+				);
+
+				foreach ( $media_meta['sizes'] as $size => $value ) {
+					$image                        = wp_get_attachment_image_src( $meta_value, $size );
+					$media_data['sizes'][ $size ] = array(
+						'url'    => $image[0],
+						'width'  => $image[1],
+						'height' => $image[2],
+					);
+				}
+			} else {
+				$media_data['url'] = wp_get_attachment_url( $meta_value );
+			}
+
+			return $media_data;
+
+		default:
+			return $meta_value;
 	}
 }
 
