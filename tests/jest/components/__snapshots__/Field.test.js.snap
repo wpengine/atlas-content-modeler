@@ -10,7 +10,6 @@ exports[`Field renders a proper number field 1`] = `
   >
     Age
   </label>
-  <br />
   <input
     defaultValue="100"
     id="atlas-content-modeler[geese][age]"
