@@ -122,7 +122,11 @@ export default function MediaUploader({ modelSlug, field, required }) {
 									alt={field.name}
 								/>
 							) : (
-								<a href={mediaUrl}>
+								<a
+									href={mediaUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
 									[{getFileExtension(mediaUrl).toUpperCase()}]{" "}
 									{mediaUrl}
 								</a>
