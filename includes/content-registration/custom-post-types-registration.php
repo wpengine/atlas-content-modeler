@@ -382,6 +382,30 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 	}
 }
 
+add_filter( 'graphql_data_is_private', __NAMESPACE__ . '\graphql_data_is_private', 10, 6 );
+/**
+ * Determines whether or not data should be considered private in WPGraphQL.
+ *
+ * Accessing private data requires authentication and proper authorization.
+ *
+ * @param boolean     $is_private Whether or not the model is private.
+ * @param string      $model_name Name of the model.
+ * @param \WP_Post    $post The post object.
+ * @param string|null $visibility The visibility that has currently been set for the post at this point.
+ * @param int|null    $owner The post author's user ID.
+ * @param \WP_User    $current_user The current user.
+ * @return bool
+ */
+function graphql_data_is_private( bool $is_private, string $model_name, $post, $visibility, $owner, \WP_User $current_user ): bool {
+	$models = get_registered_content_types();
+	if ( array_key_exists( $post->post_type, $models ) && isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
+		$post_type  = get_post_type_object( $post->post_type );
+		$is_private = ! user_can( $current_user, $post_type->cap->edit_post, $post->ID );
+	}
+
+	return $is_private;
+}
+
 /**
  * Maps an HTML field type to a WPGraphQL field type.
  *

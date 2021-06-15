@@ -183,6 +183,70 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 
 				<div
 					className={
+						errors.api_visibility
+							? "field has-error form-check form-check-inline"
+							: "field form-check form-check-inline"
+					}
+				>
+					<label htmlFor="api_visibility">API Visibility</label>
+					<br />
+					<p className="help">
+						Whether or not this model requires authentication to be
+						accessed via REST and GraphQL APIs.
+					</p>
+
+					<input
+						type="radio"
+						id="api_visibility_public"
+						name="api_visibility"
+						value="public"
+						className="form-check-input"
+						defaultChecked={model?.api_visibility === "public"}
+						ref={register({ required: true })}
+					/>
+					<label
+						htmlFor="api_visibility_public"
+						className="form-check-label"
+					>
+						Public
+					</label>
+					<br />
+
+					<input
+						type="radio"
+						id="api_visibility_private"
+						name="api_visibility"
+						value="private"
+						className="form-check-input"
+						defaultChecked={
+							model?.api_visibility === "private" ||
+							typeof model?.api_visibility === "undefined"
+						}
+						ref={register({ required: true })}
+					/>
+					<label
+						htmlFor="api_visibility_private"
+						className="form-check-label"
+					>
+						Private
+					</label>
+					<br />
+
+					<p className="field-messages">
+						{errors.api_visibility &&
+							errors.api_visibility.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										This field is required
+									</span>
+								</span>
+							)}
+					</p>
+				</div>
+
+				<div
+					className={
 						errors.description
 							? "field field-description has-error"
 							: "field field-description"
