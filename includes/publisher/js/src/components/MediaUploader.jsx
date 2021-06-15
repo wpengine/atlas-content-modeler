@@ -45,25 +45,21 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	function clickHandler(e) {
 		e.preventDefault();
 
+		let library = {
+			order: "DESC",
+			orderby: "date",
+			type: allowedTypes ? allowedTypes.split(",") : null,
+		};
+
 		const media = wp.media({
 			title: mediaUrl ? "Change Media" : "Upload Media",
 			multiple: false,
 			frame: "select",
-			library: {
-				order: "DESC",
-				orderby: "date",
-			},
+			library: library,
 			button: {
 				text: "Done",
 			},
 		});
-
-		// update default types to only be the allowed types defined
-		if (allowedTypes) {
-			media.options.library.type = allowedTypes.split(",");
-		}
-
-		console.log("types array", media);
 
 		media.open().on("select", function () {
 			const uploadedMedia = media.state().get("selection").first();
