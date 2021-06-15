@@ -212,7 +212,7 @@ final class FormEditingExperience {
 		}
 
 		wp_nonce_field( 'atlas-content-modeler-pubex-nonce', 'atlas-content-modeler-pubex-nonce' );
-		echo '<div id="atlas-content-modeler-fields-app" class="wpe"></div>';
+		echo '<div id="atlas-content-modeler-fields-app" class="wpe atlas-content-modeler"></div>';
 	}
 
 	/**
