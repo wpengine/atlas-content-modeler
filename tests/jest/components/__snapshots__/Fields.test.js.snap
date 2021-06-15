@@ -89,6 +89,7 @@ Array [
     >
       Age
     </label>
+    <br />
     <input
       defaultValue="42"
       id="atlas-content-modeler[geese][age]"
