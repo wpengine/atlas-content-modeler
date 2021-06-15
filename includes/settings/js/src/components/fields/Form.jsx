@@ -133,7 +133,7 @@ function Form({ id, position, type, editing, storedData }) {
 					validate: {
 						formattedCorrectly: (v) => {
 							const types = v;
-							const typesRegex = /^[a-z0-9,\/]*$/g;
+							const typesRegex = /^[a-z0-9,]*$/g;
 							return typesRegex.test(types);
 						},
 					},

@@ -39,6 +39,31 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	}
 
 	/**
+	 * Get long extension for provided short file extension
+	 *
+	 * @returns {*[]}
+	 */
+	function getAllowedTypesLongExtension() {
+		const fieldAllowedTypes = allowedTypes.split(",");
+		let fieldAllowedTypesLongExtensions = [];
+
+		fieldAllowedTypes.forEach((type) => {
+			for (const item in atlasContentModelerFormEditingExperience.allowedMimeTypes) {
+				const fileExtensionRegex = new RegExp(type, "gi");
+
+				if (fileExtensionRegex.test(item)) {
+					fieldAllowedTypesLongExtensions.push(
+						atlasContentModelerFormEditingExperience
+							.allowedMimeTypes[item]
+					);
+				}
+			}
+		});
+
+		return fieldAllowedTypesLongExtensions;
+	}
+
+	/**
 	 * Click handler to use wp media uploader
 	 * @param e - event
 	 */
@@ -48,8 +73,11 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		let library = {
 			order: "DESC",
 			orderby: "date",
-			type: allowedTypes ? allowedTypes.split(",") : null,
 		};
+
+		if (allowedTypes) {
+			library.type = getAllowedTypesLongExtension();
+		}
 
 		const media = wp.media({
 			title: mediaUrl ? "Change Media" : "Upload Media",
