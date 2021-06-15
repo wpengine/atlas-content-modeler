@@ -119,6 +119,10 @@ $button-primary: #002838;
 			height: 100px;
 		}
 
+		&.richtext label {
+			margin-bottom: 15px;
+		}
+
 		input.button {
 			background: $button-primary;
 			font-size: 16px;
