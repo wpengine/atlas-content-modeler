@@ -64,6 +64,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			>
 				{field.name}
 			</label>
+			{field?.required && <p className="required">*Required</p>}
 			<input
 				type="text"
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
