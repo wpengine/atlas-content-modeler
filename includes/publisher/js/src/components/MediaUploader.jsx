@@ -63,7 +63,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			media.options.library.type = allowedTypes.split(",");
 		}
 
-		console.log("types array", media.options.library.type);
+		console.log("types array", media);
 
 		media.open().on("select", function () {
 			const uploadedMedia = media.state().get("selection").first();
