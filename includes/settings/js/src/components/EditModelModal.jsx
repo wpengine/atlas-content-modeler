@@ -74,7 +74,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			parentSelector={() => {
 				return document.getElementById("root");
 			}}
-			portalClassName="atlas-content-modeler-edit-model-modal-container"
+			portalClassName="atlas-content-modeler-edit-model-modal-container atlas-content-modeler"
 			onRequestClose={() => {
 				setIsOpen(false);
 			}}
@@ -90,158 +90,180 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					setIsOpen(false);
 				})}
 			>
-				<div className={errors.singular ? "field has-error" : "field"}>
-					<label htmlFor="singular">Singular Name</label>
-					<p className="help">
-						Singular display name for your content model, e.g.
-						"Rabbit".
-					</p>
-					<input
-						id="singular"
-						name="singular"
-						placeholder="Rabbit"
-						defaultValue={model.singular}
-						ref={register({ required: true, maxLength: 50 })}
-						onChange={(e) =>
-							setSingularCount(e.target.value.length)
+				<div className="row">
+					<div
+						className={
+							errors.singular
+								? "field has-error col-sm"
+								: "field col-sm"
 						}
-					/>
-					<p className="field-messages">
-						{errors.singular &&
-							errors.singular.type === "required" && (
-								<span className="error">
-									<Icon type="error" />
-									<span role="alert">
-										This field is required
-									</span>
-								</span>
-							)}
-						{errors.singular &&
-							errors.singular.type === "maxLength" && (
-								<span className="error">
-									<Icon type="error" />
-									<span role="alert">
-										Exceeds max length.
-									</span>
-								</span>
-							)}
-						<span>&nbsp;</span>
-						<span className="count">{singularCount}/50</span>
-					</p>
-				</div>
-
-				<div className={errors.plural ? "field has-error" : "field"}>
-					<label htmlFor="plural">Plural Name</label>
-					<p className="help">
-						Plural display name for your content model, e.g.
-						"Rabbits".
-					</p>
-					<input
-						id="plural"
-						name="plural"
-						defaultValue={model.plural}
-						placeholder="Rabbits"
-						ref={register({ required: true, maxLength: 50 })}
-						onChange={(event) => {
-							setPluralCount(event.target.value.length);
-						}}
-					/>
-					<p className="field-messages">
-						{errors.plural && errors.plural.type === "required" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">This field is required</span>
-							</span>
-						)}
-						{errors.plural && errors.plural.type === "maxLength" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">Exceeds max length.</span>
-							</span>
-						)}
-						<span>&nbsp;</span>
-						<span className="count">{pluralCount}/50</span>
-					</p>
-				</div>
-
-				<div className="field">
-					<label htmlFor="slug">API Identifier</label>
-					<p className="help">
-						Auto-generated and used for API requests.
-					</p>
-					<input
-						id="slug"
-						name="slug"
-						ref={register({ required: true, maxLength: 20 })}
-						defaultValue={model.slug}
-						readOnly="readOnly"
-					/>
-					<p className="field-messages">
-						<span>&nbsp;</span>
-					</p>
-				</div>
-
-				<div
-					className={
-						errors.api_visibility
-							? "field has-error form-check form-check-inline"
-							: "field form-check form-check-inline"
-					}
-				>
-					<label htmlFor="api_visibility">API Visibility</label>
-					<p className="help">
-						Whether or not this model requires authentication to be
-						accessed via REST and GraphQL APIs.
-					</p>
-
-					<input
-						type="radio"
-						id="api_visibility_public"
-						name="api_visibility"
-						value="public"
-						className="form-check-input"
-						defaultChecked={model?.api_visibility === "public"}
-						ref={register({ required: true })}
-					/>
-					<label
-						htmlFor="api_visibility_public"
-						className="form-check-label"
 					>
-						Public
-					</label>
-					<br />
+						<label htmlFor="singular">Singular Name</label>
+						<p className="help">
+							Singular display name for your content model, e.g.
+							"Rabbit".
+						</p>
+						<input
+							id="singular"
+							name="singular"
+							placeholder="Rabbit"
+							defaultValue={model.singular}
+							ref={register({ required: true, maxLength: 50 })}
+							onChange={(e) =>
+								setSingularCount(e.target.value.length)
+							}
+						/>
+						<p className="field-messages">
+							{errors.singular &&
+								errors.singular.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											This field is required
+										</span>
+									</span>
+								)}
+							{errors.singular &&
+								errors.singular.type === "maxLength" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											Exceeds max length.
+										</span>
+									</span>
+								)}
+							<span>&nbsp;</span>
+							<span className="count">{singularCount}/50</span>
+						</p>
+					</div>
 
-					<input
-						type="radio"
-						id="api_visibility_private"
-						name="api_visibility"
-						value="private"
-						className="form-check-input"
-						defaultChecked={
-							model?.api_visibility === "private" ||
-							typeof model?.api_visibility === "undefined"
+					<div
+						className={
+							errors.plural
+								? "field has-error col-sm"
+								: "field col-sm"
 						}
-						ref={register({ required: true })}
-					/>
-					<label
-						htmlFor="api_visibility_private"
-						className="form-check-label"
 					>
-						Private
-					</label>
-					<br />
-
-					<p className="field-messages">
-						{errors.api_visibility &&
-							errors.api_visibility.type === "required" && (
-								<span className="error">
-									<Icon type="error" />
-									<span role="alert">
-										This field is required
+						<label htmlFor="plural">Plural Name</label>
+						<p className="help">
+							Plural display name for your content model, e.g.
+							"Rabbits".
+						</p>
+						<input
+							id="plural"
+							name="plural"
+							defaultValue={model.plural}
+							placeholder="Rabbits"
+							ref={register({ required: true, maxLength: 50 })}
+							onChange={(event) => {
+								setPluralCount(event.target.value.length);
+							}}
+						/>
+						<p className="field-messages">
+							{errors.plural &&
+								errors.plural.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											This field is required
+										</span>
 									</span>
-								</span>
-							)}
-					</p>
+								)}
+							{errors.plural &&
+								errors.plural.type === "maxLength" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											Exceeds max length.
+										</span>
+									</span>
+								)}
+							<span>&nbsp;</span>
+							<span className="count">{pluralCount}/50</span>
+						</p>
+					</div>
+				</div>
+
+				<div className="row">
+					<div className="field col-sm">
+						<label htmlFor="slug">API Identifier</label>
+						<p className="help">
+							Auto-generated and used for API requests.
+						</p>
+						<input
+							id="slug"
+							name="slug"
+							ref={register({ required: true, maxLength: 20 })}
+							defaultValue={model.slug}
+							readOnly="readOnly"
+						/>
+						<p className="field-messages">
+							<span>&nbsp;</span>
+						</p>
+					</div>
+
+					<div
+						className={
+							errors.api_visibility
+								? "field has-error form-check form-check-inline col-sm"
+								: "field form-check form-check-inline col-sm"
+						}
+					>
+						<label htmlFor="api_visibility">API Visibility</label>
+						<p className="help">
+							Whether or not this model requires authentication to
+							be accessed via REST and GraphQL APIs.
+						</p>
+
+						<input
+							type="radio"
+							id="api_visibility_public"
+							name="api_visibility"
+							value="public"
+							className="form-check-input"
+							defaultChecked={model?.api_visibility === "public"}
+							ref={register({ required: true })}
+						/>
+						<label
+							htmlFor="api_visibility_public"
+							className="form-check-label"
+						>
+							Public
+						</label>
+						<br />
+
+						<input
+							type="radio"
+							id="api_visibility_private"
+							name="api_visibility"
+							value="private"
+							className="form-check-input"
+							defaultChecked={
+								model?.api_visibility === "private" ||
+								typeof model?.api_visibility === "undefined"
+							}
+							ref={register({ required: true })}
+						/>
+						<label
+							htmlFor="api_visibility_private"
+							className="form-check-label"
+						>
+							Private
+						</label>
+						<br />
+
+						<p className="field-messages">
+							{errors.api_visibility &&
+								errors.api_visibility.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											This field is required
+										</span>
+									</span>
+								)}
+						</p>
+					</div>
 				</div>
 
 				<div
@@ -258,6 +280,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					<textarea
 						id="description"
 						name="description"
+						className="w-100"
 						ref={register({ maxLength: 250 })}
 						defaultValue={model.description}
 						onChange={(e) =>
