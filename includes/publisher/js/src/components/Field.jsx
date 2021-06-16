@@ -189,6 +189,15 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 		case "multiOption":
 			console.log(field);
 			if (field.listType === "multi") {
+				const initialChoices = field.choices.reduce(
+					(result, choice) => {
+						result[choice.name] =
+							field.value.includes(choice.name) || choice.default;
+						return result;
+					},
+					{}
+				);
+				const [checked, setChecked] = useState(initialChoices);
 				return (
 					<>
 						<label
@@ -204,11 +213,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						)}
 						{field.choices.map((item, index) => {
 							// console.log(field.value[index]);
-							const [checked, setChecked] = useState(
-								field.value[index]
-							);
 							return (
 								<label
+									key={index}
 									className="check-container multi-check-container"
 									// htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 								>
@@ -218,11 +225,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
 										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
 										placeholder="Option Name"
-										checked={checked}
-										defaultChecked={item.default}
+										checked={checked[item.name]}
 										onChange={(event) => {
-											event.preventDefault();
-											setChecked(!checked);
+											setChecked({
+												...checked,
+												[item.name]: !checked[
+													item.name
+												],
+											});
 										}}
 									/>
 									<span className="error">
@@ -256,6 +266,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							return (
 								<label
 									className="radio-container"
+									key={index}
 									// htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 								>
 									{item.name}
