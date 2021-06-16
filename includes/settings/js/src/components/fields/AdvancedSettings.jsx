@@ -59,7 +59,10 @@ const MediaSettings = ({
 									"formattedCorrectly" && (
 									<span className="error">
 										<Icon type="error" />
-										<span role="alert">
+										<span
+											role="alert"
+											className="text-start"
+										>
 											Must be a comma-separated list of
 											file extensions without periods or
 											spaces.
