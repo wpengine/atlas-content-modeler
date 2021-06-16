@@ -129,7 +129,7 @@ function Form({ id, position, type, editing, storedData }) {
 			component: MediaSettings,
 			fields: {
 				allowedTypes: {
-					setValueAs: (v) => (v ? v : ""),
+					setValueAs: (v) => (v ? v.replace(/\s/g, "") : ""),
 					validate: {
 						formattedCorrectly: (v) => {
 							const types = v;
