@@ -60,10 +60,12 @@ function enqueue_settings_assets( $hook ) {
 	wp_register_script(
 		'atlas-content-modeler-app',
 		ATLAS_CONTENT_MODELER_URL . 'includes/settings/dist/index.js',
-		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash' ],
+		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash', 'wp-i18n' ],
 		$plugin['Version'],
 		true
 	);
+
+	wp_set_script_translations( 'atlas-content-modeler-app', 'atlas-content-modeler' );
 
 	wp_localize_script(
 		'atlas-content-modeler-app',
