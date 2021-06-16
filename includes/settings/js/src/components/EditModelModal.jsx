@@ -189,7 +189,6 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					}
 				>
 					<label htmlFor="api_visibility">API Visibility</label>
-					<br />
 					<p className="help">
 						Whether or not this model requires authentication to be
 						accessed via REST and GraphQL APIs.
