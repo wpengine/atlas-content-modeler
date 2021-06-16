@@ -408,7 +408,7 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 	$models = get_registered_content_types();
 	if ( array_key_exists( $post->post_type, $models ) && isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
 		$post_type  = get_post_type_object( $post->post_type );
-		$is_private = ! user_can( $current_user, $post_type->cap->edit_post, $post->ID );
+		$is_private = ! user_can( $current_user, $post_type->cap->read_post, $post->ID );
 	}
 
 	return $is_private;
