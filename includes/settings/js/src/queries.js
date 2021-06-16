@@ -114,3 +114,14 @@ export function getTitleFieldId(fields = {}) {
 
 	return fieldWithTitle ? fieldWithTitle.id : "";
 }
+
+/**
+ * Gives information about the open field.
+ *
+ * @param {Object} fields Fields to check the open state of.
+ * @return {Object} The open field or an empty object.
+ */
+export function getOpenField(fields = {}) {
+	const openField = Object.values(fields).find((field) => field?.open);
+	return typeof openField === "undefined" ? {} : openField;
+}

@@ -126,6 +126,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			>
 				{field.name}
 			</label>
+			{field?.required && <p className="required">*Required</p>}
 			<input
 				type="text"
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -179,16 +180,14 @@ export default function MediaUploader({ modelSlug, field, required }) {
 					</div>
 
 					{mediaUrl && (
-						<div>
-							<a
-								href="#"
-								style={{ marginLeft: "20px" }}
-								className="btn-delete"
-								onClick={(e) => deleteImage(e)}
-							>
-								Remove Media
-							</a>
-						</div>
+						<a
+							href="#"
+							style={{ marginLeft: "20px" }}
+							className="btn-delete"
+							onClick={(e) => deleteImage(e)}
+						>
+							Remove Media
+						</a>
 					)}
 				</div>
 
