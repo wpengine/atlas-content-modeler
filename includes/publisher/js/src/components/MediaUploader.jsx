@@ -96,6 +96,12 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			return title;
 		};
 
+		// If the media frame already exists, reopen it.
+		if (media) {
+			media.open();
+			return;
+		}
+
 		const media = wp.media({
 			title: getMediaModalTitle(),
 			multiple: false,
