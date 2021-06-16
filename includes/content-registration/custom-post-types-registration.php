@@ -228,11 +228,12 @@ function generate_custom_post_type_args( array $args ): array {
 									'thumbnail',
 									'custom-fields',
 								],
-		'labels'              => $labels,
-		'show_in_graphql'     => $args['show_in_graphql'] ?? true,
-		'graphql_single_name' => $args['graphql_single_name'] ?? camelcase( $singular ),
-		'graphql_plural_name' => $args['graphql_plural_name'] ?? camelcase( $plural ),
-		'menu_icon'           => $icon,
+		'labels'                => $labels,
+		'show_in_graphql'       => $args['show_in_graphql'] ?? true,
+		'graphql_single_name'   => $args['graphql_single_name'] ?? camelcase( $singular ),
+		'graphql_plural_name'   => $args['graphql_plural_name'] ?? camelcase( $plural ),
+		'menu_icon'             => $icon,
+		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
 	];
 }
 
