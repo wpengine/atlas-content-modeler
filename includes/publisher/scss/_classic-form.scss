@@ -128,6 +128,10 @@ $error-red: #d21b46;
 			user-select: none;
 		}
 
+		.multi-check-container {
+			margin-top:14px;
+		}
+
 		/* Hide the browser's default checkbox */
 		.check-container input {
 			position: absolute;
@@ -178,6 +182,84 @@ $error-red: #d21b46;
 
 		/* Style the checkmark/indicator */
 		.check-container .checkmark:after {
+			left: 6px;
+			top: 2px;
+			width: 5px;
+			height: 10px;
+			border: solid white;
+			border-width: 0 3px 3px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+
+		/* Radio Selects */
+		.radio-container {
+			display: block;
+			position: relative;
+			padding-left: 35px;
+			margin-top:12px;
+			cursor: pointer;
+			font-size: 14px;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+		.multi-select-outer-container {
+			margin-top:14px;
+		}
+
+		/* Hide the browser's default radio */
+		.radio-container input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0;
+		}
+
+		/* Create a custom checkbox */
+		.radio-select {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 20px;
+			width: 20px;
+			background-color: #ffffff;
+			border: 2px solid $form-default-border-gray;
+			border-radius: 15px;
+		}
+
+		/* On mouse-over, focus add a purple border color */
+		.radio-container:hover input ~ .radio-select {
+			border-color: $form-purple !important;
+		}
+
+		input:focus + .radio-select {
+			border-color: $form-purple !important;
+		}
+
+		/* When the checkbox is checked, add a black background */
+		.radio-container input:checked ~ .radio-select {
+			background-color: #000;
+			border-color: #000;
+		}
+
+		/* Create the checkmark/indicator (hidden when not checked) */
+		.radio-select:after {
+			content: "";
+			position: absolute;
+			display: none;
+		}
+
+		/* Show the checkmark when checked */
+		.radio-container input:checked ~ .radio-select:after {
+			display: block;
+		}
+
+		/* Style the checkmark/indicator */
+		.radio-container .radio-select:after {
 			left: 6px;
 			top: 2px;
 			width: 5px;

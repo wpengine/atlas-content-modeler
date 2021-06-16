@@ -46,6 +46,15 @@ export default function Field(props) {
 	);
 }
 
+function onOptionChange(field, changedIndex) {
+	field.value.map((item, index) => {
+		if (index === changedIndex) {
+			remove(field.value[changedIndex]);
+		}
+	});
+	return console.log(field);
+}
+
 function fieldMarkup(field, modelSlug, errors, validate) {
 	modelSlug = modelSlug.toLowerCase();
 
@@ -176,6 +185,102 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</label>
 				</>
 			);
+
+		case "multiOption":
+			console.log(field);
+			if (field.listType === "multi") {
+				return (
+					<>
+						<label
+							htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						>
+							{field.name}
+						</label>
+						{/* <p className="help">
+							Choose any of the below options.
+						</p> */}
+						{field.required && (
+							<p className="help">This field is required.</p>
+						)}
+						{field.choices.map((item, index) => {
+							// console.log(field.value[index]);
+							const [checked, setChecked] = useState(
+								field.value[index]
+							);
+							return (
+								<label
+									className="check-container multi-check-container"
+									// htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+								>
+									{item.name}
+									<input
+										type="checkbox"
+										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+										placeholder="Option Name"
+										checked={checked}
+										defaultChecked={item.default}
+										onChange={(event) => {
+											event.preventDefault();
+											setChecked(!checked);
+										}}
+									/>
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">{defaultError}</span>
+									</span>
+									{/* span is used for custom checkbox styling purposes */}
+									<span className="checkmark"></span>
+								</label>
+							);
+						})}
+					</>
+				);
+			}
+			if (field.listType === "one") {
+				return (
+					<>
+						<label
+							htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						>
+							{field.name}
+						</label>
+						{/* <p className="help">
+							Choose one of the below options.
+						</p> */}
+						{field.required && (
+							<p className="help">This field is required.</p>
+						)}
+						{field.choices.map((item, index) => {
+							console.log(field.value);
+							return (
+								<label
+									className="radio-container"
+									// htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+								>
+									{item.name}
+									<input
+										type="radio"
+										name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+										id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+										value={item.name}
+										// checked={}
+										defaultChecked={
+											field.value && item.default
+										}
+									/>
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">{defaultError}</span>
+									</span>
+									{/* span is used for custom radio styling purposes */}
+									<span className="radio-select"></span>
+								</label>
+							);
+						})}
+					</>
+				);
+			}
 
 		default:
 			return `TODO: ${field.type} fields`;
