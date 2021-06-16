@@ -258,7 +258,7 @@ final class FormEditingExperience {
 		}
 
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			$this->error_save_post = 'You do not have permission to edit this content.';
+			$this->error_save_post = __( 'You do not have permission to edit this content.', 'atlas-content-modeler' );
 			return;
 		}
 
@@ -270,7 +270,7 @@ final class FormEditingExperience {
 				),
 				'atlas-content-modeler-pubex-nonce'
 			) ) {
-			$this->error_save_post = 'Nonce verification failed when saving your content. Please try again.';
+			$this->error_save_post = __( 'Nonce verification failed when saving your content. Please try again.', 'atlas-content-modeler' );
 			return;
 		}
 
@@ -303,7 +303,8 @@ final class FormEditingExperience {
 
 				$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
 				if ( ! $deleted ) {
-					$this->error_save_post = sprintf( 'There was an error deleting the %s field data.', $slug );
+					/* translators: %s: atlas content modeler field slug */
+					$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
 				}
 			}
 		}
@@ -321,7 +322,8 @@ final class FormEditingExperience {
 
 			$updated = update_post_meta( $post_id, sanitize_text_field( $key ), $value );
 			if ( ! $updated ) {
-				$this->error_save_post = sprintf( 'There was an error updating the %s field data.', $key );
+				/* translators: %s: atlas content modeler field slug */
+				$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
 			}
 		}
 	}

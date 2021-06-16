@@ -162,28 +162,50 @@ function generate_custom_post_type_labels( array $labels ): array {
 	return [
 		'name'                     => $plural,
 		'singular_name'            => $singular,
-		'add_new_item'             => sprintf( 'Add new %s', $singular ),
-		'edit_item'                => sprintf( 'Edit %s', $singular ),
-		'new_item'                 => sprintf( 'New %s', $singular ),
-		'view_item'                => sprintf( 'View %s', $singular ),
-		'view_items'               => sprintf( 'View %s', $plural ),
-		'search_items'             => sprintf( 'Search %s', $plural ),
-		'not_found'                => sprintf( 'No %s found', $plural ),
-		'not_found_in_trash'       => sprintf( 'No %s found in trash', $plural ),
-		'parent_item_colon'        => sprintf( 'Parent %s:', $singular ),
-		'all_items'                => sprintf( 'All %s', $plural ),
-		'archives'                 => sprintf( '%s archives', $singular ),
-		'attributes'               => sprintf( '%s Attributes', $singular ),
-		'uploaded_to_this_item'    => sprintf( 'Uploaded to this %s', $singular ),
-		'filter_items_list'        => sprintf( 'Filter %s list', $plural ),
-		'items_list_navigation'    => sprintf( '%s list navigation', $plural ),
-		'items_list'               => sprintf( '%s list', $plural ),
-		'item_published'           => sprintf( '%s published.', $singular ),
-		'item_published_privately' => sprintf( '%s published privately.', $singular ),
-		'item_reverted_to_draft'   => sprintf( '%s reverted to draft.', $singular ),
-		'item_scheduled'           => sprintf( '%s scheduled.', $singular ),
-		'item_updated'             => sprintf( '%s updated.', $singular ),
-		'parent'                   => sprintf( 'Parent %s', $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'add_new_item'             => sprintf( __( 'Add new %s', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'edit_item'                => sprintf( __( 'Edit %s', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'new_item'                 => sprintf( __( 'New %s', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'view_item'                => sprintf( __( 'View %s', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: plural atlas content modeler field */
+		'view_items'               => sprintf( __( 'View %s', 'atlas-content-modeler' ), $plural ),
+		/* translators: %s: plural atlas content modeler field */
+		'search_items'             => sprintf( __( 'Search %s', 'atlas-content-modeler' ), $plural ),
+		/* translators: %s: plural atlas content modeler field */
+		'not_found'                => sprintf( __( 'No %s found', 'atlas-content-modeler' ), $plural ),
+		/* translators: %s: plural atlas content modeler field */
+		'not_found_in_trash'       => sprintf( __( 'No %s found in trash', 'atlas-content-modeler' ), $plural ),
+		/* translators: %s: singular atlas content modeler field */
+		'parent_item_colon'        => sprintf( __( 'Parent %s:', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: plural atlas content modeler field */
+		'all_items'                => sprintf( __( 'All %s', 'atlas-content-modeler' ), $plural ),
+		/* translators: %s: singular atlas content modeler field */
+		'archives'                 => sprintf( __( '%s archives', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'attributes'               => sprintf( __( '%s Attributes', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'uploaded_to_this_item'    => sprintf( __( 'Uploaded to this %s', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: plural atlas content modeler field */
+		'filter_items_list'        => sprintf( __( 'Filter %s list', 'atlas-content-modeler' ), $plural ),
+		/* translators: %s: plural atlas content modeler field */
+		'items_list_navigation'    => sprintf( __( '%s list navigation', 'atlas-content-modeler' ), $plural ),
+		/* translators: %s: plural atlas content modeler field */
+		'items_list'               => sprintf( __( '%s list', 'atlas-content-modeler' ), $plural ),
+		/* translators: %s: singular atlas content modeler field */
+		'item_published'           => sprintf( __( '%s published.', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'item_published_privately' => sprintf( __( '%s published privately.', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'item_reverted_to_draft'   => sprintf( __( '%s reverted to draft.', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'item_scheduled'           => sprintf( __( '%s scheduled.', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'item_updated'             => sprintf( __( '%s updated.', 'atlas-content-modeler' ), $singular ),
+		/* translators: %s: singular atlas content modeler field */
+		'parent'                   => sprintf( __( 'Parent %s', 'atlas-content-modeler' ), $singular ),
 	];
 }
 
