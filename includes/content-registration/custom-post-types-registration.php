@@ -74,8 +74,8 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 /**
  * Processes field values for appropriate REST API returns.
  *
- * @param int             $post_id  The post ID of the model post.
- * @param array           $field    The field settings.
+ * @param int   $post_id  The post ID of the model post.
+ * @param array $field    The field settings.
  *
  * @return array|mixed The Field's value accounting for field type.
  */
