@@ -64,8 +64,7 @@ const MediaSettings = ({
 											className="text-start"
 										>
 											Must be a comma-separated list of
-											file extensions without periods or
-											spaces.
+											file extensions without periods.
 										</span>
 									</span>
 								)}
