@@ -64,6 +64,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			>
 				{field.name}
 			</label>
+			{field?.required && <p className="required">*Required</p>}
 			<input
 				type="text"
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -93,29 +94,24 @@ export default function MediaUploader({ modelSlug, field, required }) {
 				)}
 
 				<div className="d-flex flex-row align-items-center media-btns">
-					<div>
-						<input
-							type="button"
-							className="button button-primary button-large"
-							style={{ marginTop: "5px" }}
-							defaultValue={
-								mediaUrl ? "Change Media" : "Upload Media"
-							}
-							onClick={(e) => clickHandler(e)}
-						/>
-					</div>
+					<input
+						type="button"
+						className="button button-primary button-large"
+						defaultValue={
+							mediaUrl ? "Change Media" : "Upload Media"
+						}
+						onClick={(e) => clickHandler(e)}
+					/>
 
 					{mediaUrl && (
-						<div>
-							<a
-								href="#"
-								style={{ marginLeft: "20px" }}
-								className="btn-delete"
-								onClick={(e) => deleteImage(e)}
-							>
-								Remove Media
-							</a>
-						</div>
+						<a
+							href="#"
+							style={{ marginLeft: "20px" }}
+							className="btn-delete"
+							onClick={(e) => deleteImage(e)}
+						>
+							Remove Media
+						</a>
 					)}
 				</div>
 
