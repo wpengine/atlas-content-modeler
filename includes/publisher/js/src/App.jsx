@@ -1,5 +1,6 @@
 import React from "react";
 import Fields from "./components/Fields";
+import { sprintf, __ } from "@wordpress/i18n";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
@@ -18,7 +19,11 @@ export default function App({ model, mode }) {
 			<div className="flex-parent">
 				<div>
 					<h3 className="main-title">
-						{isEditMode ? <span>Edit </span> : <span>Add </span>}
+						{isEditMode ? (
+							<span>{__("Edit", "atlas-content-modeler")} </span>
+						) : (
+							<span>{__("Add", "atlas-content-modeler")} </span>
+						)}
 						{model.singular}
 					</h3>
 				</div>
