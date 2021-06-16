@@ -62,7 +62,7 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 						continue;
 					}
 
-					$acm_fields[ $field['slug'] ] = handle_content_fields_for_rest_api( $post['id'], $field['type'], $field['slug'] );
+					$acm_fields[ $field['slug'] ] = handle_content_fields_for_rest_api( $post['id'], $field, $request );
 				}
 
 				return $acm_fields;
@@ -74,16 +74,15 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 /**
  * Processes field values for appropriate REST API returns.
  *
- * @param int    $post_id    The post ID of the model post.
- * @param string $field_type The field type.
- * @param string $field_slug The field slug to retrieve.
+ * @param int             $post_id  The post ID of the model post.
+ * @param array           $field    The field settings.
  *
  * @return array|mixed The Field's value accounting for field type.
  */
-function handle_content_fields_for_rest_api( int $post_id, string $field_type, string $field_slug ) {
-	$meta_value = get_post_meta( $post_id, $field_slug, true );
+function handle_content_fields_for_rest_api( int $post_id, array $field ) {
+	$meta_value = get_post_meta( $post_id, $field['slug'], true );
 
-	switch ( $field_type ) {
+	switch ( $field['type'] ) {
 		case 'media':
 			$media_item = get_post( $meta_value );
 			if ( null === $media_item ) {
