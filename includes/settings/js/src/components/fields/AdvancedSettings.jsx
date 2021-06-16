@@ -60,8 +60,9 @@ const MediaSettings = ({
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											Must be a comma separated list of
-											extensions.
+											Must be a comma-separated list of
+											file extensions without periods or
+											spaces.
 										</span>
 									</span>
 								)}

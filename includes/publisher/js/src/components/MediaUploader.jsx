@@ -64,6 +64,14 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	}
 
 	/**
+	 * Format allowed types for UI display
+	 * @returns {string|string}
+	 */
+	function getAllowedTypesForUi() {
+		return allowedTypes ? `${allowedTypes.split(",").join(", ")}` : "";
+	}
+
+	/**
 	 * Click handler to use wp media uploader
 	 * @param e - event
 	 */
@@ -79,8 +87,17 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			library.type = getAllowedTypesLongExtension();
 		}
 
+		const getMediaModalTitle = () => {
+			const title = mediaUrl ? "Change Media" : "Upload Media";
+			if (allowedTypes) {
+				return `${title} (${getAllowedTypesForUi()})`;
+			}
+
+			return title;
+		};
+
 		const media = wp.media({
-			title: mediaUrl ? "Change Media" : "Upload Media",
+			title: getMediaModalTitle(),
 			multiple: false,
 			frame: "select",
 			library: library,
@@ -146,6 +163,13 @@ export default function MediaUploader({ modelSlug, field, required }) {
 							}
 							onClick={(e) => clickHandler(e)}
 						/>
+
+						{allowedTypes && (
+							<p className="text-muted">
+								Accepts file types:{" "}
+								{getAllowedTypesForUi().toUpperCase()}
+							</p>
+						)}
 					</div>
 
 					{mediaUrl && (
