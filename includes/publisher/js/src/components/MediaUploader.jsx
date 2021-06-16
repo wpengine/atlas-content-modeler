@@ -90,7 +90,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		const getMediaModalTitle = () => {
 			const title = mediaUrl ? "Change Media" : "Upload Media";
 			if (allowedTypes) {
-				return `${title} (${getAllowedTypesForUi()})`;
+				return `${title} (${getAllowedTypesForUi().toUpperCase()})`;
 			}
 
 			return title;
