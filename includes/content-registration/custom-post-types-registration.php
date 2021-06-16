@@ -212,16 +212,17 @@ function generate_custom_post_type_args( array $args ): array {
 		]
 	);
 
-	return [
-		'name'                => ucfirst( $plural ),
-		'singular_name'       => ucfirst( $singular ),
-		'description'         => $args['description'] ?? '',
-		'show_ui'             => $args['show_ui'] ?? true,
-		'show_in_rest'        => $args['show_in_rest'] ?? true,
-		'rest_base'           => $args['rest_base'] ?? strtolower( str_replace( ' ', '', $plural ) ),
-		'capability_type'     => $args['capability_type'] ?? 'post',
-		'show_in_menu'        => $args['show_in_menu'] ?? true,
-		'supports'            => $args['supports'] ??
+	$return = [
+		'name'                  => ucfirst( $plural ),
+		'singular_name'         => ucfirst( $singular ),
+		'description'           => $args['description'] ?? '',
+		'public'                => $args['public'] ?? false,
+		'show_ui'               => $args['show_ui'] ?? true,
+		'show_in_rest'          => $args['show_in_rest'] ?? true,
+		'rest_base'             => $args['rest_base'] ?? strtolower( str_replace( ' ', '', $plural ) ),
+		'capability_type'       => $args['capability_type'] ?? 'post',
+		'show_in_menu'          => $args['show_in_menu'] ?? true,
+		'supports'              => $args['supports'] ??
 								[
 									'title',
 									'editor',
@@ -235,6 +236,12 @@ function generate_custom_post_type_args( array $args ): array {
 		'menu_icon'             => $icon,
 		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
 	];
+
+	if ( ! empty( $args['api_visibility'] ) && 'private' === $args['api_visibility'] ) {
+		$return['public'] = false;
+	}
+
+	return $return;
 }
 
 /**
