@@ -58,6 +58,10 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 				$acm_fields = array();
 
 				foreach ( $fields as $key => $field ) {
+					if ( ! $field['show_in_rest'] ) {
+						continue;
+					}
+
 					$acm_fields[ $field['slug'] ] = handle_content_fields_for_rest_api( $post['id'], $field['type'], $field['slug'] );
 				}
 
