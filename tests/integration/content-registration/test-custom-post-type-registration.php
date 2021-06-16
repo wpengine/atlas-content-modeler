@@ -141,7 +141,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertFalse( array_key_exists( 'another-dog-test-field', $response_data['meta'] ) );
+		$this->assertFalse( array_key_exists( 'another-dog-test-field', $response_data['acm_fields'] ) );
 	}
 
 	/**
