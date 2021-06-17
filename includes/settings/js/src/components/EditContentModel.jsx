@@ -200,7 +200,7 @@ export default function EditContentModel() {
 									"Choose your first field for the %s content model:",
 									"atlas-content-modeler"
 								),
-								model?.name
+								model?.name ? model.name : ""
 							)}
 						</p>
 						<ul className="field-list">
