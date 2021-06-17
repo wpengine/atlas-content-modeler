@@ -31,6 +31,7 @@ function Form({ id, position, type, editing, storedData }) {
 		getValues,
 		clearErrors,
 		setError,
+		control,
 		reset,
 		trigger,
 		watch,
