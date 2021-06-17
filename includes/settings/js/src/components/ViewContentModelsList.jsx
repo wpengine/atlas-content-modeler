@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { sanitizeFields } from "../queries";
 import { ContentModelDropdown } from "./ContentModelDropdown";
+import { sprintf, __ } from "@wordpress/i18n";
 
 function Header({ showButton = true }) {
 	let history = useHistory();
@@ -17,7 +18,7 @@ function Header({ showButton = true }) {
 						)
 					}
 				>
-					Add New
+					{__("Add New", "atlas-content-modeler")}
 				</button>
 			)}
 		</section>
@@ -39,7 +40,12 @@ export default function ViewContentModelsList() {
 					</ul>
 				) : (
 					<div className="model-list-empty">
-						<p>You currently have no Content Models.</p>
+						<p>
+							{__(
+								"You currently have no Content Models.",
+								"atlas-content-modeler"
+							)}
+						</p>
 						<button
 							onClick={() =>
 								history.push(
@@ -48,7 +54,7 @@ export default function ViewContentModelsList() {
 								)
 							}
 						>
-							Get Started
+							{__("Get Started", "atlas-content-modeler")}
 						</button>
 					</div>
 				)}
@@ -68,17 +74,23 @@ function ContentModels({ models }) {
 					className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
 				>
 					<span className="flex-item mb-3 mb-sm-0 pr-1">
-						<p className="label">Name</p>
+						<p className="label">
+							{__("Name", "atlas-content-modeler")}
+						</p>
 						<p className="value">
 							<strong>{plural}</strong>
 						</p>
 					</span>
 					<span className="flex-item mb-3 mb-sm-0 pr-1">
-						<p className="label">Description</p>
+						<p className="label">
+							{__("Description", "atlas-content-modeler")}
+						</p>
 						<p className="value">{description}</p>
 					</span>
 					<span className="flex-item">
-						<p className="label">Fields</p>
+						<p className="label">
+							{__("Fields", "atlas-content-modeler")}
+						</p>
 						<p className="value">
 							{Object.keys(sanitizeFields(fields)).length}
 						</p>

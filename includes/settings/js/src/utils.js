@@ -64,7 +64,10 @@ export function generateSidebarMenuItem(model) {
 						<a href="edit.php?post_type=${slug}" class="wp-first-item">All ${plural}</a>
 					</li>
 					<li>
-						<a href="post-new.php?post_type=${slug}">Add New</a>
+						<a href="post-new.php?post_type=${slug}">${__(
+		"Add New",
+		"atlas-content-modeler"
+	)}</a>
 					</li>
 				</ul>
 			</li>`;

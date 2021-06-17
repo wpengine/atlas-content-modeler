@@ -6,6 +6,7 @@ import supportedFields from "./supportedFields";
 import { FieldOptionsDropdown } from "./FieldOptionsDropdown";
 import { ModelsContext } from "../../ModelsContext";
 import FieldButtons from "../FieldButtons";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const getItemStyle = (isDragging, draggableStyle) => {
 	return {
@@ -166,7 +167,10 @@ function Field({
 				<div className="d-flex flex-row">
 					<div>
 						<h3>
-							{editing ? `Editing` : `New`} {formFieldTitle} Field
+							{editing
+								? __("Editing", "atlas-content-modeler")
+								: __("New", "atlas-content-modeler")}{" "}
+							{formFieldTitle} Field
 						</h3>
 					</div>
 

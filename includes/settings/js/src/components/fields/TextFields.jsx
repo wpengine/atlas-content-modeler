@@ -5,6 +5,7 @@ import React, { useContext, useRef } from "react";
 import { getTitleFieldId } from "../../queries";
 import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const TextFields = ({ register, data, editing, fieldId }) => {
 	const { models, dispatch } = useContext(ModelsContext);
@@ -77,7 +78,10 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						htmlFor={`is-title-${fieldId}`}
 						className="checkbox is-title"
 					>
-						Use this field as the entry title
+						{__(
+							"Use this field as the entry title",
+							"atlas-content-modeler"
+						)}
 					</label>
 				</div>
 			)}
@@ -98,8 +102,13 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 							disabled={editing}
 						/>
 						<label className="radio" htmlFor="single">
-							Single line
-							<span>Displays an input field</span>
+							{__("Single line", "atlas-content-modeler")}
+							<span>
+								{__(
+									"Displays an input field",
+									"atlas-content-modeler"
+								)}
+							</span>
 						</label>
 					</div>
 					<div className="radio-row">
@@ -113,8 +122,13 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 							disabled={editing}
 						/>
 						<label className="radio" htmlFor="multi">
-							Multiple lines
-							<span>Displays a textarea field</span>
+							{__("Multiple lines", "atlas-content-modeler")}
+							<span>
+								{__(
+									"Displays a textarea field",
+									"atlas-content-modeler"
+								)}
+							</span>
 						</label>
 					</div>
 				</fieldset>

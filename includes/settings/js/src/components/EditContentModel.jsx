@@ -7,6 +7,7 @@ import Field from "./fields/Field";
 import { ModelsContext } from "../ModelsContext";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 import Modal from "react-modal";
+import { sprintf, __ } from "@wordpress/i18n";
 
 import {
 	getFieldOrder,
@@ -78,7 +79,7 @@ export default function EditContentModel() {
 							}
 						}}
 					>
-						Content Models
+						{__("Content Models", "atlas-content-modeler")}
 					</a>{" "}
 					/ {model?.plural}
 				</h2>
@@ -154,13 +155,23 @@ export default function EditContentModel() {
 							style={customStyles}
 							model={model}
 						>
-							<h2>Unsaved Changes</h2>
-							<p>Would you like to discard your field updates?</p>
+							<h2>
+								{__("Unsaved Changes", "atlas-content-modeler")}
+							</h2>
+							<p>
+								{__(
+									"Would you like to discard your field updates?",
+									"atlas-content-modeler"
+								)}
+							</p>
 							<button
 								className="first primary"
 								onClick={closeUnsavedChangesModal}
 							>
-								Continue Editing
+								{__(
+									"Continue Editing",
+									"atlas-content-modeler"
+								)}
 							</button>
 							<button
 								className="tertiary"
@@ -177,15 +188,20 @@ export default function EditContentModel() {
 									closeUnsavedChangesModal();
 								}}
 							>
-								Discard Changes
+								{__("Discard Changes", "atlas-content-modeler")}
 							</button>
 						</Modal>
 					</>
 				) : (
 					<>
 						<p className="field-list-info">
-							Choose your first field for the {model?.name}{" "}
-							content model:
+							{sprintf(
+								__(
+									"Choose your first field for the %s content model:",
+									"atlas-content-modeler"
+								),
+								model?.name
+							)}
 						</p>
 						<ul className="field-list">
 							<li>
