@@ -1,5 +1,5 @@
 /**
- * Additional form fields for the Multi Choice field type.
+ * Additional form fields for the Multiple Choice field type.
  */
 import React from "react";
 import { useFieldArray } from "react-hook-form";
@@ -8,7 +8,7 @@ import AddIcon from "../../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import Icon from "../../../../../components/icons";
 
-function MultiChoiceFields({
+function MultipleChoiceFields({
 	register,
 	type,
 	data,
@@ -44,7 +44,7 @@ function MultiChoiceFields({
 		<div className={editing ? "field read-only editing" : "field"}>
 			<fieldset>
 				<div
-					id="multiOptions"
+					id="multipleOptions"
 					className="d-flex flex-column d-sm-flex flex-sm-row"
 				>
 					<div className="">
@@ -79,11 +79,11 @@ function MultiChoiceFields({
 													defaultValue={`${item.name}`}
 													onChange={(event) => {
 														clearErrors(
-															"multiOption" +
+															"multipleOption" +
 																index
 														);
 														clearErrors(
-															"multiOptionName" +
+															"multipleOptionName" +
 																index
 														);
 													}}
@@ -125,11 +125,11 @@ function MultiChoiceFields({
 														event.preventDefault();
 														remove(index);
 														clearErrors(
-															"multiOption" +
+															"multipleOption" +
 																index
 														);
 														clearErrors(
-															"multiOptionName" +
+															"multipleOptionName" +
 																index
 														);
 													}}
@@ -143,10 +143,10 @@ function MultiChoiceFields({
 												</button>
 											</div>
 										</div>
-										{errors["multiOption" + index] &&
-											errors["multiOption" + index]
+										{errors["multipleOption" + index] &&
+											errors["multipleOption" + index]
 												.type ===
-												"multiOptionNameEmpty" +
+												"multipleOptionNameEmpty" +
 													index && (
 												<span className="error">
 													<Icon type="error" />
@@ -155,10 +155,10 @@ function MultiChoiceFields({
 													</span>
 												</span>
 											)}
-										{errors["multiOptionName" + index] &&
-											errors["multiOptionName" + index]
+										{errors["multipleOptionName" + index] &&
+											errors["multipleOptionName" + index]
 												.type ===
-												"multiOptionNameDuplicate" +
+												"multipleOptionNameDuplicate" +
 													index && (
 												<span className="error">
 													<Icon type="error" />
@@ -176,7 +176,7 @@ function MultiChoiceFields({
 									className="tertiary no-border"
 									onClick={(event) => {
 										event.preventDefault();
-										clearErrors("multiOption");
+										clearErrors("multipleOption");
 										append({ name: "", default: false });
 									}}
 								>
@@ -189,9 +189,9 @@ function MultiChoiceFields({
 										</span>
 									</a>
 								</button>
-								{errors.multiOption &&
-									errors.multiOption.type ===
-										"multiOptionEmpty" && (
+								{errors.multipleOption &&
+									errors.multipleOption.type ===
+										"multipleOptionEmpty" && (
 										<span className="error">
 											<Icon type="error" />
 											<span role="alert">
@@ -231,15 +231,15 @@ function MultiChoiceFields({
 					<div className="radio-row">
 						<input
 							type="radio"
-							id="multi"
+							id="multiple"
 							name="listType"
-							value="multi"
+							value="multiple"
 							ref={register()}
-							defaultChecked={data?.listType === "multi"}
+							defaultChecked={data?.listType === "multiple"}
 							disabled={editing}
 						/>
-						<label className="radio" htmlFor="multi">
-							Multi Select
+						<label className="radio" htmlFor="multiple">
+							Multiple Select
 							<span>
 								Select this if you need a list of checkboxes
 								(multiple selections)
@@ -252,4 +252,4 @@ function MultiChoiceFields({
 	);
 }
 
-export default MultiChoiceFields;
+export default MultipleChoiceFields;

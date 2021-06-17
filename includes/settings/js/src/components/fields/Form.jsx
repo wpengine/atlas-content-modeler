@@ -6,7 +6,7 @@ import Icon from "../../../../../components/icons";
 import TextFields from "./TextFields";
 import { TextSettings, NumberSettings } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
-import MultiChoiceFields from "./MultiChoiceFields";
+import MultipleChoiceFields from "./MultipleChoiceFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
@@ -17,7 +17,7 @@ const { cloneDeep } = lodash;
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
-	multiOption: MultiChoiceFields,
+	multipleOption: MultipleChoiceFields,
 };
 
 Modal.setAppElement("#root");
@@ -184,8 +184,8 @@ function Form({ id, position, type, editing, storedData }) {
 				}
 				if (err.code === "wpe_option_name_undefined") {
 					err.data.problem_index.map((index) => {
-						setError("multiOption" + index, {
-							type: "multiOptionNameEmpty" + index,
+						setError("multipleOption" + index, {
+							type: "multipleOptionNameEmpty" + index,
 						});
 					});
 				}
@@ -194,13 +194,13 @@ function Form({ id, position, type, editing, storedData }) {
 				) {
 					err.data.problem_name_index.map((index) => {
 						console.log(index);
-						setError("multiOptionName" + index, {
-							type: "multiOptionNameDuplicate" + index,
+						setError("multipleOptionName" + index, {
+							type: "multipleOptionNameDuplicate" + index,
 						});
 					});
 				}
 				if (err.code === "wpe_invalid_multi_options") {
-					setError("multiOption", { type: "multiOptionEmpty" });
+					setError("multipleOption", { type: "multipleOptionEmpty" });
 				}
 				if (err.code === "wpe_invalid_content_model") {
 					console.error(

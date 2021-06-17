@@ -206,14 +206,14 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	if ( isset( $params['type'] ) && $params['type'] === 'multiOption' && ! $params['choices'] ) {
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleOption' && ! $params['choices'] ) {
 		return new WP_Error(
 			'wpe_invalid_multi_options',
-			'Multi Option update failed. Options need to be created before updating a multi option field.',
+			'Multiple Option update failed. Options need to be created before updating a Multiple Option field.',
 			array( 'status' => 400 )
 		);
 	}
-	if ( isset( $params['type'] ) && $params['type'] === 'multiOption' && $params['choices'] ) {
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleOption' && $params['choices'] ) {
 		$options_index = -1;
 		$problem_index = [];
 		foreach ( $params['choices'] as $choice ) {
@@ -225,7 +225,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		if ( $problem_index ) {
 			return new WP_Error(
 				'wpe_option_name_undefined',
-				'Multi Option update failed, please set a name for your option before saving.',
+				'Multiple Option Field update failed, please set a name for your option before saving.',
 				array(
 					'status'        => 400,
 					'problem_index' => $problem_index,
@@ -234,7 +234,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		}
 	}
 
-	if ( isset( $params['type'] ) && $params['type'] === 'multiOption' && $params['choices'] ) {
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleOption' && $params['choices'] ) {
 		$options_name_index = -1;
 		$problem_name_index = [];
 		foreach ( $params['choices'] as $choice ) {
@@ -656,7 +656,7 @@ function content_model_field_exists( string $slug, string $id, array $model ): b
 }
 
 /**
- * Checks if a duplicate model identifier (name) exists in the multi option field.
+ * Checks if a duplicate model identifier (name) exists in the multiple option field.
  *
  * @param array  $names  The available field choice names.
  * @param string $current_choice  The currently checked field choice name.
