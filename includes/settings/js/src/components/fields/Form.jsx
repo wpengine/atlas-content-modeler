@@ -349,12 +349,12 @@ function Form({ id, position, type, editing, storedData }) {
 
 				{type in extraFields && (
 					<ExtraFields
-					editing={editing}
-					data={storedData}
-					register={register}
-					fieldId={id}
-				/>
-			)}
+						editing={editing}
+						data={storedData}
+						register={register}
+						fieldId={id}
+					/>
+				)}
 			</div>
 
 			<div className="buttons d-flex flex-row">
