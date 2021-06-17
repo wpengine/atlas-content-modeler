@@ -6,7 +6,7 @@ import DateIcon from "./DateIcon";
 import DownArrow from "./DownArrow";
 import ErrorIcon from "./ErrorIcon";
 import MediaIcon from "./MediaIcon";
-import multipleChoiceIcon from "./MultipleChoiceIcon";
+import MultipleChoiceIcon from "./MultipleChoiceIcon";
 import NumberIcon from "./NumberIcon";
 import OptionsIcon from "./OptionsIcon";
 import ReorderIcon from "./ReorderIcon";
@@ -33,7 +33,7 @@ export default function Icon({ type, size }) {
 		case "media":
 			return <MediaIcon />;
 		case "multipleOption":
-			return <multipleChoiceIcon />;
+			return <MultipleChoiceIcon />;
 		case "number":
 			return <NumberIcon />;
 		case "options":

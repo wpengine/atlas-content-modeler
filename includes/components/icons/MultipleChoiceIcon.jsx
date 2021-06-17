@@ -1,6 +1,6 @@
 import React from "react";
 
-const multipleChoiceIcon = () => {
+const MultipleChoiceIcon = () => {
 	return (
 		<svg
 			width="20"
@@ -25,4 +25,4 @@ const multipleChoiceIcon = () => {
 	);
 };
 
-export default multipleChoiceIcon;
+export default MultipleChoiceIcon;
