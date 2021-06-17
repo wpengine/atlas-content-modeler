@@ -222,14 +222,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		self::assertEquals( '100.25', $response_data['acm_fields']['dog-weight'] );
 
 		self::assertArrayHasKey( 'dog-image', $response_data['acm_fields'] );
-		self::assertArrayHasKey( 'sizes', $response_data['acm_fields']['dog-image'] );
-		self::assertEquals( 2, count( $response_data['acm_fields']['dog-image']['sizes'] ) );
-		self::assertEquals( 'image/png', $response_data['acm_fields']['dog-image']['mime_type'] );
-
 		self::assertArrayHasKey( 'dog-pdf', $response_data['acm_fields'] );
-		self::assertArrayNotHasKey( 'sizes', $response_data['acm_fields']['dog-pdf'] );
-		self::assertEquals( 'application/pdf', $response_data['acm_fields']['dog-pdf']['mime_type'] );
-
 	}
 
 	public function test_post_meta_that_is_configured_to_not_show_in_rest_is_not_accessible(): void {
@@ -238,6 +231,48 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
 		$this->assertFalse( array_key_exists( 'another-dog-test-field', $response_data['acm_fields'] ) );
+	}
+
+	public function test_post_meta_media_field_rest_response(): void {
+		wp_set_current_user( 1 );
+		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
+		$response = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+
+		self::assertArrayHasKey( 'acm_fields', $response_data );
+		self::assertArrayHasKey( 'dog-image', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'dog-pdf', $response_data ['acm_fields'] );
+
+		$image = $response_data['acm_fields']['dog-image'];
+		$file = $response_data['acm_fields']['dog-pdf'];
+		$expected_keys = [
+			'caption',
+			'alt_text',
+			'media_type',
+			'mime_type',
+			'media_details',
+			'source_url',
+		];
+
+		// Images and files have same structure
+		foreach ( $expected_keys as $key ) {
+			self::assertArrayHasKey( $key, $image );
+			self::assertArrayHasKey( $key, $file );
+		}
+
+		// Images
+		self::assertArrayHasKey( 'rendered', $image['caption'] );
+		self::assertEquals( 'image', $image['media_type'] );
+		self::assertEquals( 'image/png', $image['mime_type'] );
+		self::assertEquals( 4, count( $image['media_details'] ) );
+		self::assertArrayHasKey( 'sizes', $image['media_details'] );
+		self::assertEquals( 2, count( $image['media_details']['sizes'] ) );
+
+		// Files
+		self::assertArrayHasKey( 'rendered', $file['caption'] );
+		self::assertEquals( 'file', $file['media_type'] );
+		self::assertEquals( 'application/pdf', $file['mime_type'] );
+		self::assertInstanceOf( 'stdClass', $file['media_details'] );
 	}
 
 	/**
