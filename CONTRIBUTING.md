@@ -4,7 +4,7 @@ Thank you for your interest in contributing. We welcome bug reports, feature sug
 
 ## 1. First, Search For Duplicates
 
-[Search the existing issues](https://github.com/wpengine/search?type=Issues) before logging a new one.
+[Search the existing issues](https://github.com/wpengine/atlas-content-modeler/search?type=Issues) before logging a new one.
 
 Some search tips:
 * *Don't* restrict your search to only open issues. An issue with a title similar to yours may have been closed as a duplicate of one with a less-findable title.
