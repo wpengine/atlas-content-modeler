@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { getFieldOrder, sanitizeFields } from "./queries";
 import { toValidApiId } from "./components/fields/toValidApiId";
+import { sprintf, __ } from "@wordpress/i18n";
 
 /**
  * Parses query string and returns value.
