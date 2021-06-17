@@ -140,13 +140,17 @@
 
 	.ReactModal__Content--after-open {
 		width: 100%;
-		max-width: 500px;
+		max-width: 600px;
 
 		input,
 		textarea,
 		.field-messages {
 			width: 100%;
 			max-width: 500px;
+		}
+
+		input[type="radio"] {
+			width: 1rem;
 		}
 	}
 

@@ -215,28 +215,36 @@ function generate_custom_post_type_args( array $args ): array {
 		]
 	);
 
-	return [
-		'name'                => ucfirst( $plural ),
-		'singular_name'       => ucfirst( $singular ),
-		'description'         => $args['description'] ?? '',
-		'show_ui'             => $args['show_ui'] ?? true,
-		'show_in_rest'        => $args['show_in_rest'] ?? true,
-		'rest_base'           => $args['rest_base'] ?? strtolower( str_replace( ' ', '', $plural ) ),
-		'capability_type'     => $args['capability_type'] ?? 'post',
-		'show_in_menu'        => $args['show_in_menu'] ?? true,
-		'supports'            => $args['supports'] ??
+	$return = [
+		'name'                  => ucfirst( $plural ),
+		'singular_name'         => ucfirst( $singular ),
+		'description'           => $args['description'] ?? '',
+		'public'                => $args['public'] ?? false,
+		'show_ui'               => $args['show_ui'] ?? true,
+		'show_in_rest'          => $args['show_in_rest'] ?? true,
+		'rest_base'             => $args['rest_base'] ?? strtolower( str_replace( ' ', '', $plural ) ),
+		'capability_type'       => $args['capability_type'] ?? 'post',
+		'show_in_menu'          => $args['show_in_menu'] ?? true,
+		'supports'              => $args['supports'] ??
 								[
 									'title',
 									'editor',
 									'thumbnail',
 									'custom-fields',
 								],
-		'labels'              => $labels,
-		'show_in_graphql'     => $args['show_in_graphql'] ?? true,
-		'graphql_single_name' => $args['graphql_single_name'] ?? camelcase( $singular ),
-		'graphql_plural_name' => $args['graphql_plural_name'] ?? camelcase( $plural ),
-		'menu_icon'           => $icon,
+		'labels'                => $labels,
+		'show_in_graphql'       => $args['show_in_graphql'] ?? true,
+		'graphql_single_name'   => $args['graphql_single_name'] ?? camelcase( $singular ),
+		'graphql_plural_name'   => $args['graphql_plural_name'] ?? camelcase( $plural ),
+		'menu_icon'             => $icon,
+		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
 	];
+
+	if ( ! empty( $args['api_visibility'] ) && 'private' === $args['api_visibility'] ) {
+		$return['public'] = false;
+	}
+
+	return $return;
 }
 
 /**
@@ -383,6 +391,30 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			);
 		}
 	}
+}
+
+add_filter( 'graphql_data_is_private', __NAMESPACE__ . '\graphql_data_is_private', 10, 6 );
+/**
+ * Determines whether or not data should be considered private in WPGraphQL.
+ *
+ * Accessing private data requires authentication and proper authorization.
+ *
+ * @param boolean     $is_private Whether or not the model is private.
+ * @param string      $model_name Name of the model.
+ * @param \WP_Post    $post The post object.
+ * @param string|null $visibility The visibility that has currently been set for the post at this point.
+ * @param int|null    $owner The post author's user ID.
+ * @param \WP_User    $current_user The current user.
+ * @return bool
+ */
+function graphql_data_is_private( bool $is_private, string $model_name, $post, $visibility, $owner, \WP_User $current_user ): bool {
+	$models = get_registered_content_types();
+	if ( array_key_exists( $post->post_type, $models ) && isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
+		$post_type  = get_post_type_object( $post->post_type );
+		$is_private = ! user_can( $current_user, $post_type->cap->read_post, $post->ID );
+	}
+
+	return $is_private;
 }
 
 /**
