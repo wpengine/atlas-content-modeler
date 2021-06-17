@@ -152,7 +152,7 @@ function handle_content_fields_for_rest_api( int $post_id, array $field, \WP_RES
 			$controller         = new \WP_REST_Attachments_Controller( 'attachment' );
 			$attachments_schema = $controller->get_item_schema();
 
-			// Controlls output of rendered vs raw captions based on request context.
+			// Controls output of rendered vs raw captions based on request context.
 			$media_data = rest_filter_response_by_context( $media_data, $attachments_schema, $context );
 
 			return $media_data;
