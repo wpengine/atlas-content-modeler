@@ -11,6 +11,7 @@ import NumberIcon from "./NumberIcon";
 import OptionsIcon from "./OptionsIcon";
 import ReorderIcon from "./ReorderIcon";
 import RichTextIcon from "./RichTextIcon";
+import SettingsIcon from "./SettingsIcon";
 import TextIcon from "./TextIcon";
 import TickIcon from "./TickIcon";
 import UpArrow from "./UpArrow";
@@ -41,6 +42,8 @@ export default function Icon({ type, size }) {
 			return <ReorderIcon />;
 		case "richtext":
 			return <RichTextIcon />;
+		case "settings":
+			return <SettingsIcon />;
 		case "text":
 			return <TextIcon />;
 		case "tick":

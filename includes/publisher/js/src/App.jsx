@@ -28,12 +28,14 @@ export default function App({ model, mode }) {
 						style={{ marginLeft: "20px" }}
 						className="flex-align-v"
 					>
-						<button
+						<a
 							className="page-title-action"
-							onClick={(e) => clickHandler(e)}
+							href={
+								"/wp-admin/post-new.php?post_type=" + model.slug
+							}
 						>
 							Add New
-						</button>
+						</a>
 					</div>
 				)}
 			</div>

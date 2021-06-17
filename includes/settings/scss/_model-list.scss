@@ -73,7 +73,6 @@
 }
 
 .dropdown-content:not(.hidden) {
-	align-items: flex-start;
 	background: $color-white;
 	border-radius: 2px;
 	box-shadow: 0px 5px 20px rgba(68, 68, 68, 0.15);
@@ -81,17 +80,16 @@
 	flex-direction: column;
 	height: auto;
 	justify-content: center;
-	padding: 10px 20px;
+	padding: 10px 0;
 	position: absolute;
 	right: -4px;
 	z-index: 100;
 
 	a {
-		align-items: center;
 		color: $color-primary;
-		display: flex;
+		display: block;
 		line-height: 25px;
-		margin: 5px auto;
+		padding: 5px 20px;
 		text-align: center;
 		text-decoration: none;
 		white-space: nowrap;
@@ -115,7 +113,9 @@
 }
 
 .atlas-content-modeler-delete-model-modal-container,
-.atlas-content-modeler-delete-field-modal-container {
+.atlas-content-modeler-delete-field-modal-container,
+.atlas-content-modeler-unsaved-changes-modal-container,
+.atlas-content-modeler-field-settings-modal-container {
 	h2 {
 		font-size: 24px;
 		margin-top: 0;
@@ -140,13 +140,17 @@
 
 	.ReactModal__Content--after-open {
 		width: 100%;
-		max-width: 500px;
+		max-width: 600px;
 
 		input,
 		textarea,
 		.field-messages {
 			width: 100%;
 			max-width: 500px;
+		}
+
+		input[type="radio"] {
+			width: 1rem;
 		}
 	}
 

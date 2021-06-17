@@ -44,7 +44,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$model   = 'rabbits';
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -61,7 +61,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$model   = 'onions';
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -76,11 +76,11 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$model   = 'rabbits';
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 		$this->server->dispatch( $request );
 
 		// Send a second request with the same slug but a new ID. It should fail to update because the slugs collide.
-		$request->set_body( "{\"type\":\"text\",\"id\":\"456\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"456\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
@@ -96,13 +96,13 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		// First request to create the field.
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 		$this->server->dispatch( $request );
 
 		// Second request to update the field name.
 		$request2 = new WP_REST_Request( 'PUT', "/{$this->namespace}/{$this->route}" );
 		$request2->set_header( 'content-type', 'application/json' );
-		$request2->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"New Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request2->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"New Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 
 		$response = $this->server->dispatch( $request2 );
 		$models   = get_option( 'atlas_content_modeler_post_types' );
@@ -127,13 +127,13 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		$model   = 'rabbits';
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 		$this->server->dispatch( $request );
 
 		$model    = 'cats';
 		$request2 = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request2->set_header( 'content-type', 'application/json' );
-		$request2->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request2->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 
 		$response = $this->server->dispatch( $request2 );
 		$data     = $response->get_data();
@@ -250,7 +250,7 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		// Send the DELETE request with an invalid model.
 		$request = new WP_REST_Request( 'DELETE', "/{$this->namespace}/{$this->route}/123" );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"textLength\":\"short\",\"slug\":\"name\"}" );
+		$request->set_body( "{\"type\":\"text\",\"id\":\"123\",\"model\":\"{$model}\",\"position\":\"0\",\"name\":\"Name\",\"inputType\":\"single\",\"slug\":\"name\"}" );
 		$response = $this->server->dispatch( $request );
 
 		self::assertEquals( 400, $response->get_status() );

@@ -35,13 +35,27 @@ function render_admin_menu_page() {
 }
 
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
+
+/**
+ * Decides if feedback banner scripts should be loaded.
+ *
+ * @return bool
+ */
+function should_show_feedback_banner(): bool {
+	$time_dismissed = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
+
+	// Check for time elapsed and presence of the meta data.
+	return ! ( ! empty( $time_dismissed ) && ( $time_dismissed + WEEK_IN_SECONDS * 2 > time() ) );
+}
+
 /**
  * Registers and enqueues admin scripts and styles.
  *
  * @param string $hook The current admin page.
  */
 function enqueue_settings_assets( $hook ) {
-	$plugin = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
+	$plugin     = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
+	$admin_path = wp_parse_url( esc_url( admin_url() ) )['path'];
 
 	wp_register_script(
 		'atlas-content-modeler-app',
@@ -55,6 +69,7 @@ function enqueue_settings_assets( $hook ) {
 		'atlas-content-modeler-app',
 		'atlasContentModeler',
 		array(
+			'appPath'             => $admin_path . '?page=atlas-content-modeler',
 			'initialState'        => get_registered_content_types(),
 			'isGraphiQLAvailable' => is_plugin_active( 'wp-graphql/wp-graphql.php' )
 				&& function_exists( 'get_graphql_setting' )
@@ -79,5 +94,9 @@ function enqueue_settings_assets( $hook ) {
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'atlas-content-modeler-app' );
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
+
+		if ( should_show_feedback_banner() ) {
+			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
+		}
 	}
 }

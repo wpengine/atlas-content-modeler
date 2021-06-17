@@ -1,16 +1,17 @@
 import React from "react";
-import renderer from "react-test-renderer";
 import { BrowserRouter as Router } from "react-router-dom";
 import CreateContentModel from "../../includes/settings/js/src/components/CreateContentModel";
+import ShallowRenderer from "react-test-renderer/shallow";
 
 describe("CreateContentModel tests", () => {
-	const app = renderer.create(
+	const renderer = new ShallowRenderer();
+	renderer.render(
 		<Router>
 			<CreateContentModel />
 		</Router>
 	);
 
-	let tree = app.toJSON();
+	const tree = renderer.getRenderOutput();
 
 	it("Renders a matching snapshot", () => {
 		expect(tree).toMatchSnapshot();

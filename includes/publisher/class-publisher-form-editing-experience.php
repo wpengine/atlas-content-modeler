@@ -34,9 +34,18 @@ final class FormEditingExperience {
 	private $models;
 
 	/**
+	 * An object representing the current screen.
+	 *
+	 * @var \WP_Screen
+	 */
+	private $screen;
+
+	/**
 	 * The post type of the post on this screen.
 	 *
 	 * @var string
+	 *
+	 * @deprecated To be removed in favor of $this->screen.
 	 */
 	private $current_screen_post_type;
 
@@ -71,6 +80,8 @@ final class FormEditingExperience {
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
 		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
 		add_filter( 'screen_options_show_screen', [ $this, 'hide_screen_options' ], 10, 2 );
+		add_action( 'load-post.php', [ $this, 'feedback_notice_handler' ] );
+		add_action( 'load-post-new.php', [ $this, 'feedback_notice_handler' ] );
 	}
 
 	/**
@@ -91,6 +102,8 @@ final class FormEditingExperience {
 	 * @param object $screen The current screen object.
 	 */
 	public function current_screen( $screen ): void {
+		$this->screen = $screen;
+		// @todo remove this and refactor code below that references it.
 		$this->current_screen_post_type = $screen->post_type;
 	}
 
@@ -154,6 +167,11 @@ final class FormEditingExperience {
 		);
 
 		wp_enqueue_media();
+
+		if ( $this->should_show_feedback_banner() ) {
+			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
+		}
+
 		wp_enqueue_script( 'atlas-content-modeler-form-editing-experience' );
 	}
 
@@ -194,7 +212,7 @@ final class FormEditingExperience {
 		}
 
 		wp_nonce_field( 'atlas-content-modeler-pubex-nonce', 'atlas-content-modeler-pubex-nonce' );
-		echo '<div id="atlas-content-modeler-fields-app" class="wpe"></div>';
+		echo '<div id="atlas-content-modeler-fields-app" class="wpe atlas-content-modeler"></div>';
 	}
 
 	/**
@@ -346,6 +364,42 @@ final class FormEditingExperience {
 				</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Sets up the feedback admin notice if necessary
+	 *
+	 * @return void
+	 */
+	public function feedback_notice_handler(): void {
+		if ( $this->should_show_feedback_banner() ) {
+			add_action( 'admin_notices', [ $this, 'render_feedback_notice' ] );
+		}
+	}
+
+	/**
+	 * Determines whether the feedback form should be shown.
+	 *
+	 * @returns bool
+	 */
+	public function should_show_feedback_banner(): bool {
+		if ( ! array_key_exists( $this->screen->post_type, $this->models ) || 'edit' === $this->screen->base || ! current_user_can( 'manage_options' ) ) {
+			return false;
+		}
+
+		$time_dismissed = get_user_meta( get_current_user_id(), 'acm_hide_feedback_banner', true );
+
+		// Check for time elapsed and presence of the meta data.
+		return ! ( ! empty( $time_dismissed ) && ( $time_dismissed + WEEK_IN_SECONDS * 2 > time() ) );
+	}
+
+	/**
+	 * Displays notice for getting user feedback.
+	 *
+	 * Runs an `admin_notices` hook.
+	 */
+	public function render_feedback_notice(): void {
+		include_once ATLAS_CONTENT_MODELER_DIR . '/includes/shared-assets/views/banners/atlas-content-modeler-feedback-banner.php';
 	}
 
 	/**

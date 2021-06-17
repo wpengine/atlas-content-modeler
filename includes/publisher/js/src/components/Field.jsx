@@ -25,9 +25,9 @@ export default function Field(props) {
 
 		if (field.type === "text") {
 			if (event.target.validity.tooShort) {
-				error = "Text is too short";
+				error = `Minimum length is ${event.target.minLength}.`;
 			} else if (event.target.validity.tooLong) {
-				error = "Text is too long";
+				error = `Maximum length is ${event.target.maxLength}.`;
 			}
 		}
 
@@ -59,6 +59,17 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "text":
+			const textProps = {
+				type: `${field.type}`,
+				name: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
+				id: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
+				defaultValue: field.value,
+				required: field.required,
+				onChange: (event) => validate(event, field),
+				minLength: field?.minChars,
+				maxLength: field?.maxChars,
+			};
+
 			return (
 				<>
 					<label
@@ -66,16 +77,13 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					<br />
-					<input
-						type={`${field.type}`}
-						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						defaultValue={field.value}
-						required={field.required}
-						onChange={(event) => validate(event, field)}
-						maxLength={field.textLength === "short" ? 50 : 500}
-					/>
+					{field?.required && <p className="required">*Required</p>}
+					{field?.inputType === "multi" ? (
+						<textarea {...textProps} />
+					) : (
+						<input {...textProps} />
+					)}
+
 					<span className="error">
 						<Icon type="error" />
 						<span role="alert">
@@ -84,7 +92,32 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</span>
 				</>
 			);
-		case "number": // @todo split this out to support mix/max/step/etc.
+		case "number":
+			return (
+				<>
+					<label
+						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+					>
+						{field.name}
+					</label>
+					{field?.required && <p className="required">*Required</p>}
+					<input
+						type={`${field.type}`}
+						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+						defaultValue={field.value}
+						required={field.required}
+						onChange={(event) => validate(event, field)}
+						min={field?.minValue}
+						max={field?.maxValue}
+						step={field?.step}
+					/>
+					<span className="error">
+						<Icon type="error" />
+						<span role="alert">{defaultError}</span>
+					</span>
+				</>
+			);
 		case "date": // @todo split this out for proper browser and datepicker support
 			return (
 				<>
@@ -93,6 +126,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
+					{field?.required && <p className="required">*Required</p>}
 					<input
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}

@@ -1,6 +1,6 @@
 import React from "react";
 import { act, create } from "react-test-renderer";
-import Field from "../../../includes/content-editing/js/src/components/Field";
+import Field from "../../../includes/publisher/js/src/components/Field";
 
 const model = {
 	slug: "geese",

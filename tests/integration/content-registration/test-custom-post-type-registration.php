@@ -25,6 +25,11 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	private $namespace = '/wp/v2';
 	private $dog_route = '/dogs';
 	private $dog_post_id;
+	private $dog_image_id;
+	private $dog_pdf_id;
+	private $draft_post_id;
+	private $cat_post_id;
+	private $goose_post_id;
 	private $all_registered_post_types;
 
 	public function setUp() {
@@ -51,14 +56,65 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$this->dog_post_id = $this->factory->post->create( [
 			'post_title' => 'Test dog',
 			'post_content' => 'Hello dog',
-			'status' => 'publish',
+			'post_status' => 'publish',
 			'post_type' => 'dog',
 		] );
+
+		$this->draft_post_id = self::factory()->post->create( [
+			'post_title' => 'Draft dog',
+			'post_content' => 'This dog has a status of draft',
+			'post_status' => 'draft',
+			'post_type' => 'dog',
+		] );
+
+		$this->dog_image_id = $this->factory->attachment->create( array(
+			'post_mime_type' => 'image/png',
+			'post_title' => 'dog_image',
+		) );
+
+		$this->dog_pdf_id = $this->factory->attachment->create( array(
+			'post_mime_type' => 'application/pdf',
+			'post_title' => 'dog_pdf',
+		) );
 
 		update_post_meta( $this->dog_post_id, 'dog-test-field', 'dog-test-field string value' );
 		update_post_meta( $this->dog_post_id, 'dog-weight', '100.25' );
 		update_post_meta( $this->dog_post_id, 'dog-rich-text', 'dog-rich-text string value' );
 		update_post_meta( $this->dog_post_id, 'dog-boolean', 'this string will be cast to a boolean by WPGraphQL' );
+		update_post_meta( $this->dog_post_id, 'dog-image', $this->dog_image_id );
+		update_post_meta( $this->dog_post_id, 'dog-pdf', $this->dog_pdf_id );
+
+		$media_meta = array(
+			'width' => 1000,
+			'height' => 1000,
+			'file' => '2021/06/chris-avatar_PNG-bg.png',
+			'sizes' => array(
+				'medium' => array(
+					'file' => 'chris-avatar_PNG-bg-300x300.png',
+					'width' => 300,
+					'height' => 300,
+					'mime-type' => 'image/png',
+				),
+			),
+		);
+
+		update_post_meta( $this->dog_image_id, '_wp_attachment_metadata', $media_meta );
+		update_post_meta( $this->dog_image_id, '_wp_attachment_image_alt', 'This is alt text' );
+		update_post_meta( $this->dog_image_id, '_wp_attached_file', '2021/06/chris-avatar_PNG-bg.png' );
+
+		$this->cat_post_id = self::factory()->post->create( [
+			'post_title' => 'Test cat',
+			'post_content' => 'Hello cat',
+			'post_status' => 'publish',
+			'post_type' => 'cat',
+		] );
+
+		$this->goose_post_id = self::factory()->post->create( [
+			'post_title' => 'Test goose',
+			'post_content' => 'Hello goose',
+			'post_status' => 'publish',
+			'post_type' => 'goose',
+		] );
 	}
 
 	public function tearDown() {
@@ -79,16 +135,94 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$this->assertSame( $response_data['title']['rendered'], 'Test dog' );
 	}
 
+	public function test_draft_posts_for_models_with_public_api_visibility_cannot_be_read_via_rest_api_when_not_authenticated(): void {
+		wp_set_current_user( null );
+		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->draft_post_id );
+		$response = $this->server->dispatch( $request );
+		self::assertTrue( $response->is_error() );
+	}
+
+	public function test_draft_posts_for_models_with_public_api_visibility_can_be_read_via_rest_api_when_authenticated(): void {
+		wp_set_current_user( 1 );
+		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->draft_post_id );
+		$response = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+		self::assertSame( $response->get_status(), 200 );
+		self::assertSame( $response_data['title']['rendered'], 'Draft dog' );
+	}
+
+	public function test_post_type_with_private_api_visibility_cannot_be_read_via_rest_api_when_not_authenticated(): void {
+		$request  = new \WP_REST_Request( 'GET', $this->namespace . '/cats' . '/' . $this->cat_post_id );
+		$response = $this->server->dispatch( $request );
+		self::assertTrue( $response->is_error() );
+	}
+
+	public function test_post_type_with_private_api_visibility_can_be_read_via_rest_api_when_authenticated(): void {
+		wp_set_current_user( 1 );
+		$request  = new \WP_REST_Request( 'GET', $this->namespace . '/cats' . '/' . $this->cat_post_id );
+		$response = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+		self::assertSame( $response->get_status(), 200 );
+		self::assertSame( $response_data['title']['rendered'], 'Test cat' );
+	}
+
+	public function test_post_type_with_private_api_visibility_cannot_be_read_via_graphql_when_not_authenticated(): void {
+		try {
+			$results = graphql( [
+				'query' => '
+				{
+					geese {
+						nodes {
+							databaseId
+						}
+					}
+				}
+				'
+			] );
+
+			self::assertEmpty( $results['data']['geese']['nodes'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	public function test_post_type_with_private_api_visibility_can_be_read_via_graphql_when_authenticated(): void {
+		wp_set_current_user( 1 );
+		try {
+			$results = graphql( [
+				'query' => '
+				{
+					geese {
+						nodes {
+							databaseId
+						}
+					}
+				}
+				'
+			] );
+
+			self::assertSame( $results['data']['geese']['nodes'][0]['databaseId'], $this->goose_post_id );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
 	public function test_post_meta_that_is_configured_to_show_in_rest_is_accessible(): void {
 		wp_set_current_user( 1 );
 		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertArrayHasKey( 'dog-test-field', $response_data['meta'] );
-		$this->assertSame( $response_data['meta']['dog-test-field'][0], 'dog-test-field string value' );
 
-		self::assertArrayHasKey( 'dog-weight', $response_data['meta'] );
-		self::assertEquals( '100.25', $response_data['meta']['dog-weight'][0] );
+		self::assertArrayHasKey( 'acm_fields', $response_data );
+
+		self::assertArrayHasKey( 'dog-test-field', $response_data['acm_fields'] );
+		self::assertSame( $response_data['acm_fields']['dog-test-field'], 'dog-test-field string value' );
+
+		self::assertArrayHasKey( 'dog-weight', $response_data['acm_fields'] );
+		self::assertEquals( '100.25', $response_data['acm_fields']['dog-weight'] );
+
+		self::assertArrayHasKey( 'dog-image', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'dog-pdf', $response_data['acm_fields'] );
 	}
 
 	public function test_post_meta_that_is_configured_to_not_show_in_rest_is_not_accessible(): void {
@@ -96,7 +230,49 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertFalse( array_key_exists( 'another-dog-test-field', $response_data['meta'] ) );
+		$this->assertFalse( array_key_exists( 'another-dog-test-field', $response_data['acm_fields'] ) );
+	}
+
+	public function test_post_meta_media_field_rest_response(): void {
+		wp_set_current_user( 1 );
+		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
+		$response = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+
+		self::assertArrayHasKey( 'acm_fields', $response_data );
+		self::assertArrayHasKey( 'dog-image', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'dog-pdf', $response_data ['acm_fields'] );
+
+		$image = $response_data['acm_fields']['dog-image'];
+		$file = $response_data['acm_fields']['dog-pdf'];
+		$expected_keys = [
+			'caption',
+			'alt_text',
+			'media_type',
+			'mime_type',
+			'media_details',
+			'source_url',
+		];
+
+		// Images and files have same structure
+		foreach ( $expected_keys as $key ) {
+			self::assertArrayHasKey( $key, $image );
+			self::assertArrayHasKey( $key, $file );
+		}
+
+		// Images
+		self::assertArrayHasKey( 'rendered', $image['caption'] );
+		self::assertEquals( 'image', $image['media_type'] );
+		self::assertEquals( 'image/png', $image['mime_type'] );
+		self::assertEquals( 4, count( $image['media_details'] ) );
+		self::assertArrayHasKey( 'sizes', $image['media_details'] );
+		self::assertEquals( 2, count( $image['media_details']['sizes'] ) );
+
+		// Files
+		self::assertArrayHasKey( 'rendered', $file['caption'] );
+		self::assertEquals( 'file', $file['media_type'] );
+		self::assertEquals( 'application/pdf', $file['mime_type'] );
+		self::assertInstanceOf( 'stdClass', $file['media_details'] );
 	}
 
 	/**
@@ -213,6 +389,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 				'description' => '',
 				'show_in_rest' => true,
 				'show_in_graphql' => true,
+				'api_visibility' => 'public',
 				'fields' => [
 					'dog-test-field' => [
 						'slug' => 'dog-test-field',
@@ -249,6 +426,20 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 						'show_in_rest' => true,
 						'show_in_graphql' => true,
 					],
+					'dog-image' => [
+						'slug' => 'dog-image',
+						'type' => 'media',
+						'description' => 'dog-image description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
+					'dog-pdf' => [
+						'slug' => 'dog-pdf',
+						'type' => 'media',
+						'description' => 'dog-pdf description',
+						'show_in_rest' => true,
+						'show_in_graphql' => true,
+					],
 				],
 			],
 			'cat' => [
@@ -257,8 +448,17 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 				'plural' => 'Cats',
 				'description' => '',
 				'show_in_graphql' => false,
+				'api_visibility' => 'private',
 				'fields' => [],
 			],
+			'goose' => [
+				'slug' => 'goose',
+				'singular' => 'Goose',
+				'plural' => 'Geese',
+				'show_in_graphql' => true,
+				'api_visibility' => 'private',
+				'fields' => [],
+			]
 		];
 	}
 }
