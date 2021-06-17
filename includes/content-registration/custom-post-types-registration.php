@@ -62,7 +62,7 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 						continue;
 					}
 
-					$acm_fields[ $field['slug'] ] = handle_content_fields_for_rest_api( $post['id'], $field );
+					$acm_fields[ $field['slug'] ] = handle_content_fields_for_rest_api( $post['id'], $field, $request );
 				}
 
 				return $acm_fields;
