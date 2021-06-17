@@ -31,7 +31,6 @@ function Form({ id, position, type, editing, storedData }) {
 		getValues,
 		clearErrors,
 		setError,
-		control,
 		reset,
 		trigger,
 		watch,
@@ -350,17 +349,12 @@ function Form({ id, position, type, editing, storedData }) {
 
 				{type in extraFields && (
 					<ExtraFields
-						editing={editing}
-						data={storedData}
-						register={register}
-						fieldId={id}
-						control={control}
-						errors={errors}
-						clearErrors={clearErrors}
-						setValue={setValue}
-						watch={watch}
-					/>
-				)}
+					editing={editing}
+					data={storedData}
+					register={register}
+					fieldId={id}
+				/>
+			)}
 			</div>
 
 			<div className="buttons d-flex flex-row">
