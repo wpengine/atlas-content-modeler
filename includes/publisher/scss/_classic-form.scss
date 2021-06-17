@@ -219,7 +219,7 @@ $error-red: #d21b46;
 			width: 0;
 		}
 
-		/* Create a custom checkbox */
+		/* Create a custom radio */
 		.radio-select {
 			position: absolute;
 			top: 0;
@@ -260,15 +260,14 @@ $error-red: #d21b46;
 
 		/* Style the checkmark/indicator */
 		.radio-container .radio-select:after {
-			left: 6px;
+			left: 2px;
 			top: 2px;
-			width: 5px;
+			width: 10px;
 			height: 10px;
+			background-color: #000;
 			border: solid white;
-			border-width: 0 3px 3px 0;
-			-webkit-transform: rotate(45deg);
-			-ms-transform: rotate(45deg);
-			transform: rotate(45deg);
+			border-width: 3px;
+			border-radius: 10px;
 		}
 
 		/* HTML5 validation styling */
