@@ -27,12 +27,12 @@ export default function Field(props) {
 		if (field.type === "text") {
 			if (event.target.validity.tooShort) {
 				error = sptintf(
-					__("Minimum length is %s.", "atlas-content-modeler"),
+					__("Minimum length is %d.", "atlas-content-modeler"),
 					event.target.minLength
 				);
 			} else if (event.target.validity.tooLong) {
 				error = sprintf(
-					__("Maximum length is %s.", "atlas-content-modeler"),
+					__("Maximum length is %d.", "atlas-content-modeler"),
 					event.target.maxLength
 				);
 			}
