@@ -115,7 +115,7 @@ function MultipleChoiceFields({
 											</div>
 											<div>
 												<button
-													className="multiple-option-button tertiary no-border"
+													className="remove-option tertiary no-border"
 													onClick={(event) => {
 														event.preventDefault();
 														errors &&
@@ -135,7 +135,7 @@ function MultipleChoiceFields({
 												>
 													<a>
 														<TrashIcon size="small" />{" "}
-														<span className="delete-option">
+														<span>
 															Remove option
 														</span>
 													</a>
@@ -172,7 +172,7 @@ function MultipleChoiceFields({
 							})}
 							<div className="field">
 								<button
-									className="multiple-option-button tertiary no-border"
+									className="add-option tertiary no-border"
 									onClick={(event) => {
 										event.preventDefault();
 										clearErrors("multipleOption");
