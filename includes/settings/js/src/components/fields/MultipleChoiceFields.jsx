@@ -96,32 +96,36 @@ function MultipleChoiceFields({
 												/>
 											</div>
 											<div>
-												<button
-													className="remove-option tertiary no-border"
-													onClick={(event) => {
-														event.preventDefault();
-														errors &&
-															Object.entries(
-																errors
-															).map((item) => {
-																item[1].type.includes(
-																	"multipleChoiceNameDuplicate"
-																) &&
-																	clearErrors(
-																		item[0]
-																			.type
-																	);
-															});
-														remove(index);
-													}}
-												>
-													<a>
-														<TrashIcon size="small" />{" "}
-														<span>
-															Remove option
-														</span>
-													</a>
-												</button>
+												{index > 0 && (
+													<button
+														className="remove-option tertiary no-border"
+														onClick={(event) => {
+															event.preventDefault();
+															errors &&
+																Object.entries(
+																	errors
+																).map(
+																	(item) => {
+																		item[1].type.includes(
+																			"multipleChoiceNameDuplicate"
+																		) &&
+																			clearErrors(
+																				item[0]
+																					.type
+																			);
+																	}
+																);
+															remove(index);
+														}}
+													>
+														<a>
+															<TrashIcon size="small" />{" "}
+															<span>
+																Remove option
+															</span>
+														</a>
+													</button>
+												)}
 											</div>
 										</div>
 										{errors["multipleChoice" + index] &&
