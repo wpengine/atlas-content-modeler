@@ -58,7 +58,11 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 				$acm_fields = array();
 
 				foreach ( $fields as $key => $field ) {
-					$acm_fields[ $field['slug'] ] = handle_content_fields_for_rest_api( $post['id'], $field['type'], $field['slug'] );
+					if ( ! $field['show_in_rest'] ) {
+						continue;
+					}
+
+					$acm_fields[ $field['slug'] ] = handle_content_fields_for_rest_api( $post['id'], $field, $request );
 				}
 
 				return $acm_fields;
@@ -70,53 +74,88 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 /**
  * Processes field values for appropriate REST API returns.
  *
- * @param int    $post_id    The post ID of the model post.
- * @param string $field_type The field type.
- * @param string $field_slug The field slug to retrieve.
+ * @param int              $post_id  The post ID of the model post.
+ * @param array            $field    The field settings.
+ * @param \WP_REST_Request $request  The REST request object.
  *
  * @return array|mixed The Field's value accounting for field type.
  */
-function handle_content_fields_for_rest_api( int $post_id, string $field_type, string $field_slug ) {
-	$meta_value = get_post_meta( $post_id, $field_slug, true );
+function handle_content_fields_for_rest_api( int $post_id, array $field, \WP_REST_Request $request ) {
+	$meta_value = get_post_meta( $post_id, $field['slug'], true );
 
-	switch ( $field_type ) {
+	switch ( $field['type'] ) {
 		case 'media':
 			$media_item = get_post( $meta_value );
-			if ( null === $media_item ) {
-				return '';
+
+			if ( null === $media_item || 'attachment' !== $media_item->post_type ) {
+				return new \stdClass();
 			}
 
-			$media_data = array(
-				'mime_type' => $media_item->post_mime_type,
-				'caption'   => $media_item->post_excerpt,
+			/**
+			 * Media data is built to mimic a WordPress attachment's shape and
+			 * is therefore based on the WP_REST_Attachments_Controller.
+			 *
+			 * @see https://developer.wordpress.org/reference/classes/wp_rest_attachments_controller/prepare_item_for_response/
+			 */
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			$caption = apply_filters( 'get_the_excerpt', $media_item->post_excerpt, $media_item );
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			$caption = apply_filters( 'the_excerpt', $caption );
+
+			$media_data['caption'] = array(
+				'raw'      => $media_item->post_excerpt,
+				'rendered' => $caption,
 			);
 
-			$media_meta = wp_get_attachment_metadata( $meta_value );
+			$media_data['alt_text']      = get_post_meta( $media_item->ID, '_wp_attachment_image_alt', true );
+			$media_data['media_type']    = wp_attachment_is_image( $media_item->ID ) ? 'image' : 'file';
+			$media_data['mime_type']     = $media_item->post_mime_type;
+			$media_data['media_details'] = wp_get_attachment_metadata( $media_item->ID );
 
-			if ( wp_attachment_is_image( $meta_value ) ) {
-				$media_data['alt_text'] = get_post_meta( $meta_value, '_wp_attachment_image_alt', true );
+			// Ensure empty details is an empty object.
+			if ( empty( $media_data['media_details'] ) ) {
+				$media_data['media_details'] = new \stdClass();
+			} elseif ( ! empty( $media_data['media_details']['sizes'] ) ) {
+				foreach ( $media_data['media_details']['sizes'] as $size => &$size_data ) {
+					if ( isset( $size_data['mime-type'] ) ) {
+						$size_data['mime_type'] = $size_data['mime-type'];
+						unset( $size_data['mime-type'] );
+					}
 
-				$media_data['sizes']             = array();
-				$media_data['sizes']['original'] = array(
-					'url'    => wp_get_attachment_url( $meta_value ),
-					'width'  => $media_meta['width'],
-					'height' => $media_meta['height'],
-				);
+					// Use the same method image_downsize() does.
+					$image_src = wp_get_attachment_image_src( $media_item->ID, $size );
+					if ( ! $image_src ) {
+						continue;
+					}
 
-				foreach ( $media_meta['sizes'] as $size => $value ) {
-					$image                        = wp_get_attachment_image_src( $meta_value, $size );
-					$media_data['sizes'][ $size ] = array(
-						'url'    => $image[0],
-						'width'  => $image[1],
-						'height' => $image[2],
+					$size_data['source_url'] = $image_src[0];
+				}
+
+				$full_src = wp_get_attachment_image_src( $media_item->ID, 'full' );
+
+				if ( ! empty( $full_src ) ) {
+					$media_data['media_details']['sizes']['full'] = array(
+						'file'       => wp_basename( $full_src[0] ),
+						'width'      => $full_src[1],
+						'height'     => $full_src[2],
+						'mime_type'  => $media_item->post_mime_type,
+						'source_url' => $full_src[0],
 					);
 				}
 			} else {
-				$media_data['url'] = wp_get_attachment_url( $meta_value );
+				$media_data['media_details']['sizes'] = new \stdClass();
 			}
 
-			return $media_data;
+			$media_data['source_url'] = wp_get_attachment_url( $media_item->ID );
 
+			$context            = ! empty( $request['context'] ) ? $request['context'] : 'edit';
+			$controller         = new \WP_REST_Attachments_Controller( 'attachment' );
+			$attachments_schema = $controller->get_item_schema();
+
+			// Controls output of rendered vs raw captions based on request context.
+			$media_data = rest_filter_response_by_context( $media_data, $attachments_schema, $context );
+
+			return $media_data;
 		default:
 			return $meta_value;
 	}
@@ -234,28 +273,36 @@ function generate_custom_post_type_args( array $args ): array {
 		]
 	);
 
-	return [
-		'name'                => ucfirst( $plural ),
-		'singular_name'       => ucfirst( $singular ),
-		'description'         => $args['description'] ?? '',
-		'show_ui'             => $args['show_ui'] ?? true,
-		'show_in_rest'        => $args['show_in_rest'] ?? true,
-		'rest_base'           => $args['rest_base'] ?? strtolower( str_replace( ' ', '', $plural ) ),
-		'capability_type'     => $args['capability_type'] ?? 'post',
-		'show_in_menu'        => $args['show_in_menu'] ?? true,
-		'supports'            => $args['supports'] ??
+	$return = [
+		'name'                  => ucfirst( $plural ),
+		'singular_name'         => ucfirst( $singular ),
+		'description'           => $args['description'] ?? '',
+		'public'                => $args['public'] ?? false,
+		'show_ui'               => $args['show_ui'] ?? true,
+		'show_in_rest'          => $args['show_in_rest'] ?? true,
+		'rest_base'             => $args['rest_base'] ?? strtolower( str_replace( ' ', '', $plural ) ),
+		'capability_type'       => $args['capability_type'] ?? 'post',
+		'show_in_menu'          => $args['show_in_menu'] ?? true,
+		'supports'              => $args['supports'] ??
 								[
 									'title',
 									'editor',
 									'thumbnail',
 									'custom-fields',
 								],
-		'labels'              => $labels,
-		'show_in_graphql'     => $args['show_in_graphql'] ?? true,
-		'graphql_single_name' => $args['graphql_single_name'] ?? camelcase( $singular ),
-		'graphql_plural_name' => $args['graphql_plural_name'] ?? camelcase( $plural ),
-		'menu_icon'           => $icon,
+		'labels'                => $labels,
+		'show_in_graphql'       => $args['show_in_graphql'] ?? true,
+		'graphql_single_name'   => $args['graphql_single_name'] ?? camelcase( $singular ),
+		'graphql_plural_name'   => $args['graphql_plural_name'] ?? camelcase( $plural ),
+		'menu_icon'             => $icon,
+		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
 	];
+
+	if ( ! empty( $args['api_visibility'] ) && 'private' === $args['api_visibility'] ) {
+		$return['public'] = false;
+	}
+
+	return $return;
 }
 
 /**
@@ -402,6 +449,30 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			);
 		}
 	}
+}
+
+add_filter( 'graphql_data_is_private', __NAMESPACE__ . '\graphql_data_is_private', 10, 6 );
+/**
+ * Determines whether or not data should be considered private in WPGraphQL.
+ *
+ * Accessing private data requires authentication and proper authorization.
+ *
+ * @param boolean     $is_private Whether or not the model is private.
+ * @param string      $model_name Name of the model.
+ * @param \WP_Post    $post The post object.
+ * @param string|null $visibility The visibility that has currently been set for the post at this point.
+ * @param int|null    $owner The post author's user ID.
+ * @param \WP_User    $current_user The current user.
+ * @return bool
+ */
+function graphql_data_is_private( bool $is_private, string $model_name, $post, $visibility, $owner, \WP_User $current_user ): bool {
+	$models = get_registered_content_types();
+	if ( array_key_exists( $post->post_type, $models ) && isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
+		$post_type  = get_post_type_object( $post->post_type );
+		$is_private = ! user_can( $current_user, $post_type->cap->read_post, $post->ID );
+	}
+
+	return $is_private;
 }
 
 /**

@@ -51,7 +51,6 @@ exports[`Field renders a proper text field 1`] = `
   >
     First Name
   </label>
-  <br />
   <input
     defaultValue="John"
     id="atlas-content-modeler[geese][firstName]"

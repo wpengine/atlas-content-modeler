@@ -84,7 +84,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					<br />
+					{field?.required && <p className="required">*Required</p>}
 					{field?.inputType === "multi" ? (
 						<textarea {...textProps} />
 					) : (
@@ -107,6 +107,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
+					{field?.required && <p className="required">*Required</p>}
 					<input
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -132,6 +133,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
+					{field?.required && <p className="required">*Required</p>}
 					<input
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}

@@ -18,7 +18,12 @@ export default function CreateContentModel() {
 		setValue,
 		setError,
 		formState: { isSubmitting },
-	} = useForm();
+	} = useForm({
+		defaultValues: {
+			api_visibility: "private",
+		},
+	});
+
 	const history = useHistory();
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
@@ -196,7 +201,7 @@ export default function CreateContentModel() {
 						<br />
 						<p className="help">
 							{__(
-								"Auto-generated from the plural name and used for API requests.",
+								"Auto-generated from the singular name and used for API requests.",
 								"atlas-content-modeler"
 							)}
 						</p>
@@ -238,6 +243,56 @@ export default function CreateContentModel() {
 									</span>
 								</span>
 							)}
+							<span>&nbsp;</span>
+						</p>
+					</div>
+
+					<div
+						className={
+							errors.api_visibility ? "field has-error" : "field"
+						}
+					>
+						<label htmlFor="api_visibility">API Visibility</label>
+						<br />
+						<p className="help">
+							Whether or not this model requires authentication to
+							be accessed via REST and GraphQL APIs.
+						</p>
+
+						<input
+							id="api_visibility_public"
+							name="api_visibility"
+							type="radio"
+							value="public"
+							ref={register({ required: true })}
+						/>
+						<label htmlFor="api_visibility_public">Public</label>
+						<p className="help">
+							No authentication is needed for REST and GraphQL.
+						</p>
+
+						<input
+							id="api_visibility_private"
+							name="api_visibility"
+							type="radio"
+							value="private"
+							ref={register({ required: true })}
+						/>
+						<label htmlFor="api_visibility_private">Private</label>
+						<p className="help">
+							REST and GraphQL requests require authentication.
+						</p>
+
+						<p className="field-messages">
+							{errors.api_visibility &&
+								errors.api_visibility.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											This field is required
+										</span>
+									</span>
+								)}
 							<span>&nbsp;</span>
 						</p>
 					</div>

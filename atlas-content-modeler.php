@@ -33,6 +33,7 @@ function atlas_content_modeler_loader(): void {
 	require_once __DIR__ . '/includes/shared-assets/wp_scripts/shared_assets.php';
 	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
 	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
+	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/content-registration/class-wpe-rest-posts-controller.php';
 	require_once __DIR__ . '/includes/rest-api/rest-api-endpoint-registration.php';
 	require_once __DIR__ . '/includes/publisher/class-publisher-form-editing-experience.php';
 	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/updates/update-functions.php';

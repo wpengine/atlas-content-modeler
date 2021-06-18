@@ -40,7 +40,6 @@ export default function RichTextEditor({
 			>
 				{field.name}
 			</label>
-			<br />
 			<textarea
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 				id={fieldId}
