@@ -79,6 +79,13 @@ function MultipleChoiceFields({
 													name={`choices[${index}].name`}
 													placeholder="Option Name"
 													type="text"
+													onKeyPress={(event) => {
+														if (
+															event.key ===
+															"Enter"
+														)
+															event.preventDefault();
+													}}
 													defaultValue={`${item.name}`}
 													onChange={(event) => {
 														errors &&
