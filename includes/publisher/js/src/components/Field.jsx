@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Icon from "../../../../components/icons";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
 
@@ -25,9 +26,15 @@ export default function Field(props) {
 
 		if (field.type === "text") {
 			if (event.target.validity.tooShort) {
-				error = `Minimum length is ${event.target.minLength}.`;
+				error = sprintf(
+					__("Minimum length is %d.", "atlas-content-modeler"),
+					event.target.minLength
+				);
 			} else if (event.target.validity.tooLong) {
-				error = `Maximum length is ${event.target.maxLength}.`;
+				error = sprintf(
+					__("Maximum length is %d.", "atlas-content-modeler"),
+					event.target.maxLength
+				);
 			}
 		}
 

@@ -9,6 +9,7 @@ import NumberFields from "./NumberFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
 const { cloneDeep } = lodash;
@@ -182,7 +183,10 @@ function Form({ id, position, type, editing, storedData }) {
 				}
 				if (err.code === "wpe_invalid_content_model") {
 					console.error(
-						"Attempted to create a field in a model that no longer exists."
+						__(
+							"Attempted to create a field in a model that no longer exists.",
+							"atlas-content-modeler"
+						)
 					);
 				}
 			});
@@ -243,7 +247,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										This field is required
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -251,7 +258,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Exceeds max length.
+										{__(
+											"Exceeds max length.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -264,7 +274,10 @@ function Form({ id, position, type, editing, storedData }) {
 						<label htmlFor="slug">API Identifier</label>
 						<br />
 						<p className="help">
-							Auto-generated and used for API requests.
+							{__(
+								"Auto-generated and used for API requests.",
+								"atlas-content-modeler"
+							)}
 						</p>
 						<input
 							id="slug"
@@ -279,7 +292,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										This field is required
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -287,7 +303,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Exceeds max length of 50.
+										{__(
+											"Exceeds max length of 50.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -295,8 +314,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Another field in this model has the same
-										API identifier.
+										{__(
+											"Another field in this model has the same API identifier.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -320,7 +341,10 @@ function Form({ id, position, type, editing, storedData }) {
 							htmlFor={`is-required-${id}`}
 							className="checkbox is-required"
 						>
-							Make this field required
+							{__(
+								"Make this field required",
+								"atlas-content-modeler"
+							)}
 						</label>
 					</div>
 				)}
@@ -337,7 +361,9 @@ function Form({ id, position, type, editing, storedData }) {
 
 			<div className="buttons d-flex flex-row">
 				<button type="submit" className="primary first mr-1 mr-sm-2">
-					{editing ? "Update" : "Create"}
+					{editing
+						? __("Update", "atlas-content-modeler")
+						: __("Create", "atlas-content-modeler")}
 				</button>
 				<button
 					className="tertiary"
@@ -370,7 +396,7 @@ function Form({ id, position, type, editing, storedData }) {
 							}}
 						>
 							<Icon type="settings" />
-							Advanced Settings
+							{__("Advanced Settings", "atlas-content-modeler")}
 						</button>
 						<Modal
 							isOpen={optionsModalIsOpen}
@@ -407,7 +433,7 @@ function Form({ id, position, type, editing, storedData }) {
 									type="submit"
 									className="primary first mr-1 mr-sm-2"
 								>
-									Done
+									{__("Done", "atlas-content-modeler")}
 								</button>
 								<button
 									onClick={() => {
@@ -424,7 +450,7 @@ function Form({ id, position, type, editing, storedData }) {
 									}}
 									className="tertiary"
 								>
-									Cancel
+									{__("Cancel", "atlas-content-modeler")}
 								</button>
 							</div>
 						</Modal>

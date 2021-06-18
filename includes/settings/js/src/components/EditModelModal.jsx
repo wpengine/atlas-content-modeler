@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
 
@@ -100,8 +101,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					>
 						<label htmlFor="singular">Singular Name</label>
 						<p className="help">
-							Singular display name for your content model, e.g.
-							"Rabbit".
+							{__(
+								'Singular display name for your content model, e.g. "Rabbit".',
+								"atlas-content-modeler"
+							)}
 						</p>
 						<input
 							id="singular"
@@ -119,7 +122,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											This field is required
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -128,7 +134,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											Exceeds max length.
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -146,8 +155,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					>
 						<label htmlFor="plural">Plural Name</label>
 						<p className="help">
-							Plural display name for your content model, e.g.
-							"Rabbits".
+							{__(
+								'Plural display name for your content model, e.g. "Rabbits".',
+								"atlas-content-modeler"
+							)}
 						</p>
 						<input
 							id="plural"
@@ -165,7 +176,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											This field is required
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -174,7 +188,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											Exceeds max length.
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -188,7 +205,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					<div className="field col-sm">
 						<label htmlFor="slug">API Identifier</label>
 						<p className="help">
-							Auto-generated and used for API requests.
+							{__(
+								"Auto-generated and used for API requests.",
+								"atlas-content-modeler"
+							)}
 						</p>
 						<input
 							id="slug"
@@ -211,8 +231,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					>
 						<label htmlFor="api_visibility">API Visibility</label>
 						<p className="help">
-							Whether or not this model requires authentication to
-							be accessed via REST and GraphQL APIs.
+							{__(
+								"Whether or not this model requires authentication to be accessed via REST and GraphQL APIs.",
+								"atlas-content-modeler"
+							)}
 						</p>
 
 						<input
@@ -228,7 +250,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 							htmlFor="api_visibility_public"
 							className="form-check-label"
 						>
-							Public
+							{__("Public", "atlas-content-modeler")}
 						</label>
 						<br />
 
@@ -248,7 +270,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 							htmlFor="api_visibility_private"
 							className="form-check-label"
 						>
-							Private
+							{__("Private", "atlas-content-modeler")}
 						</label>
 						<br />
 
@@ -258,7 +280,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											This field is required
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -275,7 +300,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 				>
 					<label htmlFor="description">Description</label>
 					<p className="help">
-						A hint for content editors and API users.
+						{__(
+							"A hint for content editors and API users.",
+							"atlas-content-modeler"
+						)}
 					</p>
 					<textarea
 						id="description"
@@ -293,7 +321,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Exceeds max length.
+										{__(
+											"Exceeds max length.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -307,7 +338,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					disabled={isSubmitting}
 					className="primary first"
 				>
-					Save
+					{__("Save", "atlas-content-modeler")}
 				</button>
 				<button
 					href="#"
@@ -318,7 +349,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						setIsOpen(false);
 					}}
 				>
-					Cancel
+					{__("Cancel", "atlas-content-modeler")}
 				</button>
 			</form>
 		</Modal>

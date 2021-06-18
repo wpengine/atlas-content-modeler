@@ -1,4 +1,5 @@
 import React from "react";
+import { sprintf, __ } from "@wordpress/i18n";
 
 export default function ActionButtons({ isEditMode }) {
 	function clickHandler(e) {
@@ -16,7 +17,9 @@ export default function ActionButtons({ isEditMode }) {
 						clickHandler(e);
 					}}
 				>
-					{isEditMode ? "Update" : "Publish"}
+					{isEditMode
+						? __("Update", "atlas-content-modeler")
+						: __("Publish", "atlas-content-modeler")}
 				</button>
 			</div>
 		</div>

@@ -27,6 +27,8 @@ add_action( 'plugins_loaded', 'atlas_content_modeler_loader' );
  * Bootstraps the plugin.
  */
 function atlas_content_modeler_loader(): void {
+	load_plugin_textdomain( 'atlas_content_modeler', false, __DIR__ . '/languages' );
+
 	require_once __DIR__ . '/includes/publisher/lib/field-functions.php';
 	require_once __DIR__ . '/includes/shared-assets/wp_scripts/shared_assets.php';
 	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
