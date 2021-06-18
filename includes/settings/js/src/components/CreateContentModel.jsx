@@ -123,7 +123,7 @@ export default function CreateContentModel() {
 					</div>
 
 					<div className="field">
-						<label htmlFor="icon">Model Icon</label>
+						<label htmlFor="modelIcon">Model Icon</label>
 						<br />
 						<input
 							className="regular-text"
