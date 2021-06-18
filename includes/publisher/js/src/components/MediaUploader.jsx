@@ -102,15 +102,8 @@ export default function MediaUploader({ modelSlug, field, required }) {
 						className="button button-primary button-large"
 						defaultValue={
 							mediaUrl
-									? __(
-											"Change Media",
-											"atlas-content-modeler"
-									  )
-									: __(
-											"Upload Media",
-											"atlas-content-modeler"
-									  )
-							}
+								? __("Change Media", "atlas-content-modeler")
+								: __("Upload Media", "atlas-content-modeler")
 						}
 						onClick={(e) => clickHandler(e)}
 					/>
