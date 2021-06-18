@@ -16,29 +16,11 @@ function MultipleChoiceFields({
 	control,
 	errors,
 	clearErrors,
-	setValue,
-	watch,
 }) {
 	const { fields, append, remove } = useFieldArray({
 		control,
 		name: "choices",
 	});
-
-	const currentListType = watch("listType");
-	const currentChoices = watch("choices");
-
-	/**
-	 * Unchecks other “default value” fields when checking a new default.
-	 *
-	 * @param newDefaultIndex The choice to make the default.
-	 */
-	const setDefaultOption = (newDefaultIndex) => {
-		const newChoices = currentChoices.map((choice, index) => {
-			choice.default = index === newDefaultIndex;
-			return choice;
-		});
-		setValue("choices", newChoices);
-	};
 
 	return (
 		<div className={editing ? "field read-only" : "field"}>
@@ -170,6 +152,8 @@ function MultipleChoiceFields({
 									</div>
 								);
 							})}
+							{!fields.length > 0 &&
+								fields.push({ id: "", name: "" })}
 							<div className="field">
 								<button
 									className="add-option tertiary no-border"
