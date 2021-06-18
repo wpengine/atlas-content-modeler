@@ -92,12 +92,12 @@ You will see model data for your cats. Atlas Content Model fields appear in the 
 
 ```json
 [
-	…
-	acm_fields: {
-		name: "Garfield",
-		photo: {…}
-	},
-	…
+	{
+		"acm_fields": {
+			"name": "Garfield",
+			"photo": {}
+		}
+	}
 ]
 ```
 
