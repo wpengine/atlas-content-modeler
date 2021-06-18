@@ -26,7 +26,7 @@ export default function Field(props) {
 
 		if (field.type === "text") {
 			if (event.target.validity.tooShort) {
-				error = sptintf(
+				error = sprintf(
 					__("Minimum length is %d.", "atlas-content-modeler"),
 					event.target.minLength
 				);
