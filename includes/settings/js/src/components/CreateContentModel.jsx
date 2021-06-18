@@ -127,14 +127,14 @@ export default function CreateContentModel() {
 						<br />
 						<input
 							className="regular-text"
-							id="dashicons_picker_example_icon1"
+							id="modelIcon"
 							type="text"
 						/>
 						<input
-							className="button dashicons-picker"
+							className="primary first dashicons-picker"
 							type="button"
 							value="Choose Icon"
-							data-target="#dashicons_picker_example_icon1"
+							data-target="#modelIcon"
 						/>
 					</div>
 
