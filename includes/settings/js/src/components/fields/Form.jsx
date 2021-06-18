@@ -30,6 +30,7 @@ function Form({ id, position, type, editing, storedData }) {
 		setValue,
 		getValues,
 		clearErrors,
+		control,
 		setError,
 		reset,
 		trigger,
@@ -183,7 +184,8 @@ function Form({ id, position, type, editing, storedData }) {
 					setError("slug", { type: "idExists" });
 				}
 				if (err.code === "wpe_option_name_undefined") {
-					err.data.problem_index.map((index) => {
+					console.log(err);
+					err.additional_errors[0].message.map((index) => {
 						setError("multipleOption" + index, {
 							type: "multipleOptionNameEmpty" + index,
 						});
@@ -192,8 +194,7 @@ function Form({ id, position, type, editing, storedData }) {
 				if (
 					err.code === "wpe_duplicate_content_model_multi_option_id"
 				) {
-					err.data.problem_name_index.map((index) => {
-						console.log(index);
+					err.additional_errors[0].message.map((index) => {
 						setError("multipleOptionName" + index, {
 							type: "multipleOptionNameDuplicate" + index,
 						});
@@ -328,7 +329,7 @@ function Form({ id, position, type, editing, storedData }) {
 			</div>
 
 			<div>
-				{!["richtext"].includes(type) && (
+				{!["richtext", "multipleOption"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
 						<input
@@ -351,6 +352,10 @@ function Form({ id, position, type, editing, storedData }) {
 					<ExtraFields
 						editing={editing}
 						data={storedData}
+						control={control}
+						watch={watch}
+						errors={errors}
+						clearErrors={clearErrors}
 						register={register}
 						fieldId={id}
 					/>

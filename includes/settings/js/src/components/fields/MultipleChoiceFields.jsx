@@ -62,7 +62,7 @@ function MultipleChoiceFields({
 										</p>
 										<div
 											className={`${
-												errors.name
+												errors["multipleOption" + index]
 													? "field has-error"
 													: "field"
 											} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
@@ -88,35 +88,6 @@ function MultipleChoiceFields({
 														);
 													}}
 												/>
-											</div>
-											<div className="me-sm-5 default-checkbox">
-												<input
-													ref={register()}
-													name={`choices[${index}].default`}
-													id={`choices-${index}-default`}
-													type="checkbox"
-													defaultChecked={
-														item?.default
-													}
-													onClick={(event) => {
-														if (
-															event.target
-																.checked &&
-															currentListType ===
-																"one"
-														) {
-															setDefaultOption(
-																index
-															);
-														}
-													}}
-												/>
-												<label
-													htmlFor={`choices-${index}-default`}
-													className="checkbox is-required"
-												>
-													Default Value
-												</label>
 											</div>
 											<div>
 												<button

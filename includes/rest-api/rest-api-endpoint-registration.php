@@ -223,14 +223,13 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			}
 		}
 		if ( $problem_index ) {
-			return new WP_Error(
+			$problem_error_name_blank = new WP_Error(
 				'wpe_option_name_undefined',
 				'Multiple Option Field update failed, please set a name for your option before saving.',
-				array(
-					'status'        => 400,
-					'problem_index' => $problem_index,
-				)
+				array( 'status' => 400 )
 			);
+			$problem_error_name_blank->add( 'problem_index', $problem_index );
+			return $problem_error_name_blank;
 		}
 	}
 
@@ -244,14 +243,13 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			}
 		}
 		if ( $problem_name_index ) {
-			return new WP_Error(
+			$problem_duplicate_name = new WP_Error(
 				'wpe_duplicate_content_model_multi_option_id',
 				'Another option in this field has the same API identifier.',
-				array(
-					'status'             => 400,
-					'problem_name_index' => $problem_name_index,
-				)
+				array( 'status' => 400 )
 			);
+			$problem_duplicate_name->add( 'problem_name_index', $problem_name_index );
+			return $problem_duplicate_name;
 		}
 	}
 
