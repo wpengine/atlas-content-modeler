@@ -61,11 +61,55 @@ button.tertiary:hover {
 	border: 1px solid $color-primary;
 }
 
-button.multiple-option-button.tertiary.no-border,
-button.multiple-option-button.tertiary.no-border:focus,
-button.multiple-option-button.tertiary.no-border:hover {
-	border: none;
-	box-shadow: none;
+button.add-option {
+	border: 1px solid transparent;
+	padding: 14px 4px 14px 0;
+
+	&:focus,
+	&:hover {
+		border-color: $color-primary;
+		a {
+			color: $color-primary-hover;
+		}
+		svg path {
+			fill: $color-primary-hover;
+		}
+	}
+
+	&:hover {
+		border-color: transparent;
+		box-shadow: none;
+	}
+}
+
+button.remove-option {
+	border: 1px solid transparent;
+
+	span {
+		color: $color-warning;
+		padding-left: 7px;
+	}
+
+	&:focus,
+	&:hover {
+		border-color: $color-primary;
+		a {
+			color: $color-primary-hover;
+		}
+
+		span {
+			color: $color-warning-hover;
+		}
+
+		svg path {
+			fill: $color-warning-hover;
+		}
+	}
+
+	&:hover {
+		border-color: transparent;
+		box-shadow: none;
+	}
 }
 
 button.warning {
