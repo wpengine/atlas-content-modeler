@@ -47,11 +47,14 @@ function MultipleChoiceFields({
 					id="multipleOptions"
 					className="d-flex flex-column d-sm-flex flex-sm-row"
 				>
-					<div className="">
+					<div className="multiple-option-container">
 						<ul>
 							{fields.map((item, index) => {
 								return (
-									<div key={item.id} className="field">
+									<div
+										key={item.id}
+										className="field multiple-option-container-single"
+									>
 										<label htmlFor="name">
 											Option {index + 1}
 										</label>
@@ -91,18 +94,22 @@ function MultipleChoiceFields({
 											</div>
 											<div>
 												<button
-													className="tertiary no-border"
+													className="multiple-option-button tertiary no-border"
 													onClick={(event) => {
 														event.preventDefault();
+														errors &&
+															Object.entries(
+																errors
+															).map((item) => {
+																item[1].type.includes(
+																	"multipleOptionNameDuplicate"
+																) &&
+																	clearErrors(
+																		item[0]
+																			.type
+																	);
+															});
 														remove(index);
-														clearErrors(
-															"multipleOption" +
-																index
-														);
-														clearErrors(
-															"multipleOptionName" +
-																index
-														);
 													}}
 												>
 													<a>
@@ -144,7 +151,7 @@ function MultipleChoiceFields({
 							})}
 							<div className="field">
 								<button
-									className="tertiary no-border"
+									className="multiple-option-button tertiary no-border"
 									onClick={(event) => {
 										event.preventDefault();
 										clearErrors("multipleOption");
@@ -152,7 +159,7 @@ function MultipleChoiceFields({
 									}}
 								>
 									<a>
-										<AddIcon size="small" />{" "}
+										<AddIcon noCircle />{" "}
 										<span>
 											{fields.length > 0
 												? "Add another option"
