@@ -122,6 +122,22 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
+					<div className="field">
+						<label htmlFor="icon">Model Icon</label>
+						<br />
+						<input
+							className="regular-text"
+							id="dashicons_picker_example_icon1"
+							type="text"
+						/>
+						<input
+							className="button dashicons-picker"
+							type="button"
+							value="Choose Icon"
+							data-target="#dashicons_picker_example_icon1"
+						/>
+					</div>
+
 					<div
 						className={errors.plural ? "field has-error" : "field"}
 					>
