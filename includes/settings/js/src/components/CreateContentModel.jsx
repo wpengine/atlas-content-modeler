@@ -140,7 +140,7 @@ export default function CreateContentModel() {
 							type="text"
 							ref={register({ required: true })}
 							onChange={(event) => {
-								setIcon(event.target.value);
+								setIcon(event.target.value); // TODO: ?
 							}}
 						/>
 						<input
@@ -156,7 +156,7 @@ export default function CreateContentModel() {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											This field is required
+											An icon is required
 										</span>
 									</span>
 								)}
