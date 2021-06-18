@@ -81,6 +81,18 @@ function MultipleChoiceFields({
 													type="text"
 													defaultValue={`${item.name}`}
 													onChange={(event) => {
+														errors &&
+															Object.entries(
+																errors
+															).map((item) => {
+																item[1].type.includes(
+																	"multipleOptionNameDuplicate"
+																) &&
+																	clearErrors(
+																		item[0]
+																			.type
+																	);
+															});
 														clearErrors(
 															"multipleOption" +
 																index
