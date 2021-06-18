@@ -21,6 +21,7 @@ export default function CreateContentModel() {
 	const history = useHistory();
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
+	const [icon, setIcon] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
@@ -122,13 +123,25 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<div className="field">
+					<div
+						className={
+							errors.modelIcon ? "field has-error" : "field"
+						}
+					>
 						<label htmlFor="modelIcon">Model Icon</label>
 						<br />
+						<p className="help">
+							Choose an icon to represent your model.
+						</p>
 						<input
 							className="regular-text"
 							id="modelIcon"
+							name="modelIcon"
 							type="text"
+							ref={register({ required: true })}
+							onChange={(event) => {
+								setIcon(event.target.value);
+							}}
 						/>
 						<input
 							className="primary first dashicons-picker"
@@ -136,6 +149,18 @@ export default function CreateContentModel() {
 							value="Choose Icon"
 							data-target="#modelIcon"
 						/>
+
+						<p className="field-messages">
+							{errors.modelIcon &&
+								errors.modelIcon.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											This field is required
+										</span>
+									</span>
+								)}
+						</p>
 					</div>
 
 					<div
