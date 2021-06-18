@@ -41,7 +41,7 @@ function MultipleChoiceFields({
 	};
 
 	return (
-		<div className={editing ? "field read-only editing" : "field"}>
+		<div className={editing ? "field read-only" : "field"}>
 			<fieldset>
 				<div
 					id="multipleOptions"
@@ -55,7 +55,9 @@ function MultipleChoiceFields({
 										key={item.id}
 										className="field multiple-option-container-single"
 									>
-										<label htmlFor="name">
+										<label
+											htmlFor={"multipleOption" + index}
+										>
 											Option {index + 1}
 										</label>
 										<br />
