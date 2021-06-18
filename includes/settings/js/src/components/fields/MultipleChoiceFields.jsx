@@ -96,7 +96,7 @@ function MultipleChoiceFields({
 												/>
 											</div>
 											<div>
-												{index > 0 && (
+												{fields.length > 1 && (
 													<button
 														className="remove-option tertiary no-border"
 														onClick={(event) => {
