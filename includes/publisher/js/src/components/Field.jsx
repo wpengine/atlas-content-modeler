@@ -177,15 +177,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				</>
 			);
 
-		case "multiOption":
-			if (field.listType === "multi") {
+		case "multipleOption":
+			if (field.listType === "multiple") {
 				return (
-					<>
-						<label
-							htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						>
-							{field.name}
-						</label>
+					<fieldset>
+						<legend>{field.name}</legend>
 						{field.choices.map((item, index) => {
 							return (
 								<label
@@ -215,12 +211,12 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 								</label>
 							);
 						})}
-					</>
+					</fieldset>
 				);
 			}
 			if (field.listType === "one") {
 				return (
-					<>
+					<fieldset>
 						<legend>{field.name}</legend>
 						{field.choices.map((item, index) => {
 							return (
@@ -244,7 +240,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 								</label>
 							);
 						})}
-					</>
+					</fieldset>
 				);
 			}
 

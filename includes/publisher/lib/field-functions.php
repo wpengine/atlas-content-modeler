@@ -98,7 +98,7 @@ function sanitize_field( string $type, $value ) {
 			return preg_replace( '/\D/', '', $value );
 		case 'boolean':
 			return $value === 'on' ? 'on' : 'off';
-		case 'multiOption':
+		case 'multipleOption':
 			if ( is_array( $value ) ) {
 				$options_object = [];
 				foreach ( $value as $option ) {
