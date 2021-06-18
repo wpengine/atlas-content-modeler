@@ -44,7 +44,7 @@ function MultipleChoiceFields({
 		<div className={editing ? "field read-only" : "field"}>
 			<fieldset>
 				<div
-					id="multipleOptions"
+					id="multipleChoices"
 					className="d-flex flex-column d-sm-flex flex-sm-row"
 				>
 					<div className="multiple-option-container">
@@ -56,7 +56,7 @@ function MultipleChoiceFields({
 										className="field multiple-option-container-single"
 									>
 										<label
-											htmlFor={"multipleOption" + index}
+											htmlFor={"multipleChoice" + index}
 										>
 											Option {index + 1}
 										</label>
@@ -67,7 +67,7 @@ function MultipleChoiceFields({
 										</p>
 										<div
 											className={`${
-												errors["multipleOption" + index]
+												errors["multipleChoice" + index]
 													? "field has-error"
 													: "field"
 											} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
@@ -95,7 +95,7 @@ function MultipleChoiceFields({
 																errors
 															).map((item) => {
 																item[1].type.includes(
-																	"multipleOptionNameDuplicate"
+																	"multipleChoiceNameDuplicate"
 																) &&
 																	clearErrors(
 																		item[0]
@@ -103,11 +103,11 @@ function MultipleChoiceFields({
 																	);
 															});
 														clearErrors(
-															"multipleOption" +
+															"multipleChoice" +
 																index
 														);
 														clearErrors(
-															"multipleOptionName" +
+															"multipleChoiceName" +
 																index
 														);
 													}}
@@ -123,7 +123,7 @@ function MultipleChoiceFields({
 																errors
 															).map((item) => {
 																item[1].type.includes(
-																	"multipleOptionNameDuplicate"
+																	"multipleChoiceNameDuplicate"
 																) &&
 																	clearErrors(
 																		item[0]
@@ -142,10 +142,10 @@ function MultipleChoiceFields({
 												</button>
 											</div>
 										</div>
-										{errors["multipleOption" + index] &&
-											errors["multipleOption" + index]
+										{errors["multipleChoice" + index] &&
+											errors["multipleChoice" + index]
 												.type ===
-												"multipleOptionNameEmpty" +
+												"multipleChoiceNameEmpty" +
 													index && (
 												<span className="error">
 													<Icon type="error" />
@@ -154,10 +154,10 @@ function MultipleChoiceFields({
 													</span>
 												</span>
 											)}
-										{errors["multipleOptionName" + index] &&
-											errors["multipleOptionName" + index]
+										{errors["multipleChoiceName" + index] &&
+											errors["multipleChoiceName" + index]
 												.type ===
-												"multipleOptionNameDuplicate" +
+												"multipleChoiceNameDuplicate" +
 													index && (
 												<span className="error">
 													<Icon type="error" />
@@ -175,7 +175,7 @@ function MultipleChoiceFields({
 									className="add-option tertiary no-border"
 									onClick={(event) => {
 										event.preventDefault();
-										clearErrors("multipleOption");
+										clearErrors("multipleChoice");
 										append({ name: "", default: false });
 									}}
 								>
@@ -188,9 +188,9 @@ function MultipleChoiceFields({
 										</span>
 									</a>
 								</button>
-								{errors.multipleOption &&
-									errors.multipleOption.type ===
-										"multipleOptionEmpty" && (
+								{errors.multipleChoice &&
+									errors.multipleChoice.type ===
+										"multipleChoiceEmpty" && (
 										<span className="error">
 											<Icon type="error" />
 											<span role="alert">

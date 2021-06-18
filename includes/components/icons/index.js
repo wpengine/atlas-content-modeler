@@ -32,7 +32,7 @@ export default function Icon({ type, size }) {
 			return <ErrorIcon size={size} />;
 		case "media":
 			return <MediaIcon />;
-		case "multipleOption":
+		case "multipleChoice":
 			return <MultipleChoiceIcon />;
 		case "number":
 			return <NumberIcon />;

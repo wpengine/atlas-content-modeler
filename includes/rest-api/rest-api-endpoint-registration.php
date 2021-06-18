@@ -206,14 +206,14 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	if ( isset( $params['type'] ) && $params['type'] === 'multipleOption' && ! $params['choices'] ) {
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && ! $params['choices'] ) {
 		return new WP_Error(
 			'wpe_invalid_multi_options',
 			'Multiple Option update failed. Options need to be created before updating a Multiple Option field.',
 			array( 'status' => 400 )
 		);
 	}
-	if ( isset( $params['type'] ) && $params['type'] === 'multipleOption' && $params['choices'] ) {
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
 		$options_index = -1;
 		$problem_index = [];
 		foreach ( $params['choices'] as $choice ) {
@@ -233,7 +233,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		}
 	}
 
-	if ( isset( $params['type'] ) && $params['type'] === 'multipleOption' && $params['choices'] ) {
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
 		$options_name_index = -1;
 		$problem_name_index = [];
 		foreach ( $params['choices'] as $choice ) {

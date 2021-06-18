@@ -17,7 +17,7 @@ const { cloneDeep } = lodash;
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
-	multipleOption: MultipleChoiceFields,
+	multipleChoice: MultipleChoiceFields,
 };
 
 Modal.setAppElement("#root");
@@ -186,8 +186,8 @@ function Form({ id, position, type, editing, storedData }) {
 				if (err.code === "wpe_option_name_undefined") {
 					console.log(err);
 					err.additional_errors[0].message.map((index) => {
-						setError("multipleOption" + index, {
-							type: "multipleOptionNameEmpty" + index,
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceNameEmpty" + index,
 						});
 					});
 				}
@@ -195,13 +195,13 @@ function Form({ id, position, type, editing, storedData }) {
 					err.code === "wpe_duplicate_content_model_multi_option_id"
 				) {
 					err.additional_errors[0].message.map((index) => {
-						setError("multipleOptionName" + index, {
-							type: "multipleOptionNameDuplicate" + index,
+						setError("multipleChoiceName" + index, {
+							type: "multipleChoiceNameDuplicate" + index,
 						});
 					});
 				}
 				if (err.code === "wpe_invalid_multi_options") {
-					setError("multipleOption", { type: "multipleOptionEmpty" });
+					setError("multipleChoice", { type: "multipleChoiceEmpty" });
 				}
 				if (err.code === "wpe_invalid_content_model") {
 					console.error(
@@ -329,7 +329,7 @@ function Form({ id, position, type, editing, storedData }) {
 			</div>
 
 			<div>
-				{!["richtext", "multipleOption"].includes(type) && (
+				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
 						<input
