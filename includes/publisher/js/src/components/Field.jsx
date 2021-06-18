@@ -221,11 +221,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			if (field.listType === "one") {
 				return (
 					<>
-						<label
-							htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						>
-							{field.name}
-						</label>
+						<legend>{field.name}</legend>
 						{field.choices.map((item, index) => {
 							return (
 								<label className="radio-container" key={index}>
