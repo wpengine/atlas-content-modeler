@@ -86,7 +86,7 @@ Install and activate the [WPGraphQL plugin](https://wordpress.org/plugins/wp-gra
 4. Click the Play button at the top of GraphiQL. The response will include the name and image information for the cat you added.
 
 #### Fetch content with REST
-1. Visit `https://example.com/wp-json/wp/v2/cats` in your browser, replacing `https://example.com` with your WordPress URL.
+Visit `https://example.com/wp-json/wp/v2/cats` in your browser, replacing `https://example.com` with your WordPress URL.
 
 You will see model data for your cats. Atlas Content Model fields appear in the `acm_fields` property:
 
