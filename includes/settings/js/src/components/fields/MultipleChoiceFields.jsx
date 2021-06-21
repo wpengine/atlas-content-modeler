@@ -88,6 +88,13 @@ function MultipleChoiceFields({
 																		item[0]
 																			.type
 																	);
+																item[1].type.includes(
+																	"multipleChoiceNameEmpty"
+																) &&
+																	clearErrors(
+																		item[0]
+																			.type
+																	);
 															});
 														clearErrors(
 															"multipleChoice" +
@@ -113,6 +120,13 @@ function MultipleChoiceFields({
 																	(item) => {
 																		item[1].type.includes(
 																			"multipleChoiceNameDuplicate"
+																		) &&
+																			clearErrors(
+																				item[0]
+																					.type
+																			);
+																		item[1].type.includes(
+																			"multipleChoiceNameEmpty"
 																		) &&
 																			clearErrors(
 																				item[0]
