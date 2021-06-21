@@ -48,11 +48,68 @@ button.tertiary {
 	color: $color-text;
 }
 
+button.no-border {
+	background: $color-white;
+	border: none;
+	color: $color-text;
+}
+
 button.tertiary:focus,
 button.tertiary:hover {
 	color: $color-primary;
 	background: $color-white;
 	border: 1px solid $color-primary;
+}
+
+button.add-option {
+	border: 1px solid transparent;
+	padding: 14px 4px 14px 0;
+
+	&:focus,
+	&:hover {
+		border-color: $color-primary;
+		a {
+			color: $color-primary-hover;
+		}
+		svg path {
+			fill: $color-primary-hover;
+		}
+	}
+
+	&:hover {
+		border-color: transparent;
+		box-shadow: none;
+	}
+}
+
+button.remove-option {
+	border: 1px solid transparent;
+
+	span {
+		color: $color-warning;
+		padding-left: 7px;
+	}
+
+	&:focus,
+	&:hover {
+		border-color: $color-primary;
+		a {
+			color: $color-primary-hover;
+		}
+
+		span {
+			color: $color-warning-hover;
+		}
+
+		svg path {
+			fill: $color-warning-hover;
+		}
+	}
+
+	&:hover {
+		border-color: transparent;
+		box-shadow: none;
+	}
 }
 
 button.warning {

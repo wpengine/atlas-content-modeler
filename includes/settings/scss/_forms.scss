@@ -70,6 +70,10 @@
 	font-weight: normal;
 }
 
+.atlas-content-modeler-admin-page .default-checkbox {
+	align-self: center;
+}
+
 .atlas-content-modeler-admin-page textarea {
 	min-height: 120px;
 }
@@ -132,6 +136,26 @@
 	margin-top: 28px;
 }
 
+.atlas-content-modeler-admin-page label.radio {
+}
+
+.atlas-content-modeler-admin-page form span.error {
+	line-height: 40px;
+	margin-top: 5px;
+}
+.atlas-content-modeler-admin-page form .error span[role="alert"] {
+	vertical-align: middle;
+}
+
+.atlas-content-modeler-admin-page form .error svg {
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+.atlas-content-modeler-admin-page svg.add.add-small.add-small-button {
+	color: #7e5cef;
+}
+
 span[role="alert"] {
 	color: $color-warning;
 }
@@ -157,6 +181,30 @@ input[type="radio"] {
 	display: flex;
 	align-items: center;
 	margin-bottom: 10px;
+}
+.atlas-content-modeler-admin-page .field a {
+	font-weight: bold;
+	color: $color-primary;
+	line-height: 23px;
+}
+
+.atlas-content-modeler-admin-page .field .multiple-option-container {
+	margin-top: 0px;
+}
+
+.atlas-content-modeler-admin-page .field .multiple-option-container ul {
+	margin-top: 0px;
+}
+
+.atlas-content-modeler-admin-page .field .multiple-option-container .error {
+	margin-top: 0px;
+	vertical-align: top;
+	line-height: 50px;
+}
+
+.atlas-content-modeler-admin-page .field a span {
+	vertical-align: top;
+	margin-top: 10px;
 }
 
 .atlas-content-modeler-admin-page .radio-row input[type="radio"] {

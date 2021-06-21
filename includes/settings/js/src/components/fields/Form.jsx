@@ -6,6 +6,7 @@ import Icon from "../../../../../components/icons";
 import TextFields from "./TextFields";
 import { TextSettings, NumberSettings } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
+import MultipleChoiceFields from "./MultipleChoiceFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
@@ -17,6 +18,7 @@ const { cloneDeep } = lodash;
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
+	multipleChoice: MultipleChoiceFields,
 };
 
 Modal.setAppElement("#root");
@@ -29,6 +31,7 @@ function Form({ id, position, type, editing, storedData }) {
 		setValue,
 		getValues,
 		clearErrors,
+		control,
 		setError,
 		reset,
 		trigger,
@@ -181,6 +184,26 @@ function Form({ id, position, type, editing, storedData }) {
 				if (err.code === "wpe_duplicate_content_model_field_id") {
 					setError("slug", { type: "idExists" });
 				}
+				if (err.code === "wpe_option_name_undefined") {
+					console.log(err);
+					err.additional_errors[0].message.map((index) => {
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceNameEmpty" + index,
+						});
+					});
+				}
+				if (
+					err.code === "wpe_duplicate_content_model_multi_option_id"
+				) {
+					err.additional_errors[0].message.map((index) => {
+						setError("multipleChoiceName" + index, {
+							type: "multipleChoiceNameDuplicate" + index,
+						});
+					});
+				}
+				if (err.code === "wpe_invalid_multi_options") {
+					setError("multipleChoice", { type: "multipleChoiceEmpty" });
+				}
 				if (err.code === "wpe_invalid_content_model") {
 					console.error(
 						__(
@@ -327,7 +350,7 @@ function Form({ id, position, type, editing, storedData }) {
 			</div>
 
 			<div>
-				{!["richtext"].includes(type) && (
+				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
 						<input
@@ -353,6 +376,10 @@ function Form({ id, position, type, editing, storedData }) {
 					<ExtraFields
 						editing={editing}
 						data={storedData}
+						control={control}
+						watch={watch}
+						errors={errors}
+						clearErrors={clearErrors}
 						register={register}
 						fieldId={id}
 					/>

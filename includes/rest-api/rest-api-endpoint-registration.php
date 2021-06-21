@@ -16,6 +16,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
+
 /**
  * Registers custom routes with the WP REST API.
  */
@@ -203,6 +204,53 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
+	}
+
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && ! $params['choices'] ) {
+		return new WP_Error(
+			'wpe_invalid_multi_options',
+			'Multiple Choice update failed. Options need to be created before updating a Multiple Choice field.',
+			array( 'status' => 400 )
+		);
+	}
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$options_index = -1;
+		$problem_index = [];
+		foreach ( $params['choices'] as $choice ) {
+			++$options_index;
+			if ( $choice['name'] === '' ) {
+				$problem_index[] = $options_index;
+			}
+		}
+		if ( $problem_index ) {
+			$problem_error_name_blank = new WP_Error(
+				'wpe_option_name_undefined',
+				'Multiple Choice Field update failed, please set a name for your choice before saving.',
+				array( 'status' => 400 )
+			);
+			$problem_error_name_blank->add( 'problem_index', $problem_index );
+			return $problem_error_name_blank;
+		}
+	}
+
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$options_name_index = -1;
+		$problem_name_index = [];
+		foreach ( $params['choices'] as $choice ) {
+			++$options_name_index;
+			if ( content_model_multi_option_exists( $params['choices'], $choice['name'], $options_name_index ) ) {
+				$problem_name_index[] = $options_name_index;
+			}
+		}
+		if ( $problem_name_index ) {
+			$problem_duplicate_name = new WP_Error(
+				'wpe_duplicate_content_model_multi_option_id',
+				'Another option in this field has the same API identifier.',
+				array( 'status' => 400 )
+			);
+			$problem_duplicate_name->add( 'problem_name_index', $problem_name_index );
+			return $problem_duplicate_name;
+		}
 	}
 
 	if (
@@ -602,5 +650,33 @@ function content_model_field_exists( string $slug, string $id, array $model ): b
 		}
 	}
 
+	return false;
+}
+
+/**
+ * Checks if a duplicate model identifier (name) exists in the multiple option field.
+ *
+ * @param array  $names  The available field choice names.
+ * @param string $current_choice  The currently checked field choice name.
+ * @param int    $current_index The content index for the current choice being validated.
+ * @return bool
+ */
+function content_model_multi_option_exists( array $names, string $current_choice, int $current_index ): bool {
+	if ( ! isset( $names ) ) {
+		return false;
+	}
+	if ( $names ) {
+		if ( $names[ $current_index ] ) {
+			unset( $names[ $current_index ] );
+		}
+
+			$problem_options_list = [];
+
+		foreach ( $names as $choice ) {
+			if ( $choice['name'] === $current_choice ) {
+				return true;
+			}
+		}
+	}
 	return false;
 }
