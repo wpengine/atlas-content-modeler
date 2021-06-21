@@ -177,7 +177,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				</>
 			);
 
-		case "multipleOption":
+		case "multipleChoice":
 			if (field.listType === "multiple") {
 				return (
 					<fieldset>
