@@ -209,7 +209,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && ! $params['choices'] ) {
 		return new WP_Error(
 			'wpe_invalid_multi_options',
-			'Multiple Option update failed. Options need to be created before updating a Multiple Option field.',
+			'Multiple Choice update failed. Options need to be created before updating a Multiple Choice field.',
 			array( 'status' => 400 )
 		);
 	}
@@ -225,7 +225,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		if ( $problem_index ) {
 			$problem_error_name_blank = new WP_Error(
 				'wpe_option_name_undefined',
-				'Multiple Option Field update failed, please set a name for your option before saving.',
+				'Multiple Choice Field update failed, please set a name for your choice before saving.',
 				array( 'status' => 400 )
 			);
 			$problem_error_name_blank->add( 'problem_index', $problem_index );
