@@ -50,7 +50,7 @@ function MultipleChoiceFields({
 										<br />
 										<p className="help">
 											Display name for your{" "}
-											{supportedFields[type]} option.
+											{supportedFields[type]} choice.
 										</p>
 										<div
 											className={`${
