@@ -6,9 +6,11 @@ import Icon from "../../../../../components/icons";
 import TextFields from "./TextFields";
 import { TextSettings, NumberSettings } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
+import MultipleChoiceFields from "./MultipleChoiceFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
 const { cloneDeep } = lodash;
@@ -16,6 +18,7 @@ const { cloneDeep } = lodash;
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
+	multipleChoice: MultipleChoiceFields,
 };
 
 Modal.setAppElement("#root");
@@ -28,6 +31,7 @@ function Form({ id, position, type, editing, storedData }) {
 		setValue,
 		getValues,
 		clearErrors,
+		control,
 		setError,
 		reset,
 		trigger,
@@ -180,9 +184,32 @@ function Form({ id, position, type, editing, storedData }) {
 				if (err.code === "wpe_duplicate_content_model_field_id") {
 					setError("slug", { type: "idExists" });
 				}
+				if (err.code === "wpe_option_name_undefined") {
+					console.log(err);
+					err.additional_errors[0].message.map((index) => {
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceNameEmpty" + index,
+						});
+					});
+				}
+				if (
+					err.code === "wpe_duplicate_content_model_multi_option_id"
+				) {
+					err.additional_errors[0].message.map((index) => {
+						setError("multipleChoiceName" + index, {
+							type: "multipleChoiceNameDuplicate" + index,
+						});
+					});
+				}
+				if (err.code === "wpe_invalid_multi_options") {
+					setError("multipleChoice", { type: "multipleChoiceEmpty" });
+				}
 				if (err.code === "wpe_invalid_content_model") {
 					console.error(
-						"Attempted to create a field in a model that no longer exists."
+						__(
+							"Attempted to create a field in a model that no longer exists.",
+							"atlas-content-modeler"
+						)
 					);
 				}
 			});
@@ -243,7 +270,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										This field is required
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -251,7 +281,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Exceeds max length.
+										{__(
+											"Exceeds max length.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -264,7 +297,10 @@ function Form({ id, position, type, editing, storedData }) {
 						<label htmlFor="slug">API Identifier</label>
 						<br />
 						<p className="help">
-							Auto-generated and used for API requests.
+							{__(
+								"Auto-generated and used for API requests.",
+								"atlas-content-modeler"
+							)}
 						</p>
 						<input
 							id="slug"
@@ -279,7 +315,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										This field is required
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -287,7 +326,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Exceeds max length of 50.
+										{__(
+											"Exceeds max length of 50.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -295,8 +337,10 @@ function Form({ id, position, type, editing, storedData }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Another field in this model has the same
-										API identifier.
+										{__(
+											"Another field in this model has the same API identifier.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -306,7 +350,7 @@ function Form({ id, position, type, editing, storedData }) {
 			</div>
 
 			<div>
-				{!["richtext"].includes(type) && (
+				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
 						<input
@@ -320,7 +364,10 @@ function Form({ id, position, type, editing, storedData }) {
 							htmlFor={`is-required-${id}`}
 							className="checkbox is-required"
 						>
-							Make this field required
+							{__(
+								"Make this field required",
+								"atlas-content-modeler"
+							)}
 						</label>
 					</div>
 				)}
@@ -329,6 +376,10 @@ function Form({ id, position, type, editing, storedData }) {
 					<ExtraFields
 						editing={editing}
 						data={storedData}
+						control={control}
+						watch={watch}
+						errors={errors}
+						clearErrors={clearErrors}
 						register={register}
 						fieldId={id}
 					/>
@@ -337,7 +388,9 @@ function Form({ id, position, type, editing, storedData }) {
 
 			<div className="buttons d-flex flex-row">
 				<button type="submit" className="primary first mr-1 mr-sm-2">
-					{editing ? "Update" : "Create"}
+					{editing
+						? __("Update", "atlas-content-modeler")
+						: __("Create", "atlas-content-modeler")}
 				</button>
 				<button
 					className="tertiary"
@@ -370,7 +423,7 @@ function Form({ id, position, type, editing, storedData }) {
 							}}
 						>
 							<Icon type="settings" />
-							Advanced Settings
+							{__("Advanced Settings", "atlas-content-modeler")}
 						</button>
 						<Modal
 							isOpen={optionsModalIsOpen}
@@ -407,7 +460,7 @@ function Form({ id, position, type, editing, storedData }) {
 									type="submit"
 									className="primary first mr-1 mr-sm-2"
 								>
-									Done
+									{__("Done", "atlas-content-modeler")}
 								</button>
 								<button
 									onClick={() => {
@@ -424,7 +477,7 @@ function Form({ id, position, type, editing, storedData }) {
 									}}
 									className="tertiary"
 								>
-									Cancel
+									{__("Cancel", "atlas-content-modeler")}
 								</button>
 							</div>
 						</Modal>

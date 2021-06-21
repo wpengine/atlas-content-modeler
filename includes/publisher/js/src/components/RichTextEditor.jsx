@@ -1,6 +1,7 @@
 /* global atlasContentModelerFormEditingExperience */
 import React, { useEffect } from "react";
 import Icon from "../../../../components/icons";
+import { sprintf, __ } from "@wordpress/i18n";
 const { wp } = window;
 
 export default function RichTextEditor({
@@ -39,7 +40,6 @@ export default function RichTextEditor({
 			>
 				{field.name}
 			</label>
-			<br />
 			<textarea
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 				id={fieldId}

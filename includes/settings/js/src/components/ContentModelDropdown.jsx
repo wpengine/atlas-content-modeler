@@ -17,6 +17,7 @@ import {
 	removeSidebarMenuItem,
 } from "../utils";
 import { showError } from "../toasts";
+import { sprintf, __ } from "@wordpress/i18n";
 
 Modal.setAppElement("#root");
 
@@ -105,7 +106,7 @@ export const ContentModelDropdown = ({ model }) => {
 						setEditModelModalIsOpen(true);
 					}}
 				>
-					Edit
+					{__("Edit", "atlas-content-modeler")}
 				</a>
 				{atlasContentModeler.isGraphiQLAvailable && (
 					<a
@@ -120,7 +121,7 @@ export const ContentModelDropdown = ({ model }) => {
 							setDropdownOpen(false);
 						}}
 					>
-						Open in GraphiQL
+						{__("Open in GraphiQL", "atlas-content-modeler")}
 					</a>
 				)}
 				<a
@@ -133,7 +134,7 @@ export const ContentModelDropdown = ({ model }) => {
 						setModalIsOpen(true);
 					}}
 				>
-					Delete
+					{__("Delete", "atlas-content-modeler")}
 				</a>
 			</div>
 			<Modal
@@ -146,16 +147,36 @@ export const ContentModelDropdown = ({ model }) => {
 				style={customStyles}
 				model={model}
 			>
-				<h2>Delete the {plural} Content Model?</h2>
+				<h2>
+					{sprintf(
+						__(
+							"Delete the %s Content Model?",
+							"atlas-content-modeler"
+						),
+						plural
+					)}
+				</h2>
 				<p>
-					This is an irreversible action. You will have to recreate
-					this model if you delete it.
+					{__(
+						"This is an irreversible action. You will have to recreate this model if you delete it.",
+						"atlas-content-modeler"
+					)}
 				</p>
 				<p>
-					This will NOT delete actual data stored in this model. It
-					only deletes the model definition.
+					{__(
+						"This will NOT delete actual data stored in this model. It only deletes the model definition.",
+						"atlas-content-modeler"
+					)}
 				</p>
-				<p>{`Are you sure you want to delete the ${plural} content model?`}</p>
+				<p>
+					{sprintf(
+						__(
+							"Are you sure you want to delete the %s content model?",
+							"atlas-content-modeler"
+						),
+						plural
+					)}
+				</p>
 				<button
 					className="first warning"
 					onClick={async () => {
@@ -168,7 +189,13 @@ export const ContentModelDropdown = ({ model }) => {
 							})
 							.catch(() => {
 								showError(
-									`There was an error. The ${slug} model type was not deleted.`
+									sprintf(
+										__(
+											"There was an error. The %s model type was not deleted.",
+											"atlas-content-modeler"
+										),
+										slug
+									)
 								);
 							});
 

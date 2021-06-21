@@ -1,4 +1,5 @@
 import React from "react";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const CloseIcon = () => {
 	return (
@@ -9,7 +10,7 @@ const CloseIcon = () => {
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			<title>Close</title>
+			<title>{__("Close", "atlas-content-modeler")}</title>
 			<path
 				fillRule="evenodd"
 				clipRule="evenodd"

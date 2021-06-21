@@ -11,7 +11,6 @@ Array [
     >
       First Name
     </label>
-    <br />
     <input
       defaultValue="Lucy"
       id="atlas-content-modeler[geese][firstName]"
@@ -50,7 +49,6 @@ Array [
     >
       Last Name
     </label>
-    <br />
     <input
       defaultValue="Goosey"
       id="atlas-content-modeler[geese][lastName]"

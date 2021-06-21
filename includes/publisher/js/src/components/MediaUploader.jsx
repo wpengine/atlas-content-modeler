@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Icon from "../../../../components/icons";
+import { sprintf, __ } from "@wordpress/i18n";
 
 export default function MediaUploader({ modelSlug, field, required }) {
 	// state
@@ -46,7 +47,9 @@ export default function MediaUploader({ modelSlug, field, required }) {
 
 		const media = wp
 			.media({
-				title: mediaUrl ? "Change Media" : "Upload Media",
+				title: mediaUrl
+					? __("Change Media", "atlas-content-modeler")
+					: __("Upload Media", "atlas-content-modeler"),
 				multiple: false,
 			})
 			.open()
@@ -64,6 +67,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			>
 				{field.name}
 			</label>
+			{field?.required && <p className="required">*Required</p>}
 			<input
 				type="text"
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -93,29 +97,26 @@ export default function MediaUploader({ modelSlug, field, required }) {
 				)}
 
 				<div className="d-flex flex-row align-items-center media-btns">
-					<div>
-						<input
-							type="button"
-							className="button button-primary button-large"
-							style={{ marginTop: "5px" }}
-							defaultValue={
-								mediaUrl ? "Change Media" : "Upload Media"
-							}
-							onClick={(e) => clickHandler(e)}
-						/>
-					</div>
+					<input
+						type="button"
+						className="button button-primary button-large"
+						defaultValue={
+							mediaUrl
+								? __("Change Media", "atlas-content-modeler")
+								: __("Upload Media", "atlas-content-modeler")
+						}
+						onClick={(e) => clickHandler(e)}
+					/>
 
 					{mediaUrl && (
-						<div>
-							<a
-								href="#"
-								style={{ marginLeft: "20px" }}
-								className="btn-delete"
-								onClick={(e) => deleteImage(e)}
-							>
-								Remove Media
-							</a>
-						</div>
+						<a
+							href="#"
+							style={{ marginLeft: "20px" }}
+							className="btn-delete"
+							onClick={(e) => deleteImage(e)}
+						>
+							Remove Media
+						</a>
 					)}
 				</div>
 
@@ -130,7 +131,9 @@ export default function MediaUploader({ modelSlug, field, required }) {
 				/>
 				<span className="error">
 					<Icon type="error" />
-					<span role="alert">This field is required</span>
+					<span role="alert">
+						{__("This field is required", "atlas-content-modeler")}
+					</span>
 				</span>
 			</div>
 		</>
