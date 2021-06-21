@@ -375,7 +375,7 @@ jobs:
       - store_artifacts:
           path: atlas-content-modeler/tests/_output
 
-  plugin-pot-build:
+  plugin-bundle-pot:
     docker:
       - image: circleci/php:7.4-node-browsers
     steps:
@@ -392,7 +392,7 @@ jobs:
       - run:
           name: Build .pot file
           command: |
-            ./wp-cli.phar wp i18n make-pot . languages/atlas-content-modeler.pot
+            ./wp-cli.phar i18n make-pot . languages/atlas-content-modeler.pot
 
       - persist_to_workspace:
             root: .
@@ -465,7 +465,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-pot-build:
+      - plugin-bundle-pot:
           requires:
             - plugin-e2e-test
           # Run this job on every commit/PR so the plugin is available as a build artifact
@@ -475,7 +475,7 @@ workflows:
       - plugin-bundle-zip:
           slug: atlas-content-modeler
           requires:
-            - plugin-pot-build
+            - plugin-bundle-pot
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
@@ -483,7 +483,7 @@ workflows:
       - plugin-bundle-json:
           slug: atlas-content-modeler
           requires:
-            - plugin-test
+            - plugin-e2e-test
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
           filters:
             tags:
