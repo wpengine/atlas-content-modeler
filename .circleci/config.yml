@@ -390,9 +390,10 @@ jobs:
             ./wp-cli.phar --info
 
       - run:
-        name: Build .pot file
-        command: |
-          ./wp-cli.phar wp i18n make-pot . languages/atlas-content-modeler.pot
+          name: Build .pot file
+          command: |
+            ./wp-cli.phar wp i18n make-pot . languages/atlas-content-modeler.pot
+
       - persist_to_workspace:
             root: .
             paths:
