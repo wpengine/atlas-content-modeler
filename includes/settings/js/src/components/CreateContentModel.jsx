@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
@@ -28,6 +28,10 @@ export default function CreateContentModel() {
 		apiFieldId: "slug",
 		setValue,
 	});
+
+	useEffect(() => {
+		jQuery(".dashicons-picker").dashiconsPicker();
+	}, []);
 
 	function apiCreateModel(data) {
 		return apiFetch({
@@ -124,46 +128,6 @@ export default function CreateContentModel() {
 					</div>
 
 					<div
-						className={
-							errors.modelIcon ? "field has-error" : "field"
-						}
-					>
-						<label htmlFor="modelIcon">Model Icon</label>
-						<br />
-						<p className="help">
-							Choose an icon to represent your model.
-						</p>
-						<input
-							className="regular-text"
-							id="modelIcon"
-							name="modelIcon"
-							type="text"
-							ref={register({ required: true })}
-							onChange={(event) => {
-								setIcon(event.target.value); // TODO: ?
-							}}
-						/>
-						<input
-							className="primary first dashicons-picker"
-							type="button"
-							value="Choose Icon"
-							data-target="#modelIcon"
-						/>
-
-						<p className="field-messages">
-							{errors.modelIcon &&
-								errors.modelIcon.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											An icon is required
-										</span>
-									</span>
-								)}
-						</p>
-					</div>
-
-					<div
 						className={errors.plural ? "field has-error" : "field"}
 					>
 						<label htmlFor="plural">Plural Name</label>
@@ -203,6 +167,46 @@ export default function CreateContentModel() {
 								)}
 							<span>&nbsp;</span>
 							<span className="count">{pluralCount}/50</span>
+						</p>
+					</div>
+
+					<div
+						className={
+							errors.modelIcon ? "field has-error" : "field"
+						}
+					>
+						<label htmlFor="modelIcon">Model Icon</label>
+						<br />
+						<p className="help">
+							Choose an icon to represent your model.
+						</p>
+						<input
+							className="regular-text"
+							id="modelIcon"
+							name="modelIcon"
+							type="text"
+							ref={register({ required: true })}
+							onChange={(event) => {
+								setIcon(event.target.value); // TODO: ?
+							}}
+						/>
+						<input
+							className="primary first dashicons-picker"
+							type="button"
+							value="Choose Icon"
+							data-target="#modelIcon"
+						/>
+
+						<p className="field-messages">
+							{errors.modelIcon &&
+								errors.modelIcon.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											An icon is required
+										</span>
+									</span>
+								)}
 						</p>
 					</div>
 

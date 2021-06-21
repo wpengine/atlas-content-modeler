@@ -434,6 +434,6 @@
 	};
 
 	$(function () {
-		$(".dashicons-picker").dashiconsPicker();
+		// $(".dashicons-picker").dashiconsPicker();
 	});
 })(jQuery);

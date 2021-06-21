@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
@@ -66,6 +66,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			boxSizing: "border-box",
 		},
 	};
+
+	useEffect(() => {
+		jQuery(".dashicons-picker").dashiconsPicker();
+	}, []);
 
 	return (
 		<Modal
@@ -161,6 +165,41 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						)}
 						<span>&nbsp;</span>
 						<span className="count">{pluralCount}/50</span>
+					</p>
+				</div>
+
+				<div className={errors.modelIcon ? "field has-error" : "field"}>
+					<label htmlFor="modelIcon">Model Icon</label>
+					<p className="help">
+						Choose an icon to represent your model.
+					</p>
+					<input
+						className="regular-text"
+						id="modelIcon"
+						name="modelIcon"
+						type="text"
+						ref={register({ required: true })}
+						onChange={(event) => {
+							setIcon(event.target.value); // TODO: ?
+						}}
+					/>
+					<input
+						className="primary first dashicons-picker"
+						type="button"
+						value="Choose Icon"
+						data-target="#modelIcon"
+					/>
+
+					<p className="field-messages">
+						{errors.modelIcon &&
+							errors.modelIcon.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										An icon is required
+									</span>
+								</span>
+							)}
 					</p>
 				</div>
 
