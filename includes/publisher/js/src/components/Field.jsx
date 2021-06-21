@@ -223,7 +223,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</fieldset>
 				);
 			}
-			if (field.listType === "one") {
+			if (field.listType === "single") {
 				return (
 					<fieldset>
 						<legend>{field.name}</legend>

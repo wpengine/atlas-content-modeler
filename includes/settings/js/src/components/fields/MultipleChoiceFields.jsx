@@ -197,17 +197,17 @@ function MultipleChoiceFields({
 					<div className="radio-row">
 						<input
 							type="radio"
-							id="one"
+							id="single"
 							name="listType"
-							value="one"
+							value="single"
 							ref={register}
 							defaultChecked={
-								data?.listType === "one" ||
+								data?.listType === "single" ||
 								typeof data?.listType === "undefined"
 							}
 							disabled={editing}
 						/>
-						<label className="radio" htmlFor="one">
+						<label className="radio" htmlFor="single">
 							Single Select
 							<span>
 								Select this if you need a list of radio buttons
