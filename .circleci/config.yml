@@ -392,7 +392,7 @@ jobs:
       - run:
           name: Build .pot file
           command: |
-            ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler languages/atlas-content-modeler.pot
+            ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler
 
       - persist_to_workspace:
             root: .
@@ -467,7 +467,7 @@ workflows:
               only: /.*/
       - plugin-bundle-pot:
           requires:
-            - plugin-e2e-test
+            - plugin-composer
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
