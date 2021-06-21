@@ -17,10 +17,15 @@ function MultipleChoiceFields({
 	errors,
 	clearErrors,
 }) {
-	const { fields, append, remove } = useFieldArray({
+	let { fields, append, remove } = useFieldArray({
 		control,
 		name: "choices",
 	});
+
+	if (fields.length < 1) {
+		let fields = [];
+		append({ name: "", default: false });
+	}
 
 	return (
 		<div className={editing ? "field read-only" : "field"}>
@@ -156,8 +161,6 @@ function MultipleChoiceFields({
 									</div>
 								);
 							})}
-							{!fields.length > 0 &&
-								fields.push({ id: "", name: "" })}
 							<div className="field">
 								<button
 									className="add-option tertiary no-border"
