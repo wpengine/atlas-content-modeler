@@ -375,6 +375,29 @@ jobs:
       - store_artifacts:
           path: atlas-content-modeler/tests/_output
 
+  plugin-pot-build:
+    docker:
+      - image: circleci/php:7.4-node-browsers
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Install WP-CLI
+          command: |
+            curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+            chmod +x wp-cli.phar
+            ./wp-cli.phar --info
+
+      - run:
+        name: Build .pot file
+        command: |
+          ./wp-cli.phar wp i18n make-pot . languages/atlas-content-modeler.pot
+      - persist_to_workspace:
+            root: .
+            paths:
+              - .
+
 workflows:
   # Workflows defined for each package and plugin.
   # tag example for deploying an update for atlas-content-modeler: 1.0.0
@@ -441,10 +464,18 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-bundle-zip:
+      - plugin-pot-build:
           slug: atlas-content-modeler
           requires:
             - plugin-e2e-test
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
+      - plugin-bundle-zip:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-pot-build
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
