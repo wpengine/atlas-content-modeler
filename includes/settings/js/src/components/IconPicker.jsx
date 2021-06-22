@@ -451,7 +451,7 @@ export default function IconPicker({
 				}}
 			/>
 			<input
-				className={buttonClasses}
+				className={`dashicons-picker ${buttonClasses}`}
 				type="button"
 				value={buttonLabel}
 				ref={buttonRef}

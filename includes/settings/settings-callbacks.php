@@ -57,14 +57,6 @@ function enqueue_settings_assets( $hook ) {
 	$plugin     = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 	$admin_path = wp_parse_url( esc_url( admin_url() ) )['path'];
 
-	wp_register_script(
-		'dashicons-picker-js',
-		ATLAS_CONTENT_MODELER_URL . 'includes/settings/vendor/dashicons-picker/dashicons-picker.js',
-		[ 'jquery' ],
-		$plugin['Version'],
-		true
-	);
-
 	wp_register_style(
 		'dashicons-picker-css',
 		ATLAS_CONTENT_MODELER_URL . 'includes/settings/vendor/dashicons-picker/dashicons-picker.css',
