@@ -6,6 +6,7 @@ import { insertSidebarMenuItem } from "../utils";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
+import IconPicker from "./IconPicker";
 
 const { apiFetch } = wp;
 
@@ -180,21 +181,12 @@ export default function CreateContentModel() {
 						<p className="help">
 							Choose an icon to represent your model.
 						</p>
-						<input
-							className="regular-text"
-							id="modelIcon"
-							name="modelIcon"
-							type="text"
-							ref={register({ required: true })}
-							onChange={(event) => {
-								setIcon(event.target.value); // TODO: ?
-							}}
-						/>
-						<input
-							className="primary first dashicons-picker"
-							type="button"
-							value="Choose Icon"
-							data-target="#modelIcon"
+
+						<IconPicker
+							buttonLabel="Choose Icon"
+							inputId="iconPicker"
+							buttonClasses="primary first"
+							formRegister={register}
 						/>
 
 						<p className="field-messages">
