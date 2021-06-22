@@ -395,9 +395,9 @@ jobs:
             ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler
 
       - persist_to_workspace:
-            root: .
+            root: ~/project/atlas-content-modeler
             paths:
-              - .
+              - languages
 
 workflows:
   # Workflows defined for each package and plugin.
@@ -499,7 +499,6 @@ workflows:
               only:
                 - main
                 - canary
-                - chriswiegman/BH-1072
             tags:
               only: /.*/
           context: wpe-ldap-creds
