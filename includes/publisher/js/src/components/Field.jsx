@@ -186,6 +186,73 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				</>
 			);
 
+		case "multipleChoice":
+			if (field.listType === "multiple") {
+				return (
+					<fieldset>
+						<legend>{field.name}</legend>
+						{field.choices.map((item, index) => {
+							return (
+								<label
+									key={index}
+									className="check-container multi-check-container"
+									htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+								>
+									{item.name}
+									<input
+										type="checkbox"
+										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+										placeholder="Option Name"
+										defaultChecked={
+											field.value &&
+											field.value.some(
+												(name) => name == item.name
+											)
+										}
+									/>
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">{defaultError}</span>
+									</span>
+									{/* span is used for custom checkbox styling purposes */}
+									<span className="checkmark"></span>
+								</label>
+							);
+						})}
+					</fieldset>
+				);
+			}
+			if (field.listType === "single") {
+				return (
+					<fieldset>
+						<legend>{field.name}</legend>
+						{field.choices.map((item, index) => {
+							return (
+								<label className="radio-container" key={index}>
+									{item.name}
+									<input
+										type="radio"
+										name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${item.name}]`}
+										value={item.name}
+										defaultChecked={
+											field.value === item.name
+										}
+									/>
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">{defaultError}</span>
+									</span>
+									{/* span is used for custom radio styling purposes */}
+									<span className="radio-select"></span>
+								</label>
+							);
+						})}
+					</fieldset>
+				);
+			}
+
 		default:
 			return `TODO: ${field.type} fields`;
 	}

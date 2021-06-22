@@ -185,7 +185,6 @@ function Form({ id, position, type, editing, storedData }) {
 					setError("slug", { type: "idExists" });
 				}
 				if (err.code === "wpe_option_name_undefined") {
-					console.log(err);
 					err.additional_errors[0].message.map((index) => {
 						setError("multipleChoice" + index, {
 							type: "multipleChoiceNameEmpty" + index,
