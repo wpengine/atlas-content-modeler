@@ -467,7 +467,7 @@ workflows:
               only: /.*/
       - plugin-bundle-pot:
           requires:
-            - plugin-e2e-test
+            - plugin-composer
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
