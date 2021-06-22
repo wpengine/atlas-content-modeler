@@ -4,7 +4,7 @@
 First public release. There may be breaking changes until 1.0.0.
 
 ### Added
-- New Multiple Choice field to create radio and checklist groups.
+- New Multiple Choice field (beta) to create radio and checklist groups.
 - New “Send Feedback” button to share your experience with us.
 - New model option for “Private” or “Public” API visibility.
 - The Text field now includes an optional character minimum and maximum count in Advanced Settings.
