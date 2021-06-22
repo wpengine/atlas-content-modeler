@@ -467,7 +467,7 @@ workflows:
               only: /.*/
       - plugin-bundle-pot:
           requires:
-            - plugin-composer
+            - plugin-e2e-test
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
@@ -483,7 +483,7 @@ workflows:
       - plugin-bundle-json:
           slug: atlas-content-modeler
           requires:
-            - plugin-e2e-test
+            - plugin-test
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
           filters:
             tags:
