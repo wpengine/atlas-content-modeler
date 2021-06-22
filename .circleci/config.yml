@@ -231,6 +231,27 @@ jobs:
           paths:
             - .
 
+   plugin-bundle-pot:
+    docker:
+      - image: circleci/php:7.4-node-browsers
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install WP-CLI
+          command: |
+            curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+            chmod +x wp-cli.phar
+            ./wp-cli.phar --info
+      - run:
+          name: Build .pot file
+          command: |
+            ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler
+      - persist_to_workspace:
+            root: .
+            paths:
+              - .
+
   plugin-jest:
     executor:
       name: node/default
@@ -374,30 +395,6 @@ jobs:
 
       - store_artifacts:
           path: atlas-content-modeler/tests/_output
-
-  plugin-bundle-pot:
-    docker:
-      - image: circleci/php:7.4-node-browsers
-    steps:
-      - attach_workspace:
-          at: .
-
-      - run:
-          name: Install WP-CLI
-          command: |
-            curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-            chmod +x wp-cli.phar
-            ./wp-cli.phar --info
-
-      - run:
-          name: Build .pot file
-          command: |
-            ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler
-
-      - persist_to_workspace:
-            root: .
-            paths:
-              - .
 
 workflows:
   # Workflows defined for each package and plugin.
