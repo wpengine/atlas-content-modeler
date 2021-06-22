@@ -30,10 +30,6 @@ export default function CreateContentModel() {
 		setValue,
 	});
 
-	useEffect(() => {
-		jQuery(".dashicons-picker").dashiconsPicker();
-	}, []);
-
 	function apiCreateModel(data) {
 		return apiFetch({
 			path: "/wpe/atlas/content-model",
@@ -173,10 +169,10 @@ export default function CreateContentModel() {
 
 					<div
 						className={
-							errors.modelIcon ? "field has-error" : "field"
+							errors.iconPicker ? "field has-error" : "field"
 						}
 					>
-						<label htmlFor="modelIcon">Model Icon</label>
+						<label htmlFor="iconPicker">Model Icon</label>
 						<br />
 						<p className="help">
 							Choose an icon to represent your model.
@@ -190,8 +186,8 @@ export default function CreateContentModel() {
 						/>
 
 						<p className="field-messages">
-							{errors.modelIcon &&
-								errors.modelIcon.type === "required" && (
+							{errors.iconPicker &&
+								errors.iconPicker.type === "required" && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">

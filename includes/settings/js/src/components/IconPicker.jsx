@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
+const $ = jQuery;
 
+// available dashicon names
 const icons = [
 	"menu",
 	"admin-site",
@@ -309,7 +311,17 @@ const icons = [
 	"",
 ];
 
-export default function CreateContentModel({
+/**
+ * Dashicon Icon Picker
+ *
+ * @param buttonLabel
+ * @param buttonClasses
+ * @param inputId
+ * @param formRegister
+ * @returns {JSX.Element}
+ * @constructor
+ */
+export default function IconPicker({
 	buttonLabel,
 	buttonClasses,
 	inputId,
@@ -322,17 +334,112 @@ export default function CreateContentModel({
 	const buttonRef = useRef();
 	const popupRef = useRef();
 
+	useEffect(() => {
+		$(".dashicons-picker").dashiconsPicker();
+	}, []);
+
+	/**
+	 * Handle button click event
+	 * @param event
+	 */
 	function clickHandler(event) {
-		setOffsetTop(event.currentTarget).offset().top;
-		setOffsetLeft(event.currentTarget).offset().left;
-		createPopup();
+		setOffsetTop(event.target.offsetTop);
+		setOffsetLeft(event.target.offsetLeft);
+		createPopup($(event.target));
 	}
 
-	function createPopup() {}
+	/**
+	 * Open popup
+	 */
+	function createPopup(button) {
+		var target = $(button.data("target")),
+			preview = $(button.data("preview")),
+			popup = $(
+				'<div class="dashicon-picker-container">' +
+					'<div class="dashicon-picker-control"></div>' +
+					'<ul class="dashicon-picker-list"></ul>' +
+					"</div>"
+			).css({
+				top: offsetTop,
+				left: offsetLeft,
+			}),
+			list = popup.find(".dashicon-picker-list");
 
+		for (var i in icons) {
+			if (icons.hasOwnProperty(i)) {
+				list.append(
+					'<li data-icon="' +
+						icons[i] +
+						'"><a href="#" title="' +
+						icons[i] +
+						'"><span class="dashicons dashicons-' +
+						icons[i] +
+						'"></span></a></li>'
+				);
+			}
+		}
+
+		$("a", list).on("click", function (e) {
+			e.preventDefault();
+			var title = $(this).attr("title");
+			target.val("dashicons-" + title);
+			preview.prop("class", "dashicons").addClass("dashicons-" + title);
+			removePopup();
+		});
+
+		var control = popup.find(".dashicon-picker-control");
+
+		control.html(
+			'<a data-direction="back" href="#">' +
+				'<span class="dashicons dashicons-arrow-left-alt2"></span></a>' +
+				'<input type="text" class="" placeholder="Search" />' +
+				'<a data-direction="forward" href="#"><span class="dashicons dashicons-arrow-right-alt2"></span></a>'
+		);
+
+		$("a", control).on("click", function (e) {
+			e.preventDefault();
+			if ($(this).data("direction") === "back") {
+				$("li:gt(" + (icons.length - 26) + ")", list).prependTo(list);
+			} else {
+				$("li:lt(25)", list).appendTo(list);
+			}
+		});
+
+		popup.appendTo("body").show();
+
+		$("input", control).on("keyup", function (e) {
+			var search = $(this).val();
+			if (search === "") {
+				$("li:lt(25)", list).show();
+			} else {
+				$("li", list).each(function () {
+					if (
+						$(this)
+							.data("icon")
+							.toLowerCase()
+							.indexOf(search.toLowerCase()) !== -1
+					) {
+						$(this).show();
+					} else {
+						$(this).hide();
+					}
+				});
+			}
+		});
+
+		$(document).on("mouseup.dashicons-picker", function (e) {
+			if (!popup.is(e.target) && popup.has(e.target).length === 0) {
+				removePopup();
+			}
+		});
+	}
+
+	/**
+	 * Remove popup
+	 */
 	function removePopup() {
-		popupRef.current.remove();
-		document.removeEventListener("dashicons-picker");
+		$(".dashicon-picker-container").remove();
+		$(document).off(".dashicons-picker");
 	}
 
 	return (
@@ -353,7 +460,7 @@ export default function CreateContentModel({
 				value={buttonLabel}
 				ref={buttonRef}
 				data-target={`#${inputId}`}
-				onClick={(e) => clickHandler}
+				onClick={(e) => clickHandler(e)}
 			/>
 		</>
 	);

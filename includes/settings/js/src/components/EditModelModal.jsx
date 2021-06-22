@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
+import IconPicker from "./IconPicker";
 
 const { apiFetch } = wp;
 
@@ -168,31 +169,24 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					</p>
 				</div>
 
-				<div className={errors.modelIcon ? "field has-error" : "field"}>
-					<label htmlFor="modelIcon">Model Icon</label>
+				<div
+					className={errors.iconPicker ? "field has-error" : "field"}
+				>
+					<label htmlFor="iconPicker">Model Icon</label>
 					<p className="help">
 						Choose an icon to represent your model.
 					</p>
-					<input
-						className="regular-text"
-						id="modelIcon"
-						name="modelIcon"
-						type="text"
-						ref={register({ required: true })}
-						onChange={(event) => {
-							// setIcon(event.target.value); // TODO: ?
-						}}
-					/>
-					<input
-						className="primary first dashicons-picker"
-						type="button"
-						value="Choose Icon"
-						data-target="#modelIcon"
+
+					<IconPicker
+						buttonLabel="Choose Icon"
+						inputId="iconPicker"
+						buttonClasses="primary first"
+						formRegister={register}
 					/>
 
 					<p className="field-messages">
-						{errors.modelIcon &&
-							errors.modelIcon.type === "required" && (
+						{errors.iconPicker &&
+							errors.iconPicker.type === "required" && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
