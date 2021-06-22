@@ -68,10 +68,6 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 		},
 	};
 
-	useEffect(() => {
-		jQuery(".dashicons-picker").dashiconsPicker();
-	}, []);
-
 	return (
 		<Modal
 			isOpen={isOpen}
