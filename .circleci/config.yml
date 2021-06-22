@@ -231,7 +231,7 @@ jobs:
           paths:
             - .
 
-   plugin-bundle-pot:
+  plugin-bundle-pot:
     docker:
       - image: circleci/php:7.4-node-browsers
     steps:
