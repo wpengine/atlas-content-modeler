@@ -17,10 +17,15 @@ function MultipleChoiceFields({
 	errors,
 	clearErrors,
 }) {
-	const { fields, append, remove } = useFieldArray({
+	let { fields, append, remove } = useFieldArray({
 		control,
 		name: "choices",
 	});
+
+	if (fields.length < 1) {
+		let fields = [];
+		append({ name: "", default: false });
+	}
 
 	return (
 		<div className={editing ? "field read-only" : "field"}>
@@ -45,7 +50,7 @@ function MultipleChoiceFields({
 										<br />
 										<p className="help">
 											Display name for your{" "}
-											{supportedFields[type]} option.
+											{supportedFields[type]} choice.
 										</p>
 										<div
 											className={`${
@@ -83,6 +88,13 @@ function MultipleChoiceFields({
 																		item[0]
 																			.type
 																	);
+																item[1].type.includes(
+																	"multipleChoiceNameEmpty"
+																) &&
+																	clearErrors(
+																		item[0]
+																			.type
+																	);
 															});
 														clearErrors(
 															"multipleChoice" +
@@ -108,6 +120,13 @@ function MultipleChoiceFields({
 																	(item) => {
 																		item[1].type.includes(
 																			"multipleChoiceNameDuplicate"
+																		) &&
+																			clearErrors(
+																				item[0]
+																					.type
+																			);
+																		item[1].type.includes(
+																			"multipleChoiceNameEmpty"
 																		) &&
 																			clearErrors(
 																				item[0]
@@ -156,8 +175,6 @@ function MultipleChoiceFields({
 									</div>
 								);
 							})}
-							{!fields.length > 0 &&
-								fields.push({ id: "", name: "" })}
 							<div className="field">
 								<button
 									className="add-option tertiary no-border"
@@ -197,17 +214,17 @@ function MultipleChoiceFields({
 					<div className="radio-row">
 						<input
 							type="radio"
-							id="one"
+							id="single"
 							name="listType"
-							value="one"
+							value="single"
 							ref={register}
 							defaultChecked={
-								data?.listType === "one" ||
+								data?.listType === "single" ||
 								typeof data?.listType === "undefined"
 							}
 							disabled={editing}
 						/>
-						<label className="radio" htmlFor="one">
+						<label className="radio" htmlFor="single">
 							Single Select
 							<span>
 								Select this if you need a list of radio buttons
