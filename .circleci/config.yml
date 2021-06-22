@@ -397,7 +397,7 @@ jobs:
       - persist_to_workspace:
             root: .
             paths:
-              - atlas-content/modeler/languages
+              - atlas-content-modeler/languages
 
 workflows:
   # Workflows defined for each package and plugin.
