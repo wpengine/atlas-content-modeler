@@ -395,7 +395,7 @@ jobs:
             ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler
 
       - persist_to_workspace:
-            root: ~/project/atlas-content-modeler
+            root: .
             paths:
               - languages
 
