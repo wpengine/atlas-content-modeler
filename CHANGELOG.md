@@ -11,6 +11,7 @@ First public release. There may be breaking changes until 1.0.0.
 - The Number field now includes an optional minimum, maximum and step value in Advanced Settings.
 - Prompt to complete edits to an open field when attempting to open another field.
 - Added LICENSE, CONTRIBUTING and CHANGELOG files.
+- Automatically generate a POT language file for string translations.
 
 ### Changed
 - REST responses now show Atlas Content Modeler fields under an `acm_fields` property.
