@@ -334,10 +334,6 @@ export default function IconPicker({
 	const buttonRef = useRef();
 	const popupRef = useRef();
 
-	useEffect(() => {
-		$(".dashicons-picker").dashiconsPicker();
-	}, []);
-
 	/**
 	 * Handle button click event
 	 * @param event
