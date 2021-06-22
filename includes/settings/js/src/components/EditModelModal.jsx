@@ -180,7 +180,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						type="text"
 						ref={register({ required: true })}
 						onChange={(event) => {
-							setIcon(event.target.value); // TODO: ?
+							// setIcon(event.target.value); // TODO: ?
 						}}
 					/>
 					<input
