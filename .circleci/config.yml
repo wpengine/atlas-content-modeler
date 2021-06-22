@@ -394,10 +394,12 @@ jobs:
           command: |
             ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler
 
+      - store_artifacts:
+          path: languages
       - persist_to_workspace:
-            root: .
-            paths:
-              - .
+          root: .
+          paths:
+            - languages
 
 workflows:
   # Workflows defined for each package and plugin.
