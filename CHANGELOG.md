@@ -1,8 +1,36 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.4.0 - 2021-06-22
+First public release. There may be breaking changes until 1.0.0.
+
 ### Added
-- Allow optional character minimum and maximum counts for Text fields.
+- New Multiple Choice field to create radio and checklist groups.
+- New “Send Feedback” button to share your experience with us.
+- New model option for “Private” or “Public” API visibility.
+- The Text field now includes an optional character minimum and maximum count in Advanced Settings.
+- The Number field now includes an optional minimum, maximum and step value in Advanced Settings.
+- Prompt to complete edits to an open field when attempting to open another field.
+- Added LICENSE, CONTRIBUTING and CHANGELOG files.
+
+### Changed
+- REST responses now show Atlas Content Modeler fields under an `acm_fields` property.
+- REST responses now display detailed information about media fields.
+- Changed “Text Length” to “Input Type” in the Text field. Text length is now determined in Advanced Settings. Input type lets developers choose an input or textarea field.
+- Increased the clickable area on dropdown menu items in the developer app.
+- Adjusted styling in the publisher app.
+- Refactored default value handling to improve field load times.
+- Internal REST routes now include an `atlas` prefix.
+- The README now includes a getting started guide.
+
+### Fixed
+- Pressing return in the publisher app will now submit the form, instead of clearing fields.
+- Corrected an issue preventing fields from appearing in REST responses.
+- Prevented custom fields from showing in REST when `show_in_rest` is false.
+- Strings in the publisher and developer interfaces are now translatable.
+- Fixed Jest tests and add to Continuous Integration workflow.
+- Improved admin URL handling for WordPress sites hosted in a subfolder.
+- Improved plugin update error messages to include the name of the plugin reporting them.
+- Prevented a styling issue with the Content Modeler admin menu item.
 
 ## 0.3.0 - 2021-06-01
 ### Added
