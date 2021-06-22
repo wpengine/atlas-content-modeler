@@ -20,7 +20,6 @@ deploy.sh
 *config*
 *grunt*
 *node_modules*
-*scripts*
 *tests*
 *vendor*
 *composer.json*
