@@ -499,6 +499,7 @@ workflows:
               only:
                 - main
                 - canary
+                - chriswiegman/BH-1072
             tags:
               only: /.*/
           context: wpe-ldap-creds
