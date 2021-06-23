@@ -436,8 +436,8 @@ export default function IconPicker({
 		<>
 			<input
 				className="hidden"
-				id={inputId}
-				name={inputId}
+				id="modelIcon"
+				name="modelIcon"
 				type="text"
 				ref={formRegister({ required: true })}
 			/>
@@ -446,7 +446,7 @@ export default function IconPicker({
 				className={`dashicons-picker ${buttonClasses}`}
 				type="button"
 				value={buttonLabel}
-				data-target={`#${inputId}`}
+				data-target="#modelIcon"
 				onClick={(e) => clickHandler(e)}
 			/>
 

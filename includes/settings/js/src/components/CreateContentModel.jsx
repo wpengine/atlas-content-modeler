@@ -198,10 +198,10 @@ export default function CreateContentModel() {
 
 					<div
 						className={
-							errors.iconPicker ? "field has-error" : "field"
+							errors.modelIcon ? "field has-error" : "field"
 						}
 					>
-						<label htmlFor="iconPicker">
+						<label htmlFor="modelIcon">
 							{__("Model Icon", "atlas-content-modeler")}
 						</label>
 						<br />
@@ -214,14 +214,13 @@ export default function CreateContentModel() {
 
 						<IconPicker
 							buttonLabel="Choose Icon"
-							inputId="iconPicker"
 							buttonClasses="primary first"
 							formRegister={register}
 						/>
 
 						<p className="field-messages">
-							{errors.iconPicker &&
-								errors.iconPicker.type === "required" && (
+							{errors.modelIcon &&
+								errors.modelIcon.type === "required" && (
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
