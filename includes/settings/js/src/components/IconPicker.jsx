@@ -445,7 +445,7 @@ export default function IconPicker({
 			/>
 
 			<input
-				className={`dashicons-picker ${buttonClasses}`}
+				className={`dashicons-picker w-50 ${buttonClasses}`}
 				type="button"
 				value={buttonLabel}
 				data-target="#modelIcon"
