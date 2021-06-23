@@ -7,11 +7,13 @@ import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import Icon from "../../../../../components/icons";
+import { useApiIdGenerator } from "./useApiIdGenerator";
 
 function MultipleChoiceFields({
 	register,
 	type,
 	data,
+	setValue,
 	editing,
 	control,
 	errors,
@@ -21,11 +23,14 @@ function MultipleChoiceFields({
 		control,
 		name: "choices",
 	});
-
 	if (fields.length < 1) {
 		let fields = [];
-		append({ name: "", default: false });
+		append({ name: "" });
 	}
+	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
+		apiFieldId: "choiceSlug",
+		setValue,
+	});
 
 	return (
 		<div className={editing ? "field read-only" : "field"}>
@@ -37,6 +42,7 @@ function MultipleChoiceFields({
 					<div className="multiple-option-container">
 						<ul>
 							{fields.map((item, index) => {
+								console.log(fields);
 								return (
 									<div
 										key={item.id}
@@ -76,7 +82,10 @@ function MultipleChoiceFields({
 															event.preventDefault();
 													}}
 													defaultValue={`${item.name}`}
-													onChange={(event) => {
+													onChange={(e) => {
+														setApiIdGeneratorInput(
+															e.target.value
+														);
 														errors &&
 															Object.entries(
 																errors
@@ -105,6 +114,19 @@ function MultipleChoiceFields({
 																index
 														);
 													}}
+												/>
+											</div>
+											<div className="hey-listen">
+												<input
+													ref={register()}
+													// Below works for a statically defined option.
+													name="choiceSlug"
+													// Need to figure out how to pass the built object to the useApiGenerator logic.
+													// name={`choices[${index}].slug`}
+													// id={`choices[${index}].slug`}
+													{...apiIdFieldAttributes}
+													type="text"
+													readOnly="readonly"
 												/>
 											</div>
 											<div>
@@ -181,7 +203,7 @@ function MultipleChoiceFields({
 									onClick={(event) => {
 										event.preventDefault();
 										clearErrors("multipleChoice");
-										append({ name: "", default: false });
+										append({ name: "" });
 									}}
 								>
 									<a>

@@ -375,6 +375,7 @@ function Form({ id, position, type, editing, storedData }) {
 					<ExtraFields
 						editing={editing}
 						data={storedData}
+						setValue={setValue}
 						control={control}
 						watch={watch}
 						errors={errors}
