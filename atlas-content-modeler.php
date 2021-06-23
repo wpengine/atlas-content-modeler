@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'ATLAS_CONTENT_MODELER_FILE', __FILE__ );
-define( 'ATLAS_CONTENT_MODELER_DIR', __DIR__ );
+define( 'ATLAS_CONTENT_MODELER_INCLUDES_DIR', __DIR__ . '/includes/' );
 define( 'ATLAS_CONTENT_MODELER_URL', plugin_dir_url( __FILE__ ) );
 define( 'ATLAS_CONTENT_MODELER_PATH', plugin_basename( ATLAS_CONTENT_MODELER_FILE ) );
 define( 'ATLAS_CONTENT_MODELER_SLUG', dirname( plugin_basename( ATLAS_CONTENT_MODELER_FILE ) ) );
@@ -33,15 +33,21 @@ add_action( 'plugins_loaded', 'atlas_content_modeler_loader' );
 function atlas_content_modeler_loader(): void {
 	load_plugin_textdomain( 'atlas_content_modeler', false, __DIR__ . '/languages' );
 
-	require_once __DIR__ . '/includes/publisher/lib/field-functions.php';
-	require_once __DIR__ . '/includes/shared-assets/wp_scripts/shared_assets.php';
-	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
-	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
-	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/content-registration/class-wpe-rest-posts-controller.php';
-	require_once __DIR__ . '/includes/rest-api/rest-api-endpoint-registration.php';
-	require_once __DIR__ . '/includes/publisher/class-publisher-form-editing-experience.php';
-	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/updates/update-functions.php';
-	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/updates/update-callbacks.php';
+	$plugin_files = array(
+		'publisher/lib/field-functions.php',
+		'shared-assets/wp_scripts/shared_assets.php',
+		'settings/settings-callbacks.php',
+		'content-registration/custom-post-types-registration.php',
+		'content-registration/class-wpe-rest-posts-controller.php',
+		'rest-api/rest-api-endpoint-registration.php',
+		'publisher/class-publisher-form-editing-experience.php',
+		'updates/update-functions.php',
+		'updates/update-callbacks.php',
+	);
+
+	foreach ( $plugin_files as $file ) {
+			include ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
+	}
 
 	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
 	$form_editing_experience->bootstrap();
