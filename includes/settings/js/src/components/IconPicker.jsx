@@ -306,9 +306,6 @@ const icons = [
 	"edit-page",
 	"fullscreen-alt",
 	"fullscreen-exit-alt",
-	"",
-	"",
-	"",
 ];
 
 /**
