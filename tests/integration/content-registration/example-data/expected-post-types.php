@@ -4,7 +4,7 @@
  *
  */
 
-$atlas_content_modeler_entry_icon = include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/views/admin-entry-icon.php';
+$atlas_content_modeler_entry_icon = include ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/views/admin-entry-icon.php';
 
 return array (
 	'dog' =>

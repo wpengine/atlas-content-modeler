@@ -377,7 +377,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	private function expected_post_types(): array {
-		return include_once __DIR__ . '/example-data/expected-post-types.php';
+		return include __DIR__ . '/example-data/expected-post-types.php';
 	}
 
 	private function mock_post_types(): array {
