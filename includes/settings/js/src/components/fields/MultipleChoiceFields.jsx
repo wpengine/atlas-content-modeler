@@ -7,13 +7,12 @@ import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import Icon from "../../../../../components/icons";
-import { useApiIdGenerator } from "./useApiIdGenerator";
+import { toValidApiId } from "./toValidApiId";
 
 function MultipleChoiceFields({
 	register,
 	type,
 	data,
-	setValue,
 	editing,
 	control,
 	errors,
@@ -23,14 +22,13 @@ function MultipleChoiceFields({
 		control,
 		name: "choices",
 	});
+
 	if (fields.length < 1) {
 		let fields = [];
 		append({ name: "" });
 	}
-	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
-		apiFieldId: "choiceSlug",
-		setValue,
-	});
+
+	const fieldsInitLength = fields.length;
 
 	return (
 		<div className={editing ? "field read-only" : "field"}>
@@ -83,9 +81,6 @@ function MultipleChoiceFields({
 													}}
 													defaultValue={`${item.name}`}
 													onChange={(e) => {
-														setApiIdGeneratorInput(
-															e.target.value
-														);
 														errors &&
 															Object.entries(
 																errors
@@ -120,13 +115,26 @@ function MultipleChoiceFields({
 												<input
 													ref={register()}
 													// Below works for a statically defined option.
-													name="choiceSlug"
-													// Need to figure out how to pass the built object to the useApiGenerator logic.
-													// name={`choices[${index}].slug`}
-													// id={`choices[${index}].slug`}
-													{...apiIdFieldAttributes}
+													placeholder="Option Name"
 													type="text"
-													readOnly="readonly"
+													onKeyPress={(event) => {
+														if (
+															event.key ===
+															"Enter"
+														)
+															event.preventDefault();
+													}}
+													defaultValue={`${item.name}`}
+													// onChange={(e) => {
+													// 	toValidApiId(event.target.value);
+													// }}
+						
+													// Need to figure out how to pass the built object to the useApiGenerator logic.
+													name={`choices[${index}].slug`}
+													id={`choices[${index}].slug`}
+													// {...apiIdFieldAttributes}
+													type="text"
+													readonly={ console.log(index, fieldsInitLength) && editing || editing && ! index >= fieldsInitLength ? "readonly" : false}
 												/>
 											</div>
 											<div>
