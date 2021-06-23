@@ -403,7 +403,7 @@ final class FormEditingExperience {
 	 * Runs an `admin_notices` hook.
 	 */
 	public function render_feedback_notice(): void {
-		include_once ATLAS_CONTENT_MODELER_DIR . '/includes/shared-assets/views/banners/atlas-content-modeler-feedback-banner.php';
+		include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . '/includes/shared-assets/views/banners/atlas-content-modeler-feedback-banner.php';
 	}
 
 	/**
