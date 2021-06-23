@@ -330,18 +330,15 @@ export default function IconPicker({
 	const [offsetTop, setOffsetTop] = useState(0);
 	const [offsetLeft, setOffsetLeft] = useState(0);
 
-	const inputRef = useRef();
-	const buttonRef = useRef();
-	const popupRef = useRef();
-
 	/**
 	 * Handle button click event
 	 * @param event
 	 */
 	function clickHandler(event) {
-		setOffsetTop(event.target.offsetTop);
-		setOffsetLeft(event.target.offsetLeft);
-		createPopup($(event.target));
+		const button = $(event.target);
+		setOffsetTop(button.offset().top);
+		setOffsetLeft(button.offset().left);
+		createPopup(button);
 	}
 
 	/**
@@ -454,7 +451,6 @@ export default function IconPicker({
 				className={`dashicons-picker ${buttonClasses}`}
 				type="button"
 				value={buttonLabel}
-				ref={buttonRef}
 				data-target={`#${inputId}`}
 				onClick={(e) => clickHandler(e)}
 			/>
