@@ -201,10 +201,15 @@ export default function CreateContentModel() {
 							errors.iconPicker ? "field has-error" : "field"
 						}
 					>
-						<label htmlFor="iconPicker">Model Icon</label>
+						<label htmlFor="iconPicker">
+							{__("Model Icon", "atlas-content-modeler")}
+						</label>
 						<br />
 						<p className="help">
-							Choose an icon to represent your model.
+							{__(
+								"Choose an icon to represent your model.",
+								"atlas-content-modeler"
+							)}
 						</p>
 
 						<IconPicker
@@ -220,7 +225,10 @@ export default function CreateContentModel() {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											An icon is required
+											{__(
+												"An icon is required",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
