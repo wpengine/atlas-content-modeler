@@ -17,8 +17,13 @@ function updateSidebarMenuItem(model, data) {
 		// update sidebar icon
 		$(`li#menu-posts-${model.slug}`)
 			.find(".wp-menu-image")
-			.removeClass("dashicons-*")
-			.addClass(`dashicons-before ${data.modelIcon}`);
+			.removeClass(function (index, className) {
+				return (className.match(/(^|\s)dashicons-\S+/g) || []).join(
+					" "
+				);
+			})
+			.addClass("dashicons-before")
+			.addClass(`${data.modelIcon}`);
 	}
 }
 
