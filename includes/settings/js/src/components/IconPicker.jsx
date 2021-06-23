@@ -336,15 +336,13 @@ export default function IconPicker({
 	 */
 	function clickHandler(event) {
 		const button = $(event.target);
-		setOffsetTop(button.offset().top);
-		setOffsetLeft(button.offset().left);
-		createPopup(button);
+		createPopup(button, button.offset().top, button.offset().left);
 	}
 
 	/**
 	 * Open popup
 	 */
-	function createPopup(button) {
+	function createPopup(button, offsetTop, offsetLeft) {
 		var target = $(button.data("target")),
 			popup = $(
 				'<div class="dashicon-picker-container">' +
