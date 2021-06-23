@@ -1,7 +1,7 @@
 import { POSITION_GAP } from "../../queries";
 import { toast } from "react-toastify";
 import { showError } from "../../toasts";
-import React from "react";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
 
@@ -89,9 +89,14 @@ export function onDragEnd(result, fields, model, dispatch, models) {
 		})
 		.catch((err) => {
 			showError(
-				`Error saving field order: “${
-					err?.message || "Error unknown."
-				}” Close this and try again?`
+				sprintf(
+					__(
+						"Error saving field order: %s. Close this and try again?",
+						"atlas-content-modeler"
+					),
+					err?.message ||
+						__("Error unknown.", "atlas-content-modeler")
+				)
 			);
 
 			// Revert local field order so the state is accurate and the user can retry.

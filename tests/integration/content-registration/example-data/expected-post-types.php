@@ -12,6 +12,7 @@ return array (
 			'name' => 'Dogs',
 			'singular_name' => 'Dog',
 			'description' => '',
+			'public' => false,
 			'show_ui' => true,
 			'show_in_rest' => true,
 			'rest_base' => 'dogs',
@@ -55,6 +56,7 @@ return array (
 			'graphql_single_name' => 'dog',
 			'graphql_plural_name' => 'dogs',
 			'menu_icon'           => $atlas_content_modeler_entry_icon,
+			'rest_controller_class' => 'WPE\AtlasContentModeler\ContentRegistration\REST_Posts_Controller',
 			'fields' => array(
 				'dog-test-field' => array(
 					'slug' => 'dog-test-field',
@@ -141,5 +143,6 @@ return array (
 			'graphql_single_name' => 'cat',
 			'graphql_plural_name' => 'cats',
 			'menu_icon'           => $atlas_content_modeler_entry_icon,
+			'rest_controller_class' => 'WPE\AtlasContentModeler\ContentRegistration\REST_Posts_Controller',
 		),
 );

@@ -7,6 +7,7 @@ import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
 
@@ -18,7 +19,12 @@ export default function CreateContentModel() {
 		setValue,
 		setError,
 		formState: { isSubmitting },
-	} = useForm();
+	} = useForm({
+		defaultValues: {
+			api_visibility: "private",
+		},
+	});
+
 	const history = useHistory();
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
@@ -51,7 +57,13 @@ export default function CreateContentModel() {
 
 					window.scrollTo(0, 0);
 					showSuccess(
-						`The “${res.model.plural}” model was created. Now add your first field.`
+						sprintf(
+							__(
+								'The "%s" model was created. Now add your first field.',
+								"atlas-content-modeler"
+							),
+							res.model.plural
+						)
 					);
 				}
 			})
@@ -73,7 +85,7 @@ export default function CreateContentModel() {
 					className="tertiary"
 					onClick={() => history.push(atlasContentModeler.appPath)}
 				>
-					View All Models
+					{__("View All Models", "atlas-content-modeler")}
 				</button>
 			</section>
 			<section className="card-content">
@@ -86,8 +98,11 @@ export default function CreateContentModel() {
 						<label htmlFor="singular">Singular Name</label>
 						<br />
 						<p className="help">
-							Singular display name for your content model, e.g.
-							"Rabbit".
+							{__(
+								'Singular display name for your content model, e.g. "Rabbit"',
+								"atlas-content-modeler"
+							)}
+							.
 						</p>
 						<input
 							id="singular"
@@ -106,7 +121,10 @@ export default function CreateContentModel() {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											This field is required
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -115,7 +133,10 @@ export default function CreateContentModel() {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											Exceeds max length.
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -130,8 +151,10 @@ export default function CreateContentModel() {
 						<label htmlFor="plural">Plural Name</label>
 						<br />
 						<p className="help">
-							Plural display name for your content model, e.g.
-							"Rabbits".
+							{__(
+								'Plural display name for your content model, e.g. "Rabbits".',
+								"atlas-content-modeler"
+							)}
 						</p>
 						<input
 							id="plural"
@@ -149,7 +172,10 @@ export default function CreateContentModel() {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											This field is required
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -158,7 +184,10 @@ export default function CreateContentModel() {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											Exceeds max length.
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -199,11 +228,15 @@ export default function CreateContentModel() {
 					</div>
 
 					<div className={errors.slug ? "field has-error" : "field"}>
-						<label htmlFor="slug">API Identifier</label>
+						<label htmlFor="slug">
+							{__("API Identifier", "atlas-content-modeler")}
+						</label>
 						<br />
 						<p className="help">
-							Auto-generated from the plural name and used for API
-							requests.
+							{__(
+								"Auto-generated from the singular name and used for API requests.",
+								"atlas-content-modeler"
+							)}
 						</p>
 						<input
 							id="slug"
@@ -217,7 +250,10 @@ export default function CreateContentModel() {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										This field is required
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -225,7 +261,10 @@ export default function CreateContentModel() {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Exceeds max length of 20.
+										{__(
+											"Exceeds max length of 20.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -243,6 +282,56 @@ export default function CreateContentModel() {
 
 					<div
 						className={
+							errors.api_visibility ? "field has-error" : "field"
+						}
+					>
+						<label htmlFor="api_visibility">API Visibility</label>
+						<br />
+						<p className="help">
+							Whether or not this model requires authentication to
+							be accessed via REST and GraphQL APIs.
+						</p>
+
+						<input
+							id="api_visibility_public"
+							name="api_visibility"
+							type="radio"
+							value="public"
+							ref={register({ required: true })}
+						/>
+						<label htmlFor="api_visibility_public">Public</label>
+						<p className="help">
+							No authentication is needed for REST and GraphQL.
+						</p>
+
+						<input
+							id="api_visibility_private"
+							name="api_visibility"
+							type="radio"
+							value="private"
+							ref={register({ required: true })}
+						/>
+						<label htmlFor="api_visibility_private">Private</label>
+						<p className="help">
+							REST and GraphQL requests require authentication.
+						</p>
+
+						<p className="field-messages">
+							{errors.api_visibility &&
+								errors.api_visibility.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											This field is required
+										</span>
+									</span>
+								)}
+							<span>&nbsp;</span>
+						</p>
+					</div>
+
+					<div
+						className={
 							errors.description
 								? "field field-description has-error"
 								: "field field-description"
@@ -251,7 +340,10 @@ export default function CreateContentModel() {
 						<label htmlFor="description">Description</label>
 						<br />
 						<p className="help">
-							A hint for content editors and API users.
+							{__(
+								"A hint for content editors and API users.",
+								"atlas-content-modeler"
+							)}
 						</p>
 						<textarea
 							id="description"
@@ -268,7 +360,10 @@ export default function CreateContentModel() {
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											Exceeds max length.
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}

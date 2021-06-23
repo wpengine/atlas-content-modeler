@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
 
@@ -75,7 +76,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			parentSelector={() => {
 				return document.getElementById("root");
 			}}
-			portalClassName="atlas-content-modeler-edit-model-modal-container"
+			portalClassName="atlas-content-modeler-edit-model-modal-container atlas-content-modeler"
 			onRequestClose={() => {
 				setIsOpen(false);
 			}}
@@ -91,123 +92,234 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					setIsOpen(false);
 				})}
 			>
-				<div className={errors.singular ? "field has-error" : "field"}>
-					<label htmlFor="singular">Singular Name</label>
-					<p className="help">
-						Singular display name for your content model, e.g.
-						"Rabbit".
-					</p>
-					<input
-						id="singular"
-						name="singular"
-						placeholder="Rabbit"
-						defaultValue={model.singular}
-						ref={register({ required: true, maxLength: 50 })}
-						onChange={(e) =>
-							setSingularCount(e.target.value.length)
+				<div className="row">
+					<div
+						className={
+							errors.singular
+								? "field has-error col-sm"
+								: "field col-sm"
 						}
-					/>
-					<p className="field-messages">
-						{errors.singular &&
-							errors.singular.type === "required" && (
-								<span className="error">
-									<Icon type="error" />
-									<span role="alert">
-										This field is required
-									</span>
-								</span>
+					>
+						<label htmlFor="singular">Singular Name</label>
+						<p className="help">
+							{__(
+								'Singular display name for your content model, e.g. "Rabbit".',
+								"atlas-content-modeler"
 							)}
-						{errors.singular &&
-							errors.singular.type === "maxLength" && (
-								<span className="error">
-									<Icon type="error" />
-									<span role="alert">
-										Exceeds max length.
+						</p>
+						<input
+							id="singular"
+							name="singular"
+							placeholder="Rabbit"
+							defaultValue={model.singular}
+							ref={register({ required: true, maxLength: 50 })}
+							onChange={(e) =>
+								setSingularCount(e.target.value.length)
+							}
+						/>
+						<p className="field-messages">
+							{errors.singular &&
+								errors.singular.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
+										</span>
 									</span>
-								</span>
+								)}
+							{errors.singular &&
+								errors.singular.type === "maxLength" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							<span>&nbsp;</span>
+							<span className="count">{singularCount}/50</span>
+						</p>
+					</div>
+
+					<div
+						className={
+							errors.plural
+								? "field has-error col-sm"
+								: "field col-sm"
+						}
+					>
+						<label htmlFor="plural">Plural Name</label>
+						<p className="help">
+							{__(
+								'Plural display name for your content model, e.g. "Rabbits".',
+								"atlas-content-modeler"
 							)}
-						<span>&nbsp;</span>
-						<span className="count">{singularCount}/50</span>
-					</p>
+						</p>
+						<input
+							id="plural"
+							name="plural"
+							defaultValue={model.plural}
+							placeholder="Rabbits"
+							ref={register({ required: true, maxLength: 50 })}
+							onChange={(event) => {
+								setPluralCount(event.target.value.length);
+							}}
+						/>
+						<p className="field-messages">
+							{errors.plural &&
+								errors.plural.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							{errors.plural &&
+								errors.plural.type === "maxLength" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							<span>&nbsp;</span>
+							<span className="count">{pluralCount}/50</span>
+						</p>
+					</div>
 				</div>
 
-				<div className={errors.plural ? "field has-error" : "field"}>
-					<label htmlFor="plural">Plural Name</label>
-					<p className="help">
-						Plural display name for your content model, e.g.
-						"Rabbits".
-					</p>
-					<input
-						id="plural"
-						name="plural"
-						defaultValue={model.plural}
-						placeholder="Rabbits"
-						ref={register({ required: true, maxLength: 50 })}
-						onChange={(event) => {
-							setPluralCount(event.target.value.length);
-						}}
-					/>
-					<p className="field-messages">
-						{errors.plural && errors.plural.type === "required" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">This field is required</span>
-							</span>
-						)}
-						{errors.plural && errors.plural.type === "maxLength" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">Exceeds max length.</span>
-							</span>
-						)}
-						<span>&nbsp;</span>
-						<span className="count">{pluralCount}/50</span>
-					</p>
-				</div>
-
-				<div
-					className={errors.iconPicker ? "field has-error" : "field"}
-				>
-					<label htmlFor="iconPicker">Model Icon</label>
-					<p className="help">
-						Choose an icon to represent your model.
-					</p>
-
-					<IconPicker
-						buttonLabel="Choose Icon"
-						inputId="iconPicker"
-						buttonClasses="primary first"
-						formRegister={register}
-					/>
-
-					<p className="field-messages">
-						{errors.iconPicker &&
-							errors.iconPicker.type === "required" && (
-								<span className="error">
-									<Icon type="error" />
-									<span role="alert">
-										An icon is required
-									</span>
-								</span>
+				<div className="row">
+					<div className="field col-sm">
+						<label htmlFor="slug">API Identifier</label>
+						<p className="help">
+							{__(
+								"Auto-generated and used for API requests.",
+								"atlas-content-modeler"
 							)}
-					</p>
-				</div>
+						</p>
+						<input
+							id="slug"
+							name="slug"
+							ref={register({ required: true, maxLength: 20 })}
+							defaultValue={model.slug}
+							readOnly="readOnly"
+						/>
+						<p className="field-messages">
+							<span>&nbsp;</span>
+						</p>
+					</div>
 
-				<div className="field">
-					<label htmlFor="slug">API Identifier</label>
-					<p className="help">
-						Auto-generated and used for API requests.
-					</p>
-					<input
-						id="slug"
-						name="slug"
-						ref={register({ required: true, maxLength: 20 })}
-						defaultValue={model.slug}
-						readOnly="readOnly"
-					/>
-					<p className="field-messages">
-						<span>&nbsp;</span>
-					</p>
+					<div
+						className={
+							errors.iconPicker ? "field has-error" : "field"
+						}
+					>
+						<label htmlFor="iconPicker">Model Icon</label>
+						<p className="help">
+							Choose an icon to represent your model.
+						</p>
+
+						<IconPicker
+							buttonLabel="Choose Icon"
+							inputId="iconPicker"
+							buttonClasses="primary first"
+							formRegister={register}
+						/>
+
+						<p className="field-messages">
+							{errors.iconPicker &&
+								errors.iconPicker.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											An icon is required
+										</span>
+									</span>
+								)}
+						</p>
+					</div>
+
+					<div
+						className={
+							errors.api_visibility
+								? "field has-error form-check form-check-inline col-sm"
+								: "field form-check form-check-inline col-sm"
+						}
+					>
+						<label htmlFor="api_visibility">API Visibility</label>
+						<p className="help">
+							{__(
+								"Whether or not this model requires authentication to be accessed via REST and GraphQL APIs.",
+								"atlas-content-modeler"
+							)}
+						</p>
+
+						<input
+							type="radio"
+							id="api_visibility_public"
+							name="api_visibility"
+							value="public"
+							className="form-check-input"
+							defaultChecked={model?.api_visibility === "public"}
+							ref={register({ required: true })}
+						/>
+						<label
+							htmlFor="api_visibility_public"
+							className="form-check-label"
+						>
+							{__("Public", "atlas-content-modeler")}
+						</label>
+						<br />
+
+						<input
+							type="radio"
+							id="api_visibility_private"
+							name="api_visibility"
+							value="private"
+							className="form-check-input"
+							defaultChecked={
+								model?.api_visibility === "private" ||
+								typeof model?.api_visibility === "undefined"
+							}
+							ref={register({ required: true })}
+						/>
+						<label
+							htmlFor="api_visibility_private"
+							className="form-check-label"
+						>
+							{__("Private", "atlas-content-modeler")}
+						</label>
+						<br />
+
+						<p className="field-messages">
+							{errors.api_visibility &&
+								errors.api_visibility.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+						</p>
+					</div>
 				</div>
 
 				<div
@@ -219,11 +331,15 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 				>
 					<label htmlFor="description">Description</label>
 					<p className="help">
-						A hint for content editors and API users.
+						{__(
+							"A hint for content editors and API users.",
+							"atlas-content-modeler"
+						)}
 					</p>
 					<textarea
 						id="description"
 						name="description"
+						className="w-100"
 						ref={register({ maxLength: 250 })}
 						defaultValue={model.description}
 						onChange={(e) =>
@@ -236,7 +352,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Exceeds max length.
+										{__(
+											"Exceeds max length.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -250,7 +369,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					disabled={isSubmitting}
 					className="primary first"
 				>
-					Save
+					{__("Save", "atlas-content-modeler")}
 				</button>
 				<button
 					href="#"
@@ -261,7 +380,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						setIsOpen(false);
 					}}
 				>
-					Cancel
+					{__("Cancel", "atlas-content-modeler")}
 				</button>
 			</form>
 		</Modal>

@@ -16,6 +16,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
+
 /**
  * Registers custom routes with the WP REST API.
  */
@@ -200,9 +201,56 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	if ( ! isset( $params['model'] ) || empty( $content_types[ $params['model'] ] ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model',
-			'The specified content model does not exist.',
+			__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
+	}
+
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && ! $params['choices'] ) {
+		return new WP_Error(
+			'wpe_invalid_multi_options',
+			'Multiple Choice update failed. Options need to be created before updating a Multiple Choice field.',
+			array( 'status' => 400 )
+		);
+	}
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$options_index = -1;
+		$problem_index = [];
+		foreach ( $params['choices'] as $choice ) {
+			++$options_index;
+			if ( $choice['name'] === '' ) {
+				$problem_index[] = $options_index;
+			}
+		}
+		if ( $problem_index ) {
+			$problem_error_name_blank = new WP_Error(
+				'wpe_option_name_undefined',
+				'Multiple Choice Field update failed, please set a name for your choice before saving.',
+				array( 'status' => 400 )
+			);
+			$problem_error_name_blank->add( 'problem_index', $problem_index );
+			return $problem_error_name_blank;
+		}
+	}
+
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$options_name_index = -1;
+		$problem_name_index = [];
+		foreach ( $params['choices'] as $choice ) {
+			++$options_name_index;
+			if ( content_model_multi_option_exists( $params['choices'], $choice['name'], $options_name_index ) ) {
+				$problem_name_index[] = $options_name_index;
+			}
+		}
+		if ( $problem_name_index ) {
+			$problem_duplicate_name = new WP_Error(
+				'wpe_duplicate_content_model_multi_option_id',
+				'Another option in this field has the same API identifier.',
+				array( 'status' => 400 )
+			);
+			$problem_duplicate_name->add( 'problem_name_index', $problem_name_index );
+			return $problem_duplicate_name;
+		}
 	}
 
 	if (
@@ -214,7 +262,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	) {
 		return new WP_Error(
 			'wpe_duplicate_content_model_field_id',
-			'Another field in this model has the same API identifier.',
+			__( 'Another field in this model has the same API identifier.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
 	}
@@ -261,7 +309,7 @@ function dispatch_patch_content_model_fields( WP_REST_Request $request ) {
 	if ( empty( $params['fields'] ) ) {
 		return new WP_Error(
 			'wpe_missing_fields_data',
-			'Expected a fields key with fields to update.',
+			__( 'Expected a fields key with fields to update.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
 	}
@@ -271,7 +319,7 @@ function dispatch_patch_content_model_fields( WP_REST_Request $request ) {
 	if ( empty( $content_types[ $slug ] ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model',
-			'The specified content model does not exist.',
+			__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
 	}
@@ -313,7 +361,7 @@ function dispatch_delete_content_model_field( WP_REST_Request $request ) {
 	if ( empty( $model ) || empty( $content_types[ $model ] ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model',
-			'You must specify a valid model.',
+			__( 'You must specify a valid model.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -321,7 +369,7 @@ function dispatch_delete_content_model_field( WP_REST_Request $request ) {
 	if ( ! isset( $content_types[ $model ]['fields'][ $field_id ] ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model_field_id',
-			'Invalid field ID.',
+			__( 'Invalid field ID.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -372,7 +420,7 @@ function dispatch_update_content_model( WP_REST_Request $request ) {
 	if ( empty( $content_types[ $slug ] ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model_id',
-			'Invalid content model ID.',
+			__( 'Invalid content model ID.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -461,7 +509,7 @@ function create_model( string $post_type_slug, array $args ) {
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
-			'Please provide a valid API Identifier.',
+			__( 'Please provide a valid API Identifier.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -473,7 +521,7 @@ function create_model( string $post_type_slug, array $args ) {
 	if ( ! empty( $content_types[ $post_type_slug ] ) || array_key_exists( $post_type_slug, $existing_content_types ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_already_exists',
-			'A content model with this API Identifier already exists.',
+			__( 'A content model with this API Identifier already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -481,7 +529,7 @@ function create_model( string $post_type_slug, array $args ) {
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_labels',
-			'Please provide singular and plural labels when creating a content model.',
+			__( 'Please provide singular and plural labels when creating a content model.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -522,14 +570,14 @@ function update_model( string $post_type_slug, array $args ) {
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model_id',
-			'Invalid content model ID.'
+			__( 'Invalid content model ID.', 'atlas-content-modeler' )
 		);
 	}
 
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model_arguments',
-			'Please provide singular and plural labels when creating a content model.'
+			__( 'Please provide singular and plural labels when creating a content model.', 'atlas-content-modeler' )
 		);
 	}
 
@@ -537,7 +585,7 @@ function update_model( string $post_type_slug, array $args ) {
 	if ( empty( $content_types[ $post_type_slug ] ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model_id',
-			'Invalid content model ID.'
+			__( 'Invalid content model ID.', 'atlas-content-modeler' )
 		);
 	}
 
@@ -550,7 +598,7 @@ function update_model( string $post_type_slug, array $args ) {
 	if ( ! $updated ) {
 		return new WP_Error(
 			'model-not-updated',
-			'Model not updated. Reason unknown.'
+			__( 'Model not updated. Reason unknown.', 'atlas-content-modeler' )
 		);
 	}
 
@@ -602,5 +650,33 @@ function content_model_field_exists( string $slug, string $id, array $model ): b
 		}
 	}
 
+	return false;
+}
+
+/**
+ * Checks if a duplicate model identifier (name) exists in the multiple option field.
+ *
+ * @param array  $names  The available field choice names.
+ * @param string $current_choice  The currently checked field choice name.
+ * @param int    $current_index The content index for the current choice being validated.
+ * @return bool
+ */
+function content_model_multi_option_exists( array $names, string $current_choice, int $current_index ): bool {
+	if ( ! isset( $names ) ) {
+		return false;
+	}
+	if ( $names ) {
+		if ( $names[ $current_index ] ) {
+			unset( $names[ $current_index ] );
+		}
+
+			$problem_options_list = [];
+
+		foreach ( $names as $choice ) {
+			if ( $choice['name'] === $current_choice ) {
+				return true;
+			}
+		}
+	}
 	return false;
 }

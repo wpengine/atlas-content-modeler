@@ -2,6 +2,7 @@
  * Additional form fields for the Number field type.
  */
 import React from "react";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const NumberFields = ({ register, data, editing }) => {
 	return (
@@ -22,7 +23,7 @@ const NumberFields = ({ register, data, editing }) => {
 						disabled={editing}
 					/>
 					<label className="radio" htmlFor="integer">
-						Integer
+						{__("Integer", "atlas-content-modeler")}
 						<span>1, 2, 3, 5, 8, 13…</span>
 					</label>
 				</div>
@@ -37,7 +38,7 @@ const NumberFields = ({ register, data, editing }) => {
 						disabled={editing}
 					/>
 					<label className="radio" htmlFor="decimal">
-						Decimal
+						{__("Decimal", "atlas-content-modeler")}
 						<span>3.14159265389</span>
 					</label>
 				</div>
