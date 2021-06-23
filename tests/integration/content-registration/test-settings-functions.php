@@ -63,6 +63,6 @@ class SettingsFunctionsTestCases extends WP_UnitTestCase {
 		self::assertSame( get_registered_content_types(), $this->expected_post_types() );
 	}
 	private function expected_post_types(): array {
-		return include __DIR__ . '/example-data/expected-post-types.php';
+		return include_once __DIR__ . '/example-data/expected-post-types.php';
 	}
 }

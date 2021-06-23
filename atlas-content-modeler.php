@@ -46,7 +46,7 @@ function atlas_content_modeler_loader(): void {
 	);
 
 	foreach ( $plugin_files as $file ) {
-			include ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
+			include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
 	}
 
 	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();

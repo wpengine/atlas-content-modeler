@@ -265,7 +265,7 @@ function generate_custom_post_type_args( array $args ): array {
 
 	$singular = $args['singular'];
 	$plural   = $args['plural'];
-	$icon     = include ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/views/admin-entry-icon.php';
+	$icon     = include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/views/admin-entry-icon.php';
 	$labels   = generate_custom_post_type_labels(
 		[
 			'singular' => $singular,

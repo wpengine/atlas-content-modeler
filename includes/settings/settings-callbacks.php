@@ -16,7 +16,7 @@ add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
  * Registers the wp-admin menu page.
  */
 function register_admin_menu_page(): void {
-	$icon = include __DIR__ . '/views/admin-menu-icon.php';
+	$icon = include_once __DIR__ . '/views/admin-menu-icon.php';
 	add_menu_page(
 		esc_html__( 'Content Modeler', 'atlas-content-modeler' ),
 		esc_html__( 'Content Modeler', 'atlas-content-modeler' ),
