@@ -3,6 +3,7 @@
  */
 import React from "react";
 import Icon from "../../../../../components/icons";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const MediaSettings = ({
 	errors,
@@ -85,9 +86,12 @@ const NumberSettings = ({
 }) => {
 	return (
 		<>
-			<h3>Specific Number Range</h3>
+			<h3>{__("Specific Number Range", "atlas-content-modeler")}</h3>
 			<p className="mb-4">
-				Define your range here. Only numeric characters can be used.
+				{__(
+					"Define your range here. Only numeric characters can be used.",
+					"atlas-content-modeler"
+				)}
 			</p>
 
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
@@ -97,7 +101,9 @@ const NumberSettings = ({
 							errors.minValue ? "field has-error" : "field"
 						} me-sm-5`}
 					>
-						<label htmlFor="minValue">Min Value</label>
+						<label htmlFor="minValue">
+							{__("Min Value", "atlas-content-modeler")}
+						</label>
 						<br />
 						<input
 							aria-invalid={errors.minValue ? "true" : "false"}
@@ -122,7 +128,10 @@ const NumberSettings = ({
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										The minimum value is 0.
+										{__(
+											"The minimum value is 0.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -134,7 +143,9 @@ const NumberSettings = ({
 							errors.maxValue ? "field has-error" : "field"
 						} me-sm-5`}
 					>
-						<label htmlFor="maxValue">Max Value</label>
+						<label htmlFor="maxValue">
+							{__("Max Value", "atlas-content-modeler")}
+						</label>
 						<br />
 						<input
 							aria-invalid={errors.maxValue ? "true" : "false"}
@@ -157,7 +168,10 @@ const NumberSettings = ({
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										The minimum value is 0.
+										{__(
+											"The minimum value is 0.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -166,7 +180,10 @@ const NumberSettings = ({
 									<span className="error">
 										<Icon type="error" />
 										<span role="alert">
-											Max must be more than min.
+											{__(
+												"Max must be more than min.",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
@@ -175,7 +192,9 @@ const NumberSettings = ({
 				</div>
 
 				<div className={errors.step ? "field has-error" : "field"}>
-					<label htmlFor="step">Step</label>
+					<label htmlFor="step">
+						{__("Step", "atlas-content-modeler")}
+					</label>
 					<br />
 					<input
 						aria-invalid={errors.step ? "true" : "false"}
@@ -197,7 +216,10 @@ const NumberSettings = ({
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">
-									The minimum value is 0.
+									{__(
+										"The minimum value is 0.",
+										"atlas-content-modeler"
+									)}
 								</span>
 							</span>
 						)}
@@ -205,7 +227,10 @@ const NumberSettings = ({
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">
-									Step must be lower than max.
+									{__(
+										"Step must be lower than max.",
+										"atlas-content-modeler"
+									)}
 								</span>
 							</span>
 						)}
@@ -215,7 +240,10 @@ const NumberSettings = ({
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Min plus Step can't be larger than Max.
+										{__(
+											"Min plus Step can't be larger than Max.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}
@@ -229,10 +257,12 @@ const NumberSettings = ({
 const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 	return (
 		<>
-			<h3>Character Limit</h3>
+			<h3>{__("Character Limit", "atlas-content-modeler")}</h3>
 			<p className="mb-4">
-				Set a minimum and/or maximum character count for this text
-				field.
+				{__(
+					"Set a minimum and/or maximum character count for this text field.",
+					"atlas-content-modeler"
+				)}
 			</p>
 
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
@@ -241,7 +271,9 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 						errors.minChars ? "field has-error" : "field"
 					} me-sm-5`}
 				>
-					<label htmlFor="minChars">Minimum Character Limit</label>
+					<label htmlFor="minChars">
+						{__("Minimum Character Limit", "atlas-content-modeler")}
+					</label>
 					<br />
 					<input
 						aria-invalid={errors.minChars ? "true" : "false"}
@@ -264,7 +296,10 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">
-									The minimum value is 0.
+									{__(
+										"The minimum value is 0.",
+										"atlas-content-modeler"
+									)}
 								</span>
 							</span>
 						)}
@@ -272,7 +307,9 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 				</div>
 
 				<div className={errors.maxChars ? "field has-error" : "field"}>
-					<label htmlFor="maxChars">Maximum Character Limit</label>
+					<label htmlFor="maxChars">
+						{__("Maximum Character Limit", "atlas-content-modeler")}
+					</label>
 					<br />
 					<input
 						aria-invalid={errors.maxChars ? "true" : "false"}
@@ -293,7 +330,10 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 							<span className="error">
 								<Icon type="error" />
 								<span role="alert">
-									The minimum value is 1.
+									{__(
+										"The minimum value is 1.",
+										"atlas-content-modeler"
+									)}
 								</span>
 							</span>
 						)}
@@ -302,7 +342,10 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
-										Max must be more than min.
+										{__(
+											"Max must be more than min.",
+											"atlas-content-modeler"
+										)}
 									</span>
 								</span>
 							)}

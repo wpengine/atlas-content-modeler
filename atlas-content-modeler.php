@@ -7,7 +7,11 @@
  * Author URI: https://wpengine.com/
  * Text Domain: atlas-content-modeler
  * Domain Path: /languages
- * Version: 0.3.0
+ * Version: 0.4.0
+ * Requires at least: 5.2
+ * Requires PHP: 7.2
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
  * @package AtlasContentModeler
  */
@@ -27,10 +31,13 @@ add_action( 'plugins_loaded', 'atlas_content_modeler_loader' );
  * Bootstraps the plugin.
  */
 function atlas_content_modeler_loader(): void {
+	load_plugin_textdomain( 'atlas_content_modeler', false, __DIR__ . '/languages' );
+
 	require_once __DIR__ . '/includes/publisher/lib/field-functions.php';
 	require_once __DIR__ . '/includes/shared-assets/wp_scripts/shared_assets.php';
 	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
 	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
+	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/content-registration/class-wpe-rest-posts-controller.php';
 	require_once __DIR__ . '/includes/rest-api/rest-api-endpoint-registration.php';
 	require_once __DIR__ . '/includes/publisher/class-publisher-form-editing-experience.php';
 	require_once ATLAS_CONTENT_MODELER_DIR . '/includes/updates/update-functions.php';

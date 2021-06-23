@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { getFieldOrder, sanitizeFields } from "./queries";
 import { toValidApiId } from "./components/fields/toValidApiId";
+import { sprintf, __ } from "@wordpress/i18n";
 
 /**
  * Parses query string and returns value.
@@ -64,7 +65,10 @@ export function generateSidebarMenuItem(model) {
 						<a href="edit.php?post_type=${slug}" class="wp-first-item">All ${plural}</a>
 					</li>
 					<li>
-						<a href="post-new.php?post_type=${slug}">Add New</a>
+						<a href="post-new.php?post_type=${slug}">${__(
+		"Add New",
+		"atlas-content-modeler"
+	)}</a>
 					</li>
 				</ul>
 			</li>`;

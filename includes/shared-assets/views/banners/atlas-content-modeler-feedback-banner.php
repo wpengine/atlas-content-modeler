@@ -99,8 +99,8 @@
 			</svg>
 		</div>
 		<div class="align-self-start">
-			<h2 class="fs-6">Welcome to WP Engine's Content Modeler!</h2>
-			<p class="fs-6">Welcome to our beta. Please send us any feedback or ideas you may have that can improve the overall experience.</p>
+			<h2 class="fs-6"><?php esc_html_e( "Welcome to WP Engine's Content Modeler!", 'atlas-content-modeler' ); ?></h2>
+			<p class="fs-6"><?php esc_html_e( 'Welcome to our beta. Please send us any feedback or ideas you may have that can improve the overall experience.', 'atlas-content-modeler' ); ?></p>
 		</div>
 		<div class="ms-auto align-self-end">
 			<a rel="noopener noreferrer" id="feedbackFormBtn" href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform?usp=sf_link" target="_blank" role="button" class="btn btn-primary atlas-content-modeler btn-primary btn-lg"><span class="dashicons dashicons-admin-comments"></span> Send Feedback</a>

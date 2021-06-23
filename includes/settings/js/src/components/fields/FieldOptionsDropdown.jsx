@@ -9,6 +9,7 @@ import Icon from "../../../../../components/icons";
 import Modal from "react-modal";
 import { ModelsContext } from "../../ModelsContext";
 import { maybeCloseDropdown } from "../../utils";
+import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
 
@@ -63,7 +64,10 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 				onClick={() => setDropdownOpen(!dropdownOpen)}
-				aria-label={`Options for the ${field.name} field.`}
+				aria-label={sprintf(
+					__("Options for the %s field.", "atlas-content-modeler"),
+					field.name
+				)}
 			>
 				<Icon type="options" />
 			</button>
@@ -83,7 +87,11 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 			</div>
 			<Modal
 				isOpen={modalIsOpen}
-				contentLabel={`Delete the ${field.name} field from ${model.plural}?`}
+				contentLabel={sprintf(
+					__("Delete the %s field from %s?", "atlas-content-modeler"),
+					field.name,
+					model.plural
+				)}
 				portalClassName="atlas-content-modeler-delete-field-modal-container"
 				onRequestClose={() => {
 					setModalIsOpen(false);
@@ -92,15 +100,30 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 				style={customStyles}
 			>
 				<h2>
-					Delete the {field.name} field from {model.plural}?
+					{sprintf(
+						__(
+							"Delete the %s field from %s?",
+							"atlas-content-modeler"
+						),
+						field.name,
+						model.plural
+					)}
 				</h2>
 				<p>
-					This will not delete actual data stored in this field. It
-					only deletes the field definition.
+					{__(
+						"This will not delete actual data stored in this field. It only deletes the field definition.",
+						"atlas-content-modeler"
+					)}
 				</p>
 				<p>
-					Are you sure you want to delete the {field.name} field from{" "}
-					{model.plural}?
+					{sprintf(
+						__(
+							"Are you sure you want to delete the %s field from %s? ",
+							"atlas-content-modeler"
+						),
+						field.name,
+						model.plural
+					)}
 				</p>
 				<button
 					type="submit"
@@ -121,7 +144,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 						});
 					}}
 				>
-					Delete
+					{__("Delete", "atlas-content-modeler")}
 				</button>
 				<button
 					className="tertiary"
@@ -129,7 +152,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 						setModalIsOpen(false);
 					}}
 				>
-					Cancel
+					{__("Cancel", "atlas-content-modeler")}
 				</button>
 			</Modal>
 		</span>

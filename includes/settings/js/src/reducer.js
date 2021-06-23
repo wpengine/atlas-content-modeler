@@ -13,6 +13,7 @@ export function reducer(state, action) {
 			};
 			state[action.data.slug].name = action.data.plural;
 			state[action.data.slug].singular = action.data.singular;
+			state[action.data.slug].api_visibility = action.data.api_visibility;
 			return { ...state };
 		case "addModel":
 			return {

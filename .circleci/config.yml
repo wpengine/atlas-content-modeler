@@ -231,6 +231,27 @@ jobs:
           paths:
             - .
 
+  plugin-bundle-pot:
+    docker:
+      - image: circleci/php:7.4-node-browsers
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install WP-CLI
+          command: |
+            curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+            chmod +x wp-cli.phar
+            ./wp-cli.phar --info
+      - run:
+          name: Build .pot file
+          command: |
+            ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler
+      - persist_to_workspace:
+            root: .
+            paths:
+              - atlas-content-modeler/languages
+
   plugin-jest:
     executor:
       name: node/default
@@ -441,10 +462,18 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - plugin-bundle-pot:
+          requires:
+            - plugin-composer
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
       - plugin-bundle-zip:
           slug: atlas-content-modeler
           requires:
             - plugin-e2e-test
+            - plugin-bundle-pot
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:

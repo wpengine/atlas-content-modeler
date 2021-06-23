@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Icon from "../../../../components/icons";
+import { sprintf, __ } from "@wordpress/i18n";
 
 export default function MediaUploader({ modelSlug, field, required }) {
 	// state
@@ -88,7 +89,9 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		}
 
 		const getMediaModalTitle = () => {
-			const title = mediaUrl ? "Change Media" : "Upload Media";
+			const title = mediaUrl
+				? __("Change Media", "atlas-content-modeler")
+				: __("Upload Media", "atlas-content-modeler");
 			if (allowedTypes) {
 				return `${title} (${getAllowedTypesForUi().toUpperCase()})`;
 			}
@@ -166,7 +169,15 @@ export default function MediaUploader({ modelSlug, field, required }) {
 							className="button button-primary button-large"
 							style={{ marginTop: "5px" }}
 							defaultValue={
-								mediaUrl ? "Change Media" : "Upload Media"
+								mediaUrl
+									? __(
+											"Change Media",
+											"atlas-content-modeler"
+									  )
+									: __(
+											"Upload Media",
+											"atlas-content-modeler"
+									  )
 							}
 							onClick={(e) => clickHandler(e)}
 						/>
@@ -202,7 +213,9 @@ export default function MediaUploader({ modelSlug, field, required }) {
 				/>
 				<span className="error">
 					<Icon type="error" />
-					<span role="alert">This field is required</span>
+					<span role="alert">
+						{__("This field is required", "atlas-content-modeler")}
+					</span>
 				</span>
 			</div>
 		</>
