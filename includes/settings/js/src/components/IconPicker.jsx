@@ -329,6 +329,7 @@ export default function IconPicker({
 }) {
 	const [offsetTop, setOffsetTop] = useState(0);
 	const [offsetLeft, setOffsetLeft] = useState(0);
+	const [icon, setIcon] = useState("");
 
 	/**
 	 * Handle button click event
@@ -346,7 +347,6 @@ export default function IconPicker({
 	 */
 	function createPopup(button) {
 		var target = $(button.data("target")),
-			preview = $(button.data("preview")),
 			popup = $(
 				'<div class="dashicon-picker-container">' +
 					'<div class="dashicon-picker-control"></div>' +
@@ -376,7 +376,7 @@ export default function IconPicker({
 			e.preventDefault();
 			var title = $(this).attr("title");
 			target.val("dashicons-" + title);
-			preview.prop("class", "dashicons").addClass("dashicons-" + title);
+			setIcon(target.val());
 			removePopup();
 		});
 
@@ -438,15 +438,13 @@ export default function IconPicker({
 	return (
 		<>
 			<input
-				className="regular-text"
+				className="w-100"
 				id={inputId}
 				name={inputId}
 				type="text"
 				ref={formRegister({ required: true })}
-				onChange={(event) => {
-					// setIcon(event.target.value);
-				}}
 			/>
+
 			<input
 				className={`dashicons-picker ${buttonClasses}`}
 				type="button"
@@ -454,6 +452,8 @@ export default function IconPicker({
 				data-target={`#${inputId}`}
 				onClick={(e) => clickHandler(e)}
 			/>
+
+			{icon && <span className={`dashicons ${icon}`} />}
 		</>
 	);
 }
