@@ -265,7 +265,6 @@ function generate_custom_post_type_args( array $args ): array {
 
 	$singular = $args['singular'];
 	$plural   = $args['plural'];
-	$icon     = null;
 	$labels   = generate_custom_post_type_labels(
 		[
 			'singular' => $singular,
@@ -294,7 +293,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'show_in_graphql'       => $args['show_in_graphql'] ?? true,
 		'graphql_single_name'   => $args['graphql_single_name'] ?? camelcase( $singular ),
 		'graphql_plural_name'   => $args['graphql_plural_name'] ?? camelcase( $plural ),
-		'menu_icon'             => $args['modelIcon'] ?? $icon,
+		'menu_icon'             => $args['modelIcon'] ?? null,
 		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
 	];
 
