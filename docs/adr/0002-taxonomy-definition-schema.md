@@ -21,7 +21,7 @@ We will store taxonomy definitions in the `wp_options` table using the `atlas_co
 		'slug' => 'course', // string(32) - cannot exceed 32 chars, see register_taxonomy(). Required.
 		'hierarchical' => false, // boolean - default false, see register_taxonomy()
 		'types' => [ 'recipe' ], // array - post type slugs separated by comma. Required.
-		'api_visibility' => 'private', // string(10) - 'public' or 'private'. default 'private'. Required.
+		'api_visibility' => 'private', // string - 'public' or 'private'. default 'private'. Required.
 		'show_in_rest' => true, // boolean
 		'show_in_graphql' => true, // boolean
 	],
