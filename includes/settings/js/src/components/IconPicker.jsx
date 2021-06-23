@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 const $ = jQuery;
+import { sprintf, __ } from "@wordpress/i18n";
 
 // available dashicon names
 const icons = [
@@ -383,7 +384,9 @@ export default function IconPicker({
 		control.html(
 			'<a data-direction="back" href="#">' +
 				'<span class="dashicons dashicons-arrow-left-alt2"></span></a>' +
-				'<input type="text" class="" placeholder="Search" />' +
+				'<input type="text" class="" placeholder="' +
+				__("Search", "atlas-content-modeler") +
+				'" />' +
 				'<a data-direction="forward" href="#"><span class="dashicons dashicons-arrow-right-alt2"></span></a>'
 		);
 
