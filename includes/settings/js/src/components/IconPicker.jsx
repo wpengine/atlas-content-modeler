@@ -435,7 +435,7 @@ export default function IconPicker({
 	return (
 		<>
 			<input
-				className="w-100"
+				className="hidden"
 				id={inputId}
 				name={inputId}
 				type="text"
@@ -450,7 +450,7 @@ export default function IconPicker({
 				onClick={(e) => clickHandler(e)}
 			/>
 
-			{icon && <span className={`dashicons ${icon}`} />}
+			{icon && <span className={`p-3 ms-2 dashicons ${icon}`} />}
 		</>
 	);
 }
