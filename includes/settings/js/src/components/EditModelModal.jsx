@@ -242,6 +242,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 							buttonLabel="Choose Icon"
 							buttonClasses="primary first"
 							formRegister={register}
+							modelIcon={model.modelIcon}
 						/>
 
 						<p className="field-messages">

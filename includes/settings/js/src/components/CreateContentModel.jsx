@@ -215,6 +215,7 @@ export default function CreateContentModel() {
 						<IconPicker
 							buttonLabel="Choose Icon"
 							buttonClasses="primary first"
+							modelIcon={model.modelIcon}
 							formRegister={register}
 						/>
 

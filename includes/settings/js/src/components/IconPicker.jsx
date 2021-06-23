@@ -323,10 +323,11 @@ export default function IconPicker({
 	buttonClasses,
 	inputId,
 	formRegister,
+	modelIcon,
 }) {
 	const [offsetTop, setOffsetTop] = useState(0);
 	const [offsetLeft, setOffsetLeft] = useState(0);
-	const [icon, setIcon] = useState("");
+	const [icon, setIcon] = useState(modelIcon);
 
 	/**
 	 * Handle button click event
@@ -439,6 +440,7 @@ export default function IconPicker({
 				id="modelIcon"
 				name="modelIcon"
 				type="text"
+				defaultValue={modelIcon}
 				ref={formRegister({ required: true })}
 			/>
 
