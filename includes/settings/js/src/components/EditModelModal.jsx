@@ -6,7 +6,21 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 
+const $ = jQuery;
 const { apiFetch } = wp;
+
+/**
+ * Update sidebar model item for icon changes
+ */
+function updateSidebarMenuItem(model, data) {
+	if (model.modelIcon !== data.modelIcon) {
+		// update sidebar icon
+		$(`li#menu-posts-${model.slug}`)
+			.find(".wp-menu-image")
+			.removeClass("dashicons-*")
+			.addClass(`dashicons-before ${data.modelIcon}`);
+	}
+}
 
 /**
  * Updates a model via the REST API.
@@ -89,6 +103,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					const mergedData = { ...model, ...data };
 					await updateModel(data.slug, mergedData);
 					dispatch({ type: "updateModel", data: mergedData });
+					updateSidebarMenuItem(model, data);
 					setIsOpen(false);
 				})}
 			>
