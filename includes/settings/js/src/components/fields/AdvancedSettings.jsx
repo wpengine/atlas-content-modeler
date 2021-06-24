@@ -14,8 +14,13 @@ const MediaSettings = ({
 }) => {
 	return (
 		<>
-			<h3>Allowed File Types</h3>
-			<p>Define what file types are allowed to be uploaded.</p>
+			<h3>{__("Allowed File Types", "atlas-content-modeler")}</h3>
+			<p>
+				{__(
+					"Define what file types are allowed to be uploaded.",
+					"atlas-content-modeler"
+				)}
+			</p>
 
 			<p className="mb-4">
 				<a
@@ -23,7 +28,7 @@ const MediaSettings = ({
 					target="_blank"
 					rel="noreferrer"
 				>
-					WordPress Allowed Types
+					{__("Wordpress Allowed Types", "atlas-content-modeler")}
 				</a>
 			</p>
 
@@ -34,14 +39,19 @@ const MediaSettings = ({
 							errors.allowedTypes ? "field has-error" : "field"
 						} w-100`}
 					>
-						<label htmlFor="allowedTypes">File Extensions</label>
+						<label htmlFor="allowedTypes">
+							{__("File Extensions", "atlas-content-modeler")}
+						</label>
 						<br />
 						<textarea
 							className="w-100"
 							aria-invalid={
 								errors.allowedTypes ? "true" : "false"
 							}
-							placeholder="jpeg,jpg,png,tiff,tif,pdf"
+							placeholder={__(
+								"jpeg,jpg,png,tiff,tif,pdf",
+								"atlas-content-modeler"
+							)}
 							id="allowedTypes"
 							name="allowedTypes"
 							onChange={async (e) => {
@@ -64,8 +74,10 @@ const MediaSettings = ({
 											role="alert"
 											className="text-start"
 										>
-											Must be a comma-separated list of
-											file extensions without periods.
+											{__(
+												"Must be a comma-separated list of file extensions without periods.",
+												"atlas-content-modeler"
+											)}
 										</span>
 									</span>
 								)}
