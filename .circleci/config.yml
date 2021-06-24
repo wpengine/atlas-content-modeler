@@ -319,8 +319,7 @@ jobs:
       - run:
           name: Activate atlas-content-modeler plugin
           command: |
-            ln -s ~/project/atlas-content-modeler /tmp/wordpress/wp-content/plugins/atlas-content-modeler
-            ./wp-cli.phar plugin activate --path=/tmp/wordpress atlas-content-modeler
+            ./wp-cli.phar plugin install --activate --path=/tmp/wordpress build/atlas-content-modeler.$BUILD_VERSION.zip
 
       - run:
           name: Install WPGraphQL
