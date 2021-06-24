@@ -486,10 +486,7 @@ workflows:
               only: /.*/
       - plugin-test-e2e:
           requires:
-            - plugin-test-lint-js
-            - plugin-test-lint-php
-            - plugin-test-jest
-            - plugin-test-unit
+            - plugin-build-zip
           # run this job for any build, any branch
           filters:
             tags:
@@ -501,6 +498,10 @@ workflows:
             - plugin-build-zip
             - plugin-build-json
             - plugin-test-e2e
+            - plugin-test-lint-js
+            - plugin-test-lint-php
+            - plugin-test-jest
+            - plugin-test-unit
           filters:
             branches:
               only:
