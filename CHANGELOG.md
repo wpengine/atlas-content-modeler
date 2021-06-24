@@ -1,5 +1,15 @@
 # Atlas Content Modeler Changelog
 
+## 0.4.1 - 2021-06-24
+### Added
+- Generate POT language file for translations.
+
+### Changed
+- Use `include` in place of `require` so that missing or corrupt files do not take WordPress down.
+
+### Removed
+- Removed the Multiple Choice field for now while we add support for custom choice API IDs.
+
 ## 0.4.0 - 2021-06-22
 First public release. There may be breaking changes until 1.0.0.
 
