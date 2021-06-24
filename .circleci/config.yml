@@ -403,43 +403,10 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-test-unit:
-          slug: atlas-content-modeler
-          requires:
-            - plugin-build-composer
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
-      - plugin-test-lint:
-          slug: atlas-content-modeler
-          requires:
-            - plugin-test-unit
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
       - plugin-build-npm:
           slug: atlas-content-modeler
           requires:
             - plugin-checkout
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
-      - plugin-test-jest:
-          slug: atlas-content-modeler
-          requires:
-            - plugin-build-npm
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
-      - plugin-test-e2e:
-          requires:
-            - plugin-test-lint
-            - plugin-test-jest
-            - plugin-test-unit
           # run this job for any build, any branch
           filters:
             tags:
@@ -451,23 +418,53 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-build-zip:
-          slug: atlas-content-modeler
-          requires:
-            - plugin-build-npm
-            - plugin-build-pot
-            - plugin-test-lint
-            - plugin-test-jest
-            - plugin-test-unit
-          # Run this job on every commit/PR so the plugin is available as a build artifact
-          filters:
-            tags:
-              only: /.*/
       - plugin-build-json:
           slug: atlas-content-modeler
           requires:
             - plugin-build-composer
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-zip:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-npm
+            - plugin-build-pot
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-unit:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-lint:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-test-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-jest:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-e2e:
+          requires:
+            - plugin-test-lint
+            - plugin-test-jest
+            - plugin-test-unit
+          # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
