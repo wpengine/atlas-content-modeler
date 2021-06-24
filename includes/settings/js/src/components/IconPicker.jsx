@@ -451,7 +451,7 @@ export default function IconPicker({
 			/>
 
 			<input
-				className={`dashicons-picker w-50 ${buttonClasses}`}
+				className={`dashicons-picker w-50 mb-0 ${buttonClasses}`}
 				type="button"
 				value={
 					icon
@@ -465,14 +465,14 @@ export default function IconPicker({
 			{icon && <span className={`p-3 ms-2 dashicons ${icon}`} />}
 
 			{icon && (
-				<p>
+				<div>
 					<button
 						className="btn btn-link p-0"
 						onClick={removeIconClickHandler}
 					>
 						{__("Remove Icon", "atlas-content-modeler")}
 					</button>
-				</p>
+				</div>
 			)}
 		</>
 	);
