@@ -446,7 +446,7 @@ workflows:
       - plugin-test-lint:
           slug: atlas-content-modeler
           requires:
-            - plugin-test-zip
+            - plugin-build-zip
           # run this job for any build, any branch
           filters:
             tags:
