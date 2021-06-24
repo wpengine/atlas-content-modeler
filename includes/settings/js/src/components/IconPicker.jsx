@@ -460,7 +460,7 @@ export default function IconPicker({
 				className={`dashicons-picker w-50 mb-0 ${buttonClasses}`}
 				type="button"
 				value={
-					icon
+					icon !== defaultIcon
 						? __("Change Icon", "atlas-content-modeler")
 						: __("Choose Icon", "atlas-content-modeler")
 				}
