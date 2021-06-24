@@ -101,8 +101,7 @@ jobs:
             - build
 
   plugin-build-pot:
-    docker:
-      - image: circleci/php:7.4-node-browsers
+    executor: php/default
     steps:
       - attach_workspace:
           at: .
