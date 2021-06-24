@@ -32,10 +32,6 @@ jobs:
           command: |
             npm run lint
           working_directory: <<parameters.slug>>
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
 
   plugin-checkout:
     executor: wp-product-orb/default
@@ -87,7 +83,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - .
+            - atlas-content-modeler/vendor
 
   plugin-test-unit:
     docker:
