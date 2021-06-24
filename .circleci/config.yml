@@ -422,7 +422,7 @@ workflows:
       - plugin-build-npm:
           slug: atlas-content-modeler
           requires:
-            - plugin-test-lint
+            - plugin-checkout
           # run this job for any build, any branch
           filters:
             tags:
