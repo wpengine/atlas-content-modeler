@@ -9,7 +9,7 @@ orbs:
   node: circleci/node@4.1.0
 
 jobs:
-  lint:
+  plugin-test-lint:
     executor:
       name: node/default
       tag: lts
@@ -37,19 +37,6 @@ jobs:
           paths:
             - .
 
-  checkout:
-    executor: wp-product-orb/default
-    parameters:
-      slug:
-        type: string
-    steps:
-      - checkout:
-          path: <<parameters.slug>>
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
   plugin-checkout:
     executor: wp-product-orb/default
     environment:
@@ -60,8 +47,8 @@ jobs:
       filename:
         type: string
     steps:
-      - attach_workspace:
-          at: .
+      - checkout:
+          path: <<parameters.slug>>
       - run:
           name: Make artifacts build directory
           command: |
@@ -77,7 +64,7 @@ jobs:
           paths:
             - .
 
-  plugin-composer:
+  plugin-build-composer:
     executor: php/default
     parameters:
       slug:
@@ -102,7 +89,7 @@ jobs:
           paths:
             - .
 
-  plugin-test:
+  plugin-test-unit:
     docker:
       - image: cimg/php:7.4
       - image: circleci/mysql:5.7
@@ -140,7 +127,7 @@ jobs:
             composer test
           working_directory: <<parameters.slug>>
 
-  plugin-bundle-zip:
+  plugin-build-zip:
     executor: wp-product-orb/default
     environment:
       WPE_SESSION_DIR: ./.wpe
@@ -162,7 +149,7 @@ jobs:
           paths:
             - build
 
-  plugin-bundle-json:
+  plugin-build-json:
     executor: wp-product-orb/parser
     environment:
       WPE_SESSION_DIR: ./.wpe
@@ -208,7 +195,7 @@ jobs:
           json: build/<<parameters.slug>>.$BUILD_VERSION.json
           version: $BUILD_VERSION
 
-  plugin-npm-build:
+  plugin-build-npm:
     executor:
       name: node/default
       tag: lts
@@ -252,7 +239,7 @@ jobs:
             paths:
               - atlas-content-modeler/languages
 
-  plugin-jest:
+  plugin-test-jest:
     executor:
       name: node/default
       tag: lts
@@ -275,7 +262,7 @@ jobs:
           paths:
             - .
 
-  plugin-e2e-test:
+  plugin-test-e2e:
     docker:
       - image: circleci/php:7.4-node-browsers
       - image: circleci/mysql:5.7-ram
@@ -401,21 +388,14 @@ workflows:
   # tag example for deploying an update for atlas-content-modeler: 1.0.0
   plugin:
     jobs:
-      - checkout:
-          slug: atlas-content-modeler
-          filters:
-            tags:
-              only: /.*/
       - plugin-checkout:
           slug: atlas-content-modeler
           filename: atlas-content-modeler.php
-          requires:
-            - checkout
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
-      - plugin-composer:
+      - plugin-build-composer:
           slug: atlas-content-modeler
           requires:
             - plugin-checkout
@@ -423,65 +403,65 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-test:
+      - plugin-test-unit:
           slug: atlas-content-modeler
           requires:
-            - plugin-composer
+            - plugin-build-composer
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
-      - lint:
+      - plugin-test-lint:
           slug: atlas-content-modeler
           requires:
-            - plugin-test
+            - plugin-test-unit
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
-      - plugin-npm-build:
+      - plugin-build-npm:
           slug: atlas-content-modeler
           requires:
-            - lint
+            - plugin-test-lint
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
-      - plugin-jest:
+      - plugin-test-jest:
           slug: atlas-content-modeler
           requires:
-            - plugin-npm-build
+            - plugin-build-npm
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
-      - plugin-e2e-test:
+      - plugin-test-e2e:
           requires:
-            - plugin-jest
+            - plugin-test-jest
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
       - plugin-bundle-pot:
           requires:
-            - plugin-composer
+            - plugin-build-composer
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
               only: /.*/
-      - plugin-bundle-zip:
+      - plugin-build-zip:
           slug: atlas-content-modeler
           requires:
-            - plugin-npm-build
+            - plugin-build-npm
             - plugin-bundle-pot
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
               only: /.*/
-      - plugin-bundle-json:
+      - plugin-build-json:
           slug: atlas-content-modeler
           requires:
-            - plugin-test
+            - plugin-test-unit
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
           filters:
             tags:
@@ -490,14 +470,15 @@ workflows:
           name: "Deploy zip to api (staging) atlas-content-modeler"
           slug: atlas-content-modeler
           requires:
-            - plugin-bundle-zip
-            - plugin-bundle-json
-            - plugin-e2e-test
+            - plugin-build-zip
+            - plugin-build-json
+            - plugin-test-e2e
           filters:
             branches:
               only:
                 - main
                 - canary
+                - chriswiegman/BH-1091
             tags:
               only: /.*/
           context: wpe-ldap-creds
