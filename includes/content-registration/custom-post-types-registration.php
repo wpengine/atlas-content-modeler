@@ -265,7 +265,8 @@ function generate_custom_post_type_args( array $args ): array {
 
 	$singular = $args['singular'];
 	$plural   = $args['plural'];
-	$labels   = generate_custom_post_type_labels(
+
+	$labels = generate_custom_post_type_labels(
 		[
 			'singular' => $singular,
 			'plural'   => $plural,
