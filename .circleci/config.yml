@@ -51,11 +51,6 @@ jobs:
           name: Remove composer setup file
           command: |
             rm -v composer-setup.php
-      - run:
-          name: Composer PHP lint and code sniffer
-          command: |
-            /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
-          working_directory: <<parameters.slug>>
       - persist_to_workspace:
           root: .
           paths:
@@ -321,7 +316,7 @@ jobs:
       - php/install-composer
       - run:
           name: Run Code Sniffer sniffs
-          command: php ../composer.phar lint
+          command: /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
           working_directory: atlas-content-modeler
 
   plugin-test-unit:
