@@ -167,7 +167,7 @@ jobs:
             npm run test-no-watch
           working_directory: <<parameters.slug>>
 
-  plugin-test-lint:
+  plugin-test-lint-js:
     executor:
       name: node/default
       tag: lts
@@ -435,7 +435,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-test-lint:
+      - plugin-test-lint-js:
           slug: atlas-content-modeler
           requires:
             - plugin-build-zip
@@ -453,7 +453,7 @@ workflows:
               only: /.*/
       - plugin-test-e2e:
           requires:
-            - plugin-test-lint
+            - plugin-test-lint-js
             - plugin-test-jest
             - plugin-test-unit
           # run this job for any build, any branch
