@@ -257,10 +257,6 @@ jobs:
           command: |
             npm run test-no-watch
           working_directory: <<parameters.slug>>
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
 
   plugin-test-e2e:
     docker:
