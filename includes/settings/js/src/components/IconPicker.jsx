@@ -393,7 +393,7 @@ export default function IconPicker({
 		control.html(
 			'<a data-direction="back" href="#">' +
 				'<span class="dashicons dashicons-arrow-left-alt2"></span></a>' +
-				'<input type="text" class="" placeholder="' +
+				'<input type="text" class="dashicon-popup-search" placeholder="' +
 				__("Search", "atlas-content-modeler") +
 				'" />' +
 				'<a data-direction="forward" href="#"><span class="dashicons dashicons-arrow-right-alt2"></span></a>'
@@ -409,6 +409,8 @@ export default function IconPicker({
 		});
 
 		popup.appendTo("body").show();
+
+		$(".dashicon-popup-search").trigger("focus");
 
 		$("input", control).on("keyup", function (e) {
 			var search = $(this).val();
