@@ -209,6 +209,7 @@ jobs:
       - run:
           name: Run Code Sniffer sniffs
           command: vendor/bin/phpcs
+          working_directory: atlas-content-modeler
 
   plugin-test-unit:
     docker:
