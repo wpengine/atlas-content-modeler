@@ -111,7 +111,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			frame: "select",
 			library: library,
 			button: {
-				text: "Done",
+				text: __("Done", "atlas-content-modeler"),
 			},
 		});
 
@@ -184,8 +184,11 @@ export default function MediaUploader({ modelSlug, field, required }) {
 
 						{allowedTypes && (
 							<p className="text-muted">
-								Accepts file types:{" "}
-								{getAllowedTypesForUi().toUpperCase()}
+								{__(
+									"Accepts file types",
+									"atlas-content-modeler"
+								)}
+								: {getAllowedTypesForUi().toUpperCase()}
 							</p>
 						)}
 					</div>
@@ -197,7 +200,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 							className="btn-delete"
 							onClick={(e) => deleteImage(e)}
 						>
-							Remove Media
+							{__("Remove Media", "atlas-content-modeler")}
 						</a>
 					)}
 				</div>
