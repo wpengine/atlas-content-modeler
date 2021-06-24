@@ -461,7 +461,7 @@ workflows:
             tags:
               only: /.*/
       - plugin-deploy:
-          name: "Deploy zip to api (staging) atlas-content-modeler"
+          name: "plugin-deploy-staging"
           slug: atlas-content-modeler
           requires:
             - plugin-build-zip
@@ -479,10 +479,10 @@ workflows:
           auth_url: https://auth-staging.wpengine.io/v1/tokens
           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
       - plugin-deploy:
-          name: "Deploy zip to api (production) atlas-content-modeler"
+          name: "plugin-deploy-production"
           slug: atlas-content-modeler
           requires:
-            - "Deploy zip to api (staging) atlas-content-modeler"
+            - "plugin-deploy-staging"
           filters:
             branches:
               ignore: /.*/
