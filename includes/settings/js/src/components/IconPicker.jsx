@@ -471,7 +471,14 @@ export default function IconPicker({
 				onClick={(e) => clickHandler(e)}
 			/>
 
-			{icon && <span className={`p-3 ms-2 dashicons ${icon}`} />}
+			{icon && (
+				<span
+					onClick={() => {
+						$(".dashicons-picker").click();
+					}}
+					className={`p-3 ms-2 dashicons ${icon}`}
+				/>
+			)}
 
 			{icon !== defaultIcon && (
 				<div>
