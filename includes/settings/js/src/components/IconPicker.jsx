@@ -314,18 +314,11 @@ const icons = [
  *
  * @param buttonLabel
  * @param buttonClasses
- * @param inputId
  * @param formRegister
  * @returns {JSX.Element}
  * @constructor
  */
-export default function IconPicker({
-	buttonLabel,
-	buttonClasses,
-	inputId,
-	formRegister,
-	modelIcon,
-}) {
+export default function IconPicker({ buttonClasses, formRegister, modelIcon }) {
 	const [offsetTop, setOffsetTop] = useState(0);
 	const [offsetLeft, setOffsetLeft] = useState(0);
 	const [icon, setIcon] = useState(modelIcon);
@@ -448,7 +441,11 @@ export default function IconPicker({
 			<input
 				className={`dashicons-picker w-50 ${buttonClasses}`}
 				type="button"
-				value={buttonLabel}
+				value={
+					icon
+						? __("Change Icon", "atlas-content-modeler")
+						: __("Choose Icon", "atlas-content-modeler")
+				}
 				data-target="#modelIcon"
 				onClick={(e) => clickHandler(e)}
 			/>

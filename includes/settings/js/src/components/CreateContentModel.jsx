@@ -213,7 +213,6 @@ export default function CreateContentModel() {
 						</p>
 
 						<IconPicker
-							buttonLabel="Choose Icon"
 							buttonClasses="primary first"
 							formRegister={register}
 						/>

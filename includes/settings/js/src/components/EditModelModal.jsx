@@ -259,10 +259,6 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						</p>
 
 						<IconPicker
-							buttonLabel={__(
-								"Choose Icon",
-								"atlas-content-modeler"
-							)}
 							buttonClasses="primary first"
 							formRegister={register}
 							modelIcon={model.modelIcon}
