@@ -443,6 +443,7 @@ export default function IconPicker({
 	 * Remove popup
 	 */
 	function removePopup() {
+		$(".default-icon-btn").trigger("focus");
 		$(".dashicon-picker-container").remove();
 		$(document).off(".dashicons-picker");
 	}
@@ -475,7 +476,7 @@ export default function IconPicker({
 			{icon !== defaultIcon && (
 				<div>
 					<button
-						className="btn btn-link p-0"
+						className="btn btn-link p-0 default-icon-btn"
 						onClick={removeIconClickHandler}
 					>
 						{__("Use Default Icon", "atlas-content-modeler")}
