@@ -141,6 +141,7 @@ jobs:
           name: "Bundle plugin files into a zip"
           command: |
             zip --verbose -x@<<parameters.slug>>/.zipignore -x *.wpe/* */build/ -r "build/<<parameters.slug>>.$BUILD_VERSION.zip" <<parameters.slug>>
+            echo "<<parameters.slug>>.$BUILD_VERSION.zip" >> build/file.txt
       - store_artifacts:
           path: build
       - persist_to_workspace:
@@ -319,7 +320,7 @@ jobs:
       - run:
           name: Activate atlas-content-modeler plugin
           command: |
-            ./wp-cli.phar plugin install --activate --path=/tmp/wordpress build/atlas-content-modeler.$BUILD_VERSION.zip
+            ./wp-cli.phar plugin install --activate --path=/tmp/wordpress build/$(cat build/file.txt)
 
       - run:
           name: Install WPGraphQL
