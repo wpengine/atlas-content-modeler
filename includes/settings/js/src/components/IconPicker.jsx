@@ -324,9 +324,11 @@ export default function IconPicker({
 	modelIcon,
 	setValue,
 }) {
+	const defaultIcon = "dashicons-admin-post";
+
 	const [offsetTop, setOffsetTop] = useState(0);
 	const [offsetLeft, setOffsetLeft] = useState(0);
-	const [icon, setIcon] = useState(modelIcon);
+	const [icon, setIcon] = useState(modelIcon || defaultIcon);
 
 	/**
 	 * Handle button click event
@@ -337,10 +339,14 @@ export default function IconPicker({
 		createPopup(button, button.offset().top, button.offset().left);
 	}
 
+	/**
+	 * Set icon back to default and update form value
+	 * @param event
+	 */
 	function removeIconClickHandler(event) {
 		event.preventDefault();
-		setValue("modelIcon", null, { shouldValidate: true });
-		setIcon(null);
+		setValue("modelIcon", defaultIcon, { shouldValidate: true });
+		setIcon(defaultIcon);
 	}
 
 	/**
@@ -464,13 +470,13 @@ export default function IconPicker({
 
 			{icon && <span className={`p-3 ms-2 dashicons ${icon}`} />}
 
-			{icon && (
+			{icon !== defaultIcon && (
 				<div>
 					<button
 						className="btn btn-link p-0"
 						onClick={removeIconClickHandler}
 					>
-						{__("Remove Icon", "atlas-content-modeler")}
+						{__("Use Default Icon", "atlas-content-modeler")}
 					</button>
 				</div>
 			)}
