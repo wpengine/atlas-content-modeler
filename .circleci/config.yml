@@ -149,114 +149,6 @@ jobs:
           paths:
             - build
 
-  plugin-test-jest:
-    executor:
-      name: node/default
-      tag: lts
-    parameters:
-      slug:
-        type: string
-    working_directory: .
-    steps:
-      - attach_workspace:
-          at: .
-      - node/install-packages:
-          app-dir: <<parameters.slug>>
-      - run:
-          name: Run Jest tests
-          command: |
-            npm run test-no-watch
-          working_directory: <<parameters.slug>>
-
-  plugin-test-lint-js:
-    executor:
-      name: node/default
-      tag: lts
-    parameters:
-      slug:
-        type: string
-    working_directory: .
-    steps:
-      - attach_workspace:
-          at: .
-      - node/install-packages:
-          app-dir: <<parameters.slug>>
-      - run:
-          name: NPM style
-          command: |
-            npm run style
-          working_directory: <<parameters.slug>>
-      - run:
-          name: NPM eslint
-          command: |
-            npm run lint
-          working_directory: <<parameters.slug>>
-
-  plugin-test-lint-php:
-    working_directory: .
-    docker:
-      - image: php:7.4-apache
-        environment:
-          APP_ENV: test
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Install system packages
-          command: apt-get update && apt-get -y install git
-      - run:
-          name: Install PHP extensions
-          command: docker-php-ext-install pdo
-      - run:
-          name: Install Composer
-          command: |
-            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-            php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
-            php composer-setup.php
-            php -r "unlink('composer-setup.php');"
-      - run:
-          name: Run Code Sniffer sniffs
-          command: php ../composer.phar lint
-          working_directory: atlas-content-modeler
-
-  plugin-test-unit:
-    docker:
-      - image: cimg/php:7.4
-      - image: circleci/mysql:5.7
-        environment:
-          MYSQL_DATABASE: wp_database
-          MYSQL_USER: wp_user
-          MYSQL_PASSWORD: wp_pass
-          MYSQL_ROOT_PASSWORD: password
-    parameters:
-      slug:
-        type: string
-    steps:
-      - attach_workspace:
-          at: .
-      - php/install-composer
-      - php/install-packages:
-          app-dir: <<parameters.slug>>
-      - run:
-          name: Remove composer setup file
-          command: |
-            rm -v composer-setup.php
-      - run:
-          name: Install Subversion package
-          command: |
-            sudo apt-get update -yq
-            sudo apt-get install subversion -yq
-      - run:
-          name: Setup WordPress testing framework
-          command: |
-            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
-          working_directory: <<parameters.slug>>
-      - run:
-          name: Run testing suite
-          command: |
-            composer test
-          working_directory: <<parameters.slug>>
-
   plugin-test-e2e:
     docker:
       - image: circleci/php:7.4-node-browsers
@@ -377,6 +269,114 @@ jobs:
       - store_artifacts:
           path: atlas-content-modeler/tests/_output
 
+  plugin-test-jest:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      slug:
+        type: string
+    working_directory: .
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages:
+          app-dir: <<parameters.slug>>
+      - run:
+          name: Run Jest tests
+          command: |
+            npm run test-no-watch
+          working_directory: <<parameters.slug>>
+
+  plugin-test-lint-js:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      slug:
+        type: string
+    working_directory: .
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages:
+          app-dir: <<parameters.slug>>
+      - run:
+          name: NPM style
+          command: |
+            npm run style
+          working_directory: <<parameters.slug>>
+      - run:
+          name: NPM eslint
+          command: |
+            npm run lint
+          working_directory: <<parameters.slug>>
+
+  plugin-test-lint-php:
+    working_directory: .
+    docker:
+      - image: php:7.4-apache
+        environment:
+          APP_ENV: test
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install system packages
+          command: apt-get update && apt-get -y install git
+      - run:
+          name: Install PHP extensions
+          command: docker-php-ext-install pdo
+      - run:
+          name: Install Composer
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('https://composer.github.io/installer.sig'))) { echo 'Installer verified'; } else { echo 'Installer invalid'; unlink('composer-setup.php'); } echo PHP_EOL;"
+            php composer-setup.php
+            php -r "unlink('composer-setup.php');"
+      - run:
+          name: Run Code Sniffer sniffs
+          command: php ../composer.phar lint
+          working_directory: atlas-content-modeler
+
+  plugin-test-unit:
+    docker:
+      - image: cimg/php:7.4
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_DATABASE: wp_database
+          MYSQL_USER: wp_user
+          MYSQL_PASSWORD: wp_pass
+          MYSQL_ROOT_PASSWORD: password
+    parameters:
+      slug:
+        type: string
+    steps:
+      - attach_workspace:
+          at: .
+      - php/install-composer
+      - php/install-packages:
+          app-dir: <<parameters.slug>>
+      - run:
+          name: Remove composer setup file
+          command: |
+            rm -v composer-setup.php
+      - run:
+          name: Install Subversion package
+          command: |
+            sudo apt-get update -yq
+            sudo apt-get install subversion -yq
+      - run:
+          name: Setup WordPress testing framework
+          command: |
+            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
+          working_directory: <<parameters.slug>>
+      - run:
+          name: Run testing suite
+          command: |
+            composer test
+          working_directory: <<parameters.slug>>
+
   plugin-deploy:
     executor: wp-product-orb/authenticate
     environment:
@@ -430,18 +430,18 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-build-pot:
-          requires:
-            - plugin-build-composer
-          # Run this job on every commit/PR so the plugin is available as a build artifact
-          filters:
-            tags:
-              only: /.*/
       - plugin-build-json:
           slug: atlas-content-modeler
           requires:
             - plugin-build-composer
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-pot:
+          requires:
+            - plugin-build-composer
+          # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
               only: /.*/
@@ -454,7 +454,14 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-test-unit:
+      - plugin-test-e2e:
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-jest:
           slug: atlas-content-modeler
           requires:
             - plugin-build-zip
@@ -477,15 +484,8 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-test-jest:
+      - plugin-test-unit:
           slug: atlas-content-modeler
-          requires:
-            - plugin-build-zip
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
-      - plugin-test-e2e:
           requires:
             - plugin-build-zip
           # run this job for any build, any branch
