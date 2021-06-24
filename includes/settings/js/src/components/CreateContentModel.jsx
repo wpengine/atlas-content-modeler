@@ -213,8 +213,9 @@ export default function CreateContentModel() {
 						</p>
 
 						<IconPicker
+							setValue={setValue}
 							buttonClasses="primary first"
-							formRegister={register}
+							register={register}
 						/>
 
 						<p className="field-messages">

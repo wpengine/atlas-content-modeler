@@ -69,6 +69,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 		register,
 		handleSubmit,
 		errors,
+		setValue,
 		formState: { isSubmitting },
 	} = useForm();
 
@@ -259,8 +260,9 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						</p>
 
 						<IconPicker
+							setValue={setValue}
 							buttonClasses="primary first"
-							formRegister={register}
+							register={register}
 							modelIcon={model.modelIcon}
 						/>
 

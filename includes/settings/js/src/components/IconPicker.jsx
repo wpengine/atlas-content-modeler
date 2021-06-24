@@ -318,7 +318,12 @@ const icons = [
  * @returns {JSX.Element}
  * @constructor
  */
-export default function IconPicker({ buttonClasses, formRegister, modelIcon }) {
+export default function IconPicker({
+	buttonClasses,
+	register,
+	modelIcon,
+	setValue,
+}) {
 	const [offsetTop, setOffsetTop] = useState(0);
 	const [offsetLeft, setOffsetLeft] = useState(0);
 	const [icon, setIcon] = useState(modelIcon);
@@ -330,6 +335,12 @@ export default function IconPicker({ buttonClasses, formRegister, modelIcon }) {
 	function clickHandler(event) {
 		const button = $(event.target);
 		createPopup(button, button.offset().top, button.offset().left);
+	}
+
+	function removeIconClickHandler(event) {
+		event.preventDefault();
+		setValue("modelIcon", null, { shouldValidate: true });
+		setIcon(null);
 	}
 
 	/**
@@ -367,6 +378,7 @@ export default function IconPicker({ buttonClasses, formRegister, modelIcon }) {
 			var title = $(this).attr("title");
 			target.val("dashicons-" + title);
 			setIcon(target.val());
+			setValue("modelIcon", target.val(), { shouldValidate: true });
 			removePopup();
 		});
 
@@ -435,7 +447,7 @@ export default function IconPicker({ buttonClasses, formRegister, modelIcon }) {
 				name="modelIcon"
 				type="text"
 				defaultValue={modelIcon}
-				ref={formRegister({ required: true })}
+				ref={register({ required: true })}
 			/>
 
 			<input
@@ -451,6 +463,17 @@ export default function IconPicker({ buttonClasses, formRegister, modelIcon }) {
 			/>
 
 			{icon && <span className={`p-3 ms-2 dashicons ${icon}`} />}
+
+			{icon && (
+				<p>
+					<button
+						className="btn btn-link p-0"
+						onClick={removeIconClickHandler}
+					>
+						{__("Remove Icon", "atlas-content-modeler")}
+					</button>
+				</p>
+			)}
 		</>
 	);
 }
