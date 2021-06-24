@@ -461,7 +461,7 @@ workflows:
       - plugin-build-json:
           slug: atlas-content-modeler
           requires:
-            - plugin-test-unit
+            - plugin-build-composer
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
           filters:
             tags:
