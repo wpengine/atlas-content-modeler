@@ -34,7 +34,7 @@ function MultipleChoiceFields({
 	 * @param choice
 	 * @return {boolean}
 	 */
-	const choiceIsUnsaved = (choice) => {
+	const choiceIsSaved = (choice) => {
 		return data.choices.some(
 			(savedChoice) =>
 				savedChoice.name === choice.name &&
@@ -137,7 +137,7 @@ function MultipleChoiceFields({
 													defaultValue={`${item.slug}`}
 													name={`choices[${index}].slug`}
 													id={`choices[${index}].slug`}
-													readOnly={choiceIsUnsaved(
+													readOnly={choiceIsSaved(
 														item
 													)}
 												/>
