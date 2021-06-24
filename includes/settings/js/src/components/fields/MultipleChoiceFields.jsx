@@ -24,11 +24,23 @@ function MultipleChoiceFields({
 	});
 
 	if (fields.length < 1) {
-		let fields = [];
-		append({ name: "" });
+		append({ name: "", slug: "" });
 	}
 
-	const fieldsInitLength = fields.length;
+	/**
+	 * Checks if a choice has been saved, so that new choices can be given
+	 * editable API Identifier fields, but saved choices have read-only IDs.
+	 *
+	 * @param choice
+	 * @return {boolean}
+	 */
+	const choiceIsUnsaved = (choice) => {
+		return data.choices.some(
+			(savedChoice) =>
+				savedChoice.name === choice.name &&
+				savedChoice.slug === choice.slug
+		);
+	};
 
 	return (
 		<div className={editing ? "field read-only" : "field"}>
@@ -40,7 +52,6 @@ function MultipleChoiceFields({
 					<div className="multiple-option-container">
 						<ul>
 							{fields.map((item, index) => {
-								console.log(fields);
 								return (
 									<div
 										key={item.id}
@@ -114,8 +125,7 @@ function MultipleChoiceFields({
 											<div className="hey-listen">
 												<input
 													ref={register()}
-													// Below works for a statically defined option.
-													placeholder="Option Name"
+													placeholder="Option API Identifier"
 													type="text"
 													onKeyPress={(event) => {
 														if (
@@ -124,17 +134,12 @@ function MultipleChoiceFields({
 														)
 															event.preventDefault();
 													}}
-													defaultValue={`${item.name}`}
-													// onChange={(e) => {
-													// 	toValidApiId(event.target.value);
-													// }}
-						
-													// Need to figure out how to pass the built object to the useApiGenerator logic.
+													defaultValue={`${item.slug}`}
 													name={`choices[${index}].slug`}
 													id={`choices[${index}].slug`}
-													// {...apiIdFieldAttributes}
-													type="text"
-													readonly={ console.log(index, fieldsInitLength) && editing || editing && ! index >= fieldsInitLength ? "readonly" : false}
+													readOnly={choiceIsUnsaved(
+														item
+													)}
 												/>
 											</div>
 											<div>
@@ -211,7 +216,7 @@ function MultipleChoiceFields({
 									onClick={(event) => {
 										event.preventDefault();
 										clearErrors("multipleChoice");
-										append({ name: "" });
+										append({ name: "", slug: "" });
 									}}
 								>
 									<a>
