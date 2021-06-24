@@ -472,7 +472,7 @@ workflows:
       - plugin-bundle-zip:
           slug: atlas-content-modeler
           requires:
-            - plugin-e2e-test
+            - plugin-npm-build
             - plugin-bundle-pot
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
@@ -492,6 +492,7 @@ workflows:
           requires:
             - plugin-bundle-zip
             - plugin-bundle-json
+            - plugin-e2e-test
           filters:
             branches:
               only:
