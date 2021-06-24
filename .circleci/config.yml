@@ -218,7 +218,7 @@ jobs:
           paths:
             - .
 
-  plugin-bundle-pot:
+  plugin-build-pot:
     docker:
       - image: circleci/php:7.4-node-browsers
     steps:
@@ -437,12 +437,14 @@ workflows:
               only: /.*/
       - plugin-test-e2e:
           requires:
+            - plugin-test-lint
             - plugin-test-jest
+            - plugin-test-unit
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
-      - plugin-bundle-pot:
+      - plugin-build-pot:
           requires:
             - plugin-build-composer
           # Run this job on every commit/PR so the plugin is available as a build artifact
@@ -453,7 +455,10 @@ workflows:
           slug: atlas-content-modeler
           requires:
             - plugin-build-npm
-            - plugin-bundle-pot
+            - plugin-build-pot
+            - plugin-test-lint
+            - plugin-test-jest
+            - plugin-test-unit
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
