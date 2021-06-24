@@ -314,10 +314,7 @@ jobs:
 
   plugin-test-lint-php:
     working_directory: .
-    docker:
-      - image: php:7.4-apache
-        environment:
-          APP_ENV: test
+    executor: php/default
     steps:
       - attach_workspace:
           at: .
