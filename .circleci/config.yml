@@ -191,6 +191,25 @@ jobs:
             npm run lint
           working_directory: <<parameters.slug>>
 
+  plugin-test-lint-php:
+    working_directory: .
+    docker:
+      - image: php:7.4-apache
+        environment:
+          APP_ENV: test
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install system packages
+          command: apt-get update && apt-get -y install git
+      - run:
+          name: Install PHP extensions
+          command: docker-php-ext-install pdo
+      - run:
+          name: Run Code Sniffer sniffs
+          command: vendor/bin/phpcs
+
   plugin-test-unit:
     docker:
       - image: cimg/php:7.4
@@ -443,6 +462,13 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - plugin-test-lint-php:
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-test-jest:
           slug: atlas-content-modeler
           requires:
@@ -454,6 +480,7 @@ workflows:
       - plugin-test-e2e:
           requires:
             - plugin-test-lint-js
+            - plugin-test-lint-php
             - plugin-test-jest
             - plugin-test-unit
           # run this job for any build, any branch
