@@ -20,9 +20,9 @@ add_action( 'init', __NAMESPACE__ . '\register' );
  */
 function register(): void {
 	foreach ( get_taxonomies() as $slug => $args ) {
+		$args       = set_defaults( $args );
 		$properties = get_props( $args );
-		$types      = $args['types'] ?? [];
-		register_taxonomy( $slug, (array) $types, $properties );
+		register_taxonomy( $slug, (array) $args['types'], $properties );
 	}
 }
 
@@ -92,8 +92,6 @@ function get_labels( array $args ): array {
  * @param array $args Arguments including the singular and plural name of the post type.
  */
 function get_props( array $args ): array {
-	$args = set_defaults( $args );
-
 	/**
 	 * These values are omitted to use WP defaults:
 	 * - rewrite (true)
@@ -110,11 +108,11 @@ function get_props( array $args ): array {
 	 */
 	return array(
 		'labels'                => get_labels( $args ),
-		'public'                => ( $args['api_visibility'] ?? '' ) === 'public',
-		'description'           => $args['description'] ?? '',
-		'hierarchical'          => $args['hierarchical'] ?? false,
-		'show_in_rest'          => $args['show_in_rest'] ?? true,
-		'show_in_graphql'       => $args['show_in_graphql'] ?? true,
+		'public'                => $args['api_visibility'] === 'public',
+		'description'           => $args['description'],
+		'hierarchical'          => $args['hierarchical'],
+		'show_in_rest'          => $args['show_in_rest'],
+		'show_in_graphql'       => $args['show_in_graphql'],
 		'graphql_single_name'   => camelcase( $args['singular'] ),
 		'graphql_plural_name'   => camelcase( $args['plural'] ),
 		'show_ui'               => true,
@@ -147,9 +145,14 @@ function get_taxonomies(): array {
 function set_defaults( array $args ): array {
 	$hierarchical = $args['hierarchical'] ?? false;
 	$defaults     = array(
-		'hierarchical' => $hierarchical,
-		'singular'     => $hierarchical ? __( 'Category', 'atlas-content-modeler' ) : __( 'Tag', 'atlas-content-modeler' ),
-		'plural'       => $hierarchical ? __( 'Categories', 'atlas-content-modeler' ) : __( 'Tags', 'atlas-content-modeler' ),
+		'api_visibility'  => 'private',
+		'description'     => '',
+		'types'           => [],
+		'show_in_rest'    => true,
+		'show_in_graphql' => true,
+		'hierarchical'    => $hierarchical,
+		'singular'        => $hierarchical ? __( 'Category', 'atlas-content-modeler' ) : __( 'Tag', 'atlas-content-modeler' ),
+		'plural'          => $hierarchical ? __( 'Categories', 'atlas-content-modeler' ) : __( 'Tags', 'atlas-content-modeler' ),
 	);
 
 	return wp_parse_args( $args, $defaults );
