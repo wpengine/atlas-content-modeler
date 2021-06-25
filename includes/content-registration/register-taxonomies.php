@@ -19,7 +19,8 @@ add_action( 'init', __NAMESPACE__ . '\register' );
 function register(): void {
 	foreach ( get_taxonomies() as $slug => $args ) {
 		$properties = get_props( $args );
-		register_taxonomy( $slug, $args['types'], $properties );
+		$types      = $args['types'] ?? [];
+		register_taxonomy( $slug, (array) $types, $properties );
 	}
 }
 
