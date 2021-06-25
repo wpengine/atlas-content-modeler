@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler\ContentRegistration\Taxonomies;
 
+use function WPE\AtlasContentModeler\ContentRegistration\camelcase;
+
 add_action( 'init', __NAMESPACE__ . '\register' );
 /**
  * Registers taxonomies.
@@ -33,57 +35,51 @@ function register(): void {
  * @param array $args Taxonomy properties.
  */
 function get_labels( array $args ): array {
-	$hierarchical     = $args['hierarchical'] ?? false;
-	$default_singular = $hierarchical ? __( 'Category', 'atlas-content-modeler' ) : __( 'Tag', 'atlas-content-modeler' );
-	$default_plural   = $hierarchical ? __( 'Categories', 'atlas-content-modeler' ) : __( 'Tags', 'atlas-content-modeler' );
-	$singular         = $args['singular'] ?? $default_singular;
-	$plural           = $args['plural'] ?? $default_plural;
-
 	/**
 	 * These values are omitted to use WP defaults:
 	 * - most_used ('Most Used')
 	 */
 	return [
-		'name'                       => $plural,
-		'singular_name'              => $singular,
+		'name'                       => $args['plural'],
+		'singular_name'              => $args['singular'],
 		/* translators: %s: plural taxonomy name */
-		'search_items'               => sprintf( __( 'Search %s', 'atlas-content-modeler' ), $plural ),
+		'search_items'               => sprintf( __( 'Search %s', 'atlas-content-modeler' ), $args['plural'] ),
 		/* translators: %s: plural taxonomy name */
-		'popular_items'              => sprintf( __( 'Popular %s', 'atlas-content-modeler' ), $plural ),
+		'popular_items'              => sprintf( __( 'Popular %s', 'atlas-content-modeler' ), $args['plural'] ),
 		/* translators: %s: plural taxonomy name */
-		'all_items'                  => sprintf( __( 'All %s', 'atlas-content-modeler' ), $plural ),
+		'all_items'                  => sprintf( __( 'All %s', 'atlas-content-modeler' ), $args['plural'] ),
 		/* translators: %s: singular taxonomy name */
-		'parent_item'                => $hierarchical ? sprintf( __( 'Parent %s', 'atlas-content-modeler' ), $singular ) : null,
+		'parent_item'                => $args['hierarchical'] ? sprintf( __( 'Parent %s', 'atlas-content-modeler' ), $args['singular'] ) : null,
 		/* translators: %s: singular taxonomy name */
-		'parent_item_colon'          => $hierarchical ? sprintf( __( 'Parent %s:', 'atlas-content-modeler' ), $singular ) : null,
+		'parent_item_colon'          => $args['hierarchical'] ? sprintf( __( 'Parent %s:', 'atlas-content-modeler' ), $args['singular'] ) : null,
 		/* translators: %s: singular taxonomy name */
-		'edit_item'                  => sprintf( __( 'Edit %s', 'atlas-content-modeler' ), $singular ),
+		'edit_item'                  => sprintf( __( 'Edit %s', 'atlas-content-modeler' ), $args['singular'] ),
 		/* translators: %s: singular taxonomy name */
-		'view_item'                  => sprintf( __( 'View %s', 'atlas-content-modeler' ), $singular ),
+		'view_item'                  => sprintf( __( 'View %s', 'atlas-content-modeler' ), $args['singular'] ),
 		/* translators: %s: singular taxonomy name */
-		'update_item'                => sprintf( __( 'Update %s', 'atlas-content-modeler' ), $singular ),
+		'update_item'                => sprintf( __( 'Update %s', 'atlas-content-modeler' ), $args['singular'] ),
 		/* translators: %s: singular taxonomy name */
-		'add_new_item'               => sprintf( __( 'Add New %s', 'atlas-content-modeler' ), $singular ),
+		'add_new_item'               => sprintf( __( 'Add New %s', 'atlas-content-modeler' ), $args['singular'] ),
 		/* translators: %s: singular taxonomy name */
-		'new_item_name'              => sprintf( __( 'New %s Name', 'atlas-content-modeler' ), $singular ),
+		'new_item_name'              => sprintf( __( 'New %s Name', 'atlas-content-modeler' ), $args['singular'] ),
 		/* translators: %s: plural taxonomy name */
-		'separate_items_with_commas' => $hierarchical ? null : sprintf( __( 'Separate %s with commas', 'atlas-content-modeler' ), strtolower( $plural ) ),
+		'separate_items_with_commas' => $args['hierarchical'] ? null : sprintf( __( 'Separate %s with commas', 'atlas-content-modeler' ), strtolower( $args['plural'] ) ),
 		/* translators: %s: plural taxonomy name */
-		'add_or_remove_items'        => $hierarchical ? null : sprintf( __( 'Add or remove %s', 'atlas-content-modeler' ), strtolower( $plural ) ),
+		'add_or_remove_items'        => $args['hierarchical'] ? null : sprintf( __( 'Add or remove %s', 'atlas-content-modeler' ), strtolower( $args['plural'] ) ),
 		/* translators: %s: plural taxonomy name */
-		'choose_from_most_used'      => $hierarchical ? null : sprintf( __( 'Choose from the most used %s', 'atlas-content-modeler' ), strtolower( $plural ) ),
+		'choose_from_most_used'      => $args['hierarchical'] ? null : sprintf( __( 'Choose from the most used %s', 'atlas-content-modeler' ), strtolower( $args['plural'] ) ),
 		/* translators: %s: plural taxonomy name */
-		'not_found'                  => sprintf( __( 'No %s found.', 'atlas-content-modeler' ), strtolower( $plural ) ),
+		'not_found'                  => sprintf( __( 'No %s found.', 'atlas-content-modeler' ), strtolower( $args['plural'] ) ),
 		/* translators: %s: plural taxonomy name */
-		'no_terms'                   => sprintf( __( 'No %s', 'atlas-content-modeler' ), strtolower( $plural ) ),
+		'no_terms'                   => sprintf( __( 'No %s', 'atlas-content-modeler' ), strtolower( $args['plural'] ) ),
 		/* translators: %s: singular taxonomy name */
-		'filter_by_item'             => $hierarchical ? sprintf( __( 'Filter by %s', 'atlas-content-modeler' ), strtolower( $singular ) ) : null,
+		'filter_by_item'             => $args['hierarchical'] ? sprintf( __( 'Filter by %s', 'atlas-content-modeler' ), strtolower( $args['singular'] ) ) : null,
 		/* translators: %s: plural taxonomy name */
-		'items_list_navigation'      => sprintf( __( '%s list navigation', 'atlas-content-modeler' ), $plural ),
+		'items_list_navigation'      => sprintf( __( '%s list navigation', 'atlas-content-modeler' ), $args['plural'] ),
 		/* translators: %s: plural taxonomy name */
-		'items_list'                 => sprintf( __( '%s list', 'atlas-content-modeler' ), $plural ),
+		'items_list'                 => sprintf( __( '%s list', 'atlas-content-modeler' ), $args['plural'] ),
 		/* translators: %s: plural taxonomy name */
-		'back_to_items'              => sprintf( __( '&larr; Go to %s', 'atlas-content-modeler' ), $plural ),
+		'back_to_items'              => sprintf( __( '&larr; Go to %s', 'atlas-content-modeler' ), $args['plural'] ),
 	];
 }
 
@@ -96,6 +92,8 @@ function get_labels( array $args ): array {
  * @param array $args Arguments including the singular and plural name of the post type.
  */
 function get_props( array $args ): array {
+	$args = set_defaults( $args );
+
 	/**
 	 * These values are omitted to use WP defaults:
 	 * - rewrite (true)
@@ -117,6 +115,8 @@ function get_props( array $args ): array {
 		'hierarchical'          => $args['hierarchical'] ?? false,
 		'show_in_rest'          => $args['show_in_rest'] ?? true,
 		'show_in_graphql'       => $args['show_in_graphql'] ?? true,
+		'graphql_single_name'   => camelcase( $args['singular'] ),
+		'graphql_plural_name'   => camelcase( $args['plural'] ),
 		'show_ui'               => true,
 		'show_admin_column'     => true,
 		'capabilities'          => array(
@@ -136,4 +136,21 @@ function get_props( array $args ): array {
  */
 function get_taxonomies(): array {
 	return get_option( 'atlas_content_modeler_taxonomies', array() );
+}
+
+/**
+ * Fills default taxonomy arguments for required missing values.
+ *
+ * @since 0.6.0
+ * @param array $args The taxonomy arguments.
+ */
+function set_defaults( array $args ): array {
+	$hierarchical = $args['hierarchical'] ?? false;
+	$defaults     = array(
+		'hierarchical' => $hierarchical,
+		'singular'     => $hierarchical ? __( 'Category', 'atlas-content-modeler' ) : __( 'Tag', 'atlas-content-modeler' ),
+		'plural'       => $hierarchical ? __( 'Categories', 'atlas-content-modeler' ) : __( 'Tags', 'atlas-content-modeler' ),
+	);
+
+	return wp_parse_args( $args, $defaults );
 }
