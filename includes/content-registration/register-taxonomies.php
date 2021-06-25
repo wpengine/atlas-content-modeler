@@ -33,8 +33,8 @@ function register(): void {
  */
 function get_labels( array $args ): array {
 	$hierarchical     = $args['hierarchical'] ?? false;
-	$default_singular = $hierarchical ? 'Category' : 'Tag';
-	$default_plural   = $hierarchical ? 'Categories' : 'Tags';
+	$default_singular = $hierarchical ? __( 'Category', 'atlas-content-modeler' ) : __( 'Tag', 'atlas-content-modeler' );
+	$default_plural   = $hierarchical ? __( 'Categories', 'atlas-content-modeler' ) : __( 'Tags', 'atlas-content-modeler' );
 	$singular         = $args['singular'] ?? $default_singular;
 	$plural           = $args['plural'] ?? $default_plural;
 
