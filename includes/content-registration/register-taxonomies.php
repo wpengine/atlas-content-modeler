@@ -123,7 +123,7 @@ function get_props( array $args ): array {
 			'delete_terms' => 'delete_categories',
 			'assign_terms' => 'assign_categories',
 		),
-		'rest_controller_class' => 'WP_REST_Terms_Controller',
+		'rest_controller_class' => __NAMESPACE__ . '\REST_Terms_Controller',
 	);
 }
 
