@@ -157,3 +157,35 @@ function set_defaults( array $args ): array {
 
 	return wp_parse_args( $args, $defaults );
 }
+
+add_filter( 'graphql_data_is_private', __NAMESPACE__ . '\graphql_data_is_private', 10, 6 );
+/**
+ * Determines whether or not taxonomy data should be considered private in WPGraphQL.
+ *
+ * Accessing private data requires authentication.
+ *
+ * @since 0.6.0
+ * @param boolean     $is_private Whether or not the model is private.
+ * @param string      $model_name Name of the model the filter is being executed in.
+ * @param mixed       $data The incoming data.
+ * @param string|null $visibility The visibility that has currently been set for the data.
+ * @param int|null    $owner The user ID for the owner of this piece of data.
+ * @param \WP_User    $current_user The current user for the session.
+ */
+function graphql_data_is_private( bool $is_private, string $model_name, $data, $visibility, $owner, \WP_User $current_user ): bool {
+	if ( ! is_object( $data ) ) {
+		return $is_private;
+	}
+
+	if ( 'WP_Term' !== get_class( $data ) ) {
+		return $is_private;
+	}
+
+	$taxonomies = get_taxonomies();
+
+	if ( 'private' === ( $taxonomies[ $data->taxonomy ]['api_visibility'] ?? '' ) ) {
+		return ! user_can( $current_user, 'edit_term', $data->term_id );
+	}
+
+	return $is_private;
+}
