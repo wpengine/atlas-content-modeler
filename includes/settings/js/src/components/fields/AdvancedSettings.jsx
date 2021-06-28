@@ -28,7 +28,7 @@ const MediaSettings = ({
 					target="_blank"
 					rel="noreferrer"
 				>
-					{__("Wordpress Allowed Types", "atlas-content-modeler")}
+					{__("WordPress Allowed Types", "atlas-content-modeler")}
 				</a>
 			</p>
 
