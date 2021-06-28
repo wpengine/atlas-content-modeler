@@ -84,9 +84,9 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		register();
 
-		$missing = get_taxonomy('missing');
+		$missing = get_taxonomy( 'missing' );
 
-		self::assertSame('Tags', $missing->label );
+		self::assertSame( 'Tags', $missing->label );
 		self::assertSame( true, $missing->show_in_menu );
 		self::assertSame( true, $missing->show_ui );
 		self::assertSame( 'manage_categories', $missing->cap->manage_terms );
@@ -103,7 +103,7 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		register();
 
-		$ingredients = get_taxonomy('ingredient');
+		$ingredients = get_taxonomy( 'ingredient' );
 
 		self::assertSame('Ingredients', $ingredients->label );
 		self::assertSame('Ingredient', $ingredients->labels->singular_name );
@@ -118,11 +118,11 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		register();
 
-		$public  = get_taxonomy('public');
-		$private = get_taxonomy('private');
-		$missing = get_taxonomy('missing');
+		$public  = get_taxonomy( 'public' );
+		$private = get_taxonomy( 'private' );
+		$missing = get_taxonomy( 'missing' );
 
-		self::assertSame(true, $public->public );
+		self::assertSame( true, $public->public );
 		self::assertSame( false, $private->public );
 		self::assertSame( false, $missing->public );
 	}
