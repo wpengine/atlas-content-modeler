@@ -9,11 +9,6 @@ class TestGraphQLTaxonomyEndpoint extends WP_UnitTestCase {
 	private $taxonomy_option = 'atlas_content_modeler_taxonomies';
 
 	/**
-	 * @var array IDs of terms to use in REST requests.
-	 */
-	private $term_ids = [];
-
-	/**
 	 * @var array Taxonomies to test against.
 	 */
 	private $sample_taxonomies = array(
@@ -41,13 +36,6 @@ class TestGraphQLTaxonomyEndpoint extends WP_UnitTestCase {
 		parent::setUp();
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		register();
-
-		// Adds terms to each taxonomy to test visibility of term REST endpoints.
-		foreach ( $this->sample_taxonomies as $taxonomy => $_unused ) {
-			$term = wp_insert_term( $taxonomy . '-term', $taxonomy );
-			$this->term_ids[ $taxonomy ] = $term['term_id'];
-		}
-		do_action( 'graphql_register_types_late' );
 	}
 
 	public function test_taxonomies_are_visible_if_show_in_graphql_is_true() {
