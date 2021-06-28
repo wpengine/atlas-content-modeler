@@ -35,10 +35,13 @@ function MultipleChoiceFields({
 	 * @return {boolean}
 	 */
 	const choiceIsSaved = (choice) => {
-		return data.choices.some(
-			(savedChoice) =>
-				savedChoice.name === choice.name &&
-				savedChoice.slug === choice.slug
+		return (
+			data.choices &&
+			data.choices.some(
+				(savedChoice) =>
+					savedChoice.name === choice.name &&
+					savedChoice.slug === choice.slug
+			)
 		);
 	};
 
@@ -127,6 +130,11 @@ function MultipleChoiceFields({
 													ref={register()}
 													placeholder="Option API Identifier"
 													type="text"
+													onChange={(event) => {
+														event.target.value = toValidApiId(
+															event.target.value
+														);
+													}}
 													onKeyPress={(event) => {
 														if (
 															event.key ===

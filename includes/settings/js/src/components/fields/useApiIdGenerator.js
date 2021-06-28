@@ -38,7 +38,6 @@ export function useApiIdGenerator({
 	const [fieldsAreLinked, setFieldsAreLinked] = useState(!editing);
 
 	if (fieldsAreLinked) {
-		console.log(apiFieldId);
 		setValue(apiFieldId, toValidApiId(input));
 	}
 
@@ -46,7 +45,6 @@ export function useApiIdGenerator({
 		setApiIdGeneratorInput,
 		apiIdFieldAttributes: {
 			onChange: (event) => {
-				console.log(event.target.name);
 				// Unlinks fields if the user edits the API ID field. So that
 				// users who edit the API ID field and then the name field do
 				// not have their changes to the API ID field overwritten.
