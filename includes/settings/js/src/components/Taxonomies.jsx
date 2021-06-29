@@ -335,7 +335,10 @@ export default function Taxonomies() {
 										htmlFor="hierarchical"
 										className="checkbox"
 									>
-										Terms can have parents
+										{__(
+											"Terms can have parent terms",
+											"atlas-content-modeler"
+										)}
 									</label>
 								</p>
 								<p className="help">
