@@ -456,7 +456,7 @@ export default function IconPicker({
 				name="modelIcon"
 				type="text"
 				defaultValue={modelIcon}
-				ref={register({ required: true })}
+				ref={register}
 			/>
 
 			<input

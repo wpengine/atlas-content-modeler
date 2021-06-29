@@ -313,7 +313,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					</div>
 				</div>
 
-				<div className={errors.modelIcon ? "field has-error" : "field"}>
+				<div className="field">
 					<label htmlFor="modelIcon">
 						{__("Model Icon", "atlas-content-modeler")}
 					</label>
@@ -330,21 +330,6 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						register={register}
 						modelIcon={model.modelIcon}
 					/>
-
-					<p className="field-messages">
-						{errors.modelIcon &&
-							errors.modelIcon.type === "required" && (
-								<span className="error">
-									<Icon type="error" />
-									<span role="alert">
-										{__(
-											"An icon is required",
-											"atlas-content-modeler"
-										)}
-									</span>
-								</span>
-							)}
-					</p>
 				</div>
 
 				<div
