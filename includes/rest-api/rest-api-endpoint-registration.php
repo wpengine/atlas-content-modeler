@@ -124,6 +124,19 @@ function register_rest_routes(): void {
 			},
 		]
 	);
+
+	// Route for creating a taxonomy.
+	register_rest_route(
+		'wpe',
+		'/atlas/taxonomy',
+		[
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\dispatch_create_taxonomy',
+			'permission_callback' => static function () {
+				return current_user_can( 'manage_options' );
+			},
+		]
+	);
 }
 
 /**
@@ -559,6 +572,36 @@ function create_model( string $post_type_slug, array $args ) {
 }
 
 /**
+ * Handles taxonomy POST requests from the REST API.
+ *
+ * @param WP_REST_Request $request The REST API request object.
+ *
+ * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
+ */
+function dispatch_create_taxonomy( WP_REST_Request $request ) {
+	$params = $request->get_params();
+
+	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
+
+	$taxonomy = save_taxonomy( $params );
+
+	if ( is_wp_error( $taxonomy ) ) {
+		return new WP_Error(
+			$taxonomy->get_error_code(),
+			$taxonomy->get_error_message(),
+			[ 'status' => 400 ]
+		);
+	}
+
+	return rest_ensure_response(
+		[
+			'success'  => true,
+			'taxonomy' => $taxonomy,
+		]
+	);
+}
+
+/**
  * Updates the specified content model.
  *
  * @param string $post_type_slug The post type slug.
@@ -679,4 +722,60 @@ function content_model_multi_option_exists( array $names, string $current_choice
 		}
 	}
 	return false;
+}
+
+/**
+ * Saves a taxonomy.
+ *
+ * @param array $params Parameters passed from the taxonomy form.
+ * @return object|WP_Error
+ * @since 0.6.0
+ */
+function save_taxonomy( array $params ) {
+	if ( empty( $params['slug'] ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_invalid_id',
+			esc_html__( 'Please provide a valid API Identifier.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	$taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
+
+	if ( array_key_exists( $params['slug'], $taxonomies ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_taxonomy_exists',
+			esc_html__( 'A taxonomy with this API Identifier already exists.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	if ( empty( $params['singular'] ) || empty( $params['plural'] ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_invalid_labels',
+			esc_html__( 'Please provide singular and plural labels when creating a taxonomy.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	$defaults = [
+		'types'           => [],
+		'show_in_rest'    => true,
+		'show_in_graphql' => true,
+		'hierarchical'    => false,
+		'api_visibility'  => 'private',
+	];
+
+	$taxonomy                        = wp_parse_args( $params, $defaults );
+	$taxonomies[ $taxonomy['slug'] ] = $taxonomy;
+	$created                         = update_option( 'atlas_content_modeler_taxonomies', $taxonomies );
+
+	if ( ! $created ) {
+		return new WP_Error(
+			'atlas_content_modeler_taxonomy_not_created',
+			esc_html__( 'Taxonomy not created. Reason unknown.', 'atlas-content-modeler' )
+		);
+	}
+
+	return $taxonomy;
 }
