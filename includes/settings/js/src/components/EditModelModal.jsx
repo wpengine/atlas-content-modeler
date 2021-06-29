@@ -15,7 +15,7 @@ const { apiFetch } = wp;
 function updateSidebarMenuItem(model, data) {
 	if (model.model_icon !== data.model_icon) {
 		// update sidebar icon
-		$(`li#menu-posts-${model.slug}`)
+		$(`li#menu-posts-${model.slug.toLowerCase()}`)
 			.find(".wp-menu-image")
 			.removeClass(function (index, className) {
 				return (className.match(/(^|\s)dashicons-\S+/g) || []).join(
