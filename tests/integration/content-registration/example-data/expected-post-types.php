@@ -55,7 +55,7 @@ return array (
 			'show_in_graphql' => true,
 			'graphql_single_name' => 'dog',
 			'graphql_plural_name' => 'dogs',
-			'menu_icon'           => $atlas_content_modeler_entry_icon,
+			'menu_icon'           => 'dashicons-saved',
 			'rest_controller_class' => 'WPE\AtlasContentModeler\ContentRegistration\REST_Posts_Controller',
 			'fields' => array(
 				'dog-test-field' => array(

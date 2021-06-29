@@ -344,7 +344,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_generate_custom_post_type_args_generates_expected_data(): void {
-		$generated_args = generate_custom_post_type_args( [ 'singular' => 'Dog', 'plural' => 'Dogs' ] );
+		$generated_args = generate_custom_post_type_args( [ 'singular' => 'Dog', 'plural' => 'Dogs', 'modelIcon' => 'dashicons-saved' ] );
 		$expected_args = $this->expected_post_types()['dog'];
 		unset( $expected_args['fields'] );
 		self::assertSame( $generated_args, $expected_args );
