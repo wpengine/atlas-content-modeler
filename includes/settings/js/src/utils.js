@@ -101,8 +101,11 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
  * @return {string} The GraphiQL URL with query param prefilled.
  */
 export const getGraphiQLLink = (modelData) => {
-	const modelSingular = modelData.singular.replace(/\s/g, "");
-	const fragmentName = `${modelSingular}Fields`;
+	const graphQLType = toValidApiId(modelData.singular).replace(
+		/^[a-z]/g,
+		(match) => match.toUpperCase() // GraphQL's "Types" are all capitalized
+	);
+	const fragmentName = `${graphQLType}Fields`;
 	const pluralSlug = toValidApiId(modelData.plural);
 
 	const fields = sanitizeFields(modelData?.fields);
@@ -148,7 +151,7 @@ ${fields[id]?.slug} {
   }
 }
 
-fragment ${fragmentName} on ${modelSingular} {
+fragment ${fragmentName} on ${graphQLType} {
   ${fieldSlugs.join("\n  ")}
 }
 `;
