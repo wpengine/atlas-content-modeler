@@ -30,3 +30,12 @@ checks:
   identical-code:
     config:
       threshold: # language-specific defaults. an override will affect all languages.
+  plugins:
+    rubocop:
+      enabled: true
+    eslint:
+      enabled: true
+    phpmd:
+      enabled: true
+    duplication:
+      enabled: true
