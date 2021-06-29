@@ -196,44 +196,6 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<div
-						className={
-							errors.modelIcon ? "field has-error" : "field"
-						}
-					>
-						<label htmlFor="modelIcon">
-							{__("Model Icon", "atlas-content-modeler")}
-						</label>
-						<br />
-						<p className="help">
-							{__(
-								"Choose an icon to represent your model.",
-								"atlas-content-modeler"
-							)}
-						</p>
-
-						<IconPicker
-							setValue={setValue}
-							buttonClasses="primary first"
-							register={register}
-						/>
-
-						<p className="field-messages">
-							{errors.modelIcon &&
-								errors.modelIcon.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"An icon is required",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-						</p>
-					</div>
-
 					<div className={errors.slug ? "field has-error" : "field"}>
 						<label htmlFor="slug">
 							{__("API Identifier", "atlas-content-modeler")}
@@ -334,6 +296,44 @@ export default function CreateContentModel() {
 									</span>
 								)}
 							<span>&nbsp;</span>
+						</p>
+					</div>
+
+					<div
+						className={
+							errors.modelIcon ? "field has-error" : "field"
+						}
+					>
+						<label htmlFor="modelIcon">
+							{__("Model Icon", "atlas-content-modeler")}
+						</label>
+						<br />
+						<p className="help">
+							{__(
+								"Choose an icon to represent your model.",
+								"atlas-content-modeler"
+							)}
+						</p>
+
+						<IconPicker
+							setValue={setValue}
+							buttonClasses="primary first"
+							register={register}
+						/>
+
+						<p className="field-messages">
+							{errors.modelIcon &&
+								errors.modelIcon.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"An icon is required",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
 						</p>
 					</div>
 

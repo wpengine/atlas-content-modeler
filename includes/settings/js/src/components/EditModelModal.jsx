@@ -246,44 +246,6 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 
 					<div
 						className={
-							errors.modelIcon ? "field has-error" : "field"
-						}
-					>
-						<label htmlFor="modelIcon">
-							{__("Model Icon", "atlas-content-modeler")}
-						</label>
-						<p className="help">
-							{__(
-								"Choose an icon to represent your model.",
-								"atlas-content-modeler"
-							)}
-						</p>
-
-						<IconPicker
-							setValue={setValue}
-							buttonClasses="primary first"
-							register={register}
-							modelIcon={model.modelIcon}
-						/>
-
-						<p className="field-messages">
-							{errors.modelIcon &&
-								errors.modelIcon.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"An icon is required",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-						</p>
-					</div>
-
-					<div
-						className={
 							errors.api_visibility
 								? "field has-error form-check form-check-inline col-sm"
 								: "field form-check form-check-inline col-sm"
@@ -349,6 +311,40 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 								)}
 						</p>
 					</div>
+				</div>
+
+				<div className={errors.modelIcon ? "field has-error" : "field"}>
+					<label htmlFor="modelIcon">
+						{__("Model Icon", "atlas-content-modeler")}
+					</label>
+					<p className="help">
+						{__(
+							"Choose an icon to represent your model.",
+							"atlas-content-modeler"
+						)}
+					</p>
+
+					<IconPicker
+						setValue={setValue}
+						buttonClasses="primary first"
+						register={register}
+						modelIcon={model.modelIcon}
+					/>
+
+					<p className="field-messages">
+						{errors.modelIcon &&
+							errors.modelIcon.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"An icon is required",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+					</p>
 				</div>
 
 				<div
