@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { __ } from "@wordpress/i18n";
+import { __, sprintf } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
 import { useForm } from "react-hook-form";
 import Icon from "../../../../components/icons";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
+import { showSuccess } from "../toasts";
+
+const { apiFetch } = wp;
 
 export default function Taxonomies() {
 	const { models, taxonomies, taxonomiesDispatch } = useContext(
@@ -17,11 +20,14 @@ export default function Taxonomies() {
 		errors,
 		setValue,
 		setError,
+		clearErrors,
+		reset,
 		formState: { isSubmitting },
 	} = useForm({
 		defaultValues: {
 			api_visibility: "private",
 			hierarchical: false,
+			slug: "",
 		},
 	});
 
@@ -39,7 +45,41 @@ export default function Taxonomies() {
 			});
 			return false;
 		}
-		console.log(data);
+
+		return apiFetch({
+			path: "/wpe/atlas/taxonomy",
+			method: "POST",
+			_wpnonce: wpApiSettings.nonce,
+			data,
+		})
+			.then((res) => {
+				if (res.success) {
+					taxonomiesDispatch({
+						type: "addTaxonomy",
+						data: res.taxonomy,
+					});
+					window.scrollTo(0, 0);
+					reset();
+					showSuccess(
+						sprintf(
+							__(
+								/* translators: the taxonomy plural name */
+								'The "%s" taxonomy was created.',
+								"atlas-content-modeler"
+							),
+							res.taxonomy.plural
+						)
+					);
+				}
+			})
+			.catch((err) => {
+				if (err.code === "atlas_content_modeler_taxonomy_exists") {
+					setError("slug", {
+						type: "idExists",
+						message: err.message,
+					});
+				}
+			});
 	}
 
 	return (
@@ -285,6 +325,9 @@ export default function Taxonomies() {
 														value={model.slug}
 														name="types"
 														ref={register}
+														onChange={() =>
+															clearErrors("types")
+														}
 													/>
 													{model.plural}
 												</label>
