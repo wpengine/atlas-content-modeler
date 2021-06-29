@@ -132,4 +132,34 @@ class AdvancedSettingsCest
 		// “Done” was clicked), not an empty field (initial form state).
 		$I->seeInField('#minChars','111');
 	}
+
+	public function i_can_set_allowed_file_types_for_media_fields( \AcceptanceTester $I ) {
+		$I->click('Media', '.field-buttons');
+		$I->wait(1);
+
+		$I->fillField(['name' => 'name'], 'Photo');
+
+		// Open and fill Advanced Settings.
+		$I->click('button.settings');
+		$I->fillField(['name' => 'allowedTypes'], 'jpg,jpeg,pdf');
+
+		$I->click('.ReactModal__Content button.primary'); // Save Advanced Settings.
+		$I->wait(1);
+		$I->click('button.primary'); // Save the field.
+		$I->wait(1);
+
+		// Offsets are used here to prevent “other element would receive the click”
+		// due to the “add field” button overlapping the edit button in the center.
+		$I->clickWithLeftButton('.field-list button.edit', -5, -5);
+
+		// Open Advanced Settings again.
+		$I->click('button.settings');
+
+		// Expect to see saved values.
+		$I->seeInField('#allowedTypes', 'jpg,jpeg,pdf');
+
+		$I->amOnPage('/wp-admin/post-new.php?post_type=goose');
+		$I->wait(1);
+		$I->see('Accepts file types: JPG, JPEG, PDF');
+	}
 }
