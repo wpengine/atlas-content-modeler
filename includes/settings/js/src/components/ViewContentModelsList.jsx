@@ -11,15 +11,28 @@ function Header({ showButton = true }) {
 		<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 			<h2>Content Models</h2>
 			{showButton && (
-				<button
-					onClick={() =>
-						history.push(
-							atlasContentModeler.appPath + "&view=create-model"
-						)
-					}
-				>
-					{__("Add New", "atlas-content-modeler")}
-				</button>
+				<>
+					<button
+						className="tertiary taxonomies"
+						onClick={() =>
+							history.push(
+								atlasContentModeler.appPath + "&view=taxonomies"
+							)
+						}
+					>
+						{__("View Taxonomies", "atlas-content-modeler")}
+					</button>
+					<button
+						onClick={() =>
+							history.push(
+								atlasContentModeler.appPath +
+									"&view=create-model"
+							)
+						}
+					>
+						{__("New Model", "atlas-content-modeler")}
+					</button>
+				</>
 			)}
 		</section>
 	);
