@@ -4,8 +4,6 @@
  *
  */
 
-$atlas_content_modeler_entry_icon = include ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/views/admin-entry-icon.php';
-
 return array (
 	'dog' =>
 		array (
@@ -99,11 +97,12 @@ return array (
 		array (
 			'name' => 'Cats',
 			'singular_name' => 'Cat',
-			'description' => 'A description of cats',
+			'description' => '',
+			'public' => false,
 			'show_ui' => true,
 			'show_in_rest' => true,
+			'rest_base' => 'cats',
 			'capability_type' => 'post',
-			'rewrite' => true,
 			'show_in_menu' => true,
 			'supports' =>
 				array (
@@ -142,7 +141,7 @@ return array (
 			'show_in_graphql' => false,
 			'graphql_single_name' => 'cat',
 			'graphql_plural_name' => 'cats',
-			'menu_icon'           => $atlas_content_modeler_entry_icon,
+			'menu_icon'           => 'dashicons-admin-post',
 			'rest_controller_class' => 'WPE\AtlasContentModeler\ContentRegistration\REST_Posts_Controller',
 		),
 );

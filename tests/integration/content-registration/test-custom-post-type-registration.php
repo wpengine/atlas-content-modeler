@@ -348,6 +348,10 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$expected_args = $this->expected_post_types()['dog'];
 		unset( $expected_args['fields'] );
 		self::assertSame( $generated_args, $expected_args );
+
+		$generated_args = generate_custom_post_type_args( [ 'singular' => 'Cat', 'plural' => 'Cats', 'show_in_graphql' => false ] );
+		$expected_args = $this->expected_post_types()['cat'];
+		self::assertSame( $generated_args, $expected_args );
 	}
 
 	/**
