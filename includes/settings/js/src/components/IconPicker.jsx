@@ -452,8 +452,8 @@ export default function IconPicker({
 		<>
 			<input
 				className="hidden"
-				id="modelIcon"
-				name="modelIcon"
+				id="model_icon"
+				name="model_icon"
 				type="text"
 				defaultValue={modelIcon}
 				ref={register}
@@ -467,7 +467,7 @@ export default function IconPicker({
 						? __("Change Icon", "atlas-content-modeler")
 						: __("Choose Icon", "atlas-content-modeler")
 				}
-				data-target="#modelIcon"
+				data-target="#model_icon"
 				onClick={(e) => clickHandler(e)}
 			/>
 

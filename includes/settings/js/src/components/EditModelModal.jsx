@@ -13,7 +13,7 @@ const { apiFetch } = wp;
  * Update sidebar model item for icon changes
  */
 function updateSidebarMenuItem(model, data) {
-	if (model.modelIcon !== data.modelIcon) {
+	if (model.model_icon !== data.model_icon) {
 		// update sidebar icon
 		$(`li#menu-posts-${model.slug}`)
 			.find(".wp-menu-image")
@@ -23,7 +23,7 @@ function updateSidebarMenuItem(model, data) {
 				);
 			})
 			.addClass("dashicons-before")
-			.addClass(`${data.modelIcon}`);
+			.addClass(`${data.model_icon}`);
 	}
 }
 
@@ -314,7 +314,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 				</div>
 
 				<div className="field">
-					<label htmlFor="modelIcon">
+					<label htmlFor="model_icon">
 						{__("Model Icon", "atlas-content-modeler")}
 					</label>
 					<p className="help">
@@ -328,7 +328,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						setValue={setValue}
 						buttonClasses="primary first"
 						register={register}
-						modelIcon={model.modelIcon}
+						modelIcon={model.model_icon}
 					/>
 				</div>
 

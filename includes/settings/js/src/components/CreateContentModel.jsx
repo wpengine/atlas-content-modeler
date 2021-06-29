@@ -300,7 +300,7 @@ export default function CreateContentModel() {
 					</div>
 
 					<div className="field">
-						<label htmlFor="modelIcon">
+						<label htmlFor="model_icon">
 							{__("Model Icon", "atlas-content-modeler")}
 						</label>
 						<br />

@@ -49,14 +49,14 @@ export function removeSidebarMenuItem(slug) {
  * @returns {string} - HTML list item markup for the specified content model.
  */
 export function generateSidebarMenuItem(model) {
-	let { slug, plural, modelIcon } = model;
+	let { slug, plural, model_icon } = model;
 	slug = slug.toLowerCase();
 	return `<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" id="menu-posts-${slug}">
 				<a href="edit.php?post_type=${slug}" class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" aria-haspopup="true">
 					<div class="wp-menu-arrow">
 						<div></div>
 					</div>
-					<div class="wp-menu-image dashicons-before ${modelIcon}" aria-hidden="true"><br></div>
+					<div class="wp-menu-image dashicons-before ${model_icon}" aria-hidden="true"><br></div>
 					<div class="wp-menu-name">${plural}</div>
 				</a>
 				<ul class="wp-submenu wp-submenu-wrap">
