@@ -4,7 +4,7 @@ describe("generateSidebarMenuItem tests", () => {
 	const mock = {
 		slug: "cows",
 		plural: "Cows",
-		modelIcon: 'dashicons-saved'
+		modelIcon: "dashicons-saved",
 	};
 
 	it("Renders a matching snapshot", () => {
