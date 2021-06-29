@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const $ = jQuery;
+const $ = window.jQuery;
 import { sprintf, __ } from "@wordpress/i18n";
 
 // available dashicon names

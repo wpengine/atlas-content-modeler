@@ -6,7 +6,7 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 
-const $ = jQuery;
+const $ = window.jQuery;
 const { apiFetch } = wp;
 
 /**
