@@ -33,8 +33,8 @@ export default function Taxonomies() {
 	});
 
 	function apiCreateTaxonomy(data) {
-		if (data?.type.length < 1) {
-			setError("type", {
+		if (data.types.length < 1) {
+			setError("types", {
 				type: "noModelSet",
 			});
 			return false;
@@ -260,7 +260,7 @@ export default function Taxonomies() {
 							{/* Models / Types */}
 							<div
 								className={
-									errors.type ? "field has-error" : "field"
+									errors.types ? "field has-error" : "field"
 								}
 							>
 								<fieldset>
@@ -283,7 +283,7 @@ export default function Taxonomies() {
 													<input
 														type="checkbox"
 														value={model.slug}
-														name="type"
+														name="types"
 														ref={register}
 													/>
 													{model.plural}
@@ -294,8 +294,8 @@ export default function Taxonomies() {
 									})}
 								</fieldset>
 								<p className="field-messages">
-									{errors.type &&
-										errors.type.type === "noModelSet" && (
+									{errors.types &&
+										errors.types.type === "noModelSet" && (
 											<span className="error">
 												<Icon type="error" />
 												<span role="alert">
