@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MediaUploader tests Renders a matching snapshot 1`] = `
+<React.Fragment>
+  <label
+    htmlFor="atlas-content-modeler[goose][photo]"
+  >
+    Photo
+  </label>
+  <input
+    className="hidden"
+    id="atlas-content-modeler[goose][photo]"
+    name="atlas-content-modeler[goose][photo]"
+    readOnly={true}
+    type="text"
+    value="100"
+  />
+  <div>
+    
+    <div
+      className="d-flex flex-row align-items-center media-btns"
+    >
+      <div>
+        <input
+          className="button button-primary button-large"
+          defaultValue="Upload Media"
+          onClick={[Function]}
+          style={
+            Object {
+              "marginTop": "5px",
+            }
+          }
+          type="button"
+        />
+        <p
+          className="text-muted"
+        >
+          Accepts file types
+          : 
+          JPEG, JPG, PDF
+        </p>
+      </div>
+      
+    </div>
+    <input
+      className="hidden"
+      id="atlas-content-modeler[goose][photo]"
+      name="atlas-content-modeler[goose][photo]"
+      onChange={[Function]}
+      required={false}
+      type="text"
+      value="100"
+    />
+    <span
+      className="error"
+    >
+      <Icon
+        type="error"
+      />
+      <span
+        role="alert"
+      >
+        This field is required
+      </span>
+    </span>
+  </div>
+</React.Fragment>
+`;
