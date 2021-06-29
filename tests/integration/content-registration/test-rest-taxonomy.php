@@ -110,5 +110,9 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$wp_rest_server = null;
 		$this->server = null;
 		delete_option( $this->taxonomy_option );
+		foreach ( $this->term_ids as $taxonomy => $id ) {
+			wp_delete_term( $id, $taxonomy );
+		}
+		$this->term_ids = [];
 	}
 }
