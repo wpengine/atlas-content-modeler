@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import Icon from "../../../../components/icons";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
+import { toValidApiId } from "./fields/toValidApiId";
 
 const { apiFetch } = wp;
 
@@ -27,7 +28,6 @@ export default function Taxonomies() {
 		defaultValues: {
 			api_visibility: "private",
 			hierarchical: false,
-			slug: "",
 		},
 	});
 
@@ -60,6 +60,7 @@ export default function Taxonomies() {
 					});
 					window.scrollTo(0, 0);
 					reset();
+					setApiIdGeneratorInput(""); // Resets the API ID field.
 					showSuccess(
 						sprintf(
 							__(
