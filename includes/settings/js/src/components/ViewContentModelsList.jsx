@@ -5,12 +5,12 @@ import { sanitizeFields } from "../queries";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 import { sprintf, __ } from "@wordpress/i18n";
 
-function Header({ showButton = true }) {
+function Header({ showButtons = true }) {
 	let history = useHistory();
 	return (
 		<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 			<h2>Content Models</h2>
-			{showButton && (
+			{showButtons && (
 				<>
 					<button
 						className="tertiary taxonomies"
@@ -45,7 +45,7 @@ export default function ViewContentModelsList() {
 
 	return (
 		<div className="app-card">
-			<Header showButton={hasModels} />
+			<Header showButtons={hasModels} />
 			<section className="card-content">
 				{hasModels ? (
 					<ul className="model-list">
