@@ -270,7 +270,7 @@ export default function Taxonomies() {
 									className="w-100"
 									ref={register({
 										required: true,
-										maxLength: 20,
+										maxLength: 32,
 									})}
 									{...apiIdFieldAttributes}
 								/>
