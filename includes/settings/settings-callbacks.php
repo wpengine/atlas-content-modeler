@@ -96,8 +96,6 @@ function enqueue_settings_assets( $hook ) {
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'atlas-content-modeler-app' );
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
-		wp_enqueue_script( 'dashicons-picker-js' );
-		wp_enqueue_style( 'dashicons-picker-css' );
 
 		if ( should_show_feedback_banner() ) {
 			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
