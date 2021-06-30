@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import Icon from "../../../../components/icons";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
-import { toValidApiId } from "./fields/toValidApiId";
 
 const { apiFetch } = wp;
 
