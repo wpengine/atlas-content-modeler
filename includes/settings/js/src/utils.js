@@ -50,6 +50,9 @@ export function removeSidebarMenuItem(slug) {
  */
 export function generateSidebarMenuItem(model) {
 	let { slug, plural, model_icon } = model;
+	if (!model_icon) {
+		model_icon = "dashicons-admin-post";
+	}
 	slug = slug.toLowerCase();
 	return `<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" id="menu-posts-${slug}">
 				<a href="edit.php?post_type=${slug}" class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" aria-haspopup="true">

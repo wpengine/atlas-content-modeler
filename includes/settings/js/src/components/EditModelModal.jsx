@@ -13,7 +13,8 @@ const { apiFetch } = wp;
  * Update sidebar model item for icon changes
  */
 function updateSidebarMenuItem(model, data) {
-	if (model.model_icon !== data.model_icon) {
+	let { model_icon } = data || "dashicons-admin-post";
+	if (model.model_icon !== model_icon) {
 		// update sidebar icon
 		$(`li#menu-posts-${model.slug.toLowerCase()}`)
 			.find(".wp-menu-image")
@@ -23,7 +24,7 @@ function updateSidebarMenuItem(model, data) {
 				);
 			})
 			.addClass("dashicons-before")
-			.addClass(`${data.model_icon}`);
+			.addClass(`${model_icon}`);
 	}
 }
 
