@@ -460,7 +460,7 @@ export default function IconPicker({
 				id="model_icon"
 				name="model_icon"
 				type="text"
-				defaultValue={modelIcon}
+				defaultValue={modelIcon || defaultIcon}
 				ref={register}
 			/>
 
