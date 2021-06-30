@@ -39,7 +39,16 @@ export default function Taxonomies() {
 	});
 
 	function apiCreateTaxonomy(data) {
-		if (data.types.length < 1) {
+		// Wrap single models as an array.
+		if (typeof data.types === "string") {
+			data.types = [data.types];
+		}
+
+		// Check that at least one model was ticked.
+		if (
+			typeof data.types === "boolean" ||
+			(typeof data.types === "object" && data.types.length < 1)
+		) {
 			setError("types", {
 				type: "noModelSet",
 			});
@@ -476,7 +485,7 @@ export default function Taxonomies() {
 							</button>
 						</form>
 					</div>
-					<div className="col-xs-10 col-lg-6 order-0 order-lg-1">
+					<div className="taxonomy-list col-xs-10 col-lg-6 order-0 order-lg-1">
 						{/* TODO: Display taxonomies in a table here. */}
 						{Object.values(taxonomies).map((taxonomy) => {
 							return (
