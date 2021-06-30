@@ -293,7 +293,7 @@ export default function Taxonomies() {
 												<Icon type="error" />
 												<span role="alert">
 													{__(
-														"Exceeds max length of 20.",
+														"Exceeds max length of 32",
 														"atlas-content-modeler"
 													)}
 												</span>
