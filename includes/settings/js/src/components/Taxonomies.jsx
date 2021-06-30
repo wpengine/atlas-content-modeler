@@ -33,7 +33,11 @@ export default function Taxonomies() {
 
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
-	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
+	const {
+		setApiIdGeneratorInput,
+		apiIdFieldAttributes,
+		setFieldsAreLinked,
+	} = useApiIdGenerator({
 		apiFieldId: "slug",
 		setValue,
 	});
@@ -70,6 +74,7 @@ export default function Taxonomies() {
 					window.scrollTo(0, 0);
 					reset();
 					setApiIdGeneratorInput(""); // Resets the API ID field.
+					setFieldsAreLinked(true);
 					showSuccess(
 						sprintf(
 							__(
