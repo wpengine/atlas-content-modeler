@@ -742,10 +742,12 @@ function save_taxonomy( array $params, bool $is_update ) {
 		);
 	}
 
-	$acm_taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
-	$wp_taxonomies  = get_taxonomies();
+	$acm_taxonomies     = get_option( 'atlas_content_modeler_taxonomies', array() );
+	$wp_taxonomies      = get_taxonomies();
+	$non_acm_taxonomies = array_diff( array_keys( $wp_taxonomies ), array_keys( $acm_taxonomies ) );
 
-	if ( array_key_exists( $params['slug'], $wp_taxonomies ) ) {
+	// Prevents creation of a taxonomy if one with the same slug exists that was not created in ACM.
+	if ( in_array( $params['slug'], $non_acm_taxonomies, true ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_taxonomy_exists',
 			esc_html__( 'A taxonomy with this API Identifier already exists.', 'atlas-content-modeler' ),
@@ -753,6 +755,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 		);
 	}
 
+	// Allows updates of existing ACM taxonomies, but prevents creation of ACM taxonomies with identical slugs.
 	if ( ! $is_update && array_key_exists( $params['slug'], $acm_taxonomies ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_taxonomy_exists',
