@@ -37,11 +37,7 @@ function MultipleChoiceFields({
 	const choiceIsSaved = (choice) => {
 		return (
 			data.choices &&
-			data.choices.some(
-				(savedChoice) =>
-					savedChoice.name === choice.name &&
-					savedChoice.slug === choice.slug
-			)
+			data.choices.some((savedChoice) => savedChoice.slug === choice.slug)
 		);
 	};
 
@@ -63,12 +59,12 @@ function MultipleChoiceFields({
 										<label
 											htmlFor={"multipleChoice" + index}
 										>
-											Option {index + 1}
+											Choice {index + 1}
 										</label>
 										<br />
 										<p className="help">
-											Display name for your{" "}
-											{supportedFields[type]} choice.
+											Display name and API identifier for
+											your {supportedFields[type]} choice.
 										</p>
 										<div
 											className={`${
@@ -84,7 +80,7 @@ function MultipleChoiceFields({
 												<input
 													ref={register()}
 													name={`choices[${index}].name`}
-													placeholder="Option Name"
+													placeholder="Choice Name"
 													type="text"
 													onKeyPress={(event) => {
 														if (
@@ -128,7 +124,7 @@ function MultipleChoiceFields({
 											<div className="hey-listen">
 												<input
 													ref={register()}
-													placeholder="Option API Identifier"
+													placeholder="Choice API Identifier"
 													type="text"
 													onChange={(event) => {
 														event.target.value = toValidApiId(
@@ -149,6 +145,44 @@ function MultipleChoiceFields({
 														item
 													)}
 												/>
+												<div>
+													{errors[
+														"multipleChoice" + index
+													] &&
+														errors[
+															"multipleChoice" +
+																index
+														].type ===
+															"multipleChoiceSlugEmpty" +
+																index && (
+															<span className="error">
+																<Icon type="error" />
+																<span role="alert">
+																	Must set a
+																	choice
+																	identifier.
+																</span>
+															</span>
+														)}
+													{errors[
+														"multipleChoice" + index
+													] &&
+														errors[
+															"multipleChoice" +
+																index
+														].type ===
+															"multipleChoiceSlugDuplicate" +
+																index && (
+															<span className="error">
+																<Icon type="error" />
+																<span role="alert">
+																	Cannot have
+																	duplicate
+																	identifier.
+																</span>
+															</span>
+														)}
+												</div>
 											</div>
 											<div>
 												{fields.length > 1 && (
@@ -183,7 +217,7 @@ function MultipleChoiceFields({
 														<a>
 															<TrashIcon size="small" />{" "}
 															<span>
-																Remove option
+																Remove choice
 															</span>
 														</a>
 													</button>
@@ -211,7 +245,7 @@ function MultipleChoiceFields({
 													<Icon type="error" />
 													<span role="alert">
 														Cannot have duplicate
-														option names.
+														choice names.
 													</span>
 												</span>
 											)}
@@ -231,8 +265,8 @@ function MultipleChoiceFields({
 										<AddIcon noCircle />{" "}
 										<span>
 											{fields.length > 0
-												? "Add another option"
-												: "Add an option"}
+												? "Add another choice"
+												: "Add a choice"}
 										</span>
 									</a>
 								</button>
@@ -242,7 +276,7 @@ function MultipleChoiceFields({
 										<span className="error">
 											<Icon type="error" />
 											<span role="alert">
-												Must create an option first.
+												Must create an choice first.
 											</span>
 										</span>
 									)}
