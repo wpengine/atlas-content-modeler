@@ -107,23 +107,24 @@ function get_props( array $args ): array {
 	 * - show_in_quick_edit (null)
 	 */
 	return array(
-		'labels'                => get_labels( $args ),
-		'public'                => $args['api_visibility'] === 'public',
-		'description'           => $args['description'],
-		'hierarchical'          => $args['hierarchical'],
-		'show_in_rest'          => $args['show_in_rest'],
-		'show_in_graphql'       => $args['show_in_graphql'],
-		'graphql_single_name'   => camelcase( $args['singular'] ),
-		'graphql_plural_name'   => camelcase( $args['plural'] ),
-		'show_ui'               => true,
-		'show_admin_column'     => true,
-		'capabilities'          => array(
+		'labels'              => get_labels( $args ),
+		'public'              => $args['api_visibility'] === 'public',
+		'description'         => $args['description'],
+		'hierarchical'        => $args['hierarchical'],
+		'show_in_rest'        => $args['api_visibility'] === 'public'
+			? $args['show_in_rest']
+			: current_user_can( 'manage_options' ),
+		'show_in_graphql'     => $args['show_in_graphql'],
+		'graphql_single_name' => camelcase( $args['singular'] ),
+		'graphql_plural_name' => camelcase( $args['plural'] ),
+		'show_ui'             => true,
+		'show_admin_column'   => true,
+		'capabilities'        => array(
 			'manage_terms' => 'manage_categories',
 			'edit_terms'   => 'edit_categories',
 			'delete_terms' => 'delete_categories',
 			'assign_terms' => 'assign_categories',
 		),
-		'rest_controller_class' => __NAMESPACE__ . '\REST_Terms_Controller',
 	);
 }
 

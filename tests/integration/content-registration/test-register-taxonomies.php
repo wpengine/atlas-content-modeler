@@ -81,6 +81,7 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\Taxonomies\set_defaults()
 	 */
 	public function test_registering_partial_taxonomy_sets_defaults(): void {
+		wp_set_current_user(1);
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		register();
 

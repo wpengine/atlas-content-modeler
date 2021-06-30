@@ -86,13 +86,19 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
 
-		$this->assertEquals( 401, $response->get_status() );
+		$this->assertEquals( 404, $response->get_status() );
 		$this->assertArrayHasKey( 'code', $data );
-		$this->assertEquals( 'rest_forbidden', $data['code'] );
+		$this->assertEquals( 'rest_no_route', $data['code'] );
 	}
 
 	public function test_terms_are_visible_to_capable_user_if_api_visibility_is_private() {
 		wp_set_current_user( 1 );
+
+		// Call register and invoke rest_api_init again because the user has changed.
+		// show_in_rest is based on user capabilities for private taxonomies.
+		register();
+		do_action( 'rest_api_init' );
+
 		$request  = new WP_REST_Request( 'GET', "/wp/v2/private-visibility/{$this->term_ids['private-visibility']}" );
 
 		$response = $this->server->dispatch( $request );
@@ -101,6 +107,34 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'taxonomy', $data );
 		$this->assertEquals( 'private-visibility', $data['taxonomy'] );
+	}
+
+	public function test_taxonomy_is_not_visible_by_default_if_api_visibility_is_private() {
+		wp_set_current_user( null );
+		register();
+		do_action( 'rest_api_init' );
+
+		$request  = new WP_REST_Request( 'GET', "/wp/v2/taxonomies" );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertArrayNotHasKey( 'private-visibility', $data );
+	}
+
+	public function test_taxonomy_is_visible_to_capable_user_if_api_visibility_is_private() {
+		wp_set_current_user( 1 );
+		register();
+		do_action( 'rest_api_init' );
+
+		$request  = new WP_REST_Request( 'GET', "/wp/v2/taxonomies" );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertArrayHasKey( 'private-visibility', $data );
 	}
 
 	public function tearDown() {
