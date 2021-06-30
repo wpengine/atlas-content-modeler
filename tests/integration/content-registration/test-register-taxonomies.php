@@ -3,7 +3,7 @@
  * Tests for taxonomy registration.
  */
 
-use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_taxonomies;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register;
 
 /**
@@ -64,7 +64,7 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_taxonomies()
 	 */
 	public function test_get_taxonomies_returns_empty_array_when_no_taxonomies_exist(): void {
-		self::assertSame( get_taxonomies(), [] );
+		self::assertSame( get_acm_taxonomies(), [] );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 	 */
 	public function test_get_taxonomies_returns_stored_values(): void {
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
-		self::assertSame( get_taxonomies(), $this->sample_taxonomies );
+		self::assertSame( get_acm_taxonomies(), $this->sample_taxonomies );
 	}
 
 	/**

@@ -34,7 +34,7 @@ final class REST_Terms_Controller extends \WP_REST_Terms_Controller {
 			return $term;
 		}
 
-		$taxonomies = get_taxonomies();
+		$taxonomies = get_acm_taxonomies();
 
 		if ( 'private' === ( $taxonomies[ $term->taxonomy ]['api_visibility'] ?? '' ) ) {
 			return current_user_can( 'edit_term', $term->term_id );

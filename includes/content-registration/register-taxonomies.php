@@ -19,7 +19,7 @@ add_action( 'init', __NAMESPACE__ . '\register' );
  * @since 0.6.0
  */
 function register(): void {
-	foreach ( get_taxonomies() as $slug => $args ) {
+	foreach ( get_acm_taxonomies() as $slug => $args ) {
 		$args       = set_defaults( $args );
 		$properties = get_props( $args );
 		register_taxonomy( $slug, (array) $args['types'], $properties );
@@ -132,7 +132,7 @@ function get_props( array $args ): array {
  *
  * @since 0.6.0
  */
-function get_taxonomies(): array {
+function get_acm_taxonomies(): array {
 	return get_option( 'atlas_content_modeler_taxonomies', array() );
 }
 
@@ -181,7 +181,7 @@ function graphql_data_is_private( bool $is_private, string $model_name, $data, $
 		return $is_private;
 	}
 
-	$taxonomies = get_taxonomies();
+	$taxonomies = get_acm_taxonomies();
 
 	if ( 'private' === ( $taxonomies[ $data->taxonomy ]['api_visibility'] ?? '' ) ) {
 		return ! user_can( $current_user, 'edit_term', $data->term_id );
