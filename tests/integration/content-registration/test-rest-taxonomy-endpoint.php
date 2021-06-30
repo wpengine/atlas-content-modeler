@@ -23,6 +23,11 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 	 * @var array Taxonomies used in tests.
 	 */
 	protected $test_taxonomies = [
+		'category' => [
+			'slug'     => 'category',
+			'singular' => 'Test Existing WP Core Taxonomy',
+			'plural'   => 'Test Existing WP Core Taxonomies',
+		],
 		'ingredient' => [
 			'slug'     => 'ingredient',
 			'singular' => 'Test Changing Singular Name',
@@ -72,7 +77,19 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		self::assertSame( true, $response->data['success'] );
 	}
 
-	public function test_cannot_create_taxonomy_when_slug_conflicts_with_existing_taxonomy(): void {
+	public function test_cannot_create_taxonomy_when_slug_conflicts_with_existing_core_taxonomy(): void {
+		wp_set_current_user( 1 );
+
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $this->test_taxonomies['category'] ) );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'atlas_content_modeler_taxonomy_exists', $response->data['code'] );
+	}
+
+	public function test_cannot_create_taxonomy_when_slug_conflicts_with_existing_acm_taxonomy(): void {
 		wp_set_current_user( 1 );
 
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );

@@ -742,9 +742,18 @@ function save_taxonomy( array $params, bool $is_update ) {
 		);
 	}
 
-	$taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
+	$acm_taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
+	$wp_taxonomies  = get_taxonomies();
 
-	if ( ! $is_update && array_key_exists( $params['slug'], $taxonomies ) ) {
+	if ( array_key_exists( $params['slug'], $wp_taxonomies ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_taxonomy_exists',
+			esc_html__( 'A taxonomy with this API Identifier already exists.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	if ( ! $is_update && array_key_exists( $params['slug'], $acm_taxonomies ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_taxonomy_exists',
 			esc_html__( 'A taxonomy with this API Identifier already exists.', 'atlas-content-modeler' ),
@@ -768,9 +777,9 @@ function save_taxonomy( array $params, bool $is_update ) {
 		'api_visibility'  => 'private',
 	];
 
-	$taxonomy                        = wp_parse_args( $params, $defaults );
-	$taxonomies[ $taxonomy['slug'] ] = $taxonomy;
-	$created                         = update_option( 'atlas_content_modeler_taxonomies', $taxonomies );
+	$taxonomy                            = wp_parse_args( $params, $defaults );
+	$acm_taxonomies[ $taxonomy['slug'] ] = $taxonomy;
+	$created                             = update_option( 'atlas_content_modeler_taxonomies', $acm_taxonomies );
 
 	if ( ! $created ) {
 		return new WP_Error(
