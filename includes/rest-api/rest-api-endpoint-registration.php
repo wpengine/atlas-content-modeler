@@ -125,13 +125,13 @@ function register_rest_routes(): void {
 		]
 	);
 
-	// Route for creating a taxonomy.
+	// Route for creating (POST) or updating (PUT) a taxonomy.
 	register_rest_route(
 		'wpe',
 		'/atlas/taxonomy',
 		[
-			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\dispatch_create_taxonomy',
+			'methods'             => [ 'POST', 'PUT' ],
+			'callback'            => __NAMESPACE__ . '\dispatch_update_taxonomy',
 			'permission_callback' => static function () {
 				return current_user_can( 'manage_options' );
 			},
@@ -572,18 +572,19 @@ function create_model( string $post_type_slug, array $args ) {
 }
 
 /**
- * Handles taxonomy POST requests from the REST API.
+ * Handles taxonomy POST and PUT requests.
  *
  * @param WP_REST_Request $request The REST API request object.
  *
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
-function dispatch_create_taxonomy( WP_REST_Request $request ) {
+function dispatch_update_taxonomy( WP_REST_Request $request ) {
 	$params = $request->get_params();
 
 	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
 
-	$taxonomy = save_taxonomy( $params );
+	$is_update = $request->get_method() === 'PUT';
+	$taxonomy  = save_taxonomy( $params, $is_update );
 
 	if ( is_wp_error( $taxonomy ) ) {
 		return new WP_Error(
@@ -728,10 +729,11 @@ function content_model_multi_option_exists( array $names, string $current_choice
  * Saves a taxonomy.
  *
  * @param array $params Parameters passed from the taxonomy form.
+ * @param bool  $is_update True if `$params` came from a PUT request.
  * @return object|WP_Error
  * @since 0.6.0
  */
-function save_taxonomy( array $params ) {
+function save_taxonomy( array $params, bool $is_update ) {
 	if ( empty( $params['slug'] ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
@@ -742,7 +744,7 @@ function save_taxonomy( array $params ) {
 
 	$taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
 
-	if ( array_key_exists( $params['slug'], $taxonomies ) ) {
+	if ( ! $is_update && array_key_exists( $params['slug'], $taxonomies ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_taxonomy_exists',
 			esc_html__( 'A taxonomy with this API Identifier already exists.', 'atlas-content-modeler' ),
