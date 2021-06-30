@@ -1,3 +1,8 @@
+/**
+ * Dashicons Picker
+ *
+ * Based on: https://github.com/bradvin/dashicons-picker/
+ */
 import React, { useState } from "react";
 const $ = window.jQuery;
 import { sprintf, __ } from "@wordpress/i18n";
