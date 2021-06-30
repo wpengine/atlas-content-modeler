@@ -730,7 +730,7 @@ function content_model_multi_option_exists( array $names, string $current_choice
  *
  * @param array $params Parameters passed from the taxonomy form.
  * @param bool  $is_update True if `$params` came from a PUT request.
- * @return object|WP_Error
+ * @return array|WP_Error
  * @since 0.6.0
  */
 function save_taxonomy( array $params, bool $is_update ) {
