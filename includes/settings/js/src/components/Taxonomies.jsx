@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import Icon from "../../../../components/icons";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
-import { toValidApiId } from "./fields/toValidApiId";
 
 const { apiFetch } = wp;
 
@@ -270,7 +269,7 @@ export default function Taxonomies() {
 									className="w-100"
 									ref={register({
 										required: true,
-										maxLength: 20,
+										maxLength: 32,
 									})}
 									{...apiIdFieldAttributes}
 								/>
@@ -293,7 +292,7 @@ export default function Taxonomies() {
 												<Icon type="error" />
 												<span role="alert">
 													{__(
-														"Exceeds max length of 20.",
+														"Exceeds max length of 32",
 														"atlas-content-modeler"
 													)}
 												</span>
