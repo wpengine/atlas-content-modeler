@@ -61,16 +61,16 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_taxonomies()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies()
 	 */
-	public function test_get_taxonomies_returns_empty_array_when_no_taxonomies_exist(): void {
+	public function test_get_acm_taxonomies_returns_empty_array_when_no_taxonomies_exist(): void {
 		self::assertSame( get_acm_taxonomies(), [] );
 	}
 
 	/**
-	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_taxonomies()
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies()
 	 */
-	public function test_get_taxonomies_returns_stored_values(): void {
+	public function test_get_acm_taxonomies_returns_stored_values(): void {
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		self::assertSame( get_acm_taxonomies(), $this->sample_taxonomies );
 	}
