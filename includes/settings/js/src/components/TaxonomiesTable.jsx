@@ -3,6 +3,17 @@ import { __ } from "@wordpress/i18n";
 import { TaxonomiesDropdown } from "./TaxonomiesDropdown";
 
 const TaxonomiesTable = ({ taxonomies = {} }) => {
+	if (Object.values(taxonomies).length < 1) {
+		return (
+			<p>
+				{__(
+					"You currently have no taxonomies.",
+					"atlas-content-modeler"
+				)}
+			</p>
+		);
+	}
+
 	return (
 		<>
 			<table className="table table-striped">
