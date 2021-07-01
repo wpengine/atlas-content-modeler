@@ -1,5 +1,6 @@
 import React from "react";
-import { __ } from "@wordpress/i18n";
+import { __, sprintf } from "@wordpress/i18n";
+import { TaxonomiesDropdown } from "./TaxonomiesDropdown";
 
 const TaxonomiesTable = ({ taxonomies = {} }) => {
 	return (
@@ -33,7 +34,11 @@ const TaxonomiesTable = ({ taxonomies = {} }) => {
 								<td>{taxonomy?.slug}</td>
 								<td>{taxonomy?.types?.join(", ")}</td>
 								<td className="action">
-									<button>...</button>
+									<div className="neg-margin-wrapper">
+										<TaxonomiesDropdown
+											taxonomy={taxonomy}
+										/>
+									</div>
 								</td>
 							</tr>
 						);
