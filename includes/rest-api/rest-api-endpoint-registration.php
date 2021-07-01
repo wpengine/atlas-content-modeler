@@ -137,6 +137,19 @@ function register_rest_routes(): void {
 			},
 		]
 	);
+
+	// Route for deleting a taxonomy.
+	register_rest_route(
+		'wpe',
+		'/atlas/taxonomy/([A-Za-z])\w+/',
+		[
+			'methods'             => 'DELETE',
+			'callback'            => __NAMESPACE__ . '\dispatch_delete_taxonomy',
+			'permission_callback' => static function () {
+				return current_user_can( 'manage_options' );
+			},
+		]
+	);
 }
 
 /**
@@ -792,4 +805,36 @@ function save_taxonomy( array $params, bool $is_update ) {
 	}
 
 	return $taxonomy;
+}
+
+/**
+ * Handles taxonomy DELETE requests from the REST API.
+ *
+ * @param WP_REST_Request $request The REST API request object.
+ *
+ * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
+ */
+function dispatch_delete_taxonomy( WP_REST_Request $request ) {
+	$route          = $request->get_route();
+	$slug           = substr( strrchr( $route, '/' ), 1 );
+	$acm_taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
+
+	if ( empty( $acm_taxonomies[ $slug ] ) ) {
+		return rest_ensure_response(
+			[
+				'success' => false,
+				'errors'  => esc_html__( 'The specified taxonomy does not exist.', 'atlas-content-modeler' ),
+			]
+		);
+	}
+
+	unset( $acm_taxonomies[ $slug ] );
+
+	$updated = update_option( 'atlas_content_modeler_taxonomies', $acm_taxonomies );
+
+	return rest_ensure_response(
+		[
+			'success' => $updated,
+		]
+	);
 }

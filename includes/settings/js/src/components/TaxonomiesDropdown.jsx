@@ -1,12 +1,23 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+	useContext,
+} from "react";
 import Icon from "../../../../components/icons";
 import Modal from "react-modal";
 import { maybeCloseDropdown } from "../utils";
 import { sprintf, __ } from "@wordpress/i18n";
+import { ModelsContext } from "../ModelsContext";
+
+const { apiFetch } = wp;
 
 export const TaxonomiesDropdown = ({ taxonomy }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
+	const { taxonomiesDispatch } = useContext(ModelsContext);
+
 	const timer = useRef(null);
 
 	const customStyles = {
@@ -134,9 +145,16 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 					form={taxonomy.slug}
 					className="first warning"
 					onClick={() => {
-						// TODO: implement deletion here. See FieldOptionsDropdown.jsx.
-						alert("TODO: implement deletion here.");
+						apiFetch({
+							path: `/wpe/atlas/taxonomy/${taxonomy.slug}`,
+							method: "DELETE",
+							_wpnonce: wpApiSettings.nonce,
+						});
 						setModalIsOpen(false);
+						taxonomiesDispatch({
+							type: "removeTaxonomy",
+							slug: taxonomy.slug,
+						});
 					}}
 				>
 					{__("Delete", "atlas-content-modeler")}
