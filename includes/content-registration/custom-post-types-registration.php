@@ -265,8 +265,8 @@ function generate_custom_post_type_args( array $args ): array {
 
 	$singular = $args['singular'];
 	$plural   = $args['plural'];
-	$icon     = include ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/views/admin-entry-icon.php';
-	$labels   = generate_custom_post_type_labels(
+
+	$labels = generate_custom_post_type_labels(
 		[
 			'singular' => $singular,
 			'plural'   => $plural,
@@ -294,7 +294,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'show_in_graphql'       => $args['show_in_graphql'] ?? true,
 		'graphql_single_name'   => $args['graphql_single_name'] ?? camelcase( $singular ),
 		'graphql_plural_name'   => $args['graphql_plural_name'] ?? camelcase( $plural ),
-		'menu_icon'             => $icon,
+		'menu_icon'             => ! empty( $args['model_icon'] ) ? $args['model_icon'] : 'dashicons-admin-post',
 		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
 	];
 

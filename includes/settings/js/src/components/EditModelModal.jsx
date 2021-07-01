@@ -1,11 +1,32 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
+import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 
+const $ = window.jQuery;
 const { apiFetch } = wp;
+
+/**
+ * Update sidebar model item for icon changes
+ */
+function updateSidebarMenuItem(model, data) {
+	let { model_icon } = data || "dashicons-admin-post";
+	if (model.model_icon !== model_icon) {
+		// update sidebar icon
+		$(`li#menu-posts-${model.slug.toLowerCase()}`)
+			.find(".wp-menu-image")
+			.removeClass(function (index, className) {
+				return (className.match(/(^|\s)dashicons-\S+/g) || []).join(
+					" "
+				);
+			})
+			.addClass("dashicons-before")
+			.addClass(`${model_icon}`);
+	}
+}
 
 /**
  * Updates a model via the REST API.
@@ -49,6 +70,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 		register,
 		handleSubmit,
 		errors,
+		setValue,
 		formState: { isSubmitting },
 	} = useForm();
 
@@ -88,6 +110,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					const mergedData = { ...model, ...data };
 					await updateModel(data.slug, mergedData);
 					dispatch({ type: "updateModel", data: mergedData });
+					updateSidebarMenuItem(model, data);
 					setIsOpen(false);
 				})}
 			>
@@ -289,6 +312,25 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 								)}
 						</p>
 					</div>
+				</div>
+
+				<div className="field">
+					<label htmlFor="model_icon">
+						{__("Model Icon", "atlas-content-modeler")}
+					</label>
+					<p className="help">
+						{__(
+							"Choose an icon to represent your model.",
+							"atlas-content-modeler"
+						)}
+					</p>
+
+					<IconPicker
+						setValue={setValue}
+						buttonClasses="primary first"
+						register={register}
+						modelIcon={model.model_icon}
+					/>
 				</div>
 
 				<div
