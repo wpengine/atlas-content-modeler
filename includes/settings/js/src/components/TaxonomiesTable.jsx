@@ -5,7 +5,11 @@ import { TaxonomiesDropdown } from "./TaxonomiesDropdown";
 const TaxonomiesTable = ({ taxonomies = {} }) => {
 	return (
 		<>
-			<p>TODO: add Bulk Action here</p>
+			<select name="bulk-action">
+				<option value="-1">Bulk actions</option>
+				<option value="delete">Delete</option>
+			</select>
+			<button className="button action">Apply</button>
 			<table className="table table-striped">
 				<thead>
 					<tr>
