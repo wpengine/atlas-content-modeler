@@ -20,6 +20,12 @@ class CreateTaxonomyCest
 		$I->see('Taxonomies', 'section.heading h2');
 	}
 
+	public function i_can_see_the_no_taxonomies_message_if_none_exist(AcceptanceTester $I)
+	{
+		$I->amOnTaxonomyListingsPage();
+		$I->see('You currently have no taxonomies', '.taxonomy-list' );
+	}
+
 	public function i_can_create_a_taxonomy(AcceptanceTester $I)
 	{
 		$I->amOnTaxonomyListingsPage();
