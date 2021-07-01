@@ -2,7 +2,12 @@
 
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register;
 
-class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
+/**
+ * Class TestRestWPTaxonomy
+ *
+ * Checks ACM taxonomies are available via WP core endpoints under `/wp/v2/`.
+ */
+class TestRestWPTaxonomy extends WP_UnitTestCase {
 	/**
 	 * @var WP_REST_Server Server instance to send requests from.
 	 */
