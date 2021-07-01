@@ -8,7 +8,7 @@ checks:
       threshold: 4
   file-lines:
     config:
-      threshold: 250
+      threshold: 500
   method-complexity:
     config:
       threshold: 5
@@ -30,6 +30,8 @@ checks:
   identical-code:
     config:
       threshold: # language-specific defaults. an override will affect all languages.
+  exclude_patterns:
+    - "*.jsx"
   plugins:
     eslint:
       enabled: true
