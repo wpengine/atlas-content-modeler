@@ -492,7 +492,7 @@ export default function Taxonomies() {
 							</button>
 						</form>
 					</div>
-					<div className="taxonomy-list col-xs-10 col-lg-7 order-0 order-lg-1">
+					<div className="taxonomy-list col-xs-10 col-lg-8 order-0 order-lg-1">
 						<TaxonomiesTable taxonomies={taxonomies} />
 					</div>
 				</div>
