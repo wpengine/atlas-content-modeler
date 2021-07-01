@@ -32,6 +32,7 @@ class CreateTaxonomyCest
 		$I->wait(1);
 		$I->see('taxonomy was created', '#success');
 		$I->see('Breeds', '.taxonomy-list');
+		$I->see('goose', '.taxonomy-list');
 
 		// Form fields should reset when a submission was successful.
 		$I->seeInField("#singular", "");
