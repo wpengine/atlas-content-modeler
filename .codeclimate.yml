@@ -48,3 +48,4 @@ checks:
       enabled: true
 exclude_patterns:
   - "**/*.jsx"
+  - "tests/"
