@@ -466,6 +466,14 @@ add_filter( 'graphql_data_is_private', __NAMESPACE__ . '\graphql_data_is_private
  * @return bool
  */
 function graphql_data_is_private( bool $is_private, string $model_name, $post, $visibility, $owner, \WP_User $current_user ): bool {
+	if ( ! is_object( $post ) ) {
+		return $is_private;
+	}
+
+	if ( 'WP_Post' !== get_class( $post ) ) {
+		return $is_private;
+	}
+
 	$models = get_registered_content_types();
 	if ( array_key_exists( $post->post_type, $models ) && isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
 		$post_type  = get_post_type_object( $post->post_type );
