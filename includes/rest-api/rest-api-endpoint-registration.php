@@ -141,7 +141,7 @@ function register_rest_routes(): void {
 	// Route for deleting a taxonomy.
 	register_rest_route(
 		'wpe',
-		'/atlas/taxonomy/([A-Za-z])\w+/',
+		'/atlas/taxonomy/(?P<taxonomy>[\\w-]+)',
 		[
 			'methods'             => 'DELETE',
 			'callback'            => __NAMESPACE__ . '\dispatch_delete_taxonomy',
@@ -815,8 +815,7 @@ function save_taxonomy( array $params, bool $is_update ) {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_delete_taxonomy( WP_REST_Request $request ) {
-	$route          = $request->get_route();
-	$slug           = substr( strrchr( $route, '/' ), 1 );
+	$slug           = $request->get_param( 'taxonomy' );
 	$acm_taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
 
 	if ( empty( $acm_taxonomies[ $slug ] ) ) {
