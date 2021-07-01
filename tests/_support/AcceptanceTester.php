@@ -54,10 +54,26 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amOnPage($path);
     }
 
-    /**
-     * Create a Content Model.
-     *
-     * @param string $singular    Singular content model name.
+	/**
+	 * Visit the Taxonomy page.
+	 *
+	 * @param string $params Optional query parameter string.
+	 */
+	public function amOnTaxonomyListingsPage($params = '')
+	{
+		$path = '/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies';
+
+		if ( $params ) {
+			$path .= $params;
+		}
+
+		$this->amOnPage($path);
+	}
+
+	/**
+	 * Create a Content Model.
+	 *
+	 * @param string $singular    Singular content model name.
      * @param string $plural      Plural content model name.
      * @param string $description Content model description.
      */
