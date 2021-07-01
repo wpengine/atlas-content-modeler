@@ -24,6 +24,10 @@
 		text-align: right;
 		padding-right: 1rem;
 	}
+	&.action.right {
+		text-align: right;
+		padding-right: 0;
+	}
 }
 
 .taxonomies-view table button {
