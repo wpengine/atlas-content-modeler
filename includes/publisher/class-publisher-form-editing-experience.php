@@ -163,8 +163,9 @@ final class FormEditingExperience {
 			'atlas-content-modeler-form-editing-experience',
 			'atlasContentModelerFormEditingExperience',
 			[
-				'models'   => $models,
-				'postType' => $this->current_screen_post_type,
+				'models'           => $models,
+				'postType'         => $this->current_screen_post_type,
+				'allowedMimeTypes' => get_allowed_mime_types(),
 			]
 		);
 

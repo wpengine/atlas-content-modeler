@@ -5,6 +5,90 @@ import React from "react";
 import Icon from "../../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
+const MediaSettings = ({
+	errors,
+	storedData,
+	setValue,
+	getValues,
+	trigger,
+}) => {
+	return (
+		<>
+			<h3>{__("Allowed File Types", "atlas-content-modeler")}</h3>
+			<p>
+				{__(
+					"Define what file types are allowed to be uploaded.",
+					"atlas-content-modeler"
+				)}
+			</p>
+
+			<p className="mb-4">
+				<a
+					href="https://wpengine.com/support/mime-types-wordpress/"
+					target="_blank"
+					rel="noreferrer"
+				>
+					{__("WordPress Allowed Types", "atlas-content-modeler")}
+				</a>
+			</p>
+
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div className="w-100">
+					<div
+						className={`${
+							errors.allowedTypes ? "field has-error" : "field"
+						} w-100`}
+					>
+						<label htmlFor="allowedTypes">
+							{__("File Extensions", "atlas-content-modeler")}
+						</label>
+						<br />
+						<textarea
+							className="w-100"
+							aria-invalid={
+								errors.allowedTypes ? "true" : "false"
+							}
+							placeholder={__(
+								"jpeg,jpg,png,tiff,tif,pdf",
+								"atlas-content-modeler"
+							)}
+							id="allowedTypes"
+							name="allowedTypes"
+							onChange={async (e) => {
+								setValue("allowedTypes", e.target.value, {
+									shouldValidate: true,
+								});
+							}}
+							defaultValue={String(
+								getValues("allowedTypes") ??
+									storedData?.allowedTypes
+							)}
+						/>
+						<p className="field-messages">
+							{errors.allowedTypes &&
+								errors.allowedTypes.type ===
+									"formattedCorrectly" && (
+									<span className="error">
+										<Icon type="error" />
+										<span
+											role="alert"
+											className="text-start"
+										>
+											{__(
+												"Must be a comma-separated list of file extensions without periods.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+						</p>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+};
+
 const NumberSettings = ({
 	errors,
 	storedData,
@@ -284,4 +368,4 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 	);
 };
 
-export { TextSettings, NumberSettings };
+export { MediaSettings, TextSettings, NumberSettings };

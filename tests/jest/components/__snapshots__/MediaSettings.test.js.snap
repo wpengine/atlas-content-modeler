@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MediaSettings tests Renders a matching snapshot 1`] = `
+<React.Fragment>
+  <h3>
+    Allowed File Types
+  </h3>
+  <p>
+    Define what file types are allowed to be uploaded.
+  </p>
+  <p
+    className="mb-4"
+  >
+    <a
+      href="https://wpengine.com/support/mime-types-wordpress/"
+      rel="noreferrer"
+      target="_blank"
+    >
+      WordPress Allowed Types
+    </a>
+  </p>
+  <div
+    className="d-flex flex-column d-sm-flex flex-sm-row"
+  >
+    <div
+      className="w-100"
+    >
+      <div
+        className="field w-100"
+      >
+        <label
+          htmlFor="allowedTypes"
+        >
+          File Extensions
+        </label>
+        <br />
+        <textarea
+          aria-invalid="false"
+          className="w-100"
+          defaultValue="jpeg,jpg,pdf"
+          id="allowedTypes"
+          name="allowedTypes"
+          onChange={[Function]}
+          placeholder="jpeg,jpg,png,tiff,tif,pdf"
+        />
+        <p
+          className="field-messages"
+        />
+      </div>
+    </div>
+  </div>
+</React.Fragment>
+`;
