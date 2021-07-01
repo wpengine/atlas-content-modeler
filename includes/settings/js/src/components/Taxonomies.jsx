@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import Icon from "../../../../components/icons";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
+import TaxonomiesTable from "./TaxonomiesTable";
 
 const { apiFetch } = wp;
 
@@ -99,7 +100,7 @@ export default function Taxonomies() {
 	}
 
 	return (
-		<div className="app-card">
+		<div className="app-card taxonomies-view">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>{__("Taxonomies", "atlas-content-modeler")}</h2>
 				<button
@@ -491,13 +492,8 @@ export default function Taxonomies() {
 							</button>
 						</form>
 					</div>
-					<div className="taxonomy-list col-xs-10 col-lg-6 order-0 order-lg-1">
-						{/* TODO: Display taxonomies in a table here. */}
-						{Object.values(taxonomies).map((taxonomy) => {
-							return (
-								<p key={taxonomy?.slug}>{taxonomy?.plural}</p>
-							);
-						})}
+					<div className="taxonomy-list col-xs-10 col-lg-7 order-0 order-lg-1">
+						<TaxonomiesTable taxonomies={taxonomies} />
 					</div>
 				</div>
 			</section>
