@@ -28,6 +28,10 @@
 		text-align: right;
 		padding-right: 0;
 	}
+
+	&:first-of-type {
+		padding-left: 1rem;
+	}
 }
 
 .taxonomies-view table button {
@@ -41,15 +45,4 @@
 
 .taxonomies-view table button svg {
 	margin: 0 auto;
-}
-
-.taxonomies-view .bulk-actions {
-	margin-bottom: 18px;
-
-	select {
-		height: 52px;
-		margin-top: -1px;
-		margin-right: 18px;
-		padding: 0 32px 0 20px;
-	}
 }
