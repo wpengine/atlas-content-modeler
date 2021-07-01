@@ -42,6 +42,7 @@ export function useApiIdGenerator({
 	}
 
 	return {
+		setFieldsAreLinked,
 		setApiIdGeneratorInput,
 		apiIdFieldAttributes: {
 			onChange: (event) => {

@@ -25,6 +25,11 @@
 	color: $color-primary-hover;
 }
 
+.app-card h3 {
+	font-size: 21px;
+	font-weight: bold;
+}
+
 .app-card .heading {
 	display: flex;
 	justify-content: space-between;
