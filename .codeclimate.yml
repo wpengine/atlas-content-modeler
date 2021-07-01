@@ -31,7 +31,7 @@ checks:
     config:
       threshold: # language-specific defaults. an override will affect all languages.
   exclude_patterns:
-    - "*.jsx"
+  - "*.jsx"
   plugins:
     eslint:
       enabled: true
