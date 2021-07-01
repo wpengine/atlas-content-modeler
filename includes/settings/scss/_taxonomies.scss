@@ -28,8 +28,13 @@
 
 .taxonomies-view table button {
 	border: none;
-	height: 55px;
-	width: 55px;
-	line-height: 55px;
+	margin: 2px;
+	height: 51px;
+	width: 51px;
+	line-height: 51px;
 	padding: 0;
+}
+
+.taxonomies-view table button svg {
+	margin: 0 auto;
 }
