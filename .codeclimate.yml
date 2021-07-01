@@ -33,7 +33,16 @@ checks:
   plugins:
     eslint:
       enabled: true
+      config:
+        config: .eslintrc
+        extensions:
+          - .js
+          - .jsx
     phpmd:
       enabled: true
     duplication:
+      enabled: true
+    sonar-php:
+      enabled: true
+    fixme:
       enabled: true
