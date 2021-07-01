@@ -30,8 +30,6 @@ checks:
   identical-code:
     config:
       threshold: # language-specific defaults. an override will affect all languages.
-  exclude_patterns:
-  - "*.jsx"
   plugins:
     eslint:
       enabled: true
@@ -48,3 +46,5 @@ checks:
       enabled: true
     fixme:
       enabled: true
+  exclude_patterns:
+  - "**/*.jsx"
