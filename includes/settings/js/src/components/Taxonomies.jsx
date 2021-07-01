@@ -72,7 +72,9 @@ export default function Taxonomies() {
 					});
 					window.scrollTo(0, 0);
 					reset();
-					setApiIdGeneratorInput(""); // Resets the API ID field.
+					setApiIdGeneratorInput("");
+					setSingularCount(0);
+					setPluralCount(0);
 					setFieldsAreLinked(true);
 					showSuccess(
 						sprintf(

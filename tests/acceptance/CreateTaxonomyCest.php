@@ -37,6 +37,9 @@ class CreateTaxonomyCest
 		$I->seeInField("#singular", "");
 		$I->seeInField("#plural", "");
 		$I->seeInField("#slug", "");
+
+		// Character counts should reset.
+		$I->see('0/50', '.field .count');
 	}
 
 	public function i_can_not_create_a_taxonomy_without_ticking_a_model(AcceptanceTester $I)
