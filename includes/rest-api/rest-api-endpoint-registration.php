@@ -819,11 +819,10 @@ function dispatch_delete_taxonomy( WP_REST_Request $request ) {
 	$acm_taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
 
 	if ( empty( $acm_taxonomies[ $slug ] ) ) {
-		return rest_ensure_response(
-			[
-				'success' => false,
-				'errors'  => esc_html__( 'The specified taxonomy does not exist.', 'atlas-content-modeler' ),
-			]
+		return new WP_Error(
+			'acm_invalid_taxonomy',
+			esc_html__( 'Invalid ACM taxonomy.', 'atlas-content-modeler' ),
+			[ 'status' => 404 ]
 		);
 	}
 

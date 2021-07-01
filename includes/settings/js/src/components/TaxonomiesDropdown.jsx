@@ -10,6 +10,7 @@ import Modal from "react-modal";
 import { maybeCloseDropdown } from "../utils";
 import { sprintf, __ } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
+import { showError } from "../toasts";
 
 const { apiFetch } = wp;
 
@@ -144,17 +145,42 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 					type="submit"
 					form={taxonomy.slug}
 					className="first warning"
-					onClick={() => {
-						apiFetch({
+					onClick={async () => {
+						let hasError = false;
+
+						await apiFetch({
 							path: `/wpe/atlas/taxonomy/${taxonomy.slug}`,
 							method: "DELETE",
 							_wpnonce: wpApiSettings.nonce,
-						});
+						})
+							.then((res) => {
+								if (res.success) {
+									// removeSidebarMenuItem(slug);
+									taxonomiesDispatch({
+										type: "removeTaxonomy",
+										slug: taxonomy.slug,
+									});
+								} else {
+									hasError = true;
+								}
+							})
+							.catch(() => {
+								hasError = true;
+							});
+
+						if (hasError) {
+							showError(
+								sprintf(
+									__(
+										"There was an error. The %s taxonomy was not deleted.",
+										"atlas-content-modeler"
+									),
+									taxonomy.slug
+								)
+							);
+						}
+
 						setModalIsOpen(false);
-						taxonomiesDispatch({
-							type: "removeTaxonomy",
-							slug: taxonomy.slug,
-						});
 					}}
 				>
 					{__("Delete", "atlas-content-modeler")}
