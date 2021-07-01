@@ -10,7 +10,14 @@ const TaxonomiesTable = ({ taxonomies = {} }) => {
 				<thead>
 					<tr>
 						<th className="checkbox">
-							<input type="checkbox" className="check-all" />
+							<input
+								type="checkbox"
+								className="check-all"
+								aria-label={__(
+									"Toggle selection of all taxonomies to apply a bulk action",
+									"atlas-content-modeler"
+								)}
+							/>
 						</th>
 						<th>{__("Name", "atlas-content-modeler")}</th>
 						<th>{__("Slug", "atlas-content-modeler")}</th>
@@ -28,6 +35,13 @@ const TaxonomiesTable = ({ taxonomies = {} }) => {
 									<input
 										type="checkbox"
 										className="check-all"
+										aria-label={sprintf(
+											__(
+												"Toggle selection of the %s taxonomy.",
+												"atlas-content-modeler"
+											),
+											taxonomy.plural
+										)}
 									/>
 								</td>
 								<td>{taxonomy?.plural}</td>
