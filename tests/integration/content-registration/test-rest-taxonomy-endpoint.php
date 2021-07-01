@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Class TestRestTaxonomyEndpoint
+ *
+ * Verifies plugin REST endpoints for CRUD operations on ACM taxonomies.
+ */
 class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 	protected $server;
 
