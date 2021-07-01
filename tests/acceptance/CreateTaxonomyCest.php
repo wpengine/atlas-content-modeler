@@ -20,6 +20,12 @@ class CreateTaxonomyCest
 		$I->see('Taxonomies', 'section.heading h2');
 	}
 
+	public function i_can_see_the_no_taxonomies_message_if_none_exist(AcceptanceTester $I)
+	{
+		$I->amOnTaxonomyListingsPage();
+		$I->see('You currently have no taxonomies', '.taxonomy-list' );
+	}
+
 	public function i_can_create_a_taxonomy(AcceptanceTester $I)
 	{
 		$I->amOnTaxonomyListingsPage();
@@ -32,6 +38,7 @@ class CreateTaxonomyCest
 		$I->wait(1);
 		$I->see('taxonomy was created', '#success');
 		$I->see('Breeds', '.taxonomy-list');
+		$I->see('goose', '.taxonomy-list');
 
 		// Form fields should reset when a submission was successful.
 		$I->seeInField("#singular", "");
