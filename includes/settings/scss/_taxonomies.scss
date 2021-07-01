@@ -1,0 +1,35 @@
+@import "variables";
+
+.taxonomies-view table {
+	border-collapse: collapse;
+}
+
+.taxonomies-view table thead {
+	background: $color-secondary;
+	text-transform: uppercase;
+}
+
+.atlas-content-modeler .taxonomies-view table td {
+	vertical-align: middle;
+	padding: 0 0.5rem;
+}
+
+.atlas-content-modeler .taxonomies-view table th,
+.atlas-content-modeler .taxonomies-view table td {
+	text-align: left;
+	&.checkbox {
+		text-align: center;
+	}
+	&.action {
+		text-align: right;
+		padding-right: 1rem;
+	}
+}
+
+.taxonomies-view table button {
+	border: none;
+	height: 55px;
+	width: 55px;
+	line-height: 55px;
+	padding: 0;
+}
