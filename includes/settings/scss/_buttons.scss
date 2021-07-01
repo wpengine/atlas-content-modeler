@@ -15,9 +15,9 @@ button {
 
 button:disabled,
 button:disabled:hover {
-	background: $color-gray-disabled-background !important;
-	border-color: $color-gray-disabled-border !important;
-	color: $color-gray-disabled-text !important;
+	background: $color-secondary-light !important;
+	border-color: $color-secondary !important;
+	color: $color-gray !important;
 }
 
 button.first {
