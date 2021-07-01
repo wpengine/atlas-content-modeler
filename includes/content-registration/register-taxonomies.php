@@ -113,7 +113,7 @@ function get_props( array $args ): array {
 		'hierarchical'        => $args['hierarchical'],
 		'show_in_rest'        => $args['api_visibility'] === 'public'
 			? $args['show_in_rest']
-			: current_user_can( 'manage_options' ),
+			: current_user_can( 'read' ),
 		'show_in_graphql'     => $args['show_in_graphql'],
 		'graphql_single_name' => camelcase( $args['singular'] ),
 		'graphql_plural_name' => camelcase( $args['plural'] ),
