@@ -46,5 +46,3 @@ checks:
       enabled: true
     fixme:
       enabled: true
-  exclude_patterns:
-  - "**/*.jsx"
