@@ -155,7 +155,7 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 						})
 							.then((res) => {
 								if (res.success) {
-									// removeSidebarMenuItem(slug);
+									// TODO: Remove taxonomy from sidebar.
 									taxonomiesDispatch({
 										type: "removeTaxonomy",
 										slug: taxonomy.slug,
