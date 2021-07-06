@@ -106,7 +106,10 @@ export const getGraphiQLLink = (modelData) => {
 		(match) => match.toUpperCase() // GraphQL's "Types" are all capitalized
 	);
 	const fragmentName = `${graphQLType}Fields`;
-	const pluralSlug = toValidApiId(modelData.plural);
+	const rootToTypeConnectionFieldName =
+		modelData.singular !== modelData.plural
+			? toValidApiId(modelData.plural)
+			: "all" + graphQLType;
 
 	const fields = sanitizeFields(modelData?.fields);
 	const fieldSlugs = getFieldOrder(fields).map((id) => {
@@ -144,7 +147,7 @@ ${fields[id]?.slug} {
 
 	const query = `
 {
-  ${pluralSlug}(first: 10) {
+  ${rootToTypeConnectionFieldName}(first: 10) {
     nodes {
       ...${fragmentName}
     }
