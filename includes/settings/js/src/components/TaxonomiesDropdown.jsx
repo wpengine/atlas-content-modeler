@@ -172,10 +172,11 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 							showError(
 								sprintf(
 									__(
+										/* translators: the taxonomy plural name */
 										"There was an error. The %s taxonomy was not deleted.",
 										"atlas-content-modeler"
 									),
-									taxonomy.slug
+									taxonomy.plural
 								)
 							);
 						}
