@@ -4,7 +4,7 @@
 
 export function taxonomiesReducer(state, action) {
 	switch (action.type) {
-		case "addTaxonomy":
+		case "updateTaxonomy":
 			return {
 				...state,
 				[action.data.slug]: action.data,
