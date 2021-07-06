@@ -99,7 +99,7 @@ class AcceptanceTester extends \Codeception\Actor
      * @param string $plural      Plural taxonomy name.
 	 * @param array  $types       Slug name of the models that have this taxonomy.
      */
-	public function haveTaxonomy($singular, $plural, $types) {
+	public function haveTaxonomy($singular, $plural, array $types) {
 		$this->amOnTaxonomyListingsPage();
 		$this->wait(1);
 
