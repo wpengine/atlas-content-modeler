@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { __, sprintf } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
@@ -15,6 +15,7 @@ export default function Taxonomies() {
 		ModelsContext
 	);
 	const history = useHistory();
+	const [editingTaxonomy, setEditingTaxonomy] = useState(null);
 	const {
 		register,
 		handleSubmit,
@@ -22,6 +23,7 @@ export default function Taxonomies() {
 		setValue,
 		setError,
 		clearErrors,
+		formState,
 		reset,
 		formState: { isSubmitting },
 	} = useForm({
@@ -30,7 +32,7 @@ export default function Taxonomies() {
 			hierarchical: false,
 		},
 	});
-
+	const { isDirty } = formState;
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
 	const {
@@ -41,6 +43,17 @@ export default function Taxonomies() {
 		apiFieldId: "slug",
 		setValue,
 	});
+	const successMessage = editingTaxonomy
+		? __(
+				/* translators: the taxonomy plural name */
+				'The "%s" taxonomy was updated.',
+				"atlas-content-modeler"
+		  )
+		: __(
+				/* translators: the taxonomy plural name */
+				'The "%s" taxonomy was created.',
+				"atlas-content-modeler"
+		  );
 
 	function apiCreateTaxonomy(data) {
 		// Wrap single models as an array.
@@ -59,35 +72,31 @@ export default function Taxonomies() {
 			return false;
 		}
 
+		if (editingTaxonomy && !isDirty) {
+			window.scrollTo(0, 0);
+			cancelEditing();
+			return;
+		}
+
 		return apiFetch({
 			path: "/wpe/atlas/taxonomy",
-			method: "POST",
+			method: editingTaxonomy ? "PUT" : "POST",
 			_wpnonce: wpApiSettings.nonce,
 			data,
 		})
 			.then((res) => {
-				if (res.success) {
-					taxonomiesDispatch({
-						type: "addTaxonomy",
-						data: res.taxonomy,
-					});
-					window.scrollTo(0, 0);
-					reset();
-					setApiIdGeneratorInput("");
-					setSingularCount(0);
-					setPluralCount(0);
-					setFieldsAreLinked(true);
-					showSuccess(
-						sprintf(
-							__(
-								/* translators: the taxonomy plural name */
-								'The "%s" taxonomy was created.',
-								"atlas-content-modeler"
-							),
-							res.taxonomy.plural
-						)
-					);
+				if (!res.success) {
+					return;
 				}
+
+				taxonomiesDispatch({
+					type: "updateTaxonomy",
+					data: res.taxonomy,
+				});
+
+				window.scrollTo(0, 0);
+				editingTaxonomy ? cancelEditing() : resetForm();
+				showSuccess(sprintf(successMessage, res.taxonomy.plural));
 			})
 			.catch((err) => {
 				if (err.code === "atlas_content_modeler_taxonomy_exists") {
@@ -99,21 +108,90 @@ export default function Taxonomies() {
 			});
 	}
 
+	const resetForm = () => {
+		reset();
+		setApiIdGeneratorInput("");
+		setSingularCount(0);
+		setPluralCount(0);
+		setFieldsAreLinked(true);
+	};
+
+	const cancelEditing = () => {
+		setEditingTaxonomy(null);
+		resetForm();
+		history.push(atlasContentModeler.appPath + "&view=taxonomies");
+	};
+
+	// Update form values when editing a taxonomy.
+	useEffect(() => {
+		if (editingTaxonomy) {
+			clearErrors();
+			setFieldsAreLinked(false);
+			Object.entries(editingTaxonomy).forEach(([key, value]) =>
+				setValue(key, value)
+			);
+			setSingularCount(editingTaxonomy?.singular.length);
+			setPluralCount(editingTaxonomy?.plural.length);
+		}
+	}, [editingTaxonomy]);
+
 	return (
 		<div className="app-card taxonomies-view">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
-				<h2>{__("Taxonomies", "atlas-content-modeler")}</h2>
-				<button
-					className="tertiary"
-					onClick={() => history.push(atlasContentModeler.appPath)}
-				>
-					{__("View Content Models", "atlas-content-modeler")}
-				</button>
+				<h2>
+					{editingTaxonomy ? (
+						<>
+							<a
+								href="#"
+								onClick={(event) => {
+									event.preventDefault();
+									cancelEditing();
+								}}
+							>
+								{__("Taxonomies", "atlas-content-modeler")}
+							</a>
+							{" / "}
+							{editingTaxonomy.plural}
+						</>
+					) : (
+						__("Taxonomies", "atlas-content-modeler")
+					)}
+				</h2>
+				{editingTaxonomy ? (
+					<button
+						className="tertiary"
+						onClick={(event) => {
+							event.preventDefault();
+							cancelEditing();
+						}}
+					>
+						{__("Cancel Editing", "atlas-content-modeler")}
+					</button>
+				) : (
+					<button
+						className="tertiary"
+						onClick={() =>
+							history.push(atlasContentModeler.appPath)
+						}
+					>
+						{__("View Content Models", "atlas-content-modeler")}
+					</button>
+				)}
 			</section>
 			<section className="card-content">
 				<div className="row">
 					<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
-						<h3>{__("Add New", "atlas-content-modeler")}</h3>
+						<h3>
+							{editingTaxonomy
+								? sprintf(
+										__(
+											"Editing “%s”",
+											"atlas-content-modeler"
+										),
+										editingTaxonomy.plural
+								  )
+								: __("Add New", "atlas-content-modeler")}
+						</h3>
 						<form onSubmit={handleSubmit(apiCreateTaxonomy)}>
 							{/* Singular Name */}
 							<div
@@ -270,6 +348,7 @@ export default function Taxonomies() {
 									id="slug"
 									name="slug"
 									className="w-100"
+									readOnly={editingTaxonomy !== null}
 									ref={register({
 										required: true,
 										maxLength: 32,
@@ -387,6 +466,7 @@ export default function Taxonomies() {
 								<p>
 									<input
 										name="hierarchical"
+										disabled={editingTaxonomy !== null}
 										id="hierarchical"
 										type="checkbox"
 										ref={register()}
@@ -482,19 +562,47 @@ export default function Taxonomies() {
 									<span>&nbsp;</span>
 								</p>
 							</div>
-
-							<button
-								type="submit"
-								disabled={isSubmitting}
-								className="primary first"
-							>
-								{__("Create", "atlas-content-modeler")}
-							</button>
+							{!editingTaxonomy && (
+								<button
+									type="submit"
+									disabled={isSubmitting}
+									className="primary first"
+								>
+									{__("Create", "atlas-content-modeler")}
+								</button>
+							)}
+							{editingTaxonomy && (
+								<>
+									<button
+										type="submit"
+										disabled={isSubmitting}
+										className="primary first"
+									>
+										{__("Update", "atlas-content-modeler")}
+									</button>
+									<button
+										disabled={isSubmitting}
+										className="tertiary"
+										onClick={(e) => {
+											e.preventDefault();
+											scrollTo(0, 0);
+											cancelEditing();
+										}}
+									>
+										{__("Cancel", "atlas-content-modeler")}
+									</button>
+								</>
+							)}
 						</form>
 					</div>
-					<div className="taxonomy-list col-xs-10 col-lg-8 order-0 order-lg-1">
-						<TaxonomiesTable taxonomies={taxonomies} />
-					</div>
+					{!editingTaxonomy && (
+						<div className="taxonomy-list col-xs-10 col-lg-8 order-0 order-lg-1">
+							<TaxonomiesTable
+								taxonomies={taxonomies}
+								setEditingTaxonomy={setEditingTaxonomy}
+							/>
+						</div>
+					)}
 				</div>
 			</section>
 		</div>
