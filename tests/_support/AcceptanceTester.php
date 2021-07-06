@@ -91,4 +91,25 @@ class AcceptanceTester extends \Codeception\Actor
 
         $this->click('.card-content button.primary');
     }
+
+	/**
+	 * Create a Taxonomy.
+	 *
+	 * @param string $singular    Singular taxonomy name.
+     * @param string $plural      Plural taxonomy name.
+	 * @param array  $types       Slug name of the models that have this taxonomy.
+     */
+	public function haveTaxonomy($singular, $plural, $types) {
+		$this->amOnTaxonomyListingsPage();
+		$this->wait(1);
+
+		$this->fillField(['name' => 'singular'], $singular);
+		$this->fillField(['name' => 'plural'], $plural);
+
+		foreach ( $types as $type ) {
+			$this->click(".checklist .checkbox input[value={$type}]");
+		}
+
+		$this->click('.card-content button.primary');
+	}
 }
