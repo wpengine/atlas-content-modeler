@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { maybeCloseDropdown } from "../utils";
 import { sprintf, __ } from "@wordpress/i18n";
 
-export const TaxonomiesDropdown = ({ taxonomy }) => {
+export const TaxonomiesDropdown = ({ taxonomy, setEditingTaxonomy }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const timer = useRef(null);
@@ -71,8 +71,7 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 					onClick={(event) => {
 						event.preventDefault();
-						// TODO: implement editing here.
-						alert("TODO: Implement editing here.");
+						setEditingTaxonomy(taxonomy);
 						setDropdownOpen(false);
 					}}
 				>
@@ -105,7 +104,6 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 				onRequestClose={() => {
 					setModalIsOpen(false);
 				}}
-				// taxonomy={taxonomy}
 				style={customStyles}
 			>
 				<h2>
