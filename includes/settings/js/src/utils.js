@@ -139,7 +139,7 @@ ${fields[id]?.slug} {
 	});
 
 	if (fieldSlugs.length === 0) {
-		fieldSlugs.push("title");
+		fieldSlugs.push("databaseId");
 	}
 
 	const query = `
