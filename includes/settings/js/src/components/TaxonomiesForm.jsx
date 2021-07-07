@@ -152,10 +152,9 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 				<br />
 				<p className="help">
 					{__(
-						'Singular display name for your taxonomy, e.g. "Ingredient"',
+						"Singular display name for your taxonomy.",
 						"atlas-content-modeler"
 					)}
-					.
 				</p>
 				<input
 					id="singular"
@@ -207,7 +206,7 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 				<br />
 				<p className="help">
 					{__(
-						'Plural display name for your taxonomy, e.g. "Ingredients".',
+						"Plural display name for your taxonomy.",
 						"atlas-content-modeler"
 					)}
 				</p>
