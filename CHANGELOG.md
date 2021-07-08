@@ -1,5 +1,10 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+
+### Fixed
+- Prevent a PHP warning during title filtering if post info can not be found.
+
 ## 0.4.1 - 2021-06-24
 ### Added
 - Generate POT language file for translations.
