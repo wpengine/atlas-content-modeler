@@ -103,7 +103,7 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
 export const getGraphiQLLink = (modelData) => {
 	const graphQLType = toValidApiId(modelData.singular).replace(
 		/^[a-z]/g,
-		(match) => match.toUpperCase() // GraphQL's "Types" are all capitalized
+		(match) => match.toUpperCase() // GraphQL's "Types" are all capitalized.
 	);
 	const fragmentName = `${graphQLType}Fields`;
 	const rootToTypeConnectionFieldName =
