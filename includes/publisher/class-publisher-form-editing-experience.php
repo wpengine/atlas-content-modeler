@@ -423,6 +423,10 @@ final class FormEditingExperience {
 	public function filter_post_titles( string $title, int $id ) {
 		$post_type = get_post_type( $id );
 
+		if ( ! $post_type ) {
+			return $title;
+		}
+
 		// Only filter titles for post types created with this plugin.
 		if ( ! array_key_exists( $post_type, $this->models ) ) {
 			return $title;
