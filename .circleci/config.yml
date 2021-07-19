@@ -516,6 +516,7 @@ workflows:
               only:
                 - main
                 - canary
+                - chriswiegman/BH-1104
             tags:
               only: /.*/
           context: wpe-ldap-creds
