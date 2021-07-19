@@ -91,9 +91,9 @@ jobs:
           at: .
       - wp-product-orb/variable-load
       - run:
-        name: Add Changelog to readme
-        command: |
-          node scripts/buildReadme.js
+          name: Add Changelog to readme
+          command: |
+            node scripts/buildReadme.js
       - wp-product-orb/parse-wp-readme:
           infile: <<parameters.slug>>/readme.txt
           outfile: build/<<parameters.slug>>.$BUILD_VERSION.json
