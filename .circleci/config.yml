@@ -498,6 +498,7 @@ workflows:
           slug: atlas-content-modeler
           requires:
             - plugin-build-zip
+            - plugin-build-composer
           # run this job for any build, any branch
           filters:
             tags:
