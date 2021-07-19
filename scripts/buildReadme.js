@@ -1,3 +1,8 @@
+/**
+ * This script combines the readme.txt and CHANGELOG.md files in order to
+ * ensure that a changelog is included for viewing in the plugin update service.
+ */
+
 const fs = require("fs");
 const path = require("path");
 const util = require("util");
