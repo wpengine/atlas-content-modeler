@@ -448,7 +448,7 @@ workflows:
               only: /.*/
       - plugin-build-pot:
           requires:
-            - plugin-build-composer
+            - plugin-checkout
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
