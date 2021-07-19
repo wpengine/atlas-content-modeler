@@ -1,12 +1,24 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+	useContext,
+} from "react";
 import Icon from "../../../../components/icons";
 import Modal from "react-modal";
 import { maybeCloseDropdown } from "../utils";
 import { sprintf, __ } from "@wordpress/i18n";
+import { ModelsContext } from "../ModelsContext";
+import { showError } from "../toasts";
+
+const { apiFetch } = wp;
 
 export const TaxonomiesDropdown = ({ taxonomy, setEditingTaxonomy }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
+	const { taxonomiesDispatch } = useContext(ModelsContext);
+
 	const timer = useRef(null);
 
 	const customStyles = {
@@ -131,9 +143,42 @@ export const TaxonomiesDropdown = ({ taxonomy, setEditingTaxonomy }) => {
 					type="submit"
 					form={taxonomy.slug}
 					className="first warning"
-					onClick={() => {
-						// TODO: implement deletion here. See FieldOptionsDropdown.jsx.
-						alert("TODO: implement deletion here.");
+					onClick={async () => {
+						let hasError = false;
+
+						await apiFetch({
+							path: `/wpe/atlas/taxonomy/${taxonomy.slug}`,
+							method: "DELETE",
+							_wpnonce: wpApiSettings.nonce,
+						})
+							.then((res) => {
+								if (res.success) {
+									// TODO: Remove taxonomy from sidebar.
+									taxonomiesDispatch({
+										type: "removeTaxonomy",
+										slug: taxonomy.slug,
+									});
+								} else {
+									hasError = true;
+								}
+							})
+							.catch(() => {
+								hasError = true;
+							});
+
+						if (hasError) {
+							showError(
+								sprintf(
+									__(
+										/* translators: the taxonomy plural name */
+										"There was an error. The %s taxonomy was not deleted.",
+										"atlas-content-modeler"
+									),
+									taxonomy.plural
+								)
+							);
+						}
+
 						setModalIsOpen(false);
 					}}
 				>

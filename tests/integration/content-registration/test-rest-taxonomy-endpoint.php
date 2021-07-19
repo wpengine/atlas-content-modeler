@@ -66,9 +66,12 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 	}
 
-	public function test_taxonomy_route_is_registered(): void {
+	public function test_taxonomy_routes_are_registered(): void {
 		$routes = $this->server->get_routes( 'wpe' );
+		// For POST and PUT requests
 		self::assertArrayHasKey( "/{$this->namespace}/{$this->route}", $routes );
+		// For DELETE requests
+		self::assertArrayHasKey( "/{$this->namespace}/{$this->route}/(?P<taxonomy>[\\w-]+)", $routes );
 	}
 
 	public function test_can_create_new_taxonomy(): void {
@@ -81,6 +84,28 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 
 		self::assertSame( 200, $response->get_status() );
 		self::assertSame( true, $response->data['success'] );
+	}
+
+	public function test_can_delete_acm_taxonomy(): void {
+		wp_set_current_user( 1 );
+
+		$slug     = $this->starting_taxonomies['ingredient']['slug'];
+		$request  = new WP_REST_Request( 'DELETE', "/{$this->namespace}/{$this->route}/{$slug}" );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 200, $response->get_status() );
+		self::assertSame( true, $response->data['success'] );
+	}
+
+	public function test_cannot_delete_non_acm_taxonomy(): void {
+		wp_set_current_user( 1 );
+
+		$slug     = 'category';
+		$request  = new WP_REST_Request( 'DELETE', "/{$this->namespace}/{$this->route}/{$slug}" );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 404, $response->get_status() );
+		self::assertSame( 'acm_invalid_taxonomy', $response->data['code'] );
 	}
 
 	public function test_cannot_create_taxonomy_when_slug_conflicts_with_existing_core_taxonomy(): void {
