@@ -465,6 +465,7 @@ workflows:
       - plugin-test-e2e:
           requires:
             - plugin-build-zip
+            - plugin-build-composer
           # run this job for any build, any branch
           filters:
             tags:
@@ -488,6 +489,7 @@ workflows:
       - plugin-test-lint-php:
           requires:
             - plugin-build-zip
+            - plugin-build-composer
           # run this job for any build, any branch
           filters:
             tags:
