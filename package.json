@@ -6,6 +6,7 @@
     "build": "run-s build-settings build-publisher",
     "build-settings": "parcel build includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --no-source-maps --public-url .",
     "build-publisher": "parcel build includes/publisher/js/src/index.jsx --dist-dir includes/publisher/dist --no-source-maps --public-url .",
+    "build-readme": "node scripts/buildreadme.js",
     "start": "run-p start-settings start-publisher",
     "start-settings": "parcel watch includes/settings/js/src/index.jsx --dist-dir includes/settings/dist --public-url .",
     "start-publisher": "parcel watch includes/publisher/js/src/index.jsx --port 1235 --dist-dir includes/publisher/dist --public-url .",
