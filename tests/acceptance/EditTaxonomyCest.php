@@ -12,15 +12,14 @@ class EditTaxonomyCest
 		$I->wait(1);
 		$I->amOnTaxonomyListingsPage();
 		$I->wait(1);
+		$I->click('.action button.options');
+		$I->see('Edit', '.dropdown-content');
+		$I->click('Edit', '.action .dropdown-content');
+		$I->wait(1);
 	}
 
 	public function i_can_edit_a_taxonomy(AcceptanceTester $I)
 	{
-		$I->click('.action button.options');
-		$I->see('Edit', '.dropdown-content');
-        $I->click('Edit', '.action .dropdown-content');
-
-		$I->wait(1);
 		$I->seeInField('#singular','Breed');
 
 		$I->fillField(['name' => 'singular'], 'Br33d');
@@ -34,4 +33,27 @@ class EditTaxonomyCest
 		$I->see('Br33ds', '.taxonomy-list');
 		$I->seeInField('#singular', ''); // Form is reset.
 	}
+
+	public function i_see_the_edit_form_reset_if_no_changes_were_made(AcceptanceTester $I)
+	{
+		// Just submit the edit form without making changes.
+		$I->click('Update');
+		$I->wait(1);
+		$I->dontSee('taxonomy was updated'); // No changes were made, so no toast should appear.
+		$I->seeInField('#singular', ''); // Form is reset.
+	}
+
+	public function i_see_the_edit_form_reset_if_the_form_state_is_unchanged(AcceptanceTester $I)
+	{
+		$I->click('#model-checklist .checkbox'); // Untick the selected model.
+		$I->wait(1);
+		$I->click('#model-checklist .checkbox'); // Retick the model. The form should not be dirty now.
+		$I->wait(1);
+
+		$I->click('Update');
+		$I->wait(1);
+		$I->dontSee('taxonomy was updated'); // No changes were made, so no toast should appear.
+		$I->seeInField('#singular', ''); // Form is reset.
+	}
+
 }
