@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { __, sprintf } from "@wordpress/i18n";
 import { useLocationSearch } from "../utils";
