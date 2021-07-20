@@ -56,4 +56,12 @@ class EditTaxonomyCest
 		$I->seeInField('#singular', ''); // Form is reset.
 	}
 
+	public function i_see_the_taxonomies_index_when_navigating_back_from_the_edit_form(AcceptanceTester $I)
+	{
+		$I->moveBack(); // Immediately navigate back from the edit form.
+		$I->wait(1);
+		$I->see('Taxonomies'); // Main taxonomies screen, not the Models screen.
+		$I->see('Add New');
+		$I->seeInField('#singular', ''); // Form is empty.
+	}
 }
