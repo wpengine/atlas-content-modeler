@@ -7,6 +7,7 @@ import { showSuccess } from "../toasts";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 
 const { apiFetch } = wp;
+const { isEqual, pick } = lodash;
 
 const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 	const { models, taxonomiesDispatch } = useContext(ModelsContext);
@@ -48,7 +49,6 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 				"atlas-content-modeler"
 		  );
 
-	const { isDirty } = formState;
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
 
@@ -93,10 +93,21 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 			return false;
 		}
 
-		if (editingTaxonomy && !isDirty) {
-			window.scrollTo(0, 0);
-			setEditingTaxonomy(null);
-			return;
+		/**
+		 * Resets the edit form if it was submitted without changes.
+		 * Uses isEqual from lodash because isDirty from React Hook Form v6
+		 * reports true in error when a checkbox value is toggled twice.
+		 */
+		if (editingTaxonomy) {
+			const originalEditingValues = pick(
+				editingTaxonomy,
+				Object.keys(data) // Excludes properties not represented as form fields, such as `show_in_graphql`.
+			);
+			if (isEqual(originalEditingValues, data)) {
+				window.scrollTo(0, 0);
+				setEditingTaxonomy(null);
+				return;
+			}
 		}
 
 		return apiFetch({
@@ -309,7 +320,7 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 
 			{/* Models / Types */}
 			<div className={errors.types ? "field has-error" : "field"}>
-				<fieldset>
+				<fieldset id="model-checklist">
 					<legend>{__("Models", "atlas-content-modeler")}</legend>
 					<p className="help">
 						{__(
