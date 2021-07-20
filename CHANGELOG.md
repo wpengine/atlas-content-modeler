@@ -16,7 +16,7 @@
 - Removed the Multiple Choice field for now while we add support for custom choice API IDs.
 
 ## 0.4.0 - 2021-06-22
-First public release. There may be breaking changes until 1.0.0.
+- First public release. There may be breaking changes until 1.0.0.
 
 ### Added
 - New Multiple Choice field (beta) to create radio and checklist groups.

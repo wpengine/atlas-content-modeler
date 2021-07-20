@@ -79,6 +79,27 @@ jobs:
           paths:
             - .
 
+  plugin-build-readme:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      slug:
+        type: string
+    working_directory: .
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: NPM build readme.txt
+          command: |
+            npm run build-readme
+          working_directory: <<parameters.slug>>
+      - persist_to_workspace:
+          root: .
+          paths:
+             - atlas-content-modeler/readme.txt
+
   plugin-build-json:
     executor: wp-product-orb/parser
     environment:
@@ -409,17 +430,25 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - plugin-build-readme:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-npm
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-build-json:
           slug: atlas-content-modeler
           requires:
-            - plugin-build-composer
+            - plugin-build-readme
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
           filters:
             tags:
               only: /.*/
       - plugin-build-pot:
           requires:
-            - plugin-build-composer
+            - plugin-checkout
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
@@ -436,6 +465,7 @@ workflows:
       - plugin-test-e2e:
           requires:
             - plugin-build-zip
+            - plugin-build-composer
           # run this job for any build, any branch
           filters:
             tags:
@@ -459,6 +489,7 @@ workflows:
       - plugin-test-lint-php:
           requires:
             - plugin-build-zip
+            - plugin-build-composer
           # run this job for any build, any branch
           filters:
             tags:
@@ -467,6 +498,7 @@ workflows:
           slug: atlas-content-modeler
           requires:
             - plugin-build-zip
+            - plugin-build-composer
           # run this job for any build, any branch
           filters:
             tags:
