@@ -2,7 +2,7 @@ import React from "react";
 import { __ } from "@wordpress/i18n";
 import { TaxonomiesDropdown } from "./TaxonomiesDropdown";
 
-const TaxonomiesTable = ({ taxonomies = {}, setEditingTaxonomy }) => {
+const TaxonomiesTable = ({ taxonomies = {} }) => {
 	if (Object.values(taxonomies).length < 1) {
 		return (
 			<p>
@@ -38,9 +38,6 @@ const TaxonomiesTable = ({ taxonomies = {}, setEditingTaxonomy }) => {
 									<div className="neg-margin-wrapper">
 										<TaxonomiesDropdown
 											taxonomy={taxonomy}
-											setEditingTaxonomy={
-												setEditingTaxonomy
-											}
 										/>
 									</div>
 								</td>

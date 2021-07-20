@@ -5,6 +5,7 @@ import React, {
 	useCallback,
 	useContext,
 } from "react";
+import { useHistory } from "react-router-dom";
 import Icon from "../../../../components/icons";
 import Modal from "react-modal";
 import { maybeCloseDropdown } from "../utils";
@@ -14,10 +15,11 @@ import { showError } from "../toasts";
 
 const { apiFetch } = wp;
 
-export const TaxonomiesDropdown = ({ taxonomy, setEditingTaxonomy }) => {
+export const TaxonomiesDropdown = ({ taxonomy }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { taxonomiesDispatch } = useContext(ModelsContext);
+	const history = useHistory();
 
 	const timer = useRef(null);
 
@@ -83,7 +85,10 @@ export const TaxonomiesDropdown = ({ taxonomy, setEditingTaxonomy }) => {
 					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 					onClick={(event) => {
 						event.preventDefault();
-						setEditingTaxonomy(taxonomy);
+						history.push(
+							atlasContentModeler.appPath +
+								`&view=taxonomies&editing=${taxonomy.slug}`
+						);
 						setDropdownOpen(false);
 					}}
 				>

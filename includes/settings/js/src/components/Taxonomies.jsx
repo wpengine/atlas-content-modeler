@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { __, sprintf } from "@wordpress/i18n";
+import { useLocationSearch } from "../utils";
 import { ModelsContext } from "../ModelsContext";
 import TaxonomiesTable from "./TaxonomiesTable";
 import TaxonomiesForm from "./TaxonomiesForm";
@@ -8,10 +9,11 @@ import TaxonomiesForm from "./TaxonomiesForm";
 export default function Taxonomies() {
 	const { taxonomies } = useContext(ModelsContext);
 	const history = useHistory();
-	const [editingTaxonomy, setEditingTaxonomy] = useState(null);
+	const query = useLocationSearch();
+	const editing = query.get("editing");
+	const editingTaxonomy = editing ? taxonomies[editing] : null;
 
 	const cancelEditing = () => {
-		setEditingTaxonomy(null);
 		history.push(atlasContentModeler.appPath + "&view=taxonomies");
 	};
 
@@ -74,15 +76,12 @@ export default function Taxonomies() {
 						</h3>
 						<TaxonomiesForm
 							editingTaxonomy={editingTaxonomy}
-							setEditingTaxonomy={setEditingTaxonomy}
+							cancelEditing={cancelEditing}
 						/>
 					</div>
 					{!editingTaxonomy && (
 						<div className="taxonomy-list col-xs-10 col-lg-8 order-0 order-lg-1">
-							<TaxonomiesTable
-								taxonomies={taxonomies}
-								setEditingTaxonomy={setEditingTaxonomy}
-							/>
+							<TaxonomiesTable taxonomies={taxonomies} />
 						</div>
 					)}
 				</div>

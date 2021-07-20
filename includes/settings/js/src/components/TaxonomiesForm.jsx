@@ -9,7 +9,7 @@ import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 const { apiFetch } = wp;
 const { isEqual, pick } = lodash;
 
-const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
+const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 	const { models, taxonomiesDispatch } = useContext(ModelsContext);
 	const {
 		register,
@@ -20,7 +20,6 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 		clearErrors,
 		reset,
 		formState: { isSubmitting },
-		formState,
 	} = useForm({
 		defaultValues: {
 			api_visibility: "private",
@@ -105,7 +104,7 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 			);
 			if (isEqual(originalEditingValues, data)) {
 				window.scrollTo(0, 0);
-				setEditingTaxonomy(null);
+				cancelEditing();
 				return;
 			}
 		}
@@ -128,7 +127,7 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 
 				window.scrollTo(0, 0);
 				if (editingTaxonomy) {
-					setEditingTaxonomy(null);
+					cancelEditing();
 				} else {
 					resetForm();
 				}
@@ -479,7 +478,7 @@ const TaxonomiesForm = ({ editingTaxonomy, setEditingTaxonomy }) => {
 						onClick={(e) => {
 							e.preventDefault();
 							scrollTo(0, 0);
-							setEditingTaxonomy(null);
+							cancelEditing();
 						}}
 					>
 						{__("Cancel", "atlas-content-modeler")}
