@@ -25,22 +25,17 @@ export default function Field(props) {
 		let error = defaultError;
 
 		if (field.type === "number") {
-			console.log("field", field);
-			console.log("event", event.target.validity);
 			if (event.target.validity.rangeOverflow) {
-				console.log("over");
 				error = sprintf(
 					__("Maximum value is %d.", "atlas-content-modeler"),
 					event.target.max
 				);
 			} else if (event.target.validity.rangeUnderflow) {
-				console.log("under");
 				error = sprintf(
 					__("Minimum value is %d.", "atlas-content-modeler"),
 					event.target.min
 				);
 			} else if (event.target.validity.stepMismatch) {
-				console.log("step");
 				error = sprintf(
 					__("Step value is %d.", "atlas-content-modeler"),
 					event.target.step
