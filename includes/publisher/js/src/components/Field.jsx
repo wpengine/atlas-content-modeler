@@ -25,14 +25,30 @@ export default function Field(props) {
 		let error = defaultError;
 
 		if (field.type === "number") {
-			console.log("number field", field);
-			console.log("number", event.target.validity);
+			console.log("field", field);
+			console.log("event", event.target.validity);
+			if (event.target.validity.rangeOverflow) {
+				console.log("over");
+				error = sprintf(
+					__("Maximum value is %d.", "atlas-content-modeler"),
+					event.target.max
+				);
+			} else if (event.target.validity.rangeUnderflow) {
+				console.log("under");
+				error = sprintf(
+					__("Minimum value is %d.", "atlas-content-modeler"),
+					event.target.min
+				);
+			} else if (event.target.validity.stepMismatch) {
+				console.log("step");
+				error = sprintf(
+					__("Step value is %d.", "atlas-content-modeler"),
+					event.target.step
+				);
+			}
 		}
 
 		if (field.type === "text") {
-			console.log("text field", field);
-			console.log("text", event.target.validity);
-
 			if (event.target.validity.tooShort) {
 				error = sprintf(
 					__("Minimum length is %d.", "atlas-content-modeler"),
@@ -118,6 +134,10 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			}
 			if (field?.step) {
 				numberOptions.step = field.step;
+			} else {
+				field.numberType === "decimal"
+					? (numberOptions.step = 0.1)
+					: (numberOptions.step = 1);
 			}
 
 			return (
@@ -139,7 +159,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					/>
 					<span className="error">
 						<Icon type="error" />
-						<span role="alert">{defaultError}</span>
+						<span role="alert">
+							{errors[field.slug] ?? defaultError}
+						</span>
 					</span>
 				</>
 			);
