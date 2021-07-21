@@ -2,7 +2,7 @@
 
 /**
  * Users should see their changes reflected in the WordPress admin sidebar
- * whenever without having to refresh the page.
+ * without having to refresh the page.
  */
 class SidebarUpdatesCest
 {
