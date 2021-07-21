@@ -130,9 +130,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			if (field?.step) {
 				numberOptions.step = field.step;
 			} else {
-				field.numberType === "decimal"
-					? (numberOptions.step = 0.1)
-					: (numberOptions.step = 1);
+				field.numberType === "integer"
+					? (numberOptions.step = 1)
+					: (numberOptions.step = "any");
 			}
 
 			return (
