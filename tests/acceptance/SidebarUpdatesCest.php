@@ -38,6 +38,7 @@ class SidebarUpdatesCest
 	{
 		$I->haveContentModel('Moose', 'Moose');
 		$I->haveContentModel('Goose', 'Geese');
+		$I->wait(1);
 
 		$I->seeElementInDOM('#menu-posts-goose');
 		$I->seeElementInDOM('#menu-posts-moose');
