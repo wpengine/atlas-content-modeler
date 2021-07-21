@@ -5,6 +5,7 @@ import React, {
 	useCallback,
 	useContext,
 } from "react";
+import { useHistory } from "react-router-dom";
 import Icon from "../../../../components/icons";
 import Modal from "react-modal";
 import { maybeCloseDropdown } from "../utils";
@@ -18,6 +19,7 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const { taxonomiesDispatch } = useContext(ModelsContext);
+	const history = useHistory();
 
 	const timer = useRef(null);
 
@@ -83,8 +85,10 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 					onClick={(event) => {
 						event.preventDefault();
-						// TODO: implement editing here.
-						alert("TODO: Implement editing here.");
+						history.push(
+							atlasContentModeler.appPath +
+								`&view=taxonomies&editing=${taxonomy.slug}`
+						);
 						setDropdownOpen(false);
 					}}
 				>
@@ -117,7 +121,6 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 				onRequestClose={() => {
 					setModalIsOpen(false);
 				}}
-				// taxonomy={taxonomy}
 				style={customStyles}
 			>
 				<h2>
