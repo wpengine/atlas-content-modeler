@@ -24,7 +24,15 @@ export default function Field(props) {
 
 		let error = defaultError;
 
+		if (field.type === "number") {
+			console.log("number field", field);
+			console.log("number", event.target.validity);
+		}
+
 		if (field.type === "text") {
+			console.log("text field", field);
+			console.log("text", event.target.validity);
+
 			if (event.target.validity.tooShort) {
 				error = sprintf(
 					__("Minimum length is %d.", "atlas-content-modeler"),
@@ -100,6 +108,18 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				</>
 			);
 		case "number":
+			let numberOptions = {};
+
+			if (field?.minValue) {
+				numberOptions.min = field.minValue;
+			}
+			if (field?.maxValue) {
+				numberOptions.max = field.maxValue;
+			}
+			if (field?.step) {
+				numberOptions.step = field.step;
+			}
+
 			return (
 				<>
 					<label
@@ -115,9 +135,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						defaultValue={field.value}
 						required={field.required}
 						onChange={(event) => validate(event, field)}
-						min={field?.minValue}
-						max={field?.maxValue}
-						step={field?.step}
+						{...numberOptions}
 					/>
 					<span className="error">
 						<Icon type="error" />
