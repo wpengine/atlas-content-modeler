@@ -135,6 +135,21 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					: (numberOptions.step = "any");
 			}
 
+			function preventNegativeValues(event, field) {
+				const min = Number(numberOptions.min);
+				const inputValue = Number(field.value);
+				if (
+					!isNaN(min) &&
+					!isNaN(inputValue) &&
+					min >= 0 &&
+					inputValue < 0
+				) {
+					field.value = Math.abs(field.value);
+				}
+
+				validate(event, field);
+			}
+
 			return (
 				<>
 					<label
@@ -149,7 +164,10 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
-						onChange={(event) => validate(event, field)}
+						onChange={(event) =>
+							preventNegativeValues(event, field)
+						}
+						onInput={(event) => preventNegativeValues(event, field)}
 						{...numberOptions}
 					/>
 					<span className="error">
