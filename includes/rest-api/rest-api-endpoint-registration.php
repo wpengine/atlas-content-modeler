@@ -509,7 +509,7 @@ function create_model( string $post_type_slug, array $args ) {
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
-			__( 'Please provide a valid API Identifier.', 'atlas-content-modeler' ),
+			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -521,7 +521,7 @@ function create_model( string $post_type_slug, array $args ) {
 	if ( ! empty( $content_types[ $post_type_slug ] ) || array_key_exists( $post_type_slug, $existing_content_types ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_already_exists',
-			__( 'A content model with this API Identifier already exists.', 'atlas-content-modeler' ),
+			__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
