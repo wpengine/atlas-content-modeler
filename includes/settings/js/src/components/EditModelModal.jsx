@@ -226,10 +226,12 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 
 				<div className="row">
 					<div className="field col-sm">
-						<label htmlFor="slug">API Identifier</label>
+						<label htmlFor="slug">
+							{__("Model ID", "atlas-content-modeler")}
+						</label>
 						<p className="help">
 							{__(
-								"Auto-generated and used for API requests.",
+								"Auto-generated and used internally for WordPress to identify the model.",
 								"atlas-content-modeler"
 							)}
 						</p>
