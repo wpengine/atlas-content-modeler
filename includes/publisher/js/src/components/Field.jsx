@@ -27,18 +27,18 @@ export default function Field(props) {
 		if (field.type === "number") {
 			if (event.target.validity.rangeOverflow) {
 				error = sprintf(
-					__("Maximum value is %d.", "atlas-content-modeler"),
-					event.target.max
+					__("Maximum value is %s.", "atlas-content-modeler"),
+					event.target.max.toString()
 				);
 			} else if (event.target.validity.rangeUnderflow) {
 				error = sprintf(
-					__("Minimum value is %d.", "atlas-content-modeler"),
-					event.target.min
+					__("Minimum value is %s.", "atlas-content-modeler"),
+					event.target.min.toString()
 				);
 			} else if (event.target.validity.stepMismatch) {
 				error = sprintf(
-					__("Step value is %d.", "atlas-content-modeler"),
-					event.target.step
+					__("Step value is %s.", "atlas-content-modeler"),
+					event.target.step.toString()
 				);
 			}
 		}
