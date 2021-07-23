@@ -20,7 +20,8 @@
 	input[type="search"],
 	input[type="week"],
 	input[type="text"],
-	textarea {
+	textarea,
+	select {
 		width: 100% !important;
 	}
 }
@@ -37,7 +38,8 @@
 		input[type="search"],
 		input[type="week"],
 		input[type="text"],
-		textarea {
+		textarea,
+		select {
 			width: 260px !important;
 		}
 	}
