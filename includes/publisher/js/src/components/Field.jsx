@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Icon from "../../../../components/icons";
@@ -37,7 +37,10 @@ export default function Field(props) {
 				);
 			} else if (event.target.validity.stepMismatch) {
 				error = sprintf(
-					__("Step value is %s.", "atlas-content-modeler"),
+					__(
+						"Value must be a multiple of %s.",
+						"atlas-content-modeler"
+					),
 					event.target.step.toString()
 				);
 			}
@@ -120,6 +123,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			);
 		case "number":
 			let numberOptions = {};
+			let inputRef = useRef();
 
 			if (field?.minValue) {
 				numberOptions.min = field.minValue;
@@ -135,6 +139,34 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					: (numberOptions.step = "any");
 			}
 
+			/**
+			 * Check for need to sanitize number fields further before regular validation
+			 * @param event
+			 * @param field
+			 */
+			function preValidate(event, field) {
+				// integer
+				if (field.numberType === "integer") {
+					if (event.key === ".") {
+						event.preventDefault();
+						return;
+					}
+					// parse to remove leading 0's etc
+					inputRef.current.value = parseInt(
+						inputRef.current.value,
+						10
+					);
+				}
+
+				// decimal
+				if (field.numberType === "decimal") {
+					inputRef.current.value = parseFloat(inputRef.current.value);
+				}
+
+				// call global validate
+				validate(event, field);
+			}
+
 			return (
 				<>
 					<label
@@ -144,12 +176,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</label>
 					{field?.required && <p className="required">*Required</p>}
 					<input
+						ref={inputRef}
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
-						onChange={(event) => validate(event, field)}
+						onChange={(event) => preValidate(event, field)}
+						onKeyDown={(event) => preValidate(event, field)}
 						{...numberOptions}
 					/>
 					<span className="error">
