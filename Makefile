@@ -53,20 +53,20 @@ install-composer:
 	fi
 
 .PHONY: install-npm
-install-npm:
+install-npm: | build-npm
 	if [ ! -d ./node_modules/ ]; then \
 		echo "installing node dependencies for plugin"; \
 		$(DOCKER_RUN) $(NODE_IMAGE) npm install; \
 	fi
 
 .PHONY: test
-test: test-js-lint test-php-lint test-js-jest test-php-unit ## Build all assets and run all testing except end-to-end testing
+test: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit ## Build all assets and run all testing except end-to-end testing
 
 .PHONY: test-build
 test: build test-js-lint test-php-lint test-js-jest test-php-unit ## Run all testing except end-to-end testing
 
 .PHONY: test-all
-test-all: test-js-lint test-php-lint test-js-jest test-php-unit test-e2e ## Run all testing
+test-all: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit test-e2e ## Run all testing
 
 .PHONY: test-all-build
 test-all: build test-js-lint test-php-lint test-js-jest test-php-unit test-e2e ## Build all assets and run all testing
