@@ -14,7 +14,10 @@ build:  ## Builds all plugin assets
 	$(MAKE) build-npm
 
 .PHONY: build-docker
-build-docker:
+build-docker: build-docker-node build-docker-phpunit
+
+.PHONY: build-docker-node
+build-docker-node:
 	if [ ! "$$(docker images | grep atlascontentmodeler_node_image)" ]; then \
 		echo "Building the Node image"; \
 		docker build \
@@ -24,10 +27,28 @@ build-docker:
 			-t atlascontentmodeler_node_image .; \
 	fi
 
+.PHONY: build-docker-phpunit
+build-docker-phpunit:
+	if [ ! "$$(docker images | grep atlascontentmodeler_phpunit_image)" ]; then \
+		echo "Building the PhpUnit image"; \
+		docker build \
+			-f .docker/Dockerfile-phpunit \
+			-t atlascontentmodeler_phpunit_image .; \
+	fi
+
 .PHONY: build-npm
 build-npm: | install-npm
 	@echo "Building plugin assets"
 	$(DOCKER_RUN) $(NODE_IMAGE) npm run build
+
+.PHONY: clean-docker
+clean-docker:
+	if [ "$$(docker images | grep atlascontentmodeler_phpunit_image)" ]; then \
+		docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'atlascontentmodeler_phpunit_image'); \
+	fi
+	if [ "$$(docker images | grep atlastcontentmodeler_node_image)" ]; then \
+		docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'atlastcontentmodeler_node_image'); \
+	fi
 
 .PHONY: clean-e2e
 clean-e2e:
@@ -120,7 +141,7 @@ test-php-lint: | install-composer ## Run linting only on PHP code
 		"
 
 .PHONY: test-php-unit
-test-php-unit: | install-composer ## Run PHPunit tests
+test-php-unit: | install-composer build-docker-phpunit ## Run PHPunit tests
 	if [ "$$(docker ps | grep atlas-content-modeler_docker_phpunitdatabase_1)" ]; then \
 		docker-compose -f ./docker-compose-phpunit.yml down; \
 	fi
@@ -130,11 +151,5 @@ test-php-unit: | install-composer ## Run PHPunit tests
 		exec \
 		-w /app \
 		phpunit \
-		bash -c "\
-		apt-get update; \
-		apt-get install -y subversion; \
-		chmod +x ./tests/install-wp-tests.sh; \
-		./tests/install-wp-tests.sh wordpress wordpress wordpress phpunitdatabase latest true; \
-		composer test \
-		"
+		bash -c "composer test"
 	docker-compose -f ./docker-compose-phpunit.yml down
