@@ -66,6 +66,9 @@
     },
     "@wordpress/api-fetch": {
       "global": "wp.apiFetch"
+    },
+    "acm-icons": {
+      "fileName": "./includes/components/icons"
     }
   }
 }
