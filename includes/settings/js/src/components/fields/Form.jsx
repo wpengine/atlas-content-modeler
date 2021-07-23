@@ -11,6 +11,7 @@ import {
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
+import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
@@ -23,6 +24,7 @@ const extraFields = {
 	text: TextFields,
 	number: NumberFields,
 	multipleChoice: MultipleChoiceFields,
+	relationship: RelationshipFields,
 };
 
 Modal.setAppElement("#root");
