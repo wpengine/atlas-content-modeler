@@ -13,11 +13,42 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 			'plural'      => 'Rabbits',
 			'description' => 'Rabbits like carrots.'
 		],
+		'mice'    => [
+			'slug'        => 'mice',
+			'singular'    => 'Mouse',
+			'plural'      => 'Mice'
+		],
+		'dogs'    => [
+			'slug'        => 'dogs',
+			'singular'    => 'Dog',
+			'plural'      => 'Dogs'
+		],
 		'cats'    => [ 'name' => 'Cats' ],
 		'attachment' => [
 			'slug'     => 'attachment',
 			'singular' => 'Attachment',
 			'plural'   => 'Attachments',
+		]
+	];
+
+	protected $test_taxonomies = [
+		'energylevel' => [
+			'slug' => 'energylevel',
+			'singular' => 'Energy Level',
+			'plural' => 'Energy Levels',
+			'types' => ['dogs']
+		],
+		'furriness' => [
+			'slug' => 'furriness',
+			'singular' => 'Furriness',
+			'plural' => 'Furrinesses',
+			'types' => ['rabbits', 'dogs']
+		],
+		'breeds' => [
+			'slug' => 'breeds',
+			'singular' => 'Breed',
+			'plural' => 'Breeds',
+			'types' => [ 'rabbits', 'mice', 'dogs' ]
 		]
 	];
 
@@ -92,5 +123,42 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request2 );
 		self::assertSame( 400, $response->get_status() );
+	}
+
+	public function test_can_delete_model(): void
+	{
+		wp_set_current_user(1);
+
+		$slug     = $this->test_models['rabbits']['slug'];
+		$request  = new WP_REST_Request('DELETE', "/{$this->namespace}/{$this->route}/{$slug}");
+		$response = $this->server->dispatch($request);
+
+		self::assertSame(200, $response->get_status());
+		self::assertSame(true, $response->data['success']);
+		self::assertSame($slug, $response->data['model']['slug']);
+
+		$models = get_option('atlas_content_modeler_post_types');
+
+		self::assertArrayNotHasKey($slug, $models);
+	}
+
+	public function test_deleting_a_model_removes_taxonomy_associations(): void
+	{
+		update_option('atlas_content_modeler_taxonomies', $this->test_taxonomies);
+		wp_set_current_user(1);
+
+		$slug     = $this->test_models['dogs']['slug'];
+		$request  = new WP_REST_Request('DELETE', "/{$this->namespace}/{$this->route}/{$slug}");
+		$response = $this->server->dispatch($request);
+
+		self::assertSame(200, $response->get_status());
+
+		$saved_taxonomies = get_option('atlas_content_modeler_taxonomies', array());
+
+		foreach ( $this->test_taxonomies as $tax_slug => $taxonomy ) {
+			$expected_count = count($taxonomy['types']) - 1;
+			self::assertCount($expected_count, $saved_taxonomies[$tax_slug]['types']);
+			self::assertNotContains($slug, $saved_taxonomies[$tax_slug]['types']);
+		}
 	}
 }
