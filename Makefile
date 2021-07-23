@@ -107,7 +107,6 @@ ifdef HAS_CHROMEDRIVER
 	else \
 		vendor/bin/codecept run acceptance $(TEST); \
 	fi
-
 	$(MAKE) clean-e2e
 else
 	@echo "Chromedriver is not available. Please see the readme for installation instructions."
