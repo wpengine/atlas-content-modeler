@@ -102,7 +102,12 @@ ifdef HAS_CHROMEDRIVER
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin install wp-graphql --activate
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin activate atlas-content-modeler
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/wp-content/plugins/atlas-content-modeler --user=www-data wordpress wp db export tests/_data/dump.sql
-	vendor/bin/codecept run acceptance
+	if [ -z "$(TEST)" ]; then \
+		vendor/bin/codecept run acceptance; \
+	else \
+		vendor/bin/codecept run acceptance $(TEST); \
+	fi
+
 	$(MAKE) clean-e2e
 else
 	@echo "Chromedriver is not available. Please see the readme for installation instructions."
@@ -154,3 +159,7 @@ test-php-unit: | install-composer build-docker-phpunit ## Run PHPunit tests
 		phpunit \
 		bash -c "composer test"
 	docker-compose -f ./docker-compose-phpunit.yml down
+
+.PHONY: action
+action:
+	@echo $(TEST)
