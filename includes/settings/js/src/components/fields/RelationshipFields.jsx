@@ -86,7 +86,12 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 								<span>
 									{sprintf(
 										__(
-											"One %s can have one %s.",
+											/*
+											 * translators:
+											 * 1: Singular name of the current model (e.g. “Country”)
+											 * 2: Singular name of the related model (e.g. “Capital City”) or “related item” if no related model is selected.
+											 */
+											"One %1$s can have one %2$s.",
 											"atlas-content-modeler"
 										),
 										models[modelId].singular,
@@ -117,7 +122,12 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 								<span>
 									{sprintf(
 										__(
-											"One %s can have many %s.",
+											/*
+											 * translators:
+											 * 1: Singular name of the current content model (e.g. “Company”).
+											 * 2: Plural name of the related model (e.g. “Employees”) or “related items” if no related model is selected.
+											 */
+											"One %1$s can have many %2$s.",
 											"atlas-content-modeler"
 										),
 										models[modelId].singular,
@@ -142,6 +152,7 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 				<p className="help">
 					{sprintf(
 						__(
+							/* translators: %s: Singular name of the current content model (e.g. “Employee”). */
 							"Displayed next to the relationship field on the %s entry form.",
 							"atlas-content-modeler"
 						),
