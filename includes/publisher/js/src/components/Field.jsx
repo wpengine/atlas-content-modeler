@@ -123,7 +123,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			);
 		case "number":
 			let numberOptions = {};
-			let inputRef = useRef();
+			const numberInputRef = useRef();
 
 			if (field?.minValue) {
 				numberOptions.min = field.minValue;
@@ -145,22 +145,13 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 * @param field
 			 */
 			function preValidate(event, field) {
-				// integer
+				const disallowedCharacters = /[.]/g;
+
 				if (field.numberType === "integer") {
-					if (event.key === ".") {
+					if (disallowedCharacters.test(event.key)) {
 						event.preventDefault();
 						return;
 					}
-					// parse to remove leading 0's etc
-					inputRef.current.value = parseInt(
-						inputRef.current.value,
-						10
-					);
-				}
-
-				// decimal
-				if (field.numberType === "decimal") {
-					inputRef.current.value = parseFloat(inputRef.current.value);
 				}
 
 				// call global validate
@@ -176,7 +167,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</label>
 					{field?.required && <p className="required">*Required</p>}
 					<input
-						ref={inputRef}
+						ref={numberInputRef}
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
