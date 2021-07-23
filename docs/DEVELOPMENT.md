@@ -45,6 +45,18 @@ You can also run individual test suites as needed. For a full description of ava
 make help
 ```
 
+#### Running a single end-to-end (acceptance) test
+
+```
+TEST=<test> make test-e2e
+```
+
+example:
+
+```
+TEST=CreateContentModelMediaFieldCest:i_can_add_a_media_field_to_a_content_model make test-e2e
+```
+
 ### Manual test setup
 #### PHP Linting, code standards, and unit tests
 
