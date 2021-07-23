@@ -135,7 +135,7 @@ test-php-unit: | install-composer ## Run PHPunit tests
 		apt-get update; \
 		apt-get install -y subversion; \
 		chmod +x ./tests/install-wp-tests.sh; \
-		./tests/install-wp-tests.sh wordpress wordpress wordpress phpunitdatabase:3307 latest true; \
+		./tests/install-wp-tests.sh wordpress wordpress wordpress phpunitdatabase latest true; \
 		composer test \
 		"
 	docker-compose -f ./docker-compose-phpunit.yml down
