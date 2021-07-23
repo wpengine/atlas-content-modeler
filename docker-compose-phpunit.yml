@@ -8,8 +8,6 @@ services:
 
   phpunitdatabase:
     image: mysql:5.7
-    ports:
-      - 3307:3306
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
