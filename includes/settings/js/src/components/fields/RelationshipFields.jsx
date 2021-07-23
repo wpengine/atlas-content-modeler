@@ -114,9 +114,6 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 								name="cardinality"
 								value="one-to-many"
 								ref={register}
-								defaultChecked={
-									data?.numberType === "one-to-many"
-								}
 								disabled={editing}
 							/>
 							<label className="radio" htmlFor="one-to-many">
