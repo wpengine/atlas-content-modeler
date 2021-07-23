@@ -55,7 +55,7 @@ clean-e2e:
 	@echo "Cleaning leftovers from end-to-end tests"
 	find tests/_output/ -type f -not -name '.gitignore' -delete
 	rm -f .env.testing;
-	if [ "$$(docker ps | grep plugin_wordpress)" ]; then \
+	if [ "$$(docker ps | grep atlas-content-modeler_wordpress)" ]; then \
 		docker-compose -f ./docker-compose.yml down; \
 	fi
 
