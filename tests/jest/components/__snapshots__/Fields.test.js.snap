@@ -92,6 +92,7 @@ Array [
       id="atlas-content-modeler[geese][age]"
       name="atlas-content-modeler[geese][age]"
       onChange={[Function]}
+      onKeyDown={[Function]}
       step="any"
       type="number"
     />
