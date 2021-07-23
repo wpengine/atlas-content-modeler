@@ -2,7 +2,10 @@ version: '3'
 
 services:
   phpunit:
-    image: devwithlando/php:7.4-fpm-2
+    depends_on:
+      phpunitdatabase:
+        condition: service_healthy
+    image: atlascontentmodeler_phpunit_image
     volumes:
         - .:/app
 
@@ -15,3 +18,8 @@ services:
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
       MYSQL_ROOT_PASSWORD: wordpress
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 10s
+      timeout: 2s
+      retries: 10

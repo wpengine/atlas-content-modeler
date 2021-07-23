@@ -4,6 +4,9 @@ services:
   wordpress:
     build:
       context: ./.docker
+    depends_on:
+      db:
+        condition: service_healthy
     restart: always
     ports:
       - 8080:80
