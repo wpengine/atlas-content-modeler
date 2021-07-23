@@ -19,9 +19,10 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 		<>
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
 				<div
-					className={`${
-						errors.reference ? "field has-error" : "field"
-					} me-sm-5`}
+					className={`field me-sm-5
+						${errors.reference && " has-error"}
+						${editing && "read-only editing"}
+						`}
 				>
 					<legend>
 						{__("Model to Reference", "atlas-content-modeler")}
@@ -36,6 +37,7 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 						name="reference"
 						ref={register({ required: true })}
 						id="reference"
+						disabled={editing}
 					>
 						<option value="">
 							— {__("Choose a model", "atlas-content-modeler")} —
