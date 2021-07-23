@@ -368,6 +368,19 @@ function Form({ id, position, type, editing, storedData }) {
 			</div>
 
 			<div>
+				{type in extraFields && (
+					<ExtraFields
+						editing={editing}
+						data={storedData}
+						control={control}
+						watch={watch}
+						errors={errors}
+						clearErrors={clearErrors}
+						register={register}
+						fieldId={id}
+					/>
+				)}
+
 				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
@@ -388,19 +401,6 @@ function Form({ id, position, type, editing, storedData }) {
 							)}
 						</label>
 					</div>
-				)}
-
-				{type in extraFields && (
-					<ExtraFields
-						editing={editing}
-						data={storedData}
-						control={control}
-						watch={watch}
-						errors={errors}
-						clearErrors={clearErrors}
-						register={register}
-						fieldId={id}
-					/>
 				)}
 			</div>
 
