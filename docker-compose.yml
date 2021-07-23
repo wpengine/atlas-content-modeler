@@ -28,6 +28,11 @@ services:
       MYSQL_ROOT_PASSWORD: wordpress
     volumes:
       - ./.docker/mysql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 10s
+      timeout: 2s
+      retries: 10
 
 volumes:
   wordpress:
