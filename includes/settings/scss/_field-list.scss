@@ -69,6 +69,7 @@
 
 .field-list .read-only.editing label,
 .field-list .read-only.editing legend,
+.field-list .read-only.editing .help,
 .field-list .read-only.editing .radio-row label span {
 	color: lighten($color-gray, 20%);
 }
