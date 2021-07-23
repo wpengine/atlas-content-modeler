@@ -25,7 +25,7 @@ build-docker:
 	fi
 
 .PHONY: build-npm
-build-npm:
+build-npm: | install-npm
 	@echo "Building plugin assets"
 	$(DOCKER_RUN) $(NODE_IMAGE) npm run build
 
@@ -53,7 +53,7 @@ install-composer:
 	fi
 
 .PHONY: install-npm
-install-npm: | build-npm
+install-npm: | build-docker
 	if [ ! -d ./node_modules/ ]; then \
 		echo "installing node dependencies for plugin"; \
 		$(DOCKER_RUN) $(NODE_IMAGE) npm install; \
@@ -63,13 +63,13 @@ install-npm: | build-npm
 test: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit ## Build all assets and run all testing except end-to-end testing
 
 .PHONY: test-build
-test: build test-js-lint test-php-lint test-js-jest test-php-unit ## Run all testing except end-to-end testing
+test-build: build test-js-lint test-php-lint test-js-jest test-php-unit ## Run all testing except end-to-end testing
 
 .PHONY: test-all
 test-all: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit test-e2e ## Run all testing
 
 .PHONY: test-all-build
-test-all: build test-js-lint test-php-lint test-js-jest test-php-unit test-e2e ## Build all assets and run all testing
+test-all-build: build test-js-lint test-php-lint test-js-jest test-php-unit test-e2e ## Build all assets and run all testing
 
 .PHONE: test-e2e
 test-e2e: | clean-e2e ## Run end-2-end testing (requires Chrome and Chromedriver)
