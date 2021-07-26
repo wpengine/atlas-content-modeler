@@ -1,6 +1,6 @@
 DOCKER_RUN       := docker run --rm
-COMPOSER_IMAGE   := -v $$(pwd):/app --user $$(id -u):$$(id -g) composer
-NODE_IMAGE       := -w /home/node/app -v $$(pwd):/home/node/app --user node atlascontentmodeler_node_image
+COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer
+NODE_IMAGE       := -w /home/node/app -v "$$(pwd):/home/node/app" --user node atlascontentmodeler_node_image
 HAS_CHROMEDRIVER := $(shell command -v chromedriver 2> /dev/null)
 CURRENTUSER      := $$(id -u)
 CURRENTGROUP     := $$(id -g)
@@ -139,7 +139,7 @@ test-php: test-php-lint test-php-unit ## Run all PHP tests
 test-php-lint: | install-composer ## Run linting only on PHP code
 	$(DOCKER_RUN) \
 		-w /app \
-		-v $$(pwd):/app \
+		-v "$$(pwd):/app" \
 		devwithlando/php:7.4-fpm-2 \
 		bash -c "\
 		composer lint \
