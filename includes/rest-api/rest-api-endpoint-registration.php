@@ -13,6 +13,7 @@ use WP_Error;
 use WP_REST_Request;
 use function WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_args;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
@@ -478,26 +479,19 @@ function dispatch_update_content_model( WP_REST_Request $request ) {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_delete_model( WP_REST_Request $request ) {
-	$route         = $request->get_route();
-	$slug          = substr( strrchr( $route, '/' ), 1 );
-	$content_types = get_registered_content_types();
+	$route = $request->get_route();
+	$slug  = substr( strrchr( $route, '/' ), 1 );
 
-	if ( empty( $content_types[ $slug ] ) ) {
-		return rest_ensure_response(
-			[
-				'success' => false,
-				'errors'  => esc_html__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
-			]
-		);
+	$model = delete_model( $slug );
+
+	if ( is_wp_error( $model ) ) {
+		return $model;
 	}
-
-	unset( $content_types[ $slug ] );
-
-	$updated = update_registered_content_types( $content_types );
 
 	return rest_ensure_response(
 		[
-			'success' => $updated,
+			'success' => true,
+			'model'   => $model,
 		]
 	);
 }
@@ -665,23 +659,61 @@ function update_model( string $post_type_slug, array $args ) {
 /**
  * Deletes the specified model from the database.
  *
- * @param string $post_type_slug The post type slug.
+ * @param string $post_type_slug The Model ID.
  *
- * @return bool|WP_Error WP_Error if invalid parameters passed, otherwise true/false.
+ * @return bool|WP_Error WP_Error on failures, otherwise true.
  */
 function delete_model( string $post_type_slug ) {
-	if ( empty( $post_type_slug ) ) {
-		return new WP_Error( 'model-not-deleted', esc_html__( 'Please provide a post-type-slug.', 'atlas-content-modeler' ) );
-	}
-
 	$content_types = get_registered_content_types();
 
-	if ( empty( $content_types[ $post_type_slug ] ) ) {
-		return new WP_Error( 'model-not-deleted', esc_html__( 'Content type does not exist.', 'atlas-content-modeler' ) );
+	if ( empty( $post_type_slug ) || empty( $content_types[ $post_type_slug ] ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_invalid_id',
+			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
 	}
 
+	$taxonomies          = get_acm_taxonomies();
+	$has_taxonomy_update = false;
+
+	foreach ( $taxonomies as $tax_slug => $taxonomy ) {
+		if ( ! isset( $taxonomy['types'] ) || ! is_array( $taxonomy['types'] ) ) {
+			continue;
+		}
+
+		$type_index = array_search( $post_type_slug, $taxonomy['types'], true );
+		if ( $type_index !== false ) {
+			$has_taxonomy_update = true;
+			unset( $taxonomy['types'][ $type_index ] );
+			$taxonomies[ $tax_slug ] = $taxonomy;
+		}
+	}
+
+	if ( $has_taxonomy_update ) {
+		$updated = update_option( 'atlas_content_modeler_taxonomies', $taxonomies );
+
+		if ( ! $updated ) {
+			return new WP_Error(
+				'atlas_content_modeler_taxonomies_not_updated',
+				__( 'Model deletion aborted. Failed to remove model from associated taxonomies.', 'atlas-content-modeler' )
+			);
+		}
+	}
+
+	$model = $content_types[ $post_type_slug ];
 	unset( $content_types[ $post_type_slug ] );
-	return update_registered_content_types( $content_types );
+
+	$updated = update_registered_content_types( $content_types );
+
+	if ( ! $updated ) {
+		return new WP_Error(
+			'atlas_content_modeler_model_not_deleted',
+			__( 'Model not deleted. Reason unknown.', 'atlas-content-modeler' )
+		);
+	}
+
+	return $model;
 }
 
 /**
