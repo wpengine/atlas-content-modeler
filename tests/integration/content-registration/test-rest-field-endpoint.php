@@ -257,6 +257,76 @@ class TestRestFieldEndpoint extends WP_UnitTestCase {
 		self::assertSame( 'wpe_invalid_content_model', $response->get_data()['code'] );
 	}
 
+	public function test_attempt_to_create_relationship_field_without_reference_gives_error() {
+		$relationship_field_missing_reference = [
+			'type'        => 'relationship',
+			'id'          => '111',
+			'model'       => 'rabbits',
+			'position'    => '123',
+			'name'        => 'Related',
+			'slug'        => 'related',
+			'cardinality' => 'one-to-one',
+		];
+
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $relationship_field_missing_reference ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertEquals( 'atlas_content_modeler_missing_field_argument', $data['code'] );
+	}
+
+	public function test_attempt_to_create_relationship_field_without_cardinality_gives_error() {
+		$relationship_field_missing_cardinality = [
+			'type'        => 'relationship',
+			'id'          => '111',
+			'model'       => 'rabbits',
+			'position'    => '123',
+			'name'        => 'Related',
+			'slug'        => 'related',
+			'reference'   => 'rabbits',
+		];
+
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $relationship_field_missing_cardinality ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertEquals( 'atlas_content_modeler_missing_field_argument', $data['code'] );
+	}
+
+	public function test_attempt_to_create_relationship_field_with_missing_reference_model_gives_error() {
+		$relationship_field_missing_cardinality = [
+			'type'        => 'relationship',
+			'id'          => '111',
+			'model'       => 'rabbits',
+			'position'    => '123',
+			'name'        => 'Related',
+			'slug'        => 'related',
+			'cardinality' => 'one-to-one',
+			'reference'   => 'does-not-exist',
+		];
+
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $relationship_field_missing_cardinality ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertEquals( 'atlas_content_modeler_invalid_related_content_model', $data['code'] );
+	}
+
 	public function tearDown() {
 		parent::tearDown();
 		wp_set_current_user( null );
