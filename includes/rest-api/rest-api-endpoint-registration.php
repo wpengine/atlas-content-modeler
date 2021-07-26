@@ -11,7 +11,6 @@ namespace WPE\AtlasContentModeler\REST_API;
 
 use WP_Error;
 use WP_REST_Request;
-use function WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_args;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
