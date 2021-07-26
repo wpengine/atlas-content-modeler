@@ -63,6 +63,18 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 									</span>
 								</span>
 							)}
+						{errors.reference &&
+							errors.reference.type === "invalidRelatedModel" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"This model no longer exists.",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
 					</p>
 				</div>
 				<div className={editing ? "field read-only editing" : "field"}>

@@ -232,6 +232,12 @@ function Form({ id, position, type, editing, storedData }) {
 						)
 					);
 				}
+				if (
+					err.code ===
+					"atlas_content_modeler_invalid_related_content_model"
+				) {
+					setError("reference", { type: "invalidRelatedModel" });
+				}
 			});
 	}
 
