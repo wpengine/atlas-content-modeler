@@ -205,6 +205,24 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
+	if ( isset( $params['type'] ) && $params['type'] === 'relationship' ) {
+		if ( empty( $params['reference'] ) || empty( $params['cardinality'] ) ) {
+			return new WP_Error(
+				'atlas_content_modeler_missing_field_argument',
+				__( 'The relationship field requires a reference and cardinality argument.', 'atlas-content-modeler' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		if ( empty( $content_types[ $params['reference'] ] ) ) {
+			return new WP_Error(
+				'atlas_content_modeler_invalid_related_content_model',
+				__( 'The related content model no longer exists.', 'atlas-content-modeler' ),
+				array( 'status' => 400 )
+			);
+		}
+	}
+
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && ! $params['choices'] ) {
 		return new WP_Error(
 			'wpe_invalid_multi_options',
