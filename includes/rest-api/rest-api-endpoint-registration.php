@@ -686,7 +686,7 @@ function delete_model( string $post_type_slug ) {
 		if ( $type_index !== false ) {
 			$has_taxonomy_update = true;
 			unset( $taxonomy['types'][ $type_index ] );
-			$taxonomies[ $tax_slug ] = $taxonomy;
+			$taxonomies[ $tax_slug ]['types'] = array_values( $taxonomy['types'] );
 		}
 	}
 
