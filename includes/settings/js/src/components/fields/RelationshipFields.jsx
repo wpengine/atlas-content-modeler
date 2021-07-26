@@ -97,7 +97,7 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 											"atlas-content-modeler"
 										),
 										models[modelId].singular,
-										selectedReference
+										models[selectedReference]?.singular
 											? models[selectedReference].singular
 											: __(
 													"related item",
@@ -130,7 +130,7 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 											"atlas-content-modeler"
 										),
 										models[modelId].singular,
-										selectedReference
+										models[selectedReference]?.plural
 											? models[selectedReference].plural
 											: __(
 													"related items",
