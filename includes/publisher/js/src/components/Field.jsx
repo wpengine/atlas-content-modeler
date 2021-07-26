@@ -43,6 +43,8 @@ export default function Field(props) {
 					),
 					event.target.step.toString()
 				);
+			} else if (event.target.validity.customError) {
+				error = "The input is invalid.";
 			}
 		}
 
@@ -151,6 +153,18 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					if (disallowedCharacters.test(event.key)) {
 						event.preventDefault();
 						return;
+					}
+				}
+
+				if (field.numberType === "decimal") {
+					if (event.type === "change") {
+						// reset validity
+						event.target.setCustomValidity("");
+						const zeroEdgeCase = /^\.[0]+$/;
+						// set custom error if it matches the edge case
+						if (zeroEdgeCase.test(numberInputRef.current.value)) {
+							event.target.setCustomValidity("Invalid input.");
+						}
 					}
 				}
 
