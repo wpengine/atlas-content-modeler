@@ -9,6 +9,7 @@ import MediaIcon from "./MediaIcon";
 import MultipleChoiceIcon from "./MultipleChoiceIcon";
 import NumberIcon from "./NumberIcon";
 import OptionsIcon from "./OptionsIcon";
+import RelationshipIcon from "./RelationshipIcon";
 import ReorderIcon from "./ReorderIcon";
 import RichTextIcon from "./RichTextIcon";
 import SettingsIcon from "./SettingsIcon";
@@ -38,6 +39,8 @@ export default function Icon({ type, size }) {
 			return <NumberIcon />;
 		case "options":
 			return <OptionsIcon />;
+		case "relationship":
+			return <RelationshipIcon />;
 		case "reorder":
 			return <ReorderIcon />;
 		case "richtext":

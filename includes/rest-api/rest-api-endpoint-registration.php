@@ -11,7 +11,6 @@ namespace WPE\AtlasContentModeler\REST_API;
 
 use WP_Error;
 use WP_REST_Request;
-use function WPE\AtlasContentModeler\ContentRegistration\generate_custom_post_type_args;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
@@ -204,6 +203,24 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
+	}
+
+	if ( isset( $params['type'] ) && $params['type'] === 'relationship' ) {
+		if ( empty( $params['reference'] ) || empty( $params['cardinality'] ) ) {
+			return new WP_Error(
+				'atlas_content_modeler_missing_field_argument',
+				__( 'The relationship field requires a reference and cardinality argument.', 'atlas-content-modeler' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		if ( empty( $content_types[ $params['reference'] ] ) ) {
+			return new WP_Error(
+				'atlas_content_modeler_invalid_related_content_model',
+				__( 'The related content model no longer exists.', 'atlas-content-modeler' ),
+				array( 'status' => 400 )
+			);
+		}
 	}
 
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && ! $params['choices'] ) {

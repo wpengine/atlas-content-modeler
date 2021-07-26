@@ -11,6 +11,7 @@ import {
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
+import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useApiIdGenerator } from "./useApiIdGenerator";
@@ -23,6 +24,7 @@ const extraFields = {
 	text: TextFields,
 	number: NumberFields,
 	multipleChoice: MultipleChoiceFields,
+	relationship: RelationshipFields,
 };
 
 Modal.setAppElement("#root");
@@ -230,6 +232,12 @@ function Form({ id, position, type, editing, storedData }) {
 						)
 					);
 				}
+				if (
+					err.code ===
+					"atlas_content_modeler_invalid_related_content_model"
+				) {
+					setError("reference", { type: "invalidRelatedModel" });
+				}
 			});
 	}
 
@@ -368,6 +376,19 @@ function Form({ id, position, type, editing, storedData }) {
 			</div>
 
 			<div>
+				{type in extraFields && (
+					<ExtraFields
+						editing={editing}
+						data={storedData}
+						control={control}
+						watch={watch}
+						errors={errors}
+						clearErrors={clearErrors}
+						register={register}
+						fieldId={id}
+					/>
+				)}
+
 				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
@@ -388,19 +409,6 @@ function Form({ id, position, type, editing, storedData }) {
 							)}
 						</label>
 					</div>
-				)}
-
-				{type in extraFields && (
-					<ExtraFields
-						editing={editing}
-						data={storedData}
-						control={control}
-						watch={watch}
-						errors={errors}
-						clearErrors={clearErrors}
-						register={register}
-						fieldId={id}
-					/>
 				)}
 			</div>
 

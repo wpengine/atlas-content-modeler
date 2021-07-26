@@ -20,7 +20,8 @@
 	input[type="search"],
 	input[type="week"],
 	input[type="text"],
-	textarea {
+	textarea,
+	select {
 		width: 100% !important;
 	}
 }
@@ -37,7 +38,8 @@
 		input[type="search"],
 		input[type="week"],
 		input[type="text"],
-		textarea {
+		textarea,
+		select {
 			width: 260px !important;
 		}
 	}
@@ -81,6 +83,11 @@
 .atlas-content-modeler-admin-page label,
 .atlas-content-modeler-admin-page legend {
 	font-weight: 700;
+}
+
+.atlas-content-modeler-admin-page label span,
+.atlas-content-modeler-admin-page legend span {
+	font-weight: 400;
 }
 
 .atlas-content-modeler-admin-page .has-error label,
