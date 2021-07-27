@@ -44,7 +44,7 @@ export default function Field(props) {
 					event.target.step.toString()
 				);
 			} else if (event.target.validity.customError) {
-				error = "The input is invalid.";
+				error = __("The input is invalid.", "atlas-content-modeler");
 			}
 		}
 
