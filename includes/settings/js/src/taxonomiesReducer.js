@@ -12,6 +12,14 @@ export function taxonomiesReducer(state, action) {
 		case "removeTaxonomy":
 			const { [action.slug]: deleted, ...otherTaxonomies } = state;
 			return otherTaxonomies;
+		case "removeModel":
+			Object.values(state).forEach((taxonomy) => {
+				state[taxonomy.slug].types = taxonomy.types.filter(
+					(type) => type !== action.slug
+				);
+			});
+
+			return state;
 		default:
 			throw new Error(`${action.type} not found`);
 	}
