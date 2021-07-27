@@ -670,8 +670,6 @@ function content_model_multi_option_exists( array $names, string $current_choice
 			unset( $names[ $current_index ] );
 		}
 
-			$problem_options_list = [];
-
 		foreach ( $names as $choice ) {
 			if ( $choice['name'] === $current_choice ) {
 				return true;
