@@ -23,6 +23,7 @@ class PublishModelCest
 		$i->click('Number', '.field-buttons');
 		$i->fillField(['name' => 'name'], 'Decimal');
 		$i->click('input#decimal');
+		$i->checkOption('required');
 		$i->click('.open-field button.primary');
 		$i->wait(1);
 
@@ -33,15 +34,13 @@ class PublishModelCest
 
 		$i->fillField(['name' => 'atlas-content-modeler[goose][integer]'], '');
 		$i->fillField(['name' => 'atlas-content-modeler[goose][decimal]'], '');
-
 		$i->scrollTo('#submitdiv');
 
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
-
-		$i->see('This field is required.');
+		
+		$i->see('This field is required');
 		$i->wait(1);
-		$i->see('Edit goose'); // Page title should change from “Add goose” when published.
 
 		$i->seeInField('atlas-content-modeler[goose][integer]', '');
 		$i->seeInField('atlas-content-modeler[goose][decimal]', '');
