@@ -12,6 +12,13 @@
 
 After cloning this repository, you will need to install the required packages.
 
+If you do not have composer or npm installed locally run
+```
+make build
+```
+
+Otherwise, to manually install dependencies, run
+
 Install composer
 ```
 composer install
@@ -22,7 +29,36 @@ Install npm packages
 npm install
 ```
 
-### PHP Linting, code standards, and unit tests
+## Testing
+
+### Automated test setup
+
+The Makefile will allow for most testing without much setup. To run all tests at once run
+```
+make test-all
+```
+
+This will run lints, unit testing, the Jest test suite and all end-to-end testing.
+
+You can also run individual test suites as needed. For a full description of available tests to run see
+```
+make help
+```
+
+#### Running a single end-to-end (acceptance) test
+
+```
+TEST=<test> make test-e2e
+```
+
+example:
+
+```
+TEST=CreateContentModelMediaFieldCest:i_can_add_a_media_field_to_a_content_model make test-e2e
+```
+
+### Manual test setup
+#### PHP Linting, code standards, and unit tests
 
 _Before performing any of these commands, you should have run `composer install` during Project Setup._
 
@@ -65,13 +101,13 @@ Or run `phpunit` as a composer command.
 composer test
 ```
 
-### End-2-End Testing
+#### End-2-End Testing
 
 _Before running end-2-end tests, ensure you have ran `composer install` from the Project Setup._
 
 [Codeception](https://codeception.com/) is used for running end-2-end tests in the browser.
 
-#### 1. Environment Setup
+##### 1. Environment Setup
 1. Install [Google Chrome](https://www.google.com/chrome/).
 1. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
     - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
@@ -80,7 +116,7 @@ _Before running end-2-end tests, ensure you have ran `composer install` from the
     - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
     - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
 
-#### 2. End-2-End Testing Site Setup
+##### 2. End-2-End Testing Site Setup
 A running WordPress test site will be needed to run browser tests against. This test site's database will be reset after each test. Do not use your development site for this.
 
 1. Prepare a test WordPress site.
@@ -95,7 +131,7 @@ A running WordPress test site will be needed to run browser tests against. This 
     - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
 1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
-#### Browser testing documentation
+##### Browser testing documentation
 - [Codeception Acceptance Tests](https://codeception.com/docs/03-AcceptanceTests)
     - Base framework for browser testing in php.
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
