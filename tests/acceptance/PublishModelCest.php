@@ -38,12 +38,46 @@ class PublishModelCest
 
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
-		
+
 		$i->see('This field is required');
 		$i->wait(1);
 
 		$i->seeInField('atlas-content-modeler[goose][integer]', '');
 		$i->seeInField('atlas-content-modeler[goose][decimal]', '');
+	}
+
+	public function error_is_triggered_for_invalid_value(\AcceptanceTester $i)
+	{
+		$i->click('Number', '.field-buttons');
+		$i->fillField(['name' => 'name'], 'Integer');
+		$i->click('.open-field button.primary');
+		$i->wait(1);
+
+		$i->click(Locator::lastElement('.add-item'));
+		$i->click('Number', '.field-buttons');
+		$i->fillField(['name' => 'name'], 'Decimal');
+		$i->click('input#decimal');
+		$i->checkOption('required');
+		$i->click('.open-field button.primary');
+		$i->wait(1);
+
+		// Next we create an entry for our new model.
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
+		$i->click('Add New', '.wrap');
+		$i->wait(1);
+
+		$i->fillField(['name' => 'atlas-content-modeler[goose][integer]'], '');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][decimal]'], '.0');
+		$i->scrollTo('#submitdiv');
+
+		$i->click('Publish', '#publishing-action');
+		$i->wait(2);
+
+		$i->see('The input is invalid');
+		$i->wait(1);
+
+		$i->seeInField('atlas-content-modeler[goose][integer]', '');
+		$i->seeInField('atlas-content-modeler[goose][decimal]', '.0');
 	}
 
 	public function i_can_publish_a_model_entry(AcceptanceTester $i)
