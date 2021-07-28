@@ -97,7 +97,7 @@ test-e2e: ## Run end-2-end testing (requires Chrome and Chromedriver)
 ifdef HAS_CHROMEDRIVER
 	@echo "Running End-to-end tests"
 	cp .env.testing.sample .env.testing
-	docker-compose -f ./docker-compose.yml up -d --build
+	docker-compose -f ./docker-compose.yml up --renew-anon-volumes -d --build
 	sleep 10; \
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin install wp-graphql --activate
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin activate atlas-content-modeler
