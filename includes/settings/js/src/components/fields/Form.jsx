@@ -210,6 +210,20 @@ function Form({ id, position, type, editing, storedData }) {
 						});
 					});
 				}
+				if (err.code === "wpe_option_slug_undefined") {
+					err.additional_errors[0].message.map((index) => {
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceSlugEmpty" + index,
+						});
+					});
+				}
+				if (err.code === "wpe_option_slug_duplicate") {
+					err.additional_errors[0].message.map((index) => {
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceSlugDuplicate" + index,
+						});
+					});
+				}
 				if (
 					err.code === "wpe_duplicate_content_model_multi_option_id"
 				) {
@@ -394,6 +408,7 @@ function Form({ id, position, type, editing, storedData }) {
 					<ExtraFields
 						editing={editing}
 						data={storedData}
+						setValue={setValue}
 						control={control}
 						watch={watch}
 						errors={errors}

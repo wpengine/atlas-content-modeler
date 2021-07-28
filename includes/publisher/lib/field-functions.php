@@ -102,7 +102,7 @@ function sanitize_field( string $type, $value ) {
 			if ( is_array( $value ) ) {
 				$options_object = [];
 				foreach ( $value as $option ) {
-					$options_object[] = key( $option );
+					$options_object[] = $option;
 				}
 				return $options_object;
 			}

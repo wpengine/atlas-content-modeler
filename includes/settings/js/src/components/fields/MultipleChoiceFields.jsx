@@ -7,6 +7,7 @@ import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import Icon from "../../../../../components/icons";
+import { toValidApiId } from "./toValidApiId";
 
 function MultipleChoiceFields({
 	register,
@@ -23,9 +24,22 @@ function MultipleChoiceFields({
 	});
 
 	if (fields.length < 1) {
-		let fields = [];
-		append({ name: "", default: false });
+		append({ name: "", slug: "" });
 	}
+
+	/**
+	 * Checks if a choice has been saved, so that new choices can be given
+	 * editable API Identifier fields, but saved choices have read-only IDs.
+	 *
+	 * @param choice
+	 * @return {boolean}
+	 */
+	const choiceIsSaved = (choice) => {
+		return (
+			data.choices &&
+			data.choices.some((savedChoice) => savedChoice.slug === choice.slug)
+		);
+	};
 
 	return (
 		<div className={editing ? "field read-only" : "field"}>
@@ -45,12 +59,12 @@ function MultipleChoiceFields({
 										<label
 											htmlFor={"multipleChoice" + index}
 										>
-											Option {index + 1}
+											Choice {index + 1}
 										</label>
 										<br />
 										<p className="help">
-											Display name for your{" "}
-											{supportedFields[type]} choice.
+											Display name and API identifier for
+											your {supportedFields[type]} choice.
 										</p>
 										<div
 											className={`${
@@ -66,7 +80,7 @@ function MultipleChoiceFields({
 												<input
 													ref={register()}
 													name={`choices[${index}].name`}
-													placeholder="Option Name"
+													placeholder="Choice Name"
 													type="text"
 													onKeyPress={(event) => {
 														if (
@@ -76,7 +90,7 @@ function MultipleChoiceFields({
 															event.preventDefault();
 													}}
 													defaultValue={`${item.name}`}
-													onChange={(event) => {
+													onChange={(e) => {
 														errors &&
 															Object.entries(
 																errors
@@ -106,6 +120,92 @@ function MultipleChoiceFields({
 														);
 													}}
 												/>
+											</div>
+											<div className="hey-listen">
+												<input
+													ref={register()}
+													placeholder="Choice API Identifier"
+													type="text"
+													onChange={(event) => {
+														errors &&
+														Object.entries(
+															errors
+														).map((item) => {
+															item[1].type.includes(
+																"multipleChoiceSlugDuplicate"
+															) &&
+																clearErrors(
+																	item[0]
+																		.type
+																);
+															item[1].type.includes(
+																"multipleChoiceSlugEmpty"
+															) &&
+																clearErrors(
+																	item[0]
+																		.type
+																);
+														});
+														clearErrors(
+															"multipleChoice" +
+																index
+														);
+														event.target.value = toValidApiId(
+															event.target.value
+														);
+													}}
+													onKeyPress={(event) => {
+														if (
+															event.key ===
+															"Enter"
+														)
+															event.preventDefault();
+													}}
+													defaultValue={`${item.slug}`}
+													name={`choices[${index}].slug`}
+													id={`choices[${index}].slug`}
+													readOnly={choiceIsSaved(
+														item
+													)}
+												/>
+												<div>
+													{errors[
+														"multipleChoice" + index
+													] &&
+														errors[
+															"multipleChoice" +
+																index
+														].type ===
+															"multipleChoiceSlugEmpty" +
+																index && (
+															<span className="error">
+																<Icon type="error" />
+																<span role="alert">
+																	Must set a
+																	choice
+																	identifier.
+																</span>
+															</span>
+														)}
+													{errors[
+														"multipleChoice" + index
+													] &&
+														errors[
+															"multipleChoice" +
+																index
+														].type ===
+															"multipleChoiceSlugDuplicate" +
+																index && (
+															<span className="error">
+																<Icon type="error" />
+																<span role="alert">
+																	Cannot have
+																	duplicate
+																	identifier.
+																</span>
+															</span>
+														)}
+												</div>
 											</div>
 											<div>
 												{fields.length > 1 && (
@@ -140,7 +240,7 @@ function MultipleChoiceFields({
 														<a>
 															<TrashIcon size="small" />{" "}
 															<span>
-																Remove option
+																Remove choice
 															</span>
 														</a>
 													</button>
@@ -168,7 +268,7 @@ function MultipleChoiceFields({
 													<Icon type="error" />
 													<span role="alert">
 														Cannot have duplicate
-														option names.
+														choice names.
 													</span>
 												</span>
 											)}
@@ -181,15 +281,15 @@ function MultipleChoiceFields({
 									onClick={(event) => {
 										event.preventDefault();
 										clearErrors("multipleChoice");
-										append({ name: "", default: false });
+										append({ name: "", slug: "" });
 									}}
 								>
 									<a>
 										<AddIcon noCircle />{" "}
 										<span>
 											{fields.length > 0
-												? "Add another option"
-												: "Add an option"}
+												? "Add another choice"
+												: "Add a choice"}
 										</span>
 									</a>
 								</button>
@@ -199,7 +299,7 @@ function MultipleChoiceFields({
 										<span className="error">
 											<Icon type="error" />
 											<span role="alert">
-												Must create an option first.
+												Must create an choice first.
 											</span>
 										</span>
 									)}

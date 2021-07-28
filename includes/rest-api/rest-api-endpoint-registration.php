@@ -213,6 +213,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			array( 'status' => 400 )
 		);
 	}
+	// Check if a name is defined for each choice on save.
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
 		$options_index = -1;
 		$problem_index = [];
@@ -232,7 +233,28 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			return $problem_error_name_blank;
 		}
 	}
+	// Check if a slug is defined for each choice on save.
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$options_index = -1;
+		$problem_index = [];
+		foreach ( $params['choices'] as $choice ) {
+			++$options_index;
+			if ( $choice['slug'] === '' ) {
+				$problem_index[] = $options_index;
+			}
+		}
+		if ( $problem_index ) {
+			$problem_error_slug_blank = new WP_Error(
+				'wpe_option_slug_undefined',
+				'Multiple Choice Field update failed, please set a slug for your choice before saving.',
+				array( 'status' => 400 )
+			);
+			$problem_error_slug_blank->add( 'problem_index', $problem_index );
+			return $problem_error_slug_blank;
+		}
+	}
 
+	// Check if a choice name is a duplicate.
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
 		$options_name_index = -1;
 		$problem_name_index = [];
@@ -245,11 +267,32 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		if ( $problem_name_index ) {
 			$problem_duplicate_name = new WP_Error(
 				'wpe_duplicate_content_model_multi_option_id',
-				'Another option in this field has the same API identifier.',
+				'Another choice in this field has the same name.',
 				array( 'status' => 400 )
 			);
 			$problem_duplicate_name->add( 'problem_name_index', $problem_name_index );
 			return $problem_duplicate_name;
+		}
+	}
+
+	// Check if a slug name is a duplicate.
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$options_slug_index = -1;
+		$problem_option_slug_index = [];
+		foreach ( $params['choices'] as $choice ) {
+			++$options_slug_index;
+			if ( content_model_multi_option_slug_exists( $params['choices'], $choice['slug'], $options_slug_index ) ) {
+				$problem_option_slug_index[] = $options_slug_index;
+			}
+		}
+		if ( $problem_option_slug_index ) {
+			$problem_duplicate_slug = new WP_Error(
+				'wpe_option_slug_duplicate',
+				'Another choice in this field has the same API identifier.',
+				array( 'status' => 400 )
+			);
+			$problem_duplicate_slug->add( 'problem_option_slug_index', $problem_option_slug_index );
+			return $problem_duplicate_slug;
 		}
 	}
 
@@ -672,6 +715,34 @@ function content_model_multi_option_exists( array $names, string $current_choice
 
 		foreach ( $names as $choice ) {
 			if ( $choice['name'] === $current_choice ) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/**
+ * Checks if a duplicate model identifier (slug) exists in the multiple option field.
+ *
+ * @param array  $names  The available field choice names.
+ * @param string $current_choice  The currently checked field choice name.
+ * @param int    $current_index The content index for the current choice being validated.
+ * @return bool
+ */
+function content_model_multi_option_slug_exists( array $slugs, string $current_choice, int $current_index ): bool {
+	if ( ! isset( $slugs ) ) {
+		return false;
+	}
+	if ( $slugs ) {
+		if ( $slugs[ $current_index ] ) {
+			unset( $slugs[ $current_index ] );
+		}
+
+			$problem_options_list = [];
+
+		foreach ( $slugs as $choice ) {
+			if ( $choice['slug'] === $current_choice ) {
 				return true;
 			}
 		}

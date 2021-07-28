@@ -196,19 +196,23 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 								<label
 									key={index}
 									className="check-container multi-check-container"
-									htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+									htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.slug}]`}
 								>
 									{item.name}
 									<input
 										type="checkbox"
-										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
-										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.slug}]`}
+										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.slug}]`}
 										placeholder="Option Name"
+										value={item.name}
 										defaultChecked={
 											field.value &&
-											field.value.some(
-												(name) => name == item.name
-											)
+											field.value.some(function (slug) {
+												return (
+													Object.keys(slug) ==
+													item.slug
+												);
+											})
 										}
 									/>
 									<span className="error">
