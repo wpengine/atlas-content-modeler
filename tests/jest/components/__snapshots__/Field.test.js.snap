@@ -15,6 +15,7 @@ exports[`Field renders a proper number field 1`] = `
     id="atlas-content-modeler[geese][age]"
     name="atlas-content-modeler[geese][age]"
     onChange={[Function]}
+    onKeyDown={[Function]}
     step="any"
     type="number"
   />

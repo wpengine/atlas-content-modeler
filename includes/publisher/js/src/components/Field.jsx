@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Icon from "../../../../components/icons";
@@ -37,9 +37,14 @@ export default function Field(props) {
 				);
 			} else if (event.target.validity.stepMismatch) {
 				error = sprintf(
-					__("Step value is %s.", "atlas-content-modeler"),
+					__(
+						"Value must be a multiple of %s.",
+						"atlas-content-modeler"
+					),
 					event.target.step.toString()
 				);
+			} else if (event.target.validity.customError) {
+				error = __("The input is invalid.", "atlas-content-modeler");
 			}
 		}
 
@@ -120,6 +125,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			);
 		case "number":
 			let numberOptions = {};
+			const numberInputRef = useRef();
 
 			if (field?.minValue) {
 				numberOptions.min = field.minValue;
@@ -146,7 +152,36 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				) {
 					field.value = Math.abs(field.value);
 				}
+			}
 
+			/**
+			 * Check for need to sanitize number fields further before regular validation
+			 * @param event
+			 * @param field
+			 */
+			function preValidate(event, field) {
+				const disallowedCharacters = /[.]/g;
+
+				if (field.numberType === "integer") {
+					if (disallowedCharacters.test(event.key)) {
+						event.preventDefault();
+						return;
+					}
+				}
+
+				if (field.numberType === "decimal") {
+					if (event.type === "change") {
+						// reset validity
+						event.target.setCustomValidity("");
+						const zeroEdgeCase = /^\.[0]+$/;
+						// set custom error if it matches the edge case
+						if (zeroEdgeCase.test(numberInputRef.current.value)) {
+							event.target.setCustomValidity("Invalid input.");
+						}
+					}
+				}
+
+				// call global validate
 				validate(event, field);
 			}
 
@@ -159,15 +194,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</label>
 					{field?.required && <p className="required">*Required</p>}
 					<input
+						ref={numberInputRef}
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
-						onChange={(event) =>
-							preventNegativeValues(event, field)
-						}
-						onInput={(event) => preventNegativeValues(event, field)}
+						onChange={(event) => preValidate(event, field)}
+						onKeyDown={(event) => preValidate(event, field)}
 						{...numberOptions}
 					/>
 					<span className="error">
