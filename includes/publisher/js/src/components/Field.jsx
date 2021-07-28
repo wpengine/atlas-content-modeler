@@ -25,6 +25,8 @@ export default function Field(props) {
 		let error = defaultError;
 
 		if (field.type === "number") {
+			console.log("field", field);
+			console.log("validity", event.target.validity);
 			if (event.target.validity.rangeOverflow) {
 				error = sprintf(
 					__("Maximum value is %s.", "atlas-content-modeler"),
@@ -141,19 +143,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					: (numberOptions.step = "any");
 			}
 
-			function preventNegativeValues(event, field) {
-				const min = Number(numberOptions.min);
-				const inputValue = Number(field.value);
-				if (
-					!isNaN(min) &&
-					!isNaN(inputValue) &&
-					min >= 0 &&
-					inputValue < 0
-				) {
-					field.value = Math.abs(field.value);
-				}
-			}
-
 			/**
 			 * Check for need to sanitize number fields further before regular validation
 			 * @param event
@@ -163,6 +152,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				const disallowedCharacters = /[.]/g;
 
 				if (field.numberType === "integer") {
+					// prevent disallowed characters
 					if (disallowedCharacters.test(event.key)) {
 						event.preventDefault();
 						return;
@@ -185,6 +175,18 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				validate(event, field);
 			}
 
+			function checkForNegativeInput(event, field) {
+				const parseMethod =
+					field.numberType === "integer" ? parseInt : parseFloat;
+
+				if (
+					parseMethod(numberInputRef.current.value) <
+					parseMethod(field.minValue)
+				) {
+					event.target.validity.rangeUnderflow = true;
+				}
+			}
+
 			return (
 				<>
 					<label
@@ -200,6 +202,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
+						onInput={(event) => checkForNegativeInput(event, field)}
 						onChange={(event) => preValidate(event, field)}
 						onKeyDown={(event) => preValidate(event, field)}
 						{...numberOptions}
