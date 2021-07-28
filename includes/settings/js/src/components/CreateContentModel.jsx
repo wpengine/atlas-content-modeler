@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
@@ -6,6 +6,7 @@ import { insertSidebarMenuItem } from "../utils";
 import { useApiIdGenerator } from "./fields/useApiIdGenerator";
 import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
+import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
@@ -27,6 +28,7 @@ export default function CreateContentModel() {
 	const history = useHistory();
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
+	const [icon, setIcon] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
 	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
@@ -295,6 +297,25 @@ export default function CreateContentModel() {
 								)}
 							<span>&nbsp;</span>
 						</p>
+					</div>
+
+					<div className="field">
+						<label htmlFor="model_icon">
+							{__("Model Icon", "atlas-content-modeler")}
+						</label>
+						<br />
+						<p className="help">
+							{__(
+								"Choose an icon to represent your model.",
+								"atlas-content-modeler"
+							)}
+						</p>
+
+						<IconPicker
+							setValue={setValue}
+							buttonClasses="primary first"
+							register={register}
+						/>
 					</div>
 
 					<div

@@ -9,47 +9,6 @@ orbs:
   node: circleci/node@4.1.0
 
 jobs:
-  lint:
-    executor:
-      name: node/default
-      tag: lts
-    parameters:
-      slug:
-        type: string
-    working_directory: .
-    steps:
-      - attach_workspace:
-          at: .
-      - node/install-packages:
-          app-dir: <<parameters.slug>>
-      - run:
-          name: NPM style
-          command: |
-            npm run style
-          working_directory: <<parameters.slug>>
-      - run:
-          name: NPM eslint
-          command: |
-            npm run lint
-          working_directory: <<parameters.slug>>
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-  checkout:
-    executor: wp-product-orb/default
-    parameters:
-      slug:
-        type: string
-    steps:
-      - checkout:
-          path: <<parameters.slug>>
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
   plugin-checkout:
     executor: wp-product-orb/default
     environment:
@@ -60,8 +19,8 @@ jobs:
       filename:
         type: string
     steps:
-      - attach_workspace:
-          at: .
+      - checkout:
+          path: <<parameters.slug>>
       - run:
           name: Make artifacts build directory
           command: |
@@ -77,7 +36,7 @@ jobs:
           paths:
             - .
 
-  plugin-composer:
+  plugin-build-composer:
     executor: php/default
     parameters:
       slug:
@@ -92,123 +51,12 @@ jobs:
           name: Remove composer setup file
           command: |
             rm -v composer-setup.php
-      - run:
-          name: Composer PHP lint and code sniffer
-          command: |
-            /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
-          working_directory: <<parameters.slug>>
       - persist_to_workspace:
           root: .
           paths:
-            - .
+            - atlas-content-modeler/vendor
 
-  plugin-test:
-    docker:
-      - image: cimg/php:7.4
-      - image: circleci/mysql:5.7
-        environment:
-          MYSQL_DATABASE: wp_database
-          MYSQL_USER: wp_user
-          MYSQL_PASSWORD: wp_pass
-          MYSQL_ROOT_PASSWORD: password
-    parameters:
-      slug:
-        type: string
-    steps:
-      - attach_workspace:
-          at: .
-      - php/install-composer
-      - php/install-packages:
-          app-dir: <<parameters.slug>>
-      - run:
-          name: Remove composer setup file
-          command: |
-            rm -v composer-setup.php
-      - run:
-          name: Install Subversion package
-          command: |
-            sudo apt-get update -yq
-            sudo apt-get install subversion -yq
-      - run:
-          name: Setup WordPress testing framework
-          command: |
-            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
-          working_directory: <<parameters.slug>>
-      - run:
-          name: Run testing suite
-          command: |
-            composer test
-          working_directory: <<parameters.slug>>
-
-  plugin-bundle-zip:
-    executor: wp-product-orb/default
-    environment:
-      WPE_SESSION_DIR: ./.wpe
-    parameters:
-      slug:
-        type: string
-    steps:
-      - attach_workspace:
-          at: .
-      - wp-product-orb/variable-load
-      - run:
-          name: "Bundle plugin files into a zip"
-          command: |
-            zip --verbose -x@<<parameters.slug>>/.zipignore -x *.wpe/* */build/ -r "build/<<parameters.slug>>.$BUILD_VERSION.zip" <<parameters.slug>>
-      - store_artifacts:
-          path: build
-      - persist_to_workspace:
-          root: .
-          paths:
-            - build
-
-  plugin-bundle-json:
-    executor: wp-product-orb/parser
-    environment:
-      WPE_SESSION_DIR: ./.wpe
-    parameters:
-      slug:
-        type: string
-    steps:
-      - attach_workspace:
-          at: .
-      - wp-product-orb/variable-load
-      - wp-product-orb/parse-wp-readme:
-          infile: <<parameters.slug>>/readme.txt
-          outfile: build/<<parameters.slug>>.$BUILD_VERSION.json
-      - store_artifacts:
-          path: build
-      - persist_to_workspace:
-          root: .
-          paths:
-            - build
-
-  plugin-deploy:
-    executor: wp-product-orb/authenticate
-    environment:
-      WPE_SESSION_DIR: ./.wpe
-    parameters:
-      auth_url:
-        type: string
-      upload_url:
-        type: string
-      slug:
-        type: string
-    steps:
-      - attach_workspace:
-          at: .
-      - wp-product-orb/variable-load
-      - wp-product-orb/authenticate:
-          user: WPE_LDAP_USER
-          pass: WPE_LDAP_PASS
-          url: <<parameters.auth_url>>
-      - wp-product-orb/post-zip:
-          url: <<parameters.upload_url>>/<<parameters.slug>>
-          zip: build/<<parameters.slug>>.$BUILD_VERSION.zip
-          json: build/<<parameters.slug>>.$BUILD_VERSION.json
-          version: $BUILD_VERSION
-
-  plugin-npm-build:
+  plugin-build-npm:
     executor:
       name: node/default
       tag: lts
@@ -231,30 +79,71 @@ jobs:
           paths:
             - .
 
-  plugin-jest:
-    executor:
-      name: node/default
-      tag: lts
+  plugin-build-json:
+    executor: wp-product-orb/parser
+    environment:
+      WPE_SESSION_DIR: ./.wpe
     parameters:
       slug:
         type: string
-    working_directory: .
     steps:
       - attach_workspace:
           at: .
-      - node/install-packages:
-          app-dir: <<parameters.slug>>
-      - run:
-          name: Run Jest tests
-          command: |
-            npm run test-no-watch
-          working_directory: <<parameters.slug>>
+      - wp-product-orb/variable-load
+      - wp-product-orb/parse-wp-readme:
+          infile: <<parameters.slug>>/readme.txt
+          outfile: build/<<parameters.slug>>.$BUILD_VERSION.json
+      - store_artifacts:
+          path: build
       - persist_to_workspace:
           root: .
           paths:
-            - .
+            - build
 
-  plugin-e2e-test:
+  plugin-build-pot:
+    executor: php/default
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install WP-CLI
+          command: |
+            curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+            chmod +x wp-cli.phar
+            ./wp-cli.phar --info
+      - run:
+          name: Build .pot file
+          command: |
+            ./wp-cli.phar i18n make-pot ~/project/atlas-content-modeler
+      - persist_to_workspace:
+            root: .
+            paths:
+              - atlas-content-modeler/languages
+
+  plugin-build-zip:
+    executor: wp-product-orb/default
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    parameters:
+      slug:
+        type: string
+    steps:
+      - attach_workspace:
+          at: .
+      - wp-product-orb/variable-load
+      - run:
+          name: "Bundle plugin files into a zip"
+          command: |
+            zip --verbose -x@<<parameters.slug>>/.zipignore -x *.wpe/* */build/ -r "build/<<parameters.slug>>.$BUILD_VERSION.zip" <<parameters.slug>>
+            echo "<<parameters.slug>>.$BUILD_VERSION.zip" >> build/file.txt
+      - store_artifacts:
+          path: build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+
+  plugin-test-e2e:
     docker:
       - image: circleci/php:7.4-node-browsers
       - image: circleci/mysql:5.7-ram
@@ -317,8 +206,7 @@ jobs:
       - run:
           name: Activate atlas-content-modeler plugin
           command: |
-            ln -s ~/project/atlas-content-modeler /tmp/wordpress/wp-content/plugins/atlas-content-modeler
-            ./wp-cli.phar plugin activate --path=/tmp/wordpress atlas-content-modeler
+            ./wp-cli.phar plugin install --activate --path=/tmp/wordpress build/$(cat build/file.txt)
 
       - run:
           name: Install WPGraphQL
@@ -375,26 +263,137 @@ jobs:
       - store_artifacts:
           path: atlas-content-modeler/tests/_output
 
+  plugin-test-jest:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      slug:
+        type: string
+    working_directory: .
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages:
+          app-dir: <<parameters.slug>>
+      - run:
+          name: Run Jest tests
+          command: |
+            npm run test-no-watch
+          working_directory: <<parameters.slug>>
+
+  plugin-test-lint-js:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      slug:
+        type: string
+    working_directory: .
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages:
+          app-dir: <<parameters.slug>>
+      - run:
+          name: NPM style
+          command: |
+            npm run style
+          working_directory: <<parameters.slug>>
+      - run:
+          name: NPM eslint
+          command: |
+            npm run lint
+          working_directory: <<parameters.slug>>
+
+  plugin-test-lint-php:
+    working_directory: .
+    executor: php/default
+    steps:
+      - attach_workspace:
+          at: .
+      - php/install-composer
+      - run:
+          name: Run Code Sniffer sniffs
+          command: /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
+          working_directory: atlas-content-modeler
+
+  plugin-test-unit:
+    docker:
+      - image: cimg/php:7.4
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_DATABASE: wp_database
+          MYSQL_USER: wp_user
+          MYSQL_PASSWORD: wp_pass
+          MYSQL_ROOT_PASSWORD: password
+    parameters:
+      slug:
+        type: string
+    steps:
+      - attach_workspace:
+          at: .
+      - php/install-composer
+      - php/install-packages:
+          app-dir: <<parameters.slug>>
+      - run:
+          name: Remove composer setup file
+          command: |
+            rm -v composer-setup.php
+      - run:
+          name: Install Subversion package
+          command: |
+            sudo apt-get update -yq
+            sudo apt-get install subversion -yq
+      - run:
+          name: Setup WordPress testing framework
+          command: |
+            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
+          working_directory: <<parameters.slug>>
+      - run:
+          name: Run testing suite
+          command: |
+            composer test
+          working_directory: <<parameters.slug>>
+
+  plugin-deploy:
+    executor: wp-product-orb/authenticate
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    parameters:
+      auth_url:
+        type: string
+      upload_url:
+        type: string
+      slug:
+        type: string
+    steps:
+      - attach_workspace:
+          at: .
+      - wp-product-orb/variable-load
+      - wp-product-orb/authenticate:
+          user: WPE_LDAP_USER
+          pass: WPE_LDAP_PASS
+          url: <<parameters.auth_url>>
+      - wp-product-orb/post-zip:
+          url: <<parameters.upload_url>>/<<parameters.slug>>
+          zip: build/<<parameters.slug>>.$BUILD_VERSION.zip
+          json: build/<<parameters.slug>>.$BUILD_VERSION.json
+          version: $BUILD_VERSION
+
 workflows:
   # Workflows defined for each package and plugin.
   # tag example for deploying an update for atlas-content-modeler: 1.0.0
   plugin:
     jobs:
-      - checkout:
-          slug: atlas-content-modeler
-          filters:
-            tags:
-              only: /.*/
       - plugin-checkout:
           slug: atlas-content-modeler
           filename: atlas-content-modeler.php
-          requires:
-            - checkout
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
-      - plugin-composer:
+      - plugin-build-composer:
           slug: atlas-content-modeler
           requires:
             - plugin-checkout
@@ -402,67 +401,87 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-test:
+      - plugin-build-npm:
           slug: atlas-content-modeler
           requires:
-            - plugin-composer
+            - plugin-checkout
           # run this job for any build, any branch
           filters:
             tags:
               only: /.*/
-      - lint:
+      - plugin-build-json:
           slug: atlas-content-modeler
           requires:
-            - plugin-test
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
-      - plugin-npm-build:
-          slug: atlas-content-modeler
-          requires:
-            - lint
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
-      - plugin-jest:
-          slug: atlas-content-modeler
-          requires:
-            - plugin-npm-build
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
-      - plugin-e2e-test:
-          requires:
-            - plugin-jest
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
-      - plugin-bundle-zip:
-          slug: atlas-content-modeler
-          requires:
-            - plugin-e2e-test
-          # Run this job on every commit/PR so the plugin is available as a build artifact
-          filters:
-            tags:
-              only: /.*/
-      - plugin-bundle-json:
-          slug: atlas-content-modeler
-          requires:
-            - plugin-test
+            - plugin-build-composer
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
           filters:
             tags:
               only: /.*/
-      - plugin-deploy:
-          name: "Deploy zip to api (staging) atlas-content-modeler"
+      - plugin-build-pot:
+          requires:
+            - plugin-build-composer
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-zip:
           slug: atlas-content-modeler
           requires:
-            - plugin-bundle-zip
-            - plugin-bundle-json
+            - plugin-build-npm
+            - plugin-build-pot
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-e2e:
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-jest:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-lint-js:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-lint-php:
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-unit:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-deploy:
+          name: "plugin-deploy-staging"
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+            - plugin-build-json
+            - plugin-test-e2e
+            - plugin-test-lint-js
+            - plugin-test-lint-php
+            - plugin-test-jest
+            - plugin-test-unit
           filters:
             branches:
               only:
@@ -474,10 +493,10 @@ workflows:
           auth_url: https://auth-staging.wpengine.io/v1/tokens
           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
       - plugin-deploy:
-          name: "Deploy zip to api (production) atlas-content-modeler"
+          name: "plugin-deploy-production"
           slug: atlas-content-modeler
           requires:
-            - "Deploy zip to api (staging) atlas-content-modeler"
+            - "plugin-deploy-staging"
           filters:
             branches:
               ignore: /.*/

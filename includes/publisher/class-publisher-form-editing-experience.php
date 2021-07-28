@@ -163,8 +163,9 @@ final class FormEditingExperience {
 			'atlas-content-modeler-form-editing-experience',
 			'atlasContentModelerFormEditingExperience',
 			[
-				'models'   => $models,
-				'postType' => $this->current_screen_post_type,
+				'models'           => $models,
+				'postType'         => $this->current_screen_post_type,
+				'allowedMimeTypes' => get_allowed_mime_types(),
 			]
 		);
 
@@ -403,7 +404,7 @@ final class FormEditingExperience {
 	 * Runs an `admin_notices` hook.
 	 */
 	public function render_feedback_notice(): void {
-		include_once ATLAS_CONTENT_MODELER_DIR . '/includes/shared-assets/views/banners/atlas-content-modeler-feedback-banner.php';
+		include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'shared-assets/views/banners/atlas-content-modeler-feedback-banner.php';
 	}
 
 	/**

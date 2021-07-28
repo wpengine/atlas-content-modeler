@@ -6,6 +6,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	// state
 	const [mediaUrl, setMediaUrl] = useState("");
 	const [value, setValue] = useState(field.value);
+	const { allowedTypes } = field;
 
 	// local
 	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
@@ -39,25 +40,86 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	}
 
 	/**
+	 * Get long extension for provided short file extension
+	 *
+	 * @returns {*[]}
+	 */
+	function getAllowedTypesLongExtension() {
+		const fieldAllowedTypes = allowedTypes.split(",");
+		let fieldAllowedTypesLongExtensions = [];
+
+		fieldAllowedTypes.forEach((type) => {
+			for (const item in atlasContentModelerFormEditingExperience.allowedMimeTypes) {
+				const fileExtensionRegex = new RegExp(type, "gi");
+
+				if (fileExtensionRegex.test(item)) {
+					fieldAllowedTypesLongExtensions.push(
+						atlasContentModelerFormEditingExperience
+							.allowedMimeTypes[item]
+					);
+				}
+			}
+		});
+
+		return fieldAllowedTypesLongExtensions;
+	}
+
+	/**
+	 * Format allowed types for UI display
+	 * @returns {string|string}
+	 */
+	function getAllowedTypesForUi() {
+		return allowedTypes ? `${allowedTypes.split(",").join(", ")}` : "";
+	}
+
+	/**
 	 * Click handler to use wp media uploader
 	 * @param e - event
 	 */
 	function clickHandler(e) {
 		e.preventDefault();
 
-		const media = wp
-			.media({
-				title: mediaUrl
-					? __("Change Media", "atlas-content-modeler")
-					: __("Upload Media", "atlas-content-modeler"),
-				multiple: false,
-			})
-			.open()
-			.on("select", function () {
-				const uploadedMedia = media.state().get("selection").first();
-				setValue(uploadedMedia.attributes.id);
-				setMediaUrl(uploadedMedia.attributes.url);
-			});
+		let library = {
+			order: "DESC",
+			orderby: "date",
+		};
+
+		if (allowedTypes) {
+			library.type = getAllowedTypesLongExtension();
+		}
+
+		const getMediaModalTitle = () => {
+			const title = mediaUrl
+				? __("Change Media", "atlas-content-modeler")
+				: __("Upload Media", "atlas-content-modeler");
+			if (allowedTypes) {
+				return `${title} (${getAllowedTypesForUi().toUpperCase()})`;
+			}
+
+			return title;
+		};
+
+		// If the media frame already exists, reopen it.
+		if (media) {
+			media.open();
+			return;
+		}
+
+		const media = wp.media({
+			title: getMediaModalTitle(),
+			multiple: false,
+			frame: "select",
+			library: library,
+			button: {
+				text: __("Done", "atlas-content-modeler"),
+			},
+		});
+
+		media.open().on("select", function () {
+			const uploadedMedia = media.state().get("selection").first();
+			setValue(uploadedMedia.attributes.id);
+			setMediaUrl(uploadedMedia.attributes.url);
+		});
 	}
 
 	return (
@@ -87,7 +149,11 @@ export default function MediaUploader({ modelSlug, field, required }) {
 									alt={field.name}
 								/>
 							) : (
-								<a href={mediaUrl}>
+								<a
+									href={mediaUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
 									[{getFileExtension(mediaUrl).toUpperCase()}]{" "}
 									{mediaUrl}
 								</a>
@@ -97,16 +163,35 @@ export default function MediaUploader({ modelSlug, field, required }) {
 				)}
 
 				<div className="d-flex flex-row align-items-center media-btns">
-					<input
-						type="button"
-						className="button button-primary button-large"
-						defaultValue={
-							mediaUrl
-								? __("Change Media", "atlas-content-modeler")
-								: __("Upload Media", "atlas-content-modeler")
-						}
-						onClick={(e) => clickHandler(e)}
-					/>
+					<div>
+						<input
+							type="button"
+							className="button button-primary button-large"
+							style={{ marginTop: "5px" }}
+							defaultValue={
+								mediaUrl
+									? __(
+											"Change Media",
+											"atlas-content-modeler"
+									  )
+									: __(
+											"Upload Media",
+											"atlas-content-modeler"
+									  )
+							}
+							onClick={(e) => clickHandler(e)}
+						/>
+
+						{allowedTypes && (
+							<p className="text-muted">
+								{__(
+									"Accepts file types",
+									"atlas-content-modeler"
+								)}
+								: {getAllowedTypesForUi().toUpperCase()}
+							</p>
+						)}
+					</div>
 
 					{mediaUrl && (
 						<a
@@ -115,7 +200,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 							className="btn-delete"
 							onClick={(e) => deleteImage(e)}
 						>
-							Remove Media
+							{__("Remove Media", "atlas-content-modeler")}
 						</a>
 					)}
 				</div>
