@@ -103,9 +103,9 @@ ifdef HAS_CHROMEDRIVER
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin activate atlas-content-modeler
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/wp-content/plugins/atlas-content-modeler --user=www-data wordpress wp db export tests/_data/dump.sql
 	if [ -z "$(TEST)" ]; then \
-		vendor/bin/codecept run acceptance; \
+		vendor/bin/codecept -vvv run acceptance; \
 	else \
-		vendor/bin/codecept run acceptance $(TEST); \
+		vendor/bin/codecept -vvv run acceptance $(TEST); \
 	fi
 else
 	@echo "Chromedriver is not available. Please see the readme for installation instructions."
