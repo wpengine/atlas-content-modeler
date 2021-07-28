@@ -93,7 +93,7 @@ test-all: install-npm install-composer test-js-lint test-php-lint test-js-jest t
 test-all-build: build test-js-lint test-php-lint test-js-jest test-php-unit test-e2e ## Build all assets and run all testing
 
 .PHONE: test-e2e
-test-e2e: | clean-e2e ## Run end-2-end testing (requires Chrome and Chromedriver)
+test-e2e: ## Run end-2-end testing (requires Chrome and Chromedriver)
 ifdef HAS_CHROMEDRIVER
 	@echo "Running End-to-end tests"
 	cp .env.testing.sample .env.testing
@@ -107,7 +107,6 @@ ifdef HAS_CHROMEDRIVER
 	else \
 		vendor/bin/codecept run acceptance $(TEST); \
 	fi
-	$(MAKE) clean-e2e
 else
 	@echo "Chromedriver is not available. Please see the readme for installation instructions."
 endif
