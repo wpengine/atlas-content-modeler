@@ -32,3 +32,5 @@ deploy.sh
 *.env.testing*
 *.prettier*
 *.husky/*
+*docker-composer-phpunit.yml
+*Makefile
