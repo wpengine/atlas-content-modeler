@@ -158,7 +158,3 @@ test-php-unit: | install-composer build-docker-phpunit ## Run PHPunit tests
 		phpunit \
 		bash -c "composer test"
 	docker-compose -f ./docker-compose-phpunit.yml down
-
-.PHONY: action
-action:
-	@echo $(TEST)
