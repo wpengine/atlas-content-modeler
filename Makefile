@@ -9,12 +9,21 @@ CURRENTGROUP     := $$(id -g)
 build:  ## Builds all plugin assets
 	@echo "Setting up Content Modeler plugin"
 	$(MAKE) install-composer
-	$(MAKE) build-docker
+	$(MAKE) build-docker-node
 	$(MAKE) install-npm
 	$(MAKE) build-npm
 
 .PHONY: build-docker
-build-docker: build-docker-node build-docker-phpunit
+build-docker: build-docker-node build-docker-phpunit build-docker-codeception
+
+.PHONY: build-docker-codeception
+build-docker-codeception:
+	if [ ! "$$(docker images | grep atlascontentmodeler_codeception_image)" ]; then \
+		echo "Building the Codeception image"; \
+		docker build \
+			-f .docker/Dockerfile \
+			-t atlascontentmodeler_codeception_image .; \
+	fi
 
 .PHONY: build-docker-node
 build-docker-node:
@@ -49,6 +58,9 @@ clean-docker:
 	if [ "$$(docker images | grep atlastcontentmodeler_node_image)" ]; then \
 		docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'atlastcontentmodeler_node_image'); \
 	fi
+	if [ "$$(docker images | grep atlascontentmodeler_codeception_image)" ]; then \
+		docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'atlascontentmodeler_codeception_image'); \
+	fi
 
 .PHONY: clean-e2e
 clean-e2e:
@@ -74,7 +86,7 @@ install-composer:
 	fi
 
 .PHONY: install-npm
-install-npm: | build-docker
+install-npm: | build-docker-npm
 	if [ ! -d ./node_modules/ ]; then \
 		echo "installing node dependencies for plugin"; \
 		$(DOCKER_RUN) $(NODE_IMAGE) npm install; \
@@ -93,7 +105,7 @@ test-all: install-npm install-composer test-js-lint test-php-lint test-js-jest t
 test-all-build: build test-js-lint test-php-lint test-js-jest test-php-unit test-e2e ## Build all assets and run all testing
 
 .PHONE: test-e2e
-test-e2e: ## Run end-2-end testing (requires Chrome and Chromedriver)
+test-e2e: build-docker-codeception ## Run end-2-end testing (requires Chrome and Chromedriver)
 ifdef HAS_CHROMEDRIVER
 	@echo "Running End-to-end tests"
 	cp .env.testing.sample .env.testing

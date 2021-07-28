@@ -2,8 +2,7 @@ version: '3'
 
 services:
   wordpress:
-    build:
-      context: ./.docker
+    image: atlascontentmodeler_codeception_image
     depends_on:
       db:
         condition: service_healthy

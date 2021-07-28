@@ -8,8 +8,7 @@ FROM wordpress:${WORDPRESS_VERSION}-php${PHP_VERSION}-apache
 RUN docker-php-ext-install pdo pdo_mysql
 
 # Add wp-cli to the main container.
-COPY --from=wp-cli --chown=www-data:www-data /usr/local/bin/wp /public/bin/wp-cli.phar
-COPY wp-cli/wp-cli.sh /usr/local/bin/wp
+COPY --from=wp-cli /usr/local/bin/wp /usr/local/bin/wp
 
 RUN set -e \
     ; apt-get -qq update \
@@ -21,7 +20,6 @@ RUN set -e \
         vim \
         -qq --no-install-recommends \
     ; sudo adduser www-data sudo \
-    ; chmod +x /public/bin/wp-cli.phar \
     ; chmod +x /usr/local/bin/wp \
-    ; chown -R www-data:www-data /public /var/www \
+    ; chown -R www-data:www-data /var/www \
     ; rm -rf /var/lib/apt/lists/*
