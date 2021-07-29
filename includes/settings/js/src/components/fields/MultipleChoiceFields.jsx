@@ -121,31 +121,31 @@ function MultipleChoiceFields({
 													}}
 												/>
 											</div>
-											<div className="hey-listen">
+											<div className={`${item.name}`}>
 												<input
 													ref={register()}
 													placeholder="Choice API Identifier"
 													type="text"
 													onChange={(event) => {
 														errors &&
-														Object.entries(
-															errors
-														).map((item) => {
-															item[1].type.includes(
-																"multipleChoiceSlugDuplicate"
-															) &&
-																clearErrors(
-																	item[0]
-																		.type
-																);
-															item[1].type.includes(
-																"multipleChoiceSlugEmpty"
-															) &&
-																clearErrors(
-																	item[0]
-																		.type
-																);
-														});
+															Object.entries(
+																errors
+															).map((item) => {
+																item[1].type.includes(
+																	"multipleChoiceSlugDuplicate"
+																) &&
+																	clearErrors(
+																		item[0]
+																			.type
+																	);
+																item[1].type.includes(
+																	"multipleChoiceSlugEmpty"
+																) &&
+																	clearErrors(
+																		item[0]
+																			.type
+																	);
+															});
 														clearErrors(
 															"multipleChoice" +
 																index
