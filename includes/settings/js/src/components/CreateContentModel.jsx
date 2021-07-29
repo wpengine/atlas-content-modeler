@@ -49,7 +49,7 @@ export default function CreateContentModel() {
 					history.push(
 						atlasContentModeler.appPath +
 							"&view=edit-model&id=" +
-							data.slug
+							res.model.slug
 					);
 
 					// Insert the sidebar menu item below the Comments item, to avoid doing a full page refresh.

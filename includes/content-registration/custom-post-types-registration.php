@@ -280,7 +280,6 @@ function generate_custom_post_type_args( array $args ): array {
 		'public'                => $args['public'] ?? false,
 		'show_ui'               => $args['show_ui'] ?? true,
 		'show_in_rest'          => $args['show_in_rest'] ?? true,
-		'rest_base'             => $args['rest_base'] ?? strtolower( str_replace( ' ', '', $plural ) ),
 		'capability_type'       => $args['capability_type'] ?? 'post',
 		'show_in_menu'          => $args['show_in_menu'] ?? true,
 		'supports'              => $args['supports'] ??

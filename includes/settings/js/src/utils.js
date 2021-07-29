@@ -29,14 +29,12 @@ export function insertSidebarMenuItem(model) {
 }
 
 /**
- * Removes the content model list item in the wp-admin sidebar menu.
+ * Removes the post type from the wp-admin sidebar menu.
  *
- * @param {String} slug - The content model item to be removed from the sidebar. Lowercased.
+ * @param {String} slug - The post type slug of the item to be removed.
  */
 export function removeSidebarMenuItem(slug) {
-	const menuItem = document.querySelector(
-		`[id="menu-posts-${slug.toLowerCase()}"]`
-	);
+	const menuItem = document.querySelector(`[id="menu-posts-${slug}"]`);
 	if (menuItem) {
 		menuItem.remove();
 	}
@@ -53,7 +51,7 @@ export function generateSidebarMenuItem(model) {
 	if (!model_icon) {
 		model_icon = "dashicons-admin-post";
 	}
-	slug = slug.toLowerCase();
+
 	return `<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" id="menu-posts-${slug}">
 				<a href="edit.php?post_type=${slug}" class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-${slug}" aria-haspopup="true">
 					<div class="wp-menu-arrow">
