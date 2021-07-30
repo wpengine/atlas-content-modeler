@@ -96,11 +96,16 @@ const NumberSettings = ({
 	getValues,
 	trigger,
 }) => {
+	console.log("stored Data", storedData);
 	function getDefaultNumberValue(value, storedValue) {
-		if (value === 0 || storedValue === 0) {
-			return 0;
+		console.log("minvalue", value);
+		console.log("stored value", storedValue);
+		if (value || value === 0) {
+			return String(value);
+		} else if (storedValue || storedValue === 0) {
+			return String(storedValue);
 		} else {
-			return String(value ?? storedValue) ?? "";
+			return "";
 		}
 	}
 	return (
@@ -138,12 +143,10 @@ const NumberSettings = ({
 								await trigger("maxValue");
 								await trigger("step");
 							}}
-							defaultValue={() =>
-								getDefaultNumberValue(
-									getValues("minValue"),
-									storedData?.minValue
-								)
-							}
+							defaultValue={getDefaultNumberValue(
+								getValues("minValue"),
+								storedData?.minValue
+							)}
 						/>
 						<p className="field-messages">
 							{errors.minValue && errors.minValue.type === "min" && (
