@@ -100,9 +100,9 @@ const NumberSettings = ({
 	function getDefaultNumberValue(value, storedValue) {
 		console.log("minvalue", value);
 		console.log("stored value", storedValue);
-		if (value || value === 0) {
+		if (value || value == 0 || value == "") {
 			return String(value);
-		} else if (storedValue || storedValue === 0) {
+		} else if (storedValue || storedValue == 0 || storedValue == "") {
 			return String(storedValue);
 		} else {
 			return "";
