@@ -1,7 +1,7 @@
 /**
  * Additional field options that appear in the Advanced Settings modal.
  */
-import React from "react";
+import React, { useRef } from "react";
 import Icon from "../../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
@@ -96,11 +96,12 @@ const NumberSettings = ({
 	getValues,
 	trigger,
 }) => {
-	console.log("stored Data", storedData);
 	function getDefaultNumberValue(value, storedValue) {
-		console.log("minvalue", value);
-		console.log("stored value", storedValue);
-		if (value || value == 0 || value == "") {
+		const minValChangedRef = useRef();
+
+		if (value == "" && minValChangedRef.current) {
+			return String(storedValue);
+		} else if (value || value == 0 || value == "") {
 			return String(value);
 		} else if (storedValue || storedValue == 0 || storedValue == "") {
 			return String(storedValue);
@@ -136,6 +137,7 @@ const NumberSettings = ({
 							id="minValue"
 							name="minValue"
 							onChange={async (e) => {
+								minValChangedRef.current = true;
 								setValue("minValue", e.target.value, {
 									shouldValidate: true,
 								});
