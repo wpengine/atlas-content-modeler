@@ -93,4 +93,30 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request2 );
 		self::assertSame( 400, $response->get_status() );
 	}
+
+	public function test_cannot_update_model_slug(): void {
+		wp_set_current_user( 1 );
+		$model   = 'rabbits';
+
+		// First request to create model.
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $this->test_models['rabbits'] ) );
+		$this->server->dispatch( $request );
+
+		// Second request to update model.
+		$new_model = $this->test_models['rabbits'];
+		$new_model['slug'] = 'edited-rabbits-slug-2'; // This update should be ignored.
+		$new_model['singular'] = 'RabbIT'; // Must change something successfuly to get 200 response.
+		$request2 = new WP_REST_Request( 'PATCH', "/{$this->namespace}/{$this->route}/{$model}" );
+		$request2->set_header( 'content-type', 'application/json' );
+		$request2->set_body( json_encode( $new_model ) );
+
+		$response = $this->server->dispatch( $request2 );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
+
+		self::assertSame( 200, $response->get_status() );
+		self::assertSame( $this->test_models['rabbits']['slug'], $models['rabbits']['slug'] );
+		self::assertSame( 'RabbIT', $models['rabbits']['singular'] );
+	}
 }
