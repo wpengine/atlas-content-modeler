@@ -14,6 +14,7 @@ import MultipleChoiceFields from "./MultipleChoiceFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator } from "../../hooks";
+import { toValidApiId } from "../../formats";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
@@ -58,6 +59,7 @@ function Form({ id, position, type, editing, storedData }) {
 		sourceValue: storedData?.name,
 		editing,
 		setGeneratedValue: (value) => setValue("slug", value),
+		format: toValidApiId,
 	});
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
 	const [previousState, setPreviousState] = useState(storedData);

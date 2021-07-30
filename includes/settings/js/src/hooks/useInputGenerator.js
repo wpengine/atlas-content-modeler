@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { toValidApiId } from "../formats";
 
 /**
  * Uses the value of a source input to generate and apply a valid value
@@ -15,8 +14,10 @@ import { toValidApiId } from "../formats";
  * @param {string}   sourceValue       The initial value of the source input field.
  * @param {boolean}  editing           Is the form showing stored data for editing?
  * @param {function} setGeneratedValue Function for updating the value of the generated field.
- * @return {Object}                    Where `setInputGeneratorSourceValue` should pass the source input
- *                                     field's value whenever it is updated, and
+ * @param {function} format            Function that takes the source value and returns a valid
+ *                                     generated value.
+ * @return {Object}                    Where `setInputGeneratorSourceValue` should pass the
+ *                                     source input field's value whenever it is updated, and
  *                                     `onChangeGeneratedValue` should be called whenever the
  *                                     generated input is manually updated.
  */
@@ -24,6 +25,7 @@ export function useInputGenerator({
 	sourceValue = "",
 	editing = false,
 	setGeneratedValue,
+	format,
 }) {
 	const [input, setInputGeneratorSourceValue] = useState(sourceValue);
 
@@ -32,7 +34,7 @@ export function useInputGenerator({
 	const [fieldsAreLinked, setFieldsAreLinked] = useState(!editing);
 
 	if (fieldsAreLinked) {
-		setGeneratedValue(toValidApiId(input));
+		setGeneratedValue(format(input));
 	}
 
 	return {
@@ -46,7 +48,7 @@ export function useInputGenerator({
 			// Prevents invalid values being entered into the generated field.
 			// An alternative is to show a validation error, but that forces
 			// the user to understand legal input formats.
-			setGeneratedValue(toValidApiId(value));
+			setGeneratedValue(format(value));
 		},
 	};
 }
