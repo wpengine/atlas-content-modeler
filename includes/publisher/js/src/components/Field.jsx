@@ -129,7 +129,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			let numberOptions = {};
 			const numberInputRef = useRef();
 
-			if (field?.minValue) {
+			if (field?.minValue || field?.minValue === 0) {
 				numberOptions.min = field.minValue;
 			}
 			if (field?.maxValue) {
@@ -159,32 +159,8 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					}
 				}
 
-				if (field.numberType === "decimal") {
-					if (event.type === "change") {
-						// reset validity
-						event.target.setCustomValidity("");
-						const zeroEdgeCase = /^\.[0]+$/;
-						// set custom error if it matches the edge case
-						if (zeroEdgeCase.test(numberInputRef.current.value)) {
-							event.target.setCustomValidity("Invalid input.");
-						}
-					}
-				}
-
 				// call global validate
 				validate(event, field);
-			}
-
-			function checkForNegativeInput(event, field) {
-				const parseMethod =
-					field.numberType === "integer" ? parseInt : parseFloat;
-
-				if (
-					parseMethod(numberInputRef.current.value) <
-					parseMethod(field.minValue)
-				) {
-					event.target.validity.rangeUnderflow = true;
-				}
 			}
 
 			return (
@@ -202,7 +178,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
-						onInput={(event) => checkForNegativeInput(event, field)}
 						onChange={(event) => preValidate(event, field)}
 						onKeyDown={(event) => preValidate(event, field)}
 						{...numberOptions}
