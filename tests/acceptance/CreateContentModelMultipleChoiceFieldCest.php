@@ -24,12 +24,13 @@ class CreateContentModelMultipleChoiceFieldCest
         $I->wait(1);
         $I->see("Multiple Choice");
         $I->see("Favorite Animal");
-        // $I->click('.field-list li button');
-        // $I->wait(1);
-        // $I->see('Editing “Favorite Animal” Field', '.field-list');
-        // $I->wait(1);
-        // $I->click('Remove Choice', '.dog');
-        // $I->dontSeeElementInDOM('#choices[1].slug');
+        $I->clickWithLeftButton('.field-list button.edit', -5, -5);
+        $I->wait(1);
+        $I->seeInField('dog', '.field-list');
+        $I->see('Editing “Favorite Animal” Field', '.field-list');
+        $I->click('Remove Choice', '.dog');
+        $I->wait(1);
+        $I->dontSee('dog');
     }
 
     /**
