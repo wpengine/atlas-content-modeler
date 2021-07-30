@@ -12,7 +12,7 @@ class PublishModelCest
 		$i->wait(1);
 	}
 
-	public function error_is_triggered_for_required_value(\AcceptanceTester $i)
+	public function i_see_submission_errors_in_number_fields_when_input_is_missing_for_the_number_type(\AcceptanceTester $i)
 	{
 		$i->click('Number', '.field-buttons');
 		$i->fillField(['name' => 'name'], 'Integer');
@@ -44,40 +44,6 @@ class PublishModelCest
 
 		$i->seeInField('atlas-content-modeler[moose][integer]', '');
 		$i->seeInField('atlas-content-modeler[moose][decimal]', '');
-	}
-
-	public function error_is_triggered_for_invalid_value(\AcceptanceTester $i)
-	{
-		$i->click('Number', '.field-buttons');
-		$i->fillField(['name' => 'name'], 'Integer');
-		$i->click('.open-field button.primary');
-		$i->wait(1);
-
-		$i->click(Locator::lastElement('.add-item'));
-		$i->click('Number', '.field-buttons');
-		$i->fillField(['name' => 'name'], 'Decimal');
-		$i->click('input#decimal');
-		$i->checkOption('required');
-		$i->click('.open-field button.primary');
-		$i->wait(1);
-
-		// Next we create an entry for our new model.
-		$i->amOnPage('/wp-admin/edit.php?post_type=moose');
-		$i->click('Add New', '.wrap');
-		$i->wait(1);
-
-		$i->fillField(['name' => 'atlas-content-modeler[moose][integer]'], '');
-		$i->fillField(['name' => 'atlas-content-modeler[moose][decimal]'], '.0');
-		$i->scrollTo('#submitdiv');
-
-		$i->click('Publish', '#publishing-action');
-		$i->wait(2);
-
-		$i->see('The input is invalid');
-		$i->wait(1);
-
-		$i->seeInField('atlas-content-modeler[moose][integer]', '');
-		$i->seeInField('atlas-content-modeler[moose][decimal]', '.0');
 	}
 
 	public function i_can_publish_a_model_entry(AcceptanceTester $i)
