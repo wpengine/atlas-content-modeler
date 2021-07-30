@@ -25,6 +25,10 @@ export function useInputGenerator({
 	setGeneratedValue,
 	format,
 }) {
+	if (typeof format !== "function") {
+		format = (value) => value;
+	}
+
 	const [input, setInputGeneratorSourceValue] = useState("");
 
 	// The source and generated fields are “linked” if typing into the source field
