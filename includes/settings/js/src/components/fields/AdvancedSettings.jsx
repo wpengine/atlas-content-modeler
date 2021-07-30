@@ -97,11 +97,7 @@ const NumberSettings = ({
 	trigger,
 }) => {
 	function getDefaultNumberValue(value, storedValue) {
-		const minValChangedRef = useRef();
-
-		if (value == "" && minValChangedRef.current) {
-			return String(storedValue);
-		} else if (value || value == 0 || value == "") {
+		if (value || value == 0 || value == "") {
 			return String(value);
 		} else if (storedValue || storedValue == 0 || storedValue == "") {
 			return String(storedValue);
@@ -137,7 +133,6 @@ const NumberSettings = ({
 							id="minValue"
 							name="minValue"
 							onChange={async (e) => {
-								minValChangedRef.current = true;
 								setValue("minValue", e.target.value, {
 									shouldValidate: true,
 								});
