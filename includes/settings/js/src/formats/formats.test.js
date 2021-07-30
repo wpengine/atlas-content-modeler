@@ -1,4 +1,4 @@
-import { toValidApiId } from "./toValidApiId";
+import { toValidApiId } from ".";
 
 describe("toValidApiId", () => {
 	const cases = [
