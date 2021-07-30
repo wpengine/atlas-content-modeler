@@ -56,8 +56,7 @@ function Form({ id, position, type, editing, storedData }) {
 		setInputGeneratorSourceValue,
 		onChangeGeneratedValue,
 	} = useInputGenerator({
-		sourceValue: storedData?.name,
-		editing,
+		linked: !editing,
 		setGeneratedValue: (value) => setValue("slug", value),
 		format: toValidApiId,
 	});

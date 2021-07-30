@@ -11,8 +11,7 @@ import { useState } from "react";
  *   source field after editing the generated field does not remove changes to the
  *   generated field.)
  *
- * @param {string}   sourceValue       The initial value of the source input field.
- * @param {boolean}  editing           Is the form showing stored data for editing?
+ * @param {boolean}  linked            Should the inputs be linked on initial render?
  * @param {function} setGeneratedValue Function for updating the value of the generated field.
  * @param {function} format            Function that takes the source value and returns a valid
  *                                     generated value.
@@ -22,16 +21,15 @@ import { useState } from "react";
  *                                     generated input is manually updated.
  */
 export function useInputGenerator({
-	sourceValue = "",
-	editing = false,
+	linked = true,
 	setGeneratedValue,
 	format,
 }) {
-	const [input, setInputGeneratorSourceValue] = useState(sourceValue);
+	const [input, setInputGeneratorSourceValue] = useState("");
 
 	// The source and generated fields are “linked” if typing into the source field
 	// should update the value of the generated field.
-	const [fieldsAreLinked, setFieldsAreLinked] = useState(!editing);
+	const [fieldsAreLinked, setFieldsAreLinked] = useState(linked);
 
 	if (fieldsAreLinked) {
 		setGeneratedValue(format(input));
