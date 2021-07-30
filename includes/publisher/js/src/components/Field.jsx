@@ -128,7 +128,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			const numberInputRef = useRef();
 
 			if (field?.minValue || field?.minValue === 0) {
-				numberOptions.min = field.minValue;
+				numberOptions.min = field.minValue ?? 0;
 			}
 			if (field?.maxValue) {
 				numberOptions.max = field.maxValue;
