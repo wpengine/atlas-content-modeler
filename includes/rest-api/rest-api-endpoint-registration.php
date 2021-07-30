@@ -24,7 +24,7 @@ function register_rest_routes(): void {
 	// Route for retrieving a single content type.
 	register_rest_route(
 		'wpe',
-		'/atlas/content-model/([a-z0-9_\-]+)/',
+		'/atlas/content-model/([a-z0-9_\-]+)',
 		[
 			'methods'             => 'GET',
 			'callback'            => __NAMESPACE__ . '\dispatch_get_content_model',
