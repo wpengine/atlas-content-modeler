@@ -132,7 +132,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertSame( $response_data['title']['rendered'], 'Test dog' );
+		self::assertSame( $response_data['title']['rendered'], 'Test dog' );
 	}
 
 	public function test_draft_posts_for_models_with_public_api_visibility_cannot_be_read_via_rest_api_when_not_authenticated(): void {
@@ -230,7 +230,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->dog_route . '/' . $this->dog_post_id );
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertFalse( array_key_exists( 'another-dog-test-field', $response_data['acm_fields'] ) );
+		self::assertFalse( array_key_exists( 'another-dog-test-field', $response_data['acm_fields'] ) );
 	}
 
 	public function test_post_meta_media_field_rest_response(): void {
@@ -279,12 +279,12 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\register_content_types()
 	 */
 	public function test_content_registration_init_hook(): void {
-		$this->assertSame( 10, has_action( 'init', 'WPE\AtlasContentModeler\ContentRegistration\register_content_types' ) );
+		self::assertSame( 10, has_action( 'init', 'WPE\AtlasContentModeler\ContentRegistration\register_content_types' ) );
 	}
 
 	public function test_defined_custom_post_types_are_registered(): void {
-		$this->assertArrayHasKey( 'cat', $this->all_registered_post_types );
-		$this->assertArrayHasKey( 'dog', $this->all_registered_post_types );
+		self::assertArrayHasKey( 'cat', $this->all_registered_post_types );
+		self::assertArrayHasKey( 'dog', $this->all_registered_post_types );
 	}
 
 	public function test_custom_post_type_labels_match_expected_format(): void {
@@ -293,12 +293,12 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 			'plural'   => 'Dogs',
 		] );
 
-		$this->assertSame( $labels, $this->expected_post_types()['dog']['labels'] );
+		self::assertSame( $labels, $this->expected_post_types()['dog']['labels'] );
 	}
 
 	public function test_defined_custom_post_types_have_show_in_graphql_argument(): void {
-		$this->assertTrue( $this->all_registered_post_types['dog']->show_in_graphql );
-		$this->assertFalse( $this->all_registered_post_types['cat']->show_in_graphql );
+		self::assertTrue( $this->all_registered_post_types['dog']->show_in_graphql );
+		self::assertFalse( $this->all_registered_post_types['cat']->show_in_graphql );
 	}
 
 	public function test_graphql_query_result_has_custom_fields_data(): void {
@@ -339,7 +339,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_generate_custom_post_type_args_throws_exception_when_invalid_arguments_passed(): void {
-		self::expectException( \InvalidArgumentException::class );
+		$this->expectException( \InvalidArgumentException::class );
 		generate_custom_post_type_args( [] );
 	}
 
@@ -358,7 +358,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_is_protected_meta_hook(): void {
-		$this->assertSame( 10, has_action( 'is_protected_meta', 'WPE\AtlasContentModeler\ContentRegistration\is_protected_meta' ) );
+		self::assertSame( 10, has_action( 'is_protected_meta', 'WPE\AtlasContentModeler\ContentRegistration\is_protected_meta' ) );
 	}
 
 	/**
