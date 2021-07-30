@@ -53,20 +53,14 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 		wp_set_current_user( 1 );
 		$model   = 'rabbits';
 
-		// First request to create model.
-		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
-		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( json_encode( $this->test_models[ $model ] ) );
-		$this->server->dispatch( $request );
-
-		// Second request to update model.
+		// Request to update model.
 		$new_model = $this->test_models['rabbits'];
 		$new_model['description'] = 'This is a new description of rabbits';
-		$request2 = new WP_REST_Request( 'PATCH', "/{$this->namespace}/{$this->route}/{$model}" );
-		$request2->set_header( 'content-type', 'application/json' );
-		$request2->set_body( json_encode( $new_model ) );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/{$this->route}/{$model}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $new_model ) );
 
-		$response = $this->server->dispatch( $request2 );
+		$response = $this->server->dispatch( $request );
 		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		self::assertSame( 200, $response->get_status() );
@@ -77,20 +71,14 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 		wp_set_current_user( 1 );
 		$model   = 'rabbits';
 
-		// First request to create model.
-		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
-		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( json_encode( $this->test_models['rabbits'] ) );
-		$this->server->dispatch( $request );
-
-		// Second request to update model.
+		// Request to update model.
 		$new_model = $this->test_models['rabbits'];
 		unset( $new_model['plural'] ); // To make it an invalid request.
-		$request2 = new WP_REST_Request( 'PATCH', "/{$this->namespace}/{$this->route}/{$model}" );
-		$request2->set_header( 'content-type', 'application/json' );
-		$request2->set_body( json_encode( $new_model ) );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/{$this->route}/{$model}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $new_model ) );
 
-		$response = $this->server->dispatch( $request2 );
+		$response = $this->server->dispatch( $request );
 		self::assertSame( 400, $response->get_status() );
 	}
 
@@ -98,21 +86,15 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 		wp_set_current_user( 1 );
 		$model   = 'rabbits';
 
-		// First request to create model.
-		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
-		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( json_encode( $this->test_models['rabbits'] ) );
-		$this->server->dispatch( $request );
-
-		// Second request to update model.
+		// Request to update model.
 		$new_model = $this->test_models['rabbits'];
-		$new_model['slug'] = 'edited-rabbits-slug-2'; // This update should be ignored.
+		$new_model['slug'] = 'edited-rabbits-slug-2'; // Slug updates should be ignored.
 		$new_model['singular'] = 'RabbIT'; // Must change something successfuly to get 200 response.
-		$request2 = new WP_REST_Request( 'PATCH', "/{$this->namespace}/{$this->route}/{$model}" );
-		$request2->set_header( 'content-type', 'application/json' );
-		$request2->set_body( json_encode( $new_model ) );
+		$request = new WP_REST_Request( 'PATCH', "/{$this->namespace}/{$this->route}/{$model}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $new_model ) );
 
-		$response = $this->server->dispatch( $request2 );
+		$response = $this->server->dispatch( $request );
 		$models   = get_option( 'atlas_content_modeler_post_types' );
 
 		self::assertSame( 200, $response->get_status() );
