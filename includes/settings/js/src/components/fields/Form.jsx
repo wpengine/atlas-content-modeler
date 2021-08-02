@@ -106,7 +106,8 @@ function Form({ id, position, type, editing, storedData }) {
 				},
 				step: {
 					min: 0,
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
 						maxBelowStep: (v) => {
 							const max = parseNumber(
