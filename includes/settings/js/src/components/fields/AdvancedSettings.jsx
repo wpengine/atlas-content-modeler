@@ -96,15 +96,6 @@ const NumberSettings = ({
 	getValues,
 	trigger,
 }) => {
-	function getDefaultNumberValue(value, storedValue) {
-		if (value || value == 0 || value == "") {
-			return String(value);
-		} else if (storedValue || storedValue == 0 || storedValue == "") {
-			return String(storedValue);
-		} else {
-			return "";
-		}
-	}
 	return (
 		<>
 			<h3>{__("Specific Number Range", "atlas-content-modeler")}</h3>
@@ -140,9 +131,8 @@ const NumberSettings = ({
 								await trigger("maxValue");
 								await trigger("step");
 							}}
-							defaultValue={getDefaultNumberValue(
-								getValues("minValue"),
-								storedData?.minValue
+							defaultValue={String(
+								getValues("maxValue") ?? storedData?.maxValue
 							)}
 						/>
 						<p className="field-messages">
