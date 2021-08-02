@@ -322,17 +322,19 @@ function get_registered_content_types(): array {
 	 *
 	 * @todo Consider removing before v1.0.
 	 */
+	$updated_models = [];
 	foreach ( $models as $key => $model ) {
 		$slug = sanitize_key( $key );
 
 		if ( $key !== $slug ) {
 			$model['slug']   = $slug;
 			$models[ $slug ] = $model;
-			unset( $models[ $key ] );
 		}
+
+		$updated_models[ $slug ] = $model;
 	}
 
-	return $models;
+	return $updated_models;
 }
 
 /**
