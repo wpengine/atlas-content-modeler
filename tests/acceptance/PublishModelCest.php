@@ -8,7 +8,7 @@ class PublishModelCest
 
 		// First we create a model with fields.
 		$i->loginAsAdmin();
-		$i->haveContentModel('moose', 'mooses', 'Mooses go frmh');
+		$i->haveContentModel('goose', 'gooses', 'gooses go frmh');
 		$i->wait(1);
 	}
 
@@ -28,12 +28,12 @@ class PublishModelCest
 		$i->wait(1);
 
 		// Next we create an entry for our new model.
-		$i->amOnPage('/wp-admin/edit.php?post_type=moose');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
-		$i->fillField(['name' => 'atlas-content-modeler[moose][integer]'], '');
-		$i->fillField(['name' => 'atlas-content-modeler[moose][decimal]'], '');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][integer]'], '');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][decimal]'], '');
 		$i->scrollTo('#submitdiv');
 
 		$i->click('Publish', '#publishing-action');
@@ -42,8 +42,8 @@ class PublishModelCest
 		$i->see('This field is required');
 		$i->wait(1);
 
-		$i->seeInField('atlas-content-modeler[moose][integer]', '');
-		$i->seeInField('atlas-content-modeler[moose][decimal]', '');
+		$i->seeInField('atlas-content-modeler[goose][integer]', '');
+		$i->seeInField('atlas-content-modeler[goose][decimal]', '');
 	}
 
 	public function i_can_publish_a_model_entry(AcceptanceTester $i)
@@ -84,18 +84,18 @@ class PublishModelCest
 		$i->wait(1);
 
 		// Next we create an entry for our new model.
-		$i->amOnPage('/wp-admin/edit.php?post_type=moose');
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$i->click('Add New', '.wrap');
 		$i->wait(1);
 
-		$i->fillField(['name' => 'atlas-content-modeler[moose][color]'], 'Gray');
-		$i->fillField(['name' => 'atlas-content-modeler[moose][age]'], '100');
-		$i->fillField(['name' => 'atlas-content-modeler[moose][dateOfBirth]'], '01/01/2021');
-		$i->checkOption('atlas-content-modeler[moose][fliesSouthForWinter]');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][color]'], 'Gray');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][age]'], '100');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][dateOfBirth]'], '01/01/2021');
+		$i->checkOption('atlas-content-modeler[goose][fliesSouthForWinter]');
 
 		// Rich text fields rendered as TinyMCE live in an iframe.
 		$i->switchToIFrame('#field-description iframe');
-		$i->fillField('#tinymce', 'I am a moose');
+		$i->fillField('#tinymce', 'I am a goose');
 		$i->switchToIFrame(); // switch back to main window
 
 		// Fill the second TinyMCE field.
@@ -110,25 +110,25 @@ class PublishModelCest
 
 		$i->see('Post published.');
 		$i->wait(1);
-		$i->see('Edit moose'); // Page title should change from “Add moose” when published.
+		$i->see('Edit goose'); // Page title should change from “Add goose” when published.
 
-		$i->seeInField('atlas-content-modeler[moose][color]', 'Gray');
-		$i->seeInField('atlas-content-modeler[moose][age]', '100');
-		$i->seeInField('atlas-content-modeler[moose][dateOfBirth]', '2021-01-01');
-		$i->seeCheckboxIsChecked('atlas-content-modeler[moose][fliesSouthForWinter]');
+		$i->seeInField('atlas-content-modeler[goose][color]', 'Gray');
+		$i->seeInField('atlas-content-modeler[goose][age]', '100');
+		$i->seeInField('atlas-content-modeler[goose][dateOfBirth]', '2021-01-01');
+		$i->seeCheckboxIsChecked('atlas-content-modeler[goose][fliesSouthForWinter]');
 		$i->switchToIFrame('#field-description iframe');
-		$i->see('I am a moose'); // Sees the text in the TinyMCE iframe body.
+		$i->see('I am a goose'); // Sees the text in the TinyMCE iframe body.
 		$i->switchToIFrame();
 
 		// Show <textarea> elements hidden by TinyMCE so we can see them to check their values directly.
 		$i->executeJS("
-			var field = document.getElementsByName('atlas-content-modeler[moose][description]');
+			var field = document.getElementsByName('atlas-content-modeler[goose][description]');
 			field[0].removeAttribute('style');
-			var fieldTwo = document.getElementsByName('atlas-content-modeler[moose][anotherRichTextField]');
+			var fieldTwo = document.getElementsByName('atlas-content-modeler[goose][anotherRichTextField]');
 			fieldTwo[0].removeAttribute('style');
 		");
 
-		$i->seeInField('atlas-content-modeler[moose][description]', '<p>I am a moose</p>');
-		$i->seeInField('atlas-content-modeler[moose][anotherRichTextField]', '<p>I am another rich text field</p>');
+		$i->seeInField('atlas-content-modeler[goose][description]', '<p>I am a goose</p>');
+		$i->seeInField('atlas-content-modeler[goose][anotherRichTextField]', '<p>I am another rich text field</p>');
 	}
 }
