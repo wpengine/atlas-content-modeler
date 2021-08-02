@@ -25,8 +25,6 @@ export default function Field(props) {
 		let error = defaultError;
 
 		if (field.type === "number") {
-			console.log("field", field);
-			console.log("validity", event.target.validity);
 			if (event.target.validity.rangeOverflow) {
 				error = sprintf(
 					__("Maximum value is %s.", "atlas-content-modeler"),
@@ -150,7 +148,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				const disallowedCharacters = /[.]/g;
 
 				if (field.numberType === "integer") {
-					// prevent disallowed characters
 					if (disallowedCharacters.test(event.key)) {
 						event.preventDefault();
 						return;
