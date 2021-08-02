@@ -186,7 +186,7 @@ input[type="radio"] {
 
 .atlas-content-modeler-admin-page .radio-row {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	margin-bottom: 10px;
 }
 .atlas-content-modeler-admin-page .field a {
@@ -215,7 +215,7 @@ input[type="radio"] {
 }
 
 .atlas-content-modeler-admin-page .radio-row input[type="radio"] {
-	margin-right: 20px;
+	margin: 5px 8px 0 0;
 }
 
 .atlas-content-modeler-admin-page .radio-row label span {
