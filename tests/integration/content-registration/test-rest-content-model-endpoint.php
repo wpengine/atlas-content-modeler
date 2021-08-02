@@ -49,6 +49,35 @@ class TestRestContentModelEndpoint extends WP_UnitTestCase {
 		self::assertSame( 'atlas_content_modeler_already_exists', $response->data['code'] );
 	}
 
+	public function test_can_create_model(): void {
+		wp_set_current_user( 1 );
+
+		$slug = 'bookreviews';
+		$create_test_model =  [
+			'slug'        => $slug,
+			'singular'    => 'Book Review',
+			'plural'      => 'Book Reviews',
+			'description' => 'Reviews of books.'
+		];
+
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $create_test_model ) );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 200, $response->get_status() );
+
+		$data = $response->get_data();
+		$models   = get_option( 'atlas_content_modeler_post_types' );
+
+		foreach ( array_keys($create_test_model) as $key ) {
+			// Test returned content
+			self::assertSame( $create_test_model[$key], $data['model'][$key] );
+			// Test saved content
+			self::assertSame( $create_test_model[$key], $models[$slug][$key] );
+		}
+	}
+
 	public function test_can_update_model(): void {
 		wp_set_current_user( 1 );
 		$model   = 'rabbits';
