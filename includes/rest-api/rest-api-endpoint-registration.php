@@ -277,7 +277,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 
 	// Check if a slug name is a duplicate.
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
-		$options_slug_index = -1;
+		$options_slug_index        = -1;
 		$problem_option_slug_index = [];
 		foreach ( $params['choices'] as $choice ) {
 			++$options_slug_index;
@@ -725,7 +725,7 @@ function content_model_multi_option_exists( array $names, string $current_choice
 /**
  * Checks if a duplicate model identifier (slug) exists in the multiple option field.
  *
- * @param array  $names  The available field choice names.
+ * @param array  $slugs  The available field slug names.
  * @param string $current_choice  The currently checked field choice name.
  * @param int    $current_index The content index for the current choice being validated.
  * @return bool
