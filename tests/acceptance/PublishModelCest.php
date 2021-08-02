@@ -125,6 +125,52 @@ class PublishModelCest
 		$i->seeInField('atlas-content-modeler[goose][decimal]', '-1');
 	}
 
+	public function i_see_submission_errors_in_number_fields_when_input_is_more_than_max_for_the_number_type(\AcceptanceTester $i)
+	{
+		$i->click('Number', '.field-buttons');
+		$i->fillField(['name' => 'name'], 'Integer');
+		$i->click('.open-field button.settings');
+		$i->fillField(['name' => 'minValue'], '0');
+		$i->fillField(['name' => 'maxValue'], '10');
+		$i->fillField(['name' => 'step'], '1');
+		$i->click('.ReactModal__Content button.primary');
+		$i->wait(1);
+
+		$i->click('.open-field button.primary');
+		$i->wait(1);
+
+		$i->click(Locator::lastElement('.add-item'));
+		$i->click('Number', '.field-buttons');
+		$i->fillField(['name' => 'name'], 'Decimal');
+		$i->click('input#decimal');
+		$i->click('.open-field button.settings');
+		$i->fillField(['name' => 'minValue'], '0');
+		$i->fillField(['name' => 'maxValue'], '2.5');
+		$i->fillField(['name' => 'step'], '1.1');
+		$i->click('.ReactModal__Content button.primary');
+
+		$i->click('.open-field button.primary');
+		$i->wait(1);
+
+		// Next we create an entry for our new model.
+		$i->amOnPage('/wp-admin/edit.php?post_type=goose');
+		$i->click('Add New', '.wrap');
+		$i->wait(1);
+
+		$i->fillField(['name' => 'atlas-content-modeler[goose][integer]'], '20');
+		$i->fillField(['name' => 'atlas-content-modeler[goose][decimal]'], '20');
+		$i->scrollTo('#submitdiv');
+
+		$i->click('Publish', '#publishing-action');
+		$i->wait(2);
+
+		$i->see('Maximum value is');
+		$i->wait(1);
+
+		$i->seeInField('atlas-content-modeler[goose][integer]', '20');
+		$i->seeInField('atlas-content-modeler[goose][decimal]', '20');
+	}
+	
 	public function i_can_publish_a_model_entry(AcceptanceTester $i)
 	{
 		$i->click('Text', '.field-buttons');
