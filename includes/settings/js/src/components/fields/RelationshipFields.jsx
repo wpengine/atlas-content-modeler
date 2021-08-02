@@ -174,6 +174,7 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 					name="description"
 					ref={register()}
 					id="description"
+					className="two-columns"
 				/>
 			</div>
 		</>

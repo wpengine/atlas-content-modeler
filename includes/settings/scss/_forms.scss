@@ -42,6 +42,11 @@
 		select {
 			width: 260px !important;
 		}
+
+		textarea.two-columns {
+			max-width: none;
+			width: 570px !important;
+		}
 	}
 }
 
