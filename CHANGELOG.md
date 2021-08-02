@@ -1,8 +1,19 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.4.2 - 2021-08-02
+
+### Added
+- Ability to choose an icon when creating or editing a model.
+- Option to restrict file types for the media field.
+- Generate WordPress changelog from the Markdown changelog so that changes are visible from the WordPress changes modal.
+- Plugin developer improvements: GitHub Pull Request template; Code Climate configuration; Makefile for test environments.
+
+### Changed
+- Change “API Identifier” field title on model entry forms to “Model ID” with a new description to better reflect its use.
+- Continuous Integration: the generated plugin zip is now tested and verified before deploying.
 
 ### Fixed
+- Improve query generation for “Open in GraphiQL” to include lowercase model names and models with the same plural and singular name.
 - Prevent a PHP warning during title filtering if post info can not be found.
 
 ## 0.4.1 - 2021-06-24
