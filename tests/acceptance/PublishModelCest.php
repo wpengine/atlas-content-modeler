@@ -170,7 +170,7 @@ class PublishModelCest
 		$i->seeInField('atlas-content-modeler[goose][integer]', '20');
 		$i->seeInField('atlas-content-modeler[goose][decimal]', '20');
 	}
-	
+
 	public function i_can_publish_a_model_entry(AcceptanceTester $i)
 	{
 		$i->click('Text', '.field-buttons');
