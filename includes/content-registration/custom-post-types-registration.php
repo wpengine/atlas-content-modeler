@@ -311,7 +311,28 @@ function generate_custom_post_type_args( array $args ): array {
  * @return array
  */
 function get_registered_content_types(): array {
-	return get_option( 'atlas_content_modeler_post_types', array() );
+	$models = get_option( 'atlas_content_modeler_post_types', array() );
+
+	/**
+	 * Maintains backwards compatibility with models that were created
+	 * before sanitize_key() was used to format model slugs on creation.
+	 *
+	 * Exisitng data will be lazily corrected as models are added or
+	 * edited.
+	 *
+	 * @todo Consider removing before v1.0.
+	 */
+	foreach ( $models as $key => $model ) {
+		$slug = sanitize_key( $key );
+
+		if ( $key !== $slug ) {
+			$model['slug']   = $slug;
+			$models[ $slug ] = $model;
+			unset( $models[ $key ] );
+		}
+	}
+
+	return $models;
 }
 
 /**
