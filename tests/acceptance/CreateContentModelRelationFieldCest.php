@@ -48,4 +48,21 @@ class CreateContentModelRelationFieldCest
 		$I->assertEquals('true', $reference_disabled_state);
 		$I->assertEquals('true', $cardinality_disabled_state);
 	}
+
+	public function i_can_update_an_existing_relationship_field(AcceptanceTester $I)
+	{
+		$this->i_can_create_a_relation_field($I);
+		// Offsets from the center are used here to prevent “other element would
+		// receive the click” due to the “add field” button overlapping the edit
+		// button in the center.
+		$I->clickWithLeftButton('.field-list button.edit', -5, -5);
+		$I->wait(1);
+
+		$I->fillField(['name' => 'name'], 'Updated Name');
+
+		$I->click('.open-field button.primary');
+		$I->wait(1);
+
+		$I->see('Updated Name', '.field-list div.widest');
+	}
 }
