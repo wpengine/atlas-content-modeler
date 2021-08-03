@@ -317,21 +317,25 @@ function get_registered_content_types(): array {
 	 * Maintains backwards compatibility with models that were created
 	 * before sanitize_key() was used to format model slugs on creation.
 	 *
-	 * Existing data will be lazily corrected as models are added or
-	 * edited.
+	 * Existing data will be lazily updated as models are retrieved.
 	 *
 	 * @todo Consider removing before v1.0.
 	 */
+	$needs_update   = false;
 	$updated_models = [];
 	foreach ( $models as $key => $model ) {
 		$slug = sanitize_key( $key );
 
 		if ( $key !== $slug ) {
-			$model['slug']   = $slug;
-			$models[ $slug ] = $model;
+			$needs_update  = true;
+			$model['slug'] = $slug;
 		}
 
 		$updated_models[ $slug ] = $model;
+	}
+
+	if ( $needs_update ) {
+		update_registered_content_types( $updated_models );
 	}
 
 	return $updated_models;
