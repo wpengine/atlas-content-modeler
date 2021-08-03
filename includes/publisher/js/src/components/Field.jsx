@@ -59,16 +59,43 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 
 	switch (field.type) {
 		case "relationship":
+			function relationshipClickHandler(
+				e,
+				field,
+				modelSlug,
+				errors,
+				validate
+			) {
+				console.log("got it");
+			}
+
 			return (
-				<button
-					className="button button-primary button-large"
-					name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-					field={field}
-					required={field.required}
-				>
-					<Icon type="link" />
-					Link Reference
-				</button>
+				<>
+					<label
+						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+					>
+						{field.name}
+					</label>
+					<div className="d-flex flex-row align-items-center media-btns">
+						<button
+							className="button button-primary button-large"
+							style={{ marginTop: "5px" }}
+							id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+							onClick={(e) => {
+								relationshipClickHandler(
+									e,
+									field,
+									modelSlug,
+									errors,
+									validate
+								);
+							}}
+						>
+							{/*<Icon type="error" />*/}
+							{__("Link Reference", "atlas-content-modeler")}
+						</button>
+					</div>
+				</>
 			);
 		case "media":
 			return (
