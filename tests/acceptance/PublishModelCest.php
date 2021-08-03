@@ -118,7 +118,8 @@ class PublishModelCest
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
 
-		$i->see('Minimum value is');
+		$i->see('Minimum value is', '#field-integer');
+		$i->see('Minimum value is', '#field-decimal');
 		$i->wait(1);
 
 		$i->seeInField('atlas-content-modeler[goose][integer]', '-1');
@@ -164,7 +165,8 @@ class PublishModelCest
 		$i->click('Publish', '#publishing-action');
 		$i->wait(2);
 
-		$i->see('Maximum value is');
+		$i->see('Maximum value is', '#field-integer');
+		$i->see('Maximum value is', '#field-decimal');
 		$i->wait(1);
 
 		$i->seeInField('atlas-content-modeler[goose][integer]', '20');

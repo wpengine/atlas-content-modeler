@@ -1,7 +1,7 @@
 /**
  * Additional field options that appear in the Advanced Settings modal.
  */
-import React, { useRef } from "react";
+import React from "react";
 import Icon from "../../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
