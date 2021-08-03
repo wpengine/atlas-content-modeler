@@ -15,6 +15,7 @@
 ### Fixed
 - Improve query generation for “Open in GraphiQL” to include lowercase model names and models with the same plural and singular name.
 - Prevent a PHP warning during title filtering if post info can not be found.
+- Improve number field validation.
 
 ## 0.4.1 - 2021-06-24
 ### Added
