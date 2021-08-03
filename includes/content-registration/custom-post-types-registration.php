@@ -317,7 +317,7 @@ function get_registered_content_types(): array {
 	 * Maintains backwards compatibility with models that were created
 	 * before sanitize_key() was used to format model slugs on creation.
 	 *
-	 * Exisitng data will be lazily corrected as models are added or
+	 * Existing data will be lazily corrected as models are added or
 	 * edited.
 	 *
 	 * @todo Consider removing before v1.0.
