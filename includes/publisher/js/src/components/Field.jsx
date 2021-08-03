@@ -55,8 +55,21 @@ export default function Field(props) {
 
 function fieldMarkup(field, modelSlug, errors, validate) {
 	modelSlug = modelSlug.toLowerCase();
+	console.log(field.type);
 
 	switch (field.type) {
+		case "relationship":
+			return (
+				<button
+					className="button button-primary button-large"
+					name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+					field={field}
+					required={field.required}
+				>
+					<Icon type="link" />
+					Link Reference
+				</button>
+			);
 		case "media":
 			return (
 				<MediaUploader
