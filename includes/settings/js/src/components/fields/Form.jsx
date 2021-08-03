@@ -87,10 +87,12 @@ function Form({ id, position, type, editing, storedData }) {
 			component: NumberSettings,
 			fields: {
 				minValue: {
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 				},
 				maxValue: {
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
 						maxBelowMin: (v) => {
 							const min = parseNumber(getValues("minValue"));
@@ -104,7 +106,8 @@ function Form({ id, position, type, editing, storedData }) {
 				},
 				step: {
 					min: 0,
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
 						maxBelowStep: (v) => {
 							const max = parseNumber(
