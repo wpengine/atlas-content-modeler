@@ -2,7 +2,7 @@ import { useState } from "react";
 
 /**
  * Uses the value of a source input to generate and apply a valid value
- * to a another input.
+ * to another input.
  *
  * Updates take place as long as:
  * - The form is not presenting stored data for editing. (So that the user has
