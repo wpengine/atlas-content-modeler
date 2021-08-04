@@ -76,8 +76,6 @@ export default function Field(props) {
 }
 
 function fieldMarkup(field, modelSlug, errors, validate) {
-	modelSlug = modelSlug.toLowerCase();
-
 	switch (field.type) {
 		case "media":
 			return (
