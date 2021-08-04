@@ -1,7 +1,7 @@
 /**
  * Additional form fields for the Relationship field type.
  */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
@@ -14,6 +14,10 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 	);
 	const modelId = useLocationSearch().get("id");
 	const selectedReference = watch("reference");
+	const [descriptionCount, setDescriptionCount] = useState(
+		data?.description?.length || 0
+	);
+	const descriptionMaxLength = 250;
 
 	return (
 		<>
@@ -180,9 +184,27 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 				</p>
 				<textarea
 					name="description"
-					ref={register()}
+					ref={register({ maxLength: descriptionMaxLength })}
 					id="description"
+					className="two-columns"
+					onChange={(e) => setDescriptionCount(e.target.value.length)}
 				/>
+				<p className="field-messages two-columns">
+					{errors.description &&
+						errors.description.type === "maxLength" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									{__(
+										"Exceeds max length.",
+										"atlas-content-modeler"
+									)}
+								</span>
+							</span>
+						)}
+					<span>&nbsp;</span>
+					<span className="count">{`${descriptionCount}/${descriptionMaxLength}`}</span>
+				</p>
 			</div>
 		</>
 	);

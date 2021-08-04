@@ -42,6 +42,11 @@
 		select {
 			width: 260px !important;
 		}
+
+		textarea.two-columns {
+			max-width: none;
+			width: 570px !important;
+		}
 	}
 }
 
@@ -126,6 +131,12 @@
 	text-align: right;
 }
 
+@media screen and (min-width: 782px) {
+	.atlas-content-modeler-admin-page .field-messages.two-columns {
+		max-width: 570px;
+	}
+}
+
 .atlas-content-modeler-admin-page .field-messages .error {
 	align-items: center;
 	display: flex;
@@ -186,7 +197,7 @@ input[type="radio"] {
 
 .atlas-content-modeler-admin-page .radio-row {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	margin-bottom: 10px;
 }
 .atlas-content-modeler-admin-page .field a {
@@ -215,7 +226,7 @@ input[type="radio"] {
 }
 
 .atlas-content-modeler-admin-page .radio-row input[type="radio"] {
-	margin-right: 20px;
+	margin: 5px 8px 0 0;
 }
 
 .atlas-content-modeler-admin-page .radio-row label span {
