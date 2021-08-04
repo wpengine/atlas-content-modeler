@@ -3,6 +3,7 @@ import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Icon from "../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
+import SingleRelationshipModal from "./SingleRelationshipModal";
 
 const defaultError = "This field is required";
 
@@ -59,6 +60,12 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 
 	switch (field.type) {
 		case "relationship":
+			const [
+				editSingleRelModalIsOpen,
+				setEditSingleRelModalIsOpen,
+			] = useState(true);
+			const [model, setModel] = useState({});
+
 			function relationshipClickHandler(
 				e,
 				field,
@@ -66,7 +73,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				errors,
 				validate
 			) {
-				console.log("got it");
+				setEditModelModalIsOpen(true);
 			}
 
 			return (
@@ -95,6 +102,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							{__("Link Reference", "atlas-content-modeler")}
 						</button>
 					</div>
+					<SingleRelationshipModal
+						model={model}
+						isOpen={editSingleRelModalIsOpen}
+						setIsOpen={setEditSingleRelModalIsOpen}
+					/>
 				</>
 			);
 		case "media":
