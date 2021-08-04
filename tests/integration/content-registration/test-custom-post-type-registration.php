@@ -35,6 +35,13 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		/**
+		 * Reset the WPGraphQL schema before each test.
+		 * Lazy loading types only loads part of the schema,
+		 * so we refresh for each test.
+		 */
+		WPGraphQL::clear_schema();
+
 		update_registered_content_types( $this->mock_post_types() );
 
 		// @todo why is this not running automatically?
