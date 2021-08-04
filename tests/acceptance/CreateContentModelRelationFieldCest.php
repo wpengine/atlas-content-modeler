@@ -1,4 +1,5 @@
 <?php
+use Codeception\Util\Locator;
 
 class CreateContentModelRelationFieldCest
 {
@@ -64,5 +65,32 @@ class CreateContentModelRelationFieldCest
 		$I->wait(1);
 
 		$I->see('Updated Name', '.field-list div.widest');
+	}
+
+	public function i_can_set_a_relationship_field_description_shorter_than_the_character_limit(AcceptanceTester $I)
+	{
+		$I->selectOption('#reference', 'Employees');
+		$I->click('#one-to-many');
+
+		// The field cannot be submitted with a description exceeding the maximum length.
+		$I->fillField(['name' => 'description'], str_repeat('a', 251));
+		$I->see('251/250', Locator::lastElement('span.count'));
+		$I->click('.open-field button.primary');
+		$I->wait(1);
+		$I->see('Exceeds max length');
+
+		// The description saves when corrected.
+		$I->fillField(['name' => 'description'], 'This text is under the character limit.');
+		$I->see('39/250', Locator::lastElement('span.count'));
+		$I->click('.open-field button.primary');
+		$I->wait(1);
+		$I->see('Relationship', '.field-list div.type');
+		$I->see('Company Employees', '.field-list div.widest');
+
+		// The description and count are correct when reopening the field.
+		$I->clickWithLeftButton('.field-list button.edit', -5, -5);
+		$I->seeInField('description', 'This text is under the character limit.');
+		$I->see('39/250', Locator::lastElement('span.count'));
+		$I->wait(1);
 	}
 }
