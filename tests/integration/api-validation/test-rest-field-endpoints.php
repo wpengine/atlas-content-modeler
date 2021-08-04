@@ -12,7 +12,6 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 	private $server;
     private $namespace = '/wp/v2';
 	private $public_fields_route = '/publics-fields';
-	private $private_fields_route = '/privates-fields';
     private $post_ids;
 
     public function setUp(): void {
@@ -65,12 +64,28 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
 
-		//var_dump( $this->get_models() );
-
 		self::assertArrayHasKey( 'acm_fields', $response_data );
+
+		self::assertArrayHasKey( 'singleLineRequired', $response_data['acm_fields'] );
+		self::assertSame( $response_data['acm_fields']['singleLineRequired'], 'This is required single line text' );
+
+		self::assertArrayHasKey( 'numberIntergerRequired', $response_data['acm_fields'] );
+		self::assertEquals( '13', $response_data['acm_fields']['numberIntergerRequired'] );
+
+		self::assertArrayHasKey( 'dateRequired', $response_data['acm_fields'] );
+		self::assertEquals( '2021/02/13', $response_data['acm_fields']['dateRequired'] );
+
+		self::assertArrayHasKey( 'booleanRequired', $response_data['acm_fields'] );
+		self::assertEquals( 'true', $response_data['acm_fields']['booleanRequired'] );
+
+		self::assertArrayHasKey( 'mediaRequired', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'mediaPDF', $response_data['acm_fields'] );
 
 	}
 
+	/**
+	 * Test for full response for a required media field with image
+	 */
 	public function test_post_meta_media_field_rest_response(): void {
 		wp_set_current_user( 1 );
 		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->public_fields_route . '/' . $this->post_ids['public_fields_post_id'] );
@@ -78,11 +93,11 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$response_data = $response->get_data();
 
 		self::assertArrayHasKey( 'acm_fields', $response_data );
-		self::assertArrayHasKey( 'dog-image', $response_data['acm_fields'] );
-		self::assertArrayHasKey( 'dog-pdf', $response_data ['acm_fields'] );
+		self::assertArrayHasKey( 'mediaRequired', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'mediaPDF', $response_data ['acm_fields'] );
 
-		$image = $response_data['acm_fields']['dog-image'];
-		$file = $response_data['acm_fields']['dog-pdf'];
+		$image = $response_data['acm_fields']['mediaRequired'];
+		$file = $response_data['acm_fields']['mediaPDF'];
 		$expected_keys = [
 			'caption',
 			'alt_text',

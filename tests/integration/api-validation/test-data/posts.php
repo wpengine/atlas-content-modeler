@@ -54,8 +54,6 @@ function populate_post( $post_id, $model, $test_class ) {
         'post_title' => 'PDF Attachement',
     ) );
 
-    var_dump( $post_id );
-
     update_post_meta( $post_id, 'singleLine', 'This is single line text' );
     update_post_meta( $post_id, 'singleLineRequired', 'This is required single line text' );
     update_post_meta( $post_id, 'singleLineLimited', 'This is single line text on a limited field' );
@@ -76,10 +74,10 @@ function populate_post( $post_id, $model, $test_class ) {
     $image_meta = array(
         'width' => 1000,
         'height' => 1000,
-        'file' => '2021/06/dog-avatar_PNG-bg.png',
+        'file' => '2021/06/image.png',
         'sizes' => array(
             'medium' => array(
-                'file' => 'dog-avatar_PNG-bg-300x300.png',
+                'file' => 'image-300x300.png',
                 'width' => 300,
                 'height' => 300,
                 'mime-type' => 'image/png',
@@ -87,8 +85,8 @@ function populate_post( $post_id, $model, $test_class ) {
         ),
     );
 
-    update_post_meta( $post_id, '_wp_attachment_metadata', $image_meta );
-    update_post_meta( $post_id, '_wp_attachment_image_alt', 'This is alt text' );
-    update_post_meta( $post_id, '_wp_attached_file', '2021/06/dog-avatar_PNG-bg.png' );
+    update_post_meta( $ids[$model . '_image_id'], '_wp_attachment_metadata', $image_meta );
+    update_post_meta( $ids[$model . '_image_id'], '_wp_attachment_image_alt', 'This is alt text' );
+    update_post_meta( $ids[$model . '_image_id'], '_wp_attached_file', '2021/06/image.png' );
 
 }
