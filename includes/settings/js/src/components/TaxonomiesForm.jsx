@@ -4,7 +4,8 @@ import { __, sprintf } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import { showSuccess } from "../toasts";
-import { useApiIdGenerator } from "./fields/useApiIdGenerator";
+import { useInputGenerator } from "../hooks";
+import { toPostTypeSlug as toSanitizedKey } from "../formats";
 
 const { apiFetch } = wp;
 const { isEqual, pick } = lodash;
@@ -28,12 +29,12 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 	});
 
 	const {
-		setApiIdGeneratorInput,
-		apiIdFieldAttributes,
 		setFieldsAreLinked,
-	} = useApiIdGenerator({
-		apiFieldId: "slug",
-		setValue,
+		setInputGeneratorSourceValue,
+		onChangeGeneratedValue,
+	} = useInputGenerator({
+		setGeneratedValue: (value) => setValue("slug", value),
+		format: toSanitizedKey,
 	});
 
 	const successMessage = editingTaxonomy
@@ -56,7 +57,7 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 	 */
 	const resetForm = () => {
 		reset();
-		setApiIdGeneratorInput("");
+		setInputGeneratorSourceValue("");
 		setSingularCount(0);
 		setPluralCount(0);
 		setFieldsAreLinked(true);
@@ -176,7 +177,7 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 						maxLength: 50,
 					})}
 					onChange={(e) => {
-						setApiIdGeneratorInput(e.target.value);
+						setInputGeneratorSourceValue(e.target.value);
 						setSingularCount(e.target.value.length);
 					}}
 				/>
@@ -282,7 +283,9 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 						required: true,
 						maxLength: 32,
 					})}
-					{...apiIdFieldAttributes}
+					onChange={(e) => {
+						onChangeGeneratedValue(e.target.value);
+					}}
 				/>
 				<p className="field-messages">
 					{errors.slug && errors.slug.type === "required" && (
