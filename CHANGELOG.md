@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## 0.4.2 - 2021-08-02
+## 0.4.2 - 2021-08-04
 
 ### Added
 - Ability to choose an icon when creating or editing a model.
