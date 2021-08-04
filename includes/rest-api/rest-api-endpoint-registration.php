@@ -782,6 +782,10 @@ function content_model_multi_option_exists( array $names, string $current_choice
  * @since 0.6.0
  */
 function save_taxonomy( string $taxonomy_slug, array $params, bool $is_update ) {
+	// Sanitize key allows hyphens, but it's close enough to register_taxonomy() requirements.
+	$taxonomy_slug  = sanitize_key( $taxonomy_slug );
+	$params['slug'] = $taxonomy_slug;
+
 	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
