@@ -131,6 +131,12 @@
 	text-align: right;
 }
 
+@media screen and (min-width: 782px) {
+	.atlas-content-modeler-admin-page .field-messages.two-columns {
+		max-width: 570px;
+	}
+}
+
 .atlas-content-modeler-admin-page .field-messages .error {
 	align-items: center;
 	display: flex;
