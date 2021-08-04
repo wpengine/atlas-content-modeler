@@ -14,6 +14,8 @@
 	@import "../../../node_modules/bootstrap/scss/_buttons";
 }
 
+@import "../../../includes/shared-assets/scss/_variables";
 @import "./classic-form";
+@import "../../../includes/shared-assets/scss/_modals";
 @import "../../settings/scss/_flex";
 @import "../../settings/scss/_bootstrap-overrides";
