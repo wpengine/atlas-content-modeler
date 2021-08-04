@@ -8,6 +8,7 @@ class EditTaxonomyCest
 		$I->loginAsAdmin();
 		$I->wait(1);
 		$I->haveContentModel('Goose', 'Geese');
+		$I->wait(1);
 		$I->haveTaxonomy('Breed', 'Breeds', ['goose']);
 		$I->wait(1);
 		$I->amOnTaxonomyListingsPage();
