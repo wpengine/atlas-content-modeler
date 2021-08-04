@@ -127,4 +127,12 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		self::assertEquals( 'application/pdf', $file['mime_type'] );
 		self::assertInstanceOf( 'stdClass', $file['media_details'] );
 	}
+
+	public function test_post_meta_that_is_configured_to_not_show_in_rest_is_not_accessible(): void {
+		wp_set_current_user( 1 );
+		$request  = new \WP_REST_Request( 'GET', $this->namespace . $this->public_fields_route . '/' . $this->post_ids['public_fields_post_id'] );
+		$response = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+		self::assertFalse( array_key_exists( 'hiddenField', $response_data['acm_fields'] ) );
+	}
 }

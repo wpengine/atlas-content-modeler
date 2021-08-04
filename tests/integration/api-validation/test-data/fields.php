@@ -222,6 +222,19 @@ function get_test_fields(){
             "required" => true,
             "minChars" => "",
             "maxChars" => ""
-        )
+        ),
+        "1628083572341" => array(
+            "show_in_rest" => false,
+            "show_in_graphql" => false,
+            "type" => "text",
+            "id" => "1628083572341",
+            "position" => "160000",
+            "name" => "Hidden-Field",
+            "slug" => "hiddenField",
+            "required" => false,
+            "inputType" => "single",
+            "minChars" => "",
+            "maxChars" => ""
+        ),
     );
 }
