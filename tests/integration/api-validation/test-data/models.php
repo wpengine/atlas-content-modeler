@@ -27,7 +27,7 @@ return array(
         "api_visibility" => "public",
         "model_icon" => "dashicons-admin-post",
         "description" => "A public content model with fields",
-        "fields" => get_test_fields( 'publicFields' ),
+        "fields" => get_test_fields(),
     ),
     "private" => array(
         "show_in_rest" => true,
@@ -39,5 +39,16 @@ return array(
         "model_icon" => "dashicons-admin-post",
         "description" => "A private content model",
         "fields" => array(),
-    )
+    ),
+    "private-fields" => array(
+        "show_in_rest" => true,
+        "show_in_graphql" => true,
+        "singular" => "Private-Fields",
+        "plural" => "Privates-Fields",
+        "slug" => "private-fields",
+        "api_visibility" => "private",
+        "model_icon" => "dashicons-admin-post",
+        "description" => "A private model with fields",
+        "fields" => get_test_fields(),
+    ),
 );
