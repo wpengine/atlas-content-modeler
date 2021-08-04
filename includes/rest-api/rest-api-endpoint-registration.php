@@ -781,10 +781,10 @@ function content_model_multi_option_exists( array $names, string $current_choice
  * @since 0.6.0
  */
 function save_taxonomy( array $params, bool $is_update ) {
-	if ( empty( $params['slug'] ) ) {
+	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
-			esc_html__( 'Please provide a valid API Identifier.', 'atlas-content-modeler' ),
+			esc_html__( 'Taxonomy slug must be between 1 and 32 characters in length.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
