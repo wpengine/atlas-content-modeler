@@ -24,7 +24,7 @@ function register_rest_routes(): void {
 	// Route for retrieving a single content type.
 	register_rest_route(
 		'wpe',
-		'/atlas/content-model/([A-Za-z])\w+/',
+		'/atlas/content-model/([a-z0-9_\-]+)',
 		[
 			'methods'             => 'GET',
 			'callback'            => __NAMESPACE__ . '\dispatch_get_content_model',
@@ -50,7 +50,7 @@ function register_rest_routes(): void {
 	// Route for updating a single content type.
 	register_rest_route(
 		'wpe',
-		'/atlas/content-model/([A-Za-z0-9])\w+/',
+		'/atlas/content-model/([a-z0-9_\-]+)',
 		[
 			'methods'             => 'PATCH',
 			'callback'            => __NAMESPACE__ . '\dispatch_update_content_model',
@@ -76,7 +76,7 @@ function register_rest_routes(): void {
 	// Route for updating the properties of multiple fields in the named model.
 	register_rest_route(
 		'wpe',
-		'/atlas/content-model-fields/([A-Za-z])\w+',
+		'/atlas/content-model-fields/([a-z0-9_\-]+)',
 		[
 			'methods'             => 'PATCH',
 			'callback'            => __NAMESPACE__ . '\dispatch_patch_content_model_fields',
@@ -102,7 +102,7 @@ function register_rest_routes(): void {
 	// Route for deleting a single content type.
 	register_rest_route(
 		'wpe',
-		'/atlas/content-model/([A-Za-z])\w+/',
+		'/atlas/content-model/([a-z0-9_\-]+)',
 		[
 			'methods'             => 'DELETE',
 			'callback'            => __NAMESPACE__ . '\dispatch_delete_model',
@@ -166,7 +166,6 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 
 	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
 
-	// @todo simplify create_model() signature to single array?
 	$model = create_model( $params['slug'], $params );
 
 	if ( is_wp_error( $model ) ) {
@@ -177,12 +176,10 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 		);
 	}
 
-	$models = get_registered_content_types();
-
 	return rest_ensure_response(
 		[
 			'success' => true,
-			'model'   => $models[ $params['slug'] ],
+			'model'   => $model,
 		]
 	);
 }
@@ -503,10 +500,14 @@ function dispatch_dismiss_feedback_banner( WP_REST_Request $request ) {
  * @param string $post_type_slug The post type slug.
  * @param array  $args Model arguments.
  *
- * @return WP_Error|bool
+ * @return array|WP_Error The newly created model on success. WP_Error on failure.
  */
 function create_model( string $post_type_slug, array $args ) {
-	if ( empty( $post_type_slug ) ) {
+	// Sanitize to match the WordPress post type slug format.
+	$post_type_slug = sanitize_key( $post_type_slug );
+	$args['slug']   = $post_type_slug;
+
+	if ( empty( $post_type_slug ) || strlen( $post_type_slug ) > 20 ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
 			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
@@ -555,7 +556,7 @@ function create_model( string $post_type_slug, array $args ) {
 		return new WP_Error( 'model-not-created', esc_html__( 'Model not created. Reason unknown.', 'atlas-content-modeler' ) );
 	}
 
-	return true;
+	return $content_types[ $post_type_slug ];
 }
 
 /**
@@ -590,6 +591,9 @@ function update_model( string $post_type_slug, array $args ) {
 	}
 
 	$new_args = wp_parse_args( $args, $content_types[ $post_type_slug ] );
+
+	// Updating the slug is unsupported.
+	$new_args['slug'] = $post_type_slug;
 
 	$content_types[ $post_type_slug ] = $new_args;
 
