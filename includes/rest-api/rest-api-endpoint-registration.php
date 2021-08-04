@@ -592,7 +592,7 @@ function dispatch_update_taxonomy( WP_REST_Request $request ) {
 	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
 
 	$is_update = $request->get_method() === 'PUT';
-	$taxonomy  = save_taxonomy( $params['slug'], $params, $is_update );
+	$taxonomy  = save_taxonomy( $params, $is_update );
 
 	if ( is_wp_error( $taxonomy ) ) {
 		return new WP_Error(
@@ -775,16 +775,14 @@ function content_model_multi_option_exists( array $names, string $current_choice
 /**
  * Saves a taxonomy.
  *
- * @param string $taxonomy_slug The taxonomy slug.
- * @param array  $params Parameters passed from the taxonomy form.
- * @param bool   $is_update True if `$params` came from a PUT request.
+ * @param array $params Parameters passed from the taxonomy form.
+ * @param bool  $is_update True if `$params` came from a PUT request.
  * @return array|WP_Error
  * @since 0.6.0
  */
-function save_taxonomy( string $taxonomy_slug, array $params, bool $is_update ) {
+function save_taxonomy( array $params, bool $is_update ) {
 	// Sanitize key allows hyphens, but it's close enough to register_taxonomy() requirements.
-	$taxonomy_slug  = sanitize_key( $taxonomy_slug );
-	$params['slug'] = $taxonomy_slug;
+	$params['slug'] = isset( $params['slug'] ) ? sanitize_key( $params['slug'] ) : '';
 
 	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
 		return new WP_Error(
