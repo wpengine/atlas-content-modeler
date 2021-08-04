@@ -103,7 +103,7 @@ class CreateTaxonomyCest
 		$I->click('.card-content button.primary');
 		$I->wait(1);
 
-		$I->see('A taxonomy with this API Identifier already exists');
+		$I->see('A taxonomy with this Taxonomy ID already exists');
 	}
 
 	public function i_can_see_a_generated_slug_when_creating_a_second_taxonomy_after_editing_the_slug_in_the_first(AcceptanceTester $I)
@@ -121,7 +121,7 @@ class CreateTaxonomyCest
 		$I->see('taxonomy was created', '#success');
 		$I->see('Firsts', '.taxonomy-list');
 
-		// A successful submission should relink the Singular and API ID fields
+		// A successful submission should relink the Singular and Taxonomy ID fields
 		// so they are linked for the next entry. Confirm the fields were
 		// relinked: filling "singular" should auto-generate a slug.
 		$I->fillField(['name' => 'singular'], 'Second');

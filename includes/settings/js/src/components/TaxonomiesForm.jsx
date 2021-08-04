@@ -262,15 +262,15 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 				</p>
 			</div>
 
-			{/* API Identifier / Slug */}
+			{/* Taxonomy ID / Slug */}
 			<div className={errors.slug ? "field has-error" : "field"}>
 				<label htmlFor="slug">
-					{__("API Identifier", "atlas-content-modeler")}
+					{__("Taxonomy ID", "atlas-content-modeler")}
 				</label>
 				<br />
 				<p className="help">
 					{__(
-						"Auto-generated from the singular name and used for API requests.",
+						"Auto-generated and used internally for WordPress to identify the taxonomy.",
 						"atlas-content-modeler"
 					)}
 				</p>
