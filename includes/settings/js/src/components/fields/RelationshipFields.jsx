@@ -50,6 +50,14 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 							);
 						})}
 					</select>
+					{editing && (
+						<input
+							type="hidden"
+							ref={register()}
+							name="reference"
+							value={data?.reference}
+						/>
+					)}
 					<p className="field-messages">
 						{errors.reference &&
 							errors.reference.type === "required" && (
