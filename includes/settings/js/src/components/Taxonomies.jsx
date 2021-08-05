@@ -26,7 +26,7 @@ export default function Taxonomies() {
 		}
 
 		const getTaxonomyEditHref = (slug, type) =>
-			`edit-tags.php?taxonomy=${slug}&post_type=${type.toLowerCase()}`;
+			`edit-tags.php?taxonomy=${slug}&post_type=${type}`;
 
 		// Remove taxonomies that no longer exists or are not associated with a specific model.
 		Object.values(prevTaxonomies).forEach(({ slug, types }) => {
@@ -72,7 +72,7 @@ export default function Taxonomies() {
 				// If the taxonomy link didn't exist already, we should insert it.
 				if (!taxLink) {
 					const postTypeSubMenu = document.querySelector(
-						`#menu-posts-${type.toLowerCase()} .wp-submenu`
+						`#menu-posts-${type} .wp-submenu`
 					);
 
 					if (!postTypeSubMenu) {

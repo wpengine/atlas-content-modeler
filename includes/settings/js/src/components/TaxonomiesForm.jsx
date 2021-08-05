@@ -4,7 +4,8 @@ import { __, sprintf } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import { showSuccess } from "../toasts";
-import { useApiIdGenerator } from "./fields/useApiIdGenerator";
+import { useInputGenerator } from "../hooks";
+import { toPostTypeSlug as toSanitizedKey } from "../formats";
 
 const { apiFetch } = wp;
 const { isEqual, pick } = lodash;
@@ -28,12 +29,12 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 	});
 
 	const {
-		setApiIdGeneratorInput,
-		apiIdFieldAttributes,
 		setFieldsAreLinked,
-	} = useApiIdGenerator({
-		apiFieldId: "slug",
-		setValue,
+		setInputGeneratorSourceValue,
+		onChangeGeneratedValue,
+	} = useInputGenerator({
+		setGeneratedValue: (value) => setValue("slug", value),
+		format: toSanitizedKey,
 	});
 
 	const successMessage = editingTaxonomy
@@ -56,7 +57,7 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 	 */
 	const resetForm = () => {
 		reset();
-		setApiIdGeneratorInput("");
+		setInputGeneratorSourceValue("");
 		setSingularCount(0);
 		setPluralCount(0);
 		setFieldsAreLinked(true);
@@ -176,7 +177,7 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 						maxLength: 50,
 					})}
 					onChange={(e) => {
-						setApiIdGeneratorInput(e.target.value);
+						setInputGeneratorSourceValue(e.target.value);
 						setSingularCount(e.target.value.length);
 					}}
 				/>
@@ -261,15 +262,15 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 				</p>
 			</div>
 
-			{/* API Identifier / Slug */}
+			{/* Taxonomy ID / Slug */}
 			<div className={errors.slug ? "field has-error" : "field"}>
 				<label htmlFor="slug">
-					{__("API Identifier", "atlas-content-modeler")}
+					{__("Taxonomy ID", "atlas-content-modeler")}
 				</label>
 				<br />
 				<p className="help">
 					{__(
-						"Auto-generated from the singular name and used for API requests.",
+						"Auto-generated and used internally for WordPress to identify the taxonomy.",
 						"atlas-content-modeler"
 					)}
 				</p>
@@ -282,7 +283,9 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 						required: true,
 						maxLength: 32,
 					})}
-					{...apiIdFieldAttributes}
+					onChange={(e) => {
+						onChangeGeneratedValue(e.target.value);
+					}}
 				/>
 				<p className="field-messages">
 					{errors.slug && errors.slug.type === "required" && (

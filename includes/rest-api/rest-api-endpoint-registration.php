@@ -781,10 +781,13 @@ function content_model_multi_option_exists( array $names, string $current_choice
  * @since 0.6.0
  */
 function save_taxonomy( array $params, bool $is_update ) {
-	if ( empty( $params['slug'] ) ) {
+	// Sanitize key allows hyphens, but it's close enough to register_taxonomy() requirements.
+	$params['slug'] = isset( $params['slug'] ) ? sanitize_key( $params['slug'] ) : '';
+
+	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
-			esc_html__( 'Please provide a valid API Identifier.', 'atlas-content-modeler' ),
+			esc_html__( 'Taxonomy slug must be between 1 and 32 characters in length.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -797,7 +800,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	if ( in_array( $params['slug'], $non_acm_taxonomies, true ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_taxonomy_exists',
-			esc_html__( 'A taxonomy with this API Identifier already exists.', 'atlas-content-modeler' ),
+			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -806,7 +809,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	if ( ! $is_update && array_key_exists( $params['slug'], $acm_taxonomies ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_taxonomy_exists',
-			esc_html__( 'A taxonomy with this API Identifier already exists.', 'atlas-content-modeler' ),
+			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
