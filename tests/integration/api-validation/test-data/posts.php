@@ -37,6 +37,15 @@
         'post_type' => 'private',
     ) );
 
+    $ids['private_fields_post_id'] = $test_class->factory->post->create( array(
+        'post_title' => 'Test dog with fields',
+        'post_content' => 'Hello dog with fields',
+        'post_status' => 'publish',
+        'post_type' => 'private-fields',
+    ) );
+
+    populate_post( $ids['private_fields_post_id'], 'private-fields', $test_class );
+
     return $ids;
  }
 
