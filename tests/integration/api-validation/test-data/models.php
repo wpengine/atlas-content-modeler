@@ -4,7 +4,7 @@
  * Sample model data for testing
  */
 
-require_once __DIR__ . '/fields.php';
+require_once __DIR__ . "/fields.php";
 
 return array(
     "public" => array(
@@ -18,12 +18,12 @@ return array(
         "description" => "A public content model",
         "fields" => array(),
     ),
-    "publicFields" => array(
+    "public-fields" => array(
         "show_in_rest" => true,
         "show_in_graphql" => true,
         "singular" => "Public-Fields",
         "plural" => "Publics-Fields",
-        "slug" => "publicFields",
+        "slug" => "publics-fields",
         "api_visibility" => "public",
         "model_icon" => "dashicons-admin-post",
         "description" => "A public content model with fields",
@@ -45,10 +45,15 @@ return array(
         "show_in_graphql" => true,
         "singular" => "Private-Fields",
         "plural" => "Privates-Fields",
-        "slug" => "private-fields",
+        "slug" => "privates-fields",
         "api_visibility" => "private",
         "model_icon" => "dashicons-admin-post",
         "description" => "A private model with fields",
         "fields" => get_test_fields(),
+    ),
+    "attachment" => array(
+        "slug" => "attachment",
+        "singular" => "Attachment",
+        "plural" => "Attachments",
     ),
 );

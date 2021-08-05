@@ -18,10 +18,10 @@
         'post_title' => 'Test dog with fields',
         'post_content' => 'Hello dog with fields',
         'post_status' => 'publish',
-        'post_type' => 'publicFields',
+        'post_type' => 'public-fields',
     ) );
 
-    populate_post( $ids['public_fields_post_id'], 'publicFields', $test_class );
+    populate_post( $ids['public_fields_post_id'], 'public-fields', $test_class );
 
     $ids['draft_public_post_id'] = $test_class->factory->post->create( array(
         'post_title' => 'Draft dog',
