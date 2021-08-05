@@ -10,10 +10,10 @@ class RestModelDataTests extends WP_UnitTestCase {
 	 * @var \WP_REST_Server
 	 */
 	private $server;
-	private $namespace = '/wp/v2';
+	private $namespace           = '/wp/v2';
 	private $public_fields_route = '/publics-fields';
-	private $public_route = '/publics';
-	private $private_route = '/privates';
+	private $public_route        = '/publics';
+	private $private_route       = '/privates';
 	private $post_ids;
 
 	public function setUp(): void {
@@ -36,7 +36,6 @@ class RestModelDataTests extends WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 
 		$this->post_ids = $this->get_post_ids();
-
 	}
 
 	public function tearDown() {
@@ -83,7 +82,6 @@ class RestModelDataTests extends WP_UnitTestCase {
 
 		self::assertArrayHasKey( 'mediaRequired', $response_data['acm_fields'] );
 		self::assertArrayHasKey( 'mediaPDF', $response_data['acm_fields'] );
-
 	}
 
 	/**

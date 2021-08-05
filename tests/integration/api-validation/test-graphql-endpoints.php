@@ -25,7 +25,6 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 		do_action( 'init' );
 
 		$this->post_ids = $this->get_post_ids();
-
 	}
 
 	public function tearDown() {
@@ -49,8 +48,9 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 	 */
 	public function test_post_type_with_private_api_visibility_cannot_be_read_via_graphql_when_not_authenticated(): void {
 		try {
-			$results = graphql( [
-				'query' => '
+			$results = graphql(
+				[
+					'query' => '
 				{
 					privatesFields {
 						nodes {
@@ -58,8 +58,9 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 						}
 					}
 				}
-				'
-			] );
+				',
+				]
+			);
 
 			self::assertEmpty( $results['data']['privatesFields']['nodes'] );
 		} catch ( Exception $exception ) {
@@ -73,8 +74,9 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 	public function test_post_type_with_private_api_visibility_can_be_read_via_graphql_when_authenticated(): void {
 		wp_set_current_user( 1 );
 		try {
-			$results = graphql( [
-				'query' => '
+			$results = graphql(
+				[
+					'query' => '
 				{
 					privatesFields {
 						nodes {
@@ -82,8 +84,9 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 						}
 					}
 				}
-				'
-			] );
+				',
+				]
+			);
 
 			self::assertSame( $results['data']['privatesFields']['nodes'][0]['databaseId'], $this->post_ids['private_fields_post_id'] );
 		} catch ( Exception $exception ) {

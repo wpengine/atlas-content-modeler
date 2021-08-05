@@ -11,7 +11,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	 */
 	private $server;
 	private $namespace = '/wpe';
-	private $route = '/atlas/content-model';
+	private $route     = '/atlas/content-model';
 	private $test_models;
 
 	public function setUp(): void {
@@ -36,7 +36,6 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 
 		$this->post_ids = $this->get_post_ids();
-
 	}
 
 	public function tearDown() {
@@ -99,7 +98,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 			'slug'        => $slug,
 			'singular'    => 'Book Review',
 			'plural'      => 'Book Reviews',
-			'description' => 'Reviews of books.'
+			'description' => 'Reviews of books.',
 		);
 
 		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );

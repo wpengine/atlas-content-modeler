@@ -25,7 +25,6 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		do_action( 'init' );
 
 		$this->post_ids = $this->get_post_ids();
-
 	}
 
 	public function tearDown() {
@@ -46,8 +45,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 	public function test_graphql_query_result_has_custom_fields_data(): void {
 		try {
-			$results = graphql( [
-				'query' => '
+			$results = graphql(
+				[
+					'query' => '
 				{
 					publicsFields {
 						nodes {
@@ -60,8 +60,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 						}
 					}
 				}
-				'
-			] );
+				',
+				]
+			);
 
 			self::assertArrayHasKey( 'databaseId', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['databaseId'], 23 );
@@ -80,7 +81,6 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'booleanRequired', $results['data']['publicsFields']['nodes'][0] );
 			self::assertTrue( $results['data']['publicsFields']['nodes'][0]['booleanRequired'] );
-
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}

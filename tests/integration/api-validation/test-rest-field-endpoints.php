@@ -11,7 +11,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 	 */
 	private $server;
 	private $namespace = '/wpe';
-	private $route = '/atlas/content-model-field';
+	private $route     = '/atlas/content-model-field';
 	private $test_models;
 
 	public function setUp(): void {
@@ -36,7 +36,6 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 
 		$this->post_ids = $this->get_post_ids();
-
 	}
 
 	public function tearDown() {
@@ -346,11 +345,16 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$request = new WP_REST_Request( 'PUT', $this->namespace . $this->route );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( json_encode( array( 'id'      => '222',
-		                                        'isTitle' => true,
-		                                        'model'   => $model,
-		                                        'slug'    => 'b'
-		) ) );
+		$request->set_body(
+			json_encode(
+				array(
+					'id'      => '222',
+					'isTitle' => true,
+					'model'   => $model,
+					'slug'    => 'b',
+				)
+			)
+		);
 
 		$response = $this->server->dispatch( $request );
 		$models   = get_option( 'atlas_content_modeler_post_types' );

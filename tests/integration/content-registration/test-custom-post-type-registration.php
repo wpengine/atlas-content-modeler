@@ -65,10 +65,12 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_custom_post_type_labels_match_expected_format(): void {
-		$labels = generate_custom_post_type_labels( [
-			'singular' => 'Public',
-			'plural'   => 'Publics',
-		] );
+		$labels = generate_custom_post_type_labels(
+			[
+				'singular' => 'Public',
+				'plural'   => 'Publics',
+			]
+		);
 
 		self::assertSame( $labels['singular_name'], $this->all_registered_post_types['public']->labels->singular_name );
 		self::assertSame( $labels['name'], $this->all_registered_post_types['public']->labels->name );
@@ -85,20 +87,24 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_generate_custom_post_type_args_generates_expected_data(): void {
-		$generated_args = generate_custom_post_type_args( array(
-			'singular'   => 'Public',
-			'plural'     => 'Publics',
-			'model_icon' => 'dashicons-saved'
-		) );
+		$generated_args = generate_custom_post_type_args(
+			array(
+				'singular'   => 'Public',
+				'plural'     => 'Publics',
+				'model_icon' => 'dashicons-saved',
+			)
+		);
 		$expected_args  = $this->all_registered_post_types['public'];
 		self::assertSame( $generated_args['name'], $expected_args->label );
 		self::assertSame( $generated_args['menu_icon'], $expected_args->menu_icon );
 
-		$generated_args = generate_custom_post_type_args( array(
-			'singular' => 'Private',
-			'plural'   => 'Privates',
-			'public'   => false
-		) );
+		$generated_args = generate_custom_post_type_args(
+			array(
+				'singular' => 'Private',
+				'plural'   => 'Privates',
+				'public'   => false,
+			)
+		);
 		$expected_args  = $this->all_registered_post_types['private'];
 		self::assertSame( $generated_args['public'], $expected_args->public );
 	}
@@ -114,7 +120,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_model_fields_are_protected(): void {
-
 		$fields = $this->models['public-fields']['fields'];
 		foreach ( $fields as $field ) {
 			self::assertTrue( is_protected_meta( false, $field['slug'], 'post' ) );
