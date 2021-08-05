@@ -40,14 +40,15 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$this->all_registered_post_types = null;
 	}
 
-	 private function get_models() {
-        return include dirname( __DIR__ ). '/api-validation/test-data/models.php';
-    }
+	private function get_models() {
+		return include dirname( __DIR__ ) . '/api-validation/test-data/models.php';
+	}
 
-    private function get_post_ids() {
-        include_once dirname( __DIR__ ) . '/api-validation/test-data/posts.php';
-        return create_test_posts( $this );
-    }
+	private function get_post_ids() {
+		include_once dirname( __DIR__ ) . '/api-validation/test-data/posts.php';
+
+		return create_test_posts( $this );
+	}
 
 	/**
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\register_content_types()
@@ -84,13 +85,21 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_generate_custom_post_type_args_generates_expected_data(): void {
-		$generated_args = generate_custom_post_type_args( array( 'singular' => 'Public', 'plural' => 'Publics', 'model_icon' => 'dashicons-saved' ) );
-		$expected_args = $this->all_registered_post_types['public'];
+		$generated_args = generate_custom_post_type_args( array(
+			'singular'   => 'Public',
+			'plural'     => 'Publics',
+			'model_icon' => 'dashicons-saved'
+		) );
+		$expected_args  = $this->all_registered_post_types['public'];
 		self::assertSame( $generated_args['name'], $expected_args->label );
 		self::assertSame( $generated_args['menu_icon'], $expected_args->menu_icon );
 
-		$generated_args = generate_custom_post_type_args( array( 'singular' => 'Private', 'plural' => 'Privates', 'public' => false ) );
-		$expected_args = $this->all_registered_post_types['private'];
+		$generated_args = generate_custom_post_type_args( array(
+			'singular' => 'Private',
+			'plural'   => 'Privates',
+			'public'   => false
+		) );
+		$expected_args  = $this->all_registered_post_types['private'];
 		self::assertSame( $generated_args['public'], $expected_args->public );
 	}
 

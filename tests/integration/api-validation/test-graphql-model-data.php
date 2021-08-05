@@ -5,45 +5,46 @@ use PHPUnit\Runner\Exception as PHPUnitRunnerException;
 
 class GraphQLModelDataTests extends WP_UnitTestCase {
 
-    private $test_models;
+	private $test_models;
 
-    public function setUp(): void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->test_models = $this->get_models();
 
-        update_registered_content_types( $this->test_models );
+		update_registered_content_types( $this->test_models );
 
-        /**
+		/**
 		 * Reset the WPGraphQL schema before each test.
 		 * Lazy loading types only loads part of the schema,
 		 * so we refresh for each test.
 		 */
 		WPGraphQL::clear_schema();
 
-        // @todo why is this not running automatically?
+		// @todo why is this not running automatically?
 		do_action( 'init' );
 
-        $this->post_ids = $this->get_post_ids();
+		$this->post_ids = $this->get_post_ids();
 
 	}
 
-    public function tearDown() {
+	public function tearDown() {
 		parent::tearDown();
 		wp_set_current_user( null );
 		delete_option( 'atlas_content_modeler_post_types' );
 	}
 
-    private function get_models() {
-        return include __DIR__ . '/test-data/models.php';
-    }
+	private function get_models() {
+		return include __DIR__ . '/test-data/models.php';
+	}
 
-    private function get_post_ids() {
-        include_once __DIR__ . '/test-data/posts.php';
-        return create_test_posts( $this );
-    }
+	private function get_post_ids() {
+		include_once __DIR__ . '/test-data/posts.php';
 
-    public function test_graphql_query_result_has_custom_fields_data(): void {
+		return create_test_posts( $this );
+	}
+
+	public function test_graphql_query_result_has_custom_fields_data(): void {
 		try {
 			$results = graphql( [
 				'query' => '
@@ -62,10 +63,10 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 				'
 			] );
 
-            self::assertArrayHasKey( 'databaseId', $results['data']['publicsFields']['nodes'][0] );
+			self::assertArrayHasKey( 'databaseId', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['databaseId'], 23 );
 
-            self::assertArrayHasKey( 'title', $results['data']['publicsFields']['nodes'][0] );
+			self::assertArrayHasKey( 'title', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['title'], 'Test dog with fields' );
 
 			self::assertArrayHasKey( 'richText', $results['data']['publicsFields']['nodes'][0] );

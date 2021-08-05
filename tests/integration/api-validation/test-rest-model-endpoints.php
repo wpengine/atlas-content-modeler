@@ -4,27 +4,27 @@ use function WPE\AtlasContentModeler\ContentRegistration\update_registered_conte
 
 class RestModelEndpointTests extends WP_UnitTestCase {
 
-    /**
+	/**
 	 * The REST API server instance.
 	 *
 	 * @var \WP_REST_Server
 	 */
 	private $server;
-    private $namespace = '/wpe';
+	private $namespace = '/wpe';
 	private $route = '/atlas/content-model';
-    private $test_models;
+	private $test_models;
 
-    public function setUp(): void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->test_models = $this->get_models();
 
-        update_registered_content_types( $this->test_models );
+		update_registered_content_types( $this->test_models );
 
-        // @todo why is this not running automatically?
+		// @todo why is this not running automatically?
 		do_action( 'init' );
 
-        /**
+		/**
 		 * WP_Rest_Server instance.
 		 */
 		global $wp_rest_server;
@@ -35,27 +35,28 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 
 		do_action( 'rest_api_init' );
 
-        $this->post_ids = $this->get_post_ids();
+		$this->post_ids = $this->get_post_ids();
 
 	}
 
-    public function tearDown() {
+	public function tearDown() {
 		parent::tearDown();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
-		$this->server = null;
+		$this->server   = null;
 		delete_option( 'atlas_content_modeler_post_types' );
 	}
 
-    private function get_models() {
-        return include __DIR__ . '/test-data/models.php';
-    }
+	private function get_models() {
+		return include __DIR__ . '/test-data/models.php';
+	}
 
-    private function get_post_ids() {
-        include_once __DIR__ . '/test-data/posts.php';
-        return create_test_posts( $this );
-    }
+	private function get_post_ids() {
+		include_once __DIR__ . '/test-data/posts.php';
+
+		return create_test_posts( $this );
+	}
 
 	/**
 	 * Test that the wpe route is available via REST
@@ -93,8 +94,8 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	public function test_can_create_model(): void {
 		wp_set_current_user( 1 );
 
-		$slug = 'bookreviews';
-		$create_test_model =  array(
+		$slug              = 'bookreviews';
+		$create_test_model = array(
 			'slug'        => $slug,
 			'singular'    => 'Book Review',
 			'plural'      => 'Book Reviews',
@@ -108,14 +109,14 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 
 		self::assertSame( 200, $response->get_status() );
 
-		$data = $response->get_data();
-		$models   = get_option( 'atlas_content_modeler_post_types' );
+		$data   = $response->get_data();
+		$models = get_option( 'atlas_content_modeler_post_types' );
 
-		foreach ( array_keys($create_test_model) as $key ) {
+		foreach ( array_keys( $create_test_model ) as $key ) {
 			// Test returned content
-			self::assertSame( $create_test_model[$key], $data['model'][$key] );
+			self::assertSame( $create_test_model[ $key ], $data['model'][ $key ] );
 			// Test saved content
-			self::assertSame( $create_test_model[$key], $models[$slug][$key] );
+			self::assertSame( $create_test_model[ $key ], $models[ $slug ][ $key ] );
 		}
 	}
 
@@ -126,15 +127,15 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	 */
 	public function test_can_update_model(): void {
 		wp_set_current_user( 1 );
-		$model   = 'public';
+		$model = 'public';
 
-		$request = new WP_REST_Request( 'GET', $this->namespace . $this->route . '/' . $model );
+		$request  = new WP_REST_Request( 'GET', $this->namespace . $this->route . '/' . $model );
 		$response = $this->server->dispatch( $request );
 
 		// Request to update model.
-		$new_model = $this->test_models[ $model ];
+		$new_model                = $this->test_models[ $model ];
 		$new_model['description'] = 'This is a new description of the public model';
-		$request = new WP_REST_Request( 'PATCH', $this->namespace . $this->route . '/' . $model );
+		$request                  = new WP_REST_Request( 'PATCH', $this->namespace . $this->route . '/' . $model );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $new_model ) );
 
@@ -150,7 +151,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	 */
 	public function test_cannot_update_model_with_invalid_data(): void {
 		wp_set_current_user( 1 );
-		$model   = 'public';
+		$model = 'public';
 
 		// Request to update model.
 		$new_model = $this->test_models[ $model ];
@@ -168,13 +169,13 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	 */
 	public function test_cannot_update_model_slug(): void {
 		wp_set_current_user( 1 );
-		$model   = 'public';
+		$model = 'public';
 
 		// Request to update model.
-		$new_model = $this->test_models[ $model ];
-		$new_model['slug'] = 'edited-public-slug-2'; // Slug updates should be ignored.
+		$new_model             = $this->test_models[ $model ];
+		$new_model['slug']     = 'edited-public-slug-2'; // Slug updates should be ignored.
 		$new_model['singular'] = 'Public2'; // Must change something successfuly to get 200 response.
-		$request = new WP_REST_Request( 'PATCH', $this->namespace . $this->route . '/' . $model );
+		$request               = new WP_REST_Request( 'PATCH', $this->namespace . $this->route . '/' . $model );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $new_model ) );
 
@@ -183,6 +184,6 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 
 		self::assertSame( 200, $response->get_status() );
 		self::assertSame( $this->test_models['public']['slug'], $models['public']['slug'] );
-		self::assertSame( $new_model['singular'] , $models['public']['singular'] );
+		self::assertSame( $new_model['singular'], $models['public']['singular'] );
 	}
 }
