@@ -4,7 +4,6 @@ import { sprintf, __ } from "@wordpress/i18n";
 import { ModelsContext } from "../../../../settings/js/src/ModelsContext";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
-import IconPicker from "../../../../settings/js/src/components/IconPicker";
 const { wp } = window;
 
 /**
