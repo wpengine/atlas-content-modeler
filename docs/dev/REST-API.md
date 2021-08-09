@@ -131,7 +131,7 @@ In keeping with [WordPress Core REST conventions](https://developer.wordpress.or
 
 Send additional requests to fetch data about related resources.
 
-Alternatively, fetch data about related entries in your first request by passing the `_embed` query string in the request URI:
+Alternatively, fetch data about related entries in your first request by passing the `_embed` query parameter in the request URI:
 
 `wp-json/wp/v2/[model-plural-name]/[entry-id]?_embed`
 
