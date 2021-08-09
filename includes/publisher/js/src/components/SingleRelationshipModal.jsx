@@ -39,7 +39,7 @@ export default function SingleRelationshipModal({ model, isOpen, setIsOpen }) {
 			bottom: "auto",
 			transform: "translate(-50%, -50%)",
 			border: "none",
-			padding: "40px",
+			padding: "32px",
 			boxSizing: "border-box",
 		},
 	};
