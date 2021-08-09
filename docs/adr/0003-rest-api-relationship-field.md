@@ -69,7 +69,7 @@ curl https://example.com/wp-json/wp/v2/rabbits/123?_embed | jq
   },
   "_embedded": {
     "related": {
-      456: {
+      "456": {
         "id": 456,
         "title": "Isabella",
         "acm_fields": {
