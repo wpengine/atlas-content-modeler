@@ -45,7 +45,7 @@ curl https://example.com/wp-json/wp/v2/rabbits/123 | jq
 REST requests for the same resource with an added `_embed` query parameter will return all embeddable `_links` expanded in an `_embedded` top-level object.
 
 ```sh
-curl https://example.com/wp-json/wp/v2/rabbits/123?_embed | jq
+curl "https://example.com/wp-json/wp/v2/rabbits/123?_embed" | jq
 
 {
   "id": 123,
