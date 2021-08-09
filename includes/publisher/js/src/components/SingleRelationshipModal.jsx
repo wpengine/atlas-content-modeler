@@ -92,23 +92,6 @@ export default function SingleRelationshipModal({ model, isOpen, setIsOpen }) {
 								: "field col-sm"
 						}
 					>
-						<label htmlFor="singular">Singular Name</label>
-						<p className="help">
-							{__(
-								'Singular display name for your content model, e.g. "Rabbit".',
-								"atlas-content-modeler"
-							)}
-						</p>
-						<input
-							id="singular"
-							name="singular"
-							placeholder="Rabbit"
-							defaultValue={model?.singular}
-							ref={register({ required: true, maxLength: 50 })}
-							onChange={(e) =>
-								setSingularCount(e.target.value.length)
-							}
-						/>
 						<p className="field-messages">
 							{errors.singular &&
 								errors.singular.type === "required" && (
@@ -134,19 +117,9 @@ export default function SingleRelationshipModal({ model, isOpen, setIsOpen }) {
 										</span>
 									</span>
 								)}
-							<span>&nbsp;</span>
-							<span className="count">{singularCount}/50</span>
 						</p>
 					</div>
 				</div>
-
-				<button
-					type="submit"
-					disabled={isSubmitting}
-					className="primary first"
-				>
-					{__("Save", "atlas-content-modeler")}
-				</button>
 				<button
 					href="#"
 					className="tertiary"
@@ -157,6 +130,14 @@ export default function SingleRelationshipModal({ model, isOpen, setIsOpen }) {
 					}}
 				>
 					{__("Cancel", "atlas-content-modeler")}
+				</button>
+
+				<button
+					type="submit"
+					disabled={isSubmitting}
+					className="primary"
+				>
+					{__("Save", "atlas-content-modeler")}
 				</button>
 			</form>
 		</Modal>
