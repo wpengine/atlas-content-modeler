@@ -1,4 +1,4 @@
-1: Add schema for storing user-provided taxonomy definitions
+2: Add schema for storing user-provided taxonomy definitions
 =====================================================
 
 Date: 2021-06-23
