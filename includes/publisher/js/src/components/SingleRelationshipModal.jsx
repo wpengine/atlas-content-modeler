@@ -60,7 +60,21 @@ export default function SingleRelationshipModal({ model, isOpen, setIsOpen }) {
 			model={model}
 			style={customStyles}
 		>
-			<h2>Edit {model?.plural}</h2>
+			<h2>{__("Select Reference", "atlas-content-modeler")}</h2>
+			<p>
+				{__(
+					"Can only use published references",
+					"atlas-content-modeler"
+				)}
+			</p>
+			<form>
+				<input type="text" name="contentSearch" />
+				<input
+					type="submit"
+					value={__("Search", "atlas-content-modeler")}
+				/>
+			</form>
+
 			<form
 				onSubmit={handleSubmit(async (data) => {
 					const mergedData = { ...model, ...data };
