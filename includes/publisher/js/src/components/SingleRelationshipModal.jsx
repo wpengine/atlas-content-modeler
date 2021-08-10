@@ -66,13 +66,6 @@ export default function SingleRelationshipModal({ model, isOpen, setIsOpen }) {
 					"atlas-content-modeler"
 				)}
 			</p>
-			<form>
-				<input type="text" name="contentSearch" />
-				<input
-					type="submit"
-					value={__("Search", "atlas-content-modeler")}
-				/>
-			</form>
 
 			<form
 				onSubmit={handleSubmit(async (data) => {
