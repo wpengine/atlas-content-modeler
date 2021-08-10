@@ -56,7 +56,6 @@ export default function Field(props) {
 
 function fieldMarkup(field, modelSlug, errors, validate) {
 	modelSlug = modelSlug.toLowerCase();
-	console.log(field.type);
 
 	switch (field.type) {
 		case "relationship":
@@ -103,7 +102,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						</button>
 					</div>
 					<RelationshipModal
-						model={model}
+						field={field}
 						isOpen={editSingleRelModalIsOpen}
 						setIsOpen={setEditSingleRelModalIsOpen}
 					/>

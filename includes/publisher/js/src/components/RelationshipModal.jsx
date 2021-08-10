@@ -4,17 +4,18 @@ import { sprintf, __ } from "@wordpress/i18n";
 import { ModelsContext } from "../../../../settings/js/src/ModelsContext";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
+import apiFetch from "@wordpress/api-fetch";
 const { wp } = window;
 
 /**
  * The modal component for editing a relationship.
  *
- * @param {Object} model The model to edit.
+ * @param {Object} field The relationship field.
  * @param {Boolean} isOpen Whether or not the model is open.
  * @param {Function} setIsOpen - Callback for opening and closing modal.
  * @returns {JSX.Element} Modal
  */
-export default function RelationshipModal({ model, isOpen, setIsOpen }) {
+export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);
@@ -43,10 +44,20 @@ export default function RelationshipModal({ model, isOpen, setIsOpen }) {
 		},
 	};
 
+	function retrieveModels(slug) {
+		apiFetch({ path: "/wp/v2/" + slug }).then((posts) => {
+			console.log(posts);
+		});
+	}
+
+	console.log(field);
+
+	//retrieveModels();
+
 	return (
 		<Modal
 			isOpen={isOpen}
-			contentLabel={`Editing the ${model?.plural} content model`}
+			contentLabel={`Creating relationship with ${field.name}`}
 			parentSelector={() => {
 				return document.getElementById(
 					"atlas-content-modeler-fields-app"
@@ -56,7 +67,7 @@ export default function RelationshipModal({ model, isOpen, setIsOpen }) {
 			onRequestClose={() => {
 				setIsOpen(false);
 			}}
-			model={model}
+			field={field}
 			style={customStyles}
 		>
 			<h2>{__("Select Reference", "atlas-content-modeler")}</h2>
@@ -69,10 +80,10 @@ export default function RelationshipModal({ model, isOpen, setIsOpen }) {
 
 			<form
 				onSubmit={handleSubmit(async (data) => {
-					const mergedData = { ...model, ...data };
+					const mergedData = { ...field, ...data };
 					await updateModel(data.slug, mergedData);
 					dispatch({ type: "updateModel", data: mergedData });
-					updateSidebarMenuItem(model, data);
+					updateSidebarMenuItem(field, data);
 					setIsOpen(false);
 				})}
 			>
