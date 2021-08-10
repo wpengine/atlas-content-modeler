@@ -1,3 +1,4 @@
+/* global atlasContentModelerFormEditingExperience */
 import React, { useContext, useState } from "react";
 import Icon from "../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
@@ -44,15 +45,17 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		},
 	};
 
-	function retrieveModels(slug) {
-		apiFetch({ path: "/wp/v2/" + slug }).then((posts) => {
+	function retrieveModels(field) {
+		const { models } = atlasContentModelerFormEditingExperience;
+
+		let endpoint = models[field.slug].plural.toLowerCase().replace(" ", "");
+
+		apiFetch({ path: "/wp/v2/" + endpoint }).then((posts) => {
 			console.log(posts);
 		});
 	}
 
-	console.log(field);
-
-	//retrieveModels();
+	retrieveModels(field);
 
 	return (
 		<Modal
