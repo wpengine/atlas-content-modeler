@@ -7,14 +7,14 @@ import Modal from "react-modal";
 const { wp } = window;
 
 /**
- * The modal component for editing a single relationship.
+ * The modal component for editing a relationship.
  *
  * @param {Object} model The model to edit.
  * @param {Boolean} isOpen Whether or not the model is open.
  * @param {Function} setIsOpen - Callback for opening and closing modal.
  * @returns {JSX.Element} Modal
  */
-export default function SingleRelationshipModal({ model, isOpen, setIsOpen }) {
+export default function RelationshipModal({ model, isOpen, setIsOpen }) {
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);

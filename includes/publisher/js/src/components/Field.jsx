@@ -3,7 +3,7 @@ import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Icon from "../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
-import SingleRelationshipModal from "./SingleRelationshipModal";
+import RelationshipModal from "./RelationshipModal";
 
 const defaultError = "This field is required";
 
@@ -102,7 +102,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							{__("Link Reference", "atlas-content-modeler")}
 						</button>
 					</div>
-					<SingleRelationshipModal
+					<RelationshipModal
 						model={model}
 						isOpen={editSingleRelModalIsOpen}
 						setIsOpen={setEditSingleRelModalIsOpen}
