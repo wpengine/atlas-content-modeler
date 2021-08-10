@@ -45,12 +45,21 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		},
 	};
 
-	function retrieveModels(field) {
+	function retrieveModels(field, page, per_page) {
 		const { models } = atlasContentModelerFormEditingExperience;
 
-		let endpoint = models[field.slug].plural.toLowerCase().replace(" ", "");
+		// @TODO there has to be a better way than this.
+		let endpoint =
+			"/wp/v2/" +
+			models[field.slug].plural.toLowerCase().replace(" ", "");
 
-		apiFetch({ path: "/wp/v2/" + endpoint }).then((posts) => {
+		let params = {
+			path: endpoint,
+			page: page,
+			per_page: per_page,
+		};
+
+		apiFetch(params).then((posts) => {
 			console.log(posts);
 		});
 	}
