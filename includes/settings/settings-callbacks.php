@@ -40,7 +40,7 @@ function register_admin_menu_page(): void {
 		esc_html__( 'Taxonomies', 'atlas-content-modeler' ),
 		esc_html__( 'Taxonomies', 'atlas-content-modeler' ),
 		'manage_options',
-		'atlas-content-modeler&view=taxonomies',
+		'atlas-content-modeler&amp;view=taxonomies',
 		'__return_null'
 	);
 }
