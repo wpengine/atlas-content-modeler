@@ -112,26 +112,6 @@ export default function Taxonomies() {
 						__("Taxonomies", "atlas-content-modeler")
 					)}
 				</h2>
-				{editingTaxonomy ? (
-					<button
-						className="tertiary"
-						onClick={(event) => {
-							event.preventDefault();
-							cancelEditing();
-						}}
-					>
-						{__("Cancel Editing", "atlas-content-modeler")}
-					</button>
-				) : (
-					<button
-						className="tertiary"
-						onClick={() =>
-							history.push(atlasContentModeler.appPath)
-						}
-					>
-						{__("View Content Models", "atlas-content-modeler")}
-					</button>
-				)}
 			</section>
 			<section className="card-content">
 				<div className="row">
