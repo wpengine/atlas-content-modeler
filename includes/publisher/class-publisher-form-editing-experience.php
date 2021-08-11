@@ -148,7 +148,13 @@ final class FormEditingExperience {
 		wp_enqueue_editor();
 
 		$models = $this->models;
-		$model  = $models[ $this->current_screen_post_type ];
+
+		// Adds the wp-json rest base for utilizing model data in admin.
+		foreach ( $models as $model => $data ) {
+			$models[ $model ]['wp_rest_base'] = sanitize_key( $data['plural'] );
+		}
+
+		$model = $models[ $this->current_screen_post_type ];
 
 		// Add existing field values to models data.
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
