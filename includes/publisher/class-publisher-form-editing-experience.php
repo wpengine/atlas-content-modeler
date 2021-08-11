@@ -67,7 +67,7 @@ final class FormEditingExperience {
 	 * Bootstraps the plugin.
 	 */
 	public function bootstrap(): void {
-		$this->models = array_change_key_case( get_registered_content_types(), CASE_LOWER );
+		$this->models = get_registered_content_types();
 
 		add_action( 'init', [ $this, 'remove_post_type_supports' ] );
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
