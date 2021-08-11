@@ -25,6 +25,24 @@ function register_admin_menu_page(): void {
 		__NAMESPACE__ . '\render_admin_menu_page',
 		$icon
 	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
+		esc_html__( 'Models', 'atlas-content-modeler' ),
+		esc_html__( 'Models', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler',
+		'__return_null'
+	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
+		esc_html__( 'Taxonomies', 'atlas-content-modeler' ),
+		esc_html__( 'Taxonomies', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler&view=taxonomies',
+		'__return_null'
+	);
 }
 
 /**
