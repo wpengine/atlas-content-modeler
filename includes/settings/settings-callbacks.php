@@ -55,7 +55,7 @@ add_filter( 'parent_file', __NAMESPACE__ . '\maybe_override_submenu_file' );
  * @link https://wordpress.stackexchange.com/a/131873
  * @link https://developer.wordpress.org/reference/hooks/parent_file/
  * @param string $parent_file The original parent file.
- * @return string The $parent_file unaltered. Only the submenu_file global is altered.
+ * @return string The $parent_file unaltered. Only the $submenu_file global is altered.
  */
 function maybe_override_submenu_file( $parent_file ) {
 	global $submenu_file;
