@@ -45,7 +45,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		},
 	};
 
-	async function retrieveModels(field, page, per_page) {
+	function retrieveModels(field, page, per_page) {
 		const { models } = atlasContentModelerFormEditingExperience;
 
 		// @TODO there has to be a better way than this.
@@ -59,7 +59,9 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			per_page: per_page,
 		};
 
-		return await apiFetch(params);
+		return apiFetch(params).then((res) => {
+			return res[0]["acm_fields"];
+		});
 	}
 
 	retrieveModels(field, 1, 10).then((post_data) => {
