@@ -1,0 +1,8 @@
+FROM devwithlando/php:7.4-fpm-2
+
+COPY ../tests/install-wp-tests.sh /install-wp-tests.sh
+
+RUN apt-get update; \
+	apt-get install -y subversion; \
+	chmod +x /install-wp-tests.sh; \
+	bash /install-wp-tests.sh wordpress wordpress wordpress phpunitdatabase latest true

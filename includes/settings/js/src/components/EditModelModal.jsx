@@ -16,7 +16,7 @@ function updateSidebarMenuItem(model, data) {
 	let { model_icon } = data || "dashicons-admin-post";
 	if (model.model_icon !== model_icon) {
 		// update sidebar icon
-		$(`li#menu-posts-${model.slug.toLowerCase()}`)
+		$(`li#menu-posts-${model.slug}`)
 			.find(".wp-menu-image")
 			.removeClass(function (index, className) {
 				return (className.match(/(^|\s)dashicons-\S+/g) || []).join(

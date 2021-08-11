@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Icon from "../../../../components/icons";
@@ -24,6 +24,28 @@ export default function Field(props) {
 		}
 
 		let error = defaultError;
+
+		if (field.type === "number") {
+			if (event.target.validity.rangeOverflow) {
+				error = sprintf(
+					__("Maximum value is %s.", "atlas-content-modeler"),
+					event.target.max.toString()
+				);
+			} else if (event.target.validity.rangeUnderflow) {
+				error = sprintf(
+					__("Minimum value is %s.", "atlas-content-modeler"),
+					event.target.min.toString()
+				);
+			} else if (event.target.validity.stepMismatch) {
+				error = sprintf(
+					__(
+						"Value must be a multiple of %s.",
+						"atlas-content-modeler"
+					),
+					event.target.step.toString()
+				);
+			}
+		}
 
 		if (field.type === "text") {
 			if (event.target.validity.tooShort) {
@@ -55,8 +77,6 @@ export default function Field(props) {
 }
 
 function fieldMarkup(field, modelSlug, errors, validate) {
-	modelSlug = modelSlug.toLowerCase();
-
 	switch (field.type) {
 		case "relationship":
 			const [
@@ -151,6 +171,42 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				</>
 			);
 		case "number":
+			let numberOptions = {};
+			const numberInputRef = useRef();
+
+			if (field?.minValue || field?.minValue === 0) {
+				numberOptions.min = field.minValue ?? 0;
+			}
+			if (field?.maxValue) {
+				numberOptions.max = field.maxValue;
+			}
+			if (field?.step) {
+				numberOptions.step = field.step;
+			} else {
+				field.numberType === "integer"
+					? (numberOptions.step = 1)
+					: (numberOptions.step = "any");
+			}
+
+			/**
+			 * Check for need to sanitize number fields further before regular validation
+			 * @param event
+			 * @param field
+			 */
+			function preValidate(event, field) {
+				const disallowedCharacters = /[.]/g;
+
+				if (field.numberType === "integer") {
+					if (disallowedCharacters.test(event.key)) {
+						event.preventDefault();
+						return;
+					}
+				}
+
+				// call global validate
+				validate(event, field);
+			}
+
 			return (
 				<>
 					<label
@@ -160,19 +216,21 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</label>
 					{field?.required && <p className="required">*Required</p>}
 					<input
+						ref={numberInputRef}
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 						defaultValue={field.value}
 						required={field.required}
-						onChange={(event) => validate(event, field)}
-						min={field?.minValue}
-						max={field?.maxValue}
-						step={field?.step}
+						onChange={(event) => preValidate(event, field)}
+						onKeyDown={(event) => preValidate(event, field)}
+						{...numberOptions}
 					/>
 					<span className="error">
 						<Icon type="error" />
-						<span role="alert">{defaultError}</span>
+						<span role="alert">
+							{errors[field.slug] ?? defaultError}
+						</span>
 					</span>
 				</>
 			);

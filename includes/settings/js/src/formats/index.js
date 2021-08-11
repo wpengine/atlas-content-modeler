@@ -25,3 +25,20 @@ export function toValidApiId(value) {
 
 	return value;
 }
+
+/**
+ * Formats a given string to a valid post type slug.
+ *
+ * @see https://developer.wordpress.org/reference/functions/sanitize_key/
+ * @param {string} value The input value to convert to a valid post type slug.
+ * @returns A valid post type slug.
+ */
+export function toPostTypeSlug(value) {
+	// Must be all lower case.
+	value = value.toLowerCase();
+
+	// Strip all characters not in the range [a-z0-9_\-].
+	value = value.replace(/[^a-z0-9_\-]/g, "");
+
+	return value;
+}
