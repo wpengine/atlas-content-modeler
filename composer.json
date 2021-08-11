@@ -3,6 +3,15 @@
     "description": "Plugin for content modeling in WordPress.",
     "type": "project",
     "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/apmatthews/wp-content-connect.git"
+        }
+    ],
+    "require": {
+        "10up/wp-content-connect": "dev-acm-reduction"
+    },
     "require-dev": {
         "codeception/module-asserts": "^1.0",
         "codeception/module-cli": "^1.0",

@@ -71,6 +71,50 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 	);
 }
 
+add_action( 'tenup-content-connect-init', __NAMESPACE__ . '\\register_relationships' );
+/**
+ * Registers relationship fields.
+ *
+ * @param TenUp\ContentConnect\Registry $registry The relationships registry.
+ * @return void
+ */
+function register_relationships( $registry ) {
+	$content_types = get_registered_content_types();
+
+	if ( ! $content_types ) {
+		return;
+	}
+
+	foreach ( $content_types as $post_type => $args ) {
+		if ( ! $args['fields'] ) {
+			continue;
+		}
+
+		foreach ( $args['fields'] as $field ) {
+			if ( $field['type'] === 'relationship' ) {
+				$args = array(
+					'from' => array(
+						'enable_ui' => true,
+						'sortable'  => false,
+						'labels'    => array(
+							'name' => $field['name'],
+						),
+					),
+					'to'   => array(
+						'enable_ui' => true,
+						'sortable'  => false,
+						'labels'    => array(
+							'name' => $field['name'],
+						),
+					),
+				);
+
+				$relationship = $registry->define_post_to_post( $post_type, $field['reference'], $field['slug'], $args );
+			}
+		}
+	}
+}
+
 /**
  * Processes field values for appropriate REST API returns.
  *
