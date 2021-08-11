@@ -4,6 +4,7 @@ class DeleteContentModelCest
 {
 	public function _before(\AcceptanceTester $I)
 	{
+		$I->resizeWindow(1024, 1024);
 		$I->maximizeWindow();
 		$I->loginAsAdmin();
 		$I->wait(1);
