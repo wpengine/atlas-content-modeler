@@ -2,31 +2,44 @@ import React from "react";
 import { __ } from "@wordpress/i18n";
 import { TaxonomiesDropdown } from "./TaxonomiesDropdown";
 
+const TaxonomiesTableHead = () => {
+	return (
+		<thead>
+			<tr>
+				<th>{__("Name", "atlas-content-modeler")}</th>
+				<th>{__("Slug", "atlas-content-modeler")}</th>
+				<th>{__("Models", "atlas-content-modeler")}</th>
+				<th className="action">
+					{__("Action", "atlas-content-modeler")}
+				</th>
+			</tr>
+		</thead>
+	);
+};
+
 const TaxonomiesTable = ({ taxonomies = {} }) => {
 	if (Object.values(taxonomies).length < 1) {
 		return (
-			<p>
-				{__(
-					"You currently have no taxonomies.",
-					"atlas-content-modeler"
-				)}
-			</p>
+			<table className="table table-striped">
+				<TaxonomiesTableHead />
+				<tbody>
+					<tr>
+						<td colSpan="4" className="text-center p-3">
+							{__(
+								"You currently have no taxonomies.",
+								"atlas-content-modeler"
+							)}
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		);
 	}
 
 	return (
 		<>
 			<table className="table table-striped">
-				<thead>
-					<tr>
-						<th>{__("Name", "atlas-content-modeler")}</th>
-						<th>{__("Slug", "atlas-content-modeler")}</th>
-						<th>{__("Models", "atlas-content-modeler")}</th>
-						<th className="action">
-							{__("Action", "atlas-content-modeler")}
-						</th>
-					</tr>
-				</thead>
+				<TaxonomiesTableHead />
 				<tbody>
 					{Object.values(taxonomies).map((taxonomy) => {
 						return (
