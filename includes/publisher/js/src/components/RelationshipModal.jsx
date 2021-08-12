@@ -244,7 +244,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 
 			<button
 				href="#"
-				className="tertiary"
+				className="tertiary button button-large"
 				onClick={(event) => {
 					event.preventDefault();
 					setSelectedEntry(undefined);
@@ -257,7 +257,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			<button
 				type="submit"
 				disabled={typeof selectedEntry === "undefined"}
-				className="primary"
+				className="button button-primary button-large"
 				onClick={(event) => {
 					event.preventDefault();
 					// TODO: Update the reference field's value here.
