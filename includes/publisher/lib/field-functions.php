@@ -87,8 +87,8 @@ function sanitize_field( string $type, $value ) {
 		case 'richtext':
 			return wp_kses_post( $value );
 		case 'relationship':
-			//@TODO handle multis differently.
-			return filter_var( $value["relationshipEntryId"], FILTER_SANITIZE_NUMBER_INT );
+			// @TODO handle multis differently.
+			return filter_var( $value['relationshipEntryId'], FILTER_SANITIZE_NUMBER_INT );
 		case 'number':
 			return filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 		case 'date':
