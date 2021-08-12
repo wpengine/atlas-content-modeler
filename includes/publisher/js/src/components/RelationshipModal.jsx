@@ -32,6 +32,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const customStyles = {
 		overlay: {
 			backgroundColor: "rgba(0, 40, 56, 0.7)",
+			zIndex: 1000,
 		},
 		content: {
 			top: "50%",
