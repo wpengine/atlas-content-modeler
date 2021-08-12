@@ -54,10 +54,26 @@ class AcceptanceTester extends \Codeception\Actor
         $this->amOnPage($path);
     }
 
-    /**
-     * Create a Content Model.
-     *
-     * @param string $singular    Singular content model name.
+	/**
+	 * Visit the Taxonomy page.
+	 *
+	 * @param string $params Optional query parameter string.
+	 */
+	public function amOnTaxonomyListingsPage($params = '')
+	{
+		$path = '/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies';
+
+		if ( $params ) {
+			$path .= $params;
+		}
+
+		$this->amOnPage($path);
+	}
+
+	/**
+	 * Create a Content Model.
+	 *
+	 * @param string $singular    Singular content model name.
      * @param string $plural      Plural content model name.
      * @param string $description Content model description.
      */
@@ -75,4 +91,25 @@ class AcceptanceTester extends \Codeception\Actor
 
         $this->click('.card-content button.primary');
     }
+
+	/**
+	 * Create a Taxonomy.
+	 *
+	 * @param string $singular Singular taxonomy name.
+	 * @param string $plural   Plural taxonomy name.
+	 * @param array  $types    Slug name of the models that have this taxonomy.
+	 */
+	public function haveTaxonomy($singular, $plural, array $types) {
+		$this->amOnTaxonomyListingsPage();
+		$this->wait(1);
+
+		$this->fillField(['name' => 'singular'], $singular);
+		$this->fillField(['name' => 'plural'], $plural);
+
+		foreach ( $types as $type ) {
+			$this->click(".checklist .checkbox input[value={$type}]");
+		}
+
+		$this->click('.card-content button.primary');
+	}
 }
