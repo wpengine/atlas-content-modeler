@@ -28,6 +28,9 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		setValue,
 		formState: { isSubmitting },
 	} = useForm();
+	const perPage = 5;
+	const { models } = atlasContentModelerFormEditingExperience;
+	const endpoint = "/wp/v2/" + models[field.slug].wp_rest_base;
 
 	const customStyles = {
 		overlay: {
@@ -45,27 +48,50 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		},
 	};
 
-	function retrieveModels(field, page, per_page) {
-		const { models } = atlasContentModelerFormEditingExperience;
-
-		// @TODO there has to be a better way than this.
-		let endpoint =
-			"/wp/v2/" +
-			models[field.slug].plural.toLowerCase().replace(" ", "");
-
+	/**
+	 * Retrieves the total number of pages for the relationship field.
+	 *
+	 * @param {number} perPage
+	 * @returns {number} Total number of pages
+	 */
+	function totalPages(perPage) {
 		let params = {
 			path: endpoint,
-			page: page,
-			per_page: per_page,
+			page: 1,
+			per_page: perPage,
+			parse: false,
 		};
 
-		return apiFetch(params).then((res) => {
-			return res[0]["acm_fields"];
+		return apiFetch(params).then((response) => {
+			return response.headers.get("X-WP-TotalPages");
 		});
 	}
 
-	retrieveModels(field, 1, 10).then((post_data) => {
-		console.log(post_data);
+	/**
+	 * Retrieves relationship posts for a given page.
+	 *
+	 * @param {Number} page
+	 * @param {Number} perPage
+	 * @returns {object} Array of model data
+	 */
+	function retrieveModels(page, perPage) {
+		let params = {
+			path: endpoint,
+			page: page,
+			per_page: perPage,
+		};
+
+		return apiFetch(params).then((postData) => {
+			return postData;
+		});
+	}
+
+	retrieveModels(1, perPage).then((postData) => {
+		console.log(postData);
+	});
+
+	totalPages(perPage).then((totalPages) => {
+		console.log(totalPages);
 	});
 
 	return (
