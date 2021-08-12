@@ -1,12 +1,12 @@
 /* global atlasContentModelerFormEditingExperience */
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Icon from "../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
-import { ModelsContext } from "../../../../settings/js/src/ModelsContext";
-import { useForm } from "react-hook-form";
 import Modal from "react-modal";
-import apiFetch from "@wordpress/api-fetch";
 const { wp } = window;
+const { date, apiFetch } = wp;
+
+Modal.setAppElement("#atlas-content-modeler-fields-app");
 
 /**
  * The modal component for editing a relationship.
@@ -17,17 +17,12 @@ const { wp } = window;
  * @returns {JSX.Element} Modal
  */
 export default function RelationshipModal({ field, isOpen, setIsOpen }) {
-	const [singularCount, setSingularCount] = useState(0);
-	const [pluralCount, setPluralCount] = useState(0);
-	const [descriptionCount, setDescriptionCount] = useState(0);
-	// const { dispatch } = useContext(ModelsContext);
-	const {
-		register,
-		handleSubmit,
-		errors,
-		setValue,
-		formState: { isSubmitting },
-	} = useForm();
+	const [page, setPage] = useState(1);
+	const [pagedEntries, setPagedEntries] = useState({});
+	const [totalEntries, setTotalEntries] = useState(0);
+	const [selectedEntry, setSelectedEntry] = useState(); // TODO: set initial state value from stored field value.
+	const entriesPerPage = 1; // TODO: change to 10. 1 is for testing pagination only.
+	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
 	const customStyles = {
 		overlay: {
@@ -46,28 +41,54 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		},
 	};
 
-	function retrieveModels(field, page, per_page) {
+	async function getEntries(page) {
 		const { models } = atlasContentModelerFormEditingExperience;
 
-		// @TODO there has to be a better way than this.
-		let endpoint =
-			"/wp/v2/" +
-			models[field.slug].plural.toLowerCase().replace(" ", "");
+		const endpoint = `/wp/v2/${
+			models[field.reference].wp_rest_base
+		}?per_page=${entriesPerPage}&page=${page}`;
 
-		let params = {
+		const params = {
 			path: endpoint,
-			page: page,
-			per_page: per_page,
+			parse: false, // So the response status and headers are available.
 		};
 
-		return apiFetch(params).then((res) => {
-			return res[0]["acm_fields"];
+		return apiFetch(params).then((response) => {
+			if (response.status !== 200) {
+				console.error(
+					sprintf(
+						__(
+							/* translators: %s The HTTP error code, such as 200. */
+							"Received %s error when fetching entries.",
+							"atlas-content-modeler"
+						),
+						response.status
+					)
+				);
+				return;
+			}
+
+			if (page === 1) {
+				setTotalEntries(response.headers.get("X-WP-Total"));
+			}
+
+			return response.json();
 		});
 	}
 
-	retrieveModels(field, 1, 10).then((post_data) => {
-		console.log(post_data);
-	});
+	/**
+	 * Gets entries whenever the state of 'page' changes.
+	 * Caches those entries in the pagedEntries object, keyed by page.
+	 */
+	useEffect(() => {
+		if (isOpen && !(page in pagedEntries)) {
+			getEntries(page).then((entries) => {
+				setPagedEntries((pagedEntries) => {
+					return { ...pagedEntries, [page]: entries };
+				});
+			});
+		}
+	}, [isOpen, page]);
 
 	return (
 		<Modal
@@ -88,76 +109,161 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			<h2>{__("Select Reference", "atlas-content-modeler")}</h2>
 			<p>
 				{__(
-					"Can only use published references",
+					"Only published entries are displayed.",
 					"atlas-content-modeler"
 				)}
 			</p>
 
-			<form
-				onSubmit={handleSubmit(async (data) => {
-					const mergedData = { ...field, ...data };
-					await updateModel(data.slug, mergedData);
-					dispatch({ type: "updateModel", data: mergedData });
-					updateSidebarMenuItem(field, data);
-					setIsOpen(false);
-				})}
-			>
-				<div className="row">
-					<div
-						className={
-							errors.singular
-								? "field has-error col-sm"
-								: "field col-sm"
-						}
-					>
-						<p className="field-messages">
-							{errors.singular &&
-								errors.singular.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"This field is required",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-							{errors.singular &&
-								errors.singular.type === "maxLength" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"Exceeds max length.",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-						</p>
-					</div>
-				</div>
-				<button
-					href="#"
-					className="tertiary"
-					disabled={isSubmitting}
-					onClick={(event) => {
-						event.preventDefault();
-						setIsOpen(false);
-					}}
-				>
-					{__("Cancel", "atlas-content-modeler")}
-				</button>
+			{page in pagedEntries ? (
+				<div>
+					<table className="table table-striped">
+						<thead>
+							<tr>
+								<th></th>
+								<th>{__("Title", "atlas-content-modeler")}</th>
+								<th>
+									{__(
+										"Last modified",
+										"atlas-content-modeler"
+									)}
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{pagedEntries[page].map((entry) => {
+								const { modified, id, title } = entry;
+								const selectEntryLabel = sprintf(
+									__(
+										/* translators: %s The name of the entry title. */
+										"Link the entry titled “%s” to this entry.",
+										"atlas-content-modeler"
+									),
+									title?.rendered
+								);
+								return (
+									<tr key={id}>
+										<td>
+											<input
+												type="radio"
+												name="selected-entry"
+												id={`entry-${id}`}
+												value={id}
+												aria-label={selectEntryLabel}
+												checked={selectedEntry === id}
+												onChange={() => {
+													setSelectedEntry(id);
+												}}
+											/>
+										</td>
+										<td>
+											<label
+												htmlFor={`entry-${id}`}
+												aria-label={selectEntryLabel}
+											>
+												{title?.rendered}
+											</label>
+										</td>
+										<td>
+											<label
+												htmlFor={`entry-${id}`}
+												aria-label={selectEntryLabel}
+											>
+												{date.dateI18n(
+													"F j, Y",
+													modified
+												)}
+											</label>
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+					<p>
+						Page {page} of {totalPages}
+					</p>
 
-				<button
-					type="submit"
-					disabled={isSubmitting}
-					className="primary"
-				>
-					{__("Save", "atlas-content-modeler")}
-				</button>
-			</form>
+					<button
+						href="#"
+						className="tertiary"
+						disabled={page === 1}
+						aria-label={__("First page", "atlas-content-modeler")}
+						onClick={(event) => {
+							event.preventDefault();
+							setPage(1);
+						}}
+					>
+						{"<<"}
+					</button>
+					<button
+						href="#"
+						className="tertiary"
+						disabled={page === 1}
+						aria-label={__(
+							"Previous page",
+							"atlas-content-modeler"
+						)}
+						onClick={(event) => {
+							event.preventDefault();
+							setPage(page - 1);
+						}}
+					>
+						{"<"}
+					</button>
+					<button
+						href="#"
+						className="tertiary"
+						disabled={page === totalPages}
+						aria-label={__("Next page", "atlas-content-modeler")}
+						onClick={(event) => {
+							event.preventDefault();
+							setPage(page + 1);
+						}}
+					>
+						{">"}
+					</button>
+					<button
+						href="#"
+						className="tertiary"
+						disabled={page === totalPages}
+						aria-label={__("Last page", "atlas-content-modeler")}
+						onClick={(event) => {
+							event.preventDefault();
+							setPage(totalPages);
+						}}
+					>
+						{">>"}
+					</button>
+				</div>
+			) : (
+				<p>{__("No entries found.", "atlas-content-modeler")}</p>
+			)}
+
+			<button
+				href="#"
+				className="tertiary"
+				onClick={(event) => {
+					event.preventDefault();
+					setSelectedEntry(undefined);
+					setIsOpen(false);
+				}}
+			>
+				{__("Cancel", "atlas-content-modeler")}
+			</button>
+
+			<button
+				type="submit"
+				disabled={typeof selectedEntry === "undefined"}
+				className="primary"
+				onClick={(event) => {
+					event.preventDefault();
+					// TODO: Update the reference field's value here.
+					console.log(`Saving field ${selectedEntry}.`);
+					setIsOpen(false);
+				}}
+			>
+				{__("Save", "atlas-content-modeler")}
+			</button>
 		</Modal>
 	);
 }
