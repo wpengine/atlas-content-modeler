@@ -179,7 +179,11 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 						</tbody>
 					</table>
 					<p>
-						Page {page} of {totalPages}
+						{sprintf(
+							__("Page %d of %d", "atlas-content-modeler"),
+							page,
+							totalPages
+						)}
 					</p>
 
 					<button
