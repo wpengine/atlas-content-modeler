@@ -1,9 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Icon from "../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
 import RelationshipModal from "./RelationshipModal";
+const { wp } = window;
+const { apiFetch } = wp;
 
 const defaultError = "This field is required";
 
@@ -83,8 +85,57 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				editSingleRelModalIsOpen,
 				setEditSingleRelModalIsOpen,
 			] = useState(false);
-			const [model, setModel] = useState({});
-	
+			const [relatedContent, setRelatedContent] = useState();
+
+			/**
+			 * Retrieves related content information for display.
+			 *
+			 * @param {object} field
+			 * @returns {object}
+			 */
+			function getRelatedTitles(field) {
+				const { models } = atlasContentModelerFormEditingExperience;
+
+				const endpoint = `/wp/v2/${
+					models[field.reference].wp_rest_base
+				}/?include[]=${field.value}`;
+
+				const params = {
+					path: endpoint,
+					parse: false, // So the response status and headers are available.
+				};
+
+				return apiFetch(params).then((response) => {
+					if (response.status !== 200) {
+						console.error(
+							sprintf(
+								__(
+									/* translators: %s The HTTP error code, such as 200. */
+									"Received %s error when fetching entries.",
+									"atlas-content-modeler"
+								),
+								response.status
+							)
+						);
+						return;
+					}
+
+					return response.json();
+				});
+			}
+
+			/**
+			 * Gets entries whenever the state of 'page' changes.
+			 * Caches those entries in the pagedEntries object, keyed by page.
+			 */
+			useEffect(() => {
+				getRelatedTitles(field).then((entries) => {
+					setRelatedContent(() => {
+						return entries;
+					});
+				});
+			}, [field]);
+
 			function relationshipClickHandler(
 				e,
 				field,
@@ -102,6 +153,17 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
+					{field.value &&
+						relatedContent?.map((entry) => {
+							const { id, title } = entry;
+
+							return (
+								<input
+									key={id}
+									value={`${id}: ${title.rendered}`}
+								/>
+							);
+						})}
 					<div className="d-flex flex-row align-items-center media-btns">
 						<button
 							className="button button-primary button-large"
@@ -122,7 +184,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							{__("Link Reference", "atlas-content-modeler")}
 						</button>
 					</div>
-					{field.value && ( <input name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`} value={field.value}/>)}
 					<RelationshipModal
 						field={field}
 						isOpen={editSingleRelModalIsOpen}
