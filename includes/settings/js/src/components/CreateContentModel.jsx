@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
-import { useApiIdGenerator } from "./fields/useApiIdGenerator";
+import { useInputGenerator } from "../hooks";
+import { toPostTypeSlug } from "../formats";
 import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
@@ -31,9 +32,12 @@ export default function CreateContentModel() {
 	const [icon, setIcon] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
-	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
-		apiFieldId: "slug",
-		setValue,
+	const {
+		setInputGeneratorSourceValue,
+		onChangeGeneratedValue,
+	} = useInputGenerator({
+		setGeneratedValue: (value) => setValue("slug", value),
+		format: toPostTypeSlug,
 	});
 
 	function apiCreateModel(data) {
@@ -49,7 +53,7 @@ export default function CreateContentModel() {
 					history.push(
 						atlasContentModeler.appPath +
 							"&view=edit-model&id=" +
-							data.slug
+							res.model.slug
 					);
 
 					// Insert the sidebar menu item below the Comments item, to avoid doing a full page refresh.
@@ -111,7 +115,7 @@ export default function CreateContentModel() {
 							className="w-100"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(e) => {
-								setApiIdGeneratorInput(event.target.value);
+								setInputGeneratorSourceValue(e.target.value);
 								setSingularCount(e.target.value.length);
 							}}
 						/>
@@ -212,7 +216,9 @@ export default function CreateContentModel() {
 							name="slug"
 							className="w-100"
 							ref={register({ required: true, maxLength: 20 })}
-							{...apiIdFieldAttributes}
+							onChange={(e) =>
+								onChangeGeneratedValue(e.target.value)
+							}
 						/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (

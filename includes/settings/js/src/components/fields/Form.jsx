@@ -14,7 +14,8 @@ import MultipleChoiceFields from "./MultipleChoiceFields";
 import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
-import { useApiIdGenerator } from "./useApiIdGenerator";
+import { useInputGenerator } from "../../hooks";
+import { toValidApiId } from "../../formats";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
@@ -53,10 +54,13 @@ function Form({ id, position, type, editing, storedData }) {
 	const model = query.get("id");
 	const ExtraFields = extraFields[type] ?? null;
 	const currentNumberType = watch("numberType");
-	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
-		setValue,
-		editing,
-		storedData,
+	const {
+		setInputGeneratorSourceValue,
+		onChangeGeneratedValue,
+	} = useInputGenerator({
+		linked: !editing,
+		setGeneratedValue: (value) => setValue("slug", value),
+		format: toValidApiId,
 	});
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
 	const [previousState, setPreviousState] = useState(storedData);
@@ -89,10 +93,12 @@ function Form({ id, position, type, editing, storedData }) {
 			component: NumberSettings,
 			fields: {
 				minValue: {
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 				},
 				maxValue: {
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
 						maxBelowMin: (v) => {
 							const min = parseNumber(getValues("minValue"));
@@ -106,7 +112,8 @@ function Form({ id, position, type, editing, storedData }) {
 				},
 				step: {
 					min: 0,
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
 						maxBelowStep: (v) => {
 							const max = parseNumber(
@@ -286,7 +293,7 @@ function Form({ id, position, type, editing, storedData }) {
 							type="text"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(e) => {
-								setApiIdGeneratorInput(e.target.value);
+								setInputGeneratorSourceValue(e.target.value);
 								setNameCount(e.target.value.length);
 								clearErrors("slug");
 							}}
@@ -334,7 +341,9 @@ function Form({ id, position, type, editing, storedData }) {
 							type="text"
 							defaultValue={storedData?.slug}
 							ref={register({ required: true, maxLength: 50 })}
-							{...apiIdFieldAttributes}
+							onChange={(e) =>
+								onChangeGeneratedValue(e.target.value)
+							}
 						/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (

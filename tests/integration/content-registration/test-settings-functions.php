@@ -35,6 +35,41 @@ class SettingsFunctionsTestCases extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\get_register_content_types()
+	 * @todo Consider removing prior to v1.0
+	 */
+	public function test_get_registered_content_types_formats_model_slugs(): void {
+		$deprecated_models = [
+			'bookReviews' => [
+				'slug'        => 'bookReviews',
+				'singular'    => 'Book Review',
+				'plural'      => 'Book Reviews',
+				'description' => 'This model should have a reformatted slug.'
+			],
+			'unchanged' => [
+				'slug'        => 'unchanged',
+				'singular'    => 'Unchanged Model',
+				'plural'      => 'Unchanged Models',
+				'description' => 'This model should be unaffected.'
+			]
+		];
+
+		$updated_models = [
+			'bookreviews' => [
+				'slug'        => 'bookreviews',
+				'singular'    => 'Book Review',
+				'plural'      => 'Book Reviews',
+				'description' => 'This model should have a reformatted slug.'
+			],
+			'unchanged' => $deprecated_models['unchanged']
+		];
+
+		update_registered_content_types( $deprecated_models );
+
+		self::assertSame( $updated_models, get_registered_content_types() );
+	}
+
+	/**
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\update_registered_content_type()
 	 */
 	public function test_update_registered_content_type_returns_false_when_specified_content_type_does_not_exist(): void {

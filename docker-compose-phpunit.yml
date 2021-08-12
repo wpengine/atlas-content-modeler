@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  phpunit:
+    depends_on:
+      phpunitdatabase:
+        condition: service_healthy
+    image: atlascontentmodeler_phpunit_image
+    volumes:
+        - .:/app
+
+  phpunitdatabase:
+    image: mysql:5.7
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: wordpress
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 10s
+      timeout: 2s
+      retries: 10
