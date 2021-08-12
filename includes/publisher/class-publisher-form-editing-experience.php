@@ -70,6 +70,7 @@ final class FormEditingExperience {
 		$this->models = get_registered_content_types();
 
 		add_action( 'init', [ $this, 'remove_post_type_supports' ] );
+		add_action( 'rest_api_init', [ $this, 'support_title_in_rest_responses' ] );
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
@@ -93,6 +94,15 @@ final class FormEditingExperience {
 			remove_post_type_support( $model, 'title' );
 			remove_post_type_support( $model, 'custom-fields' );
 			remove_post_type_support( $model, 'thumbnail' );
+		}
+	}
+
+	/**
+	 * Reinstates the title so that it appears in REST responses.
+	 */
+	public function support_title_in_rest_responses(): void {
+		foreach ( $this->models as $model => $info ) {
+			add_post_type_support( $model, 'title' );
 		}
 	}
 
