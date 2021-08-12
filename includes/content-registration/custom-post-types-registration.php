@@ -93,7 +93,8 @@ function register_relationships( $registry ) {
 		foreach ( $args['fields'] as $field ) {
 			if ( $field['type'] === 'relationship' ) {
 				$args = [
-					'from' => [
+					'is_bidirectional' => false,
+					'from'             => [
 						'enable_ui' => true,
 						'sortable'  => false,
 						'labels'    => [
