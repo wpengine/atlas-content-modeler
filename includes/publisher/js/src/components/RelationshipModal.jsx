@@ -1,6 +1,5 @@
 /* global atlasContentModelerFormEditingExperience */
 import React, { useContext, useEffect, useState } from "react";
-import Icon from "../../../../components/icons";
 import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
 const { wp } = window;
@@ -21,7 +20,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
 	const [selectedEntry, setSelectedEntry] = useState(); // TODO: set initial state value from stored field value.
-	const entriesPerPage = 1; // TODO: change to 10. 1 is for testing pagination only.
+	const entriesPerPage = 1; // TODO: change to 5. 1 is for testing pagination only.
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
 	const customStyles = {
