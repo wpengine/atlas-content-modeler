@@ -113,6 +113,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					"atlas-content-modeler"
 				)}
 			</p>
+			{console.log(pagedEntries)}
 
 			{page in pagedEntries ? (
 				<div>
@@ -151,7 +152,9 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 												aria-label={selectEntryLabel}
 												checked={selectedEntry === id}
 												onChange={() => {
-													setSelectedEntryTitle(title);
+													setSelectedEntryTitle(
+														title
+													);
 													setSelectedEntry(id);
 												}}
 											/>
@@ -264,7 +267,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					event.preventDefault();
 					// TODO: Update the reference field's value here.
 					console.log(`Saving field ${selectedEntry}.`);
-					field.value =`${selectedEntry}`;
+					field.value = `${selectedEntry}`;
 					field.niceName = `${selectedEntryTitle?.rendered}`;
 					setIsOpen(false);
 				}}
