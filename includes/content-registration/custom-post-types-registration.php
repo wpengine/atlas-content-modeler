@@ -92,24 +92,17 @@ function register_relationships( $registry ) {
 
 		foreach ( $args['fields'] as $field ) {
 			if ( $field['type'] === 'relationship' ) {
-				$args = array(
-					'from' => array(
+				$args = [
+					'from' => [
 						'enable_ui' => true,
 						'sortable'  => false,
-						'labels'    => array(
+						'labels'    => [
 							'name' => $field['name'],
-						),
-					),
-					'to'   => array(
-						'enable_ui' => true,
-						'sortable'  => false,
-						'labels'    => array(
-							'name' => $field['name'],
-						),
-					),
-				);
+						],
+					],
+				];
 
-				$relationship = $registry->define_post_to_post( $post_type, $field['reference'], $field['slug'], $args );
+				$registry->define_post_to_post( $post_type, $field['reference'], $field['slug'], $args );
 			}
 		}
 	}
