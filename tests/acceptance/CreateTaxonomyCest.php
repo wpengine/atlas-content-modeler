@@ -4,6 +4,7 @@ class CreateTaxonomyCest
 {
 	public function _before(\AcceptanceTester $I)
 	{
+		$I->resizeWindow(1024, 1024);
 		$I->maximizeWindow();
 		$I->loginAsAdmin();
 		$I->haveContentModel('goose', 'geese');
@@ -14,8 +15,8 @@ class CreateTaxonomyCest
 	{
 		$I->amOnWPEngineContentModelPage();
 		$I->wait(1);
-		$I->see('View Taxonomies', 'button.taxonomies');
-		$I->click('button.taxonomies');
+		$I->see('Taxonomies', '#toplevel_page_atlas-content-modeler .wp-submenu');
+		$I->click('Taxonomies', '#toplevel_page_atlas-content-modeler .wp-submenu');
 		$I->wait(1);
 		$I->see('Taxonomies', 'section.heading h2');
 	}

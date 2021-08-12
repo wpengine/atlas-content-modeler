@@ -4,6 +4,7 @@ class DeleteContentModelCest
 {
 	public function _before(\AcceptanceTester $I)
 	{
+		$I->resizeWindow(1024, 1024);
 		$I->maximizeWindow();
 		$I->loginAsAdmin();
 		$I->wait(1);
@@ -51,7 +52,7 @@ class DeleteContentModelCest
 		$I->wait(1);
 
 		// Test that React state was updated without reloading the page.
-		$I->click('button.taxonomies');
+		$I->click('Taxonomies', '#toplevel_page_atlas-content-modeler .wp-submenu');
 		$I->see('moose', '.taxonomy-list');
 		$I->dontSee('goose', '.taxonomy-list');
 
