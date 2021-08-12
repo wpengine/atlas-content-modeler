@@ -140,7 +140,7 @@ final class FormEditingExperience {
 		wp_register_script(
 			'atlas-content-modeler-form-editing-experience',
 			ATLAS_CONTENT_MODELER_URL . 'includes/publisher/dist/index.js',
-			[ 'react', 'react-dom', 'wp-tinymce', 'wp-i18n', 'wp-api-fetch' ],
+			[ 'react', 'react-dom', 'wp-tinymce', 'wp-i18n', 'wp-api-fetch', 'wp-date' ],
 			$plugin['Version'],
 			true
 		);
