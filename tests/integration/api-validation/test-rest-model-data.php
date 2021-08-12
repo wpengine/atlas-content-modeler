@@ -21,6 +21,9 @@ class RestModelDataTests extends WP_UnitTestCase {
 
 		update_registered_content_types( $this->get_models() );
 
+		// Start each test with a fresh relationships registry.
+		\TenUp\ContentConnect\Plugin::instance()->setup();
+
 		// @todo why is this not running automatically?
 		do_action( 'init' );
 

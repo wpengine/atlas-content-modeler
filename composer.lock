@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apmatthews/wp-content-connect.git",
-                "reference": "971a97c2921520fe332bb1d77b365984febb8bdd"
+                "reference": "8e243387b65f1764ccd7878326cc7317a4b6b787"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apmatthews/wp-content-connect/zipball/971a97c2921520fe332bb1d77b365984febb8bdd",
-                "reference": "971a97c2921520fe332bb1d77b365984febb8bdd",
+                "url": "https://api.github.com/repos/apmatthews/wp-content-connect/zipball/8e243387b65f1764ccd7878326cc7317a4b6b787",
+                "reference": "8e243387b65f1764ccd7878326cc7317a4b6b787",
                 "shasum": ""
             },
             "require-dev": {
@@ -48,7 +48,7 @@
             "support": {
                 "source": "https://github.com/apmatthews/wp-content-connect/tree/acm-reduction"
             },
-            "time": "2021-08-12T14:38:47+00:00"
+            "time": "2021-08-12T21:57:55+00:00"
         }
     ],
     "packages-dev": [

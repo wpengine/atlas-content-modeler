@@ -51,6 +51,17 @@ return array(
 		'description'     => 'A private model with fields',
 		'fields'          => get_test_fields(),
 	),
+	'relationship-ref' => array(
+		'show_in_rest'    => true,
+		'show_in_graphql' => true,
+		'singular'        => 'Relationship Reference',
+		'plural'          => 'Relationship References',
+		'slug'            => 'relationship-ref',
+		'api_visibility'  => 'public',
+		'model_icon'      => 'dashicons-saved',
+		'description'     => 'A model for referencing in relationship fields.',
+		'fields'          => array(),
+	),
 	'attachment'     => array(
 		'slug'     => 'attachment',
 		'singular' => 'Attachment',
