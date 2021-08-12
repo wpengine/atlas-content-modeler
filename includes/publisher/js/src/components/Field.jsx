@@ -84,7 +84,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				setEditSingleRelModalIsOpen,
 			] = useState(false);
 			const [model, setModel] = useState({});
-
+	
 			function relationshipClickHandler(
 				e,
 				field,
@@ -122,6 +122,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							{__("Link Reference", "atlas-content-modeler")}
 						</button>
 					</div>
+					{field.value && ( <input name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`} value={field.value}/>)}
 					<RelationshipModal
 						field={field}
 						isOpen={editSingleRelModalIsOpen}

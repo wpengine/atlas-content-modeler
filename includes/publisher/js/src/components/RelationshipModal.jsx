@@ -20,6 +20,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
 	const [selectedEntry, setSelectedEntry] = useState(); // TODO: set initial state value from stored field value.
+	const [selectedEntryTitle, setSelectedEntryTitle] = useState(); // TODO: set initial state value from stored field value.
 	const entriesPerPage = 1; // TODO: change to 5. 1 is for testing pagination only.
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
@@ -150,6 +151,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 												aria-label={selectEntryLabel}
 												checked={selectedEntry === id}
 												onChange={() => {
+													setSelectedEntryTitle(title);
 													setSelectedEntry(id);
 												}}
 											/>
@@ -262,6 +264,8 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					event.preventDefault();
 					// TODO: Update the reference field's value here.
 					console.log(`Saving field ${selectedEntry}.`);
+					field.value =`${selectedEntry}`;
+					field.niceName = `${selectedEntryTitle?.rendered}`;
 					setIsOpen(false);
 				}}
 			>
