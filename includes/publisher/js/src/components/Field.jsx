@@ -82,7 +82,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			const [
 				editSingleRelModalIsOpen,
 				setEditSingleRelModalIsOpen,
-			] = useState(true);
+			] = useState(false);
 			const [model, setModel] = useState({});
 
 			function relationshipClickHandler(
@@ -92,7 +92,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				errors,
 				validate
 			) {
-				setEditModelModalIsOpen(true);
+				setEditSingleRelModalIsOpen(true);
 			}
 
 			return (
@@ -108,6 +108,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							style={{ marginTop: "5px" }}
 							id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 							onClick={(e) => {
+								e.preventDefault();
 								relationshipClickHandler(
 									e,
 									field,
