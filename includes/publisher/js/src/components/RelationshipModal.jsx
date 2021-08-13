@@ -21,7 +21,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [totalEntries, setTotalEntries] = useState(0);
 	const [selectedEntry, setSelectedEntry] = useState(); // TODO: set initial state value from stored field value.
 	const [selectedEntryTitle, setSelectedEntryTitle] = useState(); // TODO: set initial state value from stored field value.
-	const entriesPerPage = 1; // TODO: change to 5. 1 is for testing pagination only.
+	const entriesPerPage = 5; // TODO: change to 5. 1 is for testing pagination only.
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
 	const customStyles = {
@@ -113,8 +113,6 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					"atlas-content-modeler"
 				)}
 			</p>
-			{console.log(pagedEntries)}
-
 			{page in pagedEntries ? (
 				<div>
 					<table className="table table-striped">
@@ -268,7 +266,6 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					// TODO: Update the reference field's value here.
 					console.log(`Saving field ${selectedEntry}.`);
 					field.value = `${selectedEntry}`;
-					field.niceName = `${selectedEntryTitle?.rendered}`;
 					setIsOpen(false);
 				}}
 			>

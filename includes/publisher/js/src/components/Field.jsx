@@ -134,7 +134,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						return entries;
 					});
 				});
-			}, [field]);
+			}, [field.value]);
 
 			function relationshipClickHandler(
 				e,
@@ -156,12 +156,39 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					{field.value &&
 						relatedContent?.map((entry) => {
 							const { id, title } = entry;
-
 							return (
-								<input
-									key={id}
-									value={`${id}: ${title.rendered}`}
-								/>
+								<>
+									<div className="app-card">
+										<section className="card-content">
+											<ul className="model-list">
+												<li>
+													{console.log(field.value)}
+													<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
+														<span className="flex-item mb-3 mb-sm-0 pr-1">
+															<p className="label">
+																Linked Reference
+															</p>
+															<p className="value">
+																<strong>
+																	{
+																		title.rendered
+																	}
+																</strong>
+															</p>
+														</span>
+													</div>
+													{field.value && (
+														<input
+															name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
+															value={field.value}
+															type="hidden"
+														/>
+													)}
+												</li>
+											</ul>
+										</section>
+									</div>
+								</>
 							);
 						})}
 					<div className="d-flex flex-row align-items-center media-btns">
@@ -181,7 +208,12 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							}}
 						>
 							{/*<Icon type="error" />*/}
-							{__("Link Reference", "atlas-content-modeler")}
+							{field.value
+								? __(
+										"Link New Reference",
+										"atlas-content-modeler"
+								  )
+								: __("Link Reference", "atlas-content-modeler")}
 						</button>
 					</div>
 					<RelationshipModal
