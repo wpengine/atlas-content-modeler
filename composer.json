@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "10up/wp-content-connect": "dev-acm-reduction"
+        "10up/wp-content-connect": "dev-master"
     },
     "require-dev": {
         "codeception/module-asserts": "^1.0",
