@@ -24,7 +24,6 @@
   "dependencies": {
     "@babel/plugin-syntax-jsx": "^7.12.13",
     "@wordpress/api-fetch": "^3.21.5",
-    "@wordpress/i18n": "^3.19.1",
     "bootstrap": "^5.0.1",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.1.0",
