@@ -59,5 +59,5 @@ function atlas_content_modeler_loader(): void {
 	$form_editing_experience->bootstrap();
 
 	// Boostrap relationships library.
-	\TenUp\ContentConnect\Plugin::instance();
+	\WPE\AtlasContentModeler\ContentConnect\Plugin::instance();
 }

@@ -29,7 +29,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		WPGraphQL::clear_schema();
 
 		// Start each test with a fresh relationships registry.
-		\TenUp\ContentConnect\Plugin::instance()->setup();
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
 		$this->models = $this->get_models();
 
@@ -71,7 +71,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\register_relationships()
 	 */
 	public function test_relationship_registration_init_hook(): void {
-		self::assertSame( 10, has_action( 'tenup-content-connect-init', 'WPE\AtlasContentModeler\ContentRegistration\register_relationships' ) );
+		self::assertSame( 10, has_action( 'acm_content_connect_init', 'WPE\AtlasContentModeler\ContentRegistration\register_relationships' ) );
 	}
 
 	public function test_defined_custom_post_types_are_registered(): void {
@@ -83,13 +83,13 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_relationships_are_registered(): void {
-		$registry = \TenUp\ContentConnect\Helpers\get_registry();
+		$registry = \WPE\AtlasContentModeler\ContentConnect\Helpers\get_registry();
 
 		foreach ( $this->models as $post_type => $model ) {
 			foreach ( $model['fields'] as $field ) {
 				if ( $field['type'] === 'relationship' ) {
 					$relationship = $registry->get_post_to_post_relationship( $post_type, $field['reference'], $field['slug'] );
-					self::assertInstanceOf('TenUp\ContentConnect\Relationships\PostToPost', $relationship);
+					self::assertInstanceOf('WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost', $relationship);
 				}
 			}
 		}

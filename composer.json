@@ -6,11 +6,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/apmatthews/wp-content-connect.git"
+            "url": "https://github.com/wpengine/acm-content-connect.git"
         }
     ],
     "require": {
-        "10up/wp-content-connect": "dev-master"
+        "wpengine/acm-content-connect": "dev-main"
     },
     "require-dev": {
         "codeception/module-asserts": "^1.0",

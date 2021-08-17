@@ -71,11 +71,11 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 	);
 }
 
-add_action( 'tenup-content-connect-init', __NAMESPACE__ . '\\register_relationships' );
+add_action( 'acm_content_connect_init', __NAMESPACE__ . '\\register_relationships' );
 /**
  * Registers relationship fields.
  *
- * @param TenUp\ContentConnect\Registry $registry The relationships registry.
+ * @param \WPE\AtlasContentModeler\ContentConnect\Registry $registry The relationships registry.
  * @return void
  */
 function register_relationships( $registry ) {

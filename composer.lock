@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f299291227021799d32df17e41ba9160",
+    "content-hash": "a25ea16af20aabe3d66955f6819f1e3d",
     "packages": [
         {
-            "name": "10up/wp-content-connect",
-            "version": "dev-master",
+            "name": "wpengine/acm-content-connect",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/apmatthews/wp-content-connect.git",
-                "reference": "3ef0588b2535b777313c45e75f15e8e015e96ec0"
+                "url": "https://github.com/wpengine/acm-content-connect.git",
+                "reference": "35d98ea073b3482d0bacee347316ed9b8f9dd59d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apmatthews/wp-content-connect/zipball/3ef0588b2535b777313c45e75f15e8e015e96ec0",
-                "reference": "3ef0588b2535b777313c45e75f15e8e015e96ec0",
+                "url": "https://api.github.com/repos/wpengine/acm-content-connect/zipball/35d98ea073b3482d0bacee347316ed9b8f9dd59d",
+                "reference": "35d98ea073b3482d0bacee347316ed9b8f9dd59d",
                 "shasum": ""
             },
             "require-dev": {
@@ -27,9 +27,8 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "TenUp\\ContentConnect\\": "includes",
-                    "TenUp\\ContentConnect\\Tests\\Integration\\": "tests/integration",
-                    "TenUp\\ContentConnect\\Tests\\Unit\\": "tests/unit"
+                    "WPE\\AtlasContentModeler\\ContentConnect\\": "includes",
+                    "WPE\\AtlasContentModeler\\ContentConnect\\Tests\\Integration\\": "tests/integration"
                 },
                 "files": [
                     "includes/Helpers.php"
@@ -44,26 +43,27 @@
                     "email": "chris.marslender@10up.com"
                 }
             ],
-            "description": "Post to Post and Post to User Library for WordPress",
+            "description": "Post to Post Library for Atlas Content Modeler",
             "support": {
-                "source": "https://github.com/apmatthews/wp-content-connect/tree/master"
+                "source": "https://github.com/wpengine/acm-content-connect/tree/main",
+                "issues": "https://github.com/wpengine/acm-content-connect/issues"
             },
-            "time": "2021-08-13T13:20:15+00:00"
+            "time": "2021-08-17T20:10:31+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "antecedent/patchwork",
-            "version": "2.1.12",
+            "version": "2.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antecedent/patchwork.git",
-                "reference": "b98e046dd4c0acc34a0846604f06f6111654d9ea"
+                "reference": "0158dbd62bd852b178307d17a5b43a9415ca391b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/b98e046dd4c0acc34a0846604f06f6111654d9ea",
-                "reference": "b98e046dd4c0acc34a0846604f06f6111654d9ea",
+                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/0158dbd62bd852b178307d17a5b43a9415ca391b",
+                "reference": "0158dbd62bd852b178307d17a5b43a9415ca391b",
                 "shasum": ""
             },
             "require": {
@@ -94,7 +94,7 @@
                 "runkit",
                 "testing"
             ],
-            "time": "2019-12-22T17:52:09+00:00"
+            "time": "2021-08-15T16:32:48+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -1294,7 +1294,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v8.54.0",
+            "version": "v8.55.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -1344,16 +1344,16 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v8.54.0",
+            "version": "v8.55.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "504a34286a1b4c5421c43087d6bd4e176138f6fb"
+                "reference": "1a448a53bed5b3399a699321815953594aa72b40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/504a34286a1b4c5421c43087d6bd4e176138f6fb",
-                "reference": "504a34286a1b4c5421c43087d6bd4e176138f6fb",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/1a448a53bed5b3399a699321815953594aa72b40",
+                "reference": "1a448a53bed5b3399a699321815953594aa72b40",
                 "shasum": ""
             },
             "require": {
@@ -1384,11 +1384,11 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "https://laravel.com",
-            "time": "2021-08-03T14:03:47+00:00"
+            "time": "2021-08-13T13:58:11+00:00"
         },
         {
             "name": "illuminate/macroable",
-            "version": "v8.54.0",
+            "version": "v8.55.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -1430,16 +1430,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v8.54.0",
+            "version": "v8.55.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "bd33cb3460edfef8a2afd304fb7d2ff26b02f581"
+                "reference": "fa99f391a9f51b3c6ea32a87f89fb89f5ed91211"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/bd33cb3460edfef8a2afd304fb7d2ff26b02f581",
-                "reference": "bd33cb3460edfef8a2afd304fb7d2ff26b02f581",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/fa99f391a9f51b3c6ea32a87f89fb89f5ed91211",
+                "reference": "fa99f391a9f51b3c6ea32a87f89fb89f5ed91211",
                 "shasum": ""
             },
             "require": {
@@ -1490,7 +1490,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2021-08-10T14:09:41+00:00"
+            "time": "2021-08-16T13:24:30+00:00"
         },
         {
             "name": "lucatume/wp-browser",
@@ -6239,7 +6239,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "10up/wp-content-connect": 20,
+        "wpengine/acm-content-connect": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
