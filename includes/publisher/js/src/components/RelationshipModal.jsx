@@ -45,16 +45,17 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		const { value, checked, type } = event.target;
 		if (type === "checkbox") {
 			if (!checked) {
+				console.log("removing");
 				setSelectedEntry(
 					selectedEntry.splice(selectedEntry.indexOf(value), 1)
 				);
 			} else {
+				console.log("adding");
 				setSelectedEntry([...selectedEntry, value]);
 			}
 		} else {
 			setSelectedEntry([value]);
 		}
-		console.log(selectedEntry);
 	}
 
 	async function getEntries(page) {
@@ -169,9 +170,6 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 												id={`entry-${id}`}
 												value={id}
 												aria-label={selectEntryLabel}
-												defaultChecked={selectedEntry.includes(
-													id.toString()
-												)}
 												onChange={handleSelect}
 											/>
 										</td>
@@ -302,7 +300,6 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					className="tertiary mx-0"
 					onClick={(event) => {
 						event.preventDefault();
-						setSelectedEntry(undefined);
 						setIsOpen(false);
 					}}
 				>
