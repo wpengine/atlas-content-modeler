@@ -95,10 +95,17 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 */
 			function getRelatedTitles(field) {
 				const { models } = atlasContentModelerFormEditingExperience;
+				let values = field.value.split(",");
+				let query = "";
+
+				values.forEach((relationship) => {
+					let lead = query === "" ? "?" : "&";
+					query = query + `${lead}include[]=${relationship}`;
+				});
 
 				const endpoint = `/wp/v2/${
 					models[field.reference].wp_rest_base
-				}/?include[]=${field.value}`;
+				}/${query}`;
 
 				const params = {
 					path: endpoint,
@@ -129,11 +136,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 * Caches those entries in the pagedEntries object, keyed by page.
 			 */
 			useEffect(() => {
-				getRelatedTitles(field).then((entries) => {
-					setRelatedContent(() => {
-						return entries;
+				if (field.value !== "") {
+					// let's not make the call if we don't have to.
+					getRelatedTitles(field).then((entries) => {
+						setRelatedContent(() => {
+							return entries;
+						});
 					});
-				});
+				}
 			}, [field.value]);
 
 			function relationshipClickHandler(
