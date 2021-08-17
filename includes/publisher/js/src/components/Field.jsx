@@ -98,6 +98,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				let values = field.value.split(",");
 				let query = "";
 
+				// Allow for 1:many calls
 				values.forEach((relationship) => {
 					let lead = query === "" ? "?" : "&";
 					query = query + `${lead}include[]=${relationship}`;
@@ -146,13 +147,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				}
 			}, [field.value]);
 
-			function relationshipClickHandler(
-				e,
-				field,
-				modelSlug,
-				errors,
-				validate
-			) {
+			function relationshipClickHandler() {
 				setEditSingleRelModalIsOpen(true);
 			}
 
@@ -165,7 +160,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</label>
 					{field.value &&
 						relatedContent?.map((entry) => {
-							const { id, title } = entry;
+							const { title } = entry;
 							return (
 								<>
 									<div className="app-card">

@@ -41,6 +41,11 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		},
 	};
 
+	/**
+	 * Handles the selection of checkbox or radio button.
+	 *
+	 * @param {object} event
+	 */
 	function handleSelect(event) {
 		const { value, checked, type } = event.target;
 		let savedValues = [];

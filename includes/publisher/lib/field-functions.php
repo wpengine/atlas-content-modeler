@@ -87,6 +87,7 @@ function sanitize_field( string $type, $value ) {
 		case 'richtext':
 			return wp_kses_post( $value );
 		case 'relationship':
+			// Sanitizes each value as an integer and saves as a comma-separated string.
 			$relationships = explode( ',', $value['relationshipEntryId'] );
 			foreach ( $relationships as $index => $id ) {
 				$relationships[ $index ] = filter_var( $id, FILTER_SANITIZE_NUMBER_INT );
