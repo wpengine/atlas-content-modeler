@@ -43,19 +43,18 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 
 	function handleSelect(event) {
 		const { value, checked, type } = event.target;
+		let savedValues = [];
 		if (type === "checkbox") {
 			if (!checked) {
-				console.log("removing");
-				setSelectedEntry(
-					selectedEntry.splice(selectedEntry.indexOf(value), 1)
-				);
+				selectedEntry.splice(selectedEntry.indexOf(value), 1);
+				savedValues = selectedEntry;
 			} else {
-				console.log("adding");
-				setSelectedEntry([...selectedEntry, value]);
+				savedValues = [...new Set([...selectedEntry, value])];
 			}
 		} else {
-			setSelectedEntry([value]);
+			savedValues = [value];
 		}
+		setSelectedEntry(savedValues);
 	}
 
 	async function getEntries(page) {
@@ -170,6 +169,9 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 												id={`entry-${id}`}
 												value={id}
 												aria-label={selectEntryLabel}
+												defaultChecked={selectedEntry.includes(
+													id.toString()
+												)}
 												onChange={handleSelect}
 											/>
 										</td>
