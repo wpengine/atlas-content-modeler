@@ -1,0 +1,167 @@
+@import "../../../includes/shared-assets/scss/_variables";
+button {
+	background: $color-primary;
+	border-radius: $radius;
+	border: 1px solid $color-primary;
+	color: $color-white;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 600;
+	height: 52px;
+	line-height: 20px;
+	padding: 14px 24px;
+}
+
+button:disabled,
+button:disabled:hover {
+	background: $color-gray-disabled-background !important;
+	border-color: $color-gray-disabled-border !important;
+	color: $color-gray-disabled-text !important;
+}
+
+button.first {
+	margin-right: 20px;
+}
+
+button:focus,
+button:hover {
+	background: $color-primary-hover;
+	border: 1px solid $color-primary-hover;
+}
+
+button.secondary {
+	background: $color-text;
+	border: 1px solid $color-text;
+	color: $color-white;
+}
+
+button.secondary:focus,
+button.secondary:hover {
+	background: lighten($color-text, 10%);
+	border: 1px solid lighten($color-text, 10%);
+}
+
+button.tertiary {
+	background: $color-white;
+	border: 1px solid $color-text;
+	color: $color-text;
+}
+
+button.no-border {
+	background: $color-white;
+	border: none;
+	color: $color-text;
+}
+
+button.tertiary:focus,
+button.tertiary:hover {
+	color: $color-primary;
+	background: $color-white;
+	border: 1px solid $color-primary;
+}
+
+button.add-option {
+	border: 1px solid transparent;
+	padding: 14px 4px 14px 0;
+
+	&:focus,
+	&:hover {
+		border-color: $color-primary;
+		a {
+			color: $color-primary-hover;
+		}
+		svg path {
+			fill: $color-primary-hover;
+		}
+	}
+
+	&:hover {
+		border-color: transparent;
+		box-shadow: none;
+	}
+}
+
+button.remove-option {
+	border: 1px solid transparent;
+
+	span {
+		color: $color-warning;
+		padding-left: 7px;
+	}
+
+	&:focus,
+	&:hover {
+		border-color: $color-primary;
+		a {
+			color: $color-primary-hover;
+		}
+
+		span {
+			color: $color-warning-hover;
+		}
+
+		svg path {
+			fill: $color-warning-hover;
+		}
+	}
+
+	&:hover {
+		border-color: transparent;
+		box-shadow: none;
+	}
+}
+
+button.warning {
+	background: $color-warning;
+	color: $color-white;
+	border: 1px solid $color-warning;
+}
+
+button.warning:focus,
+button.warning:hover {
+	background: $color-warning-hover;
+	border: 1px solid $color-warning-hover;
+}
+
+button.settings {
+	background: transparent;
+	border-color: transparent;
+	color: $color-primary;
+	margin-left: 20px;
+	padding: 14px 0;
+}
+
+button.settings:active,
+button.settings:hover {
+	color: $color-primary-hover;
+
+	svg path {
+		fill: $color-primary-hover;
+	}
+}
+
+button.settings svg {
+	margin-right: 10px;
+}
+
+button.options svg {
+	display: block; // For vertical centering.
+}
+
+button.options {
+	background-color: $color-white;
+	border: none;
+	color: $color-text;
+	height: 100%;
+	padding: 0 30px;
+}
+
+button.tertiary.relationship-modal-nav {
+	background: none !important;
+	border: none !important;
+	padding: 0 20px;
+}
+
+.model-list-empty button {
+	margin-top: 23px;
+}

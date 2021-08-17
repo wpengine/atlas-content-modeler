@@ -11,14 +11,17 @@
 	@import "../../../node_modules/bootstrap/scss/_tables";
 	@import "../../../node_modules/bootstrap/scss/_utilities";
 	@import "../../../node_modules/bootstrap/scss/utilities/_api";
-
 	@import "../../../node_modules/bootstrap/scss/_buttons";
 }
 
 @import "../../../includes/shared-assets/scss/_variables";
 @import "./classic-form";
 @import "./app-card-publisher";
+@import "./buttons";
+@import "./table";
+@import "./relationship-modal";
 @import "../../../includes/shared-assets/scss/_modals";
 @import "../../settings/scss/_flex";
 @import "../../settings/scss/_app-card";
+@import "../../settings/scss/_buttons";
 @import "../../settings/scss/_bootstrap-overrides";

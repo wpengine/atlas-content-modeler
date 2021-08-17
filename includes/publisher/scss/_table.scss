@@ -1,0 +1,11 @@
+@import "../../../includes/shared-assets/scss/_variables";
+
+table {
+	border: 1px black;
+}
+
+table thead {
+	background: $color-gray;
+	text-transform: uppercase;
+	color: $color-white;
+}

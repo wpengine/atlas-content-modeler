@@ -193,7 +193,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						})}
 					<div className="d-flex flex-row align-items-center media-btns">
 						<button
-							className="button button-primary button-large"
+							className="button button-primary action-button"
 							style={{ marginTop: "5px" }}
 							id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 							onClick={(e) => {
