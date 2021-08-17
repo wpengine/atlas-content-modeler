@@ -19,7 +19,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [page, setPage] = useState(1);
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
-	const [selectedEntry, setSelectedEntry] = useState([]); // TODO: set initial state value from stored field value.
+	const [selectedEntry, setSelectedEntry] = useState(field.value.split(",")); // TODO: set initial state value from stored field value.
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
@@ -53,6 +53,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		} else {
 			setSelectedEntry([value]);
 		}
+		console.log(selectedEntry);
 	}
 
 	async function getEntries(page) {
@@ -167,6 +168,9 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 												id={`entry-${id}`}
 												value={id}
 												aria-label={selectEntryLabel}
+												defaultChecked={selectedEntry.includes(
+													id.toString()
+												)}
 												onChange={handleSelect}
 											/>
 										</td>

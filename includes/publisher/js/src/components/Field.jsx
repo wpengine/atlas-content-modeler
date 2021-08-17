@@ -172,7 +172,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 										<section className="card-content">
 											<ul className="model-list">
 												<li>
-													{console.log(field.value)}
 													<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 														<span className="flex-item mb-3 mb-sm-0 pr-1">
 															<p className="label">
