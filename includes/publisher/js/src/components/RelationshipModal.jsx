@@ -31,6 +31,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		content: {
 			top: "50%",
 			left: "50%",
+			width: "55%",
 			right: "auto",
 			bottom: "auto",
 			transform: "translate(-50%, -50%)",
@@ -130,7 +131,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			</p>
 			{page in pagedEntries ? (
 				<div>
-					<table className="table table-striped">
+					<table className="table table-striped mt-2">
 						<thead>
 							<tr>
 								<th></th>
@@ -198,95 +199,116 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 							})}
 						</tbody>
 					</table>
-					<p>
-						{sprintf(
-							__("Page %d of %d", "atlas-content-modeler"),
-							page,
-							totalPages
-						)}
-					</p>
-
-					<button
-						href="#"
-						className="tertiary"
-						disabled={page === 1}
-						aria-label={__("First page", "atlas-content-modeler")}
-						onClick={(event) => {
-							event.preventDefault();
-							setPage(1);
-						}}
-					>
-						{"<<"}
-					</button>
-					<button
-						href="#"
-						className="tertiary"
-						disabled={page === 1}
-						aria-label={__(
-							"Previous page",
-							"atlas-content-modeler"
-						)}
-						onClick={(event) => {
-							event.preventDefault();
-							setPage(page - 1);
-						}}
-					>
-						{"<"}
-					</button>
-					<button
-						href="#"
-						className="tertiary"
-						disabled={page === totalPages}
-						aria-label={__("Next page", "atlas-content-modeler")}
-						onClick={(event) => {
-							event.preventDefault();
-							setPage(page + 1);
-						}}
-					>
-						{">"}
-					</button>
-					<button
-						href="#"
-						className="tertiary"
-						disabled={page === totalPages}
-						aria-label={__("Last page", "atlas-content-modeler")}
-						onClick={(event) => {
-							event.preventDefault();
-							setPage(totalPages);
-						}}
-					>
-						{">>"}
-					</button>
+					<div className="d-flex flex-row-reverse">
+						<div className="d-flex flex-row">
+							<button
+								href="#"
+								className="tertiary relationship-modal-nav"
+								disabled={page === 1}
+								aria-label={__(
+									"First page",
+									"atlas-content-modeler"
+								)}
+								onClick={(event) => {
+									event.preventDefault();
+									setPage(1);
+								}}
+							>
+								{"<<"}
+							</button>
+							<button
+								href="#"
+								className="tertiary relationship-modal-nav"
+								disabled={page === 1}
+								aria-label={__(
+									"Previous page",
+									"atlas-content-modeler"
+								)}
+								onClick={(event) => {
+									event.preventDefault();
+									setPage(page - 1);
+								}}
+							>
+								{"<"}
+							</button>
+							<button
+								href="#"
+								className="tertiary relationship-modal-nav"
+								disabled={page === totalPages}
+								aria-label={__(
+									"Next page",
+									"atlas-content-modeler"
+								)}
+								onClick={(event) => {
+									event.preventDefault();
+									setPage(page + 1);
+								}}
+							>
+								{">"}
+							</button>
+							<button
+								href="#"
+								className="tertiary relationship-modal-nav"
+								disabled={page === totalPages}
+								aria-label={__(
+									"Last page",
+									"atlas-content-modeler"
+								)}
+								onClick={(event) => {
+									event.preventDefault();
+									setPage(totalPages);
+								}}
+							>
+								{">>"}
+							</button>
+						</div>
+						<div className="mx-3">
+							<span
+								className="align-middle"
+								style={{ lineHeight: "55px" }}
+							>
+								{sprintf(
+									__(
+										"Page %d of %d",
+										"atlas-content-modeler"
+									),
+									page,
+									totalPages
+								)}
+							</span>
+						</div>
+					</div>
 				</div>
 			) : (
 				<p>{__("No entries found.", "atlas-content-modeler")}</p>
 			)}
-
-			<button
-				href="#"
-				className="tertiary button button-large"
-				onClick={(event) => {
-					event.preventDefault();
-					setIsOpen(false);
-				}}
-			>
-				{__("Cancel", "atlas-content-modeler")}
-			</button>
-
-			<button
-				type="submit"
-				disabled={typeof selectedEntry === "undefined"}
-				className="button button-primary button-large"
-				onClick={(event) => {
-					event.preventDefault();
-					// TODO: Update the reference field's value here.
-					console.log(`Saving field ${selectedEntry}.`);
-					field.value = `${selectedEntry}`;
-					setIsOpen(false);
-				}}
-			>
-				{__("Save", "atlas-content-modeler")}
-			</button>
+			<div className="d-flex flex-row-reverse mt-2">
+				<button
+					type="submit"
+					disabled={typeof selectedEntry === "undefined"}
+					className="action-button mx-3"
+					onClick={(event) => {
+						event.preventDefault();
+						// TODO: Update the reference field's value here.
+						console.log(`Saving field ${selectedEntry}.`);
+						field.value = `${selectedEntry}`;
+						setIsOpen(false);
+					}}
+				>
+					{__("Save", "atlas-content-modeler")}
+				</button>
+				<button
+					href="#"
+					className="tertiary mx-0"
+					onClick={(event) => {
+						event.preventDefault();
+						setSelectedEntry(undefined);
+						setIsOpen(false);
+					}}
+				>
+					{__("Cancel", "atlas-content-modeler")}
+				</button>
+			</div>
 		</Modal>
 	);
 }
