@@ -19,7 +19,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [page, setPage] = useState(1);
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
-	const [selectedEntry, setSelectedEntry] = useState(); // TODO: set initial state value from stored field value.
+	const [selectedEntry, setSelectedEntry] = useState([]); // TODO: set initial state value from stored field value.
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
@@ -39,6 +39,21 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			boxSizing: "border-box",
 		},
 	};
+
+	function handleSelect(event) {
+		const { value, checked, type } = event.target;
+		if (type === "checkbox") {
+			if (!checked) {
+				setSelectedEntry(
+					selectedEntry.splice(selectedEntry.indexOf(value), 1)
+				);
+			} else {
+				setSelectedEntry([...selectedEntry, value]);
+			}
+		} else {
+			setSelectedEntry([value]);
+		}
+	}
 
 	async function getEntries(page) {
 		const { models } = atlasContentModelerFormEditingExperience;
@@ -142,18 +157,17 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 									<tr key={id}>
 										<td>
 											<input
-												type="radio"
+												type={
+													field.cardinality ==
+													"one-to-many"
+														? "checkbox"
+														: "radio"
+												}
 												name="selected-entry"
 												id={`entry-${id}`}
 												value={id}
 												aria-label={selectEntryLabel}
-												checked={selectedEntry === id}
-												onChange={() => {
-													setSelectedEntryTitle(
-														title
-													);
-													setSelectedEntry(id);
-												}}
+												onChange={handleSelect}
 											/>
 										</td>
 										<td>
@@ -249,7 +263,6 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 				className="tertiary button button-large"
 				onClick={(event) => {
 					event.preventDefault();
-					setSelectedEntry(undefined);
 					setIsOpen(false);
 				}}
 			>
