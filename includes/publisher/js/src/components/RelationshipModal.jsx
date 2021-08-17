@@ -20,8 +20,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
 	const [selectedEntry, setSelectedEntry] = useState(); // TODO: set initial state value from stored field value.
-	const [selectedEntryTitle, setSelectedEntryTitle] = useState(); // TODO: set initial state value from stored field value.
-	const entriesPerPage = 5; // TODO: change to 5. 1 is for testing pagination only.
+	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
 	const customStyles = {
