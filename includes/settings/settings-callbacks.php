@@ -45,7 +45,7 @@ function register_admin_menu_page(): void {
 	);
 }
 
-add_filter( 'all_plugins', 'prefix_add_plugin_icon' );
+add_filter( 'all_plugins', __NAMESPACE__ . '\prefix_add_plugin_icon' );
 /**
  * Add a custom plugin icon to the plugins update page (introduced in WP4.9).
  *
@@ -54,7 +54,7 @@ add_filter( 'all_plugins', 'prefix_add_plugin_icon' );
  * @return mixed
  */
 function prefix_add_plugin_icon( $plugins ) {
-	$plugins['plugin-directory/plugin-directory.php']['icons']['default'] = plugin_dir_url( __DIR__ ) . 'settings/img/Atlas.svg';
+	$plugins['plugin-directory/plugin-directory.php']['icons']['default'] = plugin_dir_url( __FILE__ ) . 'img/Atlas.svg';
 
 	return $plugins;
 }
