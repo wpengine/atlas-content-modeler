@@ -456,6 +456,7 @@ workflows:
       - plugin-build-zip:
           slug: atlas-content-modeler
           requires:
+            - plugin-build-composer
             - plugin-build-npm
             - plugin-build-pot
           # Run this job on every commit/PR so the plugin is available as a build artifact
