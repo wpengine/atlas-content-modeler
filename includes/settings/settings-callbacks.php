@@ -45,20 +45,6 @@ function register_admin_menu_page(): void {
 	);
 }
 
-add_filter( 'all_plugins', __NAMESPACE__ . '\prefix_add_plugin_icon' );
-/**
- * Add a custom plugin icon to the plugins update page (introduced in WP4.9).
- *
- * @param array|mixed $plugins Plugins passed in.
- *
- * @return mixed
- */
-function prefix_add_plugin_icon( $plugins ) {
-	$plugins['plugin-directory/plugin-directory.php']['icons']['default'] = plugin_dir_url( __FILE__ ) . 'img/Atlas.svg';
-
-	return $plugins;
-}
-
 add_filter( 'parent_file', __NAMESPACE__ . '\maybe_override_submenu_file' );
 /**
  * Overrides the “submenu file” that determines which admin submenu item gains
