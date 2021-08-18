@@ -148,7 +148,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						relatedContent?.map((entry) => {
 							const { title } = entry;
 							return (
-								<div key={field.id} className="app-card">
+								<div key={entry.id} className="app-card">
 									<section className="card-content">
 										<ul className="model-list">
 											<li>
