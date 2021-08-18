@@ -19,7 +19,9 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [page, setPage] = useState(1);
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
-	const [selectedEntry, setSelectedEntry] = useState(field.value.split(",")); // TODO: set initial state value from stored field value.
+	const [selectedEntries, setselectedEntries] = useState(
+		field.value.split(",")
+	); // TODO: set initial state value from stored field value.
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
@@ -51,15 +53,15 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		let savedValues = [];
 		if (type === "checkbox") {
 			if (!checked) {
-				selectedEntry.splice(selectedEntry.indexOf(value), 1);
-				savedValues = selectedEntry;
+				selectedEntries.splice(selectedEntries.indexOf(value), 1);
+				savedValues = selectedEntries;
 			} else {
-				savedValues = [...new Set([...selectedEntry, value])];
+				savedValues = [...new Set([...selectedEntries, value])];
 			}
 		} else {
 			savedValues = [value];
 		}
-		setSelectedEntry(savedValues);
+		setselectedEntries(savedValues);
 	}
 
 	async function getEntries(page) {
@@ -174,7 +176,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 												id={`entry-${id}`}
 												value={id}
 												aria-label={selectEntryLabel}
-												defaultChecked={selectedEntry.includes(
+												defaultChecked={selectedEntries.includes(
 													id.toString()
 												)}
 												onChange={handleSelect}
@@ -290,11 +292,11 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			<div className="d-flex flex-row-reverse mt-2">
 				<button
 					type="submit"
-					disabled={typeof selectedEntry === "undefined"}
+					disabled={typeof selectedEntries === "undefined"}
 					className="action-button mx-3"
 					onClick={(event) => {
 						event.preventDefault();
-						field.value = `${selectedEntry}`;
+						field.value = `${selectedEntries}`;
 						setIsOpen(false);
 					}}
 				>
