@@ -134,9 +134,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				if (field.value !== "") {
 					// let's not make the call if we don't have to.
 					getRelatedTitles(field).then((entries) => {
-						setRelatedContent(() => {
-							return entries;
-						});
+						setRelatedContent(entries);
 					});
 				}
 			}, [field.value]);
