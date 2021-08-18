@@ -95,10 +95,13 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 */
 			function getRelatedTitles(field) {
 				const { models } = atlasContentModelerFormEditingExperience;
+				let query = new URLSearchParams({
+					include: field.value.split(","),
+				});
 
 				const endpoint = `/wp/v2/${
 					models[field.reference].wp_rest_base
-				}/?include[]=${field.value}`;
+				}/?=${query}`;
 
 				const params = {
 					path: endpoint,
@@ -125,24 +128,20 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			}
 
 			/**
-			 * Gets entries whenever the state of 'page' changes.
-			 * Caches those entries in the pagedEntries object, keyed by page.
+			 * Gets post information to display to the user outside of the modal.
 			 */
 			useEffect(() => {
-				getRelatedTitles(field).then((entries) => {
-					setRelatedContent(() => {
-						return entries;
+				if (field.value !== "") {
+					// let's not make the call if we don't have to.
+					getRelatedTitles(field).then((entries) => {
+						setRelatedContent(() => {
+							return entries;
+						});
 					});
-				});
+				}
 			}, [field.value]);
 
-			function relationshipClickHandler(
-				e,
-				field,
-				modelSlug,
-				errors,
-				validate
-			) {
+			function relationshipClickHandler() {
 				setEditSingleRelModalIsOpen(true);
 			}
 
@@ -155,18 +154,20 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</label>
 					{field.value &&
 						relatedContent?.map((entry) => {
-							const { id, title } = entry;
+							const { title } = entry;
 							return (
 								<>
 									<div className="app-card">
 										<section className="card-content">
 											<ul className="model-list">
 												<li>
-													{console.log(field.value)}
 													<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 														<span className="flex-item mb-3 mb-sm-0 pr-1">
 															<p className="label">
-																Linked Reference
+																{__(
+																	"Linked Reference",
+																	"atlas-content-modeler"
+																)}
 															</p>
 															<p className="value">
 																<strong>

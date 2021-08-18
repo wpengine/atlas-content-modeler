@@ -19,9 +19,8 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [page, setPage] = useState(1);
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
-	const [selectedEntry, setSelectedEntry] = useState(); // TODO: set initial state value from stored field value.
-	const [selectedEntryTitle, setSelectedEntryTitle] = useState(); // TODO: set initial state value from stored field value.
-	const entriesPerPage = 5; // TODO: change to 5. 1 is for testing pagination only.
+	const [selectedEntry, setSelectedEntry] = useState(field.value.split(",")); // TODO: set initial state value from stored field value.
+	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
 	const customStyles = {
@@ -41,6 +40,27 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			boxSizing: "border-box",
 		},
 	};
+
+	/**
+	 * Handles the selection of checkbox or radio button.
+	 *
+	 * @param {object} event
+	 */
+	function handleSelect(event) {
+		const { value, checked, type } = event.target;
+		let savedValues = [];
+		if (type === "checkbox") {
+			if (!checked) {
+				selectedEntry.splice(selectedEntry.indexOf(value), 1);
+				savedValues = selectedEntry;
+			} else {
+				savedValues = [...new Set([...selectedEntry, value])];
+			}
+		} else {
+			savedValues = [value];
+		}
+		setSelectedEntry(savedValues);
+	}
 
 	async function getEntries(page) {
 		const { models } = atlasContentModelerFormEditingExperience;
@@ -144,18 +164,20 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 									<tr key={id}>
 										<td>
 											<input
-												type="radio"
+												type={
+													field.cardinality ==
+													"one-to-many"
+														? "checkbox"
+														: "radio"
+												}
 												name="selected-entry"
 												id={`entry-${id}`}
 												value={id}
 												aria-label={selectEntryLabel}
-												checked={selectedEntry === id}
-												onChange={() => {
-													setSelectedEntryTitle(
-														title
-													);
-													setSelectedEntry(id);
-												}}
+												defaultChecked={selectedEntry.includes(
+													id.toString()
+												)}
+												onChange={handleSelect}
 											/>
 										</td>
 										<td>
@@ -272,8 +294,6 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					className="action-button mx-3"
 					onClick={(event) => {
 						event.preventDefault();
-						// TODO: Update the reference field's value here.
-						console.log(`Saving field ${selectedEntry}.`);
 						field.value = `${selectedEntry}`;
 						setIsOpen(false);
 					}}
@@ -285,7 +305,6 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					className="tertiary mx-0"
 					onClick={(event) => {
 						event.preventDefault();
-						setSelectedEntry(undefined);
 						setIsOpen(false);
 					}}
 				>
