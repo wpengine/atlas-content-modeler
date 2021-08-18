@@ -95,18 +95,13 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 */
 			function getRelatedTitles(field) {
 				const { models } = atlasContentModelerFormEditingExperience;
-				let values = field.value.split(",");
-				let query = "";
-
-				// Allow for 1:many calls
-				values.forEach((relationship) => {
-					let lead = query === "" ? "?" : "&";
-					query = query + `${lead}include[]=${relationship}`;
+				let query = new URLSearchParams({
+					include: field.value.split(","),
 				});
 
 				const endpoint = `/wp/v2/${
 					models[field.reference].wp_rest_base
-				}/${query}`;
+				}/?=${query}`;
 
 				const params = {
 					path: endpoint,
