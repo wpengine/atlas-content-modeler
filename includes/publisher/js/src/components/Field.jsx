@@ -184,13 +184,22 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 								setEditSingleRelModalIsOpen(true);
 							}}
 						>
-							{/*<Icon type="error" />*/}
-							{field.value
-								? __(
-										"Link New Reference",
-										"atlas-content-modeler"
-								  )
-								: __("Link Reference", "atlas-content-modeler")}
+							<div className="d-flex flex-row">
+								<div style={{ lineHeight: "34px" }}>
+									<Icon type="link" />
+								</div>
+								<div className="px-2">
+									{field.value
+										? __(
+												"Link New Reference",
+												"atlas-content-modeler"
+										  )
+										: __(
+												"Link Reference",
+												"atlas-content-modeler"
+										  )}
+								</div>
+							</div>
 						</button>
 					</div>
 					<RelationshipModal
