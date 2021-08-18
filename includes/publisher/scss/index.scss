@@ -12,6 +12,7 @@
 	@import "../../../node_modules/bootstrap/scss/_utilities";
 	@import "../../../node_modules/bootstrap/scss/utilities/_api";
 	@import "../../../node_modules/bootstrap/scss/_buttons";
+	@import "./relationship-modal";
 }
 
 @import "../../../includes/shared-assets/scss/_variables";
@@ -19,7 +20,6 @@
 @import "./app-card-publisher";
 @import "./buttons";
 @import "./table";
-@import "./relationship-modal";
 @import "../../../includes/shared-assets/scss/_modals";
 @import "../../settings/scss/_flex";
 @import "../../settings/scss/_app-card";
