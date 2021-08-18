@@ -152,34 +152,30 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						relatedContent?.map((entry) => {
 							const { title } = entry;
 							return (
-								<>
-									<div className="app-card">
-										<section className="card-content">
-											<ul className="model-list">
-												<li>
-													<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
-														<span className="flex-item mb-3 mb-sm-0 pr-1">
-															<p className="value">
-																<strong>
-																	{
-																		title.rendered
-																	}
-																</strong>
-															</p>
-														</span>
-													</div>
-													{field.value && (
-														<input
-															name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
-															value={field.value}
-															type="hidden"
-														/>
-													)}
-												</li>
-											</ul>
-										</section>
-									</div>
-								</>
+								<div key={field.id} className="app-card">
+									<section className="card-content">
+										<ul className="model-list">
+											<li>
+												<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
+													<span className="flex-item mb-3 mb-sm-0 pr-1">
+														<p className="value">
+															<strong>
+																{title.rendered}
+															</strong>
+														</p>
+													</span>
+												</div>
+												{field.value && (
+													<input
+														name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
+														value={field.value}
+														type="hidden"
+													/>
+												)}
+											</li>
+										</ul>
+									</section>
+								</div>
 							);
 						})}
 					<div className="d-flex flex-row align-items-center media-btns">
