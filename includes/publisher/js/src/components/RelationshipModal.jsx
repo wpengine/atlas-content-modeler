@@ -294,8 +294,6 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					className="action-button mx-3"
 					onClick={(event) => {
 						event.preventDefault();
-						// TODO: Update the reference field's value here.
-						console.log(`Saving field ${selectedEntry}.`);
 						field.value = `${selectedEntry}`;
 						setIsOpen(false);
 					}}

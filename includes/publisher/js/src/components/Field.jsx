@@ -133,8 +133,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			}
 
 			/**
-			 * Gets entries whenever the state of 'page' changes.
-			 * Caches those entries in the pagedEntries object, keyed by page.
+			 * Gets post information to display to the user outside of the modal.
 			 */
 			useEffect(() => {
 				if (field.value !== "") {
@@ -170,7 +169,10 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 													<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 														<span className="flex-item mb-3 mb-sm-0 pr-1">
 															<p className="label">
-																Linked Reference
+																{__(
+																	"Linked Reference",
+																	"atlas-content-modeler"
+																)}
 															</p>
 															<p className="value">
 																<strong>
