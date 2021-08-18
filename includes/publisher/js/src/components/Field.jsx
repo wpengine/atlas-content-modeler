@@ -159,12 +159,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 												<li>
 													<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 														<span className="flex-item mb-3 mb-sm-0 pr-1">
-															<p className="label">
-																{__(
-																	"Linked Reference",
-																	"atlas-content-modeler"
-																)}
-															</p>
 															<p className="value">
 																<strong>
 																	{
