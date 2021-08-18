@@ -1,27 +1,28 @@
 /* import bootstrap dependencies for grid and utilities only */
 
 .atlas-content-modeler {
-	@import "../../../node_modules/bootstrap/scss/_functions";
-	@import "../../../node_modules/bootstrap/scss/_variables";
-	@import "../../../node_modules/bootstrap/scss/_mixins";
-	@import "../../../node_modules/bootstrap/scss/vendor/_rfs";
+	@import "../../../node_modules/bootstrap/scss/_buttons";
 	@import "../../../node_modules/bootstrap/scss/_containers";
+	@import "../../../node_modules/bootstrap/scss/_functions";
 	@import "../../../node_modules/bootstrap/scss/_grid";
 	@import "../../../node_modules/bootstrap/scss/_helpers";
+	@import "../../../node_modules/bootstrap/scss/_mixins";
 	@import "../../../node_modules/bootstrap/scss/_tables";
 	@import "../../../node_modules/bootstrap/scss/_utilities";
+	@import "../../../node_modules/bootstrap/scss/_variables";
 	@import "../../../node_modules/bootstrap/scss/utilities/_api";
-	@import "../../../node_modules/bootstrap/scss/_buttons";
+	@import "../../../node_modules/bootstrap/scss/vendor/_rfs";
+	@import "../../settings/scss/_app-card";
+	@import "../../settings/scss/_buttons";
+	@import "./app-card-publisher";
+	@import "./app-card-publisher";
+	@import "./buttons";
 	@import "./relationship-modal";
+	@import "./table";
 }
 
-@import "../../../includes/shared-assets/scss/_variables";
-@import "./classic-form";
-@import "./app-card-publisher";
-@import "./buttons";
-@import "./table";
 @import "../../../includes/shared-assets/scss/_modals";
-@import "../../settings/scss/_flex";
-@import "../../settings/scss/_app-card";
-@import "../../settings/scss/_buttons";
+@import "../../../includes/shared-assets/scss/_variables";
 @import "../../settings/scss/_bootstrap-overrides";
+@import "../../settings/scss/_flex";
+@import "./classic-form";
