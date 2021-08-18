@@ -137,10 +137,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				}
 			}, [field.value]);
 
-			function relationshipClickHandler() {
-				setEditSingleRelModalIsOpen(true);
-			}
-
 			return (
 				<>
 					<label
@@ -185,13 +181,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 							onClick={(e) => {
 								e.preventDefault();
-								relationshipClickHandler(
-									e,
-									field,
-									modelSlug,
-									errors,
-									validate
-								);
+								setEditSingleRelModalIsOpen(true);
 							}}
 						>
 							{/*<Icon type="error" />*/}
