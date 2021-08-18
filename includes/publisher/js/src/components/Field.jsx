@@ -133,9 +133,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			useEffect(() => {
 				if (field.value !== "") {
 					// let's not make the call if we don't have to.
-					getRelatedTitles(field).then((entries) => {
-						setRelatedContent(entries);
-					});
+					getRelatedTitles(field).then(setRelatedContent);
 				}
 			}, [field.value]);
 
