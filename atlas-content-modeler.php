@@ -58,6 +58,6 @@ function atlas_content_modeler_loader(): void {
 	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
 	$form_editing_experience->bootstrap();
 
-	// Boostrap relationships library.
+	// Bootstrap relationships library.
 	\WPE\AtlasContentModeler\ContentConnect\Plugin::instance();
 }
