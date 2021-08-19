@@ -13,13 +13,17 @@ const { date, apiFetch } = wp;
  * @param {Function} setIsOpen - Callback for opening and closing modal.
  * @returns {JSX.Element} Modal
  */
-export default function RelationshipModal({ field, isOpen, setIsOpen }) {
+export default function RelationshipModal({
+	field,
+	isOpen,
+	setIsOpen,
+	selectedEntries,
+	setSelectedEntries,
+}) {
 	const [page, setPage] = useState(1);
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
-	const [selectedEntries, setSelectedEntries] = useState(
-		field.value.split(",")
-	);
+	const [chosenEntries, setChosenEntries] = useState(selectedEntries);
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
@@ -51,15 +55,14 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		let savedValues = [];
 		if (type === "checkbox") {
 			if (!checked) {
-				selectedEntries.splice(selectedEntries.indexOf(value), 1);
-				savedValues = selectedEntries;
+				savedValues = chosenEntries.filter((item) => item !== value);
 			} else {
-				savedValues = [...new Set([...selectedEntries, value])];
+				savedValues = [...new Set([...chosenEntries, value])];
 			}
 		} else {
 			savedValues = [value];
 		}
-		setSelectedEntries(savedValues);
+		setChosenEntries(savedValues);
 	}
 
 	async function getEntries(page) {
@@ -181,7 +184,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 												id={`entry-${id}`}
 												value={id}
 												aria-label={selectEntryLabel}
-												defaultChecked={selectedEntries.includes(
+												defaultChecked={chosenEntries.includes(
 													id.toString()
 												)}
 												onChange={handleSelect}
@@ -297,11 +300,11 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			<div className="d-flex flex-row-reverse mt-2">
 				<button
 					type="submit"
-					disabled={typeof selectedEntries === "undefined"}
+					disabled={chosenEntries.length < 1}
 					className="action-button mx-3"
 					onClick={(event) => {
 						event.preventDefault();
-						field.value = `${selectedEntries}`;
+						setSelectedEntries(chosenEntries);
 						setIsOpen(false);
 					}}
 				>
@@ -312,6 +315,8 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 					className="tertiary mx-0"
 					onClick={(event) => {
 						event.preventDefault();
+						// TODO: reset chosenEntries because the user does not want to save them?
+						// So that the next time they open the modal the state is accurate.
 						setIsOpen(false);
 					}}
 				>

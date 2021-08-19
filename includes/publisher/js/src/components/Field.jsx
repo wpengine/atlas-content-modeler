@@ -85,18 +85,20 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				editSingleRelModalIsOpen,
 				setEditSingleRelModalIsOpen,
 			] = useState(false);
-			const [relatedContent, setRelatedContent] = useState();
+			const [entryInfo, setEntryInfo] = useState();
+			const [selectedEntries, setSelectedEntries] = useState(
+				field.value.split(",")
+			);
 
 			/**
 			 * Retrieves related content information for display.
 			 *
-			 * @param {object} field
 			 * @returns {object}
 			 */
-			function getRelatedTitles(field) {
+			function getEntries() {
 				const { models } = atlasContentModelerFormEditingExperience;
 				let query = new URLSearchParams({
-					include: field.value.split(","),
+					include: selectedEntries,
 				});
 
 				const endpoint = `/wp/v2/${
@@ -131,11 +133,10 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 * Gets post information to display to the user outside of the modal.
 			 */
 			useEffect(() => {
-				if (field.value !== "") {
-					// let's not make the call if we don't have to.
-					getRelatedTitles(field).then(setRelatedContent);
+				if (selectedEntries.length > 0) {
+					getEntries(selectedEntries).then(setEntryInfo);
 				}
-			}, [field.value]);
+			}, [selectedEntries]);
 
 			return (
 				<>
@@ -144,36 +145,33 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					{field.value &&
-						relatedContent?.map((entry) => {
-							const { title } = entry;
-							return (
-								<div key={entry.id} className="app-card">
-									<section className="card-content">
-										<ul className="model-list">
-											<li>
-												<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
-													<span className="flex-item mb-3 mb-sm-0 pr-1">
-														<p className="value">
-															<strong>
-																{title.rendered}
-															</strong>
-														</p>
-													</span>
-												</div>
-												{field.value && (
-													<input
-														name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
-														value={field.value}
-														type="hidden"
-													/>
-												)}
-											</li>
-										</ul>
-									</section>
-								</div>
-							);
-						})}
+					{entryInfo?.map((entry) => {
+						const { title } = entry;
+						return (
+							<div key={entry.id} className="app-card">
+								<section className="card-content">
+									<ul className="model-list">
+										<li>
+											<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
+												<span className="flex-item mb-3 mb-sm-0 pr-1">
+													<p className="value">
+														<strong>
+															{title.rendered}
+														</strong>
+													</p>
+												</span>
+											</div>
+											<input
+												name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
+												value={selectedEntries}
+												type="hidden"
+											/>
+										</li>
+									</ul>
+								</section>
+							</div>
+						);
+					})}
 					<div className="d-flex flex-row align-items-center media-btns">
 						<button
 							className="button button-primary action-button"
@@ -206,6 +204,8 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						field={field}
 						isOpen={editSingleRelModalIsOpen}
 						setIsOpen={setEditSingleRelModalIsOpen}
+						selectedEntries={selectedEntries}
+						setSelectedEntries={setSelectedEntries}
 					/>
 				</>
 			);
