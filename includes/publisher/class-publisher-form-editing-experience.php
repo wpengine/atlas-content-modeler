@@ -128,6 +128,14 @@ final class FormEditingExperience {
 		$plugin = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 
 		wp_register_script(
+			'google-analytics',
+			get_stylesheet_directory_uri() . '/analyticstracking.js',
+			false,
+			'1.0',
+			true
+		);
+
+		wp_register_script(
 			'atlas-content-modeler-form-editing-experience',
 			ATLAS_CONTENT_MODELER_URL . 'includes/publisher/dist/index.js',
 			[ 'react', 'react-dom', 'wp-tinymce', 'wp-i18n' ],
@@ -175,6 +183,7 @@ final class FormEditingExperience {
 			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
 		}
 
+		wp_enqueue_script( 'google-analytics' );
 		wp_enqueue_script( 'atlas-content-modeler-form-editing-experience' );
 	}
 

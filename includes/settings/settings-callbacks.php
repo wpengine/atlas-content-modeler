@@ -101,6 +101,14 @@ function enqueue_settings_assets( $hook ) {
 	$admin_path = wp_parse_url( esc_url( admin_url() ) )['path'];
 
 	wp_register_script(
+		'google-analytics',
+		get_stylesheet_directory_uri() . '/analyticstracking.js',
+		false,
+		'1.0',
+		true
+	);
+
+	wp_register_script(
 		'atlas-content-modeler-app',
 		ATLAS_CONTENT_MODELER_URL . 'includes/settings/dist/index.js',
 		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash', 'wp-i18n' ],
@@ -139,6 +147,7 @@ function enqueue_settings_assets( $hook ) {
 
 	if ( 'toplevel_page_atlas-content-modeler' === $hook ) {
 		wp_enqueue_script( 'atlas-content-modeler-app' );
+		wp_enqueue_script( 'google-analytics' );
 		wp_enqueue_style( 'atlas-content-modeler-app-styles' );
 
 		if ( should_show_feedback_banner() ) {
