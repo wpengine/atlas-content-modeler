@@ -21,6 +21,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		 */
 		WPGraphQL::clear_schema();
 
+		// Start each test with a fresh relationships registry.
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
+
 		// @todo why is this not running automatically?
 		do_action( 'init' );
 

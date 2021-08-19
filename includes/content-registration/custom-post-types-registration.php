@@ -71,6 +71,52 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 	);
 }
 
+add_action( 'acm_content_connect_init', __NAMESPACE__ . '\\register_relationships' );
+/**
+ * Registers relationship fields.
+ *
+ * @param \WPE\AtlasContentModeler\ContentConnect\Registry $registry The relationships registry.
+ * @return void
+ */
+function register_relationships( $registry ) {
+	$content_types = get_registered_content_types();
+
+	if ( ! $content_types ) {
+		return;
+	}
+
+	foreach ( $content_types as $post_type => $args ) {
+		if ( ! $args['fields'] ) {
+			continue;
+		}
+
+		foreach ( $args['fields'] as $field ) {
+			if ( $field['type'] === 'relationship' ) {
+				$args = [
+					'is_bidirectional' => false,
+					'from'             => [
+						'enable_ui' => true,
+						'sortable'  => false,
+						'labels'    => [
+							'name' => $field['name'],
+						],
+					],
+				];
+
+				try {
+					$registry->define_post_to_post( $post_type, $field['reference'], $field['slug'], $args );
+				} catch ( \Exception $e ) {
+					/**
+					 * Either the relationship already exists, or the referenced post type was deleted.
+					 * We should be removing any relationship fields that reference a model when it is
+					 * deleted, but for now we will just catch the exception and ignore it.
+					 */
+				}
+			}
+		}
+	}
+}
+
 /**
  * Processes field values for appropriate REST API returns.
  *
