@@ -124,17 +124,19 @@ $button-primary: #002838;
 			margin-bottom: 15px;
 		}
 
-		input.button {
+		input.button,
+		button.link-button {
 			background: $button-primary;
 			font-size: 16px;
+			font-weight: 600;
 			line-height: 16px;
 			margin-top: 15px;
 			padding: 16px 24px;
-		}
 
-		input.button:focus,
-		input.button:hover {
-			background: lighten($button-primary, 5);
+			&:focus,
+			&:hover {
+				background: lighten($button-primary, 5);
+			}
 		}
 
 		label,

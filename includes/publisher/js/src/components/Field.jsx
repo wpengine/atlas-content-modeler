@@ -178,7 +178,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 
 					<div className="d-flex flex-row align-items-center media-btns">
 						<button
-							className="button button-primary action-button"
+							className="button button-primary link-button"
 							style={{ marginTop: "5px" }}
 							id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 							onClick={(e) => {
@@ -187,9 +187,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							}}
 						>
 							<div className="d-flex flex-row">
-								<div style={{ lineHeight: "34px" }}>
-									<Icon type="link" />
-								</div>
+								<Icon type="link" />
 								<div className="px-2">
 									{field.value
 										? __(
