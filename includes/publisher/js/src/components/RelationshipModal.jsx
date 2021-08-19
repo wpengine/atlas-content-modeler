@@ -314,7 +314,6 @@ export default function RelationshipModal({
 			<div className="d-flex flex-row-reverse mt-2">
 				<button
 					type="submit"
-					disabled={chosenEntries.length < 1}
 					className="action-button mx-3"
 					onClick={(event) => {
 						event.preventDefault();
