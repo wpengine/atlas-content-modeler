@@ -145,13 +145,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					{entryInfo?.map((entry) => {
-						const { title } = entry;
-						return (
-							<div key={entry.id} className="app-card">
-								<section className="card-content">
-									<ul className="model-list">
-										<li>
+
+					{entryInfo && (
+						<section className="card-content">
+							<ul className="model-list">
+								{entryInfo?.map((entry) => {
+									const { title } = entry;
+									return (
+										<li key={entry.id}>
 											<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 												<span className="flex-item mb-3 mb-sm-0 pr-1">
 													<p className="value">
@@ -167,11 +168,12 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 												type="hidden"
 											/>
 										</li>
-									</ul>
-								</section>
-							</div>
-						);
-					})}
+									);
+								})}
+							</ul>
+						</section>
+					)}
+
 					<div className="d-flex flex-row align-items-center media-btns">
 						<button
 							className="button button-primary action-button"
