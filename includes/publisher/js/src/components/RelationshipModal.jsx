@@ -5,8 +5,6 @@ import Modal from "react-modal";
 const { wp } = window;
 const { date, apiFetch } = wp;
 
-Modal.setAppElement("#atlas-content-modeler-fields-app");
-
 /**
  * The modal component for editing a relationship.
  *
@@ -98,6 +96,13 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 			return response.json();
 		});
 	}
+
+	/**
+	 * Hides the main app from screen readers when the modal is open.
+	 */
+	useEffect(() => {
+		Modal.setAppElement("#atlas-content-modeler-fields-app");
+	}, []);
 
 	/**
 	 * Gets entries whenever the state of 'page' changes.
