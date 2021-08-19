@@ -102,9 +102,9 @@ function enqueue_settings_assets( $hook ) {
 
 	wp_register_script(
 		'google-analytics',
-		get_stylesheet_directory_uri() . '/analyticstracking.js',
+		ATLAS_CONTENT_MODELER_URL . 'includes/shared-assets/js/ga-analytics.js',
 		false,
-		'1.0',
+		$plugin['Version'],
 		true
 	);
 
