@@ -189,7 +189,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							<div className="d-flex flex-row">
 								<Icon type="link" />
 								<div className="px-2">
-									{field.value
+									{selectedEntries?.length > 0
 										? __(
 												"Link New Reference",
 												"atlas-content-modeler"
