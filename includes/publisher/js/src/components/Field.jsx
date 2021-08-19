@@ -134,7 +134,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 */
 			useEffect(() => {
 				if (selectedEntries.length > 0) {
-					getEntries(selectedEntries).then(setEntryInfo);
+					getEntries().then(setEntryInfo);
 				}
 			}, [selectedEntries]);
 
