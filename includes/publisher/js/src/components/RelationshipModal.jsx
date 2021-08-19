@@ -1,5 +1,5 @@
 /* global atlasContentModelerFormEditingExperience */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
 const { wp } = window;
