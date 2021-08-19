@@ -19,7 +19,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [totalEntries, setTotalEntries] = useState(0);
 	const [selectedEntries, setselectedEntries] = useState(
 		field.value.split(",")
-	); // TODO: set initial state value from stored field value.
+	);
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
