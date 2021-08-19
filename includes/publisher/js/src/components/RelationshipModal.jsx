@@ -17,7 +17,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 	const [page, setPage] = useState(1);
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
-	const [selectedEntries, setselectedEntries] = useState(
+	const [selectedEntries, setSelectedEntries] = useState(
 		field.value.split(",")
 	);
 	const entriesPerPage = 5;
@@ -59,7 +59,7 @@ export default function RelationshipModal({ field, isOpen, setIsOpen }) {
 		} else {
 			savedValues = [value];
 		}
-		setselectedEntries(savedValues);
+		setSelectedEntries(savedValues);
 	}
 
 	async function getEntries(page) {
