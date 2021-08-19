@@ -87,7 +87,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			] = useState(false);
 			const [entryInfo, setEntryInfo] = useState();
 			const [selectedEntries, setSelectedEntries] = useState(
-				field.value.split(",")
+				field.value.split(",").filter(Boolean)
 			);
 
 			/**
