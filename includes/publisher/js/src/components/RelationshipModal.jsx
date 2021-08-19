@@ -1,5 +1,5 @@
 /* global atlasContentModelerFormEditingExperience */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
 const { wp } = window;
@@ -24,6 +24,7 @@ export default function RelationshipModal({
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
 	const [chosenEntries, setChosenEntries] = useState(selectedEntries);
+	const savedEntries = useRef(); // To revert changes if the modal is closed via Cancel.
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
@@ -120,6 +121,17 @@ export default function RelationshipModal({
 			});
 		}
 	}, [isOpen, page]);
+
+	/**
+	 * Stores current state of selectedEntries when the modal opens.
+	 * Allows us to revert to that state if a user makes changes
+	 * to selected entries, but then clicks the Cancel button.
+	 */
+	useEffect(() => {
+		if (isOpen) {
+			savedEntries.current = selectedEntries;
+		}
+	}, [isOpen]);
 
 	return (
 		<Modal
@@ -317,8 +329,7 @@ export default function RelationshipModal({
 					className="tertiary mx-0"
 					onClick={(event) => {
 						event.preventDefault();
-						// TODO: reset chosenEntries because the user does not want to save them?
-						// So that the next time they open the modal the state is accurate.
+						setChosenEntries(savedEntries.current);
 						setIsOpen(false);
 					}}
 				>
