@@ -215,68 +215,70 @@ export default function RelationshipModal({
 						</tbody>
 					</table>
 					<div className="d-flex flex-row-reverse">
-						<div className="d-flex flex-row">
-							<button
-								href="#"
-								className="tertiary relationship-modal-nav"
-								disabled={page === 1}
-								aria-label={__(
-									"First page",
-									"atlas-content-modeler"
-								)}
-								onClick={(event) => {
-									event.preventDefault();
-									setPage(1);
-								}}
-							>
-								{"<<"}
-							</button>
-							<button
-								href="#"
-								className="tertiary relationship-modal-nav"
-								disabled={page === 1}
-								aria-label={__(
-									"Previous page",
-									"atlas-content-modeler"
-								)}
-								onClick={(event) => {
-									event.preventDefault();
-									setPage(page - 1);
-								}}
-							>
-								{"<"}
-							</button>
-							<button
-								href="#"
-								className="tertiary relationship-modal-nav"
-								disabled={page === totalPages}
-								aria-label={__(
-									"Next page",
-									"atlas-content-modeler"
-								)}
-								onClick={(event) => {
-									event.preventDefault();
-									setPage(page + 1);
-								}}
-							>
-								{">"}
-							</button>
-							<button
-								href="#"
-								className="tertiary relationship-modal-nav"
-								disabled={page === totalPages}
-								aria-label={__(
-									"Last page",
-									"atlas-content-modeler"
-								)}
-								onClick={(event) => {
-									event.preventDefault();
-									setPage(totalPages);
-								}}
-							>
-								{">>"}
-							</button>
-						</div>
+						{totalPages > 1 && (
+							<div className="d-flex flex-row">
+								<button
+									href="#"
+									className="tertiary relationship-modal-nav"
+									disabled={page === 1}
+									aria-label={__(
+										"First page",
+										"atlas-content-modeler"
+									)}
+									onClick={(event) => {
+										event.preventDefault();
+										setPage(1);
+									}}
+								>
+									{"<<"}
+								</button>
+								<button
+									href="#"
+									className="tertiary relationship-modal-nav"
+									disabled={page === 1}
+									aria-label={__(
+										"Previous page",
+										"atlas-content-modeler"
+									)}
+									onClick={(event) => {
+										event.preventDefault();
+										setPage(page - 1);
+									}}
+								>
+									{"<"}
+								</button>
+								<button
+									href="#"
+									className="tertiary relationship-modal-nav"
+									disabled={page === totalPages}
+									aria-label={__(
+										"Next page",
+										"atlas-content-modeler"
+									)}
+									onClick={(event) => {
+										event.preventDefault();
+										setPage(page + 1);
+									}}
+								>
+									{">"}
+								</button>
+								<button
+									href="#"
+									className="tertiary relationship-modal-nav"
+									disabled={page === totalPages}
+									aria-label={__(
+										"Last page",
+										"atlas-content-modeler"
+									)}
+									onClick={(event) => {
+										event.preventDefault();
+										setPage(totalPages);
+									}}
+								>
+									{">>"}
+								</button>
+							</div>
+						)}
 						<div className="mx-3">
 							<span
 								className="align-middle"
