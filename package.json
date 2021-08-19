@@ -1,6 +1,6 @@
 {
   "name": "atlas-content-modeler",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "",
   "scripts": {
     "build": "run-s build-settings build-publisher",

@@ -1,5 +1,14 @@
 # Atlas Content Modeler Changelog
 
+## 0.5.0 - 2021-08-12
+
+### Added
+- You can now add custom Taxonomies and assign them to your models. Visit Atlas Content Modeler → Taxonomies to get started.
+- Models and Taxonomies submenu items now appear in the admin sidebar below Atlas Content Modeler.
+
+### Changed
+- Refactored PHP tests.
+
 ## 0.4.2 - 2021-08-04
 
 ### Added

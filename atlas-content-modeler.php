@@ -7,7 +7,7 @@
  * Author URI: https://wpengine.com/
  * Text Domain: atlas-content-modeler
  * Domain Path: /languages
- * Version: 0.4.2
+ * Version: 0.5.0
  * Requires at least: 5.2
  * Requires PHP: 7.2
  * License: GPLv2 or later
@@ -44,6 +44,7 @@ function atlas_content_modeler_loader(): void {
 		'shared-assets/wp_scripts/shared_assets.php',
 		'settings/settings-callbacks.php',
 		'content-registration/custom-post-types-registration.php',
+		'content-registration/register-taxonomies.php',
 		'content-registration/class-wpe-rest-posts-controller.php',
 		'rest-api/rest-api-endpoint-registration.php',
 		'publisher/class-publisher-form-editing-experience.php',

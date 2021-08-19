@@ -12,6 +12,7 @@ namespace WPE\AtlasContentModeler\REST_API;
 use WP_Error;
 use WP_REST_Request;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
@@ -118,6 +119,32 @@ function register_rest_routes(): void {
 		[
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\dispatch_dismiss_feedback_banner',
+			'permission_callback' => static function () {
+				return current_user_can( 'manage_options' );
+			},
+		]
+	);
+
+	// Route for creating (POST) or updating (PUT) a taxonomy.
+	register_rest_route(
+		'wpe',
+		'/atlas/taxonomy',
+		[
+			'methods'             => [ 'POST', 'PUT' ],
+			'callback'            => __NAMESPACE__ . '\dispatch_update_taxonomy',
+			'permission_callback' => static function () {
+				return current_user_can( 'manage_options' );
+			},
+		]
+	);
+
+	// Route for deleting a taxonomy.
+	register_rest_route(
+		'wpe',
+		'/atlas/taxonomy/(?P<taxonomy>[\\w-]+)',
+		[
+			'methods'             => 'DELETE',
+			'callback'            => __NAMESPACE__ . '\dispatch_delete_taxonomy',
 			'permission_callback' => static function () {
 				return current_user_can( 'manage_options' );
 			},
@@ -466,26 +493,19 @@ function dispatch_update_content_model( WP_REST_Request $request ) {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_delete_model( WP_REST_Request $request ) {
-	$route         = $request->get_route();
-	$slug          = substr( strrchr( $route, '/' ), 1 );
-	$content_types = get_registered_content_types();
+	$route = $request->get_route();
+	$slug  = substr( strrchr( $route, '/' ), 1 );
 
-	if ( empty( $content_types[ $slug ] ) ) {
-		return rest_ensure_response(
-			[
-				'success' => false,
-				'errors'  => esc_html__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
-			]
-		);
+	$model = delete_model( $slug );
+
+	if ( is_wp_error( $model ) ) {
+		return $model;
 	}
-
-	unset( $content_types[ $slug ] );
-
-	$updated = update_registered_content_types( $content_types );
 
 	return rest_ensure_response(
 		[
-			'success' => $updated,
+			'success' => true,
+			'model'   => $model,
 		]
 	);
 }
@@ -577,6 +597,37 @@ function create_model( string $post_type_slug, array $args ) {
 }
 
 /**
+ * Handles taxonomy POST and PUT requests.
+ *
+ * @param WP_REST_Request $request The REST API request object.
+ *
+ * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
+ */
+function dispatch_update_taxonomy( WP_REST_Request $request ) {
+	$params = $request->get_params();
+
+	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
+
+	$is_update = $request->get_method() === 'PUT';
+	$taxonomy  = save_taxonomy( $params, $is_update );
+
+	if ( is_wp_error( $taxonomy ) ) {
+		return new WP_Error(
+			$taxonomy->get_error_code(),
+			$taxonomy->get_error_message(),
+			[ 'status' => 400 ]
+		);
+	}
+
+	return rest_ensure_response(
+		[
+			'success'  => true,
+			'taxonomy' => $taxonomy,
+		]
+	);
+}
+
+/**
  * Updates the specified content model.
  *
  * @param string $post_type_slug The post type slug.
@@ -629,23 +680,61 @@ function update_model( string $post_type_slug, array $args ) {
 /**
  * Deletes the specified model from the database.
  *
- * @param string $post_type_slug The post type slug.
+ * @param string $post_type_slug The Model ID.
  *
- * @return bool|WP_Error WP_Error if invalid parameters passed, otherwise true/false.
+ * @return bool|WP_Error WP_Error on failures, otherwise true.
  */
 function delete_model( string $post_type_slug ) {
-	if ( empty( $post_type_slug ) ) {
-		return new WP_Error( 'model-not-deleted', esc_html__( 'Please provide a post-type-slug.', 'atlas-content-modeler' ) );
-	}
-
 	$content_types = get_registered_content_types();
 
-	if ( empty( $content_types[ $post_type_slug ] ) ) {
-		return new WP_Error( 'model-not-deleted', esc_html__( 'Content type does not exist.', 'atlas-content-modeler' ) );
+	if ( empty( $post_type_slug ) || empty( $content_types[ $post_type_slug ] ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_invalid_id',
+			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
 	}
 
+	$taxonomies          = get_acm_taxonomies();
+	$has_taxonomy_update = false;
+
+	foreach ( $taxonomies as $tax_slug => $taxonomy ) {
+		if ( ! isset( $taxonomy['types'] ) || ! is_array( $taxonomy['types'] ) ) {
+			continue;
+		}
+
+		$type_index = array_search( $post_type_slug, $taxonomy['types'], true );
+		if ( $type_index !== false ) {
+			$has_taxonomy_update = true;
+			unset( $taxonomy['types'][ $type_index ] );
+			$taxonomies[ $tax_slug ]['types'] = array_values( $taxonomy['types'] );
+		}
+	}
+
+	if ( $has_taxonomy_update ) {
+		$updated = update_option( 'atlas_content_modeler_taxonomies', $taxonomies );
+
+		if ( ! $updated ) {
+			return new WP_Error(
+				'atlas_content_modeler_taxonomies_not_updated',
+				__( 'Model deletion aborted. Failed to remove model from associated taxonomies.', 'atlas-content-modeler' )
+			);
+		}
+	}
+
+	$model = $content_types[ $post_type_slug ];
 	unset( $content_types[ $post_type_slug ] );
-	return update_registered_content_types( $content_types );
+
+	$updated = update_registered_content_types( $content_types );
+
+	if ( ! $updated ) {
+		return new WP_Error(
+			'atlas_content_modeler_model_not_deleted',
+			__( 'Model not deleted. Reason unknown.', 'atlas-content-modeler' )
+		);
+	}
+
+	return $model;
 }
 
 /**
@@ -698,4 +787,106 @@ function content_model_multi_option_exists( array $names, string $current_choice
 		}
 	}
 	return false;
+}
+
+/**
+ * Saves a taxonomy.
+ *
+ * @param array $params Parameters passed from the taxonomy form.
+ * @param bool  $is_update True if `$params` came from a PUT request.
+ * @return array|WP_Error
+ * @since 0.6.0
+ */
+function save_taxonomy( array $params, bool $is_update ) {
+	// Sanitize key allows hyphens, but it's close enough to register_taxonomy() requirements.
+	$params['slug'] = isset( $params['slug'] ) ? sanitize_key( $params['slug'] ) : '';
+
+	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
+		return new WP_Error(
+			'atlas_content_modeler_invalid_id',
+			esc_html__( 'Taxonomy slug must be between 1 and 32 characters in length.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	$acm_taxonomies     = get_option( 'atlas_content_modeler_taxonomies', array() );
+	$wp_taxonomies      = get_taxonomies();
+	$non_acm_taxonomies = array_diff( array_keys( $wp_taxonomies ), array_keys( $acm_taxonomies ) );
+
+	// Prevents creation of a taxonomy if one with the same slug exists that was not created in ACM.
+	if ( in_array( $params['slug'], $non_acm_taxonomies, true ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_taxonomy_exists',
+			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	// Allows updates of existing ACM taxonomies, but prevents creation of ACM taxonomies with identical slugs.
+	if ( ! $is_update && array_key_exists( $params['slug'], $acm_taxonomies ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_taxonomy_exists',
+			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	if ( empty( $params['singular'] ) || empty( $params['plural'] ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_invalid_labels',
+			esc_html__( 'Please provide singular and plural labels when creating a taxonomy.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	$defaults = [
+		'types'           => [],
+		'show_in_rest'    => true,
+		'show_in_graphql' => true,
+		'hierarchical'    => false,
+		'api_visibility'  => 'private',
+	];
+
+	$taxonomy                            = wp_parse_args( $params, $defaults );
+	$acm_taxonomies[ $taxonomy['slug'] ] = $taxonomy;
+	$created                             = update_option( 'atlas_content_modeler_taxonomies', $acm_taxonomies );
+
+	if ( ! $created ) {
+		return new WP_Error(
+			'atlas_content_modeler_taxonomy_not_created',
+			esc_html__( 'Taxonomy not created. Reason unknown.', 'atlas-content-modeler' )
+		);
+	}
+
+	return $taxonomy;
+}
+
+/**
+ * Handles taxonomy DELETE requests from the REST API.
+ *
+ * @param WP_REST_Request $request The REST API request object.
+ *
+ * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
+ */
+function dispatch_delete_taxonomy( WP_REST_Request $request ) {
+	$slug           = $request->get_param( 'taxonomy' );
+	$acm_taxonomies = get_option( 'atlas_content_modeler_taxonomies', array() );
+
+	if ( empty( $acm_taxonomies[ $slug ] ) ) {
+		return new WP_Error(
+			'acm_invalid_taxonomy',
+			esc_html__( 'Invalid ACM taxonomy.', 'atlas-content-modeler' ),
+			[ 'status' => 404 ]
+		);
+	}
+
+	unset( $acm_taxonomies[ $slug ] );
+
+	$updated = update_option( 'atlas_content_modeler_taxonomies', $acm_taxonomies );
+
+	return rest_ensure_response(
+		[
+			'success' => $updated,
+		]
+	);
 }

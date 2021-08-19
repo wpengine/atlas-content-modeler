@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import { reducer } from "./reducer";
+import { taxonomiesReducer } from "./taxonomiesReducer";
 
 export const ModelsContext = React.createContext(null);
 
@@ -17,11 +18,18 @@ export function ModelsContextProvider(props) {
 		atlasContentModeler?.initialState
 	);
 
+	const [taxonomies, taxonomiesDispatch] = useReducer(
+		taxonomiesReducer,
+		atlasContentModeler?.taxonomies
+	);
+
 	return (
 		<ModelsContext.Provider
 			value={{
 				models,
 				dispatch,
+				taxonomies,
+				taxonomiesDispatch,
 			}}
 		>
 			{props.children}

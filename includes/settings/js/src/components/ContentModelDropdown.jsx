@@ -37,7 +37,7 @@ function deleteModel(name = "") {
 
 export const ContentModelDropdown = ({ model }) => {
 	const { plural, slug } = model;
-	const { models, dispatch } = useContext(ModelsContext);
+	const { models, dispatch, taxonomiesDispatch } = useContext(ModelsContext);
 	const history = useHistory();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -180,11 +180,20 @@ export const ContentModelDropdown = ({ model }) => {
 				<button
 					className="first warning"
 					onClick={async () => {
+						// Optimistically remove the model from the UI.
+						dispatch({ type: "removeModel", slug });
 						// delete model and remove related menu sidebar item
 						await deleteModel(slug)
 							.then((res) => {
 								if (res.success) {
 									removeSidebarMenuItem(slug);
+									taxonomiesDispatch({
+										type: "removeModel",
+										slug,
+									});
+								} else {
+									// Restore the model in the UI since deletion failed.
+									dispatch({ type: "addModel", data: model });
 								}
 							})
 							.catch(() => {
@@ -197,11 +206,12 @@ export const ContentModelDropdown = ({ model }) => {
 										slug
 									)
 								);
+								// Restore the model in the UI since deletion failed.
+								dispatch({ type: "addModel", data: model });
 							});
 
 						setModalIsOpen(false);
 						history.push(atlasContentModeler.appPath);
-						dispatch({ type: "removeModel", slug });
 					}}
 				>
 					Delete

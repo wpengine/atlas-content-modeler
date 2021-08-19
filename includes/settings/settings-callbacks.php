@@ -25,6 +25,49 @@ function register_admin_menu_page(): void {
 		__NAMESPACE__ . '\render_admin_menu_page',
 		$icon
 	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
+		esc_html__( 'Models', 'atlas-content-modeler' ),
+		esc_html__( 'Models', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler',
+		'__return_null'
+	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
+		esc_html__( 'Taxonomies', 'atlas-content-modeler' ),
+		esc_html__( 'Taxonomies', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler&amp;view=taxonomies',
+		'__return_null'
+	);
+}
+
+add_filter( 'parent_file', __NAMESPACE__ . '\maybe_override_submenu_file' );
+/**
+ * Overrides the “submenu file” that determines which admin submenu item gains
+ * the `current` CSS class. Without this, WordPress incorrectly gives the
+ * “Model” subpage the `current` class when the “Taxonomies” subpage is active.
+ *
+ * @link https://github.com/WordPress/WordPress/blob/9937fea517ac165ad01f67c54216469e48c48ca7/wp-admin/menu-header.php#L223-L227
+ * @link https://wordpress.stackexchange.com/a/131873
+ * @link https://developer.wordpress.org/reference/hooks/parent_file/
+ * @param string $parent_file The original parent file.
+ * @return string The $parent_file unaltered. Only the $submenu_file global is altered.
+ */
+function maybe_override_submenu_file( $parent_file ) {
+	global $submenu_file;
+
+	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+	$view = filter_input( INPUT_GET, 'view', FILTER_SANITIZE_STRING );
+
+	if ( $page === 'atlas-content-modeler' && $view === 'taxonomies' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=taxonomies'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	}
+
+	return $parent_file;
 }
 
 /**
@@ -72,6 +115,7 @@ function enqueue_settings_assets( $hook ) {
 		'atlasContentModeler',
 		array(
 			'appPath'             => $admin_path . '?page=atlas-content-modeler',
+			'taxonomies'          => get_option( 'atlas_content_modeler_taxonomies', array() ),
 			'initialState'        => get_registered_content_types(),
 			'isGraphiQLAvailable' => is_plugin_active( 'wp-graphql/wp-graphql.php' )
 				&& function_exists( 'get_graphql_setting' )
