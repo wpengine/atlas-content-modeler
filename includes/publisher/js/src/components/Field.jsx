@@ -97,7 +97,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 */
 			function getEntries() {
 				const { models } = atlasContentModelerFormEditingExperience;
-				let query = new URLSearchParams({
+				const query = new URLSearchParams({
 					include: selectedEntries,
 				});
 
@@ -133,9 +133,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 * Gets post information to display to the user outside of the modal.
 			 */
 			useEffect(() => {
-				if (selectedEntries.length > 0) {
-					getEntries().then(setEntryInfo);
+				if (selectedEntries?.length < 1) {
+					setEntryInfo([]);
+					return;
 				}
+				getEntries().then(setEntryInfo);
 			}, [selectedEntries]);
 
 			return (
