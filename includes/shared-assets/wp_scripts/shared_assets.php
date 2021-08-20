@@ -24,5 +24,13 @@ function enqueue_shared_assets() {
 		true
 	);
 
+	wp_register_script(
+		'atlas-content-modeler-google-analytics',
+		ATLAS_CONTENT_MODELER_URL . 'includes/shared-assets/js/ga-analytics.js',
+		false,
+		$plugin['Version'],
+		true
+	);
+
 	wp_set_script_translations( 'atlas-content-modeler-feedback-banner', 'atlas-content-modeler' );
 }
