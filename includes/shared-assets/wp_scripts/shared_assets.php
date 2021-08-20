@@ -29,7 +29,7 @@ function enqueue_shared_assets() {
 		'https://www.googletagmanager.com/gtag/js?id=G-S056CLLZ34',
 		[],
 		$plugin['Version'],
-		true
+		false
 	);
 
 	wp_register_script(
