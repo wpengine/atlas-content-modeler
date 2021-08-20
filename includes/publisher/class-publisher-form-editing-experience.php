@@ -298,11 +298,16 @@ final class FormEditingExperience {
 
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
-			$field_type  = get_field_type_from_slug(
+			$field_type = get_field_type_from_slug(
 				$field_id,
 				$this->models[ $post->post_type ]['fields'] ?? []
 			);
+
 			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ) );
+
+			if ( 'relationship' === $field_type ) {
+				unset( $posted_values[ $field_id ] );
+			}
 		}
 
 		// Delete any meta values missing from the submitted data.
