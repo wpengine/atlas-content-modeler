@@ -184,7 +184,7 @@ export default function RelationshipModal({
 								);
 								return (
 									<tr key={id}>
-										<td>
+										<td className="checkbox">
 											<input
 												type={
 													field.cardinality ==
