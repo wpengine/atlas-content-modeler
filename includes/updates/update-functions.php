@@ -94,6 +94,10 @@ function atlas_content_modeler_get_remote_plugin_info() {
 			wp_remote_retrieve_body( $response )
 		);
 
+		if ( ! property_exists( $response, 'icons' ) || empty( $response->icons['default'] ) ) {
+			$response->icons['default'] = ATLAS_CONTENT_MODELER_URL . 'includes/settings/img/Atlas.svg';
+		}
+
 		set_transient( 'atlas_content_modeler_product_info', $response, HOUR_IN_SECONDS * 12 );
 	}
 
