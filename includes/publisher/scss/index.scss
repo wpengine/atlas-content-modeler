@@ -14,10 +14,14 @@
 	@import "bootstrap/scss/_buttons";
 	@import "./relationship-modal";
 	@import "../../settings/scss/_app-card";
-	@import "../../settings/scss/_buttons";
-	@import "./buttons";
 	@import "./table";
 	@import "./app-card-publisher";
+
+	.app,
+	.ReactModal__Content {
+		@import "./buttons";
+		@import "../../settings/scss/_buttons";
+	}
 }
 
 @import "../../../includes/shared-assets/scss/_variables";
