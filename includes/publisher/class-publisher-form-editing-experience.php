@@ -169,6 +169,11 @@ final class FormEditingExperience {
 		// Add existing field values to models data.
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
+				if ( $field['type'] === 'relationship' ) {
+					$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = \WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name($post->ID, $field['slug']);
+					continue;
+				}
+
 				if ( isset( $post->ID ) ) {
 					$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
 				}
@@ -328,7 +333,28 @@ final class FormEditingExperience {
 			}
 		}
 
+
+		$fields = $this->models[ $post->post_type ]['fields'];
+		$relationships = [];
+
+		foreach ( $fields as $field ) {
+			if ( $field['type'] === 'relationship') {
+				$relationships[$field['slug']] = $field;
+			}
+		}
+
+		$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
 		foreach ( $posted_values as $key => $value ) {
+			if ( array_key_exists( $field['slug'], $relationships ) ) {
+				$field = $relationships[ $field['slug'] ];
+				$relationship = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $key );
+				if ( $relationship ) {
+					$value = explode( ',', $value );
+					$relationship->replace_relationships( $post_id, (array) $value );
+					continue;
+				}
+			}
+
 			/**
 			 * Check if an existing value matches the submitted value
 			 * and short-circuit the loop. Otherwise `update_post_meta`
