@@ -1,6 +1,12 @@
+@import "../../../includes/shared-assets/scss/_variables";
+
 .relation-model-card {
 	justify-content: space-between;
 	min-width: 85%;
 	padding: 10px 16px;
 	text-decoration: none;
+}
+
+.card-content li {
+	border-color: $color-gray-light;
 }
