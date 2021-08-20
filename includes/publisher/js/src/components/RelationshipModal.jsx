@@ -150,7 +150,7 @@ export default function RelationshipModal({
 			style={customStyles}
 		>
 			<h2>{__("Select Reference", "atlas-content-modeler")}</h2>
-			<p>
+			<p className="mb-4">
 				{__(
 					"Only published entries are displayed.",
 					"atlas-content-modeler"
