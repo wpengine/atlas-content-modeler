@@ -11,6 +11,7 @@ namespace WPE\AtlasContentModeler;
 
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -307,6 +308,7 @@ final class FormEditingExperience {
 
 			if ( 'relationship' === $field_type ) {
 				unset( $posted_values[ $field_id ] );
+				$this->save_relationship_field( $field_id, $post, $field_value );
 			}
 		}
 
@@ -349,6 +351,28 @@ final class FormEditingExperience {
 				/* translators: %s: atlas content modeler field slug */
 				$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
 			}
+		}
+	}
+
+	/**
+	 * Saves relationship field data using the post-to-posts library
+	 *
+	 * @param string  $field_id The name of the field being saved.
+	 * @param WP_Post $post The ID of the post being saved.
+	 * @param string  $field_value The post IDs of the relationship's destination posts.
+	 * @return void
+	 */
+	public function save_relationship_field( $field_id, $post, $field_value ) {
+		$field = get_field_from_slug(
+			$field_id,
+			$this->models[ $post->post_type ]['fields'] ?? []
+		);
+
+		$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$relationship = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field_id );
+		if ( $relationship ) {
+			$related_posts = explode( ',', $field_value );
+			$relationship->replace_relationships( $post->ID, $related_posts );
 		}
 	}
 
