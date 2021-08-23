@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
+import Title from "./Title";
 import Table from "./Table";
 import Pagination from "./Pagination";
 import Loader from "../Loader";
@@ -68,24 +69,6 @@ export default function RelationshipModal({
 			savedValues = [value];
 		}
 		setChosenEntries(savedValues);
-	}
-
-	/**
-	 * Gets the modal title depending on field cardinality.
-	 *
-	 * @returns {string}
-	 */
-	function getModalTitle() {
-		const { models } = atlasContentModelerFormEditingExperience;
-		const modelName =
-			field?.cardinality === "one-to-one"
-				? models[field.reference]?.singular ??
-				  __("Reference", "atlas-content-modeler")
-				: models[field.reference]?.plural ??
-				  __("References", "atlas-content-modeler");
-
-		/* translators: the referenced model name, such as “Car” or “Cars”. */
-		return sprintf(__("Select %s"), modelName);
 	}
 
 	async function getEntries(page) {
@@ -175,13 +158,8 @@ export default function RelationshipModal({
 			field={field}
 			style={customStyles}
 		>
-			<h2>{getModalTitle()}</h2>
-			<p className="mb-4">
-				{__(
-					"Only published entries are displayed.",
-					"atlas-content-modeler"
-				)}
-			</p>
+			<Title field={field} />
+
 			{isFetching ? (
 				<Loader />
 			) : page in pagedEntries ? (
