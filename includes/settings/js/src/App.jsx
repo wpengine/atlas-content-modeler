@@ -11,19 +11,29 @@ import Taxonomies from "./components/Taxonomies";
 import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
 
-ReactGA.initialize("G-S056CLLZ34", { gtagOptions: { anonymize_ip: true } });
+const GA_ID = "G-S056CLLZ34";
+
+/**
+ * React-GA4 Library and usage
+ * {@link https://github.com/PriceRunner/react-ga4#readme}
+ *
+ * Page send
+ * ReactGA.send("pageview"); OR
+ * ReactGA.send({ hitType: "pageview", page: "/my-path" });
+ *
+ * Send custom event
+ * ReactGA.event({
+ *	category: "your category",
+ *	action: "your action",
+ *	label: "your label", // optional
+ *	value: 99, // optional, must be a number
+ *	nonInteraction: true, // optional, true/fals
+ *	transport: "xhr", // optional, beacon/xhr/image
+ *	});
+ */
+ReactGA.initialize(GA_ID, { gtagOptions: { anonymize_ip: true } });
 
 export default function App() {
-	ReactGA.send("pageview settings");
-	// Send a custom event
-	ReactGA.event({
-		category: "your category",
-		action: "your action",
-		label: "your label", // optional
-		value: 99, // optional, must be a number
-		nonInteraction: true, // optional, true/false
-		transport: "xhr", // optional, beacon/xhr/image
-	});
 	return (
 		<div className="app atlas-content-modeler">
 			<ModelsContextProvider>
