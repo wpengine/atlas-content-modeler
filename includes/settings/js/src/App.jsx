@@ -22,7 +22,7 @@ ReactGA.initialize(GA_ID, { gtagOptions: { anonymize_ip: true } });
 export default function App() {
 	ReactGA.send({
 		hitType: "pageview",
-		page: "ACM Settings Home",
+		page: "ACM Models Home",
 	});
 	return (
 		<div className="app atlas-content-modeler">
