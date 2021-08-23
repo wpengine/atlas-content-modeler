@@ -12,9 +12,9 @@ const { apiFetch } = wp;
  * The modal component for editing a relationship.
  *
  * @param {Object} field The relationship field.
- * @param {Boolean} isOpen Whether or not the model is open.
- * @param {Function} setIsOpen - Callback for opening and closing modal.
- * @returns {JSX.Element} Modal
+ * @param {Boolean} isOpen Whether or not the modal is open.
+ * @param {Function} setIsOpen Callback for opening and closing modal.
+ * @returns {JSX.Element} RelationshipModal
  */
 export default function RelationshipModal({
 	field,
