@@ -3,12 +3,12 @@ import ReactGA from "react-ga4";
 import Fields from "./components/Fields";
 import { sprintf, __ } from "@wordpress/i18n";
 
-ReactGA.initialize("G-S056CLLZ34");
-ReactGA.send("pageview");
+ReactGA.initialize("G-S056CLLZ34", { gtagOptions: { anonymize_ip: true } });
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 
+	ReactGA.send("pageview publisher");
 	// Send a custom event
 	ReactGA.event({
 		category: "your category",

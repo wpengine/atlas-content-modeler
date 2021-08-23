@@ -11,10 +11,10 @@ import Taxonomies from "./components/Taxonomies";
 import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
 
-ReactGA.initialize("G-S056CLLZ34");
-ReactGA.send("pageview");
+ReactGA.initialize("G-S056CLLZ34", { gtagOptions: { anonymize_ip: true } });
 
 export default function App() {
+	ReactGA.send("pageview settings");
 	// Send a custom event
 	ReactGA.event({
 		category: "your category",
