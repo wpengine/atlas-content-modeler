@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
-import { loadOptions } from "@babel/core";
 const { wp } = window;
 const { date, apiFetch } = wp;
 
