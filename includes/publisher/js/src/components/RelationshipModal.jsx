@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
+import { loadOptions } from "@babel/core";
 const { wp } = window;
 const { date, apiFetch } = wp;
 
@@ -24,6 +25,7 @@ export default function RelationshipModal({
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
 	const [chosenEntries, setChosenEntries] = useState(selectedEntries);
+	const [isFetching, setIsFetching] = useState(false);
 	const savedEntries = useRef(); // To revert changes if the modal is closed via Cancel.
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
@@ -96,6 +98,8 @@ export default function RelationshipModal({
 			parse: false, // So the response status and headers are available.
 		};
 
+		setIsFetching(true);
+
 		return apiFetch(params).then((response) => {
 			if (response.status !== 200) {
 				console.error(
@@ -108,6 +112,7 @@ export default function RelationshipModal({
 						response.status
 					)
 				);
+				setIsFetching(false);
 				return;
 			}
 
@@ -115,6 +120,7 @@ export default function RelationshipModal({
 				setTotalEntries(response.headers.get("X-WP-Total"));
 			}
 
+			setIsFetching(false);
 			return response.json();
 		});
 	}
@@ -174,7 +180,12 @@ export default function RelationshipModal({
 					"atlas-content-modeler"
 				)}
 			</p>
-			{page in pagedEntries ? (
+			{isFetching ? (
+				<div
+					className="loader"
+					aria-label={__("Loading…", "atlas-content-modeler")}
+				></div>
+			) : page in pagedEntries ? (
 				<div>
 					<table className="table table-striped mt-2">
 						<thead>
