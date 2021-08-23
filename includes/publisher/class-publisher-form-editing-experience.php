@@ -326,15 +326,24 @@ final class FormEditingExperience {
 
 		foreach ( $all_field_slugs as $slug ) {
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
-				$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
-				if ( empty( $existing ) ) {
-					continue;
-				}
+				$field_type = get_field_type_from_slug(
+					$slug,
+					$this->models[ $post->post_type ]['fields'] ?? []
+				);
 
-				$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
-				if ( ! $deleted ) {
-					/* translators: %s: atlas content modeler field slug */
-					$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+				if ( 'relationship' === $field_type ) {
+					$this->save_relationship_field( $slug, $post, '' );
+				} else {
+					$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
+					if ( empty( $existing ) ) {
+						continue;
+					}
+
+					$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
+					if ( ! $deleted ) {
+						/* translators: %s: atlas content modeler field slug */
+						$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+					}
 				}
 			}
 		}
@@ -364,7 +373,6 @@ final class FormEditingExperience {
 	 * @param string  $field_id The name of the field being saved.
 	 * @param WP_Post $post The ID of the post being saved.
 	 * @param string  $field_value The post IDs of the relationship's destination posts.
-	 * @return void
 	 */
 	public function save_relationship_field( $field_id, $post, $field_value ) {
 		$field = get_field_from_slug(
