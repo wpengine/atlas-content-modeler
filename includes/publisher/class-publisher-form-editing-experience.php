@@ -385,10 +385,15 @@ final class FormEditingExperience {
 			$this->models[ $post->post_type ]['fields'] ?? []
 		);
 
-		$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
-		$relationship = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field_id );
+		$registry      = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field_id );
+		$related_posts = array();
+
 		if ( $relationship ) {
-			$related_posts = explode( ',', $field_value );
+			if ( '' !== $field_value ) {
+				$related_posts = explode( ',', $field_value );
+			}
+
 			$relationship->replace_relationships( $post->ID, $related_posts );
 		}
 	}
