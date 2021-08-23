@@ -89,6 +89,36 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			const [selectedEntries, setSelectedEntries] = useState(
 				field.value.split(",").filter(Boolean)
 			);
+			const { models } = atlasContentModelerFormEditingExperience;
+
+			/**
+			 * Gets the Reference field button label depending on field
+			 * cardinality and current selection state.
+			 *
+			 * One-to-one with no item chosen => “Link Car”.
+			 * One-to-many with items chosen => “Change Linked Cars”.
+			 * One-to-one where reference model was deleted => “Link Reference”.
+			 *
+			 * @returns {string}
+			 */
+			function getButtonLabel() {
+				const buttonLabelBase =
+					selectedEntries?.length > 0
+						? /* translators: the name of the related model, such as "Car" or "Cars" */
+						  __("Change Linked %s", "atlas-content-modeler")
+						: /* translators: the name of the related model, such as "Car" or "Cars" */
+						  __("Link %s", "atlas-content-modeler");
+
+				const buttonLabelModel =
+					field?.cardinality === "one-to-one"
+						? models[field.reference]?.singular
+						: models[field.reference]?.plural;
+
+				return sprintf(
+					buttonLabelBase,
+					buttonLabelModel ?? __("Reference", "atlas-content-modeler")
+				);
+			}
 
 			/**
 			 * Retrieves related content information for display.
@@ -96,7 +126,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 * @returns {object}
 			 */
 			function getEntries() {
-				const { models } = atlasContentModelerFormEditingExperience;
 				const query = new URLSearchParams({
 					include: selectedEntries,
 				});
@@ -188,17 +217,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						>
 							<div className="d-flex flex-row">
 								<Icon type="link" />
-								<div className="px-2">
-									{selectedEntries?.length > 0
-										? __(
-												"Link New Reference",
-												"atlas-content-modeler"
-										  )
-										: __(
-												"Link Reference",
-												"atlas-content-modeler"
-										  )}
-								</div>
+								<div className="px-2">{getButtonLabel()}</div>
 							</div>
 						</button>
 					</div>
