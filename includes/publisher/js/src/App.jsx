@@ -1,10 +1,23 @@
 import React from "react";
+import ReactGA from "react-ga4";
 import Fields from "./components/Fields";
 import { sprintf, __ } from "@wordpress/i18n";
+
+ReactGA.initialize("G-S056CLLZ34");
+ReactGA.send("pageview");
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 
+	// Send a custom event
+	ReactGA.event({
+		category: "your category",
+		action: "your action",
+		label: "your label", // optional
+		value: 99, // optional, must be a number
+		nonInteraction: true, // optional, true/false
+		transport: "xhr", // optional, beacon/xhr/image
+	});
 	/**
 	 * Navigate to the post new php file for current slug
 	 * @param e
