@@ -162,6 +162,16 @@ button.tertiary.relationship-modal-nav {
 	padding: 0 20px;
 }
 
+button.tertiary.relationship-modal-nav:disabled {
+	color: $color-gray-light !important;
+}
+
+button.tertiary.relationship-modal-nav:not([disabled]):hover {
+	background: #f4f7fa !important;
+	border-color: #cfdde9 !important;
+	color: $color-text !important;
+}
+
 .model-list-empty button {
 	margin-top: 23px;
 }

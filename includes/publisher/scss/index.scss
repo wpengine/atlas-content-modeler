@@ -19,8 +19,8 @@
 
 	.app,
 	.ReactModal__Content {
-		@import "./buttons";
 		@import "../../settings/scss/_buttons";
+		@import "./buttons";
 	}
 }
 
