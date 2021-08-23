@@ -79,7 +79,13 @@ export default function Field(props) {
 function fieldMarkup(field, modelSlug, errors, validate) {
 	switch (field.type) {
 		case "relationship":
-			return <Relationship field={field} modelSlug={modelSlug} />;
+			return (
+				<Relationship
+					field={field}
+					modelSlug={modelSlug}
+					required={field.required}
+				/>
+			);
 		case "media":
 			return (
 				<MediaUploader
