@@ -66,6 +66,24 @@ export default function RelationshipModal({
 		setChosenEntries(savedValues);
 	}
 
+	/**
+	 * Gets the modal title depending on field cardinality.
+	 *
+	 * @returns {string}
+	 */
+	function getModalTitle() {
+		const { models } = atlasContentModelerFormEditingExperience;
+		const modelName =
+			field?.cardinality === "one-to-one"
+				? models[field.reference]?.singular ??
+				  __("Reference", "atlas-content-modeler")
+				: models[field.reference]?.plural ??
+				  __("References", "atlas-content-modeler");
+
+		/* translators: the referenced model name, such as “Car” or “Cars”. */
+		return sprintf(__("Select %s"), modelName);
+	}
+
 	async function getEntries(page) {
 		const { models } = atlasContentModelerFormEditingExperience;
 
@@ -149,7 +167,7 @@ export default function RelationshipModal({
 			field={field}
 			style={customStyles}
 		>
-			<h2>{__("Select Reference", "atlas-content-modeler")}</h2>
+			<h2>{getModalTitle()}</h2>
 			<p className="mb-4">
 				{__(
 					"Only published entries are displayed.",
