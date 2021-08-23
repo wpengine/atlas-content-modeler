@@ -86,6 +86,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				setEditSingleRelModalIsOpen,
 			] = useState(false);
 			const [entryInfo, setEntryInfo] = useState();
+			const [isFetching, setIsFetching] = useState(false);
 			const [selectedEntries, setSelectedEntries] = useState(
 				field.value.split(",").filter(Boolean)
 			);
@@ -124,7 +125,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			 *
 			 * @returns {object}
 			 */
-			function getEntries() {
+			async function getEntries() {
 				const query = new URLSearchParams({
 					include: selectedEntries,
 				});
@@ -138,6 +139,8 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					parse: false, // So the response status and headers are available.
 				};
 
+				setIsFetching(true);
+
 				return apiFetch(params).then((response) => {
 					if (response.status !== 200) {
 						console.error(
@@ -150,9 +153,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 								response.status
 							)
 						);
+						setIsFetching(false);
 						return;
 					}
 
+					setIsFetching(false);
 					return response.json();
 				});
 			}
@@ -176,7 +181,12 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						{field.name}
 					</label>
 
-					{entryInfo && (
+					{isFetching ? (
+						<div
+							className="loader"
+							aria-label={__("Loading…", "atlas-content-modeler")}
+						></div>
+					) : entryInfo ? (
 						<section className="card-content">
 							<ul className="model-list">
 								{entryInfo?.map((entry) => {
@@ -202,6 +212,8 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 								})}
 							</ul>
 						</section>
+					) : (
+						"" // No linked entries.
 					)}
 
 					<div className="d-flex flex-row align-items-center media-btns">
