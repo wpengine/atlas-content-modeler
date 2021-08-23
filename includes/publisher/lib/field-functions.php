@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler;
 
-use phpDocumentor\Reflection\Types\Boolean;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
