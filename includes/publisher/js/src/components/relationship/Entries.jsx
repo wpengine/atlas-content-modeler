@@ -20,15 +20,15 @@ export default function Entries({
 									</p>
 								</span>
 							</div>
-							<input
-								name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
-								value={selectedEntries}
-								type="hidden"
-							/>
 						</li>
 					);
 				})}
 			</ul>
+			<input
+				name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
+				value={selectedEntries}
+				type="hidden"
+			/>
 		</section>
 	);
 }
