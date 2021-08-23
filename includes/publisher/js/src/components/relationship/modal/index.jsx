@@ -151,7 +151,7 @@ export default function RelationshipModal({
 					"atlas-content-modeler-fields-app"
 				);
 			}}
-			portalClassName="atlas-content-modeler-edit-model-modal-container atlas-content-modeler"
+			portalClassName="atlas-content-modeler-relationship-modal-container atlas-content-modeler"
 			onRequestClose={() => {
 				setIsOpen(false);
 			}}
