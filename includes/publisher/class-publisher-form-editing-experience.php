@@ -175,7 +175,6 @@ final class FormEditingExperience {
 			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
 		}
 
-		wp_enqueue_script( 'atlas-content-modeler-google-analytics' );
 		wp_enqueue_script( 'atlas-content-modeler-form-editing-experience' );
 	}
 

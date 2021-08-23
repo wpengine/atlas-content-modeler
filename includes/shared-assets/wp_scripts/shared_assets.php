@@ -24,21 +24,5 @@ function enqueue_shared_assets() {
 		true
 	);
 
-	wp_enqueue_script(
-		'atlas-content-modeler-gtag',
-		'https://www.googletagmanager.com/gtag/js?id=G-S056CLLZ34',
-		[],
-		$plugin['Version'],
-		false
-	);
-
-	wp_register_script(
-		'atlas-content-modeler-google-analytics',
-		ATLAS_CONTENT_MODELER_URL . 'includes/shared-assets/js/ga-analytics.js',
-		[ 'atlas-content-modeler-gtag' ],
-		$plugin['Version'],
-		true
-	);
-
 	wp_set_script_translations( 'atlas-content-modeler-feedback-banner', 'atlas-content-modeler' );
 }
