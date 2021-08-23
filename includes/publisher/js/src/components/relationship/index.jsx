@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Icon from "acm-icons";
 import RelationshipModal from "./modal";
 import { sprintf, __ } from "@wordpress/i18n";
 import Entries from "./Entries";
 import Loader from "./Loader";
+import LinkButton from "./LinkButton";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -17,34 +17,6 @@ export default function Relationship({ field, modelSlug }) {
 		field.value.split(",").filter(Boolean)
 	);
 	const { models } = atlasContentModelerFormEditingExperience;
-
-	/**
-	 * Gets the Reference field button label depending on field
-	 * cardinality and current selection state.
-	 *
-	 * One-to-one with no item chosen => “Link Car”.
-	 * One-to-many with items chosen => “Change Linked Cars”.
-	 * One-to-one where reference model was deleted => “Link Reference”.
-	 *
-	 * @returns {string}
-	 */
-	function getButtonLabel() {
-		const buttonLabelBase =
-			selectedEntries?.length > 0
-				? /* translators: the name of the related model, such as "Car" or "Cars" */
-				  __("Change Linked %s", "atlas-content-modeler")
-				: /* translators: the name of the related model, such as "Car" or "Cars" */
-				  __("Link %s", "atlas-content-modeler");
-
-		const buttonLabelModel =
-			field?.cardinality === "one-to-one"
-				? models[field.reference]?.singular ??
-				  __("Reference", "atlas-content-modeler")
-				: models[field.reference]?.plural ??
-				  __("References", "atlas-content-modeler");
-
-		return sprintf(buttonLabelBase, buttonLabelModel);
-	}
 
 	/**
 	 * Retrieves related content information for display.
@@ -106,7 +78,6 @@ export default function Relationship({ field, modelSlug }) {
 			>
 				{field.name}
 			</label>
-
 			{isFetching ? (
 				<Loader />
 			) : entryInfo ? (
@@ -119,23 +90,13 @@ export default function Relationship({ field, modelSlug }) {
 			) : (
 				"" // No linked entries.
 			)}
-
-			<div className="d-flex flex-row align-items-center media-btns">
-				<button
-					className="button button-primary link-button"
-					style={{ marginTop: "5px" }}
-					id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-					onClick={(e) => {
-						e.preventDefault();
-						setRelationshipModalIsOpen(true);
-					}}
-				>
-					<div className="d-flex flex-row">
-						<Icon type="link" />
-						<div className="px-2">{getButtonLabel()}</div>
-					</div>
-				</button>
-			</div>
+			<LinkButton
+				field={field}
+				models={models}
+				modelSlug={modelSlug}
+				selectedEntries={selectedEntries}
+				setRelationshipModalIsOpen={setRelationshipModalIsOpen}
+			/>
 			<RelationshipModal
 				field={field}
 				isOpen={relationshipModalIsOpen}
