@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Icon from "acm-icons";
-import RelationshipModal from "./RelationshipModal";
+import RelationshipModal from "./modal";
 import { sprintf, __ } from "@wordpress/i18n";
+import Entries from "./Entries";
+import Loader from "./Loader";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -106,36 +108,14 @@ export default function Relationship({ field, modelSlug }) {
 			</label>
 
 			{isFetching ? (
-				<div
-					className="loader"
-					aria-label={__("Loading…", "atlas-content-modeler")}
-				></div>
+				<Loader />
 			) : entryInfo ? (
-				<section className="card-content">
-					<ul className="model-list">
-						{entryInfo?.map((entry) => {
-							const { title } = entry;
-							return (
-								<li key={entry.id}>
-									<div className="relation-model-card flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
-										<span className="flex-item mb-3 mb-sm-0 pr-1">
-											<p className="value">
-												<strong>
-													{title.rendered}
-												</strong>
-											</p>
-										</span>
-									</div>
-									<input
-										name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
-										value={selectedEntries}
-										type="hidden"
-									/>
-								</li>
-							);
-						})}
-					</ul>
-				</section>
+				<Entries
+					entryInfo={entryInfo}
+					modelSlug={modelSlug}
+					field={field}
+					selectedEntries={selectedEntries}
+				/>
 			) : (
 				"" // No linked entries.
 			)}

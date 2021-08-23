@@ -2,8 +2,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
+import Table from "./Table";
+import Pagination from "./Pagination";
+import Loader from "../Loader";
 const { wp } = window;
-const { date, apiFetch } = wp;
+const { apiFetch } = wp;
 
 /**
  * The modal component for editing a relationship.
@@ -180,162 +183,22 @@ export default function RelationshipModal({
 				)}
 			</p>
 			{isFetching ? (
-				<div
-					className="loader"
-					aria-label={__("Loading…", "atlas-content-modeler")}
-				></div>
+				<Loader />
 			) : page in pagedEntries ? (
-				<div>
-					<table className="table table-striped mt-2">
-						<thead>
-							<tr>
-								<th></th>
-								<th>{__("Title", "atlas-content-modeler")}</th>
-								<th>
-									{__(
-										"Last modified",
-										"atlas-content-modeler"
-									)}
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							{pagedEntries[page].map((entry) => {
-								const { modified, id, title } = entry;
-								const selectEntryLabel = sprintf(
-									__(
-										/* translators: %s The name of the entry title. */
-										"Link the entry titled “%s” to this entry.",
-										"atlas-content-modeler"
-									),
-									title?.rendered
-								);
-								return (
-									<tr key={id}>
-										<td className="checkbox">
-											<input
-												type={
-													field.cardinality ==
-													"one-to-many"
-														? "checkbox"
-														: "radio"
-												}
-												name="selected-entry"
-												id={`entry-${id}`}
-												value={id}
-												aria-label={selectEntryLabel}
-												defaultChecked={chosenEntries.includes(
-													id.toString()
-												)}
-												onChange={handleSelect}
-											/>
-										</td>
-										<td>
-											<label
-												htmlFor={`entry-${id}`}
-												aria-label={selectEntryLabel}
-											>
-												{title?.rendered}
-											</label>
-										</td>
-										<td>
-											<label
-												htmlFor={`entry-${id}`}
-												aria-label={selectEntryLabel}
-											>
-												{date.dateI18n(
-													"F j, Y",
-													modified
-												)}
-											</label>
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</table>
-					<div className="d-flex flex-row-reverse">
-						{totalPages > 1 && (
-							<div className="d-flex flex-row">
-								<button
-									href="#"
-									className="tertiary relationship-modal-nav"
-									disabled={page === 1}
-									aria-label={__(
-										"First page",
-										"atlas-content-modeler"
-									)}
-									onClick={(event) => {
-										event.preventDefault();
-										setPage(1);
-									}}
-								>
-									{"<<"}
-								</button>
-								<button
-									href="#"
-									className="tertiary relationship-modal-nav"
-									disabled={page === 1}
-									aria-label={__(
-										"Previous page",
-										"atlas-content-modeler"
-									)}
-									onClick={(event) => {
-										event.preventDefault();
-										setPage(page - 1);
-									}}
-								>
-									{"<"}
-								</button>
-								<button
-									href="#"
-									className="tertiary relationship-modal-nav"
-									disabled={page === totalPages}
-									aria-label={__(
-										"Next page",
-										"atlas-content-modeler"
-									)}
-									onClick={(event) => {
-										event.preventDefault();
-										setPage(page + 1);
-									}}
-								>
-									{">"}
-								</button>
-								<button
-									href="#"
-									className="tertiary relationship-modal-nav"
-									disabled={page === totalPages}
-									aria-label={__(
-										"Last page",
-										"atlas-content-modeler"
-									)}
-									onClick={(event) => {
-										event.preventDefault();
-										setPage(totalPages);
-									}}
-								>
-									{">>"}
-								</button>
-							</div>
-						)}
-						<div className="mx-3">
-							<span
-								className="align-middle"
-								style={{ lineHeight: "55px" }}
-							>
-								{sprintf(
-									__(
-										"Page %d of %d",
-										"atlas-content-modeler"
-									),
-									page,
-									totalPages
-								)}
-							</span>
-						</div>
-					</div>
-				</div>
+				<>
+					<Table
+						pagedEntries={pagedEntries}
+						page={page}
+						field={field}
+						chosenEntries={chosenEntries}
+						handleSelect={handleSelect}
+					/>
+					<Pagination
+						totalPages={totalPages}
+						page={page}
+						setPage={setPage}
+					/>
+				</>
 			) : (
 				<p>{__("No entries found.", "atlas-content-modeler")}</p>
 			)}
