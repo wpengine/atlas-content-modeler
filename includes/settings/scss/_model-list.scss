@@ -136,11 +136,13 @@
 		padding-bottom: 17px;
 		padding-right: 17px;
 		box-sizing: content-box;
+		z-index: 99999; /* renders modal above WP Admin bar */
 	}
 
 	.ReactModal__Content--after-open {
 		width: 100%;
 		max-width: 600px;
+		max-height: 100%;
 
 		input,
 		textarea,
