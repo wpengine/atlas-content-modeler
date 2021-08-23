@@ -102,7 +102,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				});
 
 				const endpoint = `/wp/v2/${
-					models[field.reference].wp_rest_base
+					models[field.reference]?.wp_rest_base
 				}/?=${query}`;
 
 				const params = {

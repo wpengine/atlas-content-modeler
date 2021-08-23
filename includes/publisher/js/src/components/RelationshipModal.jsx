@@ -70,7 +70,7 @@ export default function RelationshipModal({
 		const { models } = atlasContentModelerFormEditingExperience;
 
 		const endpoint = `/wp/v2/${
-			models[field.reference].wp_rest_base
+			models[field.reference]?.wp_rest_base
 		}?per_page=${entriesPerPage}&page=${page}`;
 
 		const params = {
