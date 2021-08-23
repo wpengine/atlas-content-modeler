@@ -171,7 +171,11 @@ final class FormEditingExperience {
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
 				if ( isset( $post->ID ) ) {
-					$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+					if ( 'relationship' === $field['type'] ) {
+						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post->ID, $post->post_type, $field['reference'], $field['slug'] );
+					} else {
+						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+					}
 				}
 			}
 		}
@@ -374,6 +378,29 @@ final class FormEditingExperience {
 			$related_posts = explode( ',', $field_value );
 			$relationship->replace_relationships( $post->ID, $related_posts );
 		}
+	}
+
+	/**
+	 * Retrieves the related post ids
+	 *
+	 * @param int    $post_id The post ID of the parent post.
+	 * @param string $post_type The post type of the parent post.
+	 * @param string $relationship_type The post type of the relationship.
+	 * @param string $field_name The slug of the relationship saved in the DB.
+	 *
+	 * @return string A comma separated list of connected posts
+	 */
+	public function get_relationship_field( $post_id, $post_type, $relationship_type, $field_name ) {
+		$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$relationship = $registry->get_post_to_post_relationship(
+			$post_type,
+			$relationship_type,
+			$field_name
+		);
+
+		$relationship_ids = $relationship->get_related_object_ids( $post_id );
+
+		return implode( ',', $relationship_ids );
 	}
 
 	/**
