@@ -14,7 +14,7 @@ ReactGA.initialize(GA_ID, { gtagOptions: { anonymize_ip: true } });
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 
-	ReactGA.send({ hitType: "pageview", page: "Publisher App Home" });
+	ReactGA.send({ hitType: "pageview", page: "ACM Publisher Entry" });
 
 	/**
 	 * Navigate to the post new php file for current slug
