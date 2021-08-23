@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Relationship from "./relationship";
-import Icon from "../../../../components/icons";
+import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
