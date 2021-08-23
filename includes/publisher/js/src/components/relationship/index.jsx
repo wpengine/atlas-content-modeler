@@ -8,7 +8,7 @@ const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Relationship({ field, modelSlug }) {
-	const [editSingleRelModalIsOpen, setEditSingleRelModalIsOpen] = useState(
+	const [relationshipModalIsOpen, setRelationshipModalIsOpen] = useState(
 		false
 	);
 	const [entryInfo, setEntryInfo] = useState();
@@ -127,7 +127,7 @@ export default function Relationship({ field, modelSlug }) {
 					id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 					onClick={(e) => {
 						e.preventDefault();
-						setEditSingleRelModalIsOpen(true);
+						setRelationshipModalIsOpen(true);
 					}}
 				>
 					<div className="d-flex flex-row">
@@ -138,8 +138,8 @@ export default function Relationship({ field, modelSlug }) {
 			</div>
 			<RelationshipModal
 				field={field}
-				isOpen={editSingleRelModalIsOpen}
-				setIsOpen={setEditSingleRelModalIsOpen}
+				isOpen={relationshipModalIsOpen}
+				setIsOpen={setRelationshipModalIsOpen}
 				selectedEntries={selectedEntries}
 				setSelectedEntries={setSelectedEntries}
 			/>
