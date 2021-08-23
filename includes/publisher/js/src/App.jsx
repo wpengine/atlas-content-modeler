@@ -8,20 +8,6 @@ const GA_ID = "G-S056CLLZ34";
 /**
  * React-GA4 Library and usage
  * {@link https://github.com/PriceRunner/react-ga4#readme}
- *
- * Page send
- * ReactGA.send("pageview"); OR
- * ReactGA.send({ hitType: "pageview", page: "/my-path" });
- *
- * Send custom event
- * ReactGA.event({
- *	category: "your category",
- *	action: "your action",
- *	label: "your label", // optional
- *	value: 99, // optional, must be a number
- *	nonInteraction: true, // optional, true/fals
- *	transport: "xhr", // optional, beacon/xhr/image
- *	});
  */
 ReactGA.initialize(GA_ID, { gtagOptions: { anonymize_ip: true } });
 
