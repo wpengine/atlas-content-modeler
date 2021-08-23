@@ -1,5 +1,4 @@
 import React from "react";
-import GA4React, { useGA4React } from "ga-4-react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +11,6 @@ import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
 
 export default function App() {
-	const ga = useGA4React();
 	return (
 		<div className="app atlas-content-modeler">
 			<ModelsContextProvider>

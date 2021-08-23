@@ -1,11 +1,9 @@
 import React from "react";
-import GA4React, { useGA4React } from "ga-4-react";
 import Fields from "./components/Fields";
 import { sprintf, __ } from "@wordpress/i18n";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
-	const ga = useGA4React();
 
 	/**
 	 * Navigate to the post new php file for current slug
