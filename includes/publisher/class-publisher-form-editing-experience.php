@@ -301,6 +301,8 @@ final class FormEditingExperience {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$posted_values = $_POST['atlas-content-modeler'][ $post->post_type ];
 
+		$saved_replationships = array();
+
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
 			$field_type = get_field_type_from_slug(
@@ -313,6 +315,7 @@ final class FormEditingExperience {
 			if ( 'relationship' === $field_type ) {
 				unset( $posted_values[ $field_id ] );
 				$this->save_relationship_field( $field_id, $post, $field_value );
+				$saved_replationships[] = $field_id;
 			}
 		}
 
@@ -332,7 +335,9 @@ final class FormEditingExperience {
 				);
 
 				if ( 'relationship' === $field_type ) {
-					$this->save_relationship_field( $slug, $post, '' );
+					if ( ! in_array( $slug, $saved_replationships, true ) ) {
+						$this->save_relationship_field( $slug, $post, '' );
+					}
 				} else {
 					$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
 					if ( empty( $existing ) ) {
