@@ -111,13 +111,12 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 
 				const buttonLabelModel =
 					field?.cardinality === "one-to-one"
-						? models[field.reference]?.singular
-						: models[field.reference]?.plural;
+						? models[field.reference]?.singular ??
+						  __("Reference", "atlas-content-modeler")
+						: models[field.reference]?.plural ??
+						  __("References", "atlas-content-modeler");
 
-				return sprintf(
-					buttonLabelBase,
-					buttonLabelModel ?? __("Reference", "atlas-content-modeler")
-				);
+				return sprintf(buttonLabelBase, buttonLabelModel);
 			}
 
 			/**
