@@ -11,6 +11,7 @@ namespace WPE\AtlasContentModeler;
 
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -170,7 +171,11 @@ final class FormEditingExperience {
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
 				if ( isset( $post->ID ) ) {
-					$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+					if ( 'relationship' === $field['type'] ) {
+						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post->ID, $post->post_type, $field['reference'], $field['slug'] );
+					} else {
+						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+					}
 				}
 			}
 		}
@@ -296,13 +301,22 @@ final class FormEditingExperience {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$posted_values = $_POST['atlas-content-modeler'][ $post->post_type ];
 
+		$saved_relationships = array();
+
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
-			$field_type  = get_field_type_from_slug(
+			$field_type = get_field_type_from_slug(
 				$field_id,
 				$this->models[ $post->post_type ]['fields'] ?? []
 			);
+
 			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ) );
+
+			if ( 'relationship' === $field_type ) {
+				unset( $posted_values[ $field_id ] );
+				$this->save_relationship_field( $field_id, $post, $field_value );
+				$saved_relationships[] = $field_id;
+			}
 		}
 
 		// Delete any meta values missing from the submitted data.
@@ -315,15 +329,30 @@ final class FormEditingExperience {
 
 		foreach ( $all_field_slugs as $slug ) {
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
-				$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
-				if ( empty( $existing ) ) {
-					continue;
-				}
+				$field_type = get_field_type_from_slug(
+					$slug,
+					$this->models[ $post->post_type ]['fields'] ?? []
+				);
 
-				$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
-				if ( ! $deleted ) {
-					/* translators: %s: atlas content modeler field slug */
-					$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+				if ( 'relationship' === $field_type ) {
+					if ( ! in_array(
+						$slug,
+						$saved_relationships,
+						true
+					) ) {
+						$this->save_relationship_field( $slug, $post, '' );
+					}
+				} else {
+					$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
+					if ( empty( $existing ) ) {
+						continue;
+					}
+
+					$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
+					if ( ! $deleted ) {
+						/* translators: %s: atlas content modeler field slug */
+						$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+					}
 				}
 			}
 		}
@@ -345,6 +374,55 @@ final class FormEditingExperience {
 				$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
 			}
 		}
+	}
+
+	/**
+	 * Saves relationship field data using the post-to-posts library
+	 *
+	 * @param string  $field_id The name of the field being saved.
+	 * @param WP_Post $post The ID of the post being saved.
+	 * @param string  $field_value The post IDs of the relationship's destination posts.
+	 */
+	public function save_relationship_field( $field_id, $post, $field_value ) {
+		$field = get_field_from_slug(
+			$field_id,
+			$this->models[ $post->post_type ]['fields'] ?? []
+		);
+
+		$registry      = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field_id );
+		$related_posts = array();
+
+		if ( $relationship ) {
+			if ( '' !== $field_value ) {
+				$related_posts = explode( ',', $field_value );
+			}
+
+			$relationship->replace_relationships( $post->ID, $related_posts );
+		}
+	}
+
+	/**
+	 * Retrieves the related post ids
+	 *
+	 * @param int    $post_id The post ID of the parent post.
+	 * @param string $post_type The post type of the parent post.
+	 * @param string $relationship_type The post type of the relationship.
+	 * @param string $field_name The slug of the relationship saved in the DB.
+	 *
+	 * @return string A comma separated list of connected posts
+	 */
+	public function get_relationship_field( $post_id, $post_type, $relationship_type, $field_name ) {
+		$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$relationship = $registry->get_post_to_post_relationship(
+			$post_type,
+			$relationship_type,
+			$field_name
+		);
+
+		$relationship_ids = $relationship->get_related_object_ids( $post_id );
+
+		return implode( ',', $relationship_ids );
 	}
 
 	/**

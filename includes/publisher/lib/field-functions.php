@@ -73,6 +73,28 @@ function get_field_type_from_slug( string $slug, array $fields ): string {
 }
 
 /**
+ * Gets the field from the field slug.
+ *
+ * @param string $slug The slug of the field to look for.
+ * @param array  $fields Fields to search for the `$slug`.
+ *
+ * @return array The field array of the associated slugs or false if not found.
+ */
+function get_field_from_slug( string $slug, array $fields ): ?array {
+	$found = false;
+
+	foreach ( $fields as $field ) {
+		if ( $field['slug'] === $slug ) {
+			$found = $field;
+			break;
+		}
+	}
+
+	return $found;
+}
+
+
+/**
  * Sanitizes field data based on the field type.
  *
  * @param string $type The type of field.
