@@ -27,11 +27,21 @@ export default function RelationshipModal({
 	const [page, setPage] = useState(1);
 	const [pagedEntries, setPagedEntries] = useState({});
 	const [totalEntries, setTotalEntries] = useState(0);
-	const [chosenEntries, setChosenEntries] = useState(selectedEntries);
 	const [isFetching, setIsFetching] = useState(false);
 	const savedEntries = useRef(); // To revert changes if the modal is closed via Cancel.
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+	/**
+	 * An entry is “chosen” if it has been ticked in the relationships modal.
+	 * An entry is “selected” when the modal is saved.
+	 *
+	 * We maintain these states separately so that (a) chosen items across
+	 * multiple pages in the modal can be tracked (b) entry lists only update
+	 * when the modal is saved (not while the user is choosing entries) and
+	 * (c) users can cancel their choices to revert to the previous selection.
+	 */
+	const [chosenEntries, setChosenEntries] = useState(selectedEntries);
 
 	const customStyles = {
 		overlay: {
