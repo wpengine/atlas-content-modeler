@@ -153,8 +153,8 @@ export default function RelationshipModal({
 	}, [isOpen]);
 
 	/**
-	 * Update `chosenEntries` if `selectedEntries` changes externally, such as
-	 * when a user removes an entry via the entry options dropdown. Ensures that
+	 * Update chosenEntries if selectedEntries changes externally, such as when
+	 * a user removes an entry via the entry options dropdown. Ensures that
 	 * opening the relationships modal after using the 'remove' option does
 	 * not show the removed item as chosen.
 	 */
