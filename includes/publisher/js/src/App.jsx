@@ -1,20 +1,13 @@
 import React from "react";
-import ReactGA from "react-ga4";
 import Fields from "./components/Fields";
 import { sprintf, __ } from "@wordpress/i18n";
-
-const GA_ID = "G-S056CLLZ34";
-
-/**
- * React-GA4 Library and usage
- * {@link https://github.com/PriceRunner/react-ga4#readme}
- */
-ReactGA.initialize(GA_ID, { gtagOptions: { anonymize_ip: true } });
+import { useGa } from "../../../shared-assets/js/ga-service";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
+	const ga = useGa();
 
-	ReactGA.send({ hitType: "pageview", page: "ACM Publisher Entry" });
+	ga.sendPageView({ hitType: "pageview", page: "ACM Publisher Entry" });
 
 	/**
 	 * Navigate to the post new php file for current slug

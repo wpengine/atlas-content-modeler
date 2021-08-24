@@ -12,10 +12,12 @@ import { useGa } from "../../../shared-assets/js/ga-service";
 
 export default function App() {
 	const ga = useGa();
+
 	ga.sendPageView({
 		hitType: "pageview",
 		page: "ACM Models Home",
 	});
+
 	return (
 		<div className="app atlas-content-modeler">
 			<ModelsContextProvider>
