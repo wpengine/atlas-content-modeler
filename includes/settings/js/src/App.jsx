@@ -1,26 +1,18 @@
 import React from "react";
-import ReactGA from "react-ga4";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import CreateContentModel from "./components/CreateContentModel.jsx";
 import ViewContentModelsList from "./components/ViewContentModelsList";
 import EditContentModel from "./components/EditContentModel";
 import Taxonomies from "./components/Taxonomies";
 import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
-
-const GA_ID = "G-S056CLLZ34";
-
-/**
- * React-GA4 Library and usage
- * {@link https://github.com/PriceRunner/react-ga4#readme}
- */
-ReactGA.initialize(GA_ID, { gtagOptions: { anonymize_ip: true } });
+import { useGa } from "../../../shared-assets/js/ga-service";
 
 export default function App() {
-	ReactGA.send({
+	const ga = useGa();
+	ga.sendPageView({
 		hitType: "pageview",
 		page: "ACM Models Home",
 	});
