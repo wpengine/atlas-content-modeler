@@ -9,25 +9,23 @@ const GA_ID = "G-S056CLLZ34";
  */
 ReactGA.initialize(GA_ID, { gtagOptions: { anonymize_ip: true } });
 
-const { createContext, useContext } = React;
+export const GaContext = React.createContext(null);
 
-const GaContext = createContext(null);
-
-export const GaProvider = (props) => {
-	const value = {
-		sendEvent: props.sendEvent || sendEvent,
-		sendPageView: props.sendPageView || sendPageView,
-	};
-
+export function GaProvider(props) {
 	return (
-		<GaProvider.Provider value={value}>
+		<GaProvider.Provider
+			value={{
+				sendEvent,
+				sendPageView,
+			}}
+		>
 			{props.children}
 		</GaProvider.Provider>
 	);
-};
+}
 
 export const useGa = () => {
-	return useContext(GaContext);
+	return React.useContext(GaContext);
 };
 
 const sendEvent = (data) => {
