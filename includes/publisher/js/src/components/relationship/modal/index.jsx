@@ -144,13 +144,23 @@ export default function RelationshipModal({
 	/**
 	 * Stores current state of selectedEntries when the modal opens.
 	 * Allows us to revert to that state if a user makes changes
-	 * to selected entries, but then clicks the Cancel button.
+	 * to chosen entries, but then clicks the Cancel button.
 	 */
 	useEffect(() => {
 		if (isOpen) {
 			savedEntries.current = selectedEntries;
 		}
 	}, [isOpen]);
+
+	/**
+	 * Update `chosenEntries` if `selectedEntries` changes externally, such as
+	 * when a user removes an entry via the entry options dropdown. Ensures that
+	 * opening the relationships modal after using the 'remove' option does
+	 * not show the removed item as chosen.
+	 */
+	useEffect(() => {
+		setChosenEntries(selectedEntries);
+	}, [selectedEntries]);
 
 	return (
 		<Modal
