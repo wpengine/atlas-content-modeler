@@ -21,6 +21,10 @@
 	min-height: 20px;
 }
 
+.classic-form .card-content input:invalid + span.error {
+	margin: 8px 0;
+}
+
 .dropdown-content:not(.hidden) {
 	background: $color-white;
 	border-radius: 2px;

@@ -1,5 +1,7 @@
 import React from "react";
 import Options from "./Options";
+import Icon from "acm-icons";
+import { __ } from "@wordpress/i18n";
 
 export default function Entries({
 	entryInfo,
@@ -36,10 +38,20 @@ export default function Entries({
 				})}
 			</ul>
 			<input
+				className="hidden"
+				id={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}][relationshipEntryId]`}
+				required={field?.required}
+				type="text"
 				value={selectedEntries}
-				type="hidden"
+				onChange={() => {}} // Prevents “You provided a `value` prop to a form field without an `onChange` handler.”
 			/>
+			<span className="error">
+				<Icon type="error" />
+				<span role="alert">
+					{__("This field is required", "atlas-content-modeler")}
+				</span>
+			</span>
 		</section>
 	);
 }
