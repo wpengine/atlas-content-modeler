@@ -78,6 +78,11 @@ export default function Relationship({ field, modelSlug }) {
 			>
 				{field.name}
 			</label>
+			{field?.required && (
+				<p className="required">
+					{__("*Required", "atlas-content-modeler")}
+				</p>
+			)}
 			{isFetching ? (
 				<Loader />
 			) : entryInfo ? (
@@ -86,6 +91,7 @@ export default function Relationship({ field, modelSlug }) {
 					modelSlug={modelSlug}
 					field={field}
 					selectedEntries={selectedEntries}
+					setSelectedEntries={setSelectedEntries}
 				/>
 			) : (
 				"" // No linked entries.
