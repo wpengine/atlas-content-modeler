@@ -477,7 +477,9 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$rich_text = true;
 			}
 
-			$gql_field_type = map_html_field_type_to_graphql_field_type( $field );
+			$reference = isset( $field['reference'] ) ? $field['reference'] : '';
+
+			$gql_field_type = map_html_field_type_to_graphql_field_type( $field, $reference );
 			if ( empty( $gql_field_type ) ) {
 				continue;
 			}
@@ -578,12 +580,13 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 /**
  * Maps an HTML field type to a WPGraphQL field type.
  *
- * @param array $field The HTML field.
+ * @param array  $field The HTML field.
+ * @param string $reference The field type a referenced field is referring to.
  * @access private
  *
  * @return string|array|null
  */
-function map_html_field_type_to_graphql_field_type( array $field ) {
+function map_html_field_type_to_graphql_field_type( array $field, string $reference ) {
 	if ( ! isset( $field['type'] ) ) {
 		return null;
 	}
@@ -602,7 +605,7 @@ function map_html_field_type_to_graphql_field_type( array $field ) {
 		case 'media':
 			return 'MediaItem';
 		case 'relationship':
-			return array( 'list_of' => 'Rabbit' );
+			return array( 'list_of' => $reference );
 		default:
 			return null;
 	}
