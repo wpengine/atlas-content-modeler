@@ -477,16 +477,16 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$rich_text = true;
 			}
 
-			$gql_field_type = map_html_field_type_to_graphql_field_type( $field['type'] );
+			$gql_field_type = map_html_field_type_to_graphql_field_type( $field );
 			if ( empty( $gql_field_type ) ) {
 				continue;
 			}
 
-			$field['type'] = $gql_field_type;
+			$field['original_type'] = $field['type'];
+			$field['type']          = $gql_field_type;
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
-				// @todo This is a bad check. We need to make sure we can check beyond the param's type.
-				if ( is_array( $field['type'] ) ) {
+				if ( 'relationship' === $field['original_type'] ) {
 					$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
 					$relationship = $registry->get_post_to_post_relationship(
 						$post->post_type,
@@ -578,17 +578,17 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 /**
  * Maps an HTML field type to a WPGraphQL field type.
  *
- * @param string $field_type The HTML field type.
+ * @param array $field The HTML field.
  * @access private
  *
  * @return string|array|null
  */
-function map_html_field_type_to_graphql_field_type( string $field_type ) {
-	if ( empty( $field_type ) ) {
+function map_html_field_type_to_graphql_field_type( array $field ) {
+	if ( ! isset( $field['type'] ) ) {
 		return null;
 	}
 
-	switch ( $field_type ) {
+	switch ( $field['type'] ) {
 		case 'text':
 		case 'textarea':
 		case 'string':
