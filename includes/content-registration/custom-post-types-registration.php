@@ -485,6 +485,25 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$field['type'] = $gql_field_type;
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
+				// @todo This is a bad check. We need to make sure we can check beyond the param's type.
+				if ( is_array( $field['type'] ) ) {
+					$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+					$relationship = $registry->get_post_to_post_relationship(
+						$post->post_type,
+						$field['reference'],
+						$field['slug']
+					);
+
+					$relationship_ids = $relationship->get_related_object_ids( $post->ID );
+					$related_posts    = array();
+
+					foreach ( $relationship_ids as $id ) {
+						$related_posts[] = DataSource::resolve_post_object( (int) $id, $context );
+					}
+
+					return $related_posts;
+				}
+
 				$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
 				/**
@@ -562,9 +581,9 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
  * @param string $field_type The HTML field type.
  * @access private
  *
- * @return string|null
+ * @return string|array|null
  */
-function map_html_field_type_to_graphql_field_type( string $field_type ): ?string {
+function map_html_field_type_to_graphql_field_type( string $field_type ) {
 	if ( empty( $field_type ) ) {
 		return null;
 	}
@@ -582,6 +601,8 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 			return 'Boolean';
 		case 'media':
 			return 'MediaItem';
+		case 'relationship':
+			return array( 'list_of' => 'Rabbit' );
 		default:
 			return null;
 	}
