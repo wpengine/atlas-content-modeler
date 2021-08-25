@@ -12,6 +12,7 @@
     "start-publisher": "parcel watch includes/publisher/js/src/index.jsx --port 1235 --dist-dir includes/publisher/dist --public-url .",
     "style": "prettier --check .",
     "style:fix": "prettier --write .",
+    "snapshot-update": "jest --updateSnapshot",
     "test": "jest --watch",
     "test-no-watch": "jest",
     "lint": "eslint './includes/**/*.{js,jsx}'",
