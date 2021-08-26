@@ -50,8 +50,8 @@ class CreateRelationFieldEntryCest
 		$I->see('Company', 'div.field.relationship');
 		$I->click('#atlas-content-modeler[employee][company]');
 		$I->see('Select Company', 'div.ReactModal__Content.ReactModal__Content--after-open h2');
-		$I->click(Locator::elementAt('td.checkbox input', 1));
 		$I->wait(3);
+		$I->click(Locator::elementAt('td.checkbox input', 1));
 		$I->click('button.action-button');
 		$I->wait(3);
 
@@ -82,9 +82,9 @@ class CreateRelationFieldEntryCest
 		$I->see('Many Companies', 'div.field.relationship');
 		$I->click('#atlas-content-modeler[employee][manyCompanies]');
 		$I->see('Select Companies', 'div.ReactModal__Content.ReactModal__Content--after-open h2');
+		$I->wait(3);
 		$I->click(Locator::elementAt('td.checkbox input', 1));
 		$I->click(Locator::elementAt('td.checkbox input', 2));
-		$I->wait(3);
 		$I->click('button.action-button');
 		$I->wait(3);
 
