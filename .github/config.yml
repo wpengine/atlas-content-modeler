@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Help
+    url: https://github.com/wpengine/atlas-content-modeler/discussions
+    about: Ask a support question or read existing support discussions
+  - name: Security
+    url: https://forms.gle/iPePrYY9rzGsKztW6
+    about: Please report security vulnerabilities here
