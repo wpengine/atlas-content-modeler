@@ -51,9 +51,9 @@ class CreateRelationFieldEntryCest
 		$I->click('#atlas-content-modeler[employee][company]');
 		$I->see('Select Company', 'div.ReactModal__Content.ReactModal__Content--after-open h2');
 		$I->click(Locator::elementAt('td.checkbox input', 1));
-		$I->wait(1);
+		$I->wait(3);
 		$I->click('button.action-button');
-		$I->wait(1);
+		$I->wait(3);
 
 		$I->see('WP Engine', 'div.relation-model-card');
 	}
@@ -84,9 +84,9 @@ class CreateRelationFieldEntryCest
 		$I->see('Select Companies', 'div.ReactModal__Content.ReactModal__Content--after-open h2');
 		$I->click(Locator::elementAt('td.checkbox input', 1));
 		$I->click(Locator::elementAt('td.checkbox input', 2));
-		$I->wait(1);
+		$I->wait(3);
 		$I->click('button.action-button');
-		$I->wait(1);
+		$I->wait(3);
 
 		$I->see('WP Engine', 'div.relation-model-card');
 		$I->see('Another Company Name', 'div.relation-model-card');
