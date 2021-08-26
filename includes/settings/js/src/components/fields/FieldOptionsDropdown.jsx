@@ -10,6 +10,7 @@ import Modal from "react-modal";
 import { ModelsContext } from "../../ModelsContext";
 import { maybeCloseDropdown } from "../../utils";
 import { sprintf, __ } from "@wordpress/i18n";
+import { sendEvent } from "../../../../../shared-assets/js/analytics";
 
 const { apiFetch } = wp;
 

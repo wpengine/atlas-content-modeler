@@ -16,6 +16,7 @@ import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator } from "../../hooks";
 import { toValidApiId } from "../../formats";
 import { sprintf, __ } from "@wordpress/i18n";
+import { sendEvent } from "../../../../../shared-assets/js/analytics";
 
 const { apiFetch } = wp;
 const { cloneDeep } = lodash;
