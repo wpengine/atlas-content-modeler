@@ -199,6 +199,20 @@ function Form({ id, position, type, editing, storedData }) {
 		})
 			.then((res) => {
 				if (res.success) {
+					if (editing) {
+						// log field edit
+						sendEvent({
+							category: "Fields",
+							action: `Edited a Field: ${type}`,
+						});
+					} else {
+						// log field create
+						sendEvent({
+							category: "Fields",
+							action: `Created a Field: ${type}`,
+						});
+					}
+
 					dispatch({ type: "updateField", data, model });
 				} else {
 					// The user pressed “Update” but no data changed.

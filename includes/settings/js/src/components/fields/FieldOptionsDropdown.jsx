@@ -135,6 +135,12 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 							method: "DELETE",
 							body: JSON.stringify({ model: model.slug }),
 							_wpnonce: wpApiSettings.nonce,
+						}).then(() => {
+							// log field deletion
+							sendEvent({
+								category: "Fields",
+								action: `Deleted a Field: ${field.type}-${field.id}`,
+							});
 						});
 						setModalIsOpen(false);
 						dispatch({
