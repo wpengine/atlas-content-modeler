@@ -134,7 +134,7 @@ function get_props( array $args ): array {
  * @since 0.6.0
  */
 function get_acm_taxonomies(): array {
-	return get_option( 'atlas_content_modeler_taxonomies', array() );
+	return (array) get_option( 'atlas_content_modeler_taxonomies', array() );
 }
 
 /**
