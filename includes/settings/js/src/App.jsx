@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
+import { sendPageView } from "acm-analytics";
 import "react-toastify/dist/ReactToastify.css";
 
 import CreateContentModel from "./components/CreateContentModel.jsx";
@@ -11,6 +12,10 @@ import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
 
 export default function App() {
+	useEffect(() => {
+		sendPageView("ACM Models Home");
+	}, []);
+
 	return (
 		<div className="app atlas-content-modeler">
 			<ModelsContextProvider>

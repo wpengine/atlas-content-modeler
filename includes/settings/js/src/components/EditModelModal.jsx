@@ -5,6 +5,7 @@ import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
+import { sendEvent } from "../../../../shared-assets/js/analytics";
 
 const $ = window.jQuery;
 const { apiFetch } = wp;
@@ -45,6 +46,12 @@ function updateModel(slug = "", data = {}) {
 		_wpnonce: wpApiSettings.nonce,
 		data,
 	}).then((res) => {
+		// log model edit
+		sendEvent({
+			category: "Models",
+			action: `Edited a Model: ${slug}`,
+		});
+
 		return res;
 	});
 

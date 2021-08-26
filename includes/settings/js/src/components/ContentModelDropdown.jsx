@@ -18,6 +18,7 @@ import {
 } from "../utils";
 import { showError } from "../toasts";
 import { sprintf, __ } from "@wordpress/i18n";
+import { sendEvent } from "../../../../shared-assets/js/analytics";
 
 Modal.setAppElement("#root");
 
@@ -186,6 +187,12 @@ export const ContentModelDropdown = ({ model }) => {
 						await deleteModel(slug)
 							.then((res) => {
 								if (res.success) {
+									// log model delete
+									sendEvent({
+										category: "Models",
+										action: `Deleted a Model: ${slug}`,
+									});
+
 									removeSidebarMenuItem(slug);
 									taxonomiesDispatch({
 										type: "removeModel",

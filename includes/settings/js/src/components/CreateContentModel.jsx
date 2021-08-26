@@ -9,6 +9,7 @@ import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
+import { sendEvent } from "acm-analytics";
 
 const { apiFetch } = wp;
 
@@ -49,6 +50,12 @@ export default function CreateContentModel() {
 		})
 			.then((res) => {
 				if (res.success) {
+					// log model create
+					sendEvent({
+						category: "Models",
+						action: `Created a Model: ${res.model.slug}`,
+					});
+
 					dispatch({ type: "addModel", data: res.model });
 					history.push(
 						atlasContentModeler.appPath +
