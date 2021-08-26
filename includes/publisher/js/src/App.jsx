@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import Fields from "./components/Fields";
 import { __ } from "@wordpress/i18n";
-import { initializeAnalytics, sendPageView } from "acm-analytics";
+import { sendPageView } from "acm-analytics";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 
 	useEffect(() => {
-		initializeAnalytics();
 		sendPageView("ACM Publisher Entry");
 	}, []);
 

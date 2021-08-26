@@ -9,13 +9,8 @@ import EditContentModel from "./components/EditContentModel";
 import Taxonomies from "./components/Taxonomies";
 import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
-import { initializeAnalytics } from "acm-analytics";
 
 export default function App() {
-	useEffect(() => {
-		initializeAnalytics();
-	}, []);
-
 	return (
 		<div className="app atlas-content-modeler">
 			<ModelsContextProvider>
