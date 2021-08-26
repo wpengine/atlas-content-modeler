@@ -1,20 +1,15 @@
-import React from "react";
-import ReactGA from "react-ga4";
+import React, { useEffect } from "react";
 import Fields from "./components/Fields";
-import { sprintf, __ } from "@wordpress/i18n";
-
-const GA_ID = "G-S056CLLZ34";
-
-/**
- * React-GA4 Library and usage
- * {@link https://github.com/PriceRunner/react-ga4#readme}
- */
-ReactGA.initialize(GA_ID, { gtagOptions: { anonymize_ip: true } });
+import { __ } from "@wordpress/i18n";
+import { initializeAnalytics, sendPageView } from "acm-analytics";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 
-	ReactGA.send({ hitType: "pageview", page: "ACM Publisher Entry" });
+	useEffect(() => {
+		initializeAnalytics();
+		sendPageView("ACM Publisher Entry");
+	}, []);
 
 	/**
 	 * Navigate to the post new php file for current slug
