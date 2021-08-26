@@ -67,6 +67,9 @@
     },
     "@wordpress/api-fetch": {
       "global": "wp.apiFetch"
+    },
+    "acm-analytics": {
+      "fileName": "./includes/shared-assets/js/analytics.js"
     }
   }
 }
