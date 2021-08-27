@@ -18,6 +18,7 @@
 	@import "./app-card-publisher";
 	@import "./loader";
 
+	.field.relationship,
 	.ReactModal__Content {
 		@import "../../settings/scss/_buttons";
 		@import "./buttons";
