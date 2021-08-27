@@ -16,7 +16,7 @@ import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator } from "../../hooks";
 import { toValidApiId } from "../../formats";
 import { sprintf, __ } from "@wordpress/i18n";
-import { sendEvent } from "../../../../../shared-assets/js/analytics";
+import { sendEvent } from "acm-analytics";
 
 const { apiFetch } = wp;
 const { cloneDeep } = lodash;
@@ -201,13 +201,11 @@ function Form({ id, position, type, editing, storedData }) {
 			.then((res) => {
 				if (res.success) {
 					if (editing) {
-						// log field edit
 						sendEvent({
 							category: "Fields",
 							action: `Edited a Field: ${type}`,
 						});
 					} else {
-						// log field create
 						sendEvent({
 							category: "Fields",
 							action: `Created a Field: ${type}`,

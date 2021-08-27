@@ -10,7 +10,7 @@ import Modal from "react-modal";
 import { ModelsContext } from "../../ModelsContext";
 import { maybeCloseDropdown } from "../../utils";
 import { sprintf, __ } from "@wordpress/i18n";
-import { sendEvent } from "../../../../../shared-assets/js/analytics";
+import { sendEvent } from "acm-analytics";
 
 const { apiFetch } = wp;
 
@@ -137,7 +137,6 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 							body: JSON.stringify({ model: model.slug }),
 							_wpnonce: wpApiSettings.nonce,
 						}).then(() => {
-							// log field deletion
 							sendEvent({
 								category: "Fields",
 								action: `Deleted a Field: ${field.type}-${field.id}`,

@@ -50,7 +50,6 @@ export default function CreateContentModel() {
 		})
 			.then((res) => {
 				if (res.success) {
-					// log model create
 					sendEvent({
 						category: "Models",
 						action: `Created a Model: ${res.model.slug}`,

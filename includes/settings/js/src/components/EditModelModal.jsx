@@ -46,7 +46,6 @@ function updateModel(slug = "", data = {}) {
 		_wpnonce: wpApiSettings.nonce,
 		data,
 	}).then((res) => {
-		// log model edit
 		sendEvent({
 			category: "Models",
 			action: `Edited a Model: ${slug}`,
