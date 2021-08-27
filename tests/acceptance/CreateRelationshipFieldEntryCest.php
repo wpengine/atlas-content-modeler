@@ -1,7 +1,7 @@
 <?php
 use Codeception\Util\Locator;
 
-class CreateRelationFieldEntryCest
+class CreateRelationshipFieldEntryCest
 {
 	public function _before(\AcceptanceTester $I)
 	{
