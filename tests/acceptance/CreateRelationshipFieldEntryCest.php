@@ -13,17 +13,17 @@ class CreateRelationshipFieldEntryCest
 		$I->checkOption('input[name="isTitle"]');
 		$I->fillField(['name' => 'name'], 'Company');
 		$I->click('.open-field button.primary');
-	
+
 		$I->haveContentModel('Employee', 'Employees');
 		$I->wait(1);
-		$I->click('Relation', '.field-buttons');
+		$I->click('Relationship', '.field-buttons');
 		$I->wait(1);
 		$I->fillField(['name' => 'name'], 'Company');
 		$I->selectOption('#reference', 'Companies');
 		$I->click('.open-field button.primary');
 		$I->wait(1);
 		$I->click(Locator::lastElement('.add-item'));
-		$I->click('Relation', '.field-buttons');
+		$I->click('Relationship', '.field-buttons');
 		$I->wait(1);
 		$I->fillField(['name' => 'name'], 'Many Companies');
 		$I->selectOption('#reference', 'Companies');
