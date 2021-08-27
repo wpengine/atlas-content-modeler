@@ -614,21 +614,22 @@ function register_relationship( $from_type, $field ) {
  *
  * @param string $from_type The post type the connection is from.
  * @param string $to_type The post type the connection is to.
+ * @param string $from_field_name  Acts as an alternative 'toType' if connection type already defined using $to_type.
  *
  * @return string
  */
-function get_connection_name( string $from_type, string $to_type ): string {
+function get_connection_name( string $from_type, string $to_type, string $from_field_name ): string {
 
 	// Create connection name using $from_type + To + $to_type + Connection.
 	$connection_name = ucfirst( $from_type ) . 'To' . ucfirst( $to_type ) . 'Connection';
 
-	// @codingStandardsIgnoreStart
+	$type_registry = \WPGraphQL::get_type_registry();
+
 	// If connection type already exists with that connection name. Set connection name using
 	// $from_field_name + To + $to_type + Connection.
-	// if ( $this->type_registry->has_type( $connection_name ) ) {
-	// $connection_name = ucfirst( $from_type ) . 'To' . ucfirst( $from_field_name ) . 'Connection';
-	// }
-	// @codingStandardsIgnoreEnd
+	if ( $type_registry->has_type( $connection_name ) ) {
+		$connection_name = ucfirst( $from_type ) . 'To' . ucfirst( $from_field_name ) . 'Connection';
+	}
 
 	return $connection_name;
 }
