@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\ContentRegistration;
 
 use InvalidArgumentException;
+use WPGraphQL\Data\Connection\PostObjectConnectionResolver;
 use WPGraphQL\Model\Post;
 use WPGraphQL\Registry\TypeRegistry;
 use WPGraphQL\Data\DataSource;
@@ -461,12 +462,12 @@ add_action( 'graphql_register_types', __NAMESPACE__ . '\register_content_fields_
 function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 	$gql_post_types = get_graphql_enabled_post_types();
 
-	foreach ( $gql_post_types as $post_type => $post_type_args ) {
+	foreach ( $gql_post_types as $post_type_args ) {
 		if ( empty( $post_type_args['fields'] ) ) {
 			continue;
 		}
 
-		foreach ( $post_type_args['fields'] as $key => $field ) {
+		foreach ( $post_type_args['fields'] as $field ) {
 			if ( empty( $field['show_in_graphql'] ) || empty( $field['slug'] ) ) {
 				continue;
 			}
@@ -477,9 +478,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$rich_text = true;
 			}
 
-			$reference = isset( $field['reference'] ) ? $field['reference'] : '';
-
-			$gql_field_type = map_html_field_type_to_graphql_field_type( $field, $reference );
+			$gql_field_type = map_html_field_type_to_graphql_field_type( $field, $post_type_args['slug'] );
 			if ( empty( $gql_field_type ) ) {
 				continue;
 			}
@@ -488,48 +487,32 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$field['type']          = $gql_field_type;
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
-				if ( 'relationship' === $field['original_type'] ) {
-					$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
-					$relationship = $registry->get_post_to_post_relationship(
-						$post->post_type,
-						$field['reference'],
-						$field['slug']
-					);
+				if ( 'relationship' !== $field['original_type'] ) {
+					$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
-					$relationship_ids = $relationship->get_related_object_ids( $post->ID );
-					$related_posts    = array();
-
-					foreach ( $relationship_ids as $id ) {
-						$related_posts[] = DataSource::resolve_post_object( (int) $id, $context );
+					/**
+					 * If WPGraphQL expects a float and something else is returned instead
+					 * it causes a runaway PHP process and it eventually dies due to
+					 * to timeout issues. Casting to a float is a temporary fix until
+					 * we get a proper fix upstream or build something more robust here.
+					 *
+					 * @todo
+					 */
+					if ( $field['type'] === 'Float' ) {
+						return (float) $value;
 					}
 
-					return $related_posts;
+					if ( $field['type'] === 'MediaItem' ) {
+						return DataSource::resolve_post_object( (int) $value, $context );
+					}
+
+					// fixes caption shortcode for graphql output.
+					if ( $rich_text ) {
+						return do_shortcode( $value );
+					}
+
+					return $value;
 				}
-
-				$value = get_post_meta( $post->databaseId, $field['slug'], true );
-
-				/**
-				 * If WPGraphQL expects a float and something else is returned instead
-				 * it causes a runaway PHP process and it eventually dies due to
-				 * to timeout issues. Casting to a float is a temporary fix until
-				 * we get a proper fix upstream or build something more robust here.
-				 *
-				 * @todo
-				 */
-				if ( $field['type'] === 'Float' ) {
-					return (float) $value;
-				}
-
-				if ( $field['type'] === 'MediaItem' ) {
-					return DataSource::resolve_post_object( (int) $value, $context );
-				}
-
-				// fixes caption shortcode for graphql output.
-				if ( $rich_text ) {
-					return do_shortcode( $value );
-				}
-
-				return $value;
 			};
 
 			// @todo
@@ -578,15 +561,89 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 }
 
 /**
+ * Registers the relationship field as a GraphQL connection.
+ *
+ * @param string $from_type The post_type of the parent.
+ * @param array  $field The field data.
+ */
+function register_relationship( $from_type, $field ) {
+	$to_type = isset( $field['reference'] ) ? $field['reference'] : '';
+
+	$connection_type_name = get_connection_name( $from_type, $to_type, $field['slug'] );
+
+	register_graphql_connection(
+		array(
+			'fromType'           => $from_type,
+			'toType'             => $to_type,
+			'fromFieldName'      => $field['slug'],
+			'oneToOne'           => ( $field['cardinality'] === 'one-to-one' ),
+			'resolve'            => static function ( Post $post, $args, $context, $info ) use ( $field ) {
+				$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+
+				$relationship = $registry->get_post_to_post_relationship(
+					$post->post_type,
+					$field['reference'],
+					$field['slug']
+				);
+
+				$relationship_ids = $relationship->get_related_object_ids( $post->ID );
+
+				$resolver = new PostObjectConnectionResolver(
+					$post,
+					$args,
+					$context,
+					$info
+				);
+
+				$resolver->set_query_arg(
+					'post__in',
+					$relationship_ids
+				);
+
+				return $resolver->get_connection();
+			},
+			'connectionTypeName' => $connection_type_name,
+		)
+	);
+
+	return $connection_type_name;
+}
+
+/**
+ * Creates a unique name for the connection
+ *
+ * @param string $from_type The post type the connection is from.
+ * @param string $to_type The post type the connection is to.
+ *
+ * @return string
+ */
+function get_connection_name( string $from_type, string $to_type ): string {
+
+	// Create connection name using $from_type + To + $to_type + Connection.
+	$connection_name = ucfirst( $from_type ) . 'To' . ucfirst( $to_type ) . 'Connection';
+
+	// @codingStandardsIgnoreStart
+	// If connection type already exists with that connection name. Set connection name using
+	// $from_field_name + To + $to_type + Connection.
+	// if ( $this->type_registry->has_type( $connection_name ) ) {
+	// $connection_name = ucfirst( $from_type ) . 'To' . ucfirst( $from_field_name ) . 'Connection';
+	// }
+	// @codingStandardsIgnoreEnd
+
+	return $connection_name;
+}
+
+
+/**
  * Maps an HTML field type to a WPGraphQL field type.
  *
  * @param array  $field The HTML field.
- * @param string $reference The field type a referenced field is referring to.
+ * @param string $post_type The type of the parent post.
  * @access private
  *
  * @return string|array|null
  */
-function map_html_field_type_to_graphql_field_type( array $field, string $reference ) {
+function map_html_field_type_to_graphql_field_type( array $field, $post_type ) {
 	if ( ! isset( $field['type'] ) ) {
 		return null;
 	}
@@ -605,7 +662,9 @@ function map_html_field_type_to_graphql_field_type( array $field, string $refere
 		case 'media':
 			return 'MediaItem';
 		case 'relationship':
-			return array( 'list_of' => $reference );
+			register_relationship( $post_type, $field );
+			// Don't return as register connection handles field creation.
+			break;
 		default:
 			return null;
 	}
