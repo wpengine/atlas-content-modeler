@@ -203,12 +203,12 @@ function Form({ id, position, type, editing, storedData }) {
 					if (editing) {
 						sendEvent({
 							category: "Fields",
-							action: `Edited a Field: ${type}`,
+							action: `Edited a Field`,
 						});
 					} else {
 						sendEvent({
 							category: "Fields",
-							action: `Created a Field: ${type}`,
+							action: `Created a Field`,
 						});
 					}
 

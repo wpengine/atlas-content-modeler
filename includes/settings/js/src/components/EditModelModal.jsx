@@ -48,7 +48,7 @@ function updateModel(slug = "", data = {}) {
 	}).then((res) => {
 		sendEvent({
 			category: "Models",
-			action: `Edited a Model: ${slug}`,
+			action: `Edited a Model`,
 		});
 
 		return res;

@@ -189,7 +189,7 @@ export const ContentModelDropdown = ({ model }) => {
 								if (res.success) {
 									sendEvent({
 										category: "Models",
-										action: `Deleted a Model: ${slug}`,
+										action: "Deleted a Model",
 									});
 
 									removeSidebarMenuItem(slug);
