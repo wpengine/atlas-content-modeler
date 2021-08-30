@@ -595,6 +595,10 @@ function register_relationship( $from_type, $field ) {
 					$info
 				);
 
+				if ( empty( $relationship_ids ) ) {
+					return array();
+				}
+
 				$resolver->set_query_arg(
 					'post__in',
 					$relationship_ids
