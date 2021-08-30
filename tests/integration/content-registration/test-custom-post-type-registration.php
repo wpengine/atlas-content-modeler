@@ -79,7 +79,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'public-fields', $this->all_registered_post_types );
 		self::assertArrayHasKey( 'private', $this->all_registered_post_types );
 		self::assertArrayHasKey( 'private-fields', $this->all_registered_post_types );
-		self::assertArrayHasKey( 'relationship-ref', $this->all_registered_post_types );
 	}
 
 	public function test_relationships_are_registered(): void {
