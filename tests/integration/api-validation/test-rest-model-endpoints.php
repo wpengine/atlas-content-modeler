@@ -185,4 +185,30 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		self::assertSame( $this->test_models['public']['slug'], $models['public']['slug'] );
 		self::assertSame( $new_model['singular'], $models['public']['singular'] );
 	}
+
+	/**
+	 * Test that all models can be retrieved via REST.
+	 */
+	public function test_can_get_all_models_via_rest_api(): void {
+		wp_set_current_user( 1 );
+
+		$request = new WP_REST_Request( 'GET', $this->namespace . $this->route . 's' );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 200, $response->get_status() );
+		self::assertSame( $this->test_models, $response->get_data() );
+	}
+
+	/**
+	 * Test that all models cannot be retrieved via REST by unauthorized users.
+	 */
+	public function test_unauthorized_user_cannot_get_all_models_via_rest_api(): void {
+		wp_set_current_user( null );
+
+		$request = new WP_REST_Request( 'GET', $this->namespace . $this->route . 's' );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 401, $response->get_status() );
+		self::assertSame( $response->get_data()['code'], 'rest_forbidden' );
+	}
 }
