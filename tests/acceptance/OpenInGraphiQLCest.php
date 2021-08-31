@@ -19,7 +19,7 @@ class OpenInGraphiQLCest
 		$I->click('.heading .options'); // Model options button.
 		$I->click('.show-in-graphiql');
 		$I->switchToNextTab(); // GraphiQL opens in a new tab.
-		$I->wait(2); // Give GraphiQL time for linting.
+		$I->wait(3); // Give GraphiQL time for linting.
 
 		$I->see('Dog', '#graphiql');
 		// Check for query errors marked by GraphiQL linter.
@@ -44,7 +44,7 @@ class OpenInGraphiQLCest
 		$I->click('.heading .options'); // Model options button.
 		$I->click('.show-in-graphiql');
 		$I->switchToNextTab(); // GraphiQL opens in a new tab.
-		$I->wait(2); // Give GraphiQL time for linting.
+		$I->wait(3); // Give GraphiQL time for linting.
 
 		$I->see('wagsPerMinute', '#graphiql');
 		// Check for query errors marked by GraphiQL linter.
@@ -82,7 +82,7 @@ class OpenInGraphiQLCest
 		$I->click('.heading .options'); // Model options button.
 		$I->click('.show-in-graphiql');
 		$I->switchToNextTab(); // GraphiQL opens in a new tab.
-		$I->wait(2); // Give GraphiQL time for linting.
+		$I->wait(3); // Give GraphiQL time for linting.
 
 		$I->see('Deer', '#graphiql');
 		// Check for query errors marked by GraphiQL linter.
