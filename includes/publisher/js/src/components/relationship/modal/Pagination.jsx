@@ -59,15 +59,20 @@ export default function Pagination({ totalPages, page, setPage }) {
 					</button>
 				</div>
 			)}
-			<div className="mx-3">
-				<span className="align-middle" style={{ lineHeight: "55px" }}>
-					{sprintf(
-						__("Page %d of %d", "atlas-content-modeler"),
-						page,
-						totalPages
-					)}
-				</span>
-			</div>
+			{totalPages > 0 && (
+				<div className="mx-3">
+					<span
+						className="align-middle"
+						style={{ lineHeight: "55px" }}
+					>
+						{sprintf(
+							__("Page %d of %d", "atlas-content-modeler"),
+							page,
+							totalPages
+						)}
+					</span>
+				</div>
+			)}
 		</div>
 	);
 }
