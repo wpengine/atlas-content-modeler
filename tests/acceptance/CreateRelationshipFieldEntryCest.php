@@ -110,7 +110,7 @@ class CreateRelationshipFieldEntryCest
 		$I->wait(1);
 
 		// Reopen the closed modal and check our newly-entered company appears.
-		$I->switchToPreviousTab(); // Focus on the original employee tab.
+		$I->closeTab(); // Focus on the original employee tab.
 		$I->click('#atlas-content-modeler[employee][company]');
 		$I->wait(2);
 		$I->see('WP Engine', '.atlas-content-modeler-relationship-modal-container');
