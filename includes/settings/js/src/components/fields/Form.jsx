@@ -398,7 +398,9 @@ function Form({ id, position, type, editing, storedData }) {
 					/>
 				)}
 
-				{!["richtext", "multipleChoice"].includes(type) && (
+				{!["richtext", "multipleChoice", "relationship"].includes(
+					type
+				) && (
 					<div className="field">
 						<legend>Field Options</legend>
 						<input
