@@ -27,8 +27,8 @@ function register_admin_menu_page(): void {
 	);
 
 	add_submenu_item( 'atlas-content-modeler', esc_html__( 'Models', 'atlas-content-modeler' ), 'manage_options', 'atlas-content-modeler', '__return_null' );
-	add_submenu_item( 'atlas-content-modeler', 'Taxonomies', 'atlas-content-modeler', 'manage_options', 'atlas-content-modeler&amp;view=taxonomies', '__return_null' );
-	add_submenu_item( 'atlas-content-modeler', 'Tools', 'atlas-content-modeler', 'manage_options', 'atlas-content-modeler&amp;view=tools', '__return_null' );
+	add_submenu_item( 'atlas-content-modeler', esc_html__( 'Taxonomies', 'atlas-content-modeler' ), 'manage_options', 'atlas-content-modeler&amp;view=taxonomies', '__return_null' );
+	add_submenu_item( 'atlas-content-modeler', esc_html__( 'Tools', 'atlas-content-modeler' ), 'manage_options', 'atlas-content-modeler&amp;view=tools', '__return_null' );
 }
 
 /**
