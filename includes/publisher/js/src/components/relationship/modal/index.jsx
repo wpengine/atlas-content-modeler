@@ -186,10 +186,12 @@ export default function RelationshipModal({
 				<>
 					<Table
 						pagedEntries={pagedEntries}
+						setPagedEntries={setPagedEntries}
 						page={page}
 						field={field}
 						chosenEntries={chosenEntries}
 						handleSelect={handleSelect}
+						setIsOpen={setIsOpen}
 					/>
 					<Pagination
 						totalPages={totalPages}
