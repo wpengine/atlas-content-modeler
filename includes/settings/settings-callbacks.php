@@ -26,31 +26,28 @@ function register_admin_menu_page(): void {
 		$icon
 	);
 
-	add_submenu_page(
-		'atlas-content-modeler',
-		esc_html__( 'Models', 'atlas-content-modeler' ),
-		esc_html__( 'Models', 'atlas-content-modeler' ),
-		'manage_options',
-		'atlas-content-modeler',
-		'__return_null'
-	);
+	add_submenu_item( 'atlas-content-modeler', esc_html__( 'Models', 'atlas-content-modeler' ), 'manage_options', 'atlas-content-modeler', '__return_null' );
+	add_submenu_item( 'atlas-content-modeler', 'Taxonomies', 'atlas-content-modeler', 'manage_options', 'atlas-content-modeler&amp;view=taxonomies', '__return_null' );
+	add_submenu_item( 'atlas-content-modeler', 'Tools', 'atlas-content-modeler', 'manage_options', 'atlas-content-modeler&amp;view=tools', '__return_null' );
+}
 
+/**
+ * Setup submenu item.
+ *
+ * @param string $parent_slug Parent Slug.
+ * @param string $link_text Link text for title.
+ * @param string $capability Capability.
+ * @param string $menu_slug Menu slug for url.
+ * @param string $callback_fn Callback function.
+ */
+function add_submenu_item( $parent_slug, $link_text, $capability, $menu_slug, $callback_fn ):void {
 	add_submenu_page(
-		'atlas-content-modeler',
-		esc_html__( 'Taxonomies', 'atlas-content-modeler' ),
-		esc_html__( 'Taxonomies', 'atlas-content-modeler' ),
-		'manage_options',
-		'atlas-content-modeler&amp;view=taxonomies',
-		'__return_null'
-	);
-
-	add_submenu_page(
-		'atlas-content-modeler',
-		esc_html__( 'Tools', 'atlas-content-modeler' ),
-		esc_html__( 'Tools', 'atlas-content-modeler' ),
-		'manage_options',
-		'atlas-content-modeler&amp;view=tools',
-		'__return_null'
+		$parent_slug,
+		$link_text,
+		$link_text,
+		$capability,
+		$menu_slug,
+		$callback_fn
 	);
 }
 
