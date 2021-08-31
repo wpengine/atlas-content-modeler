@@ -45,7 +45,7 @@ export default function Table({
 								>
 									{sprintf(
 										__(
-											// translators: the singular of the model, or "entry" if no singular name known.
+											// translators: the singular name of the model, or "entry" if no singular name known.
 											"Create a new %s.",
 											"atlas-content-modeler"
 										),
