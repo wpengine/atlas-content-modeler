@@ -121,7 +121,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 			array(
 				'singular'   => 'Public',
 				'plural'     => 'Publics',
-				'model_icon' => 'dashicons-saved',
+				'model_icon' => 'dashicons-admin-post',
 			)
 		);
 		$expected_args  = $this->all_registered_post_types['public'];
