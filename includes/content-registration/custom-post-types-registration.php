@@ -588,16 +588,16 @@ function register_relationship_connection( $from_type, $field ) {
 
 				$relationship_ids = $relationship->get_related_object_ids( $post->ID );
 
+				if ( empty( $relationship_ids ) ) {
+					return array();
+				}
+
 				$resolver = new PostObjectConnectionResolver(
 					$post,
 					$args,
 					$context,
 					$info
 				);
-
-				if ( empty( $relationship_ids ) ) {
-					return array();
-				}
 
 				$resolver->set_query_arg(
 					'post__in',
@@ -668,7 +668,7 @@ function map_html_field_type_to_graphql_field_type( array $field, $post_type ) {
 			return 'MediaItem';
 		case 'relationship':
 			register_relationship_connection( $post_type, $field );
-			// Don't return as register connection handles field creation.
+			// Don't return as register relationship connection handles field creation.
 			break;
 		default:
 			return null;
