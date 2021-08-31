@@ -5,11 +5,15 @@ const { date } = wp;
 
 export default function Table({
 	pagedEntries,
+	setPagedEntries,
 	page,
 	field,
 	chosenEntries,
 	handleSelect,
+	setIsOpen,
 }) {
+	const { models, adminUrl } = atlasContentModelerFormEditingExperience;
+
 	return (
 		<table className="table table-striped mt-2">
 			<thead>
@@ -20,6 +24,39 @@ export default function Table({
 				</tr>
 			</thead>
 			<tbody>
+				{pagedEntries[page]?.length === 0 && (
+					<tr className="empty">
+						<td>&nbsp;</td>
+						<td colSpan="2">
+							<span>
+								{__(
+									"No published entries.",
+									"atlas-content-modeler"
+								)}{" "}
+								<a
+									href={`${adminUrl}post-new.php?post_type=${field.reference}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									onClick={() => {
+										// So users don't see stale data when they return to the tab.
+										setPagedEntries({});
+										setIsOpen(false);
+									}}
+								>
+									{sprintf(
+										__(
+											// translators: the singular of the model, or "entry" if no singular name known.
+											"Create a new %s.",
+											"atlas-content-modeler"
+										),
+										models[field.reference]?.singular ??
+											__("entry", "atlas-content-modeler")
+									)}
+								</a>
+							</span>
+						</td>
+					</tr>
+				)}
 				{pagedEntries[page].map((entry) => {
 					const { modified, id, title } = entry;
 					const selectEntryLabel = sprintf(
