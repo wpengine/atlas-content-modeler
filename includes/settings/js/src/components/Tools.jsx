@@ -12,7 +12,7 @@ export default function Tools() {
 	};
 
 	return (
-		<div className="app-card taxonomies-view">
+		<div className="app-card tools-view">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>{__("Tools", "atlas-content-modeler")}</h2>
 			</section>
