@@ -566,7 +566,7 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
  * @param string $from_type The post_type of the parent.
  * @param array  $field The field data.
  */
-function register_relationship( $from_type, $field ) {
+function register_relationship_connection( $from_type, $field ) {
 	$to_type = isset( $field['reference'] ) ? $field['reference'] : '';
 
 	$connection_type_name = get_connection_name( $from_type, $to_type, $field['slug'] );
@@ -667,7 +667,7 @@ function map_html_field_type_to_graphql_field_type( array $field, $post_type ) {
 		case 'media':
 			return 'MediaItem';
 		case 'relationship':
-			register_relationship( $post_type, $field );
+			register_relationship_connection( $post_type, $field );
 			// Don't return as register connection handles field creation.
 			break;
 		default:
