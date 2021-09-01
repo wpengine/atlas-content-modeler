@@ -1,5 +1,6 @@
 import React from "react";
 import { sprintf, __ } from "@wordpress/i18n";
+import Icon from "acm-icons";
 const { wp } = window;
 const { date } = wp;
 
@@ -37,6 +38,7 @@ export default function Table({
 									href={`${adminUrl}post-new.php?post_type=${field.reference}`}
 									target="_blank"
 									rel="noopener noreferrer"
+									className="d-inline-flex"
 									onClick={() => {
 										// So users don't see stale data when they return to the tab.
 										setPagedEntries({});
@@ -52,6 +54,7 @@ export default function Table({
 										models[field.reference]?.singular ??
 											__("entry", "atlas-content-modeler")
 									)}
+									<Icon type="external-link" />
 								</a>
 							</span>
 						</td>
