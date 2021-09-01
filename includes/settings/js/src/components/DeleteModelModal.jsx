@@ -77,7 +77,7 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 						{sprintf(
 							__(
 								// translators: plural form of the model name, such as “Cars”.
-								"Links will be removed in relationship fields that reference %s.",
+								"Relationship fields and data linked to %s will be removed.",
 								"atlas-content-modeler"
 							),
 							plural
