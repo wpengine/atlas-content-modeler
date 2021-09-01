@@ -110,8 +110,13 @@ class CreateRelationshipFieldEntryCest
 		$I->wait(1);
 
 		// Check the new company appears in the updated modal.
-		$I->closeTab(); // Focus on the original employee tab.
-		$I->wait(4); // The modal should auto-refresh to reveal the newly added company.
+		$I->switchToPreviousTab(); // Focus on the original employee tab.
+		$I->wait(2); // The modal should auto-refresh to reveal the newly added company.
 		$I->see('WP Engine', '.atlas-content-modeler-relationship-modal-container');
+
+		// Required cleanup to leave one tab open.
+		$I->switchToNextTab();
+		$I->closeTab();
+		$I->wait(1);
 	}
 }
