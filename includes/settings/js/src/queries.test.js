@@ -1,4 +1,9 @@
-import { sanitizeFields, getTitleFieldId, getOpenField } from "./queries";
+import {
+	sanitizeFields,
+	getTitleFieldId,
+	getOpenField,
+	hasReferences,
+} from "./queries";
 
 describe("sanitizeFields", () => {
 	it("moves children to subfields", () => {
@@ -69,5 +74,57 @@ describe("getOpenField", () => {
 		const expected = {};
 
 		expect(getOpenField(fields)).toEqual(expected);
+	});
+});
+
+describe("hasReferences", () => {
+	it("returns true if a reference is found in another model", () => {
+		const models = {
+			model1: {
+				fields: {
+					123: { type: "relationship", reference: "no-match" },
+				},
+			},
+			model2: {
+				fields: { 123: { type: "relationship", reference: "bunnies" } },
+			},
+		};
+
+		const modelToLookFor = "bunnies";
+
+		expect(hasReferences(models, modelToLookFor)).toEqual(true);
+	});
+
+	it("returns false if a reference is found in the same model", () => {
+		const models = {
+			bunnies: {
+				fields: {
+					123: { type: "relationship", reference: "bunnies" },
+				},
+			},
+		};
+
+		const modelToLookFor = "bunnies";
+
+		expect(hasReferences(models, modelToLookFor)).toEqual(true);
+	});
+
+	it("returns false if no reference is found", () => {
+		const models = {
+			model1: {
+				fields: {
+					123: { type: "relationship", reference: "no-match" },
+				},
+			},
+			model2: {
+				fields: {
+					123: { type: "relationship", reference: "no-match2" },
+				},
+			},
+		};
+
+		const modelToLookFor = "bunnies";
+
+		expect(hasReferences(models, modelToLookFor)).toEqual(false);
 	});
 });

@@ -125,3 +125,20 @@ export function getOpenField(fields = {}) {
 	const openField = Object.values(fields).find((field) => field?.open);
 	return typeof openField === "undefined" ? {} : openField;
 }
+
+/**
+ * Tests whether or not a model is referenced in other models via a
+ * relationship field. Includes relationship fields in the model itself.
+ *
+ * @param {Object} models Models to check for a reference in.
+ * @param {Object} slug The model slug to look for in other models.
+ * @return {Boolean} True if the `model` has references in `models`.
+ */
+export function hasReferences(models, slug) {
+	return Object.values(models).some((model) => {
+		return Object.values(model?.fields).some(
+			(field) =>
+				field?.type === "relationship" && field?.reference === slug
+		);
+	});
+}
