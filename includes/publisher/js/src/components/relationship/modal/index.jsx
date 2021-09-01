@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
+import usePageVisibility from "../../../../../../shared-assets/js/hooks/usePageVisibility";
 import Title from "./Title";
 import Table from "./Table";
 import Pagination from "./Pagination";
@@ -31,6 +32,8 @@ export default function RelationshipModal({
 	const savedEntries = useRef(); // To revert changes if the modal is closed via Cancel.
 	const entriesPerPage = 5;
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
+	const pageIsVisible = usePageVisibility();
+	const pageLostFocus = useRef(false);
 
 	/**
 	 * An entry is “chosen” if it has been ticked in the relationships modal.
@@ -79,6 +82,17 @@ export default function RelationshipModal({
 			savedValues = [value];
 		}
 		setChosenEntries(savedValues);
+	}
+
+	/**
+	 * Updates entry state for the current page.
+	 */
+	async function refreshEntries() {
+		getEntries(page).then((entries) => {
+			setPagedEntries((pagedEntries) => {
+				return { ...pagedEntries, [page]: entries };
+			});
+		});
 	}
 
 	async function getEntries(page) {
@@ -133,11 +147,9 @@ export default function RelationshipModal({
 	 */
 	useEffect(() => {
 		if (isOpen && !(page in pagedEntries)) {
-			getEntries(page).then((entries) => {
-				setPagedEntries((pagedEntries) => {
-					return { ...pagedEntries, [page]: entries };
-				});
-			});
+			(async () => {
+				refreshEntries();
+			})();
 		}
 	}, [isOpen, page]);
 
@@ -151,6 +163,22 @@ export default function RelationshipModal({
 			savedEntries.current = selectedEntries;
 		}
 	}, [isOpen]);
+
+	/**
+	 * Forces a refetch of entry data if the page loses and regains focus.
+	 */
+	useEffect(() => {
+		if (!pageIsVisible) {
+			pageLostFocus.current = true;
+		}
+
+		if (pageLostFocus.current && pageIsVisible && isOpen) {
+			pageLostFocus.current = false;
+			(async () => {
+				refreshEntries();
+			})();
+		}
+	}, [pageIsVisible, pageLostFocus, isOpen]);
 
 	/**
 	 * Update chosenEntries if selectedEntries changes externally, such as when
@@ -186,12 +214,10 @@ export default function RelationshipModal({
 				<>
 					<Table
 						pagedEntries={pagedEntries}
-						setPagedEntries={setPagedEntries}
 						page={page}
 						field={field}
 						chosenEntries={chosenEntries}
 						handleSelect={handleSelect}
-						setIsOpen={setIsOpen}
 					/>
 					<Pagination
 						totalPages={totalPages}

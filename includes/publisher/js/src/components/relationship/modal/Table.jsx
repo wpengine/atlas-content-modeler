@@ -6,12 +6,10 @@ const { date } = wp;
 
 export default function Table({
 	pagedEntries,
-	setPagedEntries,
 	page,
 	field,
 	chosenEntries,
 	handleSelect,
-	setIsOpen,
 }) {
 	const { models, adminUrl } = atlasContentModelerFormEditingExperience;
 
@@ -39,11 +37,6 @@ export default function Table({
 									target="_blank"
 									rel="noopener noreferrer"
 									className="d-inline-flex"
-									onClick={() => {
-										// So users don't see stale data when they return to the tab.
-										setPagedEntries({});
-										setIsOpen(false);
-									}}
 								>
 									{sprintf(
 										__(
