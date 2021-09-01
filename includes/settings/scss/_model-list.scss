@@ -125,6 +125,18 @@
 	}
 }
 
+.atlas-content-modeler-delete-model-modal-container {
+	ul {
+		list-style-type: disc;
+		padding-left: 2rem;
+
+		li.warning {
+			color: $color-warning;
+			font-weight: 700;
+		}
+	}
+}
+
 .atlas-content-modeler-edit-model-modal-container {
 	overflow: hidden;
 
