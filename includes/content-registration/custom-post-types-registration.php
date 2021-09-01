@@ -478,7 +478,13 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$rich_text = true;
 			}
 
-			$gql_field_type = map_html_field_type_to_graphql_field_type( $field, $post_type_args['slug'] );
+			$to_type = '';
+			if ( 'relationship' === $field['type'] && isset( $gql_post_types[ $field['reference'] ] ) ) {
+				$post_type = $gql_post_types[ $field['reference'] ];
+				$to_type   = camelcase( $post_type['singular'] );
+			}
+
+			$gql_field_type = map_html_field_type_to_graphql_field_type( $field, camelcase( $post_type_args['singular'] ), $to_type );
 			if ( empty( $gql_field_type ) ) {
 				continue;
 			}
@@ -564,11 +570,10 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
  * Registers the relationship field as a GraphQL connection.
  *
  * @param string $from_type The post_type of the parent.
+ * @param string $to_type The post_type of the connection's destination.
  * @param array  $field The field data.
  */
-function register_relationship_connection( $from_type, $field ) {
-	$to_type = isset( $field['reference'] ) ? $field['reference'] : '';
-
+function register_relationship_connection( $from_type, $to_type, $field ) {
 	$connection_type_name = get_connection_name( $from_type, $to_type, $field['slug'] );
 
 	register_graphql_connection(
@@ -643,12 +648,14 @@ function get_connection_name( string $from_type, string $to_type, string $from_f
  * Maps an HTML field type to a WPGraphQL field type.
  *
  * @param array  $field The HTML field.
- * @param string $post_type The type of the parent post.
+ * @param string $from_type The type of the parent post.
+ * @param string $to_type The post_type of the connection's destination.
+ *
  * @access private
  *
  * @return string|array|null
  */
-function map_html_field_type_to_graphql_field_type( array $field, $post_type ) {
+function map_html_field_type_to_graphql_field_type( array $field, $from_type, $to_type ) {
 	if ( ! isset( $field['type'] ) ) {
 		return null;
 	}
@@ -667,7 +674,7 @@ function map_html_field_type_to_graphql_field_type( array $field, $post_type ) {
 		case 'media':
 			return 'MediaItem';
 		case 'relationship':
-			register_relationship_connection( $post_type, $field );
+			register_relationship_connection( $from_type, $to_type, $field );
 			// Don't return as register relationship connection handles field creation.
 			break;
 		default:
