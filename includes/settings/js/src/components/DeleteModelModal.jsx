@@ -120,7 +120,7 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 					history.push(atlasContentModeler.appPath);
 				}}
 			>
-				Delete
+				{__("Delete", "atlas-content-modeler")}
 			</button>
 			<button
 				className="tertiary"
@@ -128,7 +128,7 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 					setModalIsOpen(false);
 				}}
 			>
-				Cancel
+				{__("Cancel", "atlas-content-modeler")}
 			</button>
 		</Modal>
 	);
