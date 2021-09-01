@@ -11,6 +11,8 @@ namespace WPE\AtlasContentModeler\REST_API;
 
 use WP_Error;
 use WP_REST_Request;
+use function WPE\AtlasContentModeler\REST_API\Relationships\cleanup_detached_relationship_fields;
+use function WPE\AtlasContentModeler\REST_API\Relationships\cleanup_detached_relationship_references;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
@@ -501,6 +503,9 @@ function dispatch_delete_model( WP_REST_Request $request ) {
 	if ( is_wp_error( $model ) ) {
 		return $model;
 	}
+
+	cleanup_detached_relationship_fields( $slug );
+	cleanup_detached_relationship_references( $slug );
 
 	return rest_ensure_response(
 		[
