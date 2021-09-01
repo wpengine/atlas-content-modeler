@@ -7,7 +7,14 @@ import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
 import Icon from "acm-icons";
 
-const RelationshipFields = ({ register, data, editing, watch, errors }) => {
+const RelationshipFields = ({
+	register,
+	data,
+	editing,
+	watch,
+	errors,
+	model,
+}) => {
 	const { models } = useContext(ModelsContext);
 	const modelsAlphabetical = Object.values(models).sort((a, b) =>
 		a.plural.toLowerCase() < b.plural.toLowerCase() ? -1 : 1
@@ -46,12 +53,17 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 						<option value="">
 							— {__("Choose a model", "atlas-content-modeler")} —
 						</option>
-						{modelsAlphabetical.map((model) => {
-							return (
-								<option key={model.slug} value={model.slug}>
-									{model.plural}
-								</option>
-							);
+						{modelsAlphabetical.map((relModel) => {
+							if (model !== relModel.slug) {
+								return (
+									<option
+										key={relModel.slug}
+										value={relModel.slug}
+									>
+										{relModel.plural}
+									</option>
+								);
+							}
 						})}
 					</select>
 					{editing && (
