@@ -95,7 +95,7 @@ describe("hasReferences", () => {
 		expect(hasReferences(models, modelToLookFor)).toEqual(true);
 	});
 
-	it("returns false if a reference is found in the same model", () => {
+	it("returns true if a reference is found in the same model", () => {
 		const models = {
 			bunnies: {
 				fields: {
