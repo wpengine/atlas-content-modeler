@@ -13,6 +13,16 @@ export default function Table({
 }) {
 	const { models, adminUrl } = atlasContentModelerFormEditingExperience;
 
+	const createNewEntryLabel = sprintf(
+		__(
+			// translators: the singular name of the model, or "entry" if no singular name known.
+			"Create a new %s.",
+			"atlas-content-modeler"
+		),
+		models[field.reference]?.singular ??
+			__("entry", "atlas-content-modeler")
+	);
+
 	return (
 		<table className="table table-striped mt-2">
 			<thead>
@@ -37,16 +47,16 @@ export default function Table({
 									target="_blank"
 									rel="noopener noreferrer"
 									className="d-inline-flex"
-								>
-									{sprintf(
+									aria-label={
+										createNewEntryLabel +
+										" " +
 										__(
-											// translators: the singular name of the model, or "entry" if no singular name known.
-											"Create a new %s.",
+											"Opens in a new window.",
 											"atlas-content-modeler"
-										),
-										models[field.reference]?.singular ??
-											__("entry", "atlas-content-modeler")
-									)}
+										)
+									}
+								>
+									{createNewEntryLabel}
 									<Icon type="external-link" />
 								</a>
 							</span>
