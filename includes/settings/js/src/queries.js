@@ -134,7 +134,7 @@ export function getOpenField(fields = {}) {
  * @param {String} slug The model slug to look for in other models.
  * @return {Boolean} True if the `slug` has references in `models`.
  */
-export function hasReferences(models, slug) {
+export function hasRelationships(models, slug) {
 	return Object.values(models).some((model) => {
 		return Object.values(model?.fields).some(
 			(field) =>

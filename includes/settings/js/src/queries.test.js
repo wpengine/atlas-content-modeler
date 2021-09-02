@@ -2,7 +2,7 @@ import {
 	sanitizeFields,
 	getTitleFieldId,
 	getOpenField,
-	hasReferences,
+	hasRelationships,
 } from "./queries";
 
 describe("sanitizeFields", () => {
@@ -77,7 +77,7 @@ describe("getOpenField", () => {
 	});
 });
 
-describe("hasReferences", () => {
+describe("hasRelationships", () => {
 	it("returns true if a reference is found in another model", () => {
 		const models = {
 			model1: {
@@ -92,7 +92,7 @@ describe("hasReferences", () => {
 
 		const modelToLookFor = "bunnies";
 
-		expect(hasReferences(models, modelToLookFor)).toEqual(true);
+		expect(hasRelationships(models, modelToLookFor)).toEqual(true);
 	});
 
 	it("returns true if a reference is found in the same model", () => {
@@ -106,7 +106,7 @@ describe("hasReferences", () => {
 
 		const modelToLookFor = "bunnies";
 
-		expect(hasReferences(models, modelToLookFor)).toEqual(true);
+		expect(hasRelationships(models, modelToLookFor)).toEqual(true);
 	});
 
 	it("returns false if no reference is found", () => {
@@ -125,6 +125,6 @@ describe("hasReferences", () => {
 
 		const modelToLookFor = "bunnies";
 
-		expect(hasReferences(models, modelToLookFor)).toEqual(false);
+		expect(hasRelationships(models, modelToLookFor)).toEqual(false);
 	});
 });
