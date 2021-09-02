@@ -575,7 +575,7 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
  * @param string $to_type The post_type of the connection's destination.
  * @param array  $field The field data.
  */
-function register_relationship_connection( $from_type, $to_type, $field ) {
+function register_relationship_connection( string $from_type, string $to_type, array $field ) {
 	$connection_type_name = get_connection_name( $from_type, $to_type, $field['slug'] );
 
 	register_graphql_connection(
