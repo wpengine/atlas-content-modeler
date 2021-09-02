@@ -480,8 +480,9 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 
 			if ( 'relationship' === $field['type'] && isset( $gql_post_types[ $field['reference'] ] ) ) {
 				$post_type = $gql_post_types[ $field['reference'] ];
+				$from_type = camelcase( $post_type_args['singular'] );
 				$to_type   = camelcase( $post_type['singular'] );
-				register_relationship_connection( camelcase( $post_type_args['singular'] ), $to_type, $field );
+				register_relationship_connection( $from_type, $to_type, $field );
 				continue;
 			}
 
