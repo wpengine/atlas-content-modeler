@@ -482,9 +482,11 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			if ( 'relationship' === $field['type'] && isset( $gql_post_types[ $field['reference'] ] ) ) {
 				$post_type = $gql_post_types[ $field['reference'] ];
 				$to_type   = camelcase( $post_type['singular'] );
+				register_relationship_connection( camelcase( $post_type_args['singular'] ), $to_type, $field );
+				continue;
 			}
 
-			$gql_field_type = map_html_field_type_to_graphql_field_type( $field, camelcase( $post_type_args['singular'] ), $to_type );
+			$gql_field_type = map_html_field_type_to_graphql_field_type( $field['type'] );
 			if ( empty( $gql_field_type ) ) {
 				continue;
 			}
@@ -651,20 +653,18 @@ function get_connection_name( string $from_type, string $to_type, string $from_f
 /**
  * Maps an HTML field type to a WPGraphQL field type.
  *
- * @param array  $field The HTML field.
- * @param string $from_type The type of the parent post.
- * @param string $to_type The post_type of the connection's destination.
+ * @param string $field_type The HTML field type.
  *
  * @access private
  *
- * @return string|array|null
+ * @return string|null
  */
-function map_html_field_type_to_graphql_field_type( array $field, $from_type, $to_type ) {
-	if ( ! isset( $field['type'] ) ) {
+function map_html_field_type_to_graphql_field_type( string $field_type ): ?string {
+	if ( empty( $field_type ) ) {
 		return null;
 	}
 
-	switch ( $field['type'] ) {
+	switch ( $field_type ) {
 		case 'text':
 		case 'textarea':
 		case 'string':
@@ -677,10 +677,6 @@ function map_html_field_type_to_graphql_field_type( array $field, $from_type, $t
 			return 'Boolean';
 		case 'media':
 			return 'MediaItem';
-		case 'relationship':
-			register_relationship_connection( $from_type, $to_type, $field );
-			// Don't return as register relationship connection handles field creation.
-			break;
 		default:
 			return null;
 	}
