@@ -395,7 +395,6 @@ function Form({ id, position, type, editing, storedData }) {
 						clearErrors={clearErrors}
 						register={register}
 						fieldId={id}
-						model={model}
 					/>
 				)}
 
