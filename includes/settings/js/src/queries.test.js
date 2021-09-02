@@ -2,7 +2,7 @@ import {
 	sanitizeFields,
 	getTitleFieldId,
 	getOpenField,
-	hasRelationships,
+	getRelationships,
 } from "./queries";
 
 describe("sanitizeFields", () => {
@@ -77,54 +77,101 @@ describe("getOpenField", () => {
 	});
 });
 
-describe("hasRelationships", () => {
-	it("returns true if a reference is found in another model", () => {
+describe("getRelationships", () => {
+	it("returns field IDs if a reference is found in another model", () => {
 		const models = {
 			model1: {
+				slug: "model1",
 				fields: {
-					123: { type: "relationship", reference: "no-match" },
+					123: {
+						id: 123,
+						type: "relationship",
+						reference: "no-match",
+					},
 				},
 			},
 			model2: {
-				fields: { 123: { type: "relationship", reference: "bunnies" } },
+				slug: "model2",
+				fields: {
+					456: {
+						id: 456,
+						type: "relationship",
+						reference: "bunnies",
+					},
+				},
 			},
 		};
 
 		const modelToLookFor = "bunnies";
 
-		expect(hasRelationships(models, modelToLookFor)).toEqual(true);
+		const expected = [{ model: "model2", id: 456 }];
+
+		expect(getRelationships(models, modelToLookFor)).toEqual(expected);
 	});
 
-	it("returns true if a reference is found in the same model", () => {
+	it("returns field IDs if a reference is found in the same model", () => {
 		const models = {
 			bunnies: {
+				slug: "bunnies",
 				fields: {
-					123: { type: "relationship", reference: "bunnies" },
-				},
-			},
-		};
-
-		const modelToLookFor = "bunnies";
-
-		expect(hasRelationships(models, modelToLookFor)).toEqual(true);
-	});
-
-	it("returns false if no reference is found", () => {
-		const models = {
-			model1: {
-				fields: {
-					123: { type: "relationship", reference: "no-match" },
+					123: {
+						id: 123,
+						type: "relationship",
+						reference: "bunnies",
+					},
 				},
 			},
 			model2: {
+				slug: "model2",
 				fields: {
-					123: { type: "relationship", reference: "no-match2" },
+					456: {
+						id: 456,
+						type: "relationship",
+						reference: "no-bunnies",
+					},
 				},
 			},
 		};
 
 		const modelToLookFor = "bunnies";
 
-		expect(hasRelationships(models, modelToLookFor)).toEqual(false);
+		const expected = [{ model: "bunnies", id: 123 }];
+
+		expect(getRelationships(models, modelToLookFor)).toEqual(expected);
+	});
+
+	it("returns empty array if no reference is found", () => {
+		const models = {
+			model1: {
+				slug: "model1",
+				fields: {
+					123: {
+						id: 123,
+						type: "relationship",
+						reference: "no-match",
+					},
+				},
+			},
+			model2: {
+				slug: "model2",
+				fields: {
+					123: {
+						id: 123,
+						type: "relationship",
+						reference: "no-match2",
+					},
+				},
+			},
+		};
+
+		const modelToLookFor = "bunnies";
+
+		const expected = [];
+
+		expect(getRelationships(models, modelToLookFor)).toEqual(expected);
+	});
+
+	it("returns empty array if models is empty", () => {
+		expect(getRelationships({}, "bunnies")).toEqual([]);
 	});
 });

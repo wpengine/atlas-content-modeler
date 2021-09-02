@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import { sprintf, __ } from "@wordpress/i18n";
 import { removeSidebarMenuItem } from "../utils";
-import { hasReferences } from "../queries";
+import { getRelationships } from "../queries";
 import { showError } from "../toasts";
 import { useHistory } from "react-router-dom";
 
@@ -13,6 +13,7 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 	const { models, dispatch, taxonomiesDispatch } = useContext(ModelsContext);
 	const { plural, slug } = model;
 	const history = useHistory();
+	const relationships = getRelationships(models, slug);
 
 	const customStyles = {
 		overlay: {
@@ -72,7 +73,7 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 				</strong>
 			</p>
 			<ul>
-				{hasReferences(models, slug) && (
+				{relationships?.length > 0 && (
 					<li className="warning">
 						{sprintf(
 							__(

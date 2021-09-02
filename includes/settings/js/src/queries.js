@@ -127,18 +127,25 @@ export function getOpenField(fields = {}) {
 }
 
 /**
- * Tests whether or not a model is referenced in other models via a
- * relationship field. Includes relationship fields in the model itself.
+ * Gets relationship fields in `models` whose reference is `slug`.
+ *
+ * So that relationship fields referring to a deleted model can be removed.
  *
  * @param {Object} models Models to check for a reference in.
  * @param {String} slug The model slug to look for in other models.
- * @return {Boolean} True if the `slug` has references in `models`.
+ * @return {Array} List of relationship fields as:
+ *                 `[ { model: "bunnies", id: 1234 } ]`,
+ * 	               or empty array if no relationship fields found.
  */
-export function hasRelationships(models, slug) {
-	return Object.values(models).some((model) => {
-		return Object.values(model?.fields).some(
-			(field) =>
-				field?.type === "relationship" && field?.reference === slug
-		);
+export function getRelationships(models = {}, slug) {
+	const relationships = Object.values(models).map((model) => {
+		return Object.values(model?.fields).reduce((result, field) => {
+			if (field?.type === "relationship" && field?.reference === slug) {
+				result.push({ model: model?.slug, id: field?.id });
+			}
+			return result;
+		}, []);
 	});
+
+	return relationships.flat();
 }
