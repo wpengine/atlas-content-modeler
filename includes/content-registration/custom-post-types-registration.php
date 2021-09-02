@@ -609,6 +609,10 @@ function register_relationship_connection( $from_type, $to_type, $field ) {
 					$relationship_ids
 				);
 
+				if ( $field['cardinality'] === 'one-to-one' ) {
+					return $resolver->one_to_one()->get_connection();
+				}
+
 				return $resolver->get_connection();
 			},
 			'connectionTypeName' => $connection_type_name,
