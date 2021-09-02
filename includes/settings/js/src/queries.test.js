@@ -109,13 +109,18 @@ describe("getRelationships", () => {
 		expect(getRelationships(models, modelToLookFor)).toEqual(expected);
 	});
 
-	it("returns field IDs if a reference is found in the same model", () => {
+	it("returns field IDs for relationship fields found across multiple models", () => {
 		const models = {
-			bunnies: {
-				slug: "bunnies",
+			model1: {
+				slug: "model1",
 				fields: {
 					123: {
 						id: 123,
+						type: "relationship",
+						reference: "bunnies",
+					},
+					456: {
+						id: 456,
 						type: "relationship",
 						reference: "bunnies",
 					},
@@ -124,6 +129,11 @@ describe("getRelationships", () => {
 			model2: {
 				slug: "model2",
 				fields: {
+					123: {
+						id: 123,
+						type: "relationship",
+						reference: "bunnies",
+					},
 					456: {
 						id: 456,
 						type: "relationship",
@@ -135,7 +145,11 @@ describe("getRelationships", () => {
 
 		const modelToLookFor = "bunnies";
 
-		const expected = [{ model: "bunnies", id: 123 }];
+		const expected = [
+			{ model: "model1", id: 123 },
+			{ model: "model1", id: 456 },
+			{ model: "model2", id: 123 },
+		];
 
 		expect(getRelationships(models, modelToLookFor)).toEqual(expected);
 	});
