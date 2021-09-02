@@ -123,6 +123,12 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 									type: "removeModel",
 									slug,
 								});
+								if (relationships?.length > 0) {
+									dispatch({
+										type: "removeFields",
+										fields: relationships,
+									});
+								}
 							} else {
 								// Restore the model in the UI since deletion failed.
 								dispatch({ type: "addModel", data: model });
