@@ -475,9 +475,9 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$rich_text = $field['type'] === 'richtext';
 
 			if ( 'relationship' === $field['type'] && isset( $models[ $field['reference'] ] ) ) {
-				$post_type = $models[ $field['reference'] ];
-				$from_type = camelcase( $model['singular'] );
-				$to_type   = camelcase( $post_type['singular'] );
+				$reference_model = $models[ $field['reference'] ];
+				$from_type       = camelcase( $model['singular'] );
+				$to_type         = camelcase( $reference_model['singular'] );
 				register_relationship_connection( $from_type, $to_type, $field );
 				continue;
 			}
