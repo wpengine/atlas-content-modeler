@@ -460,28 +460,24 @@ add_action( 'graphql_register_types', __NAMESPACE__ . '\register_content_fields_
  * @param TypeRegistry $type_registry The WPGraphQL Type Registry.
  */
 function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
-	$gql_post_types = get_graphql_enabled_post_types();
+	$models = get_graphql_enabled_post_types();
 
-	foreach ( $gql_post_types as $post_type_args ) {
-		if ( empty( $post_type_args['fields'] ) ) {
+	foreach ( $models as $model ) {
+		if ( empty( $model['fields'] ) ) {
 			continue;
 		}
 
-		foreach ( $post_type_args['fields'] as $field ) {
+		foreach ( $model['fields'] as $field ) {
 			if ( empty( $field['show_in_graphql'] ) || empty( $field['slug'] ) ) {
 				continue;
 			}
 
-			$rich_text = false;
+			$rich_text = $field['type'] === 'richtext';
 
-			if ( 'richtext' === $field['type'] ) {
-				$rich_text = true;
-			}
-
-			if ( 'relationship' === $field['type'] && isset( $gql_post_types[ $field['reference'] ] ) ) {
-				$post_type = $gql_post_types[ $field['reference'] ];
-				$from_type = camelcase( $post_type_args['singular'] );
-				$to_type   = camelcase( $post_type['singular'] );
+			if ( 'relationship' === $field['type'] && isset( $models[ $field['reference'] ] ) ) {
+				$reference_model = $models[ $field['reference'] ];
+				$from_type       = camelcase( $model['singular'] );
+				$to_type         = camelcase( $reference_model['singular'] );
 				register_relationship_connection( $from_type, $to_type, $field );
 				continue;
 			}
@@ -528,7 +524,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			unset( $field['name'] );
 
 			register_graphql_field(
-				camelcase( $post_type_args['singular'] ),
+				camelcase( $model['singular'] ),
 				camelcase( $field['slug'] ),
 				$field
 			);
