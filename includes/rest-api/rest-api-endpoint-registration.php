@@ -495,8 +495,9 @@ function dispatch_update_content_model( WP_REST_Request $request ) {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_delete_model( WP_REST_Request $request ) {
-	$route = $request->get_route();
-	$slug  = substr( strrchr( $route, '/' ), 1 );
+	$route             = $request->get_route();
+	$has_relationships = $request->get_param( 'hasRelationships' );
+	$slug              = substr( strrchr( $route, '/' ), 1 );
 
 	$model = delete_model( $slug );
 
@@ -504,8 +505,10 @@ function dispatch_delete_model( WP_REST_Request $request ) {
 		return $model;
 	}
 
-	cleanup_detached_relationship_fields( $slug );
-	cleanup_detached_relationship_references( $slug );
+	if ( $has_relationships ) {
+		cleanup_detached_relationship_fields( $slug );
+		cleanup_detached_relationship_references( $slug );
+	}
 
 	return rest_ensure_response(
 		[
