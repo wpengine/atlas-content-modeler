@@ -242,7 +242,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		$relationship_fields      = array_keys(
 			array_filter(
 				get_test_fields(),
-				function( $field ) use ( $model_to_delete ){
+				function( $field ) use ( $model_to_delete ) {
 					return $field['type'] === 'relationship' &&
 						   $field['reference'] === $model_to_delete;
 				}
