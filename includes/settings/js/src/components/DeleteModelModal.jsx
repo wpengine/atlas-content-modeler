@@ -40,9 +40,6 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 			path: `/wpe/atlas/content-model/${name}`,
 			method: "DELETE",
 			_wpnonce: wpApiSettings.nonce,
-			body: JSON.stringify({
-				hasRelationships: relationships?.length > 0,
-			}),
 		});
 	}
 
