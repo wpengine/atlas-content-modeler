@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Fields from "./components/Fields";
 import { sprintf, __ } from "@wordpress/i18n";
+import TrashPostModal from "./components/TrashPostModal";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
+	const [trashPostModalIsOpen, setTrashPostModalIsOpen] = useState(false);
 
 	/**
 	 * Navigate to the post new php file for current slug
@@ -47,6 +49,10 @@ export default function App({ model, mode }) {
 			<div className="d-flex flex-column">
 				<Fields model={model} />
 			</div>
+			<TrashPostModal
+				isOpen={trashPostModalIsOpen}
+				setIsOpen={setTrashPostModalIsOpen}
+			/>
 		</div>
 	);
 }
