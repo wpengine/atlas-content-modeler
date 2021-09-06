@@ -1,20 +1,11 @@
 import React, { useState } from "react";
 import Fields from "./components/Fields";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 import TrashPostModal from "./components/TrashPostModal";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 	const [trashPostModalIsOpen, setTrashPostModalIsOpen] = useState(false);
-
-	/**
-	 * Navigate to the post new php file for current slug
-	 * @param e
-	 */
-	function clickHandler(e) {
-		e.preventDefault();
-		window.location.href = `/wp-admin/post-new.php?post_type=${model.slug}`;
-	}
 
 	return (
 		<div className="app classic-form" style={{ marginTop: "20px" }}>
