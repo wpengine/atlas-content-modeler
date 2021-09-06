@@ -302,7 +302,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		$table        = ContentConnect::instance()->get_table( 'p2p' );
 		$post_to_post = $table->get_table_name();
 
-		// phpcs: disable
+		// phpcs:disable
 		$wpdb->query(
 			$wpdb->prepare(
 				"
@@ -313,10 +313,8 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 				$post_to_id
 			)
 		);
-		// phpcs: enable
 
 		// Confirm the relationship entry was added.
-		// phpcs: disable
 		$relationship_count = $wpdb->prepare(
 			"SELECT COUNT(*)
 			FROM {$post_to_post}
@@ -324,8 +322,8 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 			",
 			$post_from_id
 		);
-		// phpcs: enable
 		self::assertEquals( 1, $wpdb->get_var( $relationship_count ) );
+		// phpcs:enable
 
 		// Delete the model whose entry was stored as the 'from' reference.
 		// This should trigger a deletion of the recorded relationship.
@@ -338,6 +336,6 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		self::assertSame( 200, $response->get_status() );
 
 		// Confirm the row in the post-to-post table was deleted.
-		self::assertEquals( 0, $wpdb->get_var( $relationship_count ) );
+		self::assertEquals( 0, $wpdb->get_var( $relationship_count ) ); // phpcs:ignore
 	}
 }
