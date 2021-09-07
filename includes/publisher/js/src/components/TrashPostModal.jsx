@@ -89,7 +89,7 @@ export default function TrashPostModal({ isOpen, setIsOpen }) {
 
 			<p className="mb-4">
 				{__(
-					"Moving this to the trash will remove the relationship when the trash is next cleared.",
+					"Moving this to the trash will remove the relationship when the trash is cleared.",
 					"atlas-content-modeler"
 				)}
 			</p>
