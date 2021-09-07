@@ -148,7 +148,6 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 							dispatch({ type: "addModel", data: model });
 						});
 
-					setModalIsOpen(false);
 					history.push(atlasContentModeler.appPath);
 				}}
 			>
