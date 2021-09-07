@@ -11,6 +11,8 @@ namespace WPE\AtlasContentModeler;
 
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -183,10 +185,11 @@ final class FormEditingExperience {
 			'atlas-content-modeler-form-editing-experience',
 			'atlasContentModelerFormEditingExperience',
 			[
-				'models'           => $models,
-				'postType'         => $this->current_screen_post_type,
-				'allowedMimeTypes' => get_allowed_mime_types(),
-				'adminUrl'         => admin_url(),
+				'models'            => $models,
+				'postType'          => $this->current_screen_post_type,
+				'allowedMimeTypes'  => get_allowed_mime_types(),
+				'adminUrl'          => admin_url(),
+				'postHasReferences' => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
 			]
 		);
 
@@ -228,10 +231,6 @@ final class FormEditingExperience {
 
 		$model = $this->models[ $post->post_type ] ?? false;
 		if ( ! $model ) {
-			return;
-		}
-
-		if ( empty( $model['fields'] ) ) {
 			return;
 		}
 
@@ -389,7 +388,7 @@ final class FormEditingExperience {
 			$this->models[ $post->post_type ]['fields'] ?? []
 		);
 
-		$registry      = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$registry      = ContentConnect::instance()->get_registry();
 		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field_id );
 		$related_posts = array();
 
@@ -413,7 +412,7 @@ final class FormEditingExperience {
 	 * @return string A comma separated list of connected posts
 	 */
 	public function get_relationship_field( $post_id, $post_type, $relationship_type, $field_name ) {
-		$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$registry     = ContentConnect::instance()->get_registry();
 		$relationship = $registry->get_post_to_post_relationship(
 			$post_type,
 			$relationship_type,
@@ -423,6 +422,34 @@ final class FormEditingExperience {
 		$relationship_ids = $relationship->get_related_object_ids( $post_id );
 
 		return implode( ',', $relationship_ids );
+	}
+
+	/**
+	 * Tests if `$post_id` is referenced by any model in the post-to-post table.
+	 * Used to determine if warnings should be shown before entries are trashed.
+	 *
+	 * @param string $post_id The post ID.
+	 * @return bool True if the post is referenced in a relationship field.
+	 */
+	public function has_relationship_references( string $post_id ): bool {
+		global $wpdb;
+
+		$table        = ContentConnect::instance()->get_table( 'p2p' );
+		$post_to_post = $table->get_table_name();
+
+		// phpcs:disable
+		// The `$post_to_post` table does not need to be escaped.
+		// It is derived from an unfilterable string literal.
+		$relationship_count = $wpdb->prepare(
+			"SELECT COUNT(*)
+			FROM `{$post_to_post}`
+			WHERE id1 = %s;
+			",
+			$post_id
+		);
+
+		return (int) $wpdb->get_var( $relationship_count ) > 0;
+		// phpcs:enable
 	}
 
 	/**
