@@ -69,22 +69,23 @@ export const ContentModelDropdown = ({ model }) => {
 				>
 					{__("Edit", "atlas-content-modeler")}
 				</a>
-				{atlasContentModeler.isGraphiQLAvailable && (
-					<a
-						className="show-in-graphiql"
-						href={getGraphiQLLink(models[slug])}
-						target="_blank"
-						rel="noopener noreferrer"
-						onBlur={() =>
-							maybeCloseDropdown(setDropdownOpen, timer)
-						}
-						onClick={() => {
-							setDropdownOpen(false);
-						}}
-					>
-						{__("Open in GraphiQL", "atlas-content-modeler")}
-					</a>
-				)}
+				{atlasContentModeler.isGraphiQLAvailable &&
+					models.hasOwnProperty(slug) && (
+						<a
+							className="show-in-graphiql"
+							href={getGraphiQLLink(models[slug])}
+							target="_blank"
+							rel="noopener noreferrer"
+							onBlur={() =>
+								maybeCloseDropdown(setDropdownOpen, timer)
+							}
+							onClick={() => {
+								setDropdownOpen(false);
+							}}
+						>
+							{__("Open in GraphiQL", "atlas-content-modeler")}
+						</a>
+					)}
 				<a
 					className="delete"
 					href="#"
