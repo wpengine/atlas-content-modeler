@@ -237,7 +237,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	 */
 	public function test_deleting_a_model_removes_related_relationship_fields(): void {
 		wp_set_current_user( 1 );
-		$model_to_delete          = 'relationship-ref';
+		$model_to_delete          = 'public';
 		$model_with_relationships = 'public-fields';
 		$relationship_fields      = array_keys(
 			array_filter(
