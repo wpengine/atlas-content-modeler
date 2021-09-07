@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { __ } from "@wordpress/i18n";
+import { sprintf, __ } from "@wordpress/i18n";
 import Modal from "react-modal";
 
 /**
@@ -10,6 +10,11 @@ import Modal from "react-modal";
  * @returns {JSX.Element} TrashPostModal
  */
 export default function TrashPostModal({ isOpen, setIsOpen }) {
+	const { models, postType } = atlasContentModelerFormEditingExperience;
+
+	const modelName =
+		models[postType]?.singular ?? __("Entry", "atlas-content-modeler");
+
 	const moveToTrashLink = document.querySelector("#delete-action a");
 
 	const customStyles = {
@@ -66,7 +71,13 @@ export default function TrashPostModal({ isOpen, setIsOpen }) {
 			}}
 			style={customStyles}
 		>
-			<h2>{__("Trash this entry?", "atlas-content-modeler")}</h2>
+			<h2>
+				{sprintf(
+					// translators: singular model name or the word “entry”.
+					__("Trash this %s?", "atlas-content-modeler"),
+					modelName
+				)}
+			</h2>
 			<p className="mb-4">
 				<strong>
 					{__(
