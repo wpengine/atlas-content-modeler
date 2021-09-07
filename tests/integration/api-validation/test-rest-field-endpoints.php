@@ -264,8 +264,8 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$model          = 'public-fields';
 		$new_field_data = [
 			'fields' => [
-				'1628084952497' => [ 'position' => '10' ],
-				'1628084963946' => [ 'position' => '20' ],
+				'1630411218064' => [ 'position' => '10' ],
+				'1630411257237' => [ 'position' => '20' ],
 			],
 		];
 
@@ -279,8 +279,8 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$this->assertArrayHasKey( 'success', $data );
 		$this->assertEquals( true, $data['success'] );
-		$this->assertEquals( 10, $models[ $model ]['fields']['1628084952497']['position'] );
-		$this->assertEquals( 20, $models[ $model ]['fields']['1628084963946']['position'] );
+		$this->assertEquals( 10, $models[ $model ]['fields']['1630411218064']['position'] );
+		$this->assertEquals( 20, $models[ $model ]['fields']['1630411257237']['position'] );
 	}
 
 	/**
@@ -364,7 +364,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'isTitle', $models[ $model ]['fields']['222'] );
-		$this->assertArrayNotHasKey( 'isTitle', $models[ $model ]['fields']['1628084420404'] );
+		$this->assertArrayNotHasKey( 'isTitle', $models[ $model ]['fields']['1630411257237'] );
 	}
 
 	/**
@@ -416,7 +416,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		];
 
 		wp_set_current_user( 1 );
-		$request               = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $relationship_field_missing_reference ) );
 
@@ -432,17 +432,17 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 	 */
 	public function test_attempt_to_create_relationship_field_without_cardinality_gives_error() {
 		$relationship_field_missing_cardinality = [
-			'type'        => 'relationship',
-			'id'          => '111',
-			'model'       => 'public',
-			'position'    => '123',
-			'name'        => 'Related',
-			'slug'        => 'related',
-			'reference'   => 'rabbits',
+			'type'      => 'relationship',
+			'id'        => '111',
+			'model'     => 'public',
+			'position'  => '123',
+			'name'      => 'Related',
+			'slug'      => 'related',
+			'reference' => 'rabbits',
 		];
 
 		wp_set_current_user( 1 );
-		$request               = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $relationship_field_missing_cardinality ) );
 
@@ -469,7 +469,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		];
 
 		wp_set_current_user( 1 );
-		$request               = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $relationship_field_missing_cardinality ) );
 
