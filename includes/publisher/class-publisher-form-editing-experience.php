@@ -11,6 +11,8 @@ namespace WPE\AtlasContentModeler;
 
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -70,6 +72,7 @@ final class FormEditingExperience {
 		$this->models = get_registered_content_types();
 
 		add_action( 'init', [ $this, 'remove_post_type_supports' ] );
+		add_action( 'rest_api_init', [ $this, 'support_title_in_rest_responses' ] );
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
@@ -93,6 +96,15 @@ final class FormEditingExperience {
 			remove_post_type_support( $model, 'title' );
 			remove_post_type_support( $model, 'custom-fields' );
 			remove_post_type_support( $model, 'thumbnail' );
+		}
+	}
+
+	/**
+	 * Reinstates the title so that it appears in REST responses.
+	 */
+	public function support_title_in_rest_responses(): void {
+		foreach ( $this->models as $model => $info ) {
+			add_post_type_support( $model, 'title' );
 		}
 	}
 
@@ -130,7 +142,7 @@ final class FormEditingExperience {
 		wp_register_script(
 			'atlas-content-modeler-form-editing-experience',
 			ATLAS_CONTENT_MODELER_URL . 'includes/publisher/dist/index.js',
-			[ 'react', 'react-dom', 'wp-tinymce', 'wp-i18n' ],
+			[ 'react', 'react-dom', 'wp-tinymce', 'wp-i18n', 'wp-api-fetch', 'wp-date' ],
 			$plugin['Version'],
 			true
 		);
@@ -148,13 +160,23 @@ final class FormEditingExperience {
 		wp_enqueue_editor();
 
 		$models = $this->models;
-		$model  = $models[ $this->current_screen_post_type ];
+
+		// Adds the wp-json rest base for utilizing model data in admin.
+		foreach ( $models as $model => $data ) {
+			$models[ $model ]['wp_rest_base'] = sanitize_key( $data['plural'] );
+		}
+
+		$model = $models[ $this->current_screen_post_type ];
 
 		// Add existing field values to models data.
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
 				if ( isset( $post->ID ) ) {
-					$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+					if ( 'relationship' === $field['type'] ) {
+						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post->ID, $post->post_type, $field['reference'], $field['slug'] );
+					} else {
+						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+					}
 				}
 			}
 		}
@@ -163,9 +185,11 @@ final class FormEditingExperience {
 			'atlas-content-modeler-form-editing-experience',
 			'atlasContentModelerFormEditingExperience',
 			[
-				'models'           => $models,
-				'postType'         => $this->current_screen_post_type,
-				'allowedMimeTypes' => get_allowed_mime_types(),
+				'models'            => $models,
+				'postType'          => $this->current_screen_post_type,
+				'allowedMimeTypes'  => get_allowed_mime_types(),
+				'adminUrl'          => admin_url(),
+				'postHasReferences' => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
 			]
 		);
 
@@ -207,10 +231,6 @@ final class FormEditingExperience {
 
 		$model = $this->models[ $post->post_type ] ?? false;
 		if ( ! $model ) {
-			return;
-		}
-
-		if ( empty( $model['fields'] ) ) {
 			return;
 		}
 
@@ -280,13 +300,22 @@ final class FormEditingExperience {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$posted_values = $_POST['atlas-content-modeler'][ $post->post_type ];
 
+		$saved_relationships = array();
+
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
-			$field_type  = get_field_type_from_slug(
+			$field_type = get_field_type_from_slug(
 				$field_id,
 				$this->models[ $post->post_type ]['fields'] ?? []
 			);
+
 			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ) );
+
+			if ( 'relationship' === $field_type ) {
+				unset( $posted_values[ $field_id ] );
+				$this->save_relationship_field( $field_id, $post, $field_value );
+				$saved_relationships[] = $field_id;
+			}
 		}
 
 		// Delete any meta values missing from the submitted data.
@@ -299,15 +328,30 @@ final class FormEditingExperience {
 
 		foreach ( $all_field_slugs as $slug ) {
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
-				$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
-				if ( empty( $existing ) ) {
-					continue;
-				}
+				$field_type = get_field_type_from_slug(
+					$slug,
+					$this->models[ $post->post_type ]['fields'] ?? []
+				);
 
-				$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
-				if ( ! $deleted ) {
-					/* translators: %s: atlas content modeler field slug */
-					$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+				if ( 'relationship' === $field_type ) {
+					if ( ! in_array(
+						$slug,
+						$saved_relationships,
+						true
+					) ) {
+						$this->save_relationship_field( $slug, $post, '' );
+					}
+				} else {
+					$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
+					if ( empty( $existing ) ) {
+						continue;
+					}
+
+					$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
+					if ( ! $deleted ) {
+						/* translators: %s: atlas content modeler field slug */
+						$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+					}
 				}
 			}
 		}
@@ -329,6 +373,83 @@ final class FormEditingExperience {
 				$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
 			}
 		}
+	}
+
+	/**
+	 * Saves relationship field data using the post-to-posts library
+	 *
+	 * @param string  $field_id The name of the field being saved.
+	 * @param WP_Post $post The ID of the post being saved.
+	 * @param string  $field_value The post IDs of the relationship's destination posts.
+	 */
+	public function save_relationship_field( $field_id, $post, $field_value ) {
+		$field = get_field_from_slug(
+			$field_id,
+			$this->models[ $post->post_type ]['fields'] ?? []
+		);
+
+		$registry      = ContentConnect::instance()->get_registry();
+		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field_id );
+		$related_posts = array();
+
+		if ( $relationship ) {
+			if ( '' !== $field_value ) {
+				$related_posts = explode( ',', $field_value );
+			}
+
+			$relationship->replace_relationships( $post->ID, $related_posts );
+		}
+	}
+
+	/**
+	 * Retrieves the related post ids
+	 *
+	 * @param int    $post_id The post ID of the parent post.
+	 * @param string $post_type The post type of the parent post.
+	 * @param string $relationship_type The post type of the relationship.
+	 * @param string $field_name The slug of the relationship saved in the DB.
+	 *
+	 * @return string A comma separated list of connected posts
+	 */
+	public function get_relationship_field( $post_id, $post_type, $relationship_type, $field_name ) {
+		$registry     = ContentConnect::instance()->get_registry();
+		$relationship = $registry->get_post_to_post_relationship(
+			$post_type,
+			$relationship_type,
+			$field_name
+		);
+
+		$relationship_ids = $relationship->get_related_object_ids( $post_id );
+
+		return implode( ',', $relationship_ids );
+	}
+
+	/**
+	 * Tests if `$post_id` is referenced by any model in the post-to-post table.
+	 * Used to determine if warnings should be shown before entries are trashed.
+	 *
+	 * @param string $post_id The post ID.
+	 * @return bool True if the post is referenced in a relationship field.
+	 */
+	public function has_relationship_references( string $post_id ): bool {
+		global $wpdb;
+
+		$table        = ContentConnect::instance()->get_table( 'p2p' );
+		$post_to_post = $table->get_table_name();
+
+		// phpcs:disable
+		// The `$post_to_post` table does not need to be escaped.
+		// It is derived from an unfilterable string literal.
+		$relationship_count = $wpdb->prepare(
+			"SELECT COUNT(*)
+			FROM `{$post_to_post}`
+			WHERE id1 = %s;
+			",
+			$post_id
+		);
+
+		return (int) $wpdb->get_var( $relationship_count ) > 0;
+		// phpcs:enable
 	}
 
 	/**

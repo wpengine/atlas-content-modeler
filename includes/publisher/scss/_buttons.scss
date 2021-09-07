@@ -14,9 +14,9 @@ button {
 
 button:disabled,
 button:disabled:hover {
-	background: $color-secondary-light !important;
-	border-color: $color-secondary !important;
-	color: $color-gray !important;
+	background: $color-gray-disabled-background !important;
+	border-color: $color-gray-disabled-border !important;
+	color: $color-gray-disabled-text !important;
 }
 
 button.first {
@@ -58,11 +58,6 @@ button.tertiary:hover {
 	color: $color-primary;
 	background: $color-white;
 	border: 1px solid $color-primary;
-}
-
-button.taxonomies {
-	margin-left: auto;
-	margin-right: 14px;
 }
 
 button.add-option {
@@ -120,6 +115,7 @@ button.warning {
 	background: $color-warning;
 	color: $color-white;
 	border: 1px solid $color-warning;
+	margin-right: 20px;
 }
 
 button.warning:focus,
@@ -158,7 +154,23 @@ button.options {
 	border: none;
 	color: $color-text;
 	height: 100%;
-	padding: 0 30px;
+	padding: 0 25px;
+}
+
+button.tertiary.relationship-modal-nav {
+	background: none !important;
+	border: none !important;
+	padding: 0 20px;
+}
+
+button.tertiary.relationship-modal-nav:disabled {
+	color: $color-gray-light !important;
+}
+
+button.tertiary.relationship-modal-nav:not([disabled]):hover {
+	background: #f4f7fa !important;
+	border-color: #cfdde9 !important;
+	color: $color-text !important;
 }
 
 .model-list-empty button {

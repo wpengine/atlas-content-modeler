@@ -5,6 +5,8 @@ import CloseIcon from "./CloseIcon";
 import DateIcon from "./DateIcon";
 import DownArrow from "./DownArrow";
 import ErrorIcon from "./ErrorIcon";
+import ExternalLinkIcon from "./ExternalLink";
+import LinkIcon from "./LinkIcon";
 import MediaIcon from "./MediaIcon";
 import MultipleChoiceIcon from "./MultipleChoiceIcon";
 import NumberIcon from "./NumberIcon";
@@ -31,6 +33,10 @@ export default function Icon({ type, size }) {
 			return <DownArrow />;
 		case "error":
 			return <ErrorIcon size={size} />;
+		case "external-link":
+			return <ExternalLinkIcon />;
+		case "link":
+			return <LinkIcon />;
 		case "media":
 			return <MediaIcon />;
 		case "multipleChoice":

@@ -60,6 +60,16 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
                             numberIntergerRequired
                             dateRequired
                             booleanRequired
+							onetoManyRelationship {
+								nodes {
+									id
+								}
+							}
+							onetoOneRelationship {
+								node {
+									id
+								}
+							}
 						}
 					}
 				}
@@ -84,6 +94,12 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'booleanRequired', $results['data']['publicsFields']['nodes'][0] );
 			self::assertTrue( $results['data']['publicsFields']['nodes'][0]['booleanRequired'] );
+
+			self::assertArrayHasKey( 'onetoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoManyRelationship'] );
+
+			self::assertArrayHasKey( 'onetoOneRelationship', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoOneRelationship'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}

@@ -165,6 +165,7 @@ class SidebarUpdatesCest
 		$I->see('Delete', '.dropdown-content');
 		$I->click('Delete', '.action .dropdown-content');
 		$I->click('Delete', '.atlas-content-modeler-delete-field-modal-container');
+		$I->wait(1);
 
 		// The edited taxonomy should be removed from both models.
 		$I->moveMouseOver(['css' => '#menu-posts-goose']);
