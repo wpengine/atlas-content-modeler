@@ -28,6 +28,7 @@ class TrashEntryCest
 		// Create a mouse and link it to the goose.
 		$I->amOnPage('/wp-admin/post-new.php?post_type=mouse');
 		$I->click('#atlas-content-modeler[mouse][gooseFriend]');
+		$I->wait(2);
 		$I->click(Locator::elementAt('td.checkbox input', 1));
 		$I->click('button.action-button');
 		$I->wait(2);
