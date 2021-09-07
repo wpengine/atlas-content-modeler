@@ -187,7 +187,7 @@ final class FormEditingExperience {
 				'models'            => $models,
 				'postType'          => $this->current_screen_post_type,
 				'allowedMimeTypes'  => get_allowed_mime_types(),
-				'postHasReferences' => isset( $post->ID ) ? $this->has_relationship_references( $post->ID ) : false,
+				'postHasReferences' => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
 			]
 		);
 
@@ -430,10 +430,10 @@ final class FormEditingExperience {
 	 * Tests if `$post_id` is referenced by any model in the post-to-post table.
 	 * Used to determine if warnings should be shown before entries are trashed.
 	 *
-	 * @param int $post_id The post ID.
+	 * @param string $post_id The post ID.
 	 * @return bool True if the post is referenced in a relationship field.
 	 */
-	public function has_relationship_references( int $post_id ): bool {
+	public function has_relationship_references( string $post_id ): bool {
 		global $wpdb;
 
 		$table        = ContentConnect::instance()->get_table( 'p2p' );
