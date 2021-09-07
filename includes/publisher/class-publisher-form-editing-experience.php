@@ -13,6 +13,7 @@ use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -187,6 +188,7 @@ final class FormEditingExperience {
 				'models'            => $models,
 				'postType'          => $this->current_screen_post_type,
 				'allowedMimeTypes'  => get_allowed_mime_types(),
+				'adminUrl'          => admin_url(),
 				'postHasReferences' => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
 			]
 		);
@@ -386,7 +388,7 @@ final class FormEditingExperience {
 			$this->models[ $post->post_type ]['fields'] ?? []
 		);
 
-		$registry      = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$registry      = ContentConnect::instance()->get_registry();
 		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field_id );
 		$related_posts = array();
 
@@ -410,7 +412,7 @@ final class FormEditingExperience {
 	 * @return string A comma separated list of connected posts
 	 */
 	public function get_relationship_field( $post_id, $post_type, $relationship_type, $field_name ) {
-		$registry     = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		$registry     = ContentConnect::instance()->get_registry();
 		$relationship = $registry->get_post_to_post_relationship(
 			$post_type,
 			$relationship_type,

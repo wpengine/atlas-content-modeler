@@ -91,4 +91,33 @@ class CreateRelationshipFieldEntryCest
 		$I->see('WP Engine', 'div.relation-model-card');
 		$I->see('Another Company Name', 'div.relation-model-card');
 	}
+
+	public function i_can_create_a_new_entry_from_an_empty_relationships_modal_table(AcceptanceTester $I) {
+		// Try to create an employee before any companies have been entered.
+		$I->amOnPage('/wp-admin/post-new.php?post_type=employee');
+		$I->see('Company', 'div.field.relationship');
+		$I->click('#atlas-content-modeler[employee][company]');
+		$I->see('Select Company', '.atlas-content-modeler-relationship-modal-container h2');
+		$I->wait(2);
+		$I->see('No published entries');
+
+		// Create a company via the link in the relationships modal.
+		$I->click('Create a new Company');
+		$I->wait(1);
+		$I->switchToNextTab(); // Focus on the Create Company tab.
+		$I->fillField(['name' => 'atlas-content-modeler[company][company]'], 'WP Engine');
+		$I->click('Publish', '#publishing-action');
+		$I->wait(1);
+
+		// Check the new company appears in the updated modal.
+		$I->closeTab(); // Focus on the original employee tab.
+
+		// Test that the modal is still visible.
+		$I->see('Select Company', '.atlas-content-modeler-relationship-modal-container h2');
+
+		// This is as far as we can test in headless mode under CircleCI.
+		// The visibilitychange event does not fire in headless mode,
+		// so we can't check that the modal refreshed to show the
+		// newly-added “WP Engine” company.
+	}
 }
