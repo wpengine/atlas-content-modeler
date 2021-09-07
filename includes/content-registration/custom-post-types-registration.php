@@ -108,9 +108,8 @@ function register_relationships( $registry ) {
 					$registry->define_post_to_post( $post_type, $field['reference'], $field['slug'], $args );
 				} catch ( \Exception $e ) {
 					/**
-					 * Either the relationship already exists, or the referenced post type was deleted.
-					 * We should be removing any relationship fields that reference a model when it is
-					 * deleted, but for now we will just catch the exception and ignore it.
+					 * Either the relationship already exists,
+					 * or the referenced post type was deleted.
 					 */
 				}
 			}

@@ -1,6 +1,9 @@
 <?php
 
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
+use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
+
+require_once __DIR__ . '/test-data/fields.php';
 
 class RestModelEndpointTests extends WP_UnitTestCase {
 
@@ -187,5 +190,152 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		self::assertSame( 200, $response->get_status() );
 		self::assertSame( $this->test_models['public']['slug'], $models['public']['slug'] );
 		self::assertSame( $new_model['singular'], $models['public']['singular'] );
+	}
+
+	public function test_can_delete_a_model(): void {
+		wp_set_current_user( 1 );
+		$model_to_delete = 'public';
+		$models          = get_option( 'atlas_content_modeler_post_types' );
+		self::assertArrayHasKey( $model_to_delete, $models );
+
+		// Send DELETE request to the model deletion endpoint.
+		$request = new WP_REST_Request(
+			'DELETE',
+			$this->namespace . $this->route . '/' . $model_to_delete
+		);
+		$request->set_header( 'content-type', 'application/json' );
+		$response = $this->server->dispatch( $request );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
+
+		self::assertSame( 200, $response->get_status() );
+		self::assertArrayNotHasKey( $model_to_delete, $models );
+	}
+
+	public function test_cannot_delete_a_model_without_manage_options_capability(): void {
+		wp_set_current_user( null );
+		$model_to_delete = 'public';
+		$models          = get_option( 'atlas_content_modeler_post_types' );
+		self::assertArrayHasKey( $model_to_delete, $models );
+
+		// Send DELETE request to the model deletion endpoint.
+		$request = new WP_REST_Request(
+			'DELETE',
+			$this->namespace . $this->route . '/' . $model_to_delete
+		);
+		$request->set_header( 'content-type', 'application/json' );
+		$response = $this->server->dispatch( $request );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
+
+		self::assertSame( 401, $response->get_status() );
+	}
+
+	/**
+	 * Verifies that relationship fields in other models that refer to the
+	 * deleted model are deleted.
+	 *
+	 * @covers WPE\AtlasContentModeler\REST_API\Relationships\cleanup_detached_relationship_fields
+	 */
+	public function test_deleting_a_model_removes_related_relationship_fields(): void {
+		wp_set_current_user( 1 );
+		$model_to_delete          = 'public';
+		$model_with_relationships = 'public-fields';
+		$relationship_fields      = array_keys(
+			array_filter(
+				get_test_fields(),
+				function( $field ) use ( $model_to_delete ) {
+					return $field['type'] === 'relationship' &&
+						   $field['reference'] === $model_to_delete;
+				}
+			)
+		);
+
+		// Send DELETE request to the model deletion endpoint.
+		$request = new WP_REST_Request(
+			'DELETE',
+			$this->namespace . $this->route . '/' . $model_to_delete
+		);
+		$request->set_header( 'content-type', 'application/json' );
+		$response = $this->server->dispatch( $request );
+		$models   = get_option( 'atlas_content_modeler_post_types' );
+
+		self::assertSame( 200, $response->get_status() );
+
+		// Relationship fields for the deleted model should be removed from other models.
+		foreach ( $relationship_fields as $field_id ) {
+			self::assertArrayNotHasKey(
+				$field_id,
+				$models[$model_with_relationships]['fields']
+			);
+		}
+	}
+
+	/**
+	 * Verifies that entries in the post-to-post table are removed when related
+	 * models are deleted.
+	 *
+	 * @covers WPE\AtlasContentModeler\REST_API\Relationships\cleanup_detached_relationship_references
+	 */
+	public function test_deleting_a_model_removes_post_to_post_data(): void {
+		global $wpdb;
+		wp_set_current_user( 1 );
+
+		$model_to_delete = 'private';
+
+		// Create posts to relate via an entry in the post-to-post table.
+		$post_from_id = $this->factory->post->create(
+			[
+				'post_title'   => 'Test cat',
+				'post_status'  => 'publish',
+				'post_type'    => 'private',
+			]
+		);
+
+		$post_to_id = $this->factory->post->create(
+			[
+				'post_title'   => 'Test dog',
+				'post_status'  => 'publish',
+				'post_type'    => 'public',
+			]
+		);
+
+		// Manually record a relationship between the two posts.
+		$table        = ContentConnect::instance()->get_table( 'p2p' );
+		$post_to_post = $table->get_table_name();
+
+		// phpcs:disable
+		$wpdb->query(
+			$wpdb->prepare(
+				"
+				INSERT INTO {$post_to_post} (`id1`, `id2`, `name`, `order`)
+				VALUES (%s, %s, 'test', 0);
+				",
+				$post_from_id,
+				$post_to_id
+			)
+		);
+
+		// Confirm the relationship entry was added.
+		$relationship_count = $wpdb->prepare(
+			"SELECT COUNT(*)
+			FROM {$post_to_post}
+			WHERE id1 = %s;
+			",
+			$post_from_id
+		);
+		self::assertEquals( 1, $wpdb->get_var( $relationship_count ) );
+		// phpcs:enable
+
+		// Delete the model whose entry was stored as the 'from' reference.
+		// This should trigger a deletion of the recorded relationship.
+		$request = new WP_REST_Request(
+			'DELETE',
+			$this->namespace . $this->route . '/' . $model_to_delete
+		);
+		$request->set_header( 'content-type', 'application/json' );
+		$response = $this->server->dispatch( $request );
+		self::assertSame( 200, $response->get_status() );
+
+		// Confirm the row in the post-to-post table was deleted.
+		self::assertEquals( 0, $wpdb->get_var( $relationship_count ) ); // phpcs:ignore
 	}
 }
