@@ -11,7 +11,6 @@ namespace WPE\AtlasContentModeler;
 
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
-use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -187,6 +186,7 @@ final class FormEditingExperience {
 				'models'           => $models,
 				'postType'         => $this->current_screen_post_type,
 				'allowedMimeTypes' => get_allowed_mime_types(),
+				'adminUrl'         => admin_url(),
 			]
 		);
 
