@@ -1,5 +1,6 @@
 import React from "react";
 import { sprintf, __ } from "@wordpress/i18n";
+import Icon from "acm-icons";
 const { wp } = window;
 const { date } = wp;
 
@@ -10,6 +11,18 @@ export default function Table({
 	chosenEntries,
 	handleSelect,
 }) {
+	const { models, adminUrl } = atlasContentModelerFormEditingExperience;
+
+	const createNewEntryLabel = sprintf(
+		__(
+			// translators: the singular name of the model, or "entry" if no singular name known.
+			"Create a new %s.",
+			"atlas-content-modeler"
+		),
+		models[field.reference]?.singular ??
+			__("entry", "atlas-content-modeler")
+	);
+
 	return (
 		<table className="table table-striped mt-2">
 			<thead>
@@ -20,6 +33,36 @@ export default function Table({
 				</tr>
 			</thead>
 			<tbody>
+				{pagedEntries[page]?.length === 0 && (
+					<tr className="empty">
+						<td>&nbsp;</td>
+						<td colSpan="2">
+							<span>
+								{__(
+									"No published entries.",
+									"atlas-content-modeler"
+								)}{" "}
+								<a
+									href={`${adminUrl}post-new.php?post_type=${field.reference}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="d-inline-flex"
+									aria-label={
+										createNewEntryLabel +
+										" " +
+										__(
+											"Opens in a new window.",
+											"atlas-content-modeler"
+										)
+									}
+								>
+									{createNewEntryLabel}
+									<Icon type="external-link" />
+								</a>
+							</span>
+						</td>
+					</tr>
+				)}
 				{pagedEntries[page].map((entry) => {
 					const { modified, id, title } = entry;
 					const selectEntryLabel = sprintf(

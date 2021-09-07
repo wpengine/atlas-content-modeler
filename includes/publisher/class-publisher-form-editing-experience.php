@@ -186,6 +186,7 @@ final class FormEditingExperience {
 				'models'           => $models,
 				'postType'         => $this->current_screen_post_type,
 				'allowedMimeTypes' => get_allowed_mime_types(),
+				'adminUrl'         => admin_url(),
 			]
 		);
 
