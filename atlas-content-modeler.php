@@ -8,7 +8,7 @@
  * Text Domain: atlas-content-modeler
  * Domain Path: /languages
  * Version: 0.5.0
- * Requires at least: 5.2
+ * Requires at least: 5.7
  * Requires PHP: 7.2
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
