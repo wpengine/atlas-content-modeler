@@ -379,10 +379,10 @@ final class FormEditingExperience {
 	 * Saves relationship field data using the post-to-posts library
 	 *
 	 * @param string  $field_id The name of the field being saved.
-	 * @param WP_Post $post The ID of the post being saved.
+	 * @param WP_Post $post The post being saved.
 	 * @param string  $field_value The post IDs of the relationship's destination posts.
 	 */
-	public function save_relationship_field( $field_id, $post, $field_value ) {
+	public function save_relationship_field( string $field_id, WP_Post $post, string $field_value ): void {
 		$field = get_field_from_slug(
 			$field_id,
 			$this->models[ $post->post_type ]['fields'] ?? []
@@ -411,7 +411,7 @@ final class FormEditingExperience {
 	 *
 	 * @return string A comma separated list of connected posts
 	 */
-	public function get_relationship_field( $post_id, $post_type, $relationship_type, $field_name ) {
+	public function get_relationship_field( int $post_id, string $post_type, string $relationship_type, string $field_name ): string {
 		$registry     = ContentConnect::instance()->get_registry();
 		$relationship = $registry->get_post_to_post_relationship(
 			$post_type,
