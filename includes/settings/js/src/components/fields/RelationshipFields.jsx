@@ -91,7 +91,7 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 				</div>
 				<div className={editing ? "field read-only editing" : "field"}>
 					<legend>
-						{__("Relation Cardinality", "atlas-content-modeler")}
+						{__("Connections", "atlas-content-modeler")}
 					</legend>
 					<fieldset>
 						<div className="radio-row">
