@@ -30,6 +30,7 @@ export default function LinkButton({
 			<button
 				className="button button-primary link-button"
 				style={{ marginTop: "5px" }}
+				type="button"
 				id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 				onClick={(e) => {
 					e.preventDefault();
