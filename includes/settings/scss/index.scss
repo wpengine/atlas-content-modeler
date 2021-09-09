@@ -1,4 +1,4 @@
-@import "variables";
+@import "../../../includes/shared-assets/scss/_variables";
 
 // Bootstrap color overrides.
 $table-striped-bg: $color-secondary-light;
@@ -24,7 +24,7 @@ $breakpoint-tablet: 850px;
 @import "header";
 @import "buttons";
 @import "forms";
-@import "modals";
+@import "../../../includes/shared-assets/scss/_modals";
 @import "app-card";
 @import "model-list";
 @import "field-list";

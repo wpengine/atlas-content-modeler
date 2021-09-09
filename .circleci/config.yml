@@ -47,6 +47,27 @@ jobs:
       - php/install-composer
       - php/install-packages:
           app-dir: <<parameters.slug>>
+          install-flags: --no-interaction --prefer-dist --no-dev
+      - run:
+          name: Remove composer setup file
+          command: |
+            rm -v composer-setup.php
+      - persist_to_workspace:
+          root: .
+          paths:
+            - atlas-content-modeler/vendor
+
+  plugin-build-composer-dev:
+    executor: php/default
+    parameters:
+      slug:
+        type: string
+    steps:
+      - attach_workspace:
+          at: .
+      - php/install-composer
+      - php/install-packages:
+          app-dir: <<parameters.slug>>
       - run:
           name: Remove composer setup file
           command: |
@@ -333,7 +354,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - php/install-composer
       - run:
           name: Run Code Sniffer sniffs
           command: /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
@@ -354,13 +374,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - php/install-composer
-      - php/install-packages:
-          app-dir: <<parameters.slug>>
-      - run:
-          name: Remove composer setup file
-          command: |
-            rm -v composer-setup.php
       - run:
           name: Install Subversion package
           command: |
@@ -456,16 +469,26 @@ workflows:
       - plugin-build-zip:
           slug: atlas-content-modeler
           requires:
+            - plugin-build-composer
             - plugin-build-npm
             - plugin-build-pot
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
               only: /.*/
+      - plugin-build-composer-dev:
+          slug: atlas-content-modeler
+          requires:
+            # wait for zip build, which excludes dev depencencies
+            - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-test-e2e:
           requires:
             - plugin-build-zip
-            - plugin-build-composer
+            - plugin-build-composer-dev
           # run this job for any build, any branch
           filters:
             tags:
@@ -489,7 +512,7 @@ workflows:
       - plugin-test-lint-php:
           requires:
             - plugin-build-zip
-            - plugin-build-composer
+            - plugin-build-composer-dev
           # run this job for any build, any branch
           filters:
             tags:
@@ -498,7 +521,7 @@ workflows:
           slug: atlas-content-modeler
           requires:
             - plugin-build-zip
-            - plugin-build-composer
+            - plugin-build-composer-dev
           # run this job for any build, any branch
           filters:
             tags:

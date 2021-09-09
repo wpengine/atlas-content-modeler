@@ -3,6 +3,15 @@
     "description": "Plugin for content modeling in WordPress.",
     "type": "project",
     "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/wpengine/acm-content-connect.git"
+        }
+    ],
+    "require": {
+        "wpengine/acm-content-connect": "dev-main"
+    },
     "require-dev": {
         "codeception/module-asserts": "^1.0",
         "codeception/module-cli": "^1.0",
