@@ -1,5 +1,14 @@
 # Atlas Content Modeler Changelog
 
+## 0.6.0 - 2021-09-09
+
+### Added
+- Create one-to-one and one-to-many relationships between model entries with the new Relationship field.
+- A plugin icon will appear on the plugin update page during future updates.
+
+### Fixed
+- Improved modal scroll behavior and positioning.
+
 ## 0.5.0 - 2021-08-12
 
 ### Added
