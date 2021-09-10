@@ -68,6 +68,7 @@ jobs:
       - php/install-composer
       - php/install-packages:
           app-dir: <<parameters.slug>>
+          install-flags: --no-interaction --prefer-dist --ignore-platform-reqs
       - run:
           name: Remove composer setup file
           command: |
