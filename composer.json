@@ -2,7 +2,7 @@
     "name": "wpengine/atlas-content-modeler",
     "description": "Plugin for content modeling in WordPress.",
     "type": "project",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "repositories": [
         {
             "type": "vcs",
@@ -21,7 +21,7 @@
         "codeception/module-webdriver": "^1.0",
         "codeception/util-universalframework": "^1.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-        "lucatume/wp-browser": "3.0.5.1",
+        "lucatume/wp-browser": "3.0.9",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "phpunit/phpunit": "~7",
@@ -30,15 +30,19 @@
         "wp-coding-standards/wpcs": "^2.2"
     },
     "scripts": {
-      "lint": "parallel-lint -e php --no-colors --exclude vendor .",
-      "phpcs": "phpcs",
-      "phpcs:fix": "phpcbf",
-      "suite": ["@lint", "@phpcs", "@test"],
-      "test": "phpunit"
+        "lint": "parallel-lint -e php --no-colors --exclude vendor .",
+        "phpcs": "phpcs",
+        "phpcs:fix": "phpcbf",
+        "suite": [
+            "@lint",
+            "@phpcs",
+            "@test"
+        ],
+        "test": "phpunit"
     },
     "config": {
-      "preferred-install": "dist",
-      "sort-packages": true,
-      "optimize-autoloader": true
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
     }
 }
