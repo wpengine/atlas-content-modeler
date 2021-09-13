@@ -21,6 +21,16 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		/**
+		 * Reset the WPGraphQL schema before each test.
+		 * Lazy loading types only loads part of the schema,
+		 * so we refresh for each test.
+		 */
+		WPGraphQL::clear_schema();
+
+		// Start each test with a fresh relationships registry.
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
+
 		$this->models = $this->get_models();
 
 		update_registered_content_types( $this->models );
@@ -57,11 +67,31 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		self::assertSame( 10, has_action( 'init', 'WPE\AtlasContentModeler\ContentRegistration\register_content_types' ) );
 	}
 
+	/**
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\register_relationships()
+	 */
+	public function test_relationship_registration_init_hook(): void {
+		self::assertSame( 10, has_action( 'acm_content_connect_init', 'WPE\AtlasContentModeler\ContentRegistration\register_relationships' ) );
+	}
+
 	public function test_defined_custom_post_types_are_registered(): void {
 		self::assertArrayHasKey( 'public', $this->all_registered_post_types );
 		self::assertArrayHasKey( 'public-fields', $this->all_registered_post_types );
 		self::assertArrayHasKey( 'private', $this->all_registered_post_types );
 		self::assertArrayHasKey( 'private-fields', $this->all_registered_post_types );
+	}
+
+	public function test_relationships_are_registered(): void {
+		$registry = \WPE\AtlasContentModeler\ContentConnect\Helpers\get_registry();
+
+		foreach ( $this->models as $post_type => $model ) {
+			foreach ( $model['fields'] as $field ) {
+				if ( $field['type'] === 'relationship' ) {
+					$relationship = $registry->get_post_to_post_relationship( $post_type, $field['reference'], $field['slug'] );
+					self::assertInstanceOf('WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost', $relationship);
+				}
+			}
+		}
 	}
 
 	public function test_custom_post_type_labels_match_expected_format(): void {
@@ -91,7 +121,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 			array(
 				'singular'   => 'Public',
 				'plural'     => 'Publics',
-				'model_icon' => 'dashicons-saved',
+				'model_icon' => 'dashicons-admin-post',
 			)
 		);
 		$expected_args  = $this->all_registered_post_types['public'];

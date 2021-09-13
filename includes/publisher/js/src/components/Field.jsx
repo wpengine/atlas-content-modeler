@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
-import Icon from "../../../../components/icons";
+import Relationship from "./relationship";
+import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
@@ -77,6 +78,14 @@ export default function Field(props) {
 
 function fieldMarkup(field, modelSlug, errors, validate) {
 	switch (field.type) {
+		case "relationship":
+			return (
+				<Relationship
+					field={field}
+					modelSlug={modelSlug}
+					required={field.required}
+				/>
+			);
 		case "media":
 			return (
 				<MediaUploader
@@ -104,7 +113,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					{field?.required && <p className="required">*Required</p>}
+					{field?.required && (
+						<p className="required">
+							*{__("Required", "atlas-content-modeler")}
+						</p>
+					)}
 					{field?.inputType === "multi" ? (
 						<textarea {...textProps} />
 					) : (
@@ -163,7 +176,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					{field?.required && <p className="required">*Required</p>}
+					{field?.required && (
+						<p className="required">
+							*{__("Required", "atlas-content-modeler")}
+						</p>
+					)}
 					<input
 						ref={numberInputRef}
 						type={`${field.type}`}
@@ -191,7 +208,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					{field?.required && <p className="required">*Required</p>}
+					{field?.required && (
+						<p className="required">
+							*{__("Required", "atlas-content-modeler")}
+						</p>
+					)}
 					<input
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}

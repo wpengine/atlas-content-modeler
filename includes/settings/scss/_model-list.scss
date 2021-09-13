@@ -1,5 +1,4 @@
-@import "variables";
-
+@import "../../../includes/shared-assets/scss/_variables";
 .model-list li {
 	display: flex;
 	justify-content: space-between;
@@ -123,6 +122,18 @@
 
 	.ReactModal__Content--after-open p:last-of-type {
 		margin-bottom: 40px;
+	}
+}
+
+.atlas-content-modeler-delete-model-modal-container {
+	ul {
+		list-style-type: disc;
+		padding-left: 2rem;
+
+		li.warning {
+			color: $color-warning;
+			font-weight: 700;
+		}
 	}
 }
 

@@ -94,6 +94,12 @@ export function reducer(state, action) {
 			delete state[action.model]["fields"][action.id];
 
 			return { ...state };
+		case "removeFields":
+			action.fields.forEach((field) => {
+				delete state?.[field.model]?.["fields"]?.[field.id];
+			});
+
+			return { ...state };
 		case "reorderFields":
 			Object.keys(action.positions).forEach((fieldId) => {
 				state[action.model]["fields"][fieldId].position =

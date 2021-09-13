@@ -66,4 +66,37 @@ class DeleteContentModelCest
 		$I->see('moose', '.taxonomy-list');
 		$I->dontSee('goose', '.taxonomy-list');
 	}
+
+	public function i_see_relationship_fields_for_a_deleted_model_are_automatically_removed(AcceptanceTester $I)
+	{
+		// Create a Mouse model with a “Geese Friends” relationship field.
+		$I->haveContentModel('Mouse', 'Mice');
+		$I->wait(1);
+		$I->click('Relation', '.field-buttons');
+		$I->wait(1);
+		$I->fillField(['name' => 'name'], 'Geese Friends');
+		$I->selectOption('#reference', 'Geese');
+		$I->click('#one-to-many');
+		$I->click('.open-field button.primary');
+		$I->wait(1);
+		$I->see("Geese Friends");
+
+		// Delete the Geese model (first model on the page).
+		$I->amOnWPEngineContentModelPage();
+		$I->wait(1);
+		$I->click('.model-list button.options');
+		$I->see('Delete', '.dropdown-content');
+        $I->click('Delete', '.model-list .dropdown-content');
+
+		// Confirm we see a warning that relationship fields will be deleted.
+		$I->see("Are you sure you want to delete");
+		$I->see("Relationship fields"); // Warning that relationship fields will be deleted.
+		$I->click('Delete', '.atlas-content-modeler-delete-model-modal-container');
+		$I->wait(1);
+
+		// Confirm the relationship field has been removed.
+		$I->click("Mice", ".model-list");
+		$I->wait(1);
+		$I->dontSee("Geese Friends");
+	}
 }
