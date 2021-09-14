@@ -196,6 +196,7 @@ function dispatch_get_content_model( WP_REST_Request $request ) {
 }
 
 /**
+<<<<<<< HEAD
  * Handles model EXPORT GET requests from the REST API.
  *
  * @param WP_REST_Request $request The REST API request object.
@@ -224,6 +225,8 @@ function dispatch_get_export_models( WP_REST_Request $request ) {
 }
 
 /**
+=======
+>>>>>>> 3b10191c23e247a8fb92852818b2a0c1c824e800
  * Handles model POST requests from the REST API.
  *
  * @param WP_REST_Request $request The REST API request object.
