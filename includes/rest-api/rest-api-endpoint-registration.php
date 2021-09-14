@@ -152,19 +152,6 @@ function register_rest_routes(): void {
 			},
 		]
 	);
-
-	// Route for retrieving models for export in settings tools.
-	register_rest_route(
-		'wpe',
-		'atlas/content-model/export-models',
-		[
-			'methods'             => 'GET',
-			'callback'            => __NAMESPACE__ . '\dispatch_get_export_models',
-			'permission_callback' => static function () {
-				return current_user_can( 'manage_options' );
-			},
-		]
-	);
 }
 
 /**
@@ -184,34 +171,6 @@ function dispatch_get_content_model( WP_REST_Request $request ) {
 			[
 				'success' => false,
 				'errors'  => esc_html__( 'The requested content model does not exist.', 'atlas-content-modeler' ),
-			]
-		);
-	}
-
-	return rest_ensure_response(
-		[
-			'data' => $content_types[ $slug ],
-		]
-	);
-}
-
-/**
- * Handles model EXPORT GET requests from the REST API.
- *
- * @param WP_REST_Request $request The REST API request object.
- *
- * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
- */
-function dispatch_get_export_models( WP_REST_Request $request ) {
-	$route         = $request->get_route();
-	$slug          = substr( strrchr( $route, '/' ), 1 );
-	$content_types = get_registered_content_types();
-
-	if ( empty( $content_types[ $slug ] ) ) {
-		return rest_ensure_response(
-			[
-				'success' => false,
-				'errors'  => esc_html__( 'Model export failed.', 'atlas-content-modeler' ),
 			]
 		);
 	}
