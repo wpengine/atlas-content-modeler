@@ -11,8 +11,32 @@ export default function Tools() {
 		history.push(atlasContentModeler.appPath + "&view=tools");
 	};
 
+	/**
+	 * Gets model export data via the REST API.
+	 */
+	function exportModels() {
+		const models = apiFetch({
+			path: `/wpe/atlas/content-model/export-models`,
+			method: "GET",
+			_wpnonce: wpApiSettings.nonce,
+		})
+			.then((res) => {
+				return res;
+			})
+			.error((err) => {
+				console.log(err);
+			});
+
+		return models;
+	}
+
+	/**
+	 * Export click handler for generating models .json file
+	 * @param event
+	 */
 	function exportClickHandler(event) {
 		event.preventDefault();
+		exportModels();
 	}
 
 	return (
