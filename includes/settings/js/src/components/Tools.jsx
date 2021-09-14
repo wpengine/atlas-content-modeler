@@ -19,7 +19,42 @@ export default function Tools() {
 			<section className="card-content">
 				<div className="row">
 					<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
-						Tools Body
+						<div className="row">
+							<div className="col-xs-12">
+								<h4>
+									{__(
+										"IMPORT MODEL",
+										"atlas-content-modeler"
+									)}
+								</h4>
+								<p className="help">
+									{__(
+										"Select a .json file containing model/field definitions to import as a content model.",
+										"atlas-content-modeler"
+									)}
+								</p>
+								<button className="button button-primary link-button">
+									{__("Select File", "atlas-content-modeler")}
+								</button>
+							</div>
+							<div className="col-xs-12 mt-4">
+								<h4>
+									{__(
+										"EXPORT MODEL",
+										"atlas-content-modeler"
+									)}
+								</h4>
+								<p className="help">
+									{__(
+										"Exporting a model will generate a .json document representing all of the existing models and fields.",
+										"atlas-content-modeler"
+									)}
+								</p>
+								<button className="button button-primary link-button">
+									{__("Export", "atlas-content-modeler")}
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>
