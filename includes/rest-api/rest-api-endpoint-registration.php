@@ -156,7 +156,7 @@ function register_rest_routes(): void {
 	// Route for retrieving models for export in settings tools.
 	register_rest_route(
 		'wpe',
-		'atlas/content-model/export-models',
+		'atlas/export-models',
 		[
 			'methods'             => 'GET',
 			'callback'            => __NAMESPACE__ . '\dispatch_get_export_models',
@@ -207,7 +207,7 @@ function dispatch_get_export_models( WP_REST_Request $request ) {
 	$slug          = substr( strrchr( $route, '/' ), 1 );
 	$content_types = get_registered_content_types();
 
-	if ( empty( $content_types[ $slug ] ) ) {
+	if ( empty( $content_types ) ) {
 		return rest_ensure_response(
 			[
 				'success' => false,
@@ -218,7 +218,7 @@ function dispatch_get_export_models( WP_REST_Request $request ) {
 
 	return rest_ensure_response(
 		[
-			'data' => $content_types[ $slug ],
+			'data' => $content_types,
 		]
 	);
 }

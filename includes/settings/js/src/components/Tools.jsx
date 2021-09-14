@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { __, sprintf } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
+const { wp } = window;
+const { apiFetch } = wp;
 
 export default function Tools() {
 	const { tools } = useContext(ModelsContext);
@@ -16,14 +18,14 @@ export default function Tools() {
 	 */
 	function exportModels() {
 		const models = apiFetch({
-			path: `/wpe/atlas/content-model/export-models`,
+			path: `/wpe/atlas/export-models`,
 			method: "GET",
 			_wpnonce: wpApiSettings.nonce,
 		})
 			.then((res) => {
 				return res;
 			})
-			.error((err) => {
+			.catch((err) => {
 				console.log(err);
 			});
 
