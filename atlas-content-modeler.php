@@ -49,8 +49,6 @@ function atlas_content_modeler_loader(): void {
 		'rest-api/relationships.php',
 		'rest-api/rest-api-endpoint-registration.php',
 		'publisher/class-publisher-form-editing-experience.php',
-		'updates/update-functions.php',
-		'updates/update-callbacks.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
