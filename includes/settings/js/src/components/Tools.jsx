@@ -11,6 +11,10 @@ export default function Tools() {
 		history.push(atlasContentModeler.appPath + "&view=tools");
 	};
 
+	function exportClickHandler(event) {
+		event.preventDefault();
+	}
+
 	return (
 		<div className="app-card tools-view">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
@@ -50,7 +54,12 @@ export default function Tools() {
 										"atlas-content-modeler"
 									)}
 								</p>
-								<button className="button button-primary link-button">
+								<button
+									className="button button-primary link-button"
+									onClick={(event) =>
+										exportClickHandler(event)
+									}
+								>
 									{__("Export", "atlas-content-modeler")}
 								</button>
 							</div>
