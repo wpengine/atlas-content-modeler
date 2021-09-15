@@ -297,7 +297,7 @@ final class FormEditingExperience {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- sanitized below before use.
 		$posted_values = $_POST['atlas-content-modeler'][ $post->post_type ];
 
 		$saved_relationships = array();
