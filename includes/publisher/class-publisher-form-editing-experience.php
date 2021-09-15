@@ -304,6 +304,8 @@ final class FormEditingExperience {
 
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
+			$field_id = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
+
 			$field_type = get_field_type_from_slug(
 				$field_id,
 				$this->models[ $post->post_type ]['fields'] ?? []
