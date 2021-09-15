@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
-import { toast } from "react-toastify";
+import { showSuccess, showError } from "../toasts";
 
 export default function ExportFileButton({
 	fileData,
@@ -46,7 +46,7 @@ export default function ExportFileButton({
 		link.href = url;
 		link.click();
 
-		toast(
+		showSuccess(
 			__(
 				successMsg || "The export was successful.",
 				"atlas-content-modeler"
@@ -67,7 +67,7 @@ export default function ExportFileButton({
 					if (res) {
 						exportFile(res);
 					} else {
-						toast(
+						showError(
 							__(
 								"There is no data to export.",
 								"atlas-content-modeler"
@@ -76,7 +76,7 @@ export default function ExportFileButton({
 					}
 				})
 				.catch(() => {
-					toast(
+					showError(
 						__(
 							errorMsg ||
 								"There was an error exporting the data.",
