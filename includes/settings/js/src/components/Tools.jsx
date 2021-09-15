@@ -1,19 +1,10 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
 import { __, sprintf } from "@wordpress/i18n";
-import { ModelsContext } from "../ModelsContext";
 import { toast } from "react-toastify";
 const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Tools() {
-	const { tools } = useContext(ModelsContext);
-	const history = useHistory();
-
-	const cancelEditing = () => {
-		history.push(atlasContentModeler.appPath + "&view=tools");
-	};
-
 	/**
 	 * Gets model export data via the REST API.
 	 */
@@ -37,7 +28,7 @@ export default function Tools() {
 		var h = today.getHours();
 		var mi = today.getMinutes();
 		var s = today.getSeconds();
-		return d + "-" + m + "-" + y + "-" + h + "-" + mi + "-" + s;
+		return m + "-" + d + "-" + y + "-" + h + "-" + mi + "-" + s;
 	}
 
 	/**
@@ -72,7 +63,7 @@ export default function Tools() {
 					);
 				}
 			})
-			.catch((err) => {
+			.catch(() => {
 				toast(
 					__(
 						"There was an error exporting the models.",
