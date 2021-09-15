@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { __, sprintf } from "@wordpress/i18n";
-import { toast } from "react-toastify";
+import React from "react";
+import { __ } from "@wordpress/i18n";
 import ExportFileButton from "./ExportFileButton";
 const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Tools() {
-	const [fileData, setFileData] = useState({});
-
 	/**
 	 * Gets model export data via the REST API.
 	 */
@@ -59,7 +56,7 @@ export default function Tools() {
 									)}
 								</p>
 								<ExportFileButton
-									buttonTitle="Export"
+									buttonTitle="Export Stuff"
 									callbackFn={getModels}
 								/>
 							</div>

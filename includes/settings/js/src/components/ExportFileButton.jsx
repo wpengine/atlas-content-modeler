@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { __, sprintf } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 import { toast } from "react-toastify";
 
 export default function ExportFileButton({
@@ -34,46 +34,59 @@ export default function ExportFileButton({
 	}
 
 	/**
+	 * Export final file - json
+	 * @param data
+	 */
+	function exportFile(data) {
+		const jsonData = JSON.stringify(data);
+		const blob = new Blob([jsonData], { type: "text/plain" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.download = fileName || `${getFormattedTime()}-export.json`;
+		link.href = url;
+		link.click();
+
+		toast(
+			__(
+				successMsg || "The export was successful.",
+				"atlas-content-modeler"
+			)
+		);
+	}
+
+	/**
 	 * Export click handler for generating models .json file
 	 * @param event
 	 */
 	function exportClickHandler(event) {
 		event.preventDefault();
-		callbackFn()
-			.then((res) => {
-				if (res) {
-					const jsonData = JSON.stringify(res);
-					const blob = new Blob([jsonData], { type: "text/plain" });
-					const url = URL.createObjectURL(blob);
-					const link = document.createElement("a");
-					link.download =
-						fileName || `${getFormattedTime()}-export.json`;
-					link.href = url;
-					link.click();
 
+		if (callbackFn && !fileData) {
+			callbackFn()
+				.then((res) => {
+					if (res) {
+						exportFile(res);
+					} else {
+						toast(
+							__(
+								"There is no data to export.",
+								"atlas-content-modeler"
+							)
+						);
+					}
+				})
+				.catch(() => {
 					toast(
 						__(
-							successMsg || "The export was successful.",
+							errorMsg ||
+								"There was an error exporting the data.",
 							"atlas-content-modeler"
 						)
 					);
-				} else {
-					toast(
-						__(
-							"There is no data to export.",
-							"atlas-content-modeler"
-						)
-					);
-				}
-			})
-			.catch(() => {
-				toast(
-					__(
-						errorMsg || "There was an error exporting the data.",
-						"atlas-content-modeler"
-					)
-				);
-			});
+				});
+		} else if (fileData) {
+			exportFile(fileData);
+		}
 	}
 
 	return (
