@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { __, sprintf } from "@wordpress/i18n";
 import { toast } from "react-toastify";
+import ExportFileButton from "./ExportFileButton";
 const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Tools() {
+	const [fileData, setFileData] = useState({});
+
 	/**
 	 * Gets model export data via the REST API.
 	 */
@@ -14,63 +17,6 @@ export default function Tools() {
 			method: "GET",
 			_wpnonce: wpApiSettings.nonce,
 		});
-	}
-
-	/**
-	 * Format filename for export
-	 * @returns {string}
-	 */
-	function getFormattedTime() {
-		var today = new Date();
-		var y = today.getFullYear();
-		var m = today.getMonth() + 1;
-		var d = today.getDate();
-		var h = today.getHours();
-		var mi = today.getMinutes();
-		var s = today.getSeconds();
-		return m + "-" + d + "-" + y + "-" + h + "-" + mi + "-" + s;
-	}
-
-	/**
-	 * Export click handler for generating models .json file
-	 * @param event
-	 */
-	function exportClickHandler(event) {
-		event.preventDefault();
-		getModels()
-			.then((res) => {
-				if (res) {
-					const jsonData = JSON.stringify(res);
-					const blob = new Blob([jsonData], { type: "text/plain" });
-					const url = URL.createObjectURL(blob);
-					const link = document.createElement("a");
-					link.download = `${getFormattedTime()}-model-export.json`;
-					link.href = url;
-					link.click();
-
-					toast(
-						__(
-							"The models were successfully exported.",
-							"atlas-content-modeler"
-						)
-					);
-				} else {
-					toast(
-						__(
-							"There are no models to export.",
-							"atlas-content-modeler"
-						)
-					);
-				}
-			})
-			.catch(() => {
-				toast(
-					__(
-						"There was an error exporting the models.",
-						"atlas-content-modeler"
-					)
-				);
-			});
 	}
 
 	return (
@@ -85,7 +31,7 @@ export default function Tools() {
 							<div className="col-xs-12">
 								<h4>
 									{__(
-										"IMPORT MODEL",
+										"Import Model",
 										"atlas-content-modeler"
 									)}
 								</h4>
@@ -102,7 +48,7 @@ export default function Tools() {
 							<div className="col-xs-12 mt-4">
 								<h4>
 									{__(
-										"EXPORT MODEL",
+										"Export Model",
 										"atlas-content-modeler"
 									)}
 								</h4>
@@ -112,14 +58,10 @@ export default function Tools() {
 										"atlas-content-modeler"
 									)}
 								</p>
-								<button
-									className="button button-primary link-button"
-									onClick={(event) =>
-										exportClickHandler(event)
-									}
-								>
-									{__("Export", "atlas-content-modeler")}
-								</button>
+								<ExportFileButton
+									buttonTitle="Export"
+									callbackFn={getModels}
+								/>
 							</div>
 						</div>
 					</div>
