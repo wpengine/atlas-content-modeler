@@ -1,6 +1,6 @@
 {
   "name": "atlas-content-modeler",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "",
   "scripts": {
     "build": "run-s build-settings build-publisher",
@@ -66,6 +66,9 @@
     },
     "@wordpress/api-fetch": {
       "global": "wp.apiFetch"
+    },
+    "acm-icons": {
+      "fileName": "./includes/components/icons"
     }
   }
 }

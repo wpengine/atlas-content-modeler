@@ -125,3 +125,27 @@ export function getOpenField(fields = {}) {
 	const openField = Object.values(fields).find((field) => field?.open);
 	return typeof openField === "undefined" ? {} : openField;
 }
+
+/**
+ * Gets relationship fields in `models` whose reference is `slug`.
+ *
+ * So that relationship fields referring to a deleted model can be removed.
+ *
+ * @param {Object} models Models to check for a reference in.
+ * @param {String} slug The model slug to look for in other models.
+ * @return {Array} List of relationship fields as:
+ *                 `[ { model: "bunnies", id: 1234 } ]`,
+ * 	               or empty array if no relationship fields found.
+ */
+export function getRelationships(models = {}, slug) {
+	const relationships = Object.values(models).map((model) => {
+		return Object.values(model?.fields).reduce((result, field) => {
+			if (field?.type === "relationship" && field?.reference === slug) {
+				result.push({ model: model?.slug, id: field?.id });
+			}
+			return result;
+		}, []);
+	});
+
+	return relationships.flat();
+}

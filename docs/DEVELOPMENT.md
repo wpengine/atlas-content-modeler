@@ -144,7 +144,8 @@ Developers with full GitHub repository access can create public releases:
 ### To release the plugin
 
 1. Create a PR to update the version and changelog. [Example release PR](https://github.com/wpengine/atlas-content-modeler/pull/100).
-2. When the release PR is approved and merged, tag the commit you wish to publish with the release version in the form `x.y.z`. [Example release tag](https://github.com/wpengine/atlas-content-modeler/releases/tag/0.2.0).
+2. If necessary, update the required PHP and WordPress versions listed in the header of the plugin's main file.
+3. When the release PR is approved and merged, tag the commit you wish to publish with the release version in the form `x.y.z`. [Example release tag](https://github.com/wpengine/atlas-content-modeler/releases/tag/0.2.0).
 
 You can tag in GitHub by creating a release, or via the command line locally:
 

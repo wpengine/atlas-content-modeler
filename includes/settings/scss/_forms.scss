@@ -1,5 +1,4 @@
-@import "variables";
-
+@import "../../../includes/shared-assets/scss/_variables";
 .atlas-content-modeler-admin-page input,
 .atlas-content-modeler-admin-page textarea {
 	border-radius: $radius;
@@ -20,7 +19,8 @@
 	input[type="search"],
 	input[type="week"],
 	input[type="text"],
-	textarea {
+	textarea,
+	select {
 		width: 100% !important;
 	}
 }
@@ -37,8 +37,14 @@
 		input[type="search"],
 		input[type="week"],
 		input[type="text"],
-		textarea {
+		textarea,
+		select {
 			width: 260px !important;
+		}
+
+		textarea.two-columns {
+			max-width: none;
+			width: 570px !important;
 		}
 	}
 }
@@ -83,6 +89,11 @@
 	font-weight: 700;
 }
 
+.atlas-content-modeler-admin-page label span,
+.atlas-content-modeler-admin-page legend span {
+	font-weight: 400;
+}
+
 .atlas-content-modeler-admin-page .has-error label,
 .atlas-content-modeler-admin-page .has-error legend {
 	color: $color-warning;
@@ -124,6 +135,12 @@
 	margin: 8px 0 0;
 	max-width: 360px;
 	text-align: right;
+}
+
+@media screen and (min-width: 782px) {
+	.atlas-content-modeler-admin-page .field-messages.two-columns {
+		max-width: 570px;
+	}
 }
 
 .atlas-content-modeler-admin-page .field-messages .error {
@@ -186,7 +203,7 @@ input[type="radio"] {
 
 .atlas-content-modeler-admin-page .radio-row {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	margin-bottom: 10px;
 }
 .atlas-content-modeler-admin-page .field a {
@@ -215,7 +232,7 @@ input[type="radio"] {
 }
 
 .atlas-content-modeler-admin-page .radio-row input[type="radio"] {
-	margin-right: 20px;
+	margin: 5px 8px 0 0;
 }
 
 .atlas-content-modeler-admin-page .radio-row label span {
