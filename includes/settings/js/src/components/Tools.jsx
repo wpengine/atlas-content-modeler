@@ -55,10 +55,7 @@ export default function Tools() {
 										"atlas-content-modeler"
 									)}
 								</p>
-								<ExportFileButton
-									buttonTitle="Export Stuff"
-									callbackFn={getModels}
-								/>
+								<ExportFileButton callbackFn={getModels} />
 							</div>
 						</div>
 					</div>
