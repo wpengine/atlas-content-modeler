@@ -13,6 +13,7 @@ export default function ExportFileButton({
 }) {
 	const [buttonLabel, setButtonLabel] = useState(buttonTitle);
 	const [buttonClasses, setButtonClasses] = useState(btnClasses);
+	const [callbackFunction, setCallbackFunction] = useState(callbackFn);
 	const [exportData, setExportData] = useState(fileData);
 	const [fileName, setFileName] = useState(fileTitle);
 	const [errorMsg, setErrorMsg] = useState(errorMessage);
@@ -22,7 +23,7 @@ export default function ExportFileButton({
 	 * Format filename for export
 	 * @returns {string}
 	 */
-	function getFormattedTime() {
+	function getFormattedDateTime() {
 		var today = new Date();
 		var y = today.getFullYear();
 		var m = today.getMonth() + 1;
@@ -42,7 +43,7 @@ export default function ExportFileButton({
 		const blob = new Blob([jsonData], { type: "text/plain" });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
-		link.download = fileName || `${getFormattedTime()}-export.json`;
+		link.download = fileName || `${getFormattedDateTime()}-export.json`;
 		link.href = url;
 		link.click();
 
@@ -61,8 +62,8 @@ export default function ExportFileButton({
 	function exportClickHandler(event) {
 		event.preventDefault();
 
-		if (callbackFn && !fileData) {
-			callbackFn()
+		if (callbackFunction && !fileData) {
+			callbackFunction()
 				.then((res) => {
 					if (res) {
 						exportFile(res);
