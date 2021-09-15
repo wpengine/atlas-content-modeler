@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { __, sprintf } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
+import { toast } from "react-toastify";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -16,20 +17,27 @@ export default function Tools() {
 	/**
 	 * Gets model export data via the REST API.
 	 */
-	function exportModels() {
-		const models = apiFetch({
-			path: `/wpe/atlas/export-models`,
+	function getModels() {
+		return apiFetch({
+			path: `/wpe/atlas/content-models/`,
 			method: "GET",
 			_wpnonce: wpApiSettings.nonce,
-		})
-			.then((res) => {
-				return res;
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		});
+	}
 
-		return models;
+	/**
+	 * Format filename for export
+	 * @returns {string}
+	 */
+	function getFormattedTime() {
+		var today = new Date();
+		var y = today.getFullYear();
+		var m = today.getMonth() + 1;
+		var d = today.getDate();
+		var h = today.getHours();
+		var mi = today.getMinutes();
+		var s = today.getSeconds();
+		return d + "-" + m + "-" + y + "-" + h + "-" + mi + "-" + s;
 	}
 
 	/**
@@ -38,7 +46,40 @@ export default function Tools() {
 	 */
 	function exportClickHandler(event) {
 		event.preventDefault();
-		exportModels();
+		getModels()
+			.then((res) => {
+				if (res) {
+					const jsonData = JSON.stringify(res);
+					const blob = new Blob([jsonData], { type: "text/plain" });
+					const url = URL.createObjectURL(blob);
+					const link = document.createElement("a");
+					link.download = `${getFormattedTime()}-model-export.json`;
+					link.href = url;
+					link.click();
+
+					toast(
+						__(
+							"The models were successfully exported.",
+							"atlas-content-modeler"
+						)
+					);
+				} else {
+					toast(
+						__(
+							"There are no models to export.",
+							"atlas-content-modeler"
+						)
+					);
+				}
+			})
+			.catch((err) => {
+				toast(
+					__(
+						"There was an error exporting the models.",
+						"atlas-content-modeler"
+					)
+				);
+			});
 	}
 
 	return (
