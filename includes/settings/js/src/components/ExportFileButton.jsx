@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { __ } from "@wordpress/i18n";
 import { showSuccess, showError } from "../toasts";
 
@@ -9,16 +9,8 @@ export default function ExportFileButton({
 	errorMessage,
 	buttonTitle,
 	callbackFn,
-	btnClasses,
+	buttonClasses,
 }) {
-	const [buttonLabel, setButtonLabel] = useState(buttonTitle);
-	const [buttonClasses, setButtonClasses] = useState(btnClasses);
-	const [callbackFunction, setCallbackFunction] = useState(callbackFn);
-	const [exportData, setExportData] = useState(fileData);
-	const [fileName, setFileName] = useState(fileTitle);
-	const [errorMsg, setErrorMsg] = useState(errorMessage);
-	const [successMsg, setSuccessMsg] = useState(successMessage);
-
 	/**
 	 * Format filename for export
 	 * @returns {string}
@@ -43,13 +35,13 @@ export default function ExportFileButton({
 		const blob = new Blob([jsonData], { type: "text/plain" });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
-		link.download = fileName || `${getFormattedDateTime()}-export.json`;
+		link.download = fileTitle || `${getFormattedDateTime()}-export.json`;
 		link.href = url;
 		link.click();
 
 		showSuccess(
 			__(
-				successMsg || "The export was successful.",
+				successMessage || "The export was successful.",
 				"atlas-content-modeler"
 			)
 		);
@@ -62,8 +54,8 @@ export default function ExportFileButton({
 	function exportClickHandler(event) {
 		event.preventDefault();
 
-		if (callbackFunction && !fileData) {
-			callbackFunction()
+		if (callbackFn && !fileData) {
+			callbackFn()
 				.then((res) => {
 					if (res) {
 						exportFile(res);
@@ -79,7 +71,7 @@ export default function ExportFileButton({
 				.catch(() => {
 					showError(
 						__(
-							errorMsg ||
+							errorMessage ||
 								"There was an error exporting the data.",
 							"atlas-content-modeler"
 						)
@@ -95,7 +87,7 @@ export default function ExportFileButton({
 			className={buttonClasses || "button button-primary link-button"}
 			onClick={(event) => exportClickHandler(event)}
 		>
-			{__(buttonLabel || "Export", "atlas-content-modeler")}
+			{__(buttonTitle || "Export", "atlas-content-modeler")}
 		</button>
 	);
 }
