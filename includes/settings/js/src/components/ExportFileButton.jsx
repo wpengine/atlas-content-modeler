@@ -12,21 +12,6 @@ export default function ExportFileButton({
 	buttonClasses,
 }) {
 	/**
-	 * Format filename for export
-	 * @returns {string}
-	 */
-	function getFormattedDateTime() {
-		var today = new Date();
-		var y = today.getFullYear();
-		var m = today.getMonth() + 1;
-		var d = today.getDate();
-		var h = today.getHours();
-		var mi = today.getMinutes();
-		var s = today.getSeconds();
-		return m + "-" + d + "-" + y + "-" + h + "-" + mi + "-" + s;
-	}
-
-	/**
 	 * Export final file - json
 	 * @param data
 	 */
@@ -35,7 +20,7 @@ export default function ExportFileButton({
 		const blob = new Blob([jsonData], { type: "text/plain" });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
-		link.download = fileTitle || `${getFormattedDateTime()}-export.json`;
+		link.download = fileTitle;
 		link.href = url;
 		link.click();
 
