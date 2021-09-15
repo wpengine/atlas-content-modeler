@@ -10,6 +10,7 @@ export default function ExportFileButton({
 	buttonTitle,
 	callbackFn,
 	buttonClasses,
+	fileType,
 }) {
 	/**
 	 * Export final file - json
@@ -17,7 +18,7 @@ export default function ExportFileButton({
 	 */
 	function exportFile(data) {
 		const jsonData = JSON.stringify(data);
-		const blob = new Blob([jsonData], { type: "text/plain" });
+		const blob = new Blob([jsonData], { type: fileType });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.download = fileTitle;
