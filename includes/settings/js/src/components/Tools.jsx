@@ -1,6 +1,7 @@
 import React from "react";
 import { __ } from "@wordpress/i18n";
 import ExportFileButton from "./ExportFileButton";
+import ImportFileButton from "./ImportFileButton";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -53,9 +54,7 @@ export default function Tools() {
 										"atlas-content-modeler"
 									)}
 								</p>
-								<button className="button dark-blue button-primary link-button">
-									{__("Select File", "atlas-content-modeler")}
-								</button>
+								<ImportFileButton />
 							</div>
 							<div className="col-xs-12 mt-4">
 								<h4>
