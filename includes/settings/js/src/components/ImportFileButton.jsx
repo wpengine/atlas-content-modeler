@@ -13,6 +13,8 @@ export default function ImportFileButton({
 	const [file, setFile] = useState(null);
 	const fileUploaderRef = useRef(null);
 
+	const form = new FormData();
+
 	/**
 	 * Import file click handler
 	 * @param event
@@ -27,7 +29,61 @@ export default function ImportFileButton({
 	 * @param uploadedFile
 	 */
 	function validateFileUpload(uploadedFile) {
+		let isValid = true;
+
+		// TODO: validate here
+
+		// TODO: end validation
+
 		setFile(uploadedFile);
+
+		if (isValid) {
+			form.append("file", file);
+			if (callbackFn && form) {
+				callbackFn(form)
+					.then((res) => {
+						if (res) {
+							showSuccess(
+								__(
+									successMessage ||
+										"The file was successfully uploaded.",
+									"atlas-content-modeler"
+								)
+							);
+						} else {
+							showError(
+								__(
+									errorMessage || "The file upload failed.",
+									"atlas-content-modeler"
+								)
+							);
+						}
+					})
+					.catch(() => {
+						showError(
+							__(
+								errorMessage ||
+									"There was an error uploading the file.",
+								"atlas-content-modeler"
+							)
+						);
+					});
+			} else if (fileData) {
+				showError(
+					__(
+						errorMessage || "The file could not be uploaded.",
+						"atlas-content-modeler"
+					)
+				);
+			}
+		} else {
+			showError(
+				__(
+					errorMessage || "The file is not valid.",
+					"atlas-content-modeler"
+				)
+			);
+		}
 	}
 
 	/**

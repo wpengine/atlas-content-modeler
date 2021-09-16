@@ -18,6 +18,19 @@ export default function Tools() {
 	}
 
 	/**
+	 * Upload the file to the API
+	 * @returns {*}
+	 */
+	function uploadFile(formData) {
+		return apiFetch({
+			path: `/wpe/atlas/content-models/`,
+			method: "POST",
+			_wpnonce: wpApiSettings.nonce,
+			formData,
+		});
+	}
+
+	/**
 	 * Format filename for export
 	 * @returns {string}
 	 */
@@ -54,7 +67,7 @@ export default function Tools() {
 										"atlas-content-modeler"
 									)}
 								</p>
-								<ImportFileButton />
+								<ImportFileButton callbackFn={uploadFile} />
 							</div>
 							<div className="col-xs-12 mt-4">
 								<h4>
