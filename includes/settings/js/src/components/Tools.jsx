@@ -53,7 +53,7 @@ export default function Tools() {
 										"atlas-content-modeler"
 									)}
 								</p>
-								<button className="button button-primary link-button">
+								<button className="button dark-blue button-primary link-button">
 									{__("Select File", "atlas-content-modeler")}
 								</button>
 							</div>

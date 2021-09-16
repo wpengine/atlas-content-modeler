@@ -70,7 +70,9 @@ export default function ExportFileButton({
 
 	return (
 		<button
-			className={buttonClasses || "button button-primary link-button"}
+			className={
+				buttonClasses || "button dark-blue button-primary link-button"
+			}
 			onClick={(event) => exportClickHandler(event)}
 		>
 			{__(buttonTitle || "Export", "atlas-content-modeler")}
