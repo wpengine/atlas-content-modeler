@@ -13,12 +13,31 @@ export default function ExportFileButton({
 	fileType,
 }) {
 	/**
+	 * Get data and type ready for export
+	 * @param data
+	 * @returns {{data, type: string}|{data: string, type: string}}
+	 */
+	function processDataForExport(data) {
+		switch (fileType) {
+			case "json":
+				return {
+					data: JSON.stringify(data),
+					type: "application/json",
+				};
+			default:
+				return { data: data, type: "text/plain" };
+		}
+	}
+
+	/**
 	 * Export final file - json
 	 * @param data
 	 */
 	function exportFile(data) {
-		const jsonData = JSON.stringify(data);
-		const blob = new Blob([jsonData], { type: fileType || "text/plain" });
+		const readyData = processDataForExport(data);
+		const blob = new Blob([readyData.data], {
+			type: readyData.type,
+		});
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.download = fileTitle;

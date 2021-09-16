@@ -72,6 +72,7 @@ export default function Tools() {
 								</p>
 								<ExportFileButton
 									fileTitle={`${getFormattedDateTime()}-model-export.json`}
+									fileType="json"
 									callbackFn={getModels}
 								/>
 							</div>
