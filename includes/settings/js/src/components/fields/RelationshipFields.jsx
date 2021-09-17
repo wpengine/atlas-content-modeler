@@ -16,6 +16,7 @@ const RelationshipFields = ({
 	watch,
 	errors,
 	setValue,
+	model,
 }) => {
 	const { models } = useContext(ModelsContext);
 	const modelsAlphabetical = Object.values(models).sort((a, b) =>
@@ -279,7 +280,11 @@ const RelationshipFields = ({
 							aria-invalid={errors.reverseName ? "true" : "false"}
 							id="reverseName"
 							name="reverseName"
-							defaultValue={data?.reverseName}
+							defaultValue={
+								data?.reverseName
+									? data.reverseName
+									: models[model].plural
+							}
 							placeholder="Reverse Display Name"
 							type="text"
 							ref={register({
@@ -328,7 +333,10 @@ const RelationshipFields = ({
 						}
 					>
 						<label htmlFor="slug">
-							{__("API Identifier", "atlas-content-modeler")}
+							{__(
+								"Reverse API Identifier",
+								"atlas-content-modeler"
+							)}
 						</label>
 						<br />
 						<p className="help">
@@ -341,7 +349,11 @@ const RelationshipFields = ({
 							id="reverseSlug"
 							name="reverseSlug"
 							type="text"
-							defaultValue={data?.reverseSlug}
+							defaultValue={
+								data?.reverseSlug
+									? data.reverseSlug
+									: toValidApiId(models[model].plural)
+							}
 							ref={register({
 								required: true,
 								maxLength: 50,

@@ -396,6 +396,7 @@ function Form({ id, position, type, editing, storedData }) {
 						register={register}
 						fieldId={id}
 						setValue={setValue}
+						model={model}
 					/>
 				)}
 
