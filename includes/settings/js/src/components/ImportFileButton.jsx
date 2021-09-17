@@ -48,7 +48,7 @@ export default function ImportFileButton({
 		// read file
 		const reader = new FileReader();
 		reader.addEventListener("load", (event) => {
-			if (isValidJson(event.target.result)) {
+			if (event.target.result && isValidJson(event.target.result)) {
 				console.log(event.target.result);
 				console.log(uploadedFile);
 				form.append("file", uploadedFile);
@@ -86,7 +86,8 @@ export default function ImportFileButton({
 			} else {
 				showError(
 					__(
-						errorMessage || "The file is not valid.",
+						errorMessage ||
+							"The file could not be read or is invalid.",
 						"atlas-content-modeler"
 					)
 				);
