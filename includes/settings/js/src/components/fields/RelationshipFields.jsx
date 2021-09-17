@@ -10,7 +10,14 @@ import { useInputGenerator } from "../../hooks";
 import { toValidApiId } from "../../formats";
 import { useForm } from "react-hook-form";
 
-const RelationshipFields = ({ register, data, editing, watch, errors }) => {
+const RelationshipFields = ({
+	register,
+	data,
+	editing,
+	watch,
+	errors,
+	setValue,
+}) => {
 	const { models } = useContext(ModelsContext);
 	const modelsAlphabetical = Object.values(models).sort((a, b) =>
 		a.plural.toLowerCase() < b.plural.toLowerCase() ? -1 : 1
@@ -21,10 +28,6 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 		data?.description?.length || 0
 	);
 	const descriptionMaxLength = 250;
-	const { setValue, clearErrors } = useForm({
-		mode: "onChange",
-		defaultValues: data,
-	});
 	const [reverseNameCount, setNameCount] = useState(
 		data?.reverseName?.length || 0
 	);
@@ -223,6 +226,29 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 					<span>&nbsp;</span>
 					<span className="count">{`${descriptionCount}/${descriptionMaxLength}`}</span>
 				</p>
+			</div>
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div className="field">
+					<legend>
+						{__("Reverse Reference", "atlas-content-modeler")}
+					</legend>
+					<input
+						name="enableReverse"
+						type="checkbox"
+						id={`enable-reverse-${id}`}
+						ref={register}
+						defaultChecked={data?.enableReverse === true}
+					/>
+					<label
+						htmlFor={`is-required-${id}`}
+						className="checkbox enable-reverse"
+					>
+						{__(
+							"Configure Reverse Reference",
+							"atlas-content-modeler"
+						)}
+					</label>
+				</div>
 			</div>
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
 				<div
