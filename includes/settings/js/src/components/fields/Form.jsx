@@ -16,7 +16,7 @@ import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator } from "../../hooks";
 import { toValidApiId } from "../../formats";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
 const { cloneDeep } = lodash;
