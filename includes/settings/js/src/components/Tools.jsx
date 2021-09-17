@@ -67,7 +67,10 @@ export default function Tools() {
 										"atlas-content-modeler"
 									)}
 								</p>
-								<ImportFileButton callbackFn={uploadFile} />
+								<ImportFileButton
+									allowedMimeTypes=".json"
+									callbackFn={uploadFile}
+								/>
 							</div>
 							<div className="col-xs-12 mt-4">
 								<h4>

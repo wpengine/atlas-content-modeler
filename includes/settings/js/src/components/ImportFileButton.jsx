@@ -25,65 +25,74 @@ export default function ImportFileButton({
 	}
 
 	/**
+	 * Validate the JSON can be successfully parsed
+	 * @param file
+	 * @returns {any}
+	 */
+	function isValidJson(file) {
+		try {
+			JSON.parse(file);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Validate file before uploading
 	 * @param uploadedFile
 	 */
 	function validateFileUpload(uploadedFile) {
-		let isValid = true;
-
-		// TODO: validate here
-
-		// TODO: end validation
-
 		setFile(uploadedFile);
 
-		if (isValid) {
-			form.append("file", file);
-			if (callbackFn && form) {
-				callbackFn(form)
-					.then((res) => {
-						if (res) {
-							showSuccess(
-								__(
-									successMessage ||
-										"The file was successfully uploaded.",
-									"atlas-content-modeler"
-								)
-							);
-						} else {
+		// read file
+		const reader = new FileReader();
+		reader.addEventListener("load", (event) => {
+			if (isValidJson(event.target.result)) {
+				console.log(event.target.result);
+				console.log(uploadedFile);
+				form.append("file", uploadedFile);
+				if (false && callbackFn && form) {
+					callbackFn(form)
+						.then((res) => {
+							if (res) {
+								showSuccess(
+									__(
+										successMessage ||
+											"The file was successfully uploaded.",
+										"atlas-content-modeler"
+									)
+								);
+							} else {
+								showError(
+									__(
+										errorMessage ||
+											"The file upload failed.",
+										"atlas-content-modeler"
+									)
+								);
+							}
+						})
+						.catch(() => {
 							showError(
 								__(
-									errorMessage || "The file upload failed.",
+									errorMessage ||
+										"There was an error uploading the file.",
 									"atlas-content-modeler"
 								)
 							);
-						}
-					})
-					.catch(() => {
-						showError(
-							__(
-								errorMessage ||
-									"There was an error uploading the file.",
-								"atlas-content-modeler"
-							)
-						);
-					});
-			} else if (fileData) {
+						});
+				}
+			} else {
 				showError(
 					__(
-						errorMessage || "The file could not be uploaded.",
+						errorMessage || "The file is not valid.",
 						"atlas-content-modeler"
 					)
 				);
 			}
-		} else {
-			showError(
-				__(
-					errorMessage || "The file is not valid.",
-					"atlas-content-modeler"
-				)
-			);
-		}
+		});
+		reader.readAsText(uploadedFile);
 	}
 
 	/**
@@ -103,6 +112,7 @@ export default function ImportFileButton({
 			<input
 				type="file"
 				id="file"
+				accept={allowedMimeTypes}
 				ref={fileUploaderRef}
 				className="hidden"
 				onChange={onChangeHandler}
