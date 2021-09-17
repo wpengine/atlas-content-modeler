@@ -240,7 +240,7 @@ const RelationshipFields = ({
 						defaultChecked={data?.enableReverse === true}
 					/>
 					<label
-						htmlFor={`is-required-${id}`}
+						htmlFor={`enable-reverse-${id}`}
 						className="checkbox enable-reverse"
 					>
 						{__(
