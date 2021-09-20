@@ -579,15 +579,18 @@ function register_relationship_connection( array $parent_model, array $reference
 			'reference'  => $field['reference'],
 			'name'       => $parent_model['slug'] . '-' . $field['reference'],
 		),
-		array(
+	);
+
+	if ( isset( $field['enableReverse'] ) && true === $field['enableReverse'] ) {
+		$connections[] = array(
 			'from_type'  => camelcase( $reference_model['singular'] ),
 			'to_type'    => camelcase( $parent_model['singular'] ),
 			'slug'       => $field['reverseSlug'],
 			'one_to_one' => false,
 			'reference'  => $parent_model['slug'],
 			'name'       => $parent_model['slug'] . '-' . $field['reference'],
-		),
-	);
+		);
+	}
 
 	foreach ( $connections as $connection_args ) {
 		$connection_type_name = get_connection_name( $connection_args['from_type'], $connection_args['to_type'], $connection_args['slug'] );
