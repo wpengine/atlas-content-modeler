@@ -238,7 +238,7 @@ const RelationshipFields = ({
 					<input
 						name="enableReverse"
 						type="checkbox"
-						id={`enable-reverse-${id}`}
+						id={`enable-reverse`}
 						ref={register}
 						defaultChecked={showReferenceFields}
 						onChange={() =>
@@ -246,7 +246,7 @@ const RelationshipFields = ({
 						}
 					/>
 					<label
-						htmlFor={`enable-reverse-${id}`}
+						htmlFor={`enable-reverse`}
 						className="checkbox enable-reverse"
 					>
 						{__(
