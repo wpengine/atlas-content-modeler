@@ -569,53 +569,75 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
  * @param array $field The field data.
  */
 function register_relationship_connection( array $parent_model, array $reference_model, array $field ) {
-	$from_type = camelcase( $parent_model['singular'] );
-	$to_type   = camelcase( $reference_model['singular'] );
-
-	$connection_type_name = get_connection_name( $from_type, $to_type, $field['slug'] );
-
-	register_graphql_connection(
+	$connections = array(
 		array(
-			'fromType'           => $from_type,
-			'toType'             => $to_type,
-			'fromFieldName'      => $field['slug'],
-			'oneToOne'           => ( $field['cardinality'] === 'one-to-one' ),
-			'resolve'            => static function ( Post $post, $args, $context, $info ) use ( $field ) {
-				$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
-
-				$relationship = $registry->get_post_to_post_relationship(
-					$post->post_type,
-					$field['reference'],
-					$field['slug']
-				);
-
-				$relationship_ids = $relationship->get_related_object_ids( $post->ID );
-
-				if ( empty( $relationship_ids ) ) {
-					return array();
-				}
-
-				$resolver = new PostObjectConnectionResolver(
-					$post,
-					$args,
-					$context,
-					$info
-				);
-
-				$resolver->set_query_arg(
-					'post__in',
-					$relationship_ids
-				);
-
-				if ( $field['cardinality'] === 'one-to-one' ) {
-					return $resolver->one_to_one()->get_connection();
-				}
-
-				return $resolver->get_connection();
-			},
-			'connectionTypeName' => $connection_type_name,
-		)
+			'from_type'   => camelcase( $parent_model['singular'] ),
+			'to_type'     => camelcase( $reference_model['singular'] ),
+			'slug'        => $field['slug'],
+			'cardinality' => ( $field['cardinality'] === 'one-to-one' ),
+			'reference'   => $field['reference'],
+			'name'        => $field['slug'],
+		),
+		array(
+			'from_type'   => camelcase( $reference_model['singular'] ),
+			'to_type'     => camelcase( $parent_model['singular'] ),
+			'slug'        => $field['reverseSlug'],
+			'cardinality' => false,
+			'reference'   => $parent_model['slug'],
+			'name'        => $field['slug'],
+		),
 	);
+
+	foreach ( $connections as $connection_args ) {
+		$connection_type_name = get_connection_name( $connection_args['from_type'], $connection_args['to_type'], $connection_args['slug'] );
+
+		register_graphql_connection(
+			array(
+				'fromType'           => $connection_args['from_type'],
+				'toType'             => $connection_args['to_type'],
+				'fromFieldName'      => $connection_args['slug'],
+				'oneToOne'           => $connection_args['cardinality'],
+				'resolve'            => static function ( Post $post, $args, $context, $info ) use ( $connection_args ) {
+					$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+
+					$relationship = $registry->get_post_to_post_relationship(
+						$connection_args['to_type'],
+						$connection_args['from_type'],
+						$connection_args['name']
+					);
+
+					if ( false === $relationship ) {
+						return array();
+					}
+
+					$relationship_ids = $relationship->get_related_object_ids( $post->ID );
+
+					if ( empty( $relationship_ids ) ) {
+						return array();
+					}
+
+					$resolver = new PostObjectConnectionResolver(
+						$post,
+						$args,
+						$context,
+						$info
+					);
+
+					$resolver->set_query_arg(
+						'post__in',
+						$relationship_ids
+					);
+
+					if ( 'one-to-one' === $connection_args['cardinality'] ) {
+						return $resolver->one_to_one()->get_connection();
+					}
+
+					return $resolver->get_connection();
+				},
+				'connectionTypeName' => $connection_type_name,
+			)
+		);
+	}
 }
 
 /**
