@@ -252,5 +252,23 @@ function get_test_fields() {
 			'cardinality'     => 'one-to-many',
 			'description'     => '',
 		),
+		'1630411592343' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'relationship',
+			'id'              => '1630411592343',
+			'position'        => '180000',
+			'name'            => 'One-to-Many-Relationship-Reverse',
+			'slug'            => 'onetoManyRelationshipReverse',
+			'required'        => false,
+			'minChars'        => '',
+			'maxChars'        => '',
+			'reference'       => 'public',
+			'cardinality'     => 'one-to-many',
+			'description'     => '',
+			'enableReverse'   => true,
+			'reverseName'     => 'PPosts',
+			'reverseSlug'     => 'pposts',
+		),
 	);
 }

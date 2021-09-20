@@ -65,6 +65,11 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 									id
 								}
 							}
+							onetoManyRelationshipReverse {
+								nodes {
+									id
+								}
+							}
 							onetoOneRelationship {
 								node {
 									id
@@ -97,6 +102,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'onetoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoManyRelationship'] );
+
+			self::assertArrayHasKey( 'onetoManyRelationshipReverse', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoManyRelationshipReverse'] );
 
 			self::assertArrayHasKey( 'onetoOneRelationship', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoOneRelationship'] );
