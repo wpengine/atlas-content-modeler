@@ -94,7 +94,7 @@ function register_relationships( $registry ) {
 		foreach ( $args['fields'] as $field ) {
 			if ( $field['type'] === 'relationship' ) {
 				$args = [
-					'is_bidirectional' => false,
+					'is_bidirectional' => isset( $field['enableReverse'] ) ? $field['enableReverse'] : false,
 					'from'             => [
 						'enable_ui' => true,
 						'sortable'  => false,
