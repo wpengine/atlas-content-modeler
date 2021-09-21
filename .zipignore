@@ -33,3 +33,4 @@ deploy.sh
 *.husky/*
 *docker-composer-phpunit.yml
 *Makefile
+*assets/wporg/*
