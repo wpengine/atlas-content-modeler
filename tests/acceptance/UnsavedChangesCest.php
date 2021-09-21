@@ -45,5 +45,15 @@ class UnsavedChangesCest
 		// Click “Discard Changes” and confirm our incomplete Hobbies field is gone.
 		$I->click('.ReactModal__Content button.tertiary');
 		$I->dontSee('Hobbies');
+
+		// Start to edit the first field again.
+		$I->clickWithLeftButton('button.edit', 10, 10);
+
+		// Attempt to navigate away via the breadcrumb.
+		$I->click('Content Models');
+
+		// Confirm the modal does *not* appear, because there are no unsaved changes.
+		$I->dontSee('Unsaved Changes');
+		$I->see('Models');
 	}
 }
