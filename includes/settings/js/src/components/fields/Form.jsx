@@ -16,10 +16,10 @@ import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator } from "../../hooks";
 import { toValidApiId } from "../../formats";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
-const { cloneDeep } = lodash;
+const { cloneDeep, isEqual } = lodash;
 
 const extraFields = {
 	text: TextFields,
@@ -30,7 +30,7 @@ const extraFields = {
 
 Modal.setAppElement("#root");
 
-function Form({ id, position, type, editing, storedData }) {
+function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const {
 		register,
 		handleSubmit,
@@ -64,6 +64,7 @@ function Form({ id, position, type, editing, storedData }) {
 	});
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
 	const [previousState, setPreviousState] = useState(storedData);
+	const originalValues = useRef({});
 
 	const advancedSettings = {
 		text: {
@@ -186,6 +187,14 @@ function Form({ id, position, type, editing, storedData }) {
 		}
 	}, [register, advancedSettings]);
 
+	/**
+	 * Store original field values for comparison. Workaround for React Hook
+	 * Form v6, whose `isDirty` property is true if a checkbox is toggled twice.
+	 */
+	useEffect(() => {
+		originalValues.current = getValues();
+	}, []);
+
 	function parseNumber(num) {
 		return currentNumberType === "decimal"
 			? parseFloat(num)
@@ -207,6 +216,7 @@ function Form({ id, position, type, editing, storedData }) {
 					// Just close the field as if it was updated.
 					dispatch({ type: "closeField", id: data.id, model });
 				}
+				hasDirtyField.current = false;
 			})
 			.catch((err) => {
 				if (err.code === "wpe_duplicate_content_model_field_id") {
@@ -249,7 +259,15 @@ function Form({ id, position, type, editing, storedData }) {
 	}
 
 	return (
-		<form onSubmit={handleSubmit(apiAddField)}>
+		<form
+			onSubmit={handleSubmit(apiAddField)}
+			onChange={() => {
+				hasDirtyField.current = !isEqual(
+					originalValues.current,
+					getValues()
+				);
+			}}
+		>
 			<input
 				id="type"
 				name="type"
@@ -431,6 +449,7 @@ function Form({ id, position, type, editing, storedData }) {
 					className="tertiary"
 					onClick={(event) => {
 						event.preventDefault();
+						hasDirtyField.current = false;
 						editing
 							? dispatch({
 									type: "closeField",
