@@ -93,4 +93,25 @@ class CreateContentModelRelationFieldCest
 		$I->see('39/250', Locator::lastElement('span.count'));
 		$I->wait(1);
 	}
+
+	public function i_can_see_reverse_relationship_fields_when_clicking_the_appropriate_checkbox(AcceptanceTester $I)
+	{
+
+		$I->dontSee( 'Reverse Display Name' );
+
+		$I->click('#enable-reverse');
+		$I->wait(1);
+
+		$I->see( 'Reverse Display Name' );
+
+		$I->seeInField('reverseName', 'Companies' );
+		$I->seeInField('reverseSlug', 'companies' );
+
+		// The field cannot be submitted with a name exceeding the maximum length.
+		$I->fillField(['name' => 'reverseName'], str_repeat('a', 51));
+		$I->see('51/50', Locator::lastElement('span.count'));
+		$I->click('.open-field button.primary');
+		$I->wait(1);
+		$I->see('Exceeds max length');
+	}
 }
