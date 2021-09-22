@@ -455,6 +455,17 @@ jobs:
           json: build/<<parameters.slug>>.$BUILD_VERSION.json
           version: $BUILD_VERSION
 
+  plugin-deploy-wporg:
+    executor: php/default
+    working_directory: ~/project/svn_deploy
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - svn_setup
+      - svn_create_tag
+      - svn_add_changes
+      - svn_commit
+
 workflows:
   # Workflows defined for each package and plugin.
   # tag example for deploying an update for atlas-content-modeler: 1.0.0
@@ -526,13 +537,13 @@ workflows:
             tags:
               only: /.*/
       - plugin-test-e2e:
-          requires:
-            - plugin-build-zip
-            - plugin-build-composer-dev
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
+           requires:
+             - plugin-build-zip
+             - plugin-build-composer-dev
+           # run this job for any build, any branch
+           filters:
+             tags:
+               only: /.*/
       - plugin-test-jest:
           slug: atlas-content-modeler
           requires:
@@ -567,37 +578,48 @@ workflows:
             tags:
               only: /.*/
       - plugin-deploy:
-          name: "plugin-deploy-staging"
-          slug: atlas-content-modeler
-          requires:
-            - plugin-build-zip
-            - plugin-build-json
-            - plugin-test-e2e
-            - plugin-test-lint-js
-            - plugin-test-lint-php
-            - plugin-test-jest
-            - plugin-test-unit
-          filters:
-            branches:
-              only:
-                - main
-                - canary
-            tags:
-              only: /.*/
-          context: wpe-ldap-creds
-          auth_url: https://auth-staging.wpengine.io/v1/tokens
-          upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
+           name: "plugin-deploy-staging"
+           slug: atlas-content-modeler
+           requires:
+             - plugin-build-zip
+             - plugin-build-json
+             - plugin-test-e2e
+             - plugin-test-lint-js
+             - plugin-test-lint-php
+             - plugin-test-jest
+             - plugin-test-unit
+           filters:
+             branches:
+               only:
+                 - main
+                 - canary
+             tags:
+               only: /.*/
+           context: wpe-ldap-creds
+           auth_url: https://auth-staging.wpengine.io/v1/tokens
+           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
       - plugin-deploy:
-          name: "plugin-deploy-production"
-          slug: atlas-content-modeler
-          requires:
-            - "plugin-deploy-staging"
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              # tag ex. 1.0.0
-              only: /^\S+/
-          context: wpe-ldap-creds
-          auth_url: https://auth.wpengine.io/v1/tokens
-          upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+           name: "plugin-deploy-production"
+           slug: atlas-content-modeler
+           requires:
+             - "plugin-deploy-staging"
+           filters:
+             branches:
+               ignore: /.*/
+             tags:
+               # tag ex. 1.0.0
+               only: /^\S+/
+           context: wpe-ldap-creds
+           auth_url: https://auth.wpengine.io/v1/tokens
+           upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+      - plugin-deploy-wporg:
+           name: "plugin-deploy-wporg-production"
+           requires:
+             - "plugin-deploy-staging"
+           filters:
+             branches:
+               ignore: /.*/
+             tags:
+               # tag ex. 1.0.0
+               only: /^\S+/
+           context: wpe-wporg-svn-creds
