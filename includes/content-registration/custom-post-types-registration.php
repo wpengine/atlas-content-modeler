@@ -105,7 +105,8 @@ function register_relationships( $registry ) {
 				];
 
 				try {
-					$registry->define_post_to_post( $post_type, $field['reference'], $field['slug'], $args );
+					$name = $post_type . '-' . $field['reference'];
+					$registry->define_post_to_post( $post_type, $field['reference'], $name, $args );
 				} catch ( \Exception $e ) {
 					/**
 					 * Either the relationship already exists,
@@ -475,9 +476,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 
 			if ( 'relationship' === $field['type'] && isset( $models[ $field['reference'] ] ) ) {
 				$reference_model = $models[ $field['reference'] ];
-				$from_type       = camelcase( $model['singular'] );
-				$to_type         = camelcase( $reference_model['singular'] );
-				register_relationship_connection( $from_type, $to_type, $field );
+				register_relationship_connection( $model, $reference_model, $field );
 				continue;
 			}
 
@@ -566,12 +565,15 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 /**
  * Registers the relationship field as a GraphQL connection.
  *
- * @param string $from_type The post_type of the parent.
- * @param string $to_type The post_type of the connection's destination.
- * @param array  $field The field data.
+ * @param array $parent_model The model config of the parent.
+ * @param array $reference_model The model config of the connection's destination.
+ * @param array $field The field data.
  */
-function register_relationship_connection( string $from_type, string $to_type, array $field ) {
+function register_relationship_connection( array $parent_model, array $reference_model, array $field ) {
+	$from_type            = camelcase( $parent_model['singular'] );
+	$to_type              = camelcase( $reference_model['singular'] );
 	$connection_type_name = get_connection_name( $from_type, $to_type, $field['slug'] );
+	$name                 = $parent_model['slug'] . '-' . $field['reference'];
 
 	register_graphql_connection(
 		array(
@@ -579,14 +581,18 @@ function register_relationship_connection( string $from_type, string $to_type, a
 			'toType'             => $to_type,
 			'fromFieldName'      => $field['slug'],
 			'oneToOne'           => ( $field['cardinality'] === 'one-to-one' ),
-			'resolve'            => static function ( Post $post, $args, $context, $info ) use ( $field ) {
+			'resolve'            => static function ( Post $post, $args, $context, $info ) use ( $field, $name ) {
 				$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
 
 				$relationship = $registry->get_post_to_post_relationship(
 					$post->post_type,
 					$field['reference'],
-					$field['slug']
+					$name
 				);
+
+				if ( false === $relationship ) {
+					return array();
+				}
 
 				$relationship_ids = $relationship->get_related_object_ids( $post->ID );
 

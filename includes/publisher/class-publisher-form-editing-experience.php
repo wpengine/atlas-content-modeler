@@ -389,7 +389,7 @@ final class FormEditingExperience {
 		);
 
 		$registry      = ContentConnect::instance()->get_registry();
-		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field_id );
+		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $post->post_type . '-' . $field['reference'] );
 		$related_posts = array();
 
 		if ( $relationship ) {
@@ -416,7 +416,7 @@ final class FormEditingExperience {
 		$relationship = $registry->get_post_to_post_relationship(
 			$post_type,
 			$relationship_type,
-			$field_name
+			$post_type . '-' . $relationship_type
 		);
 
 		$relationship_ids = $relationship->get_related_object_ids( $post_id );
