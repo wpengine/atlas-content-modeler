@@ -26,7 +26,6 @@ commands:
       - run: find ./trunk -not -path "./trunk" -delete
       - run: cp -r ~/project/atlas-content-modeler/. ./trunk
       - run: rm -rf node_modules/
-      - run: ls -laR ./trunk && ls -laR ./tags
       - run: svn propset svn:ignore -F ./trunk/.svnignore ./trunk
       - run: svn propset svn:ignore -F ./trunk/.svnignore ./tags
 
