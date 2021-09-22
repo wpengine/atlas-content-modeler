@@ -621,8 +621,6 @@ function register_relationship_connection( array $parent_model, array $reference
 			'connectionTypeName' => $connection_type_name,
 		)
 	);
-
-	return $connection_type_name;
 }
 
 /**
