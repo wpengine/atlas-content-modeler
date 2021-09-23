@@ -66,7 +66,7 @@ export default function Tools() {
 								</h4>
 								<p className="help">
 									{__(
-										"Exporting a model will generate a .json document representing all of the existing models and fields.",
+										"Exporting models will generate a .json document representing all of the existing models and fields.",
 										"atlas-content-modeler"
 									)}
 								</p>
