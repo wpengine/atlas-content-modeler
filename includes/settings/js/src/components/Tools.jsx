@@ -60,7 +60,7 @@ export default function Tools() {
 							<div className="col-xs-12 mt-4">
 								<h4>
 									{__(
-										"Export Model",
+										"Export Models",
 										"atlas-content-modeler"
 									)}
 								</h4>
