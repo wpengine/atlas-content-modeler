@@ -52,8 +52,8 @@ export default function ImportFileButton({
 				console.log(event.target.result);
 				console.log(uploadedFile);
 				form.append("file", uploadedFile);
-				if (false && callbackFn && form) {
-					callbackFn(form)
+				if (callbackFn && form) {
+					callbackFn(event.target.result)
 						.then((res) => {
 							if (res) {
 								showSuccess(

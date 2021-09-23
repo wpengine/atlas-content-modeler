@@ -22,11 +22,13 @@ export default function Tools() {
 	 * @returns {*}
 	 */
 	function createModels(formData) {
+		const serializedData = JSON.parse(formData);
+		console.log(serializedData);
 		return apiFetch({
 			path: `/wpe/atlas/content-models-create/`,
 			method: "POST",
 			_wpnonce: wpApiSettings.nonce,
-			formData,
+			serializedData,
 		});
 	}
 
