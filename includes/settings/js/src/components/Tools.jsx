@@ -43,7 +43,7 @@ export default function Tools() {
 							<div className="col-xs-12">
 								<h4>
 									{__(
-										"Import Model",
+										"Import Models",
 										"atlas-content-modeler"
 									)}
 								</h4>
