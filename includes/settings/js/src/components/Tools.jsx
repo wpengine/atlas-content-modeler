@@ -21,9 +21,9 @@ export default function Tools() {
 	 * Upload the file to the API
 	 * @returns {*}
 	 */
-	function uploadFile(formData) {
+	function createModels(formData) {
 		return apiFetch({
-			path: `/wpe/atlas/content-models/`,
+			path: `/wpe/atlas/content-models-create/`,
 			method: "POST",
 			_wpnonce: wpApiSettings.nonce,
 			formData,
@@ -35,7 +35,7 @@ export default function Tools() {
 	 * @returns {string}
 	 */
 	function getFormattedDateTime() {
-		return new Date().toISOString().split('.')[0].replace(/[T:]/g, '-');
+		return new Date().toISOString().split(".")[0].replace(/[T:]/g, "-");
 	}
 
 	return (
@@ -62,7 +62,7 @@ export default function Tools() {
 								</p>
 								<ImportFileButton
 									allowedMimeTypes=".json"
-									callbackFn={uploadFile}
+									callbackFn={createModels}
 								/>
 							</div>
 							<div className="col-xs-12 mt-4">
