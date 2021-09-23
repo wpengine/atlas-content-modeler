@@ -71,7 +71,7 @@ export default function Tools() {
 									)}
 								</p>
 								<ExportFileButton
-									fileTitle={`${getFormattedDateTime()}-model-export.json`}
+									fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
 									fileType="json"
 									callbackFn={getModels}
 								/>
