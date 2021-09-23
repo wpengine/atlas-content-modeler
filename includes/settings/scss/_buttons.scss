@@ -47,13 +47,13 @@ button.tertiary {
 	color: $color-text;
 }
 
-button.dark-blue {
-	background-color: $color-blue-dark !important;
+button.button-primary.dark-blue {
+	background-color: $color-blue-dark;
 
 	&:focus,
 	&:hover {
-		background: lighten($color-blue-dark, 10%) !important;
-		border: 1px solid lighten($color-blue-dark, 10%) !important;
+		background: lighten($color-blue-dark, 10%);
+		border: 1px solid lighten($color-blue-dark, 10%);
 	}
 }
 

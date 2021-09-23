@@ -35,14 +35,7 @@ export default function Tools() {
 	 * @returns {string}
 	 */
 	function getFormattedDateTime() {
-		var today = new Date();
-		var y = today.getFullYear();
-		var m = today.getMonth() + 1;
-		var d = today.getDate();
-		var h = today.getHours();
-		var mi = today.getMinutes();
-		var s = today.getSeconds();
-		return m + "-" + d + "-" + y + "-" + h + "-" + mi + "-" + s;
+		return new Date().toISOString().split('.')[0].replace(/[T:]/g, '-');
 	}
 
 	return (
@@ -57,13 +50,13 @@ export default function Tools() {
 							<div className="col-xs-12">
 								<h4>
 									{__(
-										"Import Model",
+										"Import Models",
 										"atlas-content-modeler"
 									)}
 								</h4>
 								<p className="help">
 									{__(
-										"Select a .json file containing model/field definitions to import as a content model.",
+										"Select the .json file containing model/field definitions to be imported.",
 										"atlas-content-modeler"
 									)}
 								</p>
@@ -75,18 +68,18 @@ export default function Tools() {
 							<div className="col-xs-12 mt-4">
 								<h4>
 									{__(
-										"Export Model",
+										"Export Models",
 										"atlas-content-modeler"
 									)}
 								</h4>
 								<p className="help">
 									{__(
-										"Exporting a model will generate a .json document representing all of the existing models and fields.",
+										"Exporting models will generate a .json document representing all of the existing models and fields.",
 										"atlas-content-modeler"
 									)}
 								</p>
 								<ExportFileButton
-									fileTitle={`${getFormattedDateTime()}-model-export.json`}
+									fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
 									fileType="json"
 									callbackFn={getModels}
 								/>
