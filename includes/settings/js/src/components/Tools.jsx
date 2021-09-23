@@ -49,7 +49,7 @@ export default function Tools() {
 								</h4>
 								<p className="help">
 									{__(
-										"Select a .json file containing model/field definitions to import as a content model.",
+										"Select the .json file containing model/field definitions to be imported.",
 										"atlas-content-modeler"
 									)}
 								</p>
