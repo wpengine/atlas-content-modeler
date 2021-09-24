@@ -126,6 +126,46 @@ type: "number"
 	 */
 
 	/**
+	 * Validate model field
+	 * @param field
+	 */
+	function validateField(field) {
+		switch (field.type) {
+			case "number":
+				if (
+					field.model &&
+					field.name &&
+					field.numberType &&
+					field.slug
+				) {
+					return true;
+				}
+				break;
+		}
+	}
+
+	/**
+	 * Validate the individual model
+	 * @param model
+	 */
+	function validateModel(model) {
+		let modelIsValid = true;
+		let fieldsAreValid = true;
+
+		// check that fields are valid
+		if (model.fields?.length) {
+			for (let i = 0; i < model.fields.length; i++) {
+				if (!validateField(model.fields[i])) {
+					fieldsAreValid = false;
+					break;
+				}
+			}
+		}
+
+		return modelIsValid && fieldsAreValid;
+	}
+
+	/**
 	 * Validate model data
 	 * @param data
 	 */
@@ -135,13 +175,13 @@ type: "number"
 		let invalidModelCount = 0;
 
 		data.forEach((model) => {
-			let isValid = true;
 			totalModelCount += 1;
-			validateModel();
-			isValid ? (validModelCount += 1) : (invalidModelCount += 1);
+			validateModel(model)
+				? (validModelCount += 1)
+				: (invalidModelCount += 1);
 		});
 
-		return totalModelCount === invalidModelCount;
+		return totalModelCount === validModelCount;
 	}
 
 	/**
