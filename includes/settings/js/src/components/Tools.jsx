@@ -17,6 +17,119 @@ export default function Tools() {
 		});
 	}
 
+	/* MODEL
+	api_visibility: "public"
+description: ""
+fields: []
+model_icon: "dashicons-admin-page"
+plural: "Tests"
+show_in_graphql: true
+show_in_rest: true
+singular: "Test"
+slug: "test"
+	 */
+
+	/* MODEL FIELD RELATIONSHIP
+	cardinality: "one-to-one"
+description: "Test"
+id: "1632504552485"
+maxChars: ""
+minChars: ""
+model: "test"
+name: "Relationship 1"
+position: "60000"
+reference: "rabbit"
+required: true
+slug: "relationship1"
+type: "relationship"
+	 */
+
+	/* MODEL FIELD BOOLEAN
+	id: "1632504523751"
+maxChars: ""
+minChars: ""
+model: "test"
+name: "Boolean 1"
+position: "50000"
+required: true
+slug: "boolean1"
+type: "boolean"
+	 */
+
+	/* MODEL FIELD MEDIA
+	allowedTypes: "jpeg,png"
+id: "1632504485917"
+maxChars: ""
+minChars: ""
+model: "test"
+name: "Media 1"
+position: "40000"
+required: true
+slug: "media1"
+type: "media"
+	 */
+
+	/* MODEL FIELD DATE
+	id: "1632504449606"
+maxChars: ""
+maxValue: ""
+minChars: ""
+minValue: ""
+model: "test"
+name: "Date 1"
+position: "30000"
+required: true
+slug: "date1"
+step: ""
+type: "date"
+	 */
+
+	/* MODEL FIELD RICH TEXT
+	id: "1632504421213"
+maxChars: ""
+minChars: ""
+model: "test"
+name: "Rich Text 1"
+position: "20000"
+required: true
+slug: "richText1"
+type: "richtext"
+	 */
+
+	/* MODEL FIELD TEXT
+	id: "1632504375104"
+inputType: "single"
+isTitle: true
+maxChars: 10
+minChars: 5
+model: "test"
+name: "Text 1"
+position: "10000"
+required: true
+slug: "text1"
+type: "text"
+	 */
+
+	/* MODEL FIELD NUMBER
+	id: "1632504324736"
+maxValue: 5
+minValue: 1
+model: "test"
+name: "Num1"
+numberType: "integer"
+position: "0"
+required: true
+slug: "num1"
+step: 1
+type: "number"
+	 */
+
+	/**
+	 * Validate model data
+	 * @param data
+	 */
+	function validateModelData(data) {}
+
 	/**
 	 * Upload the file to the API
 	 * @returns {*}
@@ -24,12 +137,15 @@ export default function Tools() {
 	function createModels(formData) {
 		const serializedData = JSON.parse(formData);
 		console.log(serializedData);
-		return apiFetch({
-			path: `/wpe/atlas/content-models-create/`,
-			method: "POST",
-			_wpnonce: wpApiSettings.nonce,
-			serializedData,
-		});
+
+		if (validateModelData(serializedData)) {
+			return apiFetch({
+				path: `/wpe/atlas/content-models-create/`,
+				method: "POST",
+				_wpnonce: wpApiSettings.nonce,
+				serializedData,
+			});
+		}
 	}
 
 	/**
