@@ -128,7 +128,13 @@ type: "number"
 	 * Validate model data
 	 * @param data
 	 */
-	function validateModelData(data) {}
+	function validateModelData(data) {
+		let totalModelCount = 0;
+		let validModelCount = 0;
+		let invalidModelCount = 0;
+
+		return totalModelCount === invalidModelCount;
+	}
 
 	/**
 	 * Upload the file to the API
@@ -139,8 +145,9 @@ type: "number"
 		console.log(serializedData);
 
 		if (validateModelData(serializedData)) {
+			// loop through the models and make this apifetch
 			return apiFetch({
-				path: `/wpe/atlas/content-models-create/`,
+				path: `/wpe/atlas/content-model/`,
 				method: "POST",
 				_wpnonce: wpApiSettings.nonce,
 				serializedData,
