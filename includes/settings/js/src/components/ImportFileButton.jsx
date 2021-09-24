@@ -49,8 +49,6 @@ export default function ImportFileButton({
 		const reader = new FileReader();
 		reader.addEventListener("load", (event) => {
 			if (event.target.result && isValidJson(event.target.result)) {
-				console.log(event.target.result);
-				console.log(uploadedFile);
 				form.append("file", uploadedFile);
 				if (callbackFn && form) {
 					callbackFn(event.target.result)

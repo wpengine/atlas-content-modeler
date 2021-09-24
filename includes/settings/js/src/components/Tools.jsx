@@ -134,6 +134,13 @@ type: "number"
 		let validModelCount = 0;
 		let invalidModelCount = 0;
 
+		data.forEach((model, i) => {
+			let isValid = true;
+			totalModelCount += 1;
+
+			isValid ? (validModelCount += 1) : (invalidModelCount += 1);
+		});
+
 		return totalModelCount === invalidModelCount;
 	}
 
