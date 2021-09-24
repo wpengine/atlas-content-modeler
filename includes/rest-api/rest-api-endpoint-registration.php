@@ -395,6 +395,8 @@ function dispatch_patch_content_model_fields( WP_REST_Request $request ) {
 
 	$updated = update_registered_content_types( $content_types );
 
+	// @todo: Update relationship names
+
 	return rest_ensure_response(
 		[
 			'success' => $updated,
