@@ -297,13 +297,15 @@ final class FormEditingExperience {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- sanitized below before use.
 		$posted_values = $_POST['atlas-content-modeler'][ $post->post_type ];
 
 		$saved_relationships = array();
 
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
+			$field_id = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
+
 			$field_type = get_field_type_from_slug(
 				$field_id,
 				$this->models[ $post->post_type ]['fields'] ?? []
@@ -357,17 +359,18 @@ final class FormEditingExperience {
 		}
 
 		foreach ( $posted_values as $key => $value ) {
+			$key = sanitize_text_field( $key );
 			/**
 			 * Check if an existing value matches the submitted value
 			 * and short-circuit the loop. Otherwise `update_post_meta`
 			 * will return `false`, which we use to indicate a failure.
 			 */
-			$existing = get_post_meta( $post_id, sanitize_text_field( $key ), true );
+			$existing = get_post_meta( $post_id, $key, true );
 			if ( $existing === $value ) {
 				continue;
 			}
 
-			$updated = update_post_meta( $post_id, sanitize_text_field( $key ), $value );
+			$updated = update_post_meta( $post_id, $key, $value );
 			if ( ! $updated ) {
 				/* translators: %s: atlas content modeler field slug */
 				$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
