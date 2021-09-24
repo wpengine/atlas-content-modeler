@@ -164,28 +164,35 @@ type: "number"
 					});
 				})
 			);
-		}
 
-		// process all model api calls
-		Promise.all(modelAPICalls)
-			.then((response) => {
-				console.log(response);
-				showSuccess(
-					__(
-						"The models were successfully imported.",
-						"atlas-content-modeler"
-					)
-				);
-			})
-			.catch((err) => {
-				console.log(err);
-				showError(
-					__(
-						"There were errors during your import.",
-						"atlas-content-modeler"
-					)
-				);
-			});
+			// process all model api calls
+			Promise.all(modelAPICalls)
+				.then((response) => {
+					console.log(response);
+					showSuccess(
+						__(
+							"The models were successfully imported.",
+							"atlas-content-modeler"
+						)
+					);
+				})
+				.catch((err) => {
+					console.log(err);
+					showError(
+						__(
+							"There were errors during your import.",
+							"atlas-content-modeler"
+						)
+					);
+				});
+		} else {
+			showError(
+				__(
+					"There were validation errors in your file.",
+					"atlas-content-modeler"
+				)
+			);
+		}
 	}
 
 	/**
