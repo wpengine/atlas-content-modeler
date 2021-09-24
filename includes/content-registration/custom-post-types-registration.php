@@ -577,7 +577,7 @@ function register_relationship_connection( array $parent_model, array $reference
 			'slug'       => $field['slug'],
 			'one_to_one' => ( $field['cardinality'] === 'one-to-one' ),
 			'reference'  => $field['reference'],
-			'name'       => $parent_model['slug'] . '-' . $field['slug'] . '-' . $field['reverseSlug'],
+			'name'       => $parent_model['slug'] . '-' . $field['slug'] . '-' . ( isset( $field['reverseSlug'] ) ? $field['reverseSlug'] : '' ),
 		),
 	);
 
@@ -588,7 +588,7 @@ function register_relationship_connection( array $parent_model, array $reference
 			'slug'       => $field['reverseSlug'],
 			'one_to_one' => false,
 			'reference'  => $parent_model['slug'],
-			'name'       => $parent_model['slug'] . '-' . $field['slug'] . '-' . $field['reverseSlug'],
+			'name'       => $parent_model['slug'] . '-' . $field['slug'] . '-' . ( isset( $field['reverseSlug'] ) ? $field['reverseSlug'] : '' ),
 		);
 	}
 
