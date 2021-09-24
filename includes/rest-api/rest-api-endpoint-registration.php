@@ -64,19 +64,6 @@ function register_rest_routes(): void {
 		]
 	);
 
-	// Route for creating a single content type.
-	register_rest_route(
-		'wpe',
-		'/atlas/content-models-create',
-		[
-			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\dispatch_create_content_models',
-			'permission_callback' => static function () {
-				return current_user_can( 'manage_options' );
-			},
-		]
-	);
-
 	// Route for updating a single content type.
 	register_rest_route(
 		'wpe',
@@ -236,40 +223,6 @@ function dispatch_create_content_model( WP_REST_Request $request ) {
 		[
 			'success' => true,
 			'model'   => $model,
-		]
-	);
-}
-
-/**
- * Handles multiple models POST requests from the REST API.
- *
- * @param WP_REST_Request $request The REST API request object.
- *
- * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
- */
-function dispatch_create_content_models( WP_REST_Request $request ) {
-	$params = $request->get_params();
-
-	unset( $params['_locale'] ); // Sent by wp.apiFetch but not needed.
-
-	$models = [];
-
-	foreach ( $models as $model_item ) {
-		$model = create_model( $params['slug'], $params[ $model_item ] );
-
-		if ( is_wp_error( $model ) ) {
-			return new WP_Error(
-				$model->get_error_code(),
-				$model->get_error_message(),
-				[ 'status' => 400 ]
-			);
-		}
-	}
-
-	return rest_ensure_response(
-		[
-			'success' => true,
-			'models'  => $models,
 		]
 	);
 }
