@@ -80,13 +80,13 @@ add_action( 'acm_content_connect_init', __NAMESPACE__ . '\\register_relationship
  * @return void
  */
 function register_relationships( $registry ) {
-	$content_types = get_registered_content_types();
+	$models = get_registered_content_types();
 
-	if ( ! $content_types ) {
+	if ( ! $models ) {
 		return;
 	}
 
-	foreach ( $content_types as $post_type => $args ) {
+	foreach ( $models as $model => $args ) {
 		if ( ! $args['fields'] ) {
 			continue;
 		}
@@ -105,8 +105,8 @@ function register_relationships( $registry ) {
 				];
 
 				try {
-					$name = $post_type . '-' . $field['reference'];
-					$registry->define_post_to_post( $post_type, $field['reference'], $name, $args );
+					$name = $models[ $model ]['slug'] . '-' . $field['slug'] . '-' . $field['reverseSlug'];
+					$registry->define_post_to_post( $model, $field['reference'], $name, $args );
 				} catch ( \Exception $e ) {
 					/**
 					 * Either the relationship already exists,
@@ -577,7 +577,7 @@ function register_relationship_connection( array $parent_model, array $reference
 			'slug'       => $field['slug'],
 			'one_to_one' => ( $field['cardinality'] === 'one-to-one' ),
 			'reference'  => $field['reference'],
-			'name'       => $parent_model['slug'] . '-' . $field['reference'],
+			'name'       => $parent_model['slug'] . '-' . $field['slug'] . '-' . $field['reverseSlug'],
 		),
 	);
 
@@ -588,7 +588,7 @@ function register_relationship_connection( array $parent_model, array $reference
 			'slug'       => $field['reverseSlug'],
 			'one_to_one' => false,
 			'reference'  => $parent_model['slug'],
-			'name'       => $parent_model['slug'] . '-' . $field['reference'],
+			'name'       => $parent_model['slug'] . '-' . $field['slug'] . '-' . $field['reverseSlug'],
 		);
 	}
 

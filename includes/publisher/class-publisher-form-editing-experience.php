@@ -173,7 +173,7 @@ final class FormEditingExperience {
 			foreach ( $model['fields'] as $key => $field ) {
 				if ( isset( $post->ID ) ) {
 					if ( 'relationship' === $field['type'] ) {
-						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post->ID, $post->post_type, $field['reference'], $field['slug'] );
+						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post->ID, $post->post_type, $field['reference'], $field['slug'], ( isset( $field['reverseSlug'] ) ? $field['reverseSlug'] : '' ) );
 					} else {
 						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
 					}
@@ -389,7 +389,7 @@ final class FormEditingExperience {
 		);
 
 		$registry      = ContentConnect::instance()->get_registry();
-		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $post->post_type . '-' . $field['reference'] );
+		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $post->post_type . '-' . $field['slug'] . '-' . $field['reverseSlug'] );
 		$related_posts = array();
 
 		if ( $relationship ) {
@@ -407,17 +407,22 @@ final class FormEditingExperience {
 	 * @param int    $post_id The post ID of the parent post.
 	 * @param string $post_type The post type of the parent post.
 	 * @param string $relationship_type The post type of the relationship.
-	 * @param string $field_name The slug of the relationship saved in the DB.
+	 * @param string $field_slug The slug of the relationship saved in the DB.
+	 * @param string $field_reverse_slug The slug of the reverse relationship.
 	 *
 	 * @return string A comma separated list of connected posts
 	 */
-	public function get_relationship_field( int $post_id, string $post_type, string $relationship_type, string $field_name ): string {
+	public function get_relationship_field( int $post_id, string $post_type, string $relationship_type, string $field_slug, string $field_reverse_slug ): string {
 		$registry     = ContentConnect::instance()->get_registry();
 		$relationship = $registry->get_post_to_post_relationship(
 			$post_type,
 			$relationship_type,
-			$post_type . '-' . $relationship_type
+			$post_type . '-' . $field_slug . '-' . $field_reverse_slug
 		);
+
+		if ( false === $relationship ) {
+			return '';
+		}
 
 		$relationship_ids = $relationship->get_related_object_ids( $post_id );
 

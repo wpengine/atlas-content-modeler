@@ -256,7 +256,7 @@ const RelationshipFields = ({
 					</label>
 				</div>
 			</div>
-			{showReferenceFields === true && (
+			{showReferenceFields === true ? (
 				<div className="d-flex flex-column d-sm-flex flex-sm-row">
 					<div
 						className={`${
@@ -361,6 +361,7 @@ const RelationshipFields = ({
 							onChange={(e) =>
 								onChangeGeneratedValue(e.target.value)
 							}
+							disabled={editing}
 						/>
 						<p className="field-messages">
 							{errors.reverseSlug &&
@@ -402,6 +403,31 @@ const RelationshipFields = ({
 						</p>
 					</div>
 				</div>
+			) : (
+				<>
+					<input
+						id="reverseName"
+						name="reverseName"
+						defaultValue={
+							data?.reverseName
+								? data.reverseName
+								: models[model].plural
+						}
+						type="hidden"
+						ref={register}
+					/>
+					<input
+						id="reverseSlug"
+						name="reverseSlug"
+						type="hidden"
+						ref={register}
+						defaultValue={
+							data?.reverseSlug
+								? data.reverseSlug
+								: toValidApiId(models[model].plural)
+						}
+					/>
+				</>
 			)}
 		</>
 	);
