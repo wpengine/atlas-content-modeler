@@ -146,6 +146,7 @@ type: "number"
 		let modelAPICalls = null;
 
 		if (validateModelData(serializedData)) {
+			// add each model to the API fetch array
 			modelAPICount.push(
 				serializedData.forEach((model) => {
 					apiFetch({
@@ -158,6 +159,7 @@ type: "number"
 			);
 		}
 
+		// process all model api calls
 		Promise.all(modelAPICalls)
 			.then((response) => {
 				console.log(response);
