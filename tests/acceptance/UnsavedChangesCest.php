@@ -4,6 +4,7 @@ class UnsavedChangesCest
 {
 	public function _before(\AcceptanceTester $I)
 	{
+		$I->resizeWindow(1024, 1024);
 		$I->maximizeWindow();
 
 		$I->loginAsAdmin();
@@ -45,5 +46,30 @@ class UnsavedChangesCest
 		// Click “Discard Changes” and confirm our incomplete Hobbies field is gone.
 		$I->click('.ReactModal__Content button.tertiary');
 		$I->dontSee('Hobbies');
+
+		// Start to edit the first field again.
+		$I->clickWithLeftButton('button.edit', 10, 10);
+
+		// Make a change to a field.
+		$I->fillField(['name' => 'name'], 'Name Edited');
+
+		// Attempt to navigate away via the breadcrumb.
+		$I->click('Content Models', '.heading');
+
+		// Check the modal appears, but discard changes.
+		$I->see('Unsaved Changes');
+		$I->click('.ReactModal__Content button.tertiary');
+		$I->dontSee('Name Edited');
+		$I->see('Name');
+
+		// Start to edit the first field again.
+		$I->clickWithLeftButton('button.edit', 10, 10);
+
+		// Attempt to navigate away via the breadcrumb.
+		$I->click('Content Models', '.heading');
+
+		// Confirm the modal does *not* appear, because there are no unsaved changes.
+		$I->dontSee('Unsaved Changes');
+		$I->see('New Model'); // Model index page.
 	}
 }
