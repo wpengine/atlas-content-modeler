@@ -2,6 +2,7 @@ import React from "react";
 import { __ } from "@wordpress/i18n";
 import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
+import { showError, showSuccess } from "../toasts";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -146,7 +147,7 @@ type: "number"
 
 		if (validateModelData(serializedData)) {
 			modelAPICount.push(
-				serializedData.forEach((model, i) => {
+				serializedData.forEach((model) => {
 					apiFetch({
 						path: `/wpe/atlas/content-model/`,
 						method: "POST",
@@ -156,6 +157,26 @@ type: "number"
 				})
 			);
 		}
+
+		Promise.all(modelAPICalls)
+			.then((response) => {
+				console.log(response);
+				showSuccess(
+					__(
+						"The models were successfully imported.",
+						"atlas-content-modeler"
+					)
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				showError(
+					__(
+						"There were errors during your import.",
+						"atlas-content-modeler"
+					)
+				);
+			});
 	}
 
 	/**
