@@ -142,16 +142,19 @@ type: "number"
 	 */
 	function createModels(formData) {
 		const serializedData = JSON.parse(formData);
-		console.log(serializedData);
+		let modelAPICalls = null;
 
 		if (validateModelData(serializedData)) {
-			// loop through the models and make this apifetch
-			return apiFetch({
-				path: `/wpe/atlas/content-model/`,
-				method: "POST",
-				_wpnonce: wpApiSettings.nonce,
-				serializedData,
-			});
+			modelAPICount.push(
+				serializedData.forEach((model, i) => {
+					apiFetch({
+						path: `/wpe/atlas/content-model/`,
+						method: "POST",
+						_wpnonce: wpApiSettings.nonce,
+						model,
+					});
+				})
+			);
 		}
 	}
 
