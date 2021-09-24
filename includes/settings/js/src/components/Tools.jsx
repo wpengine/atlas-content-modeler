@@ -45,103 +45,43 @@ slug: "relationship1"
 type: "relationship"
 	 */
 
-	/* MODEL FIELD BOOLEAN
-	id: "1632504523751"
-maxChars: ""
-minChars: ""
-model: "test"
-name: "Boolean 1"
-position: "50000"
-required: true
-slug: "boolean1"
-type: "boolean"
-	 */
-
-	/* MODEL FIELD MEDIA
-	allowedTypes: "jpeg,png"
-id: "1632504485917"
-maxChars: ""
-minChars: ""
-model: "test"
-name: "Media 1"
-position: "40000"
-required: true
-slug: "media1"
-type: "media"
-	 */
-
-	/* MODEL FIELD DATE
-	id: "1632504449606"
-maxChars: ""
-maxValue: ""
-minChars: ""
-minValue: ""
-model: "test"
-name: "Date 1"
-position: "30000"
-required: true
-slug: "date1"
-step: ""
-type: "date"
-	 */
-
-	/* MODEL FIELD RICH TEXT
-	id: "1632504421213"
-maxChars: ""
-minChars: ""
-model: "test"
-name: "Rich Text 1"
-position: "20000"
-required: true
-slug: "richText1"
-type: "richtext"
-	 */
-
-	/* MODEL FIELD TEXT
-	id: "1632504375104"
-inputType: "single"
-isTitle: true
-maxChars: 10
-minChars: 5
-model: "test"
-name: "Text 1"
-position: "10000"
-required: true
-slug: "text1"
-type: "text"
-	 */
-
-	/* MODEL FIELD NUMBER
-	id: "1632504324736"
-maxValue: 5
-minValue: 1
-model: "test"
-name: "Num1"
-numberType: "integer"
-position: "0"
-required: true
-slug: "num1"
-step: 1
-type: "number"
-	 */
-
 	/**
 	 * Validate model field
 	 * @param field
 	 */
 	function validateField(field) {
-		switch (field.type) {
-			case "number":
-				if (
-					field.model &&
-					field.name &&
-					field.numberType &&
-					field.slug
-				) {
-					return true;
-				}
-				break;
+		if (field.type) {
+			switch (field.type) {
+				case "number":
+					return (
+						field.id &&
+						field.model &&
+						field.name &&
+						field.numberType &&
+						field.slug
+					);
+				case "text":
+					return (
+						field.id &&
+						field.inputType &&
+						field.model &&
+						field.name &&
+						field.slug
+					);
+				case "relationship":
+					return (
+						field.id &&
+						field.model &&
+						field.name &&
+						field.slug &&
+						field.cardinality &&
+						field.reference
+					);
+				default:
+					return field.id && field.model && field.name && field.slug;
+			}
 		}
+		return false;
 	}
 
 	/**
