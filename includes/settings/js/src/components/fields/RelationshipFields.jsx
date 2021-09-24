@@ -361,6 +361,7 @@ const RelationshipFields = ({
 							onChange={(e) =>
 								onChangeGeneratedValue(e.target.value)
 							}
+							readOnly={editing}
 						/>
 						<p className="field-messages">
 							{errors.reverseSlug &&
