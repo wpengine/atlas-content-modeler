@@ -154,7 +154,7 @@ type: "number"
 
 		if (validateModelData(serializedData)) {
 			// add each model to the API fetch array
-			modelAPICount.push(
+			modelAPICalls.push(
 				serializedData.forEach((model) => {
 					apiFetch({
 						path: `/wpe/atlas/content-model/`,
