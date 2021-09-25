@@ -20,6 +20,12 @@ class TrashEntryCest
 		$I->click('.open-field button.primary');
 		$I->wait(1);
 
+
+
+	}
+
+	public function i_see_a_warning_when_trashing_an_entry_linked_via_a_relationship_field(\AcceptanceTester $I)
+	{
 		// Create a geese entry.
 		$I->amOnPage('/wp-admin/post-new.php?post_type=goose');
 		$I->click('Publish', '#publishing-action');
@@ -33,10 +39,7 @@ class TrashEntryCest
 		$I->click('button.action-button');
 		$I->wait(2);
 		$I->click('Publish', '#publishing-action');
-	}
 
-	public function i_see_a_warning_when_trashing_an_entry_linked_via_a_relationship_field(\AcceptanceTester $I)
-	{
 		// Visit the goose we created.
 		$I->amOnPage('/wp-admin/edit.php?post_type=goose');
 		$I->click('#the-list a.row-title');
@@ -67,6 +70,11 @@ class TrashEntryCest
 
 	public function i_see_no_warnings_when_trashing_an_entry_not_linked_via_a_relationship_field(\AcceptanceTester $I)
 	{
+		// Create a mouse without a link.
+		$I->amOnPage('/wp-admin/post-new.php?post_type=mouse');
+		$I->wait(2);
+		$I->click('Publish', '#publishing-action');
+
 		// Visit the mouse we created.
 		$I->amOnPage('/wp-admin/edit.php?post_type=mouse');
 		$I->click('#the-list a.row-title');
