@@ -111,7 +111,7 @@ Requests sent in a GraphiQL session in the WordPress admin area are authenticate
 ## Next steps
 - Click ”Send Feedback” at the top of the Content Modeler page in your WordPress admin area to share your thoughts with us.
 - [File bugs or feature requests](https://github.com/wpengine/atlas-content-modeler/issues/new/choose) in GitHub.
-- Create a headless WordPress site using the [Headless Framework](https://github.com/wpengine/headless-framework) by WP Engine.
+- Create a headless WordPress site using [Faust.js](https://github.com/wpengine/faustjs) by WP Engine.
 - Discover the [Atlas headless WordPress hosting platform](https://wpengine.com/atlas) by WP Engine.
 - Watch a video introducing the [WordPress REST API](https://www.youtube.com/watch?v=uJf-fu3VbKw).
 - Watch a video introducing [WPGraphQL](https://www.youtube.com/watch?v=N7H-a1232ow).
