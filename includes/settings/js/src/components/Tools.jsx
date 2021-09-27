@@ -3,6 +3,7 @@ import { __ } from "@wordpress/i18n";
 import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
+import { stringify } from "postcss";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -114,7 +115,10 @@ type: "relationship"
 		let validModelCount = 0;
 		let invalidModelCount = 0;
 
-		data.forEach((model) => {
+		console.log(data);
+		debugger;
+
+		Object.entries(data).forEach((model) => {
 			totalModelCount += 1;
 			validateModel(model)
 				? (validModelCount += 1)
@@ -129,21 +133,23 @@ type: "relationship"
 	 * @returns {*}
 	 */
 	function createModels(formData) {
-		const serializedData = JSON.parse(formData);
-		let modelAPICalls = null;
+		const parsedData = JSON.parse(formData);
+		const serializedDataArray = Object.entries(parsedData);
+		let modelAPICalls = [];
 
-		if (validateModelData(serializedData)) {
+		if (validateModelData(serializedDataArray)) {
 			// add each model to the API fetch array
-			modelAPICalls.push(
-				serializedData.forEach((model) => {
-					apiFetch({
-						path: `/wpe/atlas/content-model/`,
-						method: "POST",
-						_wpnonce: wpApiSettings.nonce,
-						model,
-					});
-				})
-			);
+			serializedDataArray.forEach((model) => {
+				const modelData = JSON.stringify(model[1]);
+				const slug = model[1].plural;
+				const apiCall = apiFetch({
+					path: `/wpe/atlas/content-model/${slug}`,
+					method: "POST",
+					_wpnonce: wpApiSettings.nonce,
+					modelData,
+				});
+				modelAPICalls.push(apiCall);
+			});
 
 			// process all model api calls
 			Promise.all(modelAPICalls)
