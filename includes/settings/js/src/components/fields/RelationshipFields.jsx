@@ -17,6 +17,7 @@ const RelationshipFields = ({
 	errors,
 	setValue,
 	model,
+	clearErrors,
 }) => {
 	const { models } = useContext(ModelsContext);
 	const modelsAlphabetical = Object.values(models).sort((a, b) =>
