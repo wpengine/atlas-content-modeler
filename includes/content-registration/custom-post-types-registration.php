@@ -105,7 +105,7 @@ function register_relationships( $registry ) {
 				];
 
 				try {
-					$name = $models[ $model ]['slug'] . '-' . $field['slug'] . '-' . $field['reverseSlug'];
+					$name = $models[ $model ]['slug'] . '-' . $field['slug'] . '-' . ( isset( $field['reverseSlug'] ) ? $field['reverseSlug'] : '' );
 					$registry->define_post_to_post( $model, $field['reference'], $name, $args );
 				} catch ( \Exception $e ) {
 					/**
