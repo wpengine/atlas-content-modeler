@@ -409,7 +409,7 @@ const RelationshipFields = ({
 					<input
 						id="reverseName"
 						name="reverseName"
-						defaultValue={
+						value={
 							data?.reverseName
 								? data.reverseName
 								: models[model].plural
@@ -422,7 +422,7 @@ const RelationshipFields = ({
 						name="reverseSlug"
 						type="hidden"
 						ref={register}
-						defaultValue={
+						value={
 							data?.reverseSlug
 								? data.reverseSlug
 								: toValidApiId(models[model].plural)
