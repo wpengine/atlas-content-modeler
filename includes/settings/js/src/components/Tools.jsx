@@ -124,10 +124,10 @@ slug: "test"
 		if (validateModelData(serializedDataArray)) {
 			// add each model to the API fetch array
 			serializedDataArray.forEach((model) => {
-				const modelData = JSON.stringify(model[1]);
-				const slug = model[1].plural;
+				const modelData = model[1];
+				console.log("model data", modelData);
 				const apiCall = apiFetch({
-					path: `/wpe/atlas/content-model/${slug}`,
+					path: `/wpe/atlas/content-model`,
 					method: "POST",
 					_wpnonce: wpApiSettings.nonce,
 					modelData,
