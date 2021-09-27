@@ -3,7 +3,6 @@ import { __ } from "@wordpress/i18n";
 import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
-import { stringify } from "postcss";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -29,21 +28,6 @@ show_in_graphql: true
 show_in_rest: true
 singular: "Test"
 slug: "test"
-	 */
-
-	/* MODEL FIELD RELATIONSHIP
-	cardinality: "one-to-one"
-description: "Test"
-id: "1632504552485"
-maxChars: ""
-minChars: ""
-model: "test"
-name: "Relationship 1"
-position: "60000"
-reference: "rabbit"
-required: true
-slug: "relationship1"
-type: "relationship"
 	 */
 
 	/**
