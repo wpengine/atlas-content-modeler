@@ -32,7 +32,7 @@ class CreateRelationshipFieldEntryCest
 		$I->wait(1);
 	}
 
-	public function i_can_create_an_employee_and_see_one_to_one_relation_field(AcceptanceTester $I)
+	public function i_can_create_an_employee_and_see_many_to_one_relation_field(AcceptanceTester $I)
 	{
 		$I->see('Relationship', '.field-list div.type');
 		$I->see('Company', '.field-list div.widest');
@@ -49,7 +49,7 @@ class CreateRelationshipFieldEntryCest
 		$I->amOnPage('/wp-admin/post-new.php?post_type=employee');
 		$I->see('Company', 'div.field.relationship');
 		$I->click('#atlas-content-modeler[employee][company]');
-		$I->see('Select Company', 'div.ReactModal__Content.ReactModal__Content--after-open h2');
+		$I->see('Select Companies', 'div.ReactModal__Content.ReactModal__Content--after-open h2');
 		$I->wait(3);
 		$I->click(Locator::elementAt('td.checkbox input', 1));
 		$I->click('button.action-button');
@@ -58,7 +58,7 @@ class CreateRelationshipFieldEntryCest
 		$I->see('WP Engine', 'div.relation-model-card');
 	}
 
-	public function i_can_create_an_employee_and_see_one_to_many_relation_field(AcceptanceTester $I)
+	public function i_can_create_an_employee_and_see_many_to_many_relation_field(AcceptanceTester $I)
 	{
 		$I->see('Relationship', '.field-list div.type');
 		$I->see('Company', '.field-list div.widest');
@@ -97,7 +97,7 @@ class CreateRelationshipFieldEntryCest
 		$I->amOnPage('/wp-admin/post-new.php?post_type=employee');
 		$I->see('Company', 'div.field.relationship');
 		$I->click('#atlas-content-modeler[employee][company]');
-		$I->see('Select Company', '.atlas-content-modeler-relationship-modal-container h2');
+		$I->see('Select Companies', '.atlas-content-modeler-relationship-modal-container h2');
 		$I->wait(2);
 		$I->see('No published entries');
 
@@ -113,7 +113,7 @@ class CreateRelationshipFieldEntryCest
 		$I->closeTab(); // Focus on the original employee tab.
 
 		// Test that the modal is still visible.
-		$I->see('Select Company', '.atlas-content-modeler-relationship-modal-container h2');
+		$I->see('Select Companies', '.atlas-content-modeler-relationship-modal-container h2');
 
 		// This is as far as we can test in headless mode under CircleCI.
 		// The visibilitychange event does not fire in headless mode,
