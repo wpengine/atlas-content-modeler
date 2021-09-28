@@ -49,7 +49,7 @@ class CreateRelationshipFieldEntryCest
 		$I->amOnPage('/wp-admin/post-new.php?post_type=employee');
 		$I->see('Company', 'div.field.relationship');
 		$I->click('#atlas-content-modeler[employee][company]');
-		$I->see('Select Companies', 'div.ReactModal__Content.ReactModal__Content--after-open h2');
+		$I->see('Select Company', 'div.ReactModal__Content.ReactModal__Content--after-open h2');
 		$I->wait(3);
 		$I->click(Locator::elementAt('td.checkbox input', 1));
 		$I->click('button.action-button');
@@ -97,7 +97,7 @@ class CreateRelationshipFieldEntryCest
 		$I->amOnPage('/wp-admin/post-new.php?post_type=employee');
 		$I->see('Company', 'div.field.relationship');
 		$I->click('#atlas-content-modeler[employee][company]');
-		$I->see('Select Companies', '.atlas-content-modeler-relationship-modal-container h2');
+		$I->see('Select Company', '.atlas-content-modeler-relationship-modal-container h2');
 		$I->wait(2);
 		$I->see('No published entries');
 
@@ -113,7 +113,7 @@ class CreateRelationshipFieldEntryCest
 		$I->closeTab(); // Focus on the original employee tab.
 
 		// Test that the modal is still visible.
-		$I->see('Select Companies', '.atlas-content-modeler-relationship-modal-container h2');
+		$I->see('Select Company', '.atlas-content-modeler-relationship-modal-container h2');
 
 		// This is as far as we can test in headless mode under CircleCI.
 		// The visibilitychange event does not fire in headless mode,

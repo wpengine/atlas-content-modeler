@@ -5,7 +5,8 @@ export default function Title({ field }) {
 	const { models } = atlasContentModelerFormEditingExperience;
 
 	const modelName =
-		field?.cardinality === "one-to-one"
+		field?.cardinality === "one-to-one" ||
+		field?.cardinality === "many-to-one"
 			? models[field.reference]?.singular ??
 			  __("Reference", "atlas-content-modeler")
 			: models[field.reference]?.plural ??
