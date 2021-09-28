@@ -235,7 +235,7 @@ const RelationshipFields = ({
 							</span>
 						)}
 					<span>&nbsp;</span>
-					<span className="count">{`${descriptionCount}/${descriptionMaxLength}`}</span>
+					<span className="count description-count">{`${descriptionCount}/${descriptionMaxLength}`}</span>
 				</p>
 			</div>
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
@@ -333,7 +333,9 @@ const RelationshipFields = ({
 								</span>
 							)}
 						<span>&nbsp;</span>
-						<span className="count">{reverseNameCount}/50</span>
+						<span className="count reverse-name-count">
+							{reverseNameCount}/50
+						</span>
 					</p>
 				</div>
 				<div
