@@ -41,6 +41,13 @@ const RelationshipFields = ({
 	} = useInputGenerator({
 		linked: !editing,
 		setGeneratedValue: (value) => setValue("reverseSlug", value),
+		setDefaultInputValue: (value) => {
+			setNameCount(value?.length);
+			setValue("reverseName", value);
+		},
+		defaultInputValue: data?.reverseName
+			? data.reverseName
+			: models[model].plural,
 		format: toValidApiId,
 	});
 
@@ -257,178 +264,146 @@ const RelationshipFields = ({
 					</label>
 				</div>
 			</div>
-			{showReferenceFields === true ? (
-				<div className="d-flex flex-column d-sm-flex flex-sm-row">
-					<div
-						className={`${
-							errors.reverseName ? "field has-error" : "field"
-						} me-sm-5`}
-					>
-						<label htmlFor="reverseName">
-							{__(
-								"Reverse Display Name",
-								"atlas-content-modeler"
-							)}
-						</label>
-						<br />
-						<p className="help">
-							{__(
-								"Display name for your reverse connection.",
-								"atlas-content-modeler"
-							)}
-						</p>
-						<input
-							aria-invalid={errors.reverseName ? "true" : "false"}
-							id="reverseName"
-							name="reverseName"
-							defaultValue={
-								data?.reverseName
-									? data.reverseName
-									: models[model].plural
-							}
-							placeholder="Reverse Display Name"
-							type="text"
-							ref={register({
-								required: true,
-								maxLength: 50,
-							})}
-							onChange={(e) => {
-								setInputGeneratorSourceValue(e.target.value);
-								setNameCount(e.target.value.length);
-								clearErrors("reverseSlug");
-							}}
-						/>
-						<p className="field-messages">
-							{errors.reverseName &&
-								errors.reverseName.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"This field is required",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-							{errors.reverseName &&
-								errors.reverseName.type === "maxLength" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"Exceeds max length.",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-							<span>&nbsp;</span>
-							<span className="count">{reverseNameCount}/50</span>
-						</p>
-					</div>
-
-					<div
-						className={
-							errors.reverseSlug ? "field has-error" : "field"
-						}
-					>
-						<label htmlFor="slug">
-							{__(
-								"Reverse API Identifier",
-								"atlas-content-modeler"
-							)}
-						</label>
-						<br />
-						<p className="help">
-							{__(
-								"Auto-generated and used for API requests.",
-								"atlas-content-modeler"
-							)}
-						</p>
-						<input
-							id="reverseSlug"
-							name="reverseSlug"
-							type="text"
-							defaultValue={
-								data?.reverseSlug
-									? data.reverseSlug
-									: toValidApiId(models[model].plural)
-							}
-							ref={register({
-								required: true,
-								maxLength: 50,
-							})}
-							onChange={(e) =>
-								onChangeGeneratedValue(e.target.value)
-							}
-						/>
-						<p className="field-messages">
-							{errors.reverseSlug &&
-								errors.reverseSlug.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"This field is required",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-							{errors.reverseSlug &&
-								errors.reverseSlug.type === "maxLength" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"Exceeds max length of 50.",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-							{errors.reverseSlug &&
-								errors.reverseSlug.type === "idExists" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"Another field in this model has the same API identifier.",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-						</p>
-					</div>
-				</div>
-			) : (
-				<>
+			<div
+				className={
+					showReferenceFields
+						? "d-flex flex-column d-sm-flex flex-sm-row"
+						: "d-none"
+				}
+			>
+				<div
+					className={`${
+						errors.reverseName ? "field has-error" : "field"
+					} me-sm-5`}
+				>
+					<label htmlFor="reverseName">
+						{__("Reverse Display Name", "atlas-content-modeler")}
+					</label>
+					<br />
+					<p className="help">
+						{__(
+							"Display name for your reverse connection.",
+							"atlas-content-modeler"
+						)}
+					</p>
 					<input
+						aria-invalid={errors.reverseName ? "true" : "false"}
 						id="reverseName"
 						name="reverseName"
-						value={
-							data?.reverseName
-								? data.reverseName
-								: models[model].plural
-						}
-						type="hidden"
-						ref={register}
+						ref={register({
+							maxLength: 50,
+							validate: {
+								// Require field if “configure references” is open.
+								required: (value) => {
+									return showReferenceFields ? !!value : true;
+								},
+							},
+						})}
+						placeholder="Reverse Display Name"
+						type="text"
+						onChange={(e) => {
+							setInputGeneratorSourceValue(e.target.value);
+							setNameCount(e.target.value.length);
+							clearErrors("reverseSlug");
+						}}
 					/>
+					<p className="field-messages">
+						{errors.reverseName &&
+							errors.reverseName.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						{errors.reverseName &&
+							errors.reverseName.type === "maxLength" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"Exceeds max length.",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						<span>&nbsp;</span>
+						<span className="count">{reverseNameCount}/50</span>
+					</p>
+				</div>
+				<div
+					className={errors.reverseSlug ? "field has-error" : "field"}
+				>
+					<label htmlFor="slug">
+						{__("Reverse API Identifier", "atlas-content-modeler")}
+					</label>
+					<br />
+					<p className="help">
+						{__(
+							"Auto-generated and used for API requests.",
+							"atlas-content-modeler"
+						)}
+					</p>
 					<input
 						id="reverseSlug"
 						name="reverseSlug"
-						type="hidden"
-						ref={register}
-						value={
-							data?.reverseSlug
-								? data.reverseSlug
-								: toValidApiId(models[model].plural)
-						}
+						type="text"
+						ref={register({
+							maxLength: 50,
+							validate: {
+								// Require field if “configure references” is open.
+								required: (value) => {
+									return showReferenceFields ? !!value : true;
+								},
+							},
+						})}
+						onChange={(e) => onChangeGeneratedValue(e.target.value)}
 					/>
-				</>
-			)}
+					<p className="field-messages">
+						{errors.reverseSlug &&
+							errors.reverseSlug.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						{errors.reverseSlug &&
+							errors.reverseSlug.type === "maxLength" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"Exceeds max length of 50.",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						{errors.reverseSlug &&
+							errors.reverseSlug.type === "idExists" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"Another field in this model has the same API identifier.",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+					</p>
+				</div>
+			</div>
 		</>
 	);
 };
