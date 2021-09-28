@@ -18,18 +18,6 @@ export default function Tools() {
 		});
 	}
 
-	/* MODEL
-	api_visibility: "public"
-description: ""
-fields: []
-model_icon: "dashicons-admin-page"
-plural: "Tests"
-show_in_graphql: true
-show_in_rest: true
-singular: "Test"
-slug: "test"
-	 */
-
 	/**
 	 * Validate model field
 	 * @param field
@@ -99,9 +87,6 @@ slug: "test"
 		let validModelCount = 0;
 		let invalidModelCount = 0;
 
-		console.log(data);
-		debugger;
-
 		Object.entries(data).forEach((model) => {
 			totalModelCount += 1;
 			validateModel(model)
@@ -124,13 +109,11 @@ slug: "test"
 		if (validateModelData(serializedDataArray)) {
 			// add each model to the API fetch array
 			serializedDataArray.forEach((model) => {
-				const modelData = model[1];
-				console.log("model data", modelData);
 				const apiCall = apiFetch({
 					path: `/wpe/atlas/content-model`,
 					method: "POST",
 					_wpnonce: wpApiSettings.nonce,
-					modelData,
+					data: model[1],
 				});
 				modelAPICalls.push(apiCall);
 			});
