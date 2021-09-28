@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 /**
  * Uses the value of a source input to generate and apply a valid value
@@ -23,17 +23,25 @@ import { useState } from "react";
 export function useInputGenerator({
 	linked = true,
 	setGeneratedValue,
+	setDefaultInputValue,
+	defaultInputValue = "",
 	format,
 }) {
 	if (typeof format !== "function") {
 		format = (value) => value;
 	}
 
-	const [input, setInputGeneratorSourceValue] = useState("");
+	const [input, setInputGeneratorSourceValue] = useState(defaultInputValue);
 
 	// The source and generated fields are “linked” if typing into the source field
 	// should update the value of the generated field.
 	const [fieldsAreLinked, setFieldsAreLinked] = useState(linked);
+
+	useEffect(() => {
+		if (defaultInputValue && setDefaultInputValue) {
+			setDefaultInputValue(defaultInputValue);
+		}
+	}, []);
 
 	if (fieldsAreLinked) {
 		setGeneratedValue(format(input));
