@@ -131,12 +131,21 @@ export default function Tools() {
 				})
 				.catch((err) => {
 					console.log(err);
-					showError(
-						__(
-							"There were errors during your import.",
-							"atlas-content-modeler"
-						)
-					);
+					if (err.code === "atlas_content_modeler_already_exists") {
+						showError(
+							__(
+								"The model already exists.",
+								"atlas-content-modeler"
+							)
+						);
+					} else {
+						showError(
+							__(
+								"There were errors during your import.",
+								"atlas-content-modeler"
+							)
+						);
+					}
 				});
 		} else {
 			showError(

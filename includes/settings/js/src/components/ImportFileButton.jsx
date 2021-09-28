@@ -51,35 +51,7 @@ export default function ImportFileButton({
 			if (event.target.result && isValidJson(event.target.result)) {
 				form.append("file", uploadedFile);
 				if (callbackFn && form) {
-					callbackFn(event.target.result)
-						.then((res) => {
-							if (res) {
-								showSuccess(
-									__(
-										successMessage ||
-											"The file was successfully uploaded.",
-										"atlas-content-modeler"
-									)
-								);
-							} else {
-								showError(
-									__(
-										errorMessage ||
-											"The file upload failed.",
-										"atlas-content-modeler"
-									)
-								);
-							}
-						})
-						.catch(() => {
-							showError(
-								__(
-									errorMessage ||
-										"There was an error uploading the file.",
-									"atlas-content-modeler"
-								)
-							);
-						});
+					callbackFn(event.target.result);
 				}
 			} else {
 				showError(
