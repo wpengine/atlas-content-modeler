@@ -52,6 +52,13 @@ export default function ImportFileButton({
 				form.append("file", uploadedFile);
 				if (callbackFn && form) {
 					callbackFn(event.target.result);
+				} else {
+					showError(
+						__(
+							errorMessage || "There was an error during upload.",
+							"atlas-content-modeler"
+						)
+					);
 				}
 			} else {
 				showError(
