@@ -105,8 +105,7 @@ function register_relationships( $registry ) {
 				];
 
 				try {
-					$name = $models[ $model ]['slug'] . '-' . $field['slug'] . '-' . ( isset( $field['reverseSlug'] ) ? $field['reverseSlug'] : '' );
-					$registry->define_post_to_post( $model, $field['reference'], $name, $args );
+					$registry->define_post_to_post( $model, $field['reference'], $field['id'], $args );
 				} catch ( \Exception $e ) {
 					/**
 					 * Either the relationship already exists,
@@ -577,7 +576,7 @@ function register_relationship_connection( array $parent_model, array $reference
 			'slug'       => $field['slug'],
 			'one_to_one' => ( $field['cardinality'] === 'one-to-one' ),
 			'reference'  => $field['reference'],
-			'name'       => $parent_model['slug'] . '-' . $field['slug'] . '-' . ( isset( $field['reverseSlug'] ) ? $field['reverseSlug'] : '' ),
+			'name'       => $field['id'],
 		),
 	);
 
@@ -588,7 +587,7 @@ function register_relationship_connection( array $parent_model, array $reference
 			'slug'       => $field['reverseSlug'],
 			'one_to_one' => false,
 			'reference'  => $parent_model['slug'],
-			'name'       => $parent_model['slug'] . '-' . $field['slug'] . '-' . ( isset( $field['reverseSlug'] ) ? $field['reverseSlug'] : '' ),
+			'name'       => $field['id'],
 		);
 	}
 

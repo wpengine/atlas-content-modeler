@@ -389,7 +389,7 @@ final class FormEditingExperience {
 		);
 
 		$registry      = ContentConnect::instance()->get_registry();
-		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $post->post_type . '-' . $field['slug'] . '-' . $field['reverseSlug'] );
+		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field['id'] );
 		$related_posts = array();
 
 		if ( $relationship ) {
@@ -414,7 +414,7 @@ final class FormEditingExperience {
 		$relationship = $registry->get_post_to_post_relationship(
 			$post->post_type,
 			$field['reference'],
-			$post->post_type . '-' . $field['slug'] . '-' . ( isset( $field['reverseSlug'] ) ? $field['reverseSlug'] : '' )
+			$field['id']
 		);
 
 		if ( false === $relationship ) {
