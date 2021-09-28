@@ -362,7 +362,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							onChange={(e) =>
 								onChangeGeneratedValue(e.target.value)
 							}
-							readOnly={editing}
 						/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
