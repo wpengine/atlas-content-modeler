@@ -578,7 +578,7 @@ function register_relationship_connection( string $from_type, string $to_type, a
 			'fromType'           => $from_type,
 			'toType'             => $to_type,
 			'fromFieldName'      => $field['slug'],
-			'oneToOne'           => ( $field['cardinality'] === 'one-to-one' ),
+			'oneToOne'           => ( $field['cardinality'] === 'one-to-one' || $field['cardinality'] === 'many-to-one' ),
 			'resolve'            => static function ( Post $post, $args, $context, $info ) use ( $field ) {
 				$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
 
@@ -606,7 +606,7 @@ function register_relationship_connection( string $from_type, string $to_type, a
 					$relationship_ids
 				);
 
-				if ( $field['cardinality'] === 'one-to-one' ) {
+				if ( $field['cardinality'] === 'one-to-one' || $field['cardinality'] === 'many-to-one' ) {
 					return $resolver->one_to_one()->get_connection();
 				}
 

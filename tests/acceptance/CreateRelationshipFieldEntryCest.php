@@ -27,7 +27,7 @@ class CreateRelationshipFieldEntryCest
 		$I->wait(1);
 		$I->fillField(['name' => 'name'], 'Many Companies');
 		$I->selectOption('#reference', 'Companies');
-		$I->click('input#one-to-many');
+		$I->click('input#many-to-many');
 		$I->click('.open-field button.primary');
 		$I->wait(1);
 	}
