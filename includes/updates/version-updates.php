@@ -66,11 +66,11 @@ function update_0_6_1() {
 				if ( $acm_table_exists ) {
 					$query = "
 						SELECT
-						acm.name,
-						acm.id1,
-						posts.post_type AS t1,
-						acm.id2,
-						posts2.post_type AS t2
+							acm.name,
+							acm.id1,
+							posts.post_type AS t1,
+							acm.id2,
+							posts2.post_type AS t2
 						FROM
 							{$acm_table} AS acm
 							JOIN {$wpdb->posts} AS posts ON id1 = posts.ID
