@@ -51,11 +51,14 @@ function atlas_content_modeler_loader(): void {
 		'publisher/class-publisher-form-editing-experience.php',
 		'updates/update-functions.php',
 		'updates/update-callbacks.php',
+		'updates/version-updates.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
 			include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
 	}
+
+	\WPE\AtlasContentModeler\VersionUpdater\update_plugin();
 
 	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
 	$form_editing_experience->bootstrap();
