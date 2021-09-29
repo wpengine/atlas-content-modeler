@@ -70,12 +70,19 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 									id
 								}
 							}
+							manytoManyRelationshipReverse {
+								nodes {
+									id
+								}
+							}
 						}
 					}
 				}
 				',
 				]
 			);
+
+			var_dump( $results );
 
 			self::assertArrayHasKey( 'databaseId', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['databaseId'], 23 );
@@ -97,6 +104,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'manytoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationship'] );
+
+			self::assertArrayHasKey( 'manytoManyRelationshipReverse', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationshipReverse'] );
 
 			self::assertArrayHasKey( 'manytoOneRelationship', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoOneRelationship'] );

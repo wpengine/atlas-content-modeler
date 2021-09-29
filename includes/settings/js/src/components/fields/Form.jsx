@@ -413,6 +413,8 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						clearErrors={clearErrors}
 						register={register}
 						fieldId={id}
+						setValue={setValue}
+						model={model}
 					/>
 				)}
 

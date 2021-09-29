@@ -6,8 +6,19 @@ import { sprintf, __ } from "@wordpress/i18n";
 import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
 import Icon from "acm-icons";
+import { useInputGenerator } from "../../hooks";
+import { toValidApiId } from "../../formats";
 
-const RelationshipFields = ({ register, data, editing, watch, errors }) => {
+const RelationshipFields = ({
+	register,
+	data,
+	editing,
+	watch,
+	errors,
+	setValue,
+	model,
+	clearErrors,
+}) => {
 	const { models } = useContext(ModelsContext);
 	const modelsAlphabetical = Object.values(models).sort((a, b) =>
 		a.plural.toLowerCase() < b.plural.toLowerCase() ? -1 : 1
@@ -18,6 +29,27 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 		data?.description?.length || 0
 	);
 	const descriptionMaxLength = 250;
+	const [reverseNameCount, setNameCount] = useState(
+		data?.reverseName?.length || 0
+	);
+	const [showReferenceFields, setShowReferenceFields] = useState(
+		data?.enableReverse === true
+	);
+	const {
+		setInputGeneratorSourceValue,
+		onChangeGeneratedValue,
+	} = useInputGenerator({
+		linked: !editing,
+		setGeneratedValue: (value) => setValue("reverseSlug", value),
+		setDefaultInputValue: (value) => {
+			setNameCount(value?.length);
+			setValue("reverseName", value);
+		},
+		defaultInputValue: data?.reverseName
+			? data.reverseName
+			: models[model].plural,
+		format: toValidApiId,
+	});
 
 	return (
 		<>
@@ -213,8 +245,176 @@ const RelationshipFields = ({ register, data, editing, watch, errors }) => {
 							</span>
 						)}
 					<span>&nbsp;</span>
-					<span className="count">{`${descriptionCount}/${descriptionMaxLength}`}</span>
+					<span className="count description-count">{`${descriptionCount}/${descriptionMaxLength}`}</span>
 				</p>
+			</div>
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div className="field">
+					<legend>
+						{__("Reverse Reference", "atlas-content-modeler")}
+					</legend>
+					<input
+						name="enableReverse"
+						type="checkbox"
+						id={`enable-reverse`}
+						ref={register}
+						defaultChecked={showReferenceFields}
+						onChange={() =>
+							setShowReferenceFields(!showReferenceFields)
+						}
+					/>
+					<label
+						htmlFor={`enable-reverse`}
+						className="checkbox enable-reverse"
+					>
+						{__(
+							"Configure Reverse Reference",
+							"atlas-content-modeler"
+						)}
+					</label>
+				</div>
+			</div>
+			<div
+				className={
+					showReferenceFields
+						? "d-flex flex-column d-sm-flex flex-sm-row"
+						: "d-none"
+				}
+			>
+				<div
+					className={`${
+						errors.reverseName ? "field has-error" : "field"
+					} me-sm-5`}
+				>
+					<label htmlFor="reverseName">
+						{__("Reverse Display Name", "atlas-content-modeler")}
+					</label>
+					<br />
+					<p className="help">
+						{__(
+							"Display name for your reverse connection.",
+							"atlas-content-modeler"
+						)}
+					</p>
+					<input
+						aria-invalid={errors.reverseName ? "true" : "false"}
+						id="reverseName"
+						name="reverseName"
+						ref={register({
+							maxLength: 50,
+							validate: {
+								// Require field if “configure references” is open.
+								required: (value) => {
+									return showReferenceFields ? !!value : true;
+								},
+							},
+						})}
+						placeholder="Reverse Display Name"
+						type="text"
+						onChange={(e) => {
+							setInputGeneratorSourceValue(e.target.value);
+							setNameCount(e.target.value.length);
+							clearErrors("reverseSlug");
+						}}
+					/>
+					<p className="field-messages">
+						{errors.reverseName &&
+							errors.reverseName.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						{errors.reverseName &&
+							errors.reverseName.type === "maxLength" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"Exceeds max length.",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						<span>&nbsp;</span>
+						<span className="count reverse-name-count">
+							{reverseNameCount}/50
+						</span>
+					</p>
+				</div>
+				<div
+					className={errors.reverseSlug ? "field has-error" : "field"}
+				>
+					<label htmlFor="slug">
+						{__("Reverse API Identifier", "atlas-content-modeler")}
+					</label>
+					<br />
+					<p className="help">
+						{__(
+							"Auto-generated and used for API requests.",
+							"atlas-content-modeler"
+						)}
+					</p>
+					<input
+						id="reverseSlug"
+						name="reverseSlug"
+						type="text"
+						ref={register({
+							maxLength: 50,
+							validate: {
+								// Require field if “configure references” is open.
+								required: (value) => {
+									return showReferenceFields ? !!value : true;
+								},
+							},
+						})}
+						onChange={(e) => onChangeGeneratedValue(e.target.value)}
+					/>
+					<p className="field-messages">
+						{errors.reverseSlug &&
+							errors.reverseSlug.type === "required" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"This field is required",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						{errors.reverseSlug &&
+							errors.reverseSlug.type === "maxLength" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"Exceeds max length of 50.",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						{errors.reverseSlug &&
+							errors.reverseSlug.type === "idExists" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"Another field in this model has the same API identifier.",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+					</p>
+				</div>
 			</div>
 		</>
 	);

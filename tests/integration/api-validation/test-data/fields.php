@@ -252,5 +252,23 @@ function get_test_fields() {
 			'cardinality'     => 'many-to-many',
 			'description'     => '',
 		),
+		'1630411592343' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'relationship',
+			'id'              => '1630411592343',
+			'position'        => '180000',
+			'name'            => 'Many-to-Many-Relationship-Reverse',
+			'slug'            => 'manytoManyRelationshipReverse',
+			'required'        => false,
+			'minChars'        => '',
+			'maxChars'        => '',
+			'reference'       => 'public',
+			'cardinality'     => 'many-to-many',
+			'description'     => '',
+			'enableReverse'   => true,
+			'reverseName'     => 'PPosts',
+			'reverseSlug'     => 'pposts' . random_int(0, PHP_INT_MAX),
+		),
 	);
 }
