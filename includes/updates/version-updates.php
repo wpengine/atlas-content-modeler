@@ -8,10 +8,13 @@
 declare(strict_types=1);
 namespace WPE\AtlasContentModeler\VersionUpdater;
 
+use function WPE\AtlasContentModeler\ContentRegistration\camelcase;
+
 /**
  * Checks plugin version for update and calls update function where appropriate.
  */
 function update_plugin() {
+	delete_option( 'wpe_atlas_current_version' );
 	$current_version = get_option( 'wpe_atlas_current_version', '0.0.0' );
 	$file_data       = get_file_data( ATLAS_CONTENT_MODELER_FILE, array( 'Version' => 'Version' ) );
 	$plugin_version  = $file_data['Version'];
@@ -43,7 +46,12 @@ function update_plugin() {
  * reflect their cardinality. This script updates the fields accordingly.
  */
 function update_0_6_1() {
+	global $wpdb;
+
 	$models = get_option( 'atlas_content_modeler_post_types', array() );
+
+	$acm_table        = $wpdb->base_prefix . 'acm_post_to_post';
+	$acm_table_exists = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $acm_table ) );
 
 	foreach ( $models as $model_index => $model ) {
 		foreach ( $model['fields'] as $field_index => $field ) {
@@ -53,6 +61,61 @@ function update_0_6_1() {
 				}
 				if ( 'one-to-many' === $field['cardinality'] ) {
 					$models[ $model_index ]['fields'][ $field_index ]['cardinality'] = 'many-to-many';
+				}
+
+				if ( $acm_table_exists ) {
+					$query = "
+						SELECT
+						acm.name,
+						acm.id1,
+						posts.post_type AS t1,
+						acm.id2,
+						posts2.post_type AS t2
+						FROM
+							{$acm_table} AS acm
+							JOIN {$wpdb->posts} AS posts ON id1 = posts.ID
+							JOIN {$wpdb->posts} AS posts2 ON id2 = posts2.ID
+						WHERE
+							name=%s;
+						";
+
+					$relationships = $wpdb->get_results( $wpdb->prepare( $query, $field['slug'] ), ARRAY_A ); // phpcs:ignore
+
+					foreach ( $relationships as $relationship ) {
+						if (
+							$relationship['t1'] === camelcase( $models[ $field['reference'] ]['singular'] ) &&
+							$relationship['t2'] === camelcase( $model['singular'] ) &&
+							$field['slug'] === $relationship['name']
+							) {
+								$wpdb->update( // phpcs:ignore
+									$acm_table,
+									array(
+										'name' => $field['id'],
+									),
+									array(
+										'name' => $field['slug'],
+										'id1'  => $relationship['id1'],
+										'id2'  => $relationship['id2'],
+									),
+									array(
+										'%s',
+									)
+								);
+								$wpdb->insert( // phpcs:ignore
+									$acm_table,
+									array(
+										'name' => $field['id'],
+										'id1'  => $relationship['id2'],
+										'id2'  => $relationship['id1'],
+									),
+									array(
+										'%s',
+										'%d',
+										'%d',
+									)
+								);
+						}
+					}
 				}
 			}
 		}
