@@ -76,7 +76,7 @@ class DeleteContentModelCest
 		$I->wait(1);
 		$I->fillField(['name' => 'name'], 'Geese Friends');
 		$I->selectOption('#reference', 'Geese');
-		$I->click('#one-to-many');
+		$I->click('#many-to-many');
 		$I->click('.open-field button.primary');
 		$I->wait(1);
 		$I->see("Geese Friends");
