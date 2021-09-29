@@ -60,7 +60,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
                             numberIntergerRequired
                             dateRequired
                             booleanRequired
-							onetoManyRelationship {
+							manytoManyRelationship {
 								nodes {
 									id
 								}
@@ -70,7 +70,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 									id
 								}
 							}
-							onetoOneRelationship {
+							manytoOneRelationship {
 								node {
 									id
 								}
@@ -100,14 +100,14 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertArrayHasKey( 'booleanRequired', $results['data']['publicsFields']['nodes'][0] );
 			self::assertTrue( $results['data']['publicsFields']['nodes'][0]['booleanRequired'] );
 
-			self::assertArrayHasKey( 'onetoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
-			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoManyRelationship'] );
+			self::assertArrayHasKey( 'manytoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationship'] );
 
 			self::assertArrayHasKey( 'onetoManyRelationshipReverse', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoManyRelationshipReverse'] );
 
-			self::assertArrayHasKey( 'onetoOneRelationship', $results['data']['publicsFields']['nodes'][0] );
-			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoOneRelationship'] );
+			self::assertArrayHasKey( 'manytoOneRelationship', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoOneRelationship'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}

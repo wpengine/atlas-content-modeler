@@ -129,30 +129,31 @@ const RelationshipFields = ({
 						<div className="radio-row">
 							<input
 								type="radio"
-								id="one-to-one"
+								id="many-to-one"
 								name="cardinality"
-								value="one-to-one"
+								value="many-to-one"
 								ref={register}
 								defaultChecked={
+									data?.cardinality === "many-to-one" ||
 									data?.cardinality === "one-to-one" ||
 									typeof data?.cardinality === "undefined"
 								}
 								disabled={editing}
 							/>
-							<label className="radio" htmlFor="one-to-one">
-								{__("One to One", "atlas-content-modeler")}
+							<label className="radio" htmlFor="many-to-one">
+								{__("Many to One", "atlas-content-modeler")}
 								<span>
 									{sprintf(
 										__(
 											/*
 											 * translators:
-											 * 1: Singular name of the current model (e.g. “Country”)
+											 * 1: Plural name of the current model (e.g. Countries)
 											 * 2: Singular name of the related model (e.g. “Capital City”) or “related item” if no related model is selected.
 											 */
-											"One %1$s can have one %2$s.",
+											"Many %1$s can have one %2$s.",
 											"atlas-content-modeler"
 										),
-										models[modelId].singular,
+										models[modelId].plural,
 										models[selectedReference]?.singular
 											? models[selectedReference].singular
 											: __(
@@ -166,26 +167,26 @@ const RelationshipFields = ({
 						<div className="radio-row">
 							<input
 								type="radio"
-								id="one-to-many"
+								id="many-to-many"
 								name="cardinality"
-								value="one-to-many"
+								value="many-to-many"
 								ref={register}
 								disabled={editing}
 							/>
-							<label className="radio" htmlFor="one-to-many">
-								{__("One To Many", "atlas-content-modeler")}
+							<label className="radio" htmlFor="many-to-many">
+								{__("Many To Many", "atlas-content-modeler")}
 								<span>
 									{sprintf(
 										__(
 											/*
 											 * translators:
-											 * 1: Singular name of the current content model (e.g. “Company”).
+											 * 1: Plural name of the current content model (e.g. Companies).
 											 * 2: Plural name of the related model (e.g. “Employees”) or “related items” if no related model is selected.
 											 */
-											"One %1$s can have many %2$s.",
+											"Many %1$s can have many %2$s.",
 											"atlas-content-modeler"
 										),
-										models[modelId].singular,
+										models[modelId].plural,
 										models[selectedReference]?.plural
 											? models[selectedReference].plural
 											: __(
@@ -195,6 +196,15 @@ const RelationshipFields = ({
 									)}
 								</span>
 							</label>
+						</div>
+						<div className="radio-row">
+							<span>
+								*{" "}
+								{__(
+									"More options are coming soon.",
+									"atlas-content-modeler"
+								)}
+							</span>
 						</div>
 					</fieldset>
 				</div>

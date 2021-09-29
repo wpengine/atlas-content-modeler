@@ -17,7 +17,7 @@ class CreateContentModelRelationFieldCest
 	public function i_can_create_a_relation_field(AcceptanceTester $I)
 	{
 		$I->selectOption('#reference', 'Employees');
-		$I->click('#one-to-many');
+		$I->click('#many-to-many');
 		$I->click('.open-field button.primary');
 		$I->wait(1);
 
@@ -43,7 +43,7 @@ class CreateContentModelRelationFieldCest
 		$I->wait(1);
 
 		$reference_disabled_state   = $I->grabAttributeFrom('#reference', 'disabled');
-		$cardinality_disabled_state = $I->grabAttributeFrom('#one-to-many', 'disabled');
+		$cardinality_disabled_state = $I->grabAttributeFrom('#many-to-many', 'disabled');
 
 		$I->assertEquals('true', $reference_disabled_state);
 		$I->assertEquals('true', $cardinality_disabled_state);
@@ -69,7 +69,7 @@ class CreateContentModelRelationFieldCest
 	public function i_can_set_a_relationship_field_description_shorter_than_the_character_limit(AcceptanceTester $I)
 	{
 		$I->selectOption('#reference', 'Employees');
-		$I->click('#one-to-many');
+		$I->click('#many-to-many');
 
 		// The field cannot be submitted with a description exceeding the maximum length.
 		$I->fillField(['name' => 'description'], str_repeat('a', 251));

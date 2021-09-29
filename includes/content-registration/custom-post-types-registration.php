@@ -571,12 +571,12 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 function register_relationship_connection( array $parent_model, array $reference_model, array $field ) {
 	$connections = array(
 		array(
-			'from_type'  => camelcase( $parent_model['singular'] ),
-			'to_type'    => camelcase( $reference_model['singular'] ),
-			'slug'       => $field['slug'],
-			'one_to_one' => ( $field['cardinality'] === 'one-to-one' ),
-			'reference'  => $field['reference'],
-			'name'       => $field['id'],
+			'from_type' => camelcase( $parent_model['singular'] ),
+			'to_type'   => camelcase( $reference_model['singular'] ),
+			'slug'      => $field['slug'],
+			'oneToOne'  => ( $field['cardinality'] === 'one-to-one' || $field['cardinality'] === 'many-to-one' ),
+			'reference' => $field['reference'],
+			'name'      => $field['id'],
 		),
 	);
 
@@ -609,8 +609,9 @@ function register_relationship_connection( array $parent_model, array $reference
 						$connection_args['name']
 					);
 
-					$post_type = $post->post_type;
-					$post_id = $post->ID;
+					if ( $field['cardinality'] === 'one-to-one' || $field['cardinality'] === 'many-to-one' ) {
+						return $resolver->one_to_one()->get_connection();
+					}
 
 					if ( false === $relationship ) {
 						return array();
