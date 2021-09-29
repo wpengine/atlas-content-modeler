@@ -14,8 +14,8 @@ use function WPE\AtlasContentModeler\ContentRegistration\camelcase;
  * Checks plugin version for update and calls update function where appropriate.
  */
 function update_plugin() {
-	delete_option( 'wpe_atlas_current_version' );
-	$current_version = get_option( 'wpe_atlas_current_version', '0.0.0' );
+	delete_option( 'atlas_content_modeler_current_version' );
+	$current_version = get_option( 'atlas_content_modeler_current_version', '0.0.0' );
 	$file_data       = get_file_data( ATLAS_CONTENT_MODELER_FILE, array( 'Version' => 'Version' ) );
 	$plugin_version  = $file_data['Version'];
 
@@ -35,7 +35,7 @@ function update_plugin() {
 
 		// Save the last updated version.
 		$file_data = get_file_data( ATLAS_CONTENT_MODELER_FILE, array( 'Version' => 'Version' ) );
-		update_option( 'wpe_atlas_current_version', $plugin_version );
+		update_option( 'atlas_content_modeler_current_version', $plugin_version );
 	}
 }
 
