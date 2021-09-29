@@ -412,7 +412,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 			'position'    => '123',
 			'name'        => 'Related',
 			'slug'        => 'related',
-			'cardinality' => 'one-to-one',
+			'cardinality' => 'many-to-one',
 		];
 
 		wp_set_current_user( 1 );
@@ -464,7 +464,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 			'position'    => '123',
 			'name'        => 'Related',
 			'slug'        => 'related',
-			'cardinality' => 'one-to-one',
+			'cardinality' => 'many-to-one',
 			'reference'   => 'does-not-exist',
 		];
 
