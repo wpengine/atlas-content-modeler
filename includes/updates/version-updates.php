@@ -12,7 +12,6 @@ namespace WPE\AtlasContentModeler\VersionUpdater;
  * Checks plugin version for update and calls update function where appropriate.
  */
 function update_plugin() {
-	delete_option( 'wpe_atlas_current_version' );
 	$current_version = get_option( 'wpe_atlas_current_version', '0.0.0' );
 	$file_data       = get_file_data( ATLAS_CONTENT_MODELER_FILE, array( 'Version' => 'Version' ) );
 	$plugin_version  = $file_data['Version'];
