@@ -609,10 +609,6 @@ function register_relationship_connection( array $parent_model, array $reference
 						$connection_args['name']
 					);
 
-					if ( $field['cardinality'] === 'one-to-one' || $field['cardinality'] === 'many-to-one' ) {
-						return $resolver->one_to_one()->get_connection();
-					}
-
 					if ( false === $relationship ) {
 						return array();
 					}
