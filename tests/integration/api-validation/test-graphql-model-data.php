@@ -65,13 +65,13 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 									id
 								}
 							}
-							onetoManyRelationshipReverse {
-								nodes {
+							manytoOneRelationship {
+								node {
 									id
 								}
 							}
-							manytoOneRelationship {
-								node {
+							manytoManyRelationshipReverse {
+								nodes {
 									id
 								}
 							}
@@ -101,13 +101,10 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertTrue( $results['data']['publicsFields']['nodes'][0]['booleanRequired'] );
 
 			self::assertArrayHasKey( 'manytoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
-			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationship'] );
 
-			self::assertArrayHasKey( 'onetoManyRelationshipReverse', $results['data']['publicsFields']['nodes'][0] );
-			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['onetoManyRelationshipReverse'] );
+			self::assertArrayHasKey( 'manytoManyRelationshipReverse', $results['data']['publicsFields']['nodes'][0] );
 
 			self::assertArrayHasKey( 'manytoOneRelationship', $results['data']['publicsFields']['nodes'][0] );
-			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoOneRelationship'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
