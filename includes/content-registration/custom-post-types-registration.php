@@ -604,8 +604,8 @@ function register_relationship_connection( array $parent_model, array $reference
 					$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
 
 					$relationship = $registry->get_post_to_post_relationship(
-						$connection_args['to_type'],
-						$connection_args['from_type'],
+						sanitize_key( $connection_args['to_type'] ),
+						sanitize_key( $connection_args['from_type'] ),
 						$connection_args['name']
 					);
 
