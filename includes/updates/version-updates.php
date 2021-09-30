@@ -8,8 +8,6 @@
 declare(strict_types=1);
 namespace WPE\AtlasContentModeler\VersionUpdater;
 
-use function WPE\AtlasContentModeler\ContentRegistration\camelcase;
-
 /**
  * Checks plugin version for update and calls update function where appropriate.
  *
@@ -89,8 +87,8 @@ function update_0_6_1(): bool {
 
 					foreach ( $relationships as $relationship ) {
 						if (
-							$relationship['t1'] === camelcase( $models[ $field['reference'] ]['singular'] ) &&
-							$relationship['t2'] === camelcase( $model['singular'] ) &&
+							$relationship['t1'] === sanitize_key( $models[ $field['reference'] ]['singular'] ) &&
+							$relationship['t2'] === sanitize_key( $model['singular'] ) &&
 							$field['slug'] === $relationship['name']
 							) {
 								$wpdb->update( // phpcs:ignore
