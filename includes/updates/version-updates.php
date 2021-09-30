@@ -12,9 +12,10 @@ use function WPE\AtlasContentModeler\ContentRegistration\camelcase;
 
 /**
  * Checks plugin version for update and calls update function where appropriate.
+ *
+ * @return bool True if updates were carried out or false.
  */
-function update_plugin() {
-	delete_option( 'atlas_content_modeler_current_version' );
+function update_plugin(): bool {
 	$current_version = get_option( 'atlas_content_modeler_current_version', '0.0.0' );
 	$file_data       = get_file_data( ATLAS_CONTENT_MODELER_FILE, array( 'Version' => 'Version' ) );
 	$plugin_version  = $file_data['Version'];
@@ -36,7 +37,10 @@ function update_plugin() {
 		// Save the last updated version.
 		$file_data = get_file_data( ATLAS_CONTENT_MODELER_FILE, array( 'Version' => 'Version' ) );
 		update_option( 'atlas_content_modeler_current_version', $plugin_version );
+		return true;
 	}
+
+	return false;
 }
 
 /**
@@ -44,8 +48,10 @@ function update_plugin() {
  *
  * After version 0.6.0 we had to modify existing relationship fields to properly
  * reflect their cardinality. This script updates the fields accordingly.
+ *
+ * @return bool True if the database was updated or false.
  */
-function update_0_6_1() {
+function update_0_6_1(): bool {
 	global $wpdb;
 
 	$models = get_option( 'atlas_content_modeler_post_types', array() );
@@ -121,5 +127,5 @@ function update_0_6_1() {
 		}
 	}
 
-	update_option( 'atlas_content_modeler_post_types', $models );
+	return update_option( 'atlas_content_modeler_post_types', $models );
 }
