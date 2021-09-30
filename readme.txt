@@ -43,3 +43,5 @@ It can also be installed manually using a zip file.
 == Frequently Asked Questions ==
 = Can Atlas Content Modeler be used with traditional WordPress sites? =
 ACM is primarily intended for headless WordPress applications. For that reason, the WordPress REST API and WPGraphQL are the only two officially supported APIs. That said, it is possible to fetch the data for your models in a traditional WordPress site by using the `rest_do_request()` PHP function that the REST API provides or the `graphql()` PHP function that WPGraphQL provides.
+= Where can I submit bug reports and feature requests? =
+You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
