@@ -42,6 +42,7 @@ class UpdaterTestCases extends WP_UnitTestCase {
         update_option( 'atlas_content_modeler_current_version', $this->versions['old'] );
 
         self::assertTrue(VersionUpdater\update_plugin());
+        self::assertEquals( get_option( 'atlas_content_modeler_current_version' ), $this->versions['current'] );
 
 	}
 
@@ -51,6 +52,7 @@ class UpdaterTestCases extends WP_UnitTestCase {
 	public function test_update_plugin_no_saved_version(): void {
 
         self::assertTrue(VersionUpdater\update_plugin());
+        self::assertEquals( get_option( 'atlas_content_modeler_current_version' ), $this->versions['current'] );
 
 	}
 
@@ -62,6 +64,7 @@ class UpdaterTestCases extends WP_UnitTestCase {
         update_option( 'atlas_content_modeler_current_version', $this->versions['current'] );
 
         self::assertFalse(VersionUpdater\update_plugin());
+        self::assertEquals( get_option( 'atlas_content_modeler_current_version' ), $this->versions['current'] );
 
 	}
 
@@ -75,6 +78,7 @@ class UpdaterTestCases extends WP_UnitTestCase {
         update_option( 'atlas_content_modeler_current_version', $this->versions['new'] );
 
         self::assertFalse(VersionUpdater\update_plugin());
+        self::assertEquals( get_option( 'atlas_content_modeler_current_version' ), $this->versions['new'] );
 
 	}
 
