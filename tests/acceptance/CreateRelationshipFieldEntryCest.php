@@ -27,12 +27,12 @@ class CreateRelationshipFieldEntryCest
 		$I->wait(1);
 		$I->fillField(['name' => 'name'], 'Many Companies');
 		$I->selectOption('#reference', 'Companies');
-		$I->click('input#one-to-many');
+		$I->click('input#many-to-many');
 		$I->click('.open-field button.primary');
 		$I->wait(1);
 	}
 
-	public function i_can_create_an_employee_and_see_one_to_one_relation_field(AcceptanceTester $I)
+	public function i_can_create_an_employee_and_see_many_to_one_relation_field(AcceptanceTester $I)
 	{
 		$I->see('Relationship', '.field-list div.type');
 		$I->see('Company', '.field-list div.widest');
@@ -58,7 +58,7 @@ class CreateRelationshipFieldEntryCest
 		$I->see('WP Engine', 'div.relation-model-card');
 	}
 
-	public function i_can_create_an_employee_and_see_one_to_many_relation_field(AcceptanceTester $I)
+	public function i_can_create_an_employee_and_see_many_to_many_relation_field(AcceptanceTester $I)
 	{
 		$I->see('Relationship', '.field-list div.type');
 		$I->see('Company', '.field-list div.widest');

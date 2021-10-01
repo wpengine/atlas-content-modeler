@@ -5,7 +5,7 @@ const supportedFields = {
 	date: "Date",
 	media: "Media",
 	boolean: "Boolean",
-	relationship: "Relationship",
+	relationship: "Relationship (Beta)",
 	// multipleChoice: "Multiple Choice",
 };
 

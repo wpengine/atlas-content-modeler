@@ -1,15 +1,36 @@
 <?php
 /**
- * Relationship field helpers used in REST API callbacks.
+ * Field helpers used in REST API callbacks.
  *
  * @package AtlasContentModeler
  */
 
-namespace WPE\AtlasContentModeler\REST_API\Relationships;
+namespace WPE\AtlasContentModeler\REST_API\Fields;
 
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
+
+/**
+ * Shapes the field arguments array.
+ *
+ * @param array $args The field arguments.
+ *
+ * @return array
+ */
+function shape_field_args( array $args ): array {
+	$defaults = [
+		'show_in_rest'    => true,
+		'show_in_graphql' => true,
+	];
+
+	$merged = array_merge( $defaults, $args );
+
+	unset( $merged['_locale'] ); // Sent by wp.apiFetch but not needed.
+	unset( $merged['model'] ); // The field is stored in the fields property of its model.
+
+	return $merged;
+}
 
 /**
  * Deletes relationship fields that refer to the `$slug` model from all models.
@@ -72,4 +93,56 @@ function cleanup_detached_relationship_references( string $slug ) {
 		)
 	);
 	// phpcs:enable
+}
+
+/**
+ * Checks if a duplicate field identifier (slug) exists in the content model.
+ *
+ * @param string $slug  The current field slug.
+ * @param string $id    The current field id.
+ * @param array  $model The content model to check for duplicate slugs.
+ * @return bool
+ */
+function content_model_field_exists( string $slug, string $id, array $model ): bool {
+	if ( ! isset( $model['fields'] ) ) {
+		return false;
+	}
+
+	foreach ( $model['fields'] as $field ) {
+		// Exclude the field being edited from slug collision checks.
+		if ( $field['id'] === $id ) {
+			continue;
+		}
+		if ( $field['slug'] === $slug ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Checks if a duplicate model identifier (name) exists in the multiple option field.
+ *
+ * @param array  $names  The available field choice names.
+ * @param string $current_choice  The currently checked field choice name.
+ * @param int    $current_index The content index for the current choice being validated.
+ * @return bool
+ */
+function content_model_multi_option_exists( array $names, string $current_choice, int $current_index ): bool {
+	if ( ! isset( $names ) ) {
+		return false;
+	}
+	if ( $names ) {
+		if ( $names[ $current_index ] ) {
+			unset( $names[ $current_index ] );
+		}
+
+		foreach ( $names as $choice ) {
+			if ( $choice['name'] === $current_choice ) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
