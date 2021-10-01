@@ -36,9 +36,13 @@ It can also be installed manually using a zip file.
 5. Click the **Activate Plugin** button.
 
 == Screenshots ==
-1. (work in progress) Description here... screenshot-1.png in assets/wporg
-2. screenshot-2.png in assets/wporg
-3. screenshot-2.png in assets/wporg
+1. Creating a new content model
+2. Adding a Text field to a content model
+3. Adding a Relationship field to a content model. This allows you to create relationships between posts.
+4. One-click access to querying content models in WPGraphQL's GraphiQL interface
+5. Example of querying a content model in GraphiQL
+6. Creating a new custom taxonomy
+7. A list of custom taxonomies
 
 == Frequently Asked Questions ==
 = Can Atlas Content Modeler be used with traditional WordPress sites? =
