@@ -1,5 +1,11 @@
 # Atlas Content Modeler Changelog
 
+## 0.7.0 - 2021-09-09
+
+### Added
+
+### Fixed
+
 ## 0.6.0 - 2021-09-09
 
 ### Added
