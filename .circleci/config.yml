@@ -8,6 +8,48 @@ orbs:
   php: circleci/php@1.1.0
   node: circleci/node@4.1.0
 
+commands:
+  set_version_variable:
+    description: "Set the VERSION environment variable"
+    steps:
+      - run:
+          command: |
+            echo "export VERSION=$(grep 'Version:' ~/project/atlas-content-modeler/atlas-content-modeler.php | awk -F: '{print $2}' | sed 's/^\s//')" >> ${BASH_ENV}
+
+  svn_setup:
+    description: "Set up SVN"
+    steps:
+      - run: sudo apt-get update && sudo apt-get install subversion
+      - run: svn co https://plugins.svn.wordpress.org/atlas-content-modeler --depth=empty .
+      - run: svn up trunk
+      - run: svn up tags --depth=empty
+      - run: svn up assets
+      - run: find ./trunk -not -path "./trunk" -delete
+      - run: cp -r ~/project/atlas-content-modeler/. ./trunk
+      - run: mv ./trunk/assets/wporg/* ./assets
+      - run: svn propset svn:mime-type image/png ./assets/*.png
+      - run: svn propset svn:mime-type image/jpeg ./assets/*.jpg
+      - run: rm -rf node_modules/
+      - run: svn propset svn:ignore -F ./trunk/.svnignore ./trunk
+      - run: svn propset svn:ignore -F ./trunk/.svnignore ./tags
+
+  svn_create_tag:
+    description: "Create an SVN tag"
+    steps:
+      - set_version_variable
+      - run: svn cp trunk tags/${VERSION}
+
+  svn_add_changes:
+    description: "Add changes to SVN"
+    steps:
+      - run: svn add --force .
+
+  svn_commit:
+    description: "Commit changes to SVN"
+    steps:
+      - set_version_variable
+      - run: svn ci -m "Tagging ${VERSION} from GitHub" --no-auth-cache --non-interactive --username "${SVN_USERNAME}" --password "${SVN_PASSWORD}"
+
 jobs:
   plugin-checkout:
     executor: wp-product-orb/default
@@ -416,6 +458,17 @@ jobs:
           json: build/<<parameters.slug>>.$BUILD_VERSION.json
           version: $BUILD_VERSION
 
+  plugin-deploy-wporg:
+    executor: php/default
+    working_directory: ~/project/svn_deploy
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - svn_setup
+      - svn_create_tag
+      - svn_add_changes
+      - svn_commit
+
 workflows:
   # Workflows defined for each package and plugin.
   # tag example for deploying an update for atlas-content-modeler: 1.0.0
@@ -487,13 +540,13 @@ workflows:
             tags:
               only: /.*/
       - plugin-test-e2e:
-          requires:
-            - plugin-build-zip
-            - plugin-build-composer-dev
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
+           requires:
+             - plugin-build-zip
+             - plugin-build-composer-dev
+           # run this job for any build, any branch
+           filters:
+             tags:
+               only: /.*/
       - plugin-test-jest:
           slug: atlas-content-modeler
           requires:
@@ -528,37 +581,48 @@ workflows:
             tags:
               only: /.*/
       - plugin-deploy:
-          name: "plugin-deploy-staging"
-          slug: atlas-content-modeler
-          requires:
-            - plugin-build-zip
-            - plugin-build-json
-            - plugin-test-e2e
-            - plugin-test-lint-js
-            - plugin-test-lint-php
-            - plugin-test-jest
-            - plugin-test-unit
-          filters:
-            branches:
-              only:
-                - main
-                - canary
-            tags:
-              only: /.*/
-          context: wpe-ldap-creds
-          auth_url: https://auth-staging.wpengine.io/v1/tokens
-          upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
+           name: "plugin-deploy-staging"
+           slug: atlas-content-modeler
+           requires:
+             - plugin-build-zip
+             - plugin-build-json
+             - plugin-test-e2e
+             - plugin-test-lint-js
+             - plugin-test-lint-php
+             - plugin-test-jest
+             - plugin-test-unit
+           filters:
+             branches:
+               only:
+                 - main
+                 - canary
+             tags:
+               only: /.*/
+           context: wpe-ldap-creds
+           auth_url: https://auth-staging.wpengine.io/v1/tokens
+           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
       - plugin-deploy:
-          name: "plugin-deploy-production"
-          slug: atlas-content-modeler
-          requires:
-            - "plugin-deploy-staging"
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              # tag ex. 1.0.0
-              only: /^\S+/
-          context: wpe-ldap-creds
-          auth_url: https://auth.wpengine.io/v1/tokens
-          upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+           name: "plugin-deploy-production"
+           slug: atlas-content-modeler
+           requires:
+             - "plugin-deploy-staging"
+           filters:
+             branches:
+               ignore: /.*/
+             tags:
+               # tag ex. 1.0.0
+               only: /^\S+/
+           context: wpe-ldap-creds
+           auth_url: https://auth.wpengine.io/v1/tokens
+           upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+      - plugin-deploy-wporg:
+           name: "plugin-deploy-wporg-production"
+           requires:
+             - "plugin-deploy-staging"
+           filters:
+             branches:
+               ignore: /.*/
+             tags:
+               # tag ex. 1.0.0
+               only: /^\S+/
+           context: wpe-wporg-svn-creds
