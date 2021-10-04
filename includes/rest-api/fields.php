@@ -125,7 +125,9 @@ function content_model_field_exists( string $slug, string $id, string $model_id 
 		foreach ( $type['fields'] as $field ) {
 			if ( 'relationship' === $field['type'] &&
 				$model_id === $field['reference'] &&
+				isset( $field['enableReverse'] ) &&
 				true === $field['enableReverse'] &&
+				isset( $field['reverseSlug'] ) &&
 				$slug === $field['reverseSlug']
 			) {
 				return true;
