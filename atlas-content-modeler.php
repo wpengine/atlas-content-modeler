@@ -48,8 +48,6 @@ function atlas_content_modeler_loader(): void {
 		'content-registration/class-wpe-rest-posts-controller.php',
 		'rest-api/init-rest-api.php',
 		'publisher/class-publisher-form-editing-experience.php',
-		'updates/update-functions.php',
-		'updates/update-callbacks.php',
 		'updates/version-updates.php',
 	);
 

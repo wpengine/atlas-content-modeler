@@ -33,7 +33,6 @@ function update_plugin(): bool {
 		}
 
 		// Save the last updated version.
-		$file_data = get_file_data( ATLAS_CONTENT_MODELER_FILE, array( 'Version' => 'Version' ) );
 		update_option( 'atlas_content_modeler_current_version', $plugin_version );
 		return true;
 	}
