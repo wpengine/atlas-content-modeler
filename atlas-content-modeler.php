@@ -46,14 +46,16 @@ function atlas_content_modeler_loader(): void {
 		'content-registration/custom-post-types-registration.php',
 		'content-registration/register-taxonomies.php',
 		'content-registration/class-wpe-rest-posts-controller.php',
-		'rest-api/relationships.php',
-		'rest-api/rest-api-endpoint-registration.php',
+		'rest-api/init-rest-api.php',
 		'publisher/class-publisher-form-editing-experience.php',
+		'updates/version-updates.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
 			include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
 	}
+
+	\WPE\AtlasContentModeler\VersionUpdater\update_plugin();
 
 	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
 	$form_editing_experience->bootstrap();

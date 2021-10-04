@@ -25,6 +25,7 @@ function Field({
 	positionAfter,
 	setInfoTag,
 	promptToSaveChanges,
+	hasDirtyField,
 	type = "text",
 }) {
 	const [activeForm, setActiveForm] = useState(type);
@@ -186,6 +187,7 @@ function Field({
 					editing={editing}
 					id={id}
 					position={position}
+					hasDirtyField={hasDirtyField}
 				/>
 			</div>
 		</li>
