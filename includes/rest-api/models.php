@@ -23,26 +23,48 @@ use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxo
  * @return array|WP_Error The newly created model on success. WP_Error on failure.
  */
 function create_model( string $post_type_slug, array $args ) {
-	// Sanitize to match the WordPress post type slug format.
+	$args = get_model_args( $post_type_slug, $args );
+
+	if ( is_wp_error( $args ) ) {
+		return $args;
+	}
+
+	$existing_content_types = get_post_types();
+	$content_types          = get_registered_content_types();
+
+	if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_already_exists',
+			__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	$content_types[ $args['slug'] ] = $args;
+	$created                        = update_registered_content_types( $content_types );
+
+	if ( ! $created ) {
+		return new WP_Error( 'model-not-created', esc_html__( 'Model not created. Reason unknown.', 'atlas-content-modeler' ) );
+	}
+
+	return $content_types[ $args['slug'] ];
+}
+
+/**
+ * Validates existing model properties and adds missing defaults.
+ *
+ * @param string $post_type_slug The post type slug.
+ * @param array  $args Model arguments.
+ *
+ * @return array|WP_Error The model arguments on success. WP_Error if needed arguments are missing or invalid.
+ */
+function get_model_args( $post_type_slug, $args ) {
 	$post_type_slug = sanitize_key( $post_type_slug );
-	$args['slug']   = $post_type_slug;
 
 	if ( empty( $post_type_slug ) || strlen( $post_type_slug ) > 20 ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
 			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
-			[ 'status' => 400 ]
-		);
-	}
-
-	$existing_content_types = get_post_types();
-
-	$content_types = get_registered_content_types();
-
-	if ( ! empty( $content_types[ $post_type_slug ] ) || array_key_exists( $post_type_slug, $existing_content_types ) ) {
-		return new WP_Error(
-			'atlas_content_modeler_already_exists',
-			__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -68,15 +90,9 @@ function create_model( string $post_type_slug, array $args ) {
 		$args['fields'] = [];
 	}
 
-	$content_types[ $post_type_slug ] = $args;
+	$args['slug'] = $post_type_slug;
 
-	$created = update_registered_content_types( $content_types );
-
-	if ( ! $created ) {
-		return new WP_Error( 'model-not-created', esc_html__( 'Model not created. Reason unknown.', 'atlas-content-modeler' ) );
-	}
-
-	return $content_types[ $post_type_slug ];
+	return $args;
 }
 
 /**
