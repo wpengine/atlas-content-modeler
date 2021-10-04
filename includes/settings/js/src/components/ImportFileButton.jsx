@@ -1,9 +1,8 @@
 import React, { useRef, useState } from "react";
 import { __ } from "@wordpress/i18n";
-import { showSuccess, showError } from "../toasts";
+import { showError } from "../toasts";
 
 export default function ImportFileButton({
-	successMessage,
 	errorMessage,
 	buttonTitle,
 	callbackFn,
