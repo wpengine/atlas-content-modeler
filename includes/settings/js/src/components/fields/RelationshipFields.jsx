@@ -402,12 +402,12 @@ const RelationshipFields = ({
 								</span>
 							)}
 						{errors.reverseSlug &&
-							errors.reverseSlug.type === "idExists" && (
+							errors.reverseSlug.type === "reverseIdExists" && (
 								<span className="error">
 									<Icon type="error" />
 									<span role="alert">
 										{__(
-											"Another field in this model has the same API identifier.",
+											"Another field in the related model has the same API identifier.",
 											"atlas-content-modeler"
 										)}
 									</span>

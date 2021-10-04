@@ -147,6 +147,28 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
+	if (
+		isset( $params['type'] ) &&
+		$params['type'] === 'relationship' &&
+		isset( $params['enableReverse'] ) &&
+		true === $params['enableReverse'] &&
+		content_model_field_exists(
+			$params['reverseSlug'],
+			$params['id'],
+			$content_types[ $params['reference'] ]
+		)
+	) {
+			return new WP_Error(
+				'wpe_duplicate_field_reverse_slug',
+				sprintf(
+					/* translators: %s: reference id of the reffered to field */
+					__( 'Another field in the model %s model has the same API identifier.', 'atlas-content-modeler' ),
+					$params['reference']
+				),
+				array( 'status' => 400 )
+			);
+	}
+
 	/**
 	 * Remove isTitle from all fields if isTitle is set on this field. Only one
 	 * field can be used as the entry title.
@@ -170,13 +192,13 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	);
 }
 
-/**
- * Handles model field DELETE requests from the REST API to delete an existing field.
- *
- * @param WP_REST_Request $request The REST API request object.
- *
- * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
- */
+	/**
+	 * Handles model field DELETE requests from the REST API to delete an existing field.
+	 *
+	 * @param WP_REST_Request $request The REST API request object.
+	 *
+	 * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
+	 */
 function dispatch_delete_content_model_field( WP_REST_Request $request ) {
 	$route         = $request->get_route();
 	$field_id      = substr( strrchr( $route, '/' ), 1 );

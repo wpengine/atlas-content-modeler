@@ -255,6 +255,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				) {
 					setError("reference", { type: "invalidRelatedModel" });
 				}
+				if (err.code === "wpe_duplicate_field_reverse_slug") {
+					setError("reverseSlug", { type: "reverseIdExists" });
+				}
 			});
 	}
 
