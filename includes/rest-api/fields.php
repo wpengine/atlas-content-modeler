@@ -104,25 +104,23 @@ function cleanup_detached_relationship_references( string $slug ) {
  * @return bool
  */
 function content_model_field_exists( string $slug, string $id, string $model_id ): bool {
-	$content_types = get_registered_content_types();
-	$model         = $content_types[ $model_id ];
+	$models = get_registered_content_types();
 
-	if ( ! isset( $model['fields'] ) ) {
-		return false;
-	}
-
-	foreach ( $model['fields'] as $field ) {
-		// Exclude the field being edited from slug collision checks.
-		if ( $field['id'] === $id ) {
+	foreach ( $models as $current_model => $model ) {
+		if ( ! isset( $model['fields'] ) ) {
 			continue;
 		}
-		if ( $field['slug'] === $slug ) {
-			return true;
-		}
-	}
 
-	foreach ( $content_types as $type ) {
-		foreach ( $type['fields'] as $field ) {
+		foreach ( $model['fields'] as $field ) {
+			if ( $current_model === $model_id && $field['id'] === $id ) {
+				continue;
+			}
+
+			if ( $model_id === $current_model &&
+			$field['slug'] === $slug ) {
+				return true;
+			}
+
 			if ( 'relationship' === $field['type'] &&
 				$model_id === $field['reference'] &&
 				isset( $field['enableReverse'] ) &&
