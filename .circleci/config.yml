@@ -19,6 +19,7 @@ commands:
   svn_setup:
     description: "Set up SVN"
     steps:
+      - set_version_variable
       - run: sudo apt-get update && sudo apt-get install subversion
       - run: svn co https://plugins.svn.wordpress.org/atlas-content-modeler --depth=empty .
       - run: svn up trunk
