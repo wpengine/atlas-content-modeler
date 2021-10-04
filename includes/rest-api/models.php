@@ -51,6 +51,47 @@ function create_model( string $post_type_slug, array $args ) {
 }
 
 /**
+ * Creates multiple models via a single batch update.
+ *
+ * Performs no update if any of the passed models exist or have invalid properties.
+ *
+ * @param array $models The models to create.
+ *
+ * @return array|WP_Error The newly created models on success or WP_Error.
+ */
+function create_models( array $models ) {
+	$existing_content_types = get_post_types();
+	$content_types          = get_registered_content_types();
+
+	foreach ( $models as $model ) {
+		$args = get_model_args( $model['slug'] ?? '', $model );
+
+		if ( is_wp_error( $args ) ) {
+			return $args;
+		}
+
+		if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
+			return new WP_Error(
+				'atlas_content_modeler_already_exists',
+				// translators: The name of the model.
+				sprintf( __( 'A model with slug ‘%s’ already exists.', 'atlas-content-modeler' ), $args['slug'] ),
+				[ 'status' => 400 ]
+			);
+		}
+
+		$content_types[ $args['slug'] ] = $args;
+	}
+
+	$updated = update_registered_content_types( $content_types );
+
+	if ( ! $updated ) {
+		return new WP_Error( 'models-not-updated', esc_html__( 'Models not updated. Reason unknown.', 'atlas-content-modeler' ) );
+	}
+
+	return $content_types;
+}
+
+/**
  * Validates existing model properties and adds missing defaults.
  *
  * @param string $post_type_slug The post type slug.

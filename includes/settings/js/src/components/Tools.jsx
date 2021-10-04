@@ -195,45 +195,36 @@ export default function Tools() {
 		const parsedData = JSON.parse(formData);
 		const modelData = Object.values(parsedData);
 		const modelErrors = validateModels(modelData);
-		let modelAPICalls = [];
 
 		if (Object.keys(modelErrors).length !== 0) {
 			showImportErrors(modelErrors);
 			return;
 		}
 
-		modelData.forEach((model) => {
-			const apiCall = apiFetch({
-				path: `/wpe/atlas/content-model`,
-				method: "POST",
-				_wpnonce: wpApiSettings.nonce,
-				data: model,
-			});
-			modelAPICalls.push(apiCall);
-		});
-
-		Promise.all(modelAPICalls)
-			.then((response) => {
-				showSuccess(
-					__(
-						"The models were successfully imported.",
-						"atlas-content-modeler"
-					)
-				);
-			})
-			.catch((err) => {
-				if (err.code === "atlas_content_modeler_already_exists") {
-					showError(
-						__("The model already exists.", "atlas-content-modeler")
-					);
-				} else {
-					showError(
+		apiFetch({
+			path: "/wpe/atlas/content-models",
+			method: "PUT",
+			_wpnonce: wpApiSettings.nonce,
+			data: modelData,
+		})
+			.then((res) => {
+				if (res.success) {
+					showSuccess(
 						__(
-							"There were errors during your import.",
+							"The models were successfully imported.",
 							"atlas-content-modeler"
 						)
 					);
 				}
+			})
+			.catch((err) => {
+				showError(
+					err?.message ||
+						__(
+							"An unknown import error occurred",
+							"atlas-content-modeler"
+						)
+				);
 			});
 	}
 
