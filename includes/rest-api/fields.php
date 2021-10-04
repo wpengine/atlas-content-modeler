@@ -100,10 +100,13 @@ function cleanup_detached_relationship_references( string $slug ) {
  *
  * @param string $slug  The current field slug.
  * @param string $id    The current field id.
- * @param array  $model The content model to check for duplicate slugs.
+ * @param string $model_id The id of the content model to check for duplicate slugs.
  * @return bool
  */
-function content_model_field_exists( string $slug, string $id, array $model ): bool {
+function content_model_field_exists( string $slug, string $id, string $model_id ): bool {
+	$content_types = get_registered_content_types();
+	$model         = $content_types[ $model_id ];
+
 	if ( ! isset( $model['fields'] ) ) {
 		return false;
 	}
@@ -115,6 +118,18 @@ function content_model_field_exists( string $slug, string $id, array $model ): b
 		}
 		if ( $field['slug'] === $slug ) {
 			return true;
+		}
+	}
+
+	foreach ( $content_types as $type ) {
+		foreach ( $type['fields'] as $field ) {
+			if ( 'relationship' === $field['type'] &&
+				$model_id === $field['reference'] &&
+				true === $field['enableReverse'] &&
+				$slug === $field['reverseSlug']
+			) {
+				return true;
+			}
 		}
 	}
 

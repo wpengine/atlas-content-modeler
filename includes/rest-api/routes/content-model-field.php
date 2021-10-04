@@ -137,7 +137,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		content_model_field_exists(
 			$params['slug'],
 			$params['id'],
-			$content_types[ $params['model'] ]
+			$params['model']
 		)
 	) {
 		return new WP_Error(
@@ -155,7 +155,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		content_model_field_exists(
 			$params['reverseSlug'],
 			$params['id'],
-			$content_types[ $params['reference'] ]
+			$params['reference']
 		)
 	) {
 			return new WP_Error(
