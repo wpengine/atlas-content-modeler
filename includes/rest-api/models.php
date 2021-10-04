@@ -58,7 +58,7 @@ function create_model( string $post_type_slug, array $args ) {
  *
  * @return array|WP_Error The model arguments on success. WP_Error if needed arguments are missing or invalid.
  */
-function get_model_args( $post_type_slug, $args ) {
+function get_model_args( string $post_type_slug, array $args ) {
 	$post_type_slug = sanitize_key( $post_type_slug );
 
 	if ( empty( $post_type_slug ) || strlen( $post_type_slug ) > 20 ) {
