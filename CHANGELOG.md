@@ -1,10 +1,14 @@
 # Atlas Content Modeler Changelog
 
-## 0.7.0 - 2021-09-09
+## 0.7.0 - 2021-10-04
 
 ### Added
+- Relationships: one-to-one and one-to-many relationships were renamed to many-to-one and many-to-many to accurately reflect their function.
+- Chore: set "Requires at least" to WordPress version 5.7
+- Chore: set "Requires PHP" to version 7.2
 
 ### Fixed
+- Fixed bug where the app prompted about "Unsaved changes" when no changes had been made.
 
 ## 0.6.0 - 2021-09-09
 
