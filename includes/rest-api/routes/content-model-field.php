@@ -133,6 +133,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		}
 	}
 
+	// Checks the field slug on the current model.
 	if (
 		content_model_field_exists(
 			$params['slug'],
@@ -147,6 +148,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
+	// Checks the reverse slug on the reference model.
 	if (
 		isset( $params['type'] ) &&
 		$params['type'] === 'relationship' &&
