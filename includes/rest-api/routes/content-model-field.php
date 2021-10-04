@@ -161,7 +161,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			return new WP_Error(
 				'wpe_duplicate_field_reverse_slug',
 				sprintf(
-					/* translators: %s: reference id of the reffered to field */
+					/* translators: %s: reference id of the referenced to field */
 					__( 'Another field in the model %s model has the same API identifier.', 'atlas-content-modeler' ),
 					$params['reference']
 				),
