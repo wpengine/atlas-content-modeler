@@ -28,6 +28,7 @@ commands:
       - run: find ./trunk -not -path "./trunk" -delete
       - run: unzip ~/project/build/atlas-content-modeler.${VERSION}.zip -d ./trunk
       - run: cp -r ~/project/atlas-content-modeler/assets/wporg/* ./assets
+      - run: cp ~/project/atlas-content-modeler/.svnignore ./trunk
       - run: rm -rf node_modules/
       - run: svn propset svn:ignore -F ./trunk/.svnignore ./trunk
       - run: svn propset svn:ignore -F ./trunk/.svnignore ./tags
