@@ -3,7 +3,8 @@
 ## 0.7.0 - 2021-10-04
 
 ### Added
-- Relationships: one-to-one and one-to-many relationships were renamed to many-to-one and many-to-many to accurately reflect their function.
+- Relationships Field: one-to-one and one-to-many relationships were renamed to many-to-one and many-to-many to accurately reflect their function.
+- Relationships Field: added [Beta] flag as the feature takes shape. 
 - Chore: set "Requires at least" to WordPress version 5.7
 - Chore: set "Requires PHP" to version 7.2
 
