@@ -1,5 +1,5 @@
 import React from "react";
-import { __ } from "@wordpress/i18n";
+import { sprintf, __ } from "@wordpress/i18n";
 import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
@@ -19,142 +19,222 @@ export default function Tools() {
 	}
 
 	/**
-	 * Validate model field
-	 * @param field
+	 * Checks that all field properties are valid based on the field type.
+	 *
+	 * @param {object} field
+	 * @returns {array} Invalid properties or an empty array if no properties were invalid.
 	 */
 	function validateField(field) {
-		if (field.type) {
-			switch (field.type) {
-				case "number":
-					return (
-						field.id &&
-						field.model &&
-						field.name &&
-						field.numberType &&
-						field.slug
-					);
-				case "text":
-					return (
-						field.id &&
-						field.inputType &&
-						field.model &&
-						field.name &&
-						field.slug
-					);
-				case "relationship":
-					return (
-						field.id &&
-						field.model &&
-						field.name &&
-						field.slug &&
-						field.cardinality &&
-						field.reference
-					);
-				default:
-					return field.id && field.model && field.name && field.slug;
+		let invalidProperties = [];
+
+		const requiredFieldProperties = {
+			all: ["type", "id", "name", "slug"],
+			number: ["numberType"],
+			text: ["inputType"],
+			relationship: ["cardinality", "reference"],
+		};
+
+		requiredFieldProperties.all.forEach((requiredProperty) => {
+			if (!field.hasOwnProperty(requiredProperty)) {
+				invalidProperties.push(requiredProperty);
 			}
-		}
-		return false;
-	}
-
-	/**
-	 * Validate the individual model
-	 * @param model
-	 */
-	function validateModel(model) {
-		let modelIsValid = true;
-		let fieldsAreValid = true;
-
-		// check that fields are valid
-		if (model.fields?.length) {
-			for (let i = 0; i < model.fields.length; i++) {
-				if (!validateField(model.fields[i])) {
-					fieldsAreValid = false;
-					break;
-				}
-			}
-		}
-
-		return modelIsValid && fieldsAreValid;
-	}
-
-	/**
-	 * Validate model data
-	 * @param data
-	 */
-	function validateModelData(data) {
-		let totalModelCount = 0;
-		let validModelCount = 0;
-		let invalidModelCount = 0;
-
-		Object.entries(data).forEach((model) => {
-			totalModelCount += 1;
-			validateModel(model)
-				? (validModelCount += 1)
-				: (invalidModelCount += 1);
 		});
 
-		return totalModelCount === validModelCount;
+		if (field?.type && requiredFieldProperties.hasOwnProperty(field.type)) {
+			requiredFieldProperties[field.type].forEach((requiredProperty) => {
+				if (!field.hasOwnProperty(requiredProperty)) {
+					invalidProperties.push(requiredProperty);
+				}
+			});
+		}
+
+		return invalidProperties;
 	}
 
 	/**
-	 * Upload the file to the API
-	 * @returns {*}
+	 * Checks that a model is valid: it does not already exist, it has all
+	 * required model properties and its fields are valid.
+	 *
+	 * @param {object} model
+	 * @return {object} Invalid model data, or empty object if no invalid data.
+	 */
+	function validateModel(model) {
+		let errors = {};
+
+		const existingModels = Object.keys(atlasContentModeler?.initialState);
+		if (model?.slug && existingModels.includes(model.slug)) {
+			errors["alreadyExists"] = true;
+		}
+
+		const requiredModelProperties = ["slug", "singular", "plural"];
+		requiredModelProperties.forEach((requiredProperty) => {
+			if (!model.hasOwnProperty(requiredProperty)) {
+				if (!errors.hasOwnProperty("missingProperties")) {
+					errors["missingProperties"] = [];
+				}
+				errors["missingProperties"].push(requiredProperty);
+			}
+		});
+
+		Object.entries(model?.fields || {}).forEach(([fieldId, fieldData]) => {
+			const fieldErrors = validateField(fieldData);
+			if (fieldErrors?.length > 1) {
+				if (!errors.hasOwnProperty("fieldErrors")) {
+					errors["fieldErrors"] = [];
+				}
+				errors["fieldErrors"][fieldId] = fieldErrors;
+			}
+		});
+
+		return errors;
+	}
+
+	/**
+	 * Checks that all passed models are valid.
+	 *
+	 * @param {array} models
+	 * @return {object} Invalid models data, or empty object if no invalid data.
+	 */
+	function validateModels(models) {
+		let errors = {};
+
+		Object.values(models).forEach((modelData, index) => {
+			const modelErrors = validateModel(modelData);
+			if (Object.keys(modelErrors).length > 0) {
+				errors[modelData?.slug || index] = modelErrors;
+			}
+		});
+
+		return errors;
+	}
+
+	function showImportErrors(modelErrors) {
+		let message = "";
+
+		Object.entries(modelErrors).forEach(([modelSlug, errors]) => {
+			if (errors?.alreadyExists) {
+				message +=
+					"<li>" +
+					sprintf(
+						__(
+							// translators: The name of the model.
+							"The ‘%s’ model already exists.",
+							"atlas-content-modeler"
+						),
+						modelSlug
+					);
+				+"</li>";
+			}
+
+			if (errors?.missingProperties) {
+				message +=
+					"<li>" +
+					sprintf(
+						__(
+							// Translators: 1: The name of the model. 2: A list of missing properties, such as "id".
+							"The ‘%1$s’ model is missing properties: %2$s.",
+							"atlas-content-modeler"
+						),
+						modelSlug,
+						errors.missingProperties.join(", ")
+					) +
+					"</li>";
+			}
+
+			if (errors?.fieldErrors) {
+				let fieldMessages = "";
+
+				Object.entries(errors.fieldErrors).forEach(
+					([fieldKey, missingProperties]) => {
+						fieldMessages +=
+							"<li>" +
+							sprintf(
+								__(
+									// Translators: 1: The id of the field. 2: A list of missing properties, such as "type".
+									"Field ‘%1$s’ is missing: %2$s.",
+									"atlas-content-modeler"
+								),
+								fieldKey,
+								missingProperties.join(", ")
+							) +
+							"</li>";
+					}
+				);
+
+				message +=
+					"<li>" +
+					// Translators: 1: The name of the model. 2: A list of missing properties.
+					sprintf(
+						__(
+							"The ‘%1$s’ model has fields with missing properties:\n %2$s",
+							"atlas-content-modeler"
+						),
+						modelSlug,
+						"<ul>" + fieldMessages + "</ul>"
+					) +
+					"</li>";
+			}
+		});
+
+		showError(
+			sprintf(
+				"<strong>%1$s</strong><ul>%2$s</ul>",
+				__(
+					"Errors prevented import. No changes have been made.",
+					"atlas-content-modeler"
+				),
+				message
+			)
+		);
+	}
+
+	/**
+	 * Uploads the file data to the API.
 	 */
 	function createModels(formData) {
 		const parsedData = JSON.parse(formData);
-		const serializedDataArray = Object.entries(parsedData);
+		const modelData = Object.values(parsedData);
+		const modelErrors = validateModels(modelData);
 		let modelAPICalls = [];
 
-		if (validateModelData(serializedDataArray)) {
-			// add each model to the API fetch array
-			serializedDataArray.forEach((model) => {
-				const apiCall = apiFetch({
-					path: `/wpe/atlas/content-model`,
-					method: "POST",
-					_wpnonce: wpApiSettings.nonce,
-					data: model[1],
-				});
-				modelAPICalls.push(apiCall);
-			});
+		if (Object.keys(modelErrors).length !== 0) {
+			showImportErrors(modelErrors);
+			return;
+		}
 
-			// process all model api calls
-			Promise.all(modelAPICalls)
-				.then((response) => {
-					console.log(response);
-					showSuccess(
+		modelData.forEach((model) => {
+			const apiCall = apiFetch({
+				path: `/wpe/atlas/content-model`,
+				method: "POST",
+				_wpnonce: wpApiSettings.nonce,
+				data: model,
+			});
+			modelAPICalls.push(apiCall);
+		});
+
+		Promise.all(modelAPICalls)
+			.then((response) => {
+				showSuccess(
+					__(
+						"The models were successfully imported.",
+						"atlas-content-modeler"
+					)
+				);
+			})
+			.catch((err) => {
+				if (err.code === "atlas_content_modeler_already_exists") {
+					showError(
+						__("The model already exists.", "atlas-content-modeler")
+					);
+				} else {
+					showError(
 						__(
-							"The models were successfully imported.",
+							"There were errors during your import.",
 							"atlas-content-modeler"
 						)
 					);
-				})
-				.catch((err) => {
-					console.log(err);
-					if (err.code === "atlas_content_modeler_already_exists") {
-						showError(
-							__(
-								"The model already exists.",
-								"atlas-content-modeler"
-							)
-						);
-					} else {
-						showError(
-							__(
-								"There were errors during your import.",
-								"atlas-content-modeler"
-							)
-						);
-					}
-				});
-		} else {
-			showError(
-				__(
-					"There were validation errors in your file.",
-					"atlas-content-modeler"
-				)
-			);
-		}
+				}
+			});
 	}
 
 	/**
