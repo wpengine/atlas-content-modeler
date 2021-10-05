@@ -595,7 +595,7 @@ workflows:
            requires:
              - plugin-build-zip
              - plugin-build-json
-            #  - plugin-test-e2e
+             - plugin-test-e2e
              - plugin-test-lint-js
              - plugin-test-lint-php
              - plugin-test-jest
