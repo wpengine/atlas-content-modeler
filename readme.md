@@ -2,7 +2,7 @@
 
 A WordPress plugin to create custom post types and fields for headless WordPress sites.
 
-[Download the latest plugin zip file](https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download).
+[Download the latest plugin zip file](https://downloads.wordpress.org/plugin/atlas-content-modeler.latest-stable.zip).
 
 ---
 
@@ -20,7 +20,7 @@ Publishers get friendly and familiar content entry pages.
 
 ## Requirements
 
-- WordPress 5.2 or higher.
+- WordPress 5.7 or higher.
 - PHP 7.2 or higher.
 
 ## Setup
@@ -109,6 +109,7 @@ Change the API Visibility of a model at any time by choosing “Edit” from the
 Requests sent in a GraphiQL session in the WordPress admin area are authenticated by default. This makes GraphiQL a good place to experiment with queries for private model data.
 
 ## Next steps
+- Learn more by [reading the documentation](https://developers.wpengine.com/docs/atlas-content-modeler).
 - Click ”Send Feedback” at the top of the Content Modeler page in your WordPress admin area to share your thoughts with us.
 - [File bugs or feature requests](https://github.com/wpengine/atlas-content-modeler/issues/new/choose) in GitHub.
 - Create a headless WordPress site using [Faust.js](https://github.com/wpengine/faustjs) by WP Engine.
