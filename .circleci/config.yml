@@ -19,17 +19,19 @@ commands:
   svn_setup:
     description: "Set up SVN"
     steps:
+      - set_version_variable
       - run: sudo apt-get update && sudo apt-get install subversion
       - run: svn co https://plugins.svn.wordpress.org/atlas-content-modeler --depth=empty .
       - run: svn up trunk
       - run: svn up tags --depth=empty
       - run: svn up assets
       - run: find ./trunk -not -path "./trunk" -delete
-      - run: cp -r ~/project/atlas-content-modeler/. ./trunk
-      - run: mv ./trunk/assets/wporg/* ./assets
-      - run: svn propset svn:mime-type image/png ./assets/*.png
-      - run: svn propset svn:mime-type image/jpeg ./assets/*.jpg
+      - run: mkdir ~/project/unzip-temp
+      - run: unzip ~/project/build/atlas-content-modeler.${VERSION}.zip -d ~/project/unzip-temp
+      - run: cp -r ~/project/unzip-temp/atlas-content-modeler/. ./trunk
+      - run: cp -r ~/project/atlas-content-modeler/assets/wporg/* ./assets
       - run: rm -rf node_modules/
+      - run: cp ~/project/atlas-content-modeler/.svnignore ./trunk
       - run: svn propset svn:ignore -F ./trunk/.svnignore ./trunk
       - run: svn propset svn:ignore -F ./trunk/.svnignore ./tags
 
@@ -38,6 +40,12 @@ commands:
     steps:
       - set_version_variable
       - run: svn cp trunk tags/${VERSION}
+
+  svn_set_mimes:
+    description: "Set MIMES for SVN"
+    steps:
+      - run: svn propset svn:mime-type image/png ./assets/*.png
+      - run: svn propset svn:mime-type image/jpeg ./assets/*.jpg
 
   svn_add_changes:
     description: "Add changes to SVN"
@@ -467,6 +475,7 @@ jobs:
       - svn_setup
       - svn_create_tag
       - svn_add_changes
+      - svn_set_mimes
       - svn_commit
 
 workflows:
@@ -586,7 +595,7 @@ workflows:
            requires:
              - plugin-build-zip
              - plugin-build-json
-             - plugin-test-e2e
+            #  - plugin-test-e2e
              - plugin-test-lint-js
              - plugin-test-lint-php
              - plugin-test-jest
