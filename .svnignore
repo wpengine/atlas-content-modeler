@@ -22,7 +22,6 @@
 .svnignore
 .zipignore
 .docker
-*assets*
 docs
 node_modules
 scripts
