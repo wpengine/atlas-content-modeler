@@ -51,10 +51,22 @@ make help
 TEST=<test> make test-e2e
 ```
 
-example:
+Example:
 
 ```
 TEST=CreateContentModelMediaFieldCest:i_can_add_a_media_field_to_a_content_model make test-e2e
+```
+
+#### Running a single PHP unit test
+
+```
+TEST=<test> make test-php-unit
+```
+
+Example:
+
+```
+TEST=tests/integration/api-validation/test-graphql-endpoints.php make test-php-unit
 ```
 
 ### Manual test setup
