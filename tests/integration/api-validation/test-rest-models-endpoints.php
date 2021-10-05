@@ -40,8 +40,6 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 		$this->server = $wp_rest_server;
 
 		do_action( 'rest_api_init' );
-
-		$this->post_ids = $this->get_post_ids();
 	}
 
 	public function tearDown() {
@@ -55,12 +53,6 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 
 	private function get_models() {
 		return include __DIR__ . '/test-data/models.php';
-	}
-
-	private function get_post_ids() {
-		include_once __DIR__ . '/test-data/posts.php';
-
-		return create_test_posts( $this );
 	}
 
 	/**
@@ -78,17 +70,28 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 	 */
 	public function test_cannot_create_model_when_slug_conflicts_with_existing_post_type(): void {
 		wp_set_current_user( 1 );
-		$model = 'attachment'; // already exists by default in WP.
 
-		// Attempt to create the model.
-		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$create_test_models = array(
+			array(
+				'slug'        => 'public',
+				'singular'    => 'Book Review 1',
+				'plural'      => 'Book Reviews 1',
+				'description' => 'Reviews of books.',
+			),
+			array(
+				'slug'        => 'private',
+				'singular'    => 'Book Review 2',
+				'plural'      => 'Book Reviews 2',
+				'description' => 'Reviews of books.',
+			)
+		);
+
+		$request = new WP_REST_Request( 'PUT', $this->namespace . $this->route );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( json_encode( $this->test_models[ $model ] ) );
-		$this->server->dispatch( $request );
-
+		$request->set_body( json_encode( $create_test_models ) );
 		$response = $this->server->dispatch( $request );
+
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'atlas_content_modeler_already_exists', $response->data['code'] );
 	}
 
 	/**
@@ -99,29 +102,28 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 	public function test_can_create_models(): void {
 		wp_set_current_user( 1 );
 
-		$slug              = 'bookreviews';
 		$create_test_models = array(
 			array(
-				'slug'        => $slug,
+				'slug'        => 'bookreviews',
 				'singular'    => 'Book Review 1',
 				'plural'      => 'Book Reviews 1',
 				'description' => 'Reviews of books.',
 			),
 			array(
-				'slug'        => $slug,
+				'slug'        => 'rabbits',
 				'singular'    => 'Book Review 2',
 				'plural'      => 'Book Reviews 2',
 				'description' => 'Reviews of books.',
 			),
 			array(
-				'slug'        => $slug,
+				'slug'        => 'cheeses',
 				'singular'    => 'Book Review 3',
 				'plural'      => 'Book Reviews 3',
 				'description' => 'Reviews of books.',
 			)
 		);
 
-		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request = new WP_REST_Request( 'PUT', $this->namespace . $this->route );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $create_test_models ) );
 		$response = $this->server->dispatch( $request );
@@ -131,11 +133,9 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 		$data   = $response->get_data();
 		$models = get_option( 'atlas_content_modeler_post_types' );
 
-		foreach ( array_keys( $create_test_models ) as $key ) {
-			// Test returned content
-			self::assertSame( $create_test_models[ $key ], $data['model'][ $key ] );
-			// Test saved content
-			self::assertSame( $create_test_models[ $key ], $models[ $slug ][ $key ] );
-		}
+		self::assertArrayHasKey('success', $data);
+		self::assertArrayHasKey('cheeses', $models);
+		self::assertArrayHasKey('rabbits', $models);
+		self::assertArrayHasKey('bookreviews', $models);
 	}
 }
