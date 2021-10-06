@@ -2,6 +2,7 @@
 
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 
 require_once __DIR__ . '/test-data/fields.php';
 
@@ -131,7 +132,7 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 		self::assertSame( 200, $response->get_status() );
 
 		$data   = $response->get_data();
-		$models = get_option( 'atlas_content_modeler_post_types' );
+		$models = get_registered_content_types();
 
 		self::assertArrayHasKey('success', $data);
 		self::assertArrayHasKey('cheeses', $models);
