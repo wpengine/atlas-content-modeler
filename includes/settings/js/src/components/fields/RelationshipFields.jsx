@@ -407,7 +407,7 @@ const RelationshipFields = ({
 									<Icon type="error" />
 									<span role="alert">
 										{__(
-											"Another field in the related model has the same API identifier.",
+											"A field in the related model has the same API identifier.",
 											"atlas-content-modeler"
 										)}
 									</span>
