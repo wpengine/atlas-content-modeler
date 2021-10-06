@@ -49,19 +49,20 @@ export default function ImportFileButton({
 					callbackFn(event.target.result);
 				} else {
 					showError(
-						__(
-							errorMessage || "There was an error during upload.",
-							"atlas-content-modeler"
-						)
+						errorMessage ||
+							__(
+								"There was an error during upload.",
+								"atlas-content-modeler"
+							)
 					);
 				}
 			} else {
 				showError(
-					__(
-						errorMessage ||
+					errorMessage ||
+						__(
 							"The file could not be read or is invalid.",
-						"atlas-content-modeler"
-					)
+							"atlas-content-modeler"
+						)
 				);
 			}
 		});
