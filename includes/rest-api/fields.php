@@ -100,21 +100,36 @@ function cleanup_detached_relationship_references( string $slug ) {
  *
  * @param string $slug  The current field slug.
  * @param string $id    The current field id.
- * @param array  $model The content model to check for duplicate slugs.
+ * @param string $model_id The id of the content model to check for duplicate slugs.
  * @return bool
  */
-function content_model_field_exists( string $slug, string $id, array $model ): bool {
-	if ( ! isset( $model['fields'] ) ) {
-		return false;
-	}
+function content_model_field_exists( string $slug, string $id, string $model_id ): bool {
+	$models = get_registered_content_types();
 
-	foreach ( $model['fields'] as $field ) {
-		// Exclude the field being edited from slug collision checks.
-		if ( $field['id'] === $id ) {
+	foreach ( $models as $current_model => $model ) {
+		if ( ! isset( $model['fields'] ) ) {
 			continue;
 		}
-		if ( $field['slug'] === $slug ) {
-			return true;
+
+		foreach ( $model['fields'] as $field ) {
+			if ( $current_model === $model_id && $field['id'] === $id ) {
+				continue;
+			}
+
+			if ( $model_id === $current_model &&
+			$field['slug'] === $slug ) {
+				return true;
+			}
+
+			if ( 'relationship' === $field['type'] &&
+				$model_id === $field['reference'] &&
+				isset( $field['enableReverse'] ) &&
+				true === $field['enableReverse'] &&
+				isset( $field['reverseSlug'] ) &&
+				$slug === $field['reverseSlug']
+			) {
+				return true;
+			}
 		}
 	}
 

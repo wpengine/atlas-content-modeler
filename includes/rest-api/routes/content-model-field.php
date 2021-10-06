@@ -133,11 +133,12 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		}
 	}
 
+	// Checks the field slug on the current model.
 	if (
 		content_model_field_exists(
 			$params['slug'],
 			$params['id'],
-			$content_types[ $params['model'] ]
+			$params['model']
 		)
 	) {
 		return new WP_Error(
@@ -145,6 +146,29 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			__( 'Another field in this model has the same API identifier.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
+	}
+
+	// Checks the reverse slug on the reference model.
+	if (
+		isset( $params['type'] ) &&
+		$params['type'] === 'relationship' &&
+		isset( $params['enableReverse'] ) &&
+		true === $params['enableReverse'] &&
+		content_model_field_exists(
+			$params['reverseSlug'],
+			$params['id'],
+			$params['reference']
+		)
+	) {
+			return new WP_Error(
+				'wpe_duplicate_field_reverse_slug',
+				sprintf(
+					/* translators: %s: reference id of the referenced to field */
+					__( 'Another field in the model %s model has the same API identifier.', 'atlas-content-modeler' ),
+					$params['reference']
+				),
+				array( 'status' => 400 )
+			);
 	}
 
 	/**
@@ -170,13 +194,13 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	);
 }
 
-/**
- * Handles model field DELETE requests from the REST API to delete an existing field.
- *
- * @param WP_REST_Request $request The REST API request object.
- *
- * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
- */
+	/**
+	 * Handles model field DELETE requests from the REST API to delete an existing field.
+	 *
+	 * @param WP_REST_Request $request The REST API request object.
+	 *
+	 * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
+	 */
 function dispatch_delete_content_model_field( WP_REST_Request $request ) {
 	$route         = $request->get_route();
 	$field_id      = substr( strrchr( $route, '/' ), 1 );

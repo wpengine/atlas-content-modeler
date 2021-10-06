@@ -156,6 +156,80 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test we can't add a field with a duplicate relationship slug to a given model
+	 */
+	public function test_reverse_relationship_slugs_must_be_unique_to_each_model() {
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+
+		// Insert a successful relationship with a reverse relationship
+		$field = array(
+			'type'          => 'relationship',
+			'id'            => '3427364',
+			'model'         => 'private-fields',
+			'position'      => '0',
+			'name'          => 'Relationship',
+			'slug'          => 'reverseRelationship',
+			'reference'     => 'public-fields',
+			'enableReverse' => true,
+			'cardinality'   => 'many-to-many',
+			'reverseName'   => 'Reverse',
+			'reverseSlug'   => 'reverseIt'
+		);
+		$request->set_body( json_encode( $field ) );
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertEquals( true, $data['success'] );
+
+		// Attempt to insert a reverse relationship that would conflict with the slug of a non-relationship field
+		$field = array(
+			'type'          => 'relationship',
+			'id'            => '456343234',
+			'model'         => 'private-fields',
+			'position'      => '0',
+			'name'          => 'Relationship',
+			'slug'          => 'relationship',
+			'reference'     => 'public-fields',
+			'enableReverse' => true,
+			'cardinality'   => 'many-to-many',
+			'reverseName'   => 'Reverse',
+			'reverseSlug'   => 'singleLine'
+		);
+		$request->set_body( json_encode( $field ) );
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertArrayHasKey( 'message', $data );
+		$this->assertEquals( 'Another field in the model public-fields model has the same API identifier.', $data['message'] );
+
+		// Attempt to create a reverse relationship that would conflict with the slug of an existing reverse relationship from the same model
+		$field = array(
+			'type'          => 'relationship',
+			'id'            => '123456789',
+			'model'         => 'private-fields',
+			'position'      => '0',
+			'name'          => 'Relationship2',
+			'slug'          => 'reverseIt',
+			'reference'     => 'public-fields',
+			'enableReverse' => true,
+			'cardinality'   => 'many-to-many',
+			'reverseName'   => 'Reverse',
+			'reverseSlug'   => 'reverseIt'
+		);
+		$request->set_body( json_encode( $field ) );
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertArrayHasKey( 'message', $data );
+		$this->assertEquals( 'Another field in the model public-fields model has the same API identifier.', $data['message'] );
+	}
+
+	/**
 	 * Test crud operations for a field
 	 */
 	public function test_field_can_be_created_and_updated_and_deleted() {
