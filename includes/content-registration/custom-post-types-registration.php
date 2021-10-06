@@ -610,13 +610,19 @@ function register_relationship_connection( array $parent_model, array $reference
 					);
 
 					if ( false === $relationship ) {
+						if ( $connection_args['one_to_one'] ) {
+							return array();
+						}
 						return array();
 					}
 
 					$relationship_ids = $relationship->get_related_object_ids( $post->ID );
 
 					if ( empty( $relationship_ids ) ) {
-						return array();
+						if ( $connection_args['one_to_one'] ) {
+							return array();
+						}
+						return array( 'nodes' => array() );
 					}
 
 					$resolver = new PostObjectConnectionResolver(
