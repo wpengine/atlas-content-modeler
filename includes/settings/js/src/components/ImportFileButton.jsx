@@ -102,7 +102,7 @@ export default function ImportFileButton({
 				}
 				onClick={(event) => importClickHandler(event)}
 			>
-				{__(buttonTitle || "Select File", "atlas-content-modeler")}
+				{buttonTitle || __("Select File", "atlas-content-modeler")}
 			</button>
 		</>
 	);
