@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { __ } from "@wordpress/i18n";
 import { showError } from "../toasts";
 
@@ -8,9 +8,8 @@ export default function ImportFileButton({
 	callbackFn,
 	buttonClasses,
 	allowedMimeTypes,
+	fileUploaderRef,
 }) {
-	const fileUploaderRef = useRef(null);
-
 	const form = new FormData();
 
 	/**

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
@@ -8,6 +8,8 @@ const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Tools() {
+	const fileUploaderRef = useRef(null);
+
 	/**
 	 * Gets model export data via the REST API.
 	 */
@@ -199,6 +201,7 @@ export default function Tools() {
 
 		if (Object.keys(modelErrors).length !== 0) {
 			showImportErrors(modelErrors);
+			fileUploaderRef.current.value = null;
 			return;
 		}
 
@@ -218,6 +221,7 @@ export default function Tools() {
 					);
 
 					modelData.forEach(insertSidebarMenuItem);
+					fileUploaderRef.current.value = null;
 				}
 			})
 			.catch((err) => {
@@ -228,6 +232,7 @@ export default function Tools() {
 							"atlas-content-modeler"
 						)
 				);
+				fileUploaderRef.current.value = null;
 			});
 	}
 
@@ -264,6 +269,7 @@ export default function Tools() {
 								<ImportFileButton
 									allowedMimeTypes=".json"
 									callbackFn={createModels}
+									fileUploaderRef={fileUploaderRef}
 								/>
 							</div>
 							<div className="col-xs-12 mt-4">
