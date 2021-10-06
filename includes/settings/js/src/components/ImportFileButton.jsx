@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { __ } from "@wordpress/i18n";
 import { showError } from "../toasts";
 
@@ -9,7 +9,6 @@ export default function ImportFileButton({
 	buttonClasses,
 	allowedMimeTypes,
 }) {
-	const [file, setFile] = useState(null);
 	const fileUploaderRef = useRef(null);
 
 	const form = new FormData();
@@ -42,9 +41,6 @@ export default function ImportFileButton({
 	 * @param uploadedFile
 	 */
 	function validateFileUpload(uploadedFile) {
-		setFile(uploadedFile);
-
-		// read file
 		const reader = new FileReader();
 		reader.addEventListener("load", (event) => {
 			if (event.target.result && isValidJson(event.target.result)) {

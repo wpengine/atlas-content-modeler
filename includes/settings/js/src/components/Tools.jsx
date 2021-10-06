@@ -3,6 +3,7 @@ import { sprintf, __ } from "@wordpress/i18n";
 import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
+import { insertSidebarMenuItem } from "../utils";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -215,6 +216,8 @@ export default function Tools() {
 							"atlas-content-modeler"
 						)
 					);
+
+					modelData.forEach(insertSidebarMenuItem);
 				}
 			})
 			.catch((err) => {
