@@ -23,7 +23,11 @@ export function showError(message) {
 		({ closeToast }) => (
 			<>
 				<Icon type="error" size="large" />
-				<span>{message}</span>
+				<span
+					dangerouslySetInnerHTML={{
+						__html: message,
+					}}
+				></span>
 				<button className="close" onClick={closeToast}>
 					<Icon type="close" />
 				</button>
