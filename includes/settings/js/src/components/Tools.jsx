@@ -58,14 +58,14 @@ export default function Tools() {
 	 * Checks that a model is valid: it does not already exist, it has all
 	 * required model properties and its fields are valid.
 	 *
-	 * @param {object} model
+	 * @param {object} model The new model data to validate before it is added.
+	 * @param {object} storedModelData Existing stored model data.
 	 * @return {object} Invalid model data, or empty object if no invalid data.
 	 */
-	async function validateModel(model) {
+	async function validateModel(model, storedModelData) {
 		let errors = {};
 
-		let models = await getModels();
-		const existingModels = Object.keys(models);
+		const existingModels = Object.keys(storedModelData);
 
 		if (model?.slug && existingModels.includes(model.slug)) {
 			errors["alreadyExists"] = true;
@@ -97,14 +97,16 @@ export default function Tools() {
 	/**
 	 * Checks that all passed models are valid.
 	 *
-	 * @param {array} models
+	 * @param {array} models The models in the import file to validate.
 	 * @return {object} Invalid models data, or empty object if no invalid data.
 	 */
 	async function validateModels(models) {
 		let errors = {};
 
+		let storedModelData = await getModels();
+
 		for (const [index, modelData] of Object.entries(models)) {
-			const modelErrors = await validateModel(modelData);
+			const modelErrors = await validateModel(modelData, storedModelData);
 			if (Object.keys(modelErrors).length > 0) {
 				errors[modelData?.slug || index] = modelErrors;
 			}
