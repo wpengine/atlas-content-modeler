@@ -9,6 +9,7 @@
 	overflow: hidden;
 	padding: 5px;
 	box-sizing: border-box;
+	z-index: 1000000; /* Above the edit model modal. */
 }
 .dashicon-picker-container ul {
 	margin: 0;
