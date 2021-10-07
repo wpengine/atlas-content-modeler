@@ -39,13 +39,13 @@ export default function ImportFileButton({
 	 * Validate file before uploading
 	 * @param uploadedFile
 	 */
-	function validateFileUpload(uploadedFile) {
+	async function validateFileUpload(uploadedFile) {
 		const reader = new FileReader();
-		reader.addEventListener("load", (event) => {
+		reader.addEventListener("load", async (event) => {
 			if (event.target.result && isValidJson(event.target.result)) {
 				form.append("file", uploadedFile);
 				if (callbackFn && form) {
-					callbackFn(event.target.result);
+					await callbackFn(event.target.result);
 				} else {
 					showError(
 						errorMessage ||
@@ -72,11 +72,11 @@ export default function ImportFileButton({
 	 * Handle file change
 	 * @param event
 	 */
-	function onChangeHandler(event) {
+	async function onChangeHandler(event) {
 		event.preventDefault();
 		const uploadedFile = event.target.files[0];
 		if (uploadedFile) {
-			validateFileUpload(uploadedFile);
+			await validateFileUpload(uploadedFile);
 		}
 	}
 

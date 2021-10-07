@@ -13,7 +13,7 @@ export default function Tools() {
 	/**
 	 * Gets model export data via the REST API.
 	 */
-	function getModels() {
+	async function getModels() {
 		return apiFetch({
 			path: `/wpe/atlas/content-models/`,
 			method: "GET",
@@ -61,10 +61,12 @@ export default function Tools() {
 	 * @param {object} model
 	 * @return {object} Invalid model data, or empty object if no invalid data.
 	 */
-	function validateModel(model) {
+	async function validateModel(model) {
 		let errors = {};
 
-		const existingModels = Object.keys(atlasContentModeler?.initialState);
+		let models = await getModels();
+		const existingModels = Object.keys(models);
+
 		if (model?.slug && existingModels.includes(model.slug)) {
 			errors["alreadyExists"] = true;
 		}
@@ -98,15 +100,15 @@ export default function Tools() {
 	 * @param {array} models
 	 * @return {object} Invalid models data, or empty object if no invalid data.
 	 */
-	function validateModels(models) {
+	async function validateModels(models) {
 		let errors = {};
 
-		Object.values(models).forEach((modelData, index) => {
-			const modelErrors = validateModel(modelData);
+		for (const [index, modelData] of Object.entries(models)) {
+			const modelErrors = await validateModel(modelData);
 			if (Object.keys(modelErrors).length > 0) {
 				errors[modelData?.slug || index] = modelErrors;
 			}
-		});
+		}
 
 		return errors;
 	}
@@ -194,10 +196,10 @@ export default function Tools() {
 	/**
 	 * Uploads the file data to the API.
 	 */
-	function createModels(formData) {
+	async function createModels(formData) {
 		const parsedData = JSON.parse(formData);
 		const modelData = Object.values(parsedData);
-		const modelErrors = validateModels(modelData);
+		const modelErrors = await validateModels(modelData);
 
 		if (Object.keys(modelErrors).length !== 0) {
 			showImportErrors(modelErrors);
