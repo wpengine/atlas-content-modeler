@@ -7,6 +7,7 @@ import CreateContentModel from "./components/CreateContentModel.jsx";
 import ViewContentModelsList from "./components/ViewContentModelsList";
 import EditContentModel from "./components/EditContentModel";
 import Taxonomies from "./components/Taxonomies";
+import Tools from "./components/Tools";
 import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
 
@@ -42,6 +43,10 @@ function ViewTemplate() {
 
 	if (view === "taxonomies") {
 		return <Taxonomies />;
+	}
+
+	if (view === "tools") {
+		return <Tools />;
 	}
 
 	return <ViewContentModelsList />;
