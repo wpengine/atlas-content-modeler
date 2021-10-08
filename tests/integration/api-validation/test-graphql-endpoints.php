@@ -96,4 +96,29 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
 	}
+
+	/**
+	 * Ensure GraphQL includes support data like author
+	 */
+	public function test_graphql_can_query_by_author_id(): void {
+		try {
+			$results = graphql(
+				[
+					'query' => '
+				{
+					privatesFields ( where: {author: 1}) {
+						nodes {
+							databaseId
+						}
+					}
+				}
+				',
+				]
+			);
+
+			self::assertArrayHasKey( "privatesFields" , $results['data']);
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
 }
