@@ -67,7 +67,8 @@
       "global": "wp.apiFetch"
     },
     "acm-icons": {
-      "fileName": "./includes/components/icons",
+      "fileName": "./includes/components/icons"
+    },
     "@wordpress/i18n": {
       "global": "wp.i18n"
     }
