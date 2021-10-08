@@ -163,4 +163,11 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		self::assertFalse( is_protected_meta( false, 'this-key-is-unprotected-and-not-ours-and-should-remain-unprotected', 'post' ) );
 		self::assertTrue( is_protected_meta( true, 'this-key-is-already-protected-and-should-remain-protected', 'post' ) );
 	}
+
+	/**
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
+	 */
+	public function test_model_supports_author(): void {
+		self::assertTrue(post_type_supports('public', 'author'));
+	}
 }
