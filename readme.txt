@@ -35,6 +35,8 @@ It can also be installed manually using a zip file.
 4. Click the **Choose File** button, select the zip file you downloaded in step 1, then click the **Install Now** button.
 5. Click the **Activate Plugin** button.
 
+We recommend that you set Permalinks to a value other than “Plain” in your WordPress dashboard at Settings → Permalinks.
+
 == Screenshots ==
 1. Creating a new content model
 2. Adding a Text field to a content model

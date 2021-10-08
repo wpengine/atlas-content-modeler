@@ -22,6 +22,7 @@ Publishers get friendly and familiar content entry pages.
 
 - WordPress 5.7 or higher.
 - PHP 7.2 or higher.
+- We recommend that you set Permalinks to a value other than “Plain” in your WordPress dashboard at Settings → Permalinks.
 
 ## Setup
 
