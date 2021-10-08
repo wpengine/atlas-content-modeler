@@ -64,6 +64,10 @@ function create_models( array $models ) {
 	$content_types          = get_registered_content_types();
 
 	foreach ( $models as $model ) {
+		if ( ! is_array( $model ) ) {
+			continue;
+		}
+
 		$args = get_model_args( $model['slug'] ?? '', $model );
 
 		if ( is_wp_error( $args ) ) {
