@@ -22,4 +22,20 @@ class CreateContentModelNumberFieldCest
         $I->see('Number', '.field-list div.type');
         $I->see('Count', '.field-list div.widest');
     }
+
+    public function i_can_add_a_step_setting_without_a_max_setting(AcceptanceTester $I)
+    {
+        $I->loginAsAdmin();
+        $I->haveContentModel('Candy', 'Candies');
+        $I->wait(1);
+
+        $I->click('Number', '.field-buttons');
+		$I->wait(1);
+
+        $I->click('button.settings');
+        $I->fillField(['name' => 'minValue'], '1');
+        $I->fillField(['name' => 'step'], '2');
+        $I->dontSee('Step must be lower than max.', '.error');
+
+    }
 }

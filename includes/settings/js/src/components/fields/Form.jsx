@@ -117,6 +117,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
 						maxBelowStep: (v) => {
+							if (getValues("maxValue") === "") {
+								return true;
+							}
 							const max = parseNumber(
 								Math.abs(getValues("maxValue"))
 							);
