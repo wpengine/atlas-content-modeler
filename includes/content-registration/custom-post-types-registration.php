@@ -87,7 +87,7 @@ function register_relationships( $registry ) {
 	}
 
 	foreach ( $models as $model => $args ) {
-		if ( ! $args['fields'] ) {
+		if ( ! isset( $args['fields'] ) ) {
 			continue;
 		}
 
