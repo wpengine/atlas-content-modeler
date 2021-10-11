@@ -467,6 +467,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						<br />
 						<textarea
 							aria-invalid={errors.description ? "true" : "false"}
+							className="text-area-single-line"
 							id="description"
 							name="description"
 							defaultValue={storedData?.description}

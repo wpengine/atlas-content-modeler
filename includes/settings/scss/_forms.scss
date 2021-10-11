@@ -82,6 +82,10 @@
 
 .atlas-content-modeler-admin-page textarea {
 	min-height: 120px;
+
+	&.text-area-single-line {
+		min-height: 30px;
+	}
 }
 
 .atlas-content-modeler-admin-page label,
