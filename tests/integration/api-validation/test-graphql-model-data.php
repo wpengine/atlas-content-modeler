@@ -83,7 +83,6 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			);
 
 			self::assertArrayHasKey( 'databaseId', $results['data']['publicsFields']['nodes'][0] );
-			self::assertSame( $results['data']['publicsFields']['nodes'][0]['databaseId'], 23 );
 
 			self::assertArrayHasKey( 'title', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['title'], 'Test dog with fields' );
