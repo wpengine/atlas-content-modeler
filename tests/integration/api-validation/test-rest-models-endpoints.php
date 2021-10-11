@@ -84,7 +84,7 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 				'singular'    => 'Book Review 2',
 				'plural'      => 'Book Reviews 2',
 				'description' => 'Reviews of books.',
-			)
+			),
 		);
 
 		$request = new WP_REST_Request( 'PUT', $this->namespace . $this->route );
@@ -121,7 +121,7 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 				'singular'    => 'Book Review 3',
 				'plural'      => 'Book Reviews 3',
 				'description' => 'Reviews of books.',
-			)
+			),
 		);
 
 		$request = new WP_REST_Request( 'PUT', $this->namespace . $this->route );
@@ -134,9 +134,9 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 		$data   = $response->get_data();
 		$models = get_registered_content_types();
 
-		self::assertArrayHasKey('success', $data);
-		self::assertArrayHasKey('cheeses', $models);
-		self::assertArrayHasKey('rabbits', $models);
-		self::assertArrayHasKey('bookreviews', $models);
+		self::assertArrayHasKey( 'success', $data );
+		self::assertArrayHasKey( 'cheeses', $models );
+		self::assertArrayHasKey( 'rabbits', $models );
+		self::assertArrayHasKey( 'bookreviews', $models );
 	}
 }

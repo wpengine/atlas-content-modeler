@@ -21,11 +21,13 @@ class TestContentCreation extends WP_UnitTestCase {
 		$expected = 'custom_regular_post_slug';
 
 		$slug = 'custom_regular_post_slug';
-		$post = $this->factory()->post->create_and_get([
-			'post_name'   => $slug,
-			'post_status' => 'publish',
-			'post_type'   => 'post',
-		]);
+		$post = $this->factory()->post->create_and_get(
+			[
+				'post_name'   => $slug,
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			]
+		);
 		$this->assertSame(
 			$expected,
 			$post->post_name

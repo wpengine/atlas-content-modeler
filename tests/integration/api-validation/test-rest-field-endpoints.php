@@ -163,7 +163,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
 		$request->set_header( 'content-type', 'application/json' );
 
-		// Insert a successful relationship with a reverse relationship
+		// Insert a successful relationship with a reverse relationship.
 		$field = array(
 			'type'          => 'relationship',
 			'id'            => '3427364',
@@ -175,7 +175,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 			'enableReverse' => true,
 			'cardinality'   => 'many-to-many',
 			'reverseName'   => 'Reverse',
-			'reverseSlug'   => 'reverseIt'
+			'reverseSlug'   => 'reverseIt',
 		);
 		$request->set_body( json_encode( $field ) );
 		$response = $this->server->dispatch( $request );
@@ -184,7 +184,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( true, $data['success'] );
 
-		// Attempt to insert a reverse relationship that would conflict with the slug of a non-relationship field
+		// Attempt to insert a reverse relationship that would conflict with the slug of a non-relationship field.
 		$field = array(
 			'type'          => 'relationship',
 			'id'            => '456343234',
@@ -196,7 +196,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 			'enableReverse' => true,
 			'cardinality'   => 'many-to-many',
 			'reverseName'   => 'Reverse',
-			'reverseSlug'   => 'singleLine'
+			'reverseSlug'   => 'singleLine',
 		);
 		$request->set_body( json_encode( $field ) );
 		$response = $this->server->dispatch( $request );
@@ -206,7 +206,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'message', $data );
 		$this->assertEquals( 'Another field in the model public-fields model has the same API identifier.', $data['message'] );
 
-		// Attempt to create a reverse relationship that would conflict with the slug of an existing reverse relationship from the same model
+		// Attempt to create a reverse relationship that would conflict with the slug of an existing reverse relationship from the same model.
 		$field = array(
 			'type'          => 'relationship',
 			'id'            => '123456789',
@@ -218,7 +218,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 			'enableReverse' => true,
 			'cardinality'   => 'many-to-many',
 			'reverseName'   => 'Reverse',
-			'reverseSlug'   => 'reverseIt'
+			'reverseSlug'   => 'reverseIt',
 		);
 		$request->set_body( json_encode( $field ) );
 		$response = $this->server->dispatch( $request );
