@@ -6,7 +6,6 @@
 
 	<!-- Exclude composer vendor directory -->
 	<exclude-pattern>/vendor/</exclude-pattern>
-	<exclude-pattern>/tests/</exclude-pattern>
 	<exclude-pattern>/node_modules/</exclude-pattern>
 
 	<!-- Exclude CircleCI composer file -->
@@ -64,5 +63,66 @@
 		<properties>
 			<property name="blank_line_check" value="true" />
 		</properties>
+	</rule>
+
+	<!-- Exclude rules that break PHP Unit test conventions or result in redundant comments. -->
+	<!-- Test functions and properties are self-describing. -->
+	<rule ref="Generic.Commenting.DocComment.MissingShort">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Test file names are self-describing. -->
+	<rule ref="Squiz.Commenting.FileComment">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Test class names are self-describing. -->
+	<rule ref="Squiz.Commenting.ClassComment.Missing">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Test function names are self-describing. -->
+	<rule ref="Squiz.Commenting.FunctionComment">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Test variables should be self-describing. -->
+	<rule ref="Squiz.Commenting.VariableComment.Missing">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Test functions are not public so do not require @throws docblock annotations. -->
+	<rule ref="Squiz.Commenting.FunctionCommentThrowTag.Missing">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Multiple assignments are used as part of test setup. -->
+	<rule ref="Squiz.PHP.DisallowMultipleAssignments.Found">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- We follow the Codeception class name convention instead of the WordPress one. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Test globals don't require prefixes. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- `json_encode()` is fine for tests. -->
+	<rule ref="WordPress.WP.AlternativeFunctions.json_encode_json_encode">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Allow queries, DROP and general database manipulation in tests. -->
+	<rule ref="WordPress.DB">
+		<exclude-pattern>/tests/</exclude-pattern>
+	</rule>
+
+	<!-- Suppress warnings about the _before() test methods used in Codeception tests. -->
+	<rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+		<exclude-pattern>/tests/</exclude-pattern>
 	</rule>
 </ruleset>
