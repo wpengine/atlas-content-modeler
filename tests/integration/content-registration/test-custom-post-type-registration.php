@@ -168,6 +168,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
 	 */
 	public function test_model_supports_author(): void {
-		self::assertTrue(post_type_supports('public', 'author'));
+		self::assertTrue( post_type_supports( 'public', 'author' ) );
 	}
 }

@@ -106,7 +106,7 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 				[
 					'query' => '
 				{
-					privatesFields ( where: {author: 1}) {
+					privatesFields(where: {author: 1}) {
 						nodes {
 							databaseId
 						}
@@ -116,7 +116,7 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 				]
 			);
 
-			self::assertArrayHasKey( "privatesFields" , $results['data']);
+			self::assertArrayHasKey( "privatesFields" , $results['data'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
