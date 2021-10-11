@@ -471,7 +471,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							name="description"
 							defaultValue={storedData?.description}
 							placeholder="Add a description"
-							ref={register({ required: true, maxLength: 50 })}
+							ref={register({ required: true, maxLength: 250 })}
 							onChange={(e) => {
 								setInputGeneratorSourceValue(e.target.value);
 								setDescriptionCount(e.target.value.length);
