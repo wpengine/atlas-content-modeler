@@ -88,7 +88,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 			foreach ( $model['fields'] as $field ) {
 				if ( $field['type'] === 'relationship' ) {
 					$relationship = $registry->get_post_to_post_relationship( $post_type, $field['reference'], $field['id'] );
-					self::assertInstanceOf('WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost', $relationship);
+					self::assertInstanceOf( 'WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost', $relationship );
 				}
 			}
 		}

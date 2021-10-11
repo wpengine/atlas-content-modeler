@@ -2,7 +2,6 @@
 /**
  * Sample field data for testing
  */
-
 function get_test_fields() {
 	return array(
 		'1630411218064' => array(
@@ -268,7 +267,7 @@ function get_test_fields() {
 			'description'     => '',
 			'enableReverse'   => true,
 			'reverseName'     => 'PPosts',
-			'reverseSlug'     => 'pposts' . random_int(0, PHP_INT_MAX),
+			'reverseSlug'     => 'pposts' . random_int( 0, PHP_INT_MAX ),
 		),
 	);
 }

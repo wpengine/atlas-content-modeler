@@ -24,33 +24,33 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 	private $sample_taxonomies = array(
 		// A complete taxonomy.
 		'ingredient' =>
-		  array (
-			'singular' => 'Ingredient',
-			'plural' => 'Ingredients',
-			'slug' => 'ingredient',
-			'hierarchical' => false,
-			'types' =>
-			array (
-			  0 => 'recipe',
+		array(
+			'singular'        => 'Ingredient',
+			'plural'          => 'Ingredients',
+			'slug'            => 'ingredient',
+			'hierarchical'    => false,
+			'types'           =>
+			array(
+				0 => 'recipe',
 			),
-			'api_visibility' => 'public',
-			'show_in_rest' => true,
+			'api_visibility'  => 'public',
+			'show_in_rest'    => true,
 			'show_in_graphql' => true,
-		  ),
+		),
 		// A taxonomy with missing values. Should gain default values when registered.
-		'missing' =>
-			array (
+		'missing'    =>
+			array(
 				'slug' => 'missing',
 			),
 		// Public and private examples to test the `public` property is set.
-		'public' =>
-			array (
-				'slug' => 'public',
+		'public'     =>
+			array(
+				'slug'           => 'public',
 				'api_visibility' => 'public',
 			),
-		'private' =>
-			array (
-				'slug' => 'private',
+		'private'    =>
+			array(
+				'slug'           => 'private',
 				'api_visibility' => 'private',
 			),
 	);
@@ -81,7 +81,7 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\Taxonomies\set_defaults()
 	 */
 	public function test_registering_partial_taxonomy_sets_defaults(): void {
-		wp_set_current_user(1);
+		wp_set_current_user( 1 );
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		register();
 
@@ -106,8 +106,8 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 
 		$ingredients = get_taxonomy( 'ingredient' );
 
-		self::assertSame('Ingredients', $ingredients->label );
-		self::assertSame('Ingredient', $ingredients->labels->singular_name );
+		self::assertSame( 'Ingredients', $ingredients->label );
+		self::assertSame( 'Ingredient', $ingredients->labels->singular_name );
 	}
 
 	/**

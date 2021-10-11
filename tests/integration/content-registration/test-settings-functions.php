@@ -44,14 +44,14 @@ class SettingsFunctionsTestCases extends WP_UnitTestCase {
 				'slug'        => 'bookReviews',
 				'singular'    => 'Book Review',
 				'plural'      => 'Book Reviews',
-				'description' => 'This model should have a reformatted slug.'
+				'description' => 'This model should have a reformatted slug.',
 			],
-			'unchanged' => [
+			'unchanged'   => [
 				'slug'        => 'unchanged',
 				'singular'    => 'Unchanged Model',
 				'plural'      => 'Unchanged Models',
-				'description' => 'This model should be unaffected.'
-			]
+				'description' => 'This model should be unaffected.',
+			],
 		];
 
 		$updated_models = [
@@ -59,9 +59,9 @@ class SettingsFunctionsTestCases extends WP_UnitTestCase {
 				'slug'        => 'bookreviews',
 				'singular'    => 'Book Review',
 				'plural'      => 'Book Reviews',
-				'description' => 'This model should have a reformatted slug.'
+				'description' => 'This model should have a reformatted slug.',
 			],
-			'unchanged' => $deprecated_models['unchanged']
+			'unchanged'   => $deprecated_models['unchanged'],
 		];
 
 		update_registered_content_types( $deprecated_models );
@@ -83,7 +83,7 @@ class SettingsFunctionsTestCases extends WP_UnitTestCase {
 		$org = $this->expected_post_types();
 		update_registered_content_types( $org );
 
-		$new = $org;
+		$new                           = $org;
 		$new['cat']['show_in_graphql'] = true;
 
 		self::assertTrue( update_registered_content_type( 'cat', $new['cat'] ) );
