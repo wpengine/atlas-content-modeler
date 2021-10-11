@@ -448,6 +448,60 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				)}
 			</div>
 
+			<div
+				className={`${
+					errors.description ? "field has-error" : "field"
+				} me-sm-5`}
+			>
+				<label htmlFor="description">Description</label>
+				<br />
+				<p className="help">
+					Display name for your {supportedFields[type]} field.
+				</p>
+				<input
+					aria-invalid={errors.description ? "true" : "false"}
+					id="description"
+					name="description"
+					defaultValue={storedData?.description}
+					placeholder="Add a description"
+					type="text"
+					ref={register({ required: true, maxLength: 50 })}
+					onChange={(e) => {
+						setInputGeneratorSourceValue(e.target.value);
+						setDescriptionCount(e.target.value.length);
+						clearErrors("slug");
+					}}
+				/>
+				<p className="field-messages">
+					{errors.description &&
+						errors.description.type === "required" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									{__(
+										"This field is required",
+										"atlas-content-modeler"
+									)}
+								</span>
+							</span>
+						)}
+					{errors.description &&
+						errors.description.type === "maxLength" && (
+							<span className="error">
+								<Icon type="error" />
+								<span role="alert">
+									{__(
+										"Exceeds max length.",
+										"atlas-content-modeler"
+									)}
+								</span>
+							</span>
+						)}
+					<span>&nbsp;</span>
+					<span className="count">{descriptionCount}/250</span>
+				</p>
+			</div>
+
 			<div className="buttons d-flex flex-row">
 				<button type="submit" className="primary first mr-1 mr-sm-2">
 					{editing
