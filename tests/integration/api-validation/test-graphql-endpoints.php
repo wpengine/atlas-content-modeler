@@ -106,7 +106,7 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 				[
 					'query' => '
 				{
-					privatesFields ( where: {author: 1}) {
+					privatesFields(where: {author: 1}) {
 						nodes {
 							databaseId
 						}
