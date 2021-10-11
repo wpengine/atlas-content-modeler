@@ -116,7 +116,7 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 				]
 			);
 
-			self::assertArrayHasKey( "privatesFields" , $results['data']);
+			self::assertArrayHasKey( "privatesFields" , $results['data'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
