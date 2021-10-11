@@ -48,6 +48,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		defaultValues: storedData,
 	});
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
+	const [descriptionCount, setDescriptionCount] = useState(
+		storedData?.description?.length || 0
+	);
 	const [optionsModalIsOpen, setOptionsModalIsOpen] = useState(false);
 	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
@@ -448,58 +451,65 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				)}
 			</div>
 
-			<div
-				className={`${
-					errors.description ? "field has-error" : "field"
-				} me-sm-5`}
-			>
-				<label htmlFor="description">Description</label>
-				<br />
-				<p className="help">
-					Display name for your {supportedFields[type]} field.
-				</p>
-				<input
-					aria-invalid={errors.description ? "true" : "false"}
-					id="description"
-					name="description"
-					defaultValue={storedData?.description}
-					placeholder="Add a description"
-					type="text"
-					ref={register({ required: true, maxLength: 50 })}
-					onChange={(e) => {
-						setInputGeneratorSourceValue(e.target.value);
-						setDescriptionCount(e.target.value.length);
-						clearErrors("slug");
-					}}
-				/>
-				<p className="field-messages">
-					{errors.description &&
-						errors.description.type === "required" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">
-									{__(
-										"This field is required",
-										"atlas-content-modeler"
-									)}
-								</span>
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div className="d-flex flex-column d-sm-flex flex-sm-row">
+					<div
+						className={`${
+							errors.description ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="description">
+							Description{" "}
+							<span style={{ fontWeight: "normal" }}>
+								(Optional)
 							</span>
-						)}
-					{errors.description &&
-						errors.description.type === "maxLength" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">
-									{__(
-										"Exceeds max length.",
-										"atlas-content-modeler"
-									)}
-								</span>
+						</label>
+						<br />
+						<textarea
+							aria-invalid={errors.description ? "true" : "false"}
+							id="description"
+							name="description"
+							defaultValue={storedData?.description}
+							placeholder="Add a description"
+							ref={register({ required: true, maxLength: 50 })}
+							onChange={(e) => {
+								setInputGeneratorSourceValue(e.target.value);
+								setDescriptionCount(e.target.value.length);
+								clearErrors("slug");
+							}}
+						/>
+						<p className="field-messages">
+							{errors.description &&
+								errors.description.type === "required" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"This field is required",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							{errors.description &&
+								errors.description.type === "maxLength" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							<span>&nbsp;</span>
+							<span className="count">
+								{descriptionCount}/250
 							</span>
-						)}
-					<span>&nbsp;</span>
-					<span className="count">{descriptionCount}/250</span>
-				</p>
+						</p>
+					</div>
+				</div>
 			</div>
 
 			<div className="buttons d-flex flex-row">
