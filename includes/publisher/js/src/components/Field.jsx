@@ -118,12 +118,16 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							*{__("Required", "atlas-content-modeler")}
 						</p>
 					)}
+					{field?.description && (
+						<p className="help mb-0">
+							{__(field.description, "atlas-content-modeler")}
+						</p>
+					)}
 					{field?.inputType === "multi" ? (
 						<textarea {...textProps} />
 					) : (
 						<input {...textProps} />
 					)}
-
 					<span className="error">
 						<Icon type="error" />
 						<span role="alert">
@@ -181,6 +185,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							*{__("Required", "atlas-content-modeler")}
 						</p>
 					)}
+					{field?.description && (
+						<p className="help mb-0">
+							{__(field.description, "atlas-content-modeler")}
+						</p>
+					)}
 					<input
 						ref={numberInputRef}
 						type={`${field.type}`}
@@ -213,6 +222,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							*{__("Required", "atlas-content-modeler")}
 						</p>
 					)}
+					{field?.description && (
+						<p className="help mb-0">
+							{__(field.description, "atlas-content-modeler")}
+						</p>
+					)}
 					<input
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -242,6 +256,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			const [checked, setChecked] = useState(field.value === "on");
 			return (
 				<>
+					{field?.description && (
+						<p className="help mb-3">
+							{__(field.description, "atlas-content-modeler")}
+						</p>
+					)}
 					<label
 						className="check-container"
 						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -277,6 +296,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 									className="check-container multi-check-container"
 									htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
 								>
+									{item?.description && (
+										<p className="help mb-0">
+											{__(
+												item.description,
+												"atlas-content-modeler"
+											)}
+										</p>
+									)}
 									{item.name}
 									<input
 										type="checkbox"
@@ -309,6 +336,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						{field.choices.map((item, index) => {
 							return (
 								<label className="radio-container" key={index}>
+									{item?.description && (
+										<p className="help mb-0">
+											{__(
+												item.description,
+												"atlas-content-modeler"
+											)}
+										</p>
+									)}
 									{item.name}
 									<input
 										type="radio"
