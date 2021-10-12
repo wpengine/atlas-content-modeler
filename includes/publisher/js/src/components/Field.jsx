@@ -289,6 +289,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				return (
 					<fieldset>
 						<legend>{field.name}</legend>
+						{field?.description && (
+							<p className="help mb-0">
+								{__(field.description, "atlas-content-modeler")}
+							</p>
+						)}
 						{field.choices.map((item, index) => {
 							return (
 								<label
@@ -296,14 +301,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 									className="check-container multi-check-container"
 									htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
 								>
-									{item?.description && (
-										<p className="help mb-0">
-											{__(
-												item.description,
-												"atlas-content-modeler"
-											)}
-										</p>
-									)}
 									{item.name}
 									<input
 										type="checkbox"
@@ -333,17 +330,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				return (
 					<fieldset>
 						<legend>{field.name}</legend>
+						{field?.description && (
+							<p className="help mb-0">
+								{__(field.description, "atlas-content-modeler")}
+							</p>
+						)}
 						{field.choices.map((item, index) => {
 							return (
 								<label className="radio-container" key={index}>
-									{item?.description && (
-										<p className="help mb-0">
-											{__(
-												item.description,
-												"atlas-content-modeler"
-											)}
-										</p>
-									)}
 									{item.name}
 									<input
 										type="radio"
