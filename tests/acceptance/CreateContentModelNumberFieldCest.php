@@ -1,41 +1,38 @@
 <?php
 
-class CreateContentModelNumberFieldCest
-{
-    /**
-     * Ensure a user can add a number field to the model and see it within the list.
-     */
-    public function i_can_add_a_number_field_to_a_content_model(AcceptanceTester $I)
-    {
-        $I->loginAsAdmin();
-        $I->haveContentModel('Candy', 'Candies');
-        $I->wait(1);
+class CreateContentModelNumberFieldCest {
 
-        $I->click('Number', '.field-buttons');
-		$I->wait(1);
-		$I->fillField(['name' => 'name'], 'Count');
-        $I->see('5/50', 'span.count');
-        $I->seeInField('#slug','count');
-        $I->click('.open-field button.primary');
-        $I->wait(1);
+	/**
+	 * Ensure a user can add a number field to the model and see it within the list.
+	 */
+	public function i_can_add_a_number_field_to_a_content_model( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->haveContentModel( 'Candy', 'Candies' );
+		$i->wait( 1 );
 
-        $I->see('Number', '.field-list div.type');
-        $I->see('Count', '.field-list div.widest');
-    }
+		$i->click( 'Number', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Count' );
+		$i->see( '5/50', 'span.count' );
+		$i->seeInField( '#slug', 'count' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
 
-    public function i_can_add_a_step_setting_without_a_max_setting(AcceptanceTester $I)
-    {
-        $I->loginAsAdmin();
-        $I->haveContentModel('Candy', 'Candies');
-        $I->wait(1);
+		$i->see( 'Number', '.field-list div.type' );
+		$i->see( 'Count', '.field-list div.widest' );
+	}
 
-        $I->click('Number', '.field-buttons');
-		$I->wait(1);
+	public function i_can_add_a_step_setting_without_a_max_setting( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->haveContentModel( 'Candy', 'Candies' );
+		$i->wait( 1 );
 
-        $I->click('button.settings');
-        $I->fillField(['name' => 'minValue'], '1');
-        $I->fillField(['name' => 'step'], '2');
-        $I->dontSee('Step must be lower than max.', '.error');
+		$i->click( 'Number', '.field-buttons' );
+		$i->wait( 1 );
 
-    }
+		$i->click( 'button.settings' );
+		$i->fillField( [ 'name' => 'minValue' ], '1' );
+		$i->fillField( [ 'name' => 'step' ], '2' );
+		$i->dontSee( 'Step must be lower than max.', '.error' );
+	}
 }

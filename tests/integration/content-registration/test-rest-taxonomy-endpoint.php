@@ -29,30 +29,30 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 	 * @var array Taxonomies used in tests.
 	 */
 	protected $test_taxonomies = [
-		'category' => [
+		'category'        => [
 			'slug'     => 'category',
 			'singular' => 'Test Existing WP Core Taxonomy',
 			'plural'   => 'Test Existing WP Core Taxonomies',
 		],
-		'ingredient' => [
+		'ingredient'      => [
 			'slug'     => 'ingredient',
 			'singular' => 'Test Changing Singular Name',
 			'plural'   => 'Test Changing Plural Name',
 		],
-		'new' => [
+		'new'             => [
 			'slug'     => 'new',
 			'singular' => 'New',
 			'plural'   => 'News',
 		],
-		'missingSlug' => [
+		'missingSlug'     => [
 			'singular' => 'Missing Slug',
 			'plural'   => 'Missing Slugs',
 		],
 		'missingSingular' => [
-			'slug'     => 'missingSingular',
-			'plural'   => 'Missing Singulars',
+			'slug'   => 'missingSingular',
+			'plural' => 'Missing Singulars',
 		],
-		'missingPlural' => [
+		'missingPlural'   => [
 			'slug'     => 'missingPlural',
 			'singular' => 'Missing Plural',
 		],
@@ -61,16 +61,16 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 	public function setUp(): void {
 		parent::setUp();
 		global $wp_rest_server;
-		$this->server = $wp_rest_server = new \WP_REST_Server;
+		$this->server = $wp_rest_server = new \WP_REST_Server();
 		update_option( $this->taxonomy_option, $this->starting_taxonomies );
 		do_action( 'rest_api_init' );
 	}
 
 	public function test_taxonomy_routes_are_registered(): void {
 		$routes = $this->server->get_routes( 'wpe' );
-		// For POST and PUT requests
+		// For POST and PUT requests.
 		self::assertArrayHasKey( "/{$this->namespace}/{$this->route}", $routes );
-		// For DELETE requests
+		// For DELETE requests.
 		self::assertArrayHasKey( "/{$this->namespace}/{$this->route}/(?P<taxonomy>[\\w-]+)", $routes );
 	}
 
@@ -174,7 +174,7 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'PUT', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( json_encode( $this->test_taxonomies['ingredient'] ) );
-		$response = $this->server->dispatch( $request );
+		$response   = $this->server->dispatch( $request );
 		$taxonomies = get_option( $this->taxonomy_option );
 
 		self::assertSame( 200, $response->get_status() );

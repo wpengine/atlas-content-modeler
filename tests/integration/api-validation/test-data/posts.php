@@ -2,7 +2,6 @@
 /**
  * Saves mock post data for processing
  */
-
 function create_test_posts( $test_class ) {
 	$ids = array();
 

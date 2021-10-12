@@ -111,13 +111,13 @@ class RestModelDataTests extends WP_UnitTestCase {
 			'source_url',
 		];
 
-		// Images and files have same structure
+		// Images and files have same structure.
 		foreach ( $expected_keys as $key ) {
 			self::assertArrayHasKey( $key, $image );
 			self::assertArrayHasKey( $key, $file );
 		}
 
-		// Images
+		// Images.
 		self::assertArrayHasKey( 'rendered', $image['caption'] );
 		self::assertEquals( 'image', $image['media_type'] );
 		self::assertEquals( 'image/png', $image['mime_type'] );
@@ -125,7 +125,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'sizes', $image['media_details'] );
 		self::assertEquals( 2, count( $image['media_details']['sizes'] ) );
 
-		// Files
+		// Files.
 		self::assertArrayHasKey( 'rendered', $file['caption'] );
 		self::assertEquals( 'file', $file['media_type'] );
 		self::assertEquals( 'application/pdf', $file['mime_type'] );

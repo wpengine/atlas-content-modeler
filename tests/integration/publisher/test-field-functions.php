@@ -18,13 +18,25 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 
 	public function test_order_fields(): void {
 		$fields = [
-			[ 'id' => 123, 'position' => 10000 ],
-			[ 'id' => 456, 'position' => 0 ],
+			[
+				'id'       => 123,
+				'position' => 10000,
+			],
+			[
+				'id'       => 456,
+				'position' => 0,
+			],
 		];
 
 		$expected = [
-			[ 'id' => 456, 'position' => 0 ],
-			[ 'id' => 123, 'position' => 10000 ],
+			[
+				'id'       => 456,
+				'position' => 0,
+			],
+			[
+				'id'       => 123,
+				'position' => 10000,
+			],
 		];
 
 		$this->assertSame(
@@ -36,10 +48,16 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 	public function test_get_entry_title_field(): void {
 		$fields = [
 			[ 'id' => 123 ],
-			[ 'id' => 456, 'isTitle' => true ],
+			[
+				'id'      => 456,
+				'isTitle' => true,
+			],
 		];
 
-		$expected = [ 'id' => 456, 'isTitle' => true ];
+		$expected = [
+			'id'      => 456,
+			'isTitle' => true,
+		];
 
 		$this->assertSame(
 			$expected,
@@ -49,8 +67,14 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 
 	public function test_get_entry_title_field_with_no_titles(): void {
 		$fields = [
-			[ 'id' => 123, 'position' => 0 ],
-			[ 'id' => 456, 'position' => 1 ],
+			[
+				'id'       => 123,
+				'position' => 0,
+			],
+			[
+				'id'       => 456,
+				'position' => 1,
+			],
 		];
 
 		$expected = [];
@@ -65,8 +89,14 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 		$slug_to_find = 'findme';
 
 		$fields = [
-			[ 'type' => 'text', 'slug' => 'test', ],
-			[ 'type' => 'media', 'slug' => $slug_to_find ],
+			[
+				'type' => 'text',
+				'slug' => 'test',
+			],
+			[
+				'type' => 'media',
+				'slug' => $slug_to_find,
+			],
 		];
 
 		$expected = 'media';
@@ -81,7 +111,7 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 		$slug_to_find = 'findme';
 
 		$fields = [
-			[ 'slug' => 'test', ],
+			[ 'slug' => 'test' ],
 			[ 'slug' => $slug_to_find ],
 		];
 
@@ -97,7 +127,7 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 		$slug_to_find = 'findme';
 
 		$fields = [
-			[ 'slug' => 'test', ],
+			[ 'slug' => 'test' ],
 			[ 'slug' => 'test2' ],
 			[ 'slug' => 'test3' ],
 		];

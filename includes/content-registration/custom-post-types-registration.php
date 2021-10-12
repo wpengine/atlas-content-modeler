@@ -87,7 +87,7 @@ function register_relationships( $registry ) {
 	}
 
 	foreach ( $models as $model => $args ) {
-		if ( ! $args['fields'] ) {
+		if ( ! isset( $args['fields'] ) ) {
 			continue;
 		}
 
@@ -331,6 +331,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'show_in_menu'          => $args['show_in_menu'] ?? true,
 		'supports'              => $args['supports'] ??
 								[
+									'author',
 									'title',
 									'editor',
 									'thumbnail',

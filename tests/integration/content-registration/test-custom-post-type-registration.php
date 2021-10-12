@@ -88,7 +88,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 			foreach ( $model['fields'] as $field ) {
 				if ( $field['type'] === 'relationship' ) {
 					$relationship = $registry->get_post_to_post_relationship( $post_type, $field['reference'], $field['id'] );
-					self::assertInstanceOf('WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost', $relationship);
+					self::assertInstanceOf( 'WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost', $relationship );
 				}
 			}
 		}
@@ -162,5 +162,12 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	public function test_fields_not_attached_to_a_model_are_not_affected(): void {
 		self::assertFalse( is_protected_meta( false, 'this-key-is-unprotected-and-not-ours-and-should-remain-unprotected', 'post' ) );
 		self::assertTrue( is_protected_meta( true, 'this-key-is-already-protected-and-should-remain-protected', 'post' ) );
+	}
+
+	/**
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
+	 */
+	public function test_model_supports_author(): void {
+		self::assertTrue( post_type_supports( 'public', 'author' ) );
 	}
 }

@@ -118,9 +118,9 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		$models = get_option( 'atlas_content_modeler_post_types' );
 
 		foreach ( array_keys( $create_test_model ) as $key ) {
-			// Test returned content
+			// Test returned content.
 			self::assertSame( $create_test_model[ $key ], $data['model'][ $key ] );
-			// Test saved content
+			// Test saved content.
 			self::assertSame( $create_test_model[ $key ], $models[ $slug ][ $key ] );
 		}
 	}
@@ -198,7 +198,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	public function test_can_get_all_models_via_rest_api(): void {
 		wp_set_current_user( 1 );
 
-		$request = new WP_REST_Request( 'GET', $this->namespace . $this->route . 's' );
+		$request  = new WP_REST_Request( 'GET', $this->namespace . $this->route . 's' );
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 200, $response->get_status() );
@@ -211,7 +211,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	public function test_unauthorized_user_cannot_get_all_models_via_rest_api(): void {
 		wp_set_current_user( null );
 
-		$request = new WP_REST_Request( 'GET', $this->namespace . $this->route . 's' );
+		$request  = new WP_REST_Request( 'GET', $this->namespace . $this->route . 's' );
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 401, $response->get_status() );
@@ -270,7 +270,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 				get_test_fields(),
 				function( $field ) use ( $model_to_delete ) {
 					return $field['type'] === 'relationship' &&
-						   $field['reference'] === $model_to_delete;
+						$field['reference'] === $model_to_delete;
 				}
 			)
 		);
@@ -290,7 +290,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		foreach ( $relationship_fields as $field_id ) {
 			self::assertArrayNotHasKey(
 				$field_id,
-				$models[$model_with_relationships]['fields']
+				$models[ $model_with_relationships ]['fields']
 			);
 		}
 	}
@@ -310,17 +310,17 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		// Create posts to relate via an entry in the post-to-post table.
 		$post_from_id = $this->factory->post->create(
 			[
-				'post_title'   => 'Test cat',
-				'post_status'  => 'publish',
-				'post_type'    => 'private',
+				'post_title'  => 'Test cat',
+				'post_status' => 'publish',
+				'post_type'   => 'private',
 			]
 		);
 
 		$post_to_id = $this->factory->post->create(
 			[
-				'post_title'   => 'Test dog',
-				'post_status'  => 'publish',
-				'post_type'    => 'public',
+				'post_title'  => 'Test dog',
+				'post_status' => 'publish',
+				'post_type'   => 'public',
 			]
 		);
 
