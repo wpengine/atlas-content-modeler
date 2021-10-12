@@ -602,10 +602,8 @@ final class FormEditingExperience {
 	 * in the user meta table under a key named `meta-box-order_[post-slug]`.
 	 */
 	public function move_author_meta_box(): void {
-		$screen = get_current_screen();
-
 		// Only change placement for post types created by this plugin.
-		if ( ! array_key_exists( $screen->post_type, $this->models ) ) {
+		if ( ! array_key_exists( $this->screen->post_type, $this->models ) ) {
 			return;
 		}
 
