@@ -120,7 +120,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					)}
 					{field?.description && (
 						<p className="help mb-0">
-							{__(field.description, "atlas-content-modeler")}
+							{field.description}
 						</p>
 					)}
 					{field?.inputType === "multi" ? (
