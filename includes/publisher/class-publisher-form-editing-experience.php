@@ -85,6 +85,7 @@ final class FormEditingExperience {
 		add_filter( 'screen_options_show_screen', [ $this, 'hide_screen_options' ], 10, 2 );
 		add_action( 'load-post.php', [ $this, 'feedback_notice_handler' ] );
 		add_action( 'load-post-new.php', [ $this, 'feedback_notice_handler' ] );
+		add_action( 'do_meta_boxes', [ $this, 'move_author_meta_box' ] );
 	}
 
 	/**
@@ -589,5 +590,35 @@ final class FormEditingExperience {
 		}
 
 		return $show_screen;
+	}
+
+	/**
+	 * Moves the author meta box to the sidebar.
+	 *
+	 * Improves usability by moving the meta box away from the main editor area
+	 * so that it does not appear there before the publisher React application.
+	 *
+	 * Users can still override meta box position. Their preference is stored
+	 * in the user meta table under a key named `meta-box-order_[post-slug]`.
+	 */
+	public function move_author_meta_box(): void {
+		$screen = get_current_screen();
+
+		// Only change placement for post types created by this plugin.
+		if ( ! array_key_exists( $screen->post_type, $this->models ) ) {
+			return;
+		}
+
+		remove_meta_box( 'authordiv', null, 'normal' );
+
+		add_meta_box(
+			'authordiv',
+			__( 'Author' ), // phpcs:ignore -- use translation from WordPress Core.
+			'post_author_meta_box',
+			null,
+			'side', // Move to the sidebar.
+			'default',
+			array( '__back_compat_meta_box' => true )
+		);
 	}
 }
