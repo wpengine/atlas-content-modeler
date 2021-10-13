@@ -13,6 +13,7 @@ class CreateContentModelTextFieldCest {
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
+		$i->fillField( [ 'name' => 'description' ], 'Description.' );
 		$i->see( '5/50', 'span.count' );
 		$i->seeInField( '#slug', 'color' );
 		$i->click( '.open-field button.primary' );
