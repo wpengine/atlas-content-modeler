@@ -496,7 +496,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 									</span>
 								)}
 							<span>&nbsp;</span>
-							<span className="count">
+							<span className="description-count">
 								{descriptionCount}/250
 							</span>
 						</p>
