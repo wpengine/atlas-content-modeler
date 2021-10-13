@@ -25,10 +25,6 @@ const RelationshipFields = ({
 	);
 	const modelId = useLocationSearch().get("id");
 	const selectedReference = watch("reference");
-	const [descriptionCount, setDescriptionCount] = useState(
-		data?.description?.length || 0
-	);
-	const descriptionMaxLength = 250;
 	const [reverseNameCount, setNameCount] = useState(
 		data?.reverseName?.length || 0
 	);
@@ -208,45 +204,6 @@ const RelationshipFields = ({
 						</div>
 					</fieldset>
 				</div>
-			</div>
-			<div className="field">
-				<label htmlFor="description">
-					{__("Description", "atlas-content-modeler")}{" "}
-					<span>({__("Optional", "atlas-content-modeler")})</span>
-				</label>
-				<p className="help">
-					{sprintf(
-						__(
-							/* translators: %s: Singular name of the current content model (e.g. “Employee”). */
-							"Displayed next to the relationship field on the %s entry form.",
-							"atlas-content-modeler"
-						),
-						models[modelId].singular
-					)}
-				</p>
-				<textarea
-					name="description"
-					ref={register({ maxLength: descriptionMaxLength })}
-					id="description"
-					className="two-columns"
-					onChange={(e) => setDescriptionCount(e.target.value.length)}
-				/>
-				<p className="field-messages two-columns">
-					{errors.description &&
-						errors.description.type === "maxLength" && (
-							<span className="error">
-								<Icon type="error" />
-								<span role="alert">
-									{__(
-										"Exceeds max length.",
-										"atlas-content-modeler"
-									)}
-								</span>
-							</span>
-						)}
-					<span>&nbsp;</span>
-					<span className="count description-count">{`${descriptionCount}/${descriptionMaxLength}`}</span>
-				</p>
 			</div>
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
 				<div className="field">
