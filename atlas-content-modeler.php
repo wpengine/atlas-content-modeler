@@ -49,6 +49,7 @@ function atlas_content_modeler_loader(): void {
 		'rest-api/init-rest-api.php',
 		'publisher/class-publisher-form-editing-experience.php',
 		'updates/version-updates.php',
+		'content-connect/autoload.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
@@ -61,5 +62,6 @@ function atlas_content_modeler_loader(): void {
 	$form_editing_experience->bootstrap();
 
 	// Bootstrap relationships library.
+	acm_content_connect_autoloader();
 	\WPE\AtlasContentModeler\ContentConnect\Plugin::instance();
 }
