@@ -119,9 +119,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						</p>
 					)}
 					{field?.description && (
-						<p className="help mb-0">
-							{field.description}
-						</p>
+						<p className="help mb-0">{field.description}</p>
 					)}
 					{field?.inputType === "multi" ? (
 						<textarea {...textProps} />
@@ -186,9 +184,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						</p>
 					)}
 					{field?.description && (
-						<p className="help mb-0">
-							{__(field.description, "atlas-content-modeler")}
-						</p>
+						<p className="help mb-0">{field.description}</p>
 					)}
 					<input
 						ref={numberInputRef}
@@ -223,9 +219,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						</p>
 					)}
 					{field?.description && (
-						<p className="help mb-0">
-							{__(field.description, "atlas-content-modeler")}
-						</p>
+						<p className="help mb-0">{field.description}</p>
 					)}
 					<input
 						type={`${field.type}`}
@@ -257,9 +251,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			return (
 				<>
 					{field?.description && (
-						<p className="help mb-3">
-							{__(field.description, "atlas-content-modeler")}
-						</p>
+						<p className="help mb-3">{field.description}</p>
 					)}
 					<label
 						className="check-container"
@@ -290,9 +282,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					<fieldset>
 						<legend>{field.name}</legend>
 						{field?.description && (
-							<p className="help mb-0">
-								{__(field.description, "atlas-content-modeler")}
-							</p>
+							<p className="help mb-0">{field.description}</p>
 						)}
 						{field.choices.map((item, index) => {
 							return (
@@ -331,9 +321,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					<fieldset>
 						<legend>{field.name}</legend>
 						{field?.description && (
-							<p className="help mb-0">
-								{__(field.description, "atlas-content-modeler")}
-							</p>
+							<p className="help mb-0">{field.description}</p>
 						)}
 						{field.choices.map((item, index) => {
 							return (
