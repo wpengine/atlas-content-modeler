@@ -481,18 +481,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						/>
 						<p className="field-messages">
 							{errors.description &&
-								errors.description.type === "required" && (
-									<span className="error">
-										<Icon type="error" />
-										<span role="alert">
-											{__(
-												"This field is required",
-												"atlas-content-modeler"
-											)}
-										</span>
-									</span>
-								)}
-							{errors.description &&
 								errors.description.type === "maxLength" && (
 									<span className="error">
 										<Icon type="error" />
