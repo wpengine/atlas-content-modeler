@@ -471,7 +471,10 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							id="description"
 							name="description"
 							defaultValue={storedData?.description}
-							placeholder="Add a description"
+							placeholder={__(
+								"Add a description",
+								"atlas-content-modeler"
+							)}
 							ref={register({ maxLength: 250 })}
 							onChange={(e) => {
 								setInputGeneratorSourceValue(e.target.value);
