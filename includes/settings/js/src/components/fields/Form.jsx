@@ -478,9 +478,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							)}
 							ref={register({ maxLength: 250 })}
 							onChange={(e) => {
-								setInputGeneratorSourceValue(e.target.value);
 								setDescriptionCount(e.target.value.length);
-								clearErrors("slug");
 							}}
 						/>
 						<p className="field-messages">
