@@ -167,3 +167,26 @@ test-php-unit: | install-composer build-docker-phpunit ## Run PHPunit tests
 			bash -c "vendor/bin/phpunit $(TEST)"; \
 	fi
 	docker-compose -f ./docker-compose-phpunit.yml down
+
+.PHONY: test-content-connect
+test-content-connect: | install-composer build-docker-phpunit ## Run PHPunit tests
+	if [ "$$(docker ps | grep atlas-content-modeler_docker_phpunitdatabase_1)" ]; then \
+		docker-compose -f ./docker-compose-phpunit.yml down; \
+	fi
+	docker-compose -f ./docker-compose-phpunit.yml up -d
+	if [ -z "$(TEST)" ]; then \
+		docker-compose \
+			-f ./docker-compose-phpunit.yml \
+			exec \
+			-w /app \
+			phpunit \
+			bash -c "vendor/bin/phpunit --configuration phpunit.content-connect.xml"; \
+	else \
+		docker-compose \
+			-f ./docker-compose-phpunit.yml \
+			exec \
+			-w /app \
+			phpunit \
+			bash -c "vendor/bin/phpunit --configuration phpunit.content-connect.xml $(TEST)"; \
+	fi
+	docker-compose -f ./docker-compose-phpunit.yml down
