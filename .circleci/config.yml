@@ -441,6 +441,37 @@ jobs:
             composer test
           working_directory: <<parameters.slug>>
 
+  plugin-test-content-connect:
+    docker:
+      - image: cimg/php:7.4
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_DATABASE: wp_database
+          MYSQL_USER: wp_user
+          MYSQL_PASSWORD: wp_pass
+          MYSQL_ROOT_PASSWORD: password
+    parameters:
+      slug:
+        type: string
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install Subversion package
+          command: |
+            sudo apt-get update -yq
+            sudo apt-get install subversion -yq
+      - run:
+          name: Setup WordPress testing framework
+          command: |
+            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
+          working_directory: <<parameters.slug>>
+      - run:
+          name: Run content connect testing suite
+          command: |
+            vendor/bin/phpunit --configuration phpunit.content-connect.xml
+          working_directory: <<parameters.slug>>
+
   plugin-deploy:
     executor: wp-product-orb/authenticate
     environment:
@@ -572,6 +603,14 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - plugin-test-content-connect:
+          requires:
+            - plugin-build-zip
+            - plugin-build-composer-dev
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-test-lint-php:
           requires:
             - plugin-build-zip
@@ -598,6 +637,7 @@ workflows:
              - plugin-test-e2e
              - plugin-test-lint-js
              - plugin-test-lint-php
+             - plugin-test-content-connect
              - plugin-test-jest
              - plugin-test-unit
            filters:

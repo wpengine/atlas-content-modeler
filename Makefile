@@ -81,7 +81,7 @@ install-npm: | build-docker
 	fi
 
 .PHONY: test
-test: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit ## Build all assets and run all testing except end-to-end testing
+test: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit test-content-connect ## Build all assets and run all testing except end-to-end testing
 
 .PHONY: test-build
 test-build: build test-js-lint test-php-lint test-js-jest test-php-unit ## Run all testing except end-to-end testing
