@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionButtons renders a publish button 1`] = `
+<div
+  className="flex-parent action-buttons"
+>
+  <div
+    className="flex-grow"
+  />
+  <div>
+    <button
+      className="button button-primary button-large action-button"
+      onClick={[Function]}
+    >
+      Publish
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ActionButtons renders an update button 1`] = `
+<div
+  className="flex-parent action-buttons"
+>
+  <div
+    className="flex-grow"
+  />
+  <div>
+    <button
+      className="button button-primary button-large action-button"
+      onClick={[Function]}
+    >
+      Update
+    </button>
+  </div>
+</div>
+`;
