@@ -470,6 +470,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							className="text-area-single-line mt-4"
 							id="description"
 							name="description"
+							rows="4"
 							defaultValue={storedData?.description}
 							placeholder={__(
 								"Add a description",
