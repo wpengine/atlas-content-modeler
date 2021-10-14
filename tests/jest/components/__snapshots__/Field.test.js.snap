@@ -1,5 +1,114 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Field renders a media field 1`] = `
+<React.Fragment>
+  <div
+    className="field d-flex flex-column media"
+    id="field-photo"
+  >
+    <MediaUploader
+      field={
+        Object {
+          "allowedTypes": "jpeg,jpg,pdf",
+          "id": "1624884901144",
+          "name": "Photo",
+          "required": false,
+          "slug": "photo",
+          "type": "media",
+          "value": "100",
+        }
+      }
+      modelSlug="geese"
+      required={false}
+    />
+  </div>
+</React.Fragment>
+`;
+
+exports[`Field renders a proper boolean field 1`] = `
+<div
+  className="field d-flex flex-column boolean"
+  id="field-boolean"
+>
+  <label
+    className="check-container"
+    htmlFor="atlas-content-modeler[geese][boolean]"
+  >
+    Boolean
+    <input
+      checked={false}
+      id="atlas-content-modeler[geese][boolean]"
+      name="atlas-content-modeler[geese][boolean]"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="error"
+    >
+      <svg
+        fill="none"
+        height="16"
+        viewBox="0 0 16 16"
+        width="16"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8 0C6.41775 0 4.87103 0.469192 3.55544 1.34824C2.23985 2.22729 1.21447 3.47672 0.608967 4.93853C0.00346635 6.40034 -0.15496 8.00887 0.153721 9.56072C0.462403 11.1126 1.22433 12.538 2.34315 13.6569C3.46197 14.7757 4.88743 15.5376 6.43928 15.8463C7.99113 16.155 9.59966 15.9965 11.0615 15.391C12.5233 14.7855 13.7727 13.7602 14.6518 12.4446C15.5308 11.129 16 9.58225 16 8C15.9976 5.879 15.154 3.84557 13.6542 2.3458C12.1544 0.846025 10.121 0.00239972 8 0ZM1.6 8C1.59898 6.80236 1.93431 5.62851 2.56779 4.61212C3.20128 3.59574 4.10745 2.77768 5.18312 2.25112C6.25879 1.72455 7.46072 1.51065 8.65201 1.63376C9.8433 1.75687 10.9761 2.21205 11.9213 2.94747L2.94747 11.9213C2.07326 10.8012 1.59893 9.42086 1.6 8ZM8 14.4C6.5796 14.4008 5.19974 13.9265 4.08 13.0525L13.0525 4.08C13.7876 5.02526 14.2424 6.15791 14.3653 7.34899C14.4882 8.54007 14.2742 9.74173 13.7477 10.8172C13.2212 11.8926 12.4033 12.7986 11.3871 13.432C10.371 14.0654 9.19741 14.4008 8 14.4Z"
+          fill="#D21B46"
+        />
+      </svg>
+      <span
+        role="alert"
+      >
+        This field is required
+      </span>
+    </span>
+    <span
+      className="checkmark"
+    />
+  </label>
+</div>
+`;
+
+exports[`Field renders a proper date field 1`] = `
+<div
+  className="field d-flex flex-column date"
+  id="field-date"
+>
+  <label
+    htmlFor="atlas-content-modeler[geese][date]"
+  >
+    Date
+  </label>
+  <input
+    id="atlas-content-modeler[geese][date]"
+    name="atlas-content-modeler[geese][date]"
+    type="date"
+  />
+  <span
+    className="error"
+  >
+    <svg
+      fill="none"
+      height="16"
+      viewBox="0 0 16 16"
+      width="16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 0C6.41775 0 4.87103 0.469192 3.55544 1.34824C2.23985 2.22729 1.21447 3.47672 0.608967 4.93853C0.00346635 6.40034 -0.15496 8.00887 0.153721 9.56072C0.462403 11.1126 1.22433 12.538 2.34315 13.6569C3.46197 14.7757 4.88743 15.5376 6.43928 15.8463C7.99113 16.155 9.59966 15.9965 11.0615 15.391C12.5233 14.7855 13.7727 13.7602 14.6518 12.4446C15.5308 11.129 16 9.58225 16 8C15.9976 5.879 15.154 3.84557 13.6542 2.3458C12.1544 0.846025 10.121 0.00239972 8 0ZM1.6 8C1.59898 6.80236 1.93431 5.62851 2.56779 4.61212C3.20128 3.59574 4.10745 2.77768 5.18312 2.25112C6.25879 1.72455 7.46072 1.51065 8.65201 1.63376C9.8433 1.75687 10.9761 2.21205 11.9213 2.94747L2.94747 11.9213C2.07326 10.8012 1.59893 9.42086 1.6 8ZM8 14.4C6.5796 14.4008 5.19974 13.9265 4.08 13.0525L13.0525 4.08C13.7876 5.02526 14.2424 6.15791 14.3653 7.34899C14.4882 8.54007 14.2742 9.74173 13.7477 10.8172C13.2212 11.8926 12.4033 12.7986 11.3871 13.432C10.371 14.0654 9.19741 14.4008 8 14.4Z"
+        fill="#D21B46"
+      />
+    </svg>
+    <span
+      role="alert"
+    >
+      This field is required
+    </span>
+  </span>
+</div>
+`;
+
 exports[`Field renders a proper number field 1`] = `
 <div
   className="field d-flex flex-column number"
@@ -82,4 +191,27 @@ exports[`Field renders a proper text field 1`] = `
     </span>
   </span>
 </div>
+`;
+
+exports[`Field renders a rich text field 1`] = `
+<React.Fragment>
+  <div
+    className="field d-flex flex-column richtext"
+    id="field-richtext"
+  >
+    <RichTextEditor
+      defaultError="This field is required"
+      errors={Object {}}
+      field={
+        Object {
+          "name": "Rich Text",
+          "slug": "richtext",
+          "type": "richtext",
+        }
+      }
+      modelSlug="geese"
+      validate={[Function]}
+    />
+  </div>
+</React.Fragment>
 `;
