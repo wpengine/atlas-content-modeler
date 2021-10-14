@@ -11,23 +11,26 @@ import {
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
+import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
-import { useApiIdGenerator } from "./useApiIdGenerator";
-import { sprintf, __ } from "@wordpress/i18n";
+import { useInputGenerator } from "../../hooks";
+import { toValidApiId } from "../../formats";
+import { __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
-const { cloneDeep } = lodash;
+const { cloneDeep, isEqual } = lodash;
 
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
 	multipleChoice: MultipleChoiceFields,
+	relationship: RelationshipFields,
 };
 
 Modal.setAppElement("#root");
 
-function Form({ id, position, type, editing, storedData }) {
+function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const {
 		register,
 		handleSubmit,
@@ -51,13 +54,17 @@ function Form({ id, position, type, editing, storedData }) {
 	const model = query.get("id");
 	const ExtraFields = extraFields[type] ?? null;
 	const currentNumberType = watch("numberType");
-	const { setApiIdGeneratorInput, apiIdFieldAttributes } = useApiIdGenerator({
-		setValue,
-		editing,
-		storedData,
+	const {
+		setInputGeneratorSourceValue,
+		onChangeGeneratedValue,
+	} = useInputGenerator({
+		linked: !editing,
+		setGeneratedValue: (value) => setValue("slug", value),
+		format: toValidApiId,
 	});
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
 	const [previousState, setPreviousState] = useState(storedData);
+	const originalValues = useRef({});
 
 	const advancedSettings = {
 		text: {
@@ -87,10 +94,12 @@ function Form({ id, position, type, editing, storedData }) {
 			component: NumberSettings,
 			fields: {
 				minValue: {
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 				},
 				maxValue: {
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
 						maxBelowMin: (v) => {
 							const min = parseNumber(getValues("minValue"));
@@ -104,9 +113,13 @@ function Form({ id, position, type, editing, storedData }) {
 				},
 				step: {
 					min: 0,
-					setValueAs: (v) => (v ? parseNumber(v) : ""),
+					setValueAs: (v) =>
+						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
 						maxBelowStep: (v) => {
+							if (getValues("maxValue") === "") {
+								return true;
+							}
 							const max = parseNumber(
 								Math.abs(getValues("maxValue"))
 							);
@@ -177,6 +190,14 @@ function Form({ id, position, type, editing, storedData }) {
 		}
 	}, [register, advancedSettings]);
 
+	/**
+	 * Store original field values for comparison. Workaround for React Hook
+	 * Form v6, whose `isDirty` property is true if a checkbox is toggled twice.
+	 */
+	useEffect(() => {
+		originalValues.current = getValues();
+	}, []);
+
 	function parseNumber(num) {
 		return currentNumberType === "decimal"
 			? parseFloat(num)
@@ -198,6 +219,7 @@ function Form({ id, position, type, editing, storedData }) {
 					// Just close the field as if it was updated.
 					dispatch({ type: "closeField", id: data.id, model });
 				}
+				hasDirtyField.current = false;
 			})
 			.catch((err) => {
 				if (err.code === "wpe_duplicate_content_model_field_id") {
@@ -244,11 +266,28 @@ function Form({ id, position, type, editing, storedData }) {
 						)
 					);
 				}
+				if (
+					err.code ===
+					"atlas_content_modeler_invalid_related_content_model"
+				) {
+					setError("reference", { type: "invalidRelatedModel" });
+				}
+				if (err.code === "wpe_duplicate_field_reverse_slug") {
+					setError("reverseSlug", { type: "reverseIdExists" });
+				}
 			});
 	}
 
 	return (
-		<form onSubmit={handleSubmit(apiAddField)}>
+		<form
+			onSubmit={handleSubmit(apiAddField)}
+			onChange={() => {
+				hasDirtyField.current = !isEqual(
+					originalValues.current,
+					getValues()
+				);
+			}}
+		>
 			<input
 				id="type"
 				name="type"
@@ -292,7 +331,7 @@ function Form({ id, position, type, editing, storedData }) {
 							type="text"
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(e) => {
-								setApiIdGeneratorInput(e.target.value);
+								setInputGeneratorSourceValue(e.target.value);
 								setNameCount(e.target.value.length);
 								clearErrors("slug");
 							}}
@@ -340,7 +379,10 @@ function Form({ id, position, type, editing, storedData }) {
 							type="text"
 							defaultValue={storedData?.slug}
 							ref={register({ required: true, maxLength: 50 })}
-							{...apiIdFieldAttributes}
+							onChange={(e) =>
+								onChangeGeneratedValue(e.target.value)
+							}
+							readOnly={editing}
 						/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
@@ -382,6 +424,21 @@ function Form({ id, position, type, editing, storedData }) {
 			</div>
 
 			<div>
+				{type in extraFields && (
+					<ExtraFields
+						editing={editing}
+						data={storedData}
+						control={control}
+						watch={watch}
+						errors={errors}
+						clearErrors={clearErrors}
+						register={register}
+						fieldId={id}
+						setValue={setValue}
+						model={model}
+					/>
+				)}
+
 				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
@@ -403,22 +460,7 @@ function Form({ id, position, type, editing, storedData }) {
 						</label>
 					</div>
 				)}
-
-				{type in extraFields && (
-					<ExtraFields
-						editing={editing}
-						data={storedData}
-						setValue={setValue}
-						control={control}
-						watch={watch}
-						errors={errors}
-						clearErrors={clearErrors}
-						register={register}
-						fieldId={id}
-					/>
-				)}
 			</div>
-
 			<div className="buttons d-flex flex-row">
 				<button type="submit" className="primary first mr-1 mr-sm-2">
 					{editing
@@ -429,6 +471,7 @@ function Form({ id, position, type, editing, storedData }) {
 					className="tertiary"
 					onClick={(event) => {
 						event.preventDefault();
+						hasDirtyField.current = false;
 						editing
 							? dispatch({
 									type: "closeField",

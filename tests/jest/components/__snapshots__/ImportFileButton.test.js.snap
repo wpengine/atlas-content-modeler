@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImportFileButton tests Renders a matching snapshot 1`] = `
+<React.Fragment>
+  <input
+    className="hidden"
+    id="file"
+    onChange={[Function]}
+    type="file"
+  />
+  <button
+    className="button dark-blue button-primary link-button"
+    onClick={[Function]}
+  >
+    Select File
+  </button>
+</React.Fragment>
+`;

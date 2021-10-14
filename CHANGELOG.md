@@ -1,9 +1,52 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.7.0 - 2021-10-04
+
+### Added
+- Relationship Field: one-to-one and one-to-many relationships were renamed to many-to-one and many-to-many to accurately reflect their function.
+- Relationship Field: fields can now optionally include reverse references.
+- Relationship Field: added [Beta] flag as the feature takes shape. 
+- Chore: set "Requires at least" to WordPress version 5.7
+- Chore: set "Requires PHP" to version 7.2
 
 ### Fixed
+- Fixed bug where the app prompted about "Unsaved changes" when no changes had been made.
+
+## 0.6.0 - 2021-09-09
+
+### Added
+- Create one-to-one and one-to-many relationships between model entries with the new Relationship field.
+- A plugin icon will appear on the plugin update page during future updates.
+
+### Fixed
+- Improved modal scroll behavior and positioning.
+
+## 0.5.0 - 2021-08-12
+
+### Added
+- You can now add custom Taxonomies and assign them to your models. Visit Atlas Content Modeler → Taxonomies to get started.
+- Models and Taxonomies submenu items now appear in the admin sidebar below Atlas Content Modeler.
+
+### Changed
+- Refactored PHP tests.
+
+## 0.4.2 - 2021-08-04
+
+### Added
+- Ability to choose an icon when creating or editing a model.
+- Option to restrict file types for the media field.
+- Generate WordPress changelog from the Markdown changelog so that changes are visible from the WordPress changes modal.
+- Plugin developer improvements: GitHub Pull Request template; Code Climate configuration; Makefile for test environments.
+
+### Changed
+- Change “API Identifier” field title on model entry forms to “Model ID” with a new description to better reflect its use.
+- Continuous Integration: the generated plugin zip is now tested and verified before deploying.
+
+### Fixed
+- Improve query generation for “Open in GraphiQL” to include lowercase model names and models with the same plural and singular name.
+- Improve sanitization of model slugs. Includes safe migration of existing model slugs.
 - Prevent a PHP warning during title filtering if post info can not be found.
+- Improve number field validation.
 
 ## 0.4.1 - 2021-06-24
 ### Added

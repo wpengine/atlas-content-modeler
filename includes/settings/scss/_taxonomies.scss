@@ -1,0 +1,52 @@
+@import "../../../includes/shared-assets/scss/_variables";
+
+.taxonomies-view table {
+	border-collapse: collapse;
+}
+
+.taxonomies-view table thead {
+	background: $color-secondary;
+	text-transform: uppercase;
+}
+
+.atlas-content-modeler .taxonomies-view table td {
+	vertical-align: middle;
+	padding: 0 0.5rem;
+}
+
+.atlas-content-modeler .taxonomies-view table th,
+.atlas-content-modeler .taxonomies-view table td {
+	text-align: left;
+	&.checkbox {
+		text-align: center;
+	}
+	&.action {
+		text-align: right;
+		padding-right: 1rem;
+	}
+	&.action.right {
+		text-align: right;
+		padding-right: 0;
+	}
+
+	&:first-of-type {
+		padding-left: 1rem;
+	}
+}
+
+.taxonomies-view table button {
+	border: none;
+	margin: 2px;
+	height: 51px;
+	width: 51px;
+	line-height: 51px;
+	padding: 0;
+}
+
+.taxonomies-view table button svg {
+	margin: 0 auto;
+}
+
+.atlas-content-modeler .taxonomies-view .row > * {
+	box-sizing: border-box;
+}

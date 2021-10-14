@@ -1,4 +1,7 @@
-/* import bootstrap dependencies for grid and utilities only */
+@import "../../../includes/shared-assets/scss/_variables";
+
+// Bootstrap color overrides.
+$table-striped-bg: $color-secondary-light;
 
 .atlas-content-modeler {
 	@import "../../../node_modules/bootstrap/scss/_functions";
@@ -9,6 +12,7 @@
 	@import "../../../node_modules/bootstrap/scss/_grid";
 	@import "../../../node_modules/bootstrap/scss/_helpers";
 	@import "../../../node_modules/bootstrap/scss/_utilities";
+	@import "../../../node_modules/bootstrap/scss/_tables";
 	@import "../../../node_modules/bootstrap/scss/utilities/_api";
 
 	@import "../../../node_modules/bootstrap/scss/_buttons";
@@ -20,11 +24,12 @@ $breakpoint-tablet: 850px;
 @import "header";
 @import "buttons";
 @import "forms";
-@import "modals";
+@import "../../../includes/shared-assets/scss/_modals";
 @import "app-card";
 @import "model-list";
 @import "field-list";
 @import "open-field";
+@import "taxonomies";
 @import "toast";
 @import "flex";
 @import "dashicons-picker";

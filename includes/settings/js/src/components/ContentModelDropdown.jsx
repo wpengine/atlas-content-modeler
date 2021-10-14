@@ -8,57 +8,18 @@ import React, {
 } from "react";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
-import Modal from "react-modal";
 import { EditModelModal } from "./EditModelModal";
-import { useHistory } from "react-router-dom";
-import {
-	getGraphiQLLink,
-	maybeCloseDropdown,
-	removeSidebarMenuItem,
-} from "../utils";
-import { showError } from "../toasts";
-import { sprintf, __ } from "@wordpress/i18n";
-
-Modal.setAppElement("#root");
-
-const { apiFetch } = wp;
-
-function deleteModel(name = "") {
-	if (!name.length) {
-		return;
-	}
-
-	return apiFetch({
-		path: `/wpe/atlas/content-model/${name}`,
-		method: "DELETE",
-		_wpnonce: wpApiSettings.nonce,
-	});
-}
+import { DeleteModelModal } from "./DeleteModelModal";
+import { getGraphiQLLink, maybeCloseDropdown } from "../utils";
+import { __ } from "@wordpress/i18n";
 
 export const ContentModelDropdown = ({ model }) => {
 	const { plural, slug } = model;
-	const { models, dispatch } = useContext(ModelsContext);
-	const history = useHistory();
+	const { models } = useContext(ModelsContext);
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [editModelModalIsOpen, setEditModelModalIsOpen] = useState(false);
 	const timer = useRef(null);
-
-	const customStyles = {
-		overlay: {
-			backgroundColor: "rgba(0, 40, 56, 0.7)",
-		},
-		content: {
-			top: "50%",
-			left: "50%",
-			right: "auto",
-			bottom: "auto",
-			marginRight: "-50%",
-			transform: "translate(-50%, -50%)",
-			border: "none",
-			padding: "40px",
-		},
-	};
 
 	const handleKeyPress = useCallback(
 		(e) => {
@@ -108,22 +69,23 @@ export const ContentModelDropdown = ({ model }) => {
 				>
 					{__("Edit", "atlas-content-modeler")}
 				</a>
-				{atlasContentModeler.isGraphiQLAvailable && (
-					<a
-						className="show-in-graphiql"
-						href={getGraphiQLLink(models[slug])}
-						target="_blank"
-						rel="noopener noreferrer"
-						onBlur={() =>
-							maybeCloseDropdown(setDropdownOpen, timer)
-						}
-						onClick={() => {
-							setDropdownOpen(false);
-						}}
-					>
-						{__("Open in GraphiQL", "atlas-content-modeler")}
-					</a>
-				)}
+				{atlasContentModeler.isGraphiQLAvailable &&
+					models.hasOwnProperty(slug) && (
+						<a
+							className="show-in-graphiql"
+							href={getGraphiQLLink(models[slug])}
+							target="_blank"
+							rel="noopener noreferrer"
+							onBlur={() =>
+								maybeCloseDropdown(setDropdownOpen, timer)
+							}
+							onClick={() => {
+								setDropdownOpen(false);
+							}}
+						>
+							{__("Open in GraphiQL", "atlas-content-modeler")}
+						</a>
+					)}
 				<a
 					className="delete"
 					href="#"
@@ -137,84 +99,11 @@ export const ContentModelDropdown = ({ model }) => {
 					{__("Delete", "atlas-content-modeler")}
 				</a>
 			</div>
-			<Modal
-				isOpen={modalIsOpen}
-				contentLabel={`Delete the ${plural} content model?`}
-				portalClassName="atlas-content-modeler-delete-model-modal-container"
-				onRequestClose={() => {
-					setModalIsOpen(false);
-				}}
-				style={customStyles}
+			<DeleteModelModal
+				modalIsOpen={modalIsOpen}
 				model={model}
-			>
-				<h2>
-					{sprintf(
-						__(
-							"Delete the %s Content Model?",
-							"atlas-content-modeler"
-						),
-						plural
-					)}
-				</h2>
-				<p>
-					{__(
-						"This is an irreversible action. You will have to recreate this model if you delete it.",
-						"atlas-content-modeler"
-					)}
-				</p>
-				<p>
-					{__(
-						"This will NOT delete actual data stored in this model. It only deletes the model definition.",
-						"atlas-content-modeler"
-					)}
-				</p>
-				<p>
-					{sprintf(
-						__(
-							"Are you sure you want to delete the %s content model?",
-							"atlas-content-modeler"
-						),
-						plural
-					)}
-				</p>
-				<button
-					className="first warning"
-					onClick={async () => {
-						// delete model and remove related menu sidebar item
-						await deleteModel(slug)
-							.then((res) => {
-								if (res.success) {
-									removeSidebarMenuItem(slug);
-								}
-							})
-							.catch(() => {
-								showError(
-									sprintf(
-										__(
-											"There was an error. The %s model type was not deleted.",
-											"atlas-content-modeler"
-										),
-										slug
-									)
-								);
-							});
-
-						setModalIsOpen(false);
-						history.push(atlasContentModeler.appPath);
-						dispatch({ type: "removeModel", slug });
-					}}
-				>
-					Delete
-				</button>
-				<button
-					className="tertiary"
-					onClick={() => {
-						setModalIsOpen(false);
-					}}
-				>
-					Cancel
-				</button>
-			</Modal>
+				setModalIsOpen={setModalIsOpen}
+			/>
 			<EditModelModal
 				model={model}
 				isOpen={editModelModalIsOpen}

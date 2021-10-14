@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 
 const $ = window.jQuery;
 const { apiFetch } = wp;
@@ -16,7 +16,7 @@ function updateSidebarMenuItem(model, data) {
 	let { model_icon } = data || "dashicons-admin-post";
 	if (model.model_icon !== model_icon) {
 		// update sidebar icon
-		$(`li#menu-posts-${model.slug.toLowerCase()}`)
+		$(`li#menu-posts-${model.slug}`)
 			.find(".wp-menu-image")
 			.removeClass(function (index, className) {
 				return (className.match(/(^|\s)dashicons-\S+/g) || []).join(
@@ -60,6 +60,10 @@ function updateModel(slug = "", data = {}) {
  * @returns {JSX.Element} Modal
  */
 export function EditModelModal({ model, isOpen, setIsOpen }) {
+	if (typeof model?.singular === "undefined") {
+		return ""; // Prevents a crash when a model is deleted from its own page.
+	}
+
 	const [singularCount, setSingularCount] = useState(model.singular.length);
 	const [pluralCount, setPluralCount] = useState(model.plural.length);
 	const [descriptionCount, setDescriptionCount] = useState(
@@ -89,6 +93,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			boxSizing: "border-box",
 		},
 	};
+
+	useEffect(() => {
+		Modal.setAppElement("#root");
+	}, []);
 
 	return (
 		<Modal

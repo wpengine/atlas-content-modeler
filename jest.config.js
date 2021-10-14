@@ -6,6 +6,7 @@ module.exports = {
 		atlasContentModeler: {},
 	},
 	moduleNameMapper: {
+		"acm-icons": "<rootDir>/includes/components/icons/index.js",
 		"^.+\\.(css|less|scss)$": "jest-css-modules-transform",
 	},
 };

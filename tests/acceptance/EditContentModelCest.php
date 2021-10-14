@@ -1,33 +1,39 @@
 <?php
 class EditContentModelCest {
-	public function i_can_update_an_existing_content_model( AcceptanceTester $I ) {
-		$I->loginAsAdmin();
-		// First, create a new model.
-		$I->haveContentModel('Candy', 'Candies');
-		$I->wait(1);
+	public function i_can_update_an_existing_content_model( AcceptanceTester $i ) {
+		$i->resizeWindow( 1024, 1024 );
+		$i->loginAsAdmin();
 
-		// Modal content is too large for default size
-		// which causes modal title to not be visible
-		// and the link in #wpfooter to overlay Save button.
-		$I->resizeWindow(1024, 1024);
+		// First, create a new model.
+		$i->haveContentModel( 'Candy', 'Candies' );
+		$i->wait( 1 );
 
 		// Invoke edit mode.
-		$I->amOnWPEngineContentModelPage();
-		$I->click( '.model-list button.options' );
-		$I->click( '.dropdown-content a.edit' );
-		$I->see( 'Edit Candies' );
+		$i->amOnWPEngineContentModelPage();
+		$i->click( '.model-list button.options' );
+		$i->click( '.dropdown-content a.edit' );
+		$i->see( 'Edit Candies' );
 
-		// Update the model data and save.
-		$I->fillField(['name' => 'singular'], 'Cat');
-		$I->fillField(['name' => 'plural'], 'Cats');
-		$I->fillField(['name' => 'description'], 'Cats are better than candy.');
-		$I->see('27/250', 'span.count');
+		// Update the model data.
+		$i->fillField( [ 'name' => 'singular' ], 'Cat' );
+		$i->fillField( [ 'name' => 'plural' ], 'Cats' );
+		$i->fillField( [ 'name' => 'description' ], 'Cats are better than candy.' );
+		$i->see( '27/250', 'span.count' );
 
-		$I->click('Save');
+		// Change the model's icon.
+		$i->click( '.dashicons-picker' );
+		$i->waitForElement( '.dashicon-picker-container' );
+		$i->click( '.dashicon-picker-container .dashicons-admin-media' );
+
+		$i->click( 'Save' );
 
 		// Verify the updated data.
-		$I->wait(1);
-		$I->see('Cats', '.model-list');
-		$I->see('Cats are better than candy.', '.model-list');
+		$i->wait( 1 );
+		$i->see( 'Cats', '.model-list' );
+		$i->see( 'Cats are better than candy.', '.model-list' );
+
+		// Check the icon in the WP admin sidebar was updated.
+		$classes = $i->grabAttributeFrom( '#menu-posts-candy .wp-menu-image', 'class' );
+		$i->assertContains( 'dashicons-admin-media', $classes );
 	}
 }

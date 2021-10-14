@@ -1,5 +1,4 @@
-@import "variables";
-
+@import "../../../includes/shared-assets/scss/_variables";
 .model-list li {
 	display: flex;
 	justify-content: space-between;
@@ -126,6 +125,18 @@
 	}
 }
 
+.atlas-content-modeler-delete-model-modal-container {
+	ul {
+		list-style-type: disc;
+		padding-left: 2rem;
+
+		li.warning {
+			color: $color-warning;
+			font-weight: 700;
+		}
+	}
+}
+
 .atlas-content-modeler-edit-model-modal-container {
 	overflow: hidden;
 
@@ -136,11 +147,13 @@
 		padding-bottom: 17px;
 		padding-right: 17px;
 		box-sizing: content-box;
+		z-index: 99999; /* renders modal above WP Admin bar */
 	}
 
 	.ReactModal__Content--after-open {
 		width: 100%;
 		max-width: 600px;
+		max-height: 100%;
 
 		input,
 		textarea,

@@ -7,7 +7,7 @@ import supportedFields from "./supportedFields";
 import AddIcon from "../../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import Icon from "../../../../../components/icons";
-import { toValidApiId } from "./toValidApiId";
+import { toValidApiId } from "../../formats";
 
 function MultipleChoiceFields({
 	register,

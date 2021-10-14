@@ -7,8 +7,8 @@
  * Author URI: https://wpengine.com/
  * Text Domain: atlas-content-modeler
  * Domain Path: /languages
- * Version: 0.4.1
- * Requires at least: 5.2
+ * Version: 0.7.0
+ * Requires at least: 5.7
  * Requires PHP: 7.2
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -31,6 +31,12 @@ add_action( 'plugins_loaded', 'atlas_content_modeler_loader' );
  * Bootstraps the plugin.
  */
 function atlas_content_modeler_loader(): void {
+	$composer_autoloader = __DIR__ . '/vendor/autoload.php';
+
+	if ( file_exists( $composer_autoloader ) ) {
+		include_once $composer_autoloader;
+	}
+
 	load_plugin_textdomain( 'atlas_content_modeler', false, __DIR__ . '/languages' );
 
 	$plugin_files = array(
@@ -38,17 +44,22 @@ function atlas_content_modeler_loader(): void {
 		'shared-assets/wp_scripts/shared_assets.php',
 		'settings/settings-callbacks.php',
 		'content-registration/custom-post-types-registration.php',
+		'content-registration/register-taxonomies.php',
 		'content-registration/class-wpe-rest-posts-controller.php',
-		'rest-api/rest-api-endpoint-registration.php',
+		'rest-api/init-rest-api.php',
 		'publisher/class-publisher-form-editing-experience.php',
-		'updates/update-functions.php',
-		'updates/update-callbacks.php',
+		'updates/version-updates.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
 			include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
 	}
 
+	\WPE\AtlasContentModeler\VersionUpdater\update_plugin();
+
 	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
 	$form_editing_experience->bootstrap();
+
+	// Bootstrap relationships library.
+	\WPE\AtlasContentModeler\ContentConnect\Plugin::instance();
 }

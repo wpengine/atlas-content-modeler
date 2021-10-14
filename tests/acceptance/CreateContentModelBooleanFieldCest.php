@@ -1,25 +1,24 @@
 <?php
 
-class CreateContentModelBooleanFieldCest
-{
-    /**
-     * Ensure a user can add a boolean field to the model and see it within the list.
-     */
-    public function i_can_create_a_content_model_boolean_field(AcceptanceTester $I)
-    {
-        $I->loginAsAdmin();
-        $I->haveContentModel('Candy', 'Candies');
-        $I->wait(1);
+class CreateContentModelBooleanFieldCest {
 
-        $I->click('Boolean', '.field-buttons');
-		$I->wait(1);
-		$I->fillField(['name' => 'name'], 'Accept Terms');
-        $I->see('12/50', 'span.count');
-        $I->seeInField('#slug','acceptTerms');
-        $I->click('.open-field button.primary');
-        $I->wait(1);
+	/**
+	 * Ensure a user can add a boolean field to the model and see it within the list.
+	 */
+	public function i_can_create_a_content_model_boolean_field( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->haveContentModel( 'Candy', 'Candies' );
+		$i->wait( 1 );
 
-        $I->see('Boolean', '.field-list div.type');
-        $I->see('Accept Terms', '.field-list div.widest');
-    }
+		$i->click( 'Boolean', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Accept Terms' );
+		$i->see( '12/50', 'span.count' );
+		$i->seeInField( '#slug', 'acceptTerms' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
+
+		$i->see( 'Boolean', '.field-list div.type' );
+		$i->see( 'Accept Terms', '.field-list div.widest' );
+	}
 }

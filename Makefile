@@ -103,9 +103,9 @@ ifdef HAS_CHROMEDRIVER
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/ --user=www-data wordpress wp plugin activate atlas-content-modeler
 	docker-compose -f ./docker-compose.yml exec --workdir=/var/www/html/wp-content/plugins/atlas-content-modeler --user=www-data wordpress wp db export tests/_data/dump.sql
 	if [ -z "$(TEST)" ]; then \
-		vendor/bin/codecept run acceptance; \
+		vendor/bin/codecept -vvv run acceptance; \
 	else \
-		vendor/bin/codecept run acceptance $(TEST); \
+		vendor/bin/codecept -vvv run acceptance $(TEST); \
 	fi
 	$(MAKE) clean-e2e
 else
@@ -151,10 +151,19 @@ test-php-unit: | install-composer build-docker-phpunit ## Run PHPunit tests
 		docker-compose -f ./docker-compose-phpunit.yml down; \
 	fi
 	docker-compose -f ./docker-compose-phpunit.yml up -d
-	docker-compose \
-		-f ./docker-compose-phpunit.yml\
-		exec \
-		-w /app \
-		phpunit \
-		bash -c "composer test"
+	if [ -z "$(TEST)" ]; then \
+		docker-compose \
+			-f ./docker-compose-phpunit.yml \
+			exec \
+			-w /app \
+			phpunit \
+			bash -c "composer test"; \
+	else \
+		docker-compose \
+			-f ./docker-compose-phpunit.yml \
+			exec \
+			-w /app \
+			phpunit \
+			bash -c "vendor/bin/phpunit $(TEST)"; \
+	fi
 	docker-compose -f ./docker-compose-phpunit.yml down

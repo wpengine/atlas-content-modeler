@@ -1,44 +1,43 @@
 <?php
 use Codeception\Util\Locator;
-class RequiredFieldsCest
-{
-	public function i_can_set_required_fields_and_see_submission_errors(AcceptanceTester $I)
-	{
-		$I->maximizeWindow();
+class RequiredFieldsCest {
+
+	public function i_can_set_required_fields_and_see_submission_errors( AcceptanceTester $i ) {
+		$i->maximizeWindow();
 
 		// Create a model with a required 'name' field.
-		$I->loginAsAdmin();
-		$I->haveContentModel('goose', 'geese');
-		$I->wait(1);
+		$i->loginAsAdmin();
+		$i->haveContentModel( 'goose', 'geese' );
+		$i->wait( 1 );
 
-		$I->click('Text', '.field-buttons');
-		$I->wait(1);
-		$I->fillField(['name' => 'name'], 'Name');
-		$I->seeInField('#slug','name');
-		$I->click('.open-field label.checkbox.is-required');
-		$I->click('.open-field button.primary');
-		$I->wait(1);
+		$i->click( 'Text', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Name' );
+		$i->seeInField( '#slug', 'name' );
+		$i->click( '.open-field label.checkbox.is-required' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
 
 		// Create an entry for the new model.
-		$I->amOnPage('/wp-admin/edit.php?post_type=goose');
-		$I->click('Add New', '.wrap');
-		$I->wait(1);
+		$i->amOnPage( '/wp-admin/edit.php?post_type=goose' );
+		$i->click( 'Add New', '.wrap' );
+		$i->wait( 1 );
 
 		// Do not fill the 'name' field here.
 		// We want to check we're prompted to fill the required field.
 
-		$I->click('Publish', '#publishing-action');
-		$I->wait(1);
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 1 );
 
-		$I->see('field is required');
+		$i->see( 'field is required' );
 
 		// Fill the field as prompted.
-		$I->fillField(['name' => 'atlas-content-modeler[goose][name]'], 'Goosey goose');
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][name]' ], 'Goosey goose' );
 
-		$I->click('Publish', '#publishing-action');
-		$I->wait(2);
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
 
-		$I->see('Post published.');
-		$I->seeInField('atlas-content-modeler[goose][name]', 'Goosey goose');
+		$i->see( 'Post published.' );
+		$i->seeInField( 'atlas-content-modeler[goose][name]', 'Goosey goose' );
 	}
 }

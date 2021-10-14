@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useLocationSearch } from "../utils";
@@ -33,6 +33,7 @@ export default function EditContentModel() {
 	const fieldCount = Object.keys(fields).length;
 	const fieldOrder = getFieldOrder(fields);
 	const history = useHistory();
+	const hasDirtyField = useRef(false);
 
 	const customStyles = {
 		overlay: {
@@ -52,7 +53,7 @@ export default function EditContentModel() {
 
 	const promptToSaveChanges = () => {
 		const openField = getOpenField(fields);
-		if (Object.keys(openField).length > 0) {
+		if (Object.keys(openField).length > 0 && hasDirtyField.current) {
 			updateUnsavedChangesModal({ open: true, field: openField });
 			return true;
 		}
@@ -130,6 +131,9 @@ export default function EditContentModel() {
 														editing={editing}
 														data={fields[id]}
 														setInfoTag={setInfoTag}
+														hasDirtyField={
+															hasDirtyField
+														}
 														promptToSaveChanges={
 															promptToSaveChanges
 														}
@@ -180,6 +184,7 @@ export default function EditContentModel() {
 										?.editing
 										? "closeField"
 										: "removeField";
+									hasDirtyField.current = false;
 									dispatch({
 										type: action,
 										model: id,

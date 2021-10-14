@@ -73,6 +73,28 @@ function get_field_type_from_slug( string $slug, array $fields ): string {
 }
 
 /**
+ * Gets the field from the field slug.
+ *
+ * @param string $slug The slug of the field to look for.
+ * @param array  $fields Fields to search for the `$slug`.
+ *
+ * @return array The field array of the associated slugs or false if not found.
+ */
+function get_field_from_slug( string $slug, array $fields ): ?array {
+	$found = false;
+
+	foreach ( $fields as $field ) {
+		if ( $field['slug'] === $slug ) {
+			$found = $field;
+			break;
+		}
+	}
+
+	return $found;
+}
+
+
+/**
  * Sanitizes field data based on the field type.
  *
  * @param string $type The type of field.
@@ -86,6 +108,13 @@ function sanitize_field( string $type, $value ) {
 			return wp_strip_all_tags( $value );
 		case 'richtext':
 			return wp_kses_post( $value );
+		case 'relationship':
+			// Sanitizes each value as an integer and saves as a comma-separated string.
+			$relationships = explode( ',', $value['relationshipEntryId'] );
+			foreach ( $relationships as $index => $id ) {
+				$relationships[ $index ] = filter_var( $id, FILTER_SANITIZE_NUMBER_INT );
+			}
+			return implode( ',', $relationships );
 		case 'number':
 			return filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 		case 'date':
