@@ -48,6 +48,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		defaultValues: storedData,
 	});
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
+	const [descriptionCount, setDescriptionCount] = useState(
+		storedData?.description?.length || 0
+	);
 	const [optionsModalIsOpen, setOptionsModalIsOpen] = useState(false);
 	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
@@ -446,6 +449,58 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						</label>
 					</div>
 				)}
+			</div>
+
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div className="d-flex flex-column d-sm-flex flex-sm-row">
+					<div
+						className={`${
+							errors.description ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="description">
+							Description{" "}
+							<span style={{ fontWeight: "normal" }}>
+								(Optional)
+							</span>
+						</label>
+						<br />
+						<textarea
+							aria-invalid={errors.description ? "true" : "false"}
+							className="text-area-single-line mt-4"
+							id="description"
+							name="description"
+							rows="4"
+							defaultValue={storedData?.description}
+							placeholder={__(
+								"Add a description",
+								"atlas-content-modeler"
+							)}
+							ref={register({ maxLength: 250 })}
+							onChange={(e) => {
+								setDescriptionCount(e.target.value.length);
+							}}
+						/>
+						<p className="field-messages">
+							{errors.description &&
+								errors.description.type === "maxLength" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							<span>&nbsp;</span>
+							<span className="description-count">
+								{descriptionCount}/250
+							</span>
+						</p>
+					</div>
+				</div>
 			</div>
 
 			<div className="buttons d-flex flex-row">
