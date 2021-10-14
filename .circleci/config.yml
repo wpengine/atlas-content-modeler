@@ -603,14 +603,6 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-test-content-connect:
-          requires:
-            - plugin-build-zip
-            - plugin-build-composer-dev
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
       - plugin-test-lint-php:
           requires:
             - plugin-build-zip
@@ -628,6 +620,15 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - plugin-test-content-connect:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+            - plugin-build-composer-dev
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-deploy:
            name: "plugin-deploy-staging"
            slug: atlas-content-modeler
@@ -637,9 +638,9 @@ workflows:
              - plugin-test-e2e
              - plugin-test-lint-js
              - plugin-test-lint-php
-             - plugin-test-content-connect
              - plugin-test-jest
              - plugin-test-unit
+             - plugin-test-content-connect
            filters:
              branches:
                only:
