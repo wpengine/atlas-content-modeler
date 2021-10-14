@@ -299,7 +299,7 @@ function MultipleChoiceFields({
 										<span className="error">
 											<Icon type="error" />
 											<span role="alert">
-												Must create an choice first.
+												Must create a choice first.
 											</span>
 										</span>
 									)}
