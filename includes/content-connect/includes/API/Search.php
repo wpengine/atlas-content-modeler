@@ -9,7 +9,7 @@ namespace WPE\AtlasContentModeler\ContentConnect\API;
 
 /**
  * Currently unused, but may be useful when we integrate search
- * into the realtionships UI.
+ * into the relationships UI.
  */
 class Search {
 

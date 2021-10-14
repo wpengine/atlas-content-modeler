@@ -1,6 +1,9 @@
 <?php
 /**
- * Autoloader
+ * Autoloader for the Content Connect library.
+ *
+ * Forked from https://github.com/10up/wp-content-connect with changes specific
+ * to ACM, such as custom relationship cardinality.
  *
  * @package AtlasContentModeler
  */
