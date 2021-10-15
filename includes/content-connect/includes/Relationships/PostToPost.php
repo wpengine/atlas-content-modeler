@@ -71,10 +71,11 @@ class PostToPost extends Relationship {
 	 *
 	 * @param int  $post_id Post ID.
 	 * @param bool $order_by_relationship Order By Relationship.
+	 * @param bool $is_reverse Set to true if we're looking for reverse relationships.
 	 *
 	 * @return array
 	 */
-	public function get_related_object_ids( $post_id, $order_by_relationship = false ) {
+	public function get_related_object_ids( $post_id, $order_by_relationship = false, $is_reverse = false ) {
 		// phpcs:ignore
 		/** @var \WPE\AtlasContentModeler\ContentConnect\Tables\PostToPost $table */
 		$table = Plugin::instance()->get_table( 'p2p' );
@@ -122,6 +123,8 @@ class PostToPost extends Relationship {
 	 *
 	 * @param int $pid1 Post ID 1.
 	 * @param int $pid2 Post ID 2.
+	 *
+	 * @return boolean True on success or false if relationship would violate cardinality.
 	 */
 	public function add_relationship( $pid1, $pid2 ) {
 		// phpcs:ignore
@@ -129,6 +132,10 @@ class PostToPost extends Relationship {
 		$table = Plugin::instance()->get_table( 'p2p' );
 
 		if ( $this->can_relate_post_ids( $pid1, $pid2 ) ) {
+			if ( ! $this->check_cardinality( intval( $pid1 ), intval( $pid2 ) ) ) {
+				return false;
+			}
+
 			// For one way relationships, $pid1 must be the "from" post type.
 			if ( ! $this->is_bidirectional && get_post_type( $pid1 ) !== $this->from ) {
 				$tmp  = $pid2;
@@ -160,6 +167,8 @@ class PostToPost extends Relationship {
 				);
 			}
 		}
+
+		return true;
 	}
 
 	/**
@@ -210,6 +219,8 @@ class PostToPost extends Relationship {
 	 *
 	 * @param int   $post_id Post ID.
 	 * @param array $related_ids Related IDs.
+	 *
+	 * @return boolean True on success of false if the relationship would break cardinality.
 	 */
 	public function replace_relationships( $post_id, $related_ids ) {
 		$current_ids = $this->get_related_object_ids( $post_id );
@@ -222,8 +233,12 @@ class PostToPost extends Relationship {
 		}
 
 		foreach ( $add_ids as $add ) {
-			$this->add_relationship( $post_id, $add );
+			if ( ! $this->add_relationship( $post_id, $add ) ) {
+				return false;
+			}
 		}
+
+		return true;
 	}
 
 	/**
@@ -293,4 +308,37 @@ class PostToPost extends Relationship {
 		return true;
 	}
 
+	/**
+	 * Checks for cardinality
+	 *
+	 * @param int $post_id_1 Post ID 1.
+	 * @param int $post_id_2 Post ID 2.
+	 *
+	 * @return boolean
+	 */
+	protected function check_cardinality( $post_id_1, $post_id_2 ) {
+		$forward_relationships = $this->get_related_object_ids( $post_id_1 );
+		$reverse_relationships = $this->get_related_object_ids( $post_id_2 );
+
+		switch ( $this->cardinality ) {
+			case 'one-to-one':
+				foreach ( $forward_relationships as $relationship ) {
+					if ( intval( $relationship ) === $post_id_1 ) {
+						return false;
+					}
+				}
+				foreach ( $reverse_relationships as $relationship ) {
+					if ( intval( $relationship ) === $post_id_2 ) {
+						return false;
+					}
+				}
+				break;
+			case 'many-to-one':
+				return false;
+			case 'one-to-many':
+				return false;
+		};
+
+		return true;
+	}
 }
