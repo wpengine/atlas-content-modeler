@@ -35,3 +35,4 @@ deploy.sh
 *Makefile
 *assets/wporg/*
 *.svnignore
+*vendor*
