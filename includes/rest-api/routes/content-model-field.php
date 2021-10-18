@@ -59,7 +59,7 @@ function register_rest_routes(): void {
 function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	$params               = $request->get_params();
 	$content_types        = get_registered_content_types();
-	$reserved_field_slugs = include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-field-slugs.php';
+	$reserved_field_slugs = include ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-field-slugs.php';
 
 	if ( ! isset( $params['model'] ) || empty( $content_types[ $params['model'] ] ) ) {
 		return new WP_Error(
