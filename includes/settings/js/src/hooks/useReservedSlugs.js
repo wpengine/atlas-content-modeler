@@ -40,10 +40,10 @@ const fieldQuery = (model) => {
  *
  * When WPGraphQL is available, this allows us to check for conflicts against
  * additional types registered at runtime by WPGraphQL or other plugins,
- * instead of depending on the `defaultReservedNames`.
+ * instead of depending on the default `reservedFieldSlugs`.
  *
- * Note that this includes names of existing ACM fields, which are not currently
- * filterable with WPGraphQL introspection.
+ * Note that the response includes names of existing ACM fields, which are not
+ * currently filterable with WPGraphQL introspection.
  *
  * @param {string} model The case-sensitive WPGraphQL type.
  * @returns
