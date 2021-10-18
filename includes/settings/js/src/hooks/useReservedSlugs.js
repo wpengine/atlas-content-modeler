@@ -46,7 +46,8 @@ const fieldQuery = (model) => {
  * currently filterable with WPGraphQL introspection.
  *
  * @param {string} model The case-sensitive WPGraphQL type.
- * @returns
+ * @returns {Promise|undefined} A promise resolving to GraphQL response data,
+ *                              or undefined if the request failed.
  */
 function getReservedNames(model) {
 	const params = {
