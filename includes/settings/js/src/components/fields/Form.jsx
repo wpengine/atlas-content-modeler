@@ -267,6 +267,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				if (err.code === "wpe_duplicate_field_reverse_slug") {
 					setError("reverseSlug", { type: "reverseIdExists" });
 				}
+				if (err.code === "atlas_content_modeler_reserved_field_slug") {
+					setError("slug", { type: "nameReserved" });
+				}
 			});
 	}
 
