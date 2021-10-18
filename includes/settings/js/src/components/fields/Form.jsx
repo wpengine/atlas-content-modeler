@@ -275,7 +275,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	 * known reserved field slugs, such as “id” and “author”.
 	 */
 	function checkReservedSlugs() {
-		// Slugs can not be changed on field being edited, only new fields.
+		// Slugs can not be changed on fields being edited, only new fields.
 		if (editing) {
 			return;
 		}
