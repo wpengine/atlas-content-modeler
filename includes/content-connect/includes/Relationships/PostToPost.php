@@ -321,21 +321,19 @@ class PostToPost extends Relationship {
 
 		switch ( $this->cardinality ) {
 			case 'one-to-one':
-				foreach ( $forward_relationships as $relationship ) {
-					if ( intval( $relationship ) === $post_id_1 ) {
-						return false;
-					}
-				}
-				foreach ( $reverse_relationships as $relationship ) {
-					if ( intval( $relationship ) === $post_id_2 ) {
-						return false;
-					}
+				if ( ! empty( $forward_relationships ) || ! empty( $reverse_relationships ) ) {
+					return false;
 				}
 				break;
 			case 'many-to-one':
-				return false;
+				if ( ! empty( $forward_relationships ) ) {
+					return false;
+				}
+				break;
 			case 'one-to-many':
-				return false;
+				if ( ! empty( $reverse_relationships ) ) {
+					return false;
+				}
 		};
 
 		return true;
