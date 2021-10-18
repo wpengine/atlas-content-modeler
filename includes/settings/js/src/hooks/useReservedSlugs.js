@@ -195,7 +195,7 @@ const getNames = (graphQLResponse) => {
  * }
  * ```
  * @param {string} model The case-sensitive WPGraphQL type. Cat != cat.
- * @returns {array} Reserved field names in use by the passed model.
+ * @returns {object} A reference holding reserved field names of the `model`.
  */
 export function useReservedSlugs(model) {
 	const reservedNames = useRef(defaultReservedNames);
