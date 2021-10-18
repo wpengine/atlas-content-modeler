@@ -71,11 +71,10 @@ class PostToPost extends Relationship {
 	 *
 	 * @param int  $post_id Post ID.
 	 * @param bool $order_by_relationship Order By Relationship.
-	 * @param bool $is_reverse Set to true if we're looking for reverse relationships.
 	 *
 	 * @return array
 	 */
-	public function get_related_object_ids( $post_id, $order_by_relationship = false, $is_reverse = false ) {
+	public function get_related_object_ids( $post_id, $order_by_relationship = false ) {
 		// phpcs:ignore
 		/** @var \WPE\AtlasContentModeler\ContentConnect\Tables\PostToPost $table */
 		$table = Plugin::instance()->get_table( 'p2p' );
