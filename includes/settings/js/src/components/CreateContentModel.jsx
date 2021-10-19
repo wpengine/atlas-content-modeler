@@ -215,7 +215,7 @@ export default function CreateContentModel() {
 							id="slug"
 							name="slug"
 							className="w-100"
-							ref={register({ required: true, maxLength: 20 })}
+							ref={register({ required: true, maxLength: 50 })}
 							onChange={(e) =>
 								onChangeGeneratedValue(e.target.value)
 							}
@@ -237,7 +237,7 @@ export default function CreateContentModel() {
 									<Icon type="error" />
 									<span role="alert">
 										{__(
-											"Exceeds max length of 20.",
+											"Exceeds max length of 50.",
 											"atlas-content-modeler"
 										)}
 									</span>
