@@ -17,7 +17,7 @@
     }
   },
   "scripts": {
-    "build": "parcel build --no-source-maps",
+    "build": "npm run build-settings && npm run build-publisher",
     "build-settings": "parcel build --target=settings --no-source-maps",
     "build-publisher": "parcel build --target=publisher --no-source-maps",
     "build-readme": "node scripts/buildReadme.js",
