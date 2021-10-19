@@ -1,8 +1,8 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
-import { useLocationSearch } from "../../utils";
-import Icon from "../../../../../components/icons";
+import { useLocationSearch, getGraphQLType } from "../../utils";
+import Icon from "acm-icons";
 import TextFields from "./TextFields";
 import {
 	MediaSettings,
@@ -14,7 +14,7 @@ import MultipleChoiceFields from "./MultipleChoiceFields";
 import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
-import { useInputGenerator } from "../../hooks";
+import { useInputGenerator, useReservedSlugs } from "../../hooks";
 import { toValidApiId } from "../../formats";
 import { __ } from "@wordpress/i18n";
 
@@ -68,6 +68,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
 	const [previousState, setPreviousState] = useState(storedData);
 	const originalValues = useRef({});
+	const reservedSlugs = editing
+		? false
+		: useReservedSlugs(getGraphQLType(models[model]?.singular));
 
 	const advancedSettings = {
 		text: {
@@ -264,7 +267,28 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				if (err.code === "wpe_duplicate_field_reverse_slug") {
 					setError("reverseSlug", { type: "reverseIdExists" });
 				}
+				if (err.code === "atlas_content_modeler_reserved_field_slug") {
+					setError("slug", { type: "nameReserved" });
+				}
 			});
+	}
+
+	/**
+	 * Checks the current slug (API Identifier) does not conflict with
+	 * known reserved field slugs, such as “id” and “author”.
+	 */
+	function checkReservedSlugs() {
+		// Slugs can not be changed on fields being edited, only new fields.
+		if (editing) {
+			return;
+		}
+
+		if (
+			reservedSlugs &&
+			reservedSlugs.current?.includes(getValues("slug"))
+		) {
+			setError("slug", { type: "nameReserved" });
+		}
 	}
 
 	return (
@@ -324,6 +348,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 								setNameCount(e.target.value.length);
 								clearErrors("slug");
 							}}
+							onBlur={checkReservedSlugs}
 						/>
 						<p className="field-messages">
 							{errors.name && errors.name.type === "required" && (
@@ -372,6 +397,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 								onChangeGeneratedValue(e.target.value)
 							}
 							readOnly={editing}
+							onBlur={checkReservedSlugs}
 						/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
@@ -407,6 +433,18 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 									</span>
 								</span>
 							)}
+							{errors.slug &&
+								errors.slug.type === "nameReserved" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"Identifier in use or reserved.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
 						</p>
 					</div>
 				</div>
