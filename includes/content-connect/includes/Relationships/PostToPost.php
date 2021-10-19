@@ -310,14 +310,22 @@ class PostToPost extends Relationship {
 	/**
 	 * Checks for cardinality
 	 *
-	 * @param int $post_id_1 Post ID 1.
-	 * @param int $post_id_2 Post ID 2.
+	 * Ensures a given pair of posts would respect the given relationship's cardinality.
 	 *
-	 * @return boolean
+	 * @param int $post_id_1 The first post to add to the relationship.
+	 * @param int $post_id_2 The 2nd post to add to the relationship.
+	 *
+	 * @return boolean True if cardinality is correct or false if the relationship would break cardinality.
 	 */
 	protected function check_cardinality( $post_id_1, $post_id_2 ) {
-		$forward_relationships = $this->get_related_object_ids( $post_id_1 );
-		$reverse_relationships = $this->get_related_object_ids( $post_id_2 );
+		// We need to make sure post_id_1 is always the "from" type of the relationship to ensure cardinality is checked in the correct direction.
+		if ( $this->from === get_post_type( $post_id_1 ) ) {
+			$forward_relationships = $this->get_related_object_ids( $post_id_1 );
+			$reverse_relationships = $this->get_related_object_ids( $post_id_2 );
+		} else {
+			$forward_relationships = $this->get_related_object_ids( $post_id_2 );
+			$reverse_relationships = $this->get_related_object_ids( $post_id_1 );
+		}
 
 		switch ( $this->cardinality ) {
 			case 'one-to-one':
