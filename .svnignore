@@ -41,3 +41,4 @@ docker-compose.yml
 codeception.dist.yml
 docker-composer-phpunit.yml
 Makefile
+*vendor*

@@ -171,6 +171,7 @@ class PublishModelCest {
 	public function i_can_publish_a_model_entry( AcceptanceTester $i ) {
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
+		$i->fillField( [ 'name' => 'description' ], 'This is the description.' );
 		$i->click( '.open-field button.primary' );
 		$i->wait( 1 );
 
@@ -236,6 +237,7 @@ class PublishModelCest {
 		$i->see( 'Edit goose' ); // Page title should change from “Add goose” when published.
 
 		$i->seeInField( 'atlas-content-modeler[goose][color]', 'Gray' );
+		$i->see( 'This is the description.' );
 		$i->seeInField( 'atlas-content-modeler[goose][age]', '100' );
 		$i->seeInField( 'atlas-content-modeler[goose][dateOfBirth]', '2021-01-01' );
 		$i->seeCheckboxIsChecked( 'atlas-content-modeler[goose][fliesSouthForWinter]' );
