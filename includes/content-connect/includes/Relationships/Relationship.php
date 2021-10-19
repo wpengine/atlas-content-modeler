@@ -122,7 +122,7 @@ abstract class Relationship {
 		$this->enable_to_ui = $args['to']['enable_ui'];
 		$this->to_sortable  = $args['to']['sortable'];
 		$this->to_labels    = $args['to']['labels'];
-		$this->cardinality  = 'one-to-one';
+		$this->cardinality  = 'many-to-many';
 	}
 
 	/**
