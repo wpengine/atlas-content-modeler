@@ -78,6 +78,13 @@ abstract class Relationship {
 	public $is_bidirectional;
 
 	/**
+	 * The relationship cardinality.
+	 *
+	 * @var [type]
+	 */
+	public $cardinality;
+
+	/**
 	 * Undocumented function
 	 *
 	 * @param string $name Name.
@@ -115,6 +122,7 @@ abstract class Relationship {
 		$this->enable_to_ui = $args['to']['enable_ui'];
 		$this->to_sortable  = $args['to']['sortable'];
 		$this->to_labels    = $args['to']['labels'];
+		$this->cardinality  = 'many-to-many';
 	}
 
 	/**

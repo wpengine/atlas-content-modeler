@@ -291,6 +291,79 @@ class PostToPostTest extends ContentConnectTestCase {
 		$this->assertEquals( 1, $wpdb->get_var( "select count(id1) from {$wpdb->prefix}acm_post_to_post where id1=1 and id2=6 and `name`='basic';" ) );
 	}
 
+	public function test_one_to_one_restriction() {
+		$pp              = new PostToPost( 'post', 'post', 'basic' );
+		$pp->cardinality = 'one-to-one';
 
+		$pairs = array(
+			array( 1, 2 ),
+			array( 1, 5 ),
+			array( 3, 8 ),
+			array( 3, 9 ),
+		);
 
+		$results = array();
+
+		foreach ( $pairs as $pair ) {
+			$results[] = $pp->add_relationship( $pair[0], $pair[1] );
+		}
+
+		$this->assertTrue( $results[0] );
+		$this->assertTrue( $results[2] );
+
+		$this->assertFalse( $results[1] );
+		$this->assertFalse( $results[3] );
+	}
+
+	public function test_one_to_many_restriction() {
+		$pp              = new PostToPost( 'post', 'post', 'basic' );
+		$pp->cardinality = 'one-to-many';
+
+		$pairs = array(
+			array( 1, 2 ),
+			array( 1, 5 ),
+			array( 4, 2 ),
+			array( 3, 8 ),
+			array( 3, 9 ),
+			array( 7, 3 ),
+		);
+
+		$results = array();
+
+		foreach ( $pairs as $pair ) {
+			$results[] = $pp->add_relationship( $pair[0], $pair[1] );
+		}
+
+		$this->assertTrue( $results[0] );
+		$this->assertTrue( $results[1] );
+		$this->assertTrue( $results[3] );
+		$this->assertTrue( $results[4] );
+
+		$this->assertFalse( $results[2] );
+		$this->assertFalse( $results[5] );
+	}
+
+	public function test_many_to_one_restriction() {
+		$pp              = new PostToPost( 'post', 'post', 'basic' );
+		$pp->cardinality = 'many-to-one';
+
+		$pairs = array(
+			array( 1, 2 ),
+			array( 1, 5 ),
+			array( 3, 8 ),
+			array( 3, 9 ),
+		);
+
+		$results = array();
+
+		foreach ( $pairs as $pair ) {
+			$results[] = $pp->add_relationship( $pair[0], $pair[1] );
+		}
+
+		$this->assertTrue( $results[0] );
+		$this->assertTrue( $results[2] );
+
+		$this->assertFalse( $results[1] );
+		$this->assertFalse( $results[3] );
+	}
 }
