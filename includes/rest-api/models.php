@@ -106,7 +106,7 @@ function create_models( array $models ) {
 function get_model_args( string $post_type_slug, array $args ) {
 	$post_type_slug = sanitize_key( $post_type_slug );
 
-	if ( empty( $post_type_slug ) || strlen( $post_type_slug ) > 50 ) {
+	if ( empty( $post_type_slug ) || strlen( $post_type_slug ) > 20 ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
 			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
