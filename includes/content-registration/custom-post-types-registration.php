@@ -509,7 +509,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return DataSource::resolve_post_object( (int) $value, $context );
 					}
 
-					if ( $field['type'] === 'multipleChoice') {
+					if ( $field['type'] === 'multipleChoice' ) {
 						return $value;
 					}
 
