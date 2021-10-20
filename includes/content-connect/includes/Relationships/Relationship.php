@@ -78,6 +78,13 @@ abstract class Relationship {
 	public $is_bidirectional;
 
 	/**
+	 * The relationship cardinality, such as "many-to-many".
+	 *
+	 * @var string
+	 */
+	public $cardinality;
+
+	/**
 	 * Undocumented function
 	 *
 	 * @param string $name Name.
@@ -88,6 +95,7 @@ abstract class Relationship {
 
 		$defaults = array(
 			'is_bidirectional' => true,
+			'cardinality'      => 'many-to-many',
 			'from'             => array(
 				'enable_ui' => true,
 				'sortable'  => false,
@@ -107,6 +115,7 @@ abstract class Relationship {
 		$args = array_replace_recursive( $defaults, $args );
 
 		$this->is_bidirectional = $args['is_bidirectional'];
+		$this->cardinality      = $args['cardinality'];
 
 		$this->enable_from_ui = $args['from']['enable_ui'];
 		$this->from_sortable  = $args['from']['sortable'];
