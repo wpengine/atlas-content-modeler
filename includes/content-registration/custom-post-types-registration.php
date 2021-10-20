@@ -508,6 +508,10 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return DataSource::resolve_post_object( (int) $value, $context );
 					}
 
+					if ( $field['type'] === 'multipleChoice') {
+						return $value;
+					}
+
 					// fixes caption shortcode for graphql output.
 					if ( $rich_text ) {
 						return do_shortcode( $value );
@@ -689,6 +693,7 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'textarea':
 		case 'string':
 		case 'date':
+		case 'multipleChoice':
 		case 'richtext':
 			return 'String';
 		case 'number':

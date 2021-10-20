@@ -283,12 +283,12 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.slug}]`}
 										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.slug}]`}
 										placeholder="Option Name"
-										value={item.name}
+										value={item.slug}
 										defaultChecked={
 											field.value &&
 											field.value.some(function (slug) {
 												return (
-													Object.keys(slug) ==
+													Object.keys(slug) ===
 													item.slug
 												);
 											})
