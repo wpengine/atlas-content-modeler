@@ -40,5 +40,8 @@ export function toPostTypeSlug(value) {
 	// Strip all characters not in the range [a-z0-9_\-].
 	value = value.replace(/[^a-z0-9_\-]/g, "");
 
+	// Limit the substring we set to 20 chars which is the max for a post type.
+	value = value.substring(0, 20);
+
 	return value;
 }
