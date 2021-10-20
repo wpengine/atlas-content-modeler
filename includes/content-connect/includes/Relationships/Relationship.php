@@ -78,9 +78,9 @@ abstract class Relationship {
 	public $is_bidirectional;
 
 	/**
-	 * The relationship cardinality.
+	 * The relationship cardinality, such as "many-to-many".
 	 *
-	 * @var [type]
+	 * @var string
 	 */
 	public $cardinality;
 
@@ -95,6 +95,7 @@ abstract class Relationship {
 
 		$defaults = array(
 			'is_bidirectional' => true,
+			'cardinality'      => 'many-to-many',
 			'from'             => array(
 				'enable_ui' => true,
 				'sortable'  => false,
@@ -114,6 +115,7 @@ abstract class Relationship {
 		$args = array_replace_recursive( $defaults, $args );
 
 		$this->is_bidirectional = $args['is_bidirectional'];
+		$this->cardinality      = $args['cardinality'];
 
 		$this->enable_from_ui = $args['from']['enable_ui'];
 		$this->from_sortable  = $args['from']['sortable'];
@@ -122,7 +124,6 @@ abstract class Relationship {
 		$this->enable_to_ui = $args['to']['enable_ui'];
 		$this->to_sortable  = $args['to']['sortable'];
 		$this->to_labels    = $args['to']['labels'];
-		$this->cardinality  = 'many-to-many';
 	}
 
 	/**
