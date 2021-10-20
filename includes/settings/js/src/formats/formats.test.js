@@ -29,15 +29,12 @@ describe("toPostTypeSlug", () => {
 		["strip accented éîøü", "stripaccented"],
 		["strips    white    spaces", "stripswhitespaces"],
 		["     trim_white_space     ", "trim_white_space"],
-		["1allow_leading_number", "1allow_leading_number"],
-		["123allow_leading_numbers", "123allow_leading_numbers"],
-		["Lower_case_All_the_THINGS", "lower_case_all_the_things"],
-		["_allows_leading_underscore", "_allows_leading_underscore"],
+		["1allow_leading_number", "1allow_leading_numbe"],
+		["123allow_leading_numbers", "123allow_leading_num"],
+		["Lower_case_All_the_THINGS", "lower_case_all_the_t"],
+		["_allows_leading_underscore", "_allows_leading_unde"],
 		["-Allows-Hypens-", "-allows-hypens-"],
-		[
-			"allow numbers after 1st character123",
-			"allownumbersafter1stcharacter123",
-		],
+		["allow n after 1st c123", "allownafter1stc123"],
 	];
 
 	test.each(cases)("toPostTypeSlug(%s) should be %s", (input, expected) => {
