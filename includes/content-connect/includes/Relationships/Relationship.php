@@ -78,6 +78,13 @@ abstract class Relationship {
 	public $is_bidirectional;
 
 	/**
+	 * The relationship cardinality, such as "many-to-many".
+	 *
+	 * @var string
+	 */
+	public $cardinality;
+
+	/**
 	 * Undocumented function
 	 *
 	 * @param string $name Name.
