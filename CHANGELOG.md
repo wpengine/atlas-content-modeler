@@ -1,11 +1,25 @@
 # Atlas Content Modeler Changelog
 
+## 0.8.0 - 2021-10-13
+
+### Added
+- Share models between sites using the new Export and Import models feature. Visit Content Modeler → Tools to get started.
+- Added "author" support to custom post types. This unlocks new functionality such as assigning specific users to a post, and querying posts by author in WPGraphQL.
+
+### Fixed
+- Fixed bug where the model icon could not be changed when editing an existing model.
+- Fixed bug in the Number field where you could not define a Step value without also defining a Max value.
+- Improved duplicate field slug detection to ensure forward and reverse slugs for the Relationship field are unique in WPGraphQL.
+
+### Changed
+- The `@wordpress/i18n` package is no longer bundled in the plugin's scripts, relying on the version that ships with WordPress instead.
+
 ## 0.7.0 - 2021-10-04
 
 ### Added
 - Relationship Field: one-to-one and one-to-many relationships were renamed to many-to-one and many-to-many to accurately reflect their function.
 - Relationship Field: fields can now optionally include reverse references.
-- Relationship Field: added [Beta] flag as the feature takes shape. 
+- Relationship Field: added [Beta] flag as the feature takes shape.
 - Chore: set "Requires at least" to WordPress version 5.7
 - Chore: set "Requires PHP" to version 7.2
 

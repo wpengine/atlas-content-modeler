@@ -7,7 +7,7 @@
  * Author URI: https://wpengine.com/
  * Text Domain: atlas-content-modeler
  * Domain Path: /languages
- * Version: 0.7.0
+ * Version: 0.8.0
  * Requires at least: 5.7
  * Requires PHP: 7.2
  * License: GPLv2 or later
@@ -49,6 +49,7 @@ function atlas_content_modeler_loader(): void {
 		'rest-api/init-rest-api.php',
 		'publisher/class-publisher-form-editing-experience.php',
 		'updates/version-updates.php',
+		'content-connect/autoload.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
@@ -61,5 +62,6 @@ function atlas_content_modeler_loader(): void {
 	$form_editing_experience->bootstrap();
 
 	// Bootstrap relationships library.
+	acm_content_connect_autoloader();
 	\WPE\AtlasContentModeler\ContentConnect\Plugin::instance();
 }

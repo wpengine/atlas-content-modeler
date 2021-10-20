@@ -95,6 +95,7 @@ function register_relationships( $registry ) {
 			if ( $field['type'] === 'relationship' ) {
 				$args = [
 					'is_bidirectional' => true,
+					'cardinality'      => $field['cardinality'],
 					'from'             => [
 						'enable_ui' => true,
 						'sortable'  => false,

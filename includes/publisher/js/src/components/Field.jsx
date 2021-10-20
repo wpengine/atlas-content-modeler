@@ -118,12 +118,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							*{__("Required", "atlas-content-modeler")}
 						</p>
 					)}
+					{field?.description && (
+						<p className="help mb-0">{field.description}</p>
+					)}
 					{field?.inputType === "multi" ? (
 						<textarea {...textProps} />
 					) : (
 						<input {...textProps} />
 					)}
-
 					<span className="error">
 						<Icon type="error" />
 						<span role="alert">
@@ -181,6 +183,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							*{__("Required", "atlas-content-modeler")}
 						</p>
 					)}
+					{field?.description && (
+						<p className="help mb-0">{field.description}</p>
+					)}
 					<input
 						ref={numberInputRef}
 						type={`${field.type}`}
@@ -213,6 +218,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							*{__("Required", "atlas-content-modeler")}
 						</p>
 					)}
+					{field?.description && (
+						<p className="help mb-0">{field.description}</p>
+					)}
 					<input
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -242,6 +250,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			const [checked, setChecked] = useState(field.value === "on");
 			return (
 				<>
+					{field?.description && (
+						<p className="help mb-3">{field.description}</p>
+					)}
 					<label
 						className="check-container"
 						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -270,6 +281,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				return (
 					<fieldset>
 						<legend>{field.name}</legend>
+						{field?.description && (
+							<p className="help mb-0">{field.description}</p>
+						)}
 						{field.choices.map((item, index) => {
 							return (
 								<label
@@ -310,6 +324,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				return (
 					<fieldset>
 						<legend>{field.name}</legend>
+						{field?.description && (
+							<p className="help mb-0">{field.description}</p>
+						)}
 						{field.choices.map((item, index) => {
 							return (
 								<label className="radio-container" key={index}>

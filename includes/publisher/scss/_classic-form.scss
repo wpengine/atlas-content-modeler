@@ -1,3 +1,4 @@
+$color-gray-mid: #405e6a;
 $form-purple: #7e5cef;
 $form-default-border-gray: #9db7d1;
 $error-red: #d21b46;
@@ -330,8 +331,12 @@ $button-primary: #002838;
 			margin-right: 8px;
 		}
 
+		.help {
+			color: $color-gray-mid;
+		}
+
 		.required {
-			color: #405e6a;
+			color: $color-gray-mid;
 			font-size: 12px;
 			margin-bottom: 0;
 		}

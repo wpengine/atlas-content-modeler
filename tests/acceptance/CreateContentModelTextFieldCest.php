@@ -15,6 +15,7 @@ class CreateContentModelTextFieldCest {
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
 		$i->see( '5/50', 'span.count' );
 		$i->seeInField( '#slug', 'color' );
+		$i->fillField( [ 'name' => 'description' ], 'Description.' );
 		$i->click( '.open-field button.primary' );
 		$i->wait( 1 );
 

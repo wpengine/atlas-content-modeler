@@ -553,4 +553,26 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$this->assertEquals( 400, $response->get_status() );
 		$this->assertEquals( 'atlas_content_modeler_invalid_related_content_model', $data['code'] );
 	}
+
+	public function test_using_reserved_field_slug_generates_error() {
+		$field_with_reserved_slug = [
+			'slug'     => 'title',
+			'type'     => 'text',
+			'id'       => '111',
+			'model'    => 'public',
+			'position' => '123',
+			'name'     => 'Title',
+		];
+
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $field_with_reserved_slug ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertEquals( 'atlas_content_modeler_reserved_field_slug', $data['code'] );
+	}
 }

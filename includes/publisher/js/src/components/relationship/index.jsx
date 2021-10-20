@@ -83,6 +83,11 @@ export default function Relationship({ field, modelSlug }) {
 					{__("*Required", "atlas-content-modeler")}
 				</p>
 			)}
+			{field?.description && (
+				<p className="help mb-0">
+					{__(field.description, "atlas-content-modeler")}
+				</p>
+			)}
 			{isFetching ? (
 				<Loader />
 			) : entryInfo ? (

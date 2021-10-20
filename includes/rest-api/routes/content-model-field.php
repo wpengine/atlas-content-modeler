@@ -58,13 +58,27 @@ function register_rest_routes(): void {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_update_content_model_field( WP_REST_Request $request ) {
-	$params        = $request->get_params();
-	$content_types = get_registered_content_types();
+	$params               = $request->get_params();
+	$content_types        = get_registered_content_types();
+	$reserved_field_slugs = include ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-field-slugs.php';
 
 	if ( ! isset( $params['model'] ) || empty( $content_types[ $params['model'] ] ) ) {
 		return new WP_Error(
 			'wpe_invalid_content_model',
 			__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
+			array( 'status' => 400 )
+		);
+	}
+
+	// Prevents use of reserved field slugs during new field creation.
+	if (
+		$request->get_method() === 'POST' &&
+		isset( $params['slug'] ) &&
+		in_array( $params['slug'], $reserved_field_slugs, true )
+	) {
+		return new WP_Error(
+			'atlas_content_modeler_reserved_field_slug',
+			__( 'Identifier in use or reserved.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
 	}
