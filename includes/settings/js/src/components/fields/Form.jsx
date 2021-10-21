@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
-import { useLocationSearch, getGraphQLType } from "../../utils";
+import { useLocationSearch } from "../../utils";
 import Icon from "acm-icons";
 import TextFields from "./TextFields";
 import {
@@ -15,7 +15,7 @@ import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator, useReservedSlugs } from "../../hooks";
-import { toValidApiId } from "../../formats";
+import { toValidApiId, toGraphQLType } from "../../formats";
 import { __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
@@ -70,7 +70,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const originalValues = useRef({});
 	const reservedSlugs = editing
 		? false
-		: useReservedSlugs(getGraphQLType(models[model]?.singular));
+		: useReservedSlugs(toGraphQLType(models[model]?.singular));
 
 	const advancedSettings = {
 		text: {
