@@ -27,21 +27,22 @@ export function toValidApiId(value) {
 }
 
 /**
- * Formats a given string to a valid post type slug.
+ * Formats a given string to a valid slug for use in taxonomies or post types.
  *
  * @see https://developer.wordpress.org/reference/functions/sanitize_key/
- * @param {string} value The input value to convert to a valid post type slug.
+ * @param {string} value The input value to convert to a valid slug.
+ * @param {number} length Maximium character length of the returned slug.
  * @returns A valid post type slug.
  */
-export function toPostTypeSlug(value) {
+export function toSanitizedKey(value, length = 20) {
 	// Must be all lower case.
 	value = value.toLowerCase();
 
 	// Strip all characters not in the range [a-z0-9_\-].
 	value = value.replace(/[^a-z0-9_\-]/g, "");
 
-	// Limit the substring we set to 20 chars which is the max for a post type.
-	value = value.substring(0, 20);
+	// Limit the generated value to a maximum length.
+	value = value.substring(0, length);
 
 	return value;
 }
