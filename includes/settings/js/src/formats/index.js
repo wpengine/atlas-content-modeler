@@ -7,6 +7,9 @@
  * @return {string} The valid API ID.
  */
 export function toValidApiId(value) {
+	// Replaces dashes and underscores with spaces for further processing into camelcase later.
+	value = value.replace(/[_\-]/g, " ");
+
 	// Strip all characters not in the range [_0-9A-Za-z ].
 	// Preserve spaces for now to turn “camel case” into “camelCase” later.
 	value = value.replace(/[^_0-9A-Za-z ]/g, "");
