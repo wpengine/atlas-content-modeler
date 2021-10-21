@@ -1,4 +1,4 @@
-import { toValidApiId, toPostTypeSlug } from ".";
+import { toValidApiId, toSanitizedKey } from ".";
 
 describe("toValidApiId", () => {
 	const cases = [
@@ -22,7 +22,7 @@ describe("toValidApiId", () => {
 	});
 });
 
-describe("toPostTypeSlug", () => {
+describe("toSanitizedKey", () => {
 	const cases = [
 		[",,,#!!!strip_punctuation???$...", "strip_punctuation"],
 		["⚠️⚠️⚠️strip_emoji🐇🐇🐇", "strip_emoji"],
@@ -37,7 +37,11 @@ describe("toPostTypeSlug", () => {
 		["allow n after 1st c123", "allownafter1stc123"],
 	];
 
-	test.each(cases)("toPostTypeSlug(%s) should be %s", (input, expected) => {
-		expect(toPostTypeSlug(input)).toEqual(expected);
+	test.each(cases)("toSanitizedKey(%s) should be %s", (input, expected) => {
+		expect(toSanitizedKey(input)).toEqual(expected);
+	});
+
+	test("limits character length to a custom value", () => {
+		expect(toSanitizedKey("abcdefghi", 3)).toEqual("abc");
 	});
 });
