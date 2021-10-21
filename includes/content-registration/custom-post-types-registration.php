@@ -509,9 +509,17 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return (float) $value;
 					}
 
-					if ( array( 'list_of' => 'String' ) === $field['type'] ) {
-						$value = get_post_meta( $post->databaseId, $field['slug'], true );
-						return array( 'test', 'test 2' );
+					if ( $field['original_type']=== 'multipleChoice') {
+						// We need to return the values of multiple selects differently to build a proper array of strings.
+						if( is_array($value) ) {
+							$listValues = array();
+							foreach ( $value as $v ) {
+								array_push($listValues, implode( array_values($v) ) );
+							}
+							return $listValues;
+						}
+						// Return the single value if it is a single select
+						return array($value);
 					}
 
 					if ( $field['type'] === 'MediaItem' ) {
