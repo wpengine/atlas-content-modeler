@@ -78,7 +78,6 @@ function MultipleChoiceFields({
 												name="multiples"
 											>
 												<input
-													ref={register()}
 													name={`choices[${index}].name`}
 													placeholder="Choice Name"
 													type="text"
@@ -123,7 +122,6 @@ function MultipleChoiceFields({
 											</div>
 											<div className={`${item.name}`}>
 												<input
-													ref={register()}
 													placeholder="Choice API Identifier"
 													type="text"
 													onChange={(event) => {
