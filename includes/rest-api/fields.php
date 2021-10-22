@@ -179,8 +179,6 @@ function content_model_multi_option_slug_exists( array $slugs, string $current_c
 			unset( $slugs[ $current_index ] );
 		}
 
-			$problem_options_list = [];
-
 		foreach ( $slugs as $choice ) {
 			if ( $choice['slug'] === $current_choice ) {
 				return true;
