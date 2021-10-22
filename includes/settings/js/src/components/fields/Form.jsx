@@ -70,7 +70,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const originalValues = useRef({});
 	const reservedSlugs = editing
 		? false
-		: useReservedSlugs(toGraphQLType(models[model]?.singular));
+		: useReservedSlugs(toGraphQLType(models[model]?.singular, true));
 
 	const advancedSettings = {
 		text: {
