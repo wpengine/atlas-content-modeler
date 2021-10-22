@@ -335,7 +335,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 										type="radio"
 										name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${item.name}]`}
-										value={item.name}
+										value={item.slug}
 										defaultChecked={
 											field.value === item.name
 										}
