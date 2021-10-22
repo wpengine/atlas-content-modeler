@@ -54,7 +54,7 @@ function MultipleChoiceFields({
 								return (
 									<div
 										key={item.id}
-										className={`choices[${index}].container field multiple-option-container-single`}
+										className={`field multiple-option-container-single`}
 									>
 										<label
 											htmlFor={"multipleChoice" + index}
