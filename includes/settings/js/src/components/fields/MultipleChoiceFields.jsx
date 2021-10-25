@@ -207,7 +207,9 @@ function MultipleChoiceFields({
 														)}
 												</div>
 											</div>
-											<div className={`choices[${index}].remove-container`}>
+											<div
+												className={`choices[${index}].remove-container`}
+											>
 												{fields.length > 1 && (
 													<button
 														className="remove-option tertiary no-border"
