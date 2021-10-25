@@ -9,7 +9,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->loginAsAdmin();
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
-		$i->click( 'Multiple Choice', '.field-buttons' );
+		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->wait( 1 );
@@ -27,7 +27,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->wait( 1 );
 		$i->seeInField( 'choices[0].name', 'dog' );
 		$i->see( 'Editing “Favorite Animal” Field', '.field-list' );
-		$i->click( '.remove-option', '.choices[0].container' );
+		$i->click( '.remove-option', '.choices[0].remove-container' );
 		$i->wait( 1 );
 		$i->seeInField( 'choices[0].name', 'cat' );
 	}
@@ -39,7 +39,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->loginAsAdmin();
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
-		$i->click( 'Multiple Choice', '.field-buttons' );
+		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->fillField( [ 'name' => 'choices[0].name' ], 'dog' );
@@ -63,7 +63,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->loginAsAdmin();
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
-		$i->click( 'Multiple Choice', '.field-buttons' );
+		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->fillField( [ 'name' => 'choices[0].name' ], 'dog' );
@@ -85,7 +85,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->loginAsAdmin();
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
-		$i->click( 'Multiple Choice', '.field-buttons' );
+		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->wait( 1 );
