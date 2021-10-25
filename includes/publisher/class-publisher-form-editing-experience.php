@@ -162,6 +162,22 @@ final class FormEditingExperience {
 
 		$models = $this->models;
 
+		// Get model fields that have a back reference to current post type.
+		foreach ( $models as $slug => $model ) {
+			foreach ( $model['fields'] as $field ) {
+				if ( $field['type'] !== 'relationship' ) {
+					continue;
+				}
+
+				if ( $field['reference'] !== $post->post_type ) {
+					continue;
+				}
+
+				// Add fields from reverse relationships to the existing models fields.
+				$models[ $model['slug'] ]['fields'][ $field['id'] ] = $field;
+			}
+		}
+
 		// Adds the wp-json rest base for utilizing model data in admin.
 		foreach ( $models as $model => $data ) {
 			$models[ $model ]['wp_rest_base'] = sanitize_key( $data['plural'] );
