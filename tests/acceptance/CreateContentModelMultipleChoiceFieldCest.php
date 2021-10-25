@@ -10,7 +10,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
 		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
-		$i->wait( 1 );
+		$i->wait( 2 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'choices[0].name' ], 'dog' );
@@ -40,7 +40,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
 		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
-		$i->wait( 1 );
+		$i->wait( 2 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->fillField( [ 'name' => 'choices[0].name' ], 'dog' );
 		$i->fillField( [ 'name' => 'choices[0].slug' ], 'dogSlug' );
@@ -64,7 +64,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
 		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
-		$i->wait( 1 );
+		$i->wait( 2 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->fillField( [ 'name' => 'choices[0].name' ], 'dog' );
 		$i->fillField( [ 'name' => 'choices[0].slug' ], 'dogSlug' );
@@ -86,7 +86,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
 		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
-		$i->wait( 1 );
+		$i->wait( 2 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'choices[0].name' ], 'dog' );
