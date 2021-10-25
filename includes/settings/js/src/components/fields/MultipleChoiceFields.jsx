@@ -64,7 +64,7 @@ function MultipleChoiceFields({
 										<br />
 										<p className="help">
 											Display name and API identifier for
-											your {supportedFields[type]} choice.
+											your choice.
 										</p>
 										<div
 											className={`${
