@@ -1,4 +1,4 @@
-import { toValidApiId, toSanitizedKey } from ".";
+import { toValidApiId, toSanitizedKey, toGraphQLType } from ".";
 
 describe("toValidApiId", () => {
 	const cases = [
@@ -44,4 +44,32 @@ describe("toSanitizedKey", () => {
 	test("limits character length to a custom value", () => {
 		expect(toSanitizedKey("abcdefghi", 3)).toEqual("abc");
 	});
+});
+
+describe("toGraphQLType", () => {
+	const cases = [
+		[",,,#!!!strip_punctuation???$...", "stripPunctuation", false],
+		["⚠️⚠️⚠️strip_emoji🐇🐇🐇", "stripEmoji", false],
+		["strip accented éîøü", "stripAccented", false],
+		["1strip_leading_number", "stripLeadingNumber", false],
+		["123strip_leading_numbers", "stripLeadingNumbers", false],
+		["     trim_white_space     ", "trimWhiteSpace", false],
+		["Lower_case_initial_capitals", "lowerCaseInitialCapitals", false],
+		["_removes_leading_underscore", "removesLeadingUnderscore", false],
+		["camel case    white    spaces", "camelCaseWhiteSpaces", false],
+		["cap-first-word-with-dashes", "CapFirstWordWithDashes", true],
+		["cap-first-word-with-spaces", "CapFirstWordWithSpaces", true],
+		[
+			"cap-first-word-with-underscores",
+			"CapFirstWordWithUnderscores",
+			true,
+		],
+	];
+
+	test.each(cases)(
+		"toGraphQLType(%s) should be %s",
+		(input, expected, capFirst) => {
+			expect(toGraphQLType(input, capFirst)).toEqual(expected);
+		}
+	);
 });
