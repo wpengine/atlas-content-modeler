@@ -33,7 +33,7 @@ npm install
 
 We recommend using a Node.js version manager such as Fast Node Manager ([fnm](https://github.com/Schniz/fnm)) to ensure your version of Node.js matches ours when working on Atlas Content Modeler.
 
-[Install fnm](https://github.com/Schniz/fnm#installation), then run these commands from the Atlas Content Modeler project root:
+[Install fnm](https://github.com/Schniz/fnm#installation), close and reopen your shell, then run these commands from the Atlas Content Modeler project root:
 
 ```
 fnm install
