@@ -1,12 +1,12 @@
 # Contributing
 
-**Required Software**
-- [Composer]()
-- [Nodejs]()
+## Required Software
+- [Composer](https://getcomposer.org/download/)
+- [Nodejs](https://nodejs.org/en/)
 
-**Optional Software** Required for end-2-end testing
-- [Docker Desktop]()
-- [Chromedriver]()
+## Optional Software for end-2-end testing
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [Chromedriver](https://formulae.brew.sh/cask/chromedriver)
 
 ## Project Setup
 
@@ -28,6 +28,19 @@ Install npm packages
 ```
 npm install
 ```
+
+### Which Node.js version should I use?
+
+We recommend using a Node.js version manager such as Fast Node Manager ([fnm](https://github.com/Schniz/fnm)) to ensure your version of Node.js matches ours when working on Atlas Content Modeler.
+
+[Install fnm](https://github.com/Schniz/fnm#installation), then run these commands from the Atlas Content Modeler project root:
+
+```
+fnm install
+fnm use
+```
+
+`node -v` will then return the same version from this project's `.nvmrc`.
 
 ## Testing
 
