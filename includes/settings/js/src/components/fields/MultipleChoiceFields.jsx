@@ -24,7 +24,7 @@ function MultipleChoiceFields({
 	});
 
 	if (fields.length < 1) {
-		append({ name: "", slug: "" }, false );
+		append({ name: "", slug: "" }, false);
 	}
 
 	/**
