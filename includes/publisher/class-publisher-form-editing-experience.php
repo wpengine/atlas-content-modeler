@@ -164,6 +164,10 @@ final class FormEditingExperience {
 
 		// Get model fields that have a back reference to current post type.
 		foreach ( $models as $slug => $model ) {
+			if ( empty( $model['fields'] ) ) {
+				continue;
+			}
+
 			foreach ( $model['fields'] as $field ) {
 				if ( $field['type'] !== 'relationship' ) {
 					continue;
