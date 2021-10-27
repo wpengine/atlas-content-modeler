@@ -178,7 +178,9 @@ final class FormEditingExperience {
 				}
 
 				// Add fields from reverse relationships to the existing models fields.
-				$models[ $model['slug'] ]['fields'][ $field['id'] ] = $field;
+				$field['forwardSlug'] = $slug;
+
+				$models[ $field['reference'] ]['fields'][ $field['id'] ] = $field;
 			}
 		}
 

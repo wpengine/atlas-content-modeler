@@ -23,7 +23,19 @@ export default function LinkButton({
 			: models[field.reference]?.plural ??
 			  __("References", "atlas-content-modeler");
 
+	const buttonReverseLabelModel =
+		field?.cardinality === "one-to-one"
+			? models[field.forwardSlug]?.singular ??
+			  __("Reference", "atlas-content-modeler")
+			: models[field.forwardSlug]?.plural ??
+			  __("References", "atlas-content-modeler");
+
 	const buttonLabel = sprintf(buttonLabelBase, buttonLabelModel);
+
+	const buttonReverseLabel = sprintf(
+		buttonLabelBase,
+		buttonReverseLabelModel
+	);
 
 	return (
 		<div className="d-flex flex-row align-items-center media-btns">
@@ -39,7 +51,11 @@ export default function LinkButton({
 			>
 				<div className="d-flex flex-row">
 					<Icon type="link" />
-					<div className="px-2">{buttonLabel}</div>
+					<div className="px-2">
+						{modelSlug !== field.forwardSlug
+							? buttonReverseLabel
+							: buttonLabel}
+					</div>
 				</div>
 			</button>
 		</div>
