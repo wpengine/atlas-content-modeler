@@ -169,7 +169,7 @@ final class FormEditingExperience {
 			}
 
 			foreach ( $model['fields'] as $field ) {
-				if ( $field['type'] !== 'relationship' ) {
+				if ( $field['type'] !== 'relationship' || ! $field['enableReverse'] ) {
 					continue;
 				}
 
