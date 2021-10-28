@@ -104,15 +104,13 @@ export default function Table({
 							className={notSelectable ? "unselectable" : ""}
 						>
 							{notSelectable ? (
-								<td className="info">
+								<td className="info tooltip">
 									<button
-										onMouseOver={() =>
-											console.log("TODO: show tooltip")
-										}
 										type="button"
 										aria-label={sprintf(
 											__(
-												"“%s” is not selectable. It is already linked to another entry.",
+												// translators: entry title, such as “My Post”.
+												"“%s” is not selectable. It is already linked to other entries.",
 												"atlas-content-modeler"
 											),
 											title?.rendered
@@ -120,6 +118,16 @@ export default function Table({
 									>
 										<Icon type="info" />
 									</button>
+									<span className="tooltip-text">
+										{sprintf(
+											__(
+												// translators: entry title, such as “My Post”.
+												"“%s” is already linked to other entries.",
+												"atlas-content-modeler"
+											),
+											title?.rendered
+										)}
+									</span>
 								</td>
 							) : (
 								<td className="checkbox">

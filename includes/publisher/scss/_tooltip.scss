@@ -1,0 +1,37 @@
+.tooltip {
+	position: relative;
+}
+
+.tooltip .tooltip-text {
+	background-color: #fff;
+	border-radius: 6px;
+	color: #002838;
+	font-size: 16px;
+	filter: drop-shadow(0px 2px 4px rgba(89, 118, 127, 0.48))
+		drop-shadow(0px 0px 1px rgba(0, 40, 56, 0.32));
+	left: 70%;
+	line-height: 1.4;
+	padding: 8px 16px;
+	position: absolute;
+	text-align: left;
+	top: 7px;
+	visibility: hidden;
+	min-width: 350px;
+	z-index: 1;
+}
+
+/* Adds the triangle to the left of the tooltip. */
+.tooltip .tooltip-text::after {
+	border-color: transparent #fff transparent transparent;
+	border-style: solid;
+	border-width: 10px;
+	content: " ";
+	margin-top: -10px;
+	position: absolute;
+	right: 100%;
+	top: 50%;
+}
+
+.tooltip:hover .tooltip-text {
+	visibility: visible;
+}
