@@ -78,7 +78,7 @@ final class FormEditingExperience {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 		add_action( 'edit_form_after_title', [ $this, 'render_app_container' ] );
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
-		add_action( 'wp_insert_post', [ $this, 'set_slug' ], 10, 3 );
+		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
 		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
@@ -247,7 +247,7 @@ final class FormEditingExperience {
 	 * @param bool    $update  Whether this is an existing post being updated.
 	 * @return void
 	 */
-	public function set_slug( int $post_ID, WP_Post $post, bool $update ): void {
+	public function set_post_attributes( int $post_ID, WP_Post $post, bool $update ): void {
 		if ( true === $update ) {
 			// @todo Perhaps check that the slug has not been changed outside of the editor.
 			return;
@@ -264,8 +264,9 @@ final class FormEditingExperience {
 
 		wp_update_post(
 			array(
-				'ID'        => $post_ID,
-				'post_name' => $model_post_slug,
+				'ID'         => $post_ID,
+				'post_name'  => $model_post_slug,
+				'post_title' => 'entry' . $post_ID,
 			)
 		);
 	}
