@@ -100,7 +100,7 @@ export default function RelationshipModal({
 
 		const endpoint = `/wp/v2/${
 			models[field.reference]?.wp_rest_base
-		}?per_page=${entriesPerPage}&page=${page}`;
+		}?per_page=${entriesPerPage}&page=${page}&field_id=${field?.id}`;
 
 		const params = {
 			path: endpoint,
