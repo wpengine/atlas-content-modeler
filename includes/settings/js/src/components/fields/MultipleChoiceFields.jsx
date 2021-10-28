@@ -42,6 +42,30 @@ function MultipleChoiceFields({
 		);
 	};
 
+	const clearChoiceIdentifierErrors = (errors, index, event) => {
+		errors &&
+			Object.entries(errors).map((item) => {
+				item[1].type.includes("multipleChoiceSlugDuplicate") &&
+					clearErrors(item[0].type);
+				item[1].type.includes("multipleChoiceSlugEmpty") &&
+					clearErrors(item[0].type);
+			});
+		clearErrors("multipleChoice" + index);
+		event.target.value = toValidApiId(event.target.value);
+	};
+
+	const clearNameErrors = (errors, index) => {
+		errors &&
+			Object.entries(errors).map((item) => {
+				item[1].type.includes("multipleChoiceNameDuplicate") &&
+					clearErrors(item[0].type);
+				item[1].type.includes("multipleChoiceNameEmpty") &&
+					clearErrors(item[0].type);
+			});
+		clearErrors("multipleChoice" + index);
+		clearErrors("multipleChoiceName" + index);
+	};
+
 	return (
 		<div className={editing ? "field read-only" : "field"}>
 			<fieldset>
@@ -101,32 +125,9 @@ function MultipleChoiceFields({
 													}}
 													defaultValue={`${item.name}`}
 													onChange={(e) => {
-														errors &&
-															Object.entries(
-																errors
-															).map((item) => {
-																item[1].type.includes(
-																	"multipleChoiceNameDuplicate"
-																) &&
-																	clearErrors(
-																		item[0]
-																			.type
-																	);
-																item[1].type.includes(
-																	"multipleChoiceNameEmpty"
-																) &&
-																	clearErrors(
-																		item[0]
-																			.type
-																	);
-															});
-														clearErrors(
-															"multipleChoice" +
-																index
-														);
-														clearErrors(
-															"multipleChoiceName" +
-																index
+														clearNameErrors(
+															errors,
+															index
 														);
 													}}
 												/>
@@ -140,31 +141,10 @@ function MultipleChoiceFields({
 													)}
 													type="text"
 													onChange={(event) => {
-														errors &&
-															Object.entries(
-																errors
-															).map((item) => {
-																item[1].type.includes(
-																	"multipleChoiceSlugDuplicate"
-																) &&
-																	clearErrors(
-																		item[0]
-																			.type
-																	);
-																item[1].type.includes(
-																	"multipleChoiceSlugEmpty"
-																) &&
-																	clearErrors(
-																		item[0]
-																			.type
-																	);
-															});
-														clearErrors(
-															"multipleChoice" +
-																index
-														);
-														event.target.value = toValidApiId(
-															event.target.value
+														clearChoiceIdentifierErrors(
+															errors,
+															index,
+															event
 														);
 													}}
 													onKeyPress={(event) => {
