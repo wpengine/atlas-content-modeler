@@ -8,6 +8,7 @@ import AddIcon from "../../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import Icon from "../../../../../components/icons";
 import { toValidApiId } from "../../formats";
+import { sprintf, __ } from "@wordpress/i18n";
 
 function MultipleChoiceFields({
 	register,
@@ -59,12 +60,18 @@ function MultipleChoiceFields({
 										<label
 											htmlFor={"multipleChoice" + index}
 										>
-											Choice {index + 1}
+											{__(
+												"Choice",
+												"atlas-content-modeler"
+											)}
+											{index + 1}
 										</label>
 										<br />
 										<p className="help">
-											Display name and API identifier for
-											your choice.
+											{__(
+												"Display name and API identifier for your choice",
+												"atlas-content-modeler"
+											)}
 										</p>
 										<div
 											className={`${
@@ -80,7 +87,10 @@ function MultipleChoiceFields({
 												<input
 													ref={register()}
 													name={`choices[${index}].name`}
-													placeholder="Choice Name"
+													placeholder={__(
+														"Choice Name",
+														"atlas-content-modeler"
+													)}
 													type="text"
 													onKeyPress={(event) => {
 														if (
@@ -124,7 +134,10 @@ function MultipleChoiceFields({
 											<div className={`${item.name}`}>
 												<input
 													ref={register()}
-													placeholder="Choice API Identifier"
+													placeholder={__(
+														"Choice API Identifier",
+														"atlas-content-modeler"
+													)}
 													type="text"
 													onChange={(event) => {
 														errors &&
@@ -181,9 +194,10 @@ function MultipleChoiceFields({
 															<span className="error">
 																<Icon type="error" />
 																<span role="alert">
-																	Must set a
-																	choice
-																	identifier.
+																	{__(
+																		"Must set a choice identifier.",
+																		"atlas-content-modeler"
+																	)}
 																</span>
 															</span>
 														)}
@@ -199,9 +213,10 @@ function MultipleChoiceFields({
 															<span className="error">
 																<Icon type="error" />
 																<span role="alert">
-																	Cannot have
-																	duplicate
-																	identifier.
+																	{__(
+																		"Cannot have duplicate identifier.",
+																		"atlas-content-modeler"
+																	)}
 																</span>
 															</span>
 														)}
@@ -242,7 +257,10 @@ function MultipleChoiceFields({
 														<a>
 															<TrashIcon size="small" />{" "}
 															<span>
-																Remove choice
+																{__(
+																	"Remove choice.",
+																	"atlas-content-modeler"
+																)}
 															</span>
 														</a>
 													</button>
@@ -257,7 +275,10 @@ function MultipleChoiceFields({
 												<span className="error">
 													<Icon type="error" />
 													<span role="alert">
-														Must set a name.
+														{__(
+															"Must set a name.",
+															"atlas-content-modeler"
+														)}
 													</span>
 												</span>
 											)}
@@ -269,8 +290,10 @@ function MultipleChoiceFields({
 												<span className="error">
 													<Icon type="error" />
 													<span role="alert">
-														Cannot have duplicate
-														choice names.
+														{__(
+															"Cannot have duplicate choice names.",
+															"atlas-content-modeler"
+														)}
 													</span>
 												</span>
 											)}
@@ -290,8 +313,14 @@ function MultipleChoiceFields({
 										<AddIcon noCircle />{" "}
 										<span>
 											{fields.length > 0
-												? "Add another choice"
-												: "Add a choice"}
+												? __(
+														"Add another choice",
+														"atlas-content-modeler"
+												  )
+												: __(
+														"Add a choice",
+														"atlas-content-modeler"
+												  )}
 										</span>
 									</a>
 								</button>
@@ -301,7 +330,10 @@ function MultipleChoiceFields({
 										<span className="error">
 											<Icon type="error" />
 											<span role="alert">
-												Must create a choice first.
+												{__(
+													"Must create a choice first.",
+													"atlas-content-modeler"
+												)}
 											</span>
 										</span>
 									)}
@@ -327,10 +359,12 @@ function MultipleChoiceFields({
 							disabled={editing}
 						/>
 						<label className="radio" htmlFor="single">
-							Single Select
+							{__("Single Select.", "atlas-content-modeler")}
 							<span>
-								Select this if you need a list of radio buttons
-								(single selection)
+								{__(
+									"Select this if you need a list of radio buttons. (single selection)",
+									"atlas-content-modeler"
+								)}
 							</span>
 						</label>
 					</div>
@@ -345,10 +379,12 @@ function MultipleChoiceFields({
 							disabled={editing}
 						/>
 						<label className="radio" htmlFor="multiple">
-							Multiple Select
+							{__("Multiple Select", "atlas-content-modeler")}
 							<span>
-								Select this if you need a list of checkboxes
-								(multiple selections)
+								{__(
+									"Select this if you need a list of checkboxes. (multiple selections)",
+									"atlas-content-modeler"
+								)}
 							</span>
 						</label>
 					</div>

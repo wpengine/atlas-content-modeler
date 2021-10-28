@@ -510,7 +510,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return (float) $value;
 					}
 
-					if ( $field['original_type'] === 'multipleChoice' ) {
+					if ( 'multipleChoice' === $field['original_type'] ) {
 
 						// We need to return the values of multiple selects differently to build a proper array of strings.
 						if ( is_array( $value ) ) {
