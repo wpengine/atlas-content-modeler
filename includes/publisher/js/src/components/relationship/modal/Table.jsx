@@ -23,6 +23,26 @@ export default function Table({
 			__("entry", "atlas-content-modeler")
 	);
 
+	/**
+	 * Checks if the passed `entry` is already connected to posts other than
+	 * the one being edited.
+	 *
+	 * Allows posts with existing relationships to be made unselectable for
+	 * one-to-one and one-to-many relationship fields.
+	 *
+	 * @param {object} entry
+	 * @returns {boolean} True if there are related posts.
+	 */
+	const entryHasRelatedPosts = (entry) => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const editedPostId = urlParams.get("post");
+		const relatedPosts = entry?.acm_related_posts?.filter(
+			(id) => id != editedPostId
+		);
+
+		return relatedPosts?.length > 0;
+	};
+
 	return (
 		<table className="table table-striped mt-2">
 			<thead>
@@ -73,30 +93,60 @@ export default function Table({
 						),
 						title?.rendered
 					);
+					const notSelectable =
+						(field?.cardinality === "one-to-one" ||
+							field?.cardinality === "one-to-many") &&
+						entryHasRelatedPosts(entry);
+
 					return (
-						<tr key={id}>
-							<td className="checkbox">
-								<input
-									type={
-										field.cardinality == "one-to-many" ||
-										field.cardinality == "many-to-many"
-											? "checkbox"
-											: "radio"
-									}
-									name="selected-entry"
-									id={`entry-${id}`}
-									value={id}
-									aria-label={selectEntryLabel}
-									defaultChecked={chosenEntries.includes(
-										id.toString()
-									)}
-									onChange={handleSelect}
-								/>
-							</td>
+						<tr
+							key={id}
+							className={notSelectable ? "unselectable" : ""}
+						>
+							{notSelectable ? (
+								<td className="info">
+									<button
+										onMouseOver={() =>
+											console.log("TODO: show tooltip")
+										}
+										type="button"
+										aria-label={sprintf(
+											__(
+												"“%s” is not selectable. It is already linked to another entry.",
+												"atlas-content-modeler"
+											),
+											title?.rendered
+										)}
+									>
+										<Icon type="info" />
+									</button>
+								</td>
+							) : (
+								<td className="checkbox">
+									<input
+										type={
+											field.cardinality ==
+												"one-to-many" ||
+											field.cardinality == "many-to-many"
+												? "checkbox"
+												: "radio"
+										}
+										name="selected-entry"
+										id={`entry-${id}`}
+										value={id}
+										aria-label={selectEntryLabel}
+										defaultChecked={chosenEntries.includes(
+											id.toString()
+										)}
+										onChange={handleSelect}
+									/>
+								</td>
+							)}
 							<td>
 								<label
 									htmlFor={`entry-${id}`}
 									aria-label={selectEntryLabel}
+									aria-disabled={notSelectable}
 								>
 									{title?.rendered}
 								</label>
@@ -105,6 +155,7 @@ export default function Table({
 								<label
 									htmlFor={`entry-${id}`}
 									aria-label={selectEntryLabel}
+									aria-disabled={notSelectable}
 								>
 									{date.dateI18n("F j, Y", modified)}
 								</label>
