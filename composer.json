@@ -2,6 +2,7 @@
     "name": "wpengine/atlas-content-modeler",
     "description": "Plugin for content modeling in WordPress.",
     "type": "project",
+    "prefer-stable": true,
     "minimum-stability": "dev",
     "require-dev": {
         "codeception/module-asserts": "^1.3.1",
