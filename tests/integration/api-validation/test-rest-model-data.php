@@ -197,4 +197,15 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertSame( 200, $response->get_status() );
 		self::assertEquals( $this->post_ids['private_post_id'], $response_data['slug'] );
 	}
+
+	/**
+	 * Ensures the acm_related_posts REST field was registered and is present in returned post data.
+	 */
+	public function test_rest_fields_include_acm_related_posts(): void {
+		wp_set_current_user( 1 );
+		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_fields_route . '/' . $this->post_ids['public_fields_post_id'] );
+		$response      = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+		self::assertIsArray( $response_data['acm_related_posts'] );
+	}
 }
