@@ -76,7 +76,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'acm_fields', $response_data );
 
 		self::assertArrayHasKey( 'singleLineRequired', $response_data['acm_fields'] );
-		self::assertSame( $response_data['acm_fields']['singleLineRequired'], 'This is required single line text' );
+		self::assertSame( 'This is required single line text', $response_data['acm_fields']['singleLineRequired'] );
 
 		self::assertArrayHasKey( 'numberIntergerRequired', $response_data['acm_fields'] );
 		self::assertEquals( '13', $response_data['acm_fields']['numberIntergerRequired'] );
@@ -152,7 +152,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_route . '/' . $this->post_ids['public_post_id'] );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		self::assertSame( $response_data['title']['rendered'], 'Test dog' );
+		self::assertEquals( $this->post_ids['public_post_id'], $response_data['slug'] );
 	}
 
 	/**
@@ -173,8 +173,8 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_route . '/' . $this->post_ids['draft_public_post_id'] );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		self::assertSame( $response->get_status(), 200 );
-		self::assertSame( $response_data['title']['rendered'], 'Draft dog' );
+		self::assertSame( 200, $response->get_status() );
+		self::assertEquals( $this->post_ids['draft_public_post_id'], $response_data['slug'] );
 	}
 
 	/**
@@ -194,7 +194,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->private_route . '/' . $this->post_ids['private_post_id'] );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		self::assertSame( $response->get_status(), 200 );
-		self::assertSame( $response_data['title']['rendered'], 'Test cat' );
+		self::assertSame( 200, $response->get_status() );
+		self::assertEquals( $this->post_ids['private_post_id'], $response_data['slug'] );
 	}
 }
