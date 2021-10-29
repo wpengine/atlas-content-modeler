@@ -24,6 +24,10 @@ class RestModelDataTests extends WP_UnitTestCase {
 		// Start each test with a fresh relationships registry.
 		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
+		// Initialize the publisher logic, which includes additional filters and REST callbacks.
+		$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
+		$form_editing_experience->bootstrap();
+
 		// @todo why is this not running automatically?
 		do_action( 'init' );
 
