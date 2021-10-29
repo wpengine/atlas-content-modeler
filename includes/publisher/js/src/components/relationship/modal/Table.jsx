@@ -205,9 +205,9 @@ export default function Table({
 								<td className="checkbox">
 									<input
 										type={
-											field.cardinality ==
+											field.cardinality ===
 												"one-to-many" ||
-											field.cardinality == "many-to-many"
+											field.cardinality === "many-to-many"
 												? "checkbox"
 												: "radio"
 										}
