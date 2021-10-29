@@ -137,7 +137,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementNotVisible( '.ReactModal__Content' );
 
 		$i->click( 'Publish', '#publishing-action' );
-		$i->wait( 1 );
+		$i->wait( 3 );
 
 		// Start to add Employee 2.
 		$i->amOnPage( '/wp-admin/post-new.php?post_type=employee' );
