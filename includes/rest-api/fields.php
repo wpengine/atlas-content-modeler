@@ -130,7 +130,8 @@ function content_model_field_exists( string $slug, string $id, string $model_id 
  *
  * @param array $candidate_field The field to check other relationship fields
  *                               for a reverse slug collision with.
- * @return bool True if another relationship field has the same reverse slug.
+ * @return bool True if another relationship field has the same reverse slug
+ *              and relates to the same model.
  */
 function content_model_reverse_slug_exists( $candidate_field ) {
 	$models = get_registered_content_types();
@@ -148,7 +149,8 @@ function content_model_reverse_slug_exists( $candidate_field ) {
 		}
 
 		if (
-			( $current_field['reverseSlug'] ?? '' ) === ( $candidate_field['reverseSlug'] ?? false )
+			( $current_field['reverseSlug'] ?? '' ) === ( $candidate_field['reverseSlug'] ?? false ) &&
+			( $current_field['reference'] ?? '' ) === ( $candidate_field['reference'] ?? false )
 		) {
 			return true;
 		}
