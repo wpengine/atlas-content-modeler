@@ -125,6 +125,39 @@ function content_model_field_exists( string $slug, string $id, string $model_id 
 }
 
 /**
+ * Checks if a relationship field has the same reverse slug as other
+ * relationship fields in the same model.
+ *
+ * @param array $candidate_field The field to check other relationship fields
+ *                               for a reverse slug collision with.
+ * @return bool True if another relationship field has the same reverse slug.
+ */
+function content_model_reverse_slug_exists( $candidate_field ) {
+	$models = get_registered_content_types();
+	$fields = $models[ $candidate_field['model'] ]['fields'] ?? [];
+
+	foreach ( $fields as $current_field ) {
+		$reverse_enabled = $current_field['enableReverse'] ?? false;
+
+		if (
+			$current_field['type'] !== 'relationship' ||
+			$current_field['id'] === $candidate_field['id'] ||
+			! $reverse_enabled
+		) {
+			continue;
+		}
+
+		if (
+			( $current_field['reverseSlug'] ?? '' ) === ( $candidate_field['reverseSlug'] ?? false )
+		) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Checks if a duplicate model identifier (name) exists in the multiple option field.
  *
  * @param array  $names  The available field choice names.
