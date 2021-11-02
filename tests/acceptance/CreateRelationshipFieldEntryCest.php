@@ -127,14 +127,12 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
 		$i->click( 'button.action-button' );
-		$i->waitForElementNotVisible( '.ReactModal__Content' );
 
 		// Link Employee 1 to Company A via the one-to-many field.
 		$i->click( '#atlas-content-modeler[employee][onetomany]' );
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
 		$i->click( 'button.action-button' );
-		$i->waitForElementNotVisible( '.ReactModal__Content' );
 
 		$i->click( 'Publish', '#publishing-action' );
 		$i->wait( 3 );
@@ -150,7 +148,6 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( '.tooltip-text' );
 		$i->see( 'is already linked', '.tooltip-text' ); // Company A is already linked to Employee 1.
 		$i->click( 'button.tertiary' ); // Closes the modal.
-		$i->waitForElementNotVisible( '.ReactModal__Content' );
 
 		// Attempt to link Employee 2 to Company A via one-to-many.
 		$i->click( '#atlas-content-modeler[employee][onetomany]' );
