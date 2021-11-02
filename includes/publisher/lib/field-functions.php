@@ -136,7 +136,7 @@ function sanitize_field( string $type, $value ) {
 				return $options_object;
 			}
 			return $value;
-			default:
+		default:
 			return $value;
 	}
 }
