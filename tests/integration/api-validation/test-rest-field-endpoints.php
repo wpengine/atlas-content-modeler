@@ -204,7 +204,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$this->assertEquals( 400, $response->get_status() );
 		$this->assertArrayHasKey( 'message', $data );
-		$this->assertEquals( 'Another field in the model public-fields model has the same API identifier.', $data['message'] );
+		$this->assertEquals( 'A field in the public-fields model has the same identifier.', $data['message'] );
 
 		// Attempt to create a reverse relationship that would conflict with the slug of an existing reverse relationship from the same model.
 		$field = array(
@@ -226,7 +226,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$this->assertEquals( 400, $response->get_status() );
 		$this->assertArrayHasKey( 'message', $data );
-		$this->assertEquals( 'Another field in the model public-fields model has the same API identifier.', $data['message'] );
+		$this->assertEquals( 'A relationship field in this model has the same identifier.', $data['message'] );
 	}
 
 	/**

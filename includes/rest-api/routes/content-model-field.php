@@ -16,6 +16,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\update_registered_conte
 use function WPE\AtlasContentModeler\REST_API\Fields\shape_field_args;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_field_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_multi_option_exists;
+use function WPE\AtlasContentModeler\REST_API\Fields\content_model_reverse_slug_exists;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
 /**
@@ -162,27 +163,38 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		);
 	}
 
-	// Checks the reverse slug on the reference model.
+	// Checks the reverse slug does not appear in the reference model's field slugs.
 	if (
-		isset( $params['type'] ) &&
-		$params['type'] === 'relationship' &&
-		isset( $params['enableReverse'] ) &&
-		true === $params['enableReverse'] &&
+		( $params['type'] ?? '' ) === 'relationship' &&
+		( $params['enableReverse'] ?? false ) === true &&
 		content_model_field_exists(
 			$params['reverseSlug'],
 			$params['id'],
 			$params['reference']
 		)
 	) {
-			return new WP_Error(
-				'wpe_duplicate_field_reverse_slug',
-				sprintf(
-					/* translators: %s: reference id of the referenced to field */
-					__( 'Another field in the model %s model has the same API identifier.', 'atlas-content-modeler' ),
-					$params['reference']
-				),
-				array( 'status' => 400 )
-			);
+		return new WP_Error(
+			'atlas_content_modeler_reverse_slug_conflict',
+			sprintf(
+				/* translators: %s: reference id of the referenced to field */
+				__( 'A field in the %s model has the same identifier.', 'atlas-content-modeler' ),
+				$params['reference']
+			),
+			array( 'status' => 400 )
+		);
+	}
+
+	// Checks the reverse slug is not used by other relationship fields in the same model.
+	if (
+		( $params['type'] ?? '' ) === 'relationship' &&
+		( $params['enableReverse'] ?? false ) === true &&
+		content_model_reverse_slug_exists( $params )
+	) {
+		return new WP_Error(
+			'atlas_content_modeler_reverse_slug_in_use',
+			__( 'A relationship field in this model has the same identifier.', 'atlas-content-modeler' ),
+			array( 'status' => 400 )
+		);
 	}
 
 	/**
