@@ -146,7 +146,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->click( '#atlas-content-modeler[employee][company]' );
 		$i->see( 'Select Company', '.atlas-content-modeler-relationship-modal-container h2' );
 		$i->waitForElementVisible( '.unselectable button' );
-		$i->moveMouseOver( [ 'css' => '.unselectable button' ] );
+		$i->moveMouseOver( '.unselectable button' );
 		$i->waitForElementVisible( '.tooltip-text' );
 		$i->see( 'is already linked', '.tooltip-text' ); // Company A is already linked to Employee 1.
 		$i->click( 'button.tertiary' ); // Closes the modal.
@@ -156,7 +156,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->click( '#atlas-content-modeler[employee][onetomany]' );
 		$i->see( 'Select Companies', '.atlas-content-modeler-relationship-modal-container h2' );
 		$i->waitForElementVisible( '.unselectable button' );
-		$i->moveMouseOver( [ 'css' => '.unselectable button' ] );
+		$i->moveMouseOver( '.unselectable button' );
 		$i->waitForElementVisible( '.tooltip-text' );
 		$i->see( 'is already linked', '.tooltip-text' ); // Company A is already llinked to Employee 1.
 	}
