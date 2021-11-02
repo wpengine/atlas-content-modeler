@@ -127,15 +127,17 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
 		$i->click( 'button.action-button' );
+		$i->wait( 1 );
 
 		// Link Employee 1 to Company A via the one-to-many field.
 		$i->click( '#atlas-content-modeler[employee][onetomany]' );
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
 		$i->click( 'button.action-button' );
+		$i->wait( 1 );
 
 		$i->click( 'Publish', '#publishing-action' );
-		$i->wait( 3 );
+		$i->wait( 2 );
 
 		// Start to add Employee 2.
 		$i->amOnPage( '/wp-admin/post-new.php?post_type=employee' );
