@@ -264,8 +264,19 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				) {
 					setError("reference", { type: "invalidRelatedModel" });
 				}
-				if (err.code === "wpe_duplicate_field_reverse_slug") {
-					setError("reverseSlug", { type: "reverseIdExists" });
+				if (
+					err.code === "atlas_content_modeler_reverse_slug_conflict"
+				) {
+					setError("reverseSlug", {
+						type: "reverseIdConflicts",
+						message: err.message,
+					});
+				}
+				if (err.code === "atlas_content_modeler_reverse_slug_in_use") {
+					setError("reverseSlug", {
+						type: "reverseIdInUse",
+						message: err.message,
+					});
 				}
 				if (err.code === "atlas_content_modeler_reserved_field_slug") {
 					setError("slug", { type: "nameReserved" });
