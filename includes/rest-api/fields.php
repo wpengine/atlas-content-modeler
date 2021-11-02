@@ -105,31 +105,19 @@ function cleanup_detached_relationship_references( string $slug ) {
  */
 function content_model_field_exists( string $slug, string $id, string $model_id ): bool {
 	$models = get_registered_content_types();
+	$model  = $models[ $model_id ] ?? [];
 
-	foreach ( $models as $current_model => $model ) {
-		if ( ! isset( $model['fields'] ) ) {
+	if ( ! isset( $model['fields'] ) ) {
+		return false;
+	}
+
+	foreach ( $model['fields'] as $field ) {
+		if ( $field['id'] === $id ) {
 			continue;
 		}
 
-		foreach ( $model['fields'] as $field ) {
-			if ( $current_model === $model_id && $field['id'] === $id ) {
-				continue;
-			}
-
-			if ( $model_id === $current_model &&
-			$field['slug'] === $slug ) {
-				return true;
-			}
-
-			if ( 'relationship' === $field['type'] &&
-				$model_id === $field['reference'] &&
-				isset( $field['enableReverse'] ) &&
-				true === $field['enableReverse'] &&
-				isset( $field['reverseSlug'] ) &&
-				$slug === $field['reverseSlug']
-			) {
-				return true;
-			}
+		if ( $field['slug'] === $slug ) {
+			return true;
 		}
 	}
 
