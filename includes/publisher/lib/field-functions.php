@@ -128,13 +128,15 @@ function sanitize_field( string $type, $value ) {
 		case 'boolean':
 			return $value === 'on' ? 'on' : 'off';
 		case 'multipleChoice':
-			$options_object = [];
-			foreach ( $value as $option ) {
-				$options_object[] = $option;
+			if ( is_array( $value ) ) {
+				$options_object = [];
+				foreach ( $value as $option ) {
+					$options_object[] = $option;
+				}
 				return $options_object;
 			}
 			return $value;
-		default:
+			default:
 			return $value;
 	}
 }
