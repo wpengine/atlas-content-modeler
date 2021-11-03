@@ -213,6 +213,9 @@ final class FormEditingExperience {
 					continue;
 				}
 
+				/**
+				 *  Fields below are manually adjusted to correctly display labels in UI.
+				 */
 				$models[ $field['reference'] ]['fields'][ $field['id'] ] = $field;
 				// Overriding reference.
 				$models[ $field['reference'] ]['fields'][ $field['id'] ]['reference'] = $slug;
