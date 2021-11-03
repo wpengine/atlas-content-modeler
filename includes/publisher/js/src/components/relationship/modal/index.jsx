@@ -97,17 +97,10 @@ export default function RelationshipModal({
 
 	async function getEntries(page) {
 		const { models } = atlasContentModelerFormEditingExperience;
-		let endpoint = null;
 
-		if (field.forwardSlug) {
-			endpoint = `/wp/v2/${
-				models[field.forwardSlug]?.wp_rest_base
-			}?per_page=${entriesPerPage}&page=${page}`;
-		} else {
-			endpoint = `/wp/v2/${
-				models[field.reference]?.wp_rest_base
-			}?per_page=${entriesPerPage}&page=${page}`;
-		}
+		const endpoint = `/wp/v2/${
+			models[field.reference]?.wp_rest_base
+		}?per_page=${entriesPerPage}&page=${page}&field_id=${field?.id}`;
 
 		const params = {
 			path: endpoint,

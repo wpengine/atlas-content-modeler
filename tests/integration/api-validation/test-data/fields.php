@@ -141,7 +141,7 @@ function get_test_fields() {
 			'id'              => '1630411384975',
 			'position'        => '90000',
 			'name'            => 'Date',
-			'slug'            => 'date',
+			'slug'            => 'dateNotRequired',
 			'required'        => false,
 			'minChars'        => '',
 			'maxChars'        => '',

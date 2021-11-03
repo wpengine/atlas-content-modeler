@@ -325,6 +325,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'singular_name'         => ucfirst( $singular ),
 		'description'           => $args['description'] ?? '',
 		'public'                => $args['public'] ?? false,
+		'publicly_queryable'    => ( $args['api_visibility'] ?? 'private' ) === 'public',
 		'show_ui'               => $args['show_ui'] ?? true,
 		'show_in_rest'          => $args['show_in_rest'] ?? true,
 		'rest_base'             => $args['rest_base'] ?? sanitize_key( $plural ),
