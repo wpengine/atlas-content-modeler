@@ -50,6 +50,32 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'WP Engine', 'div.relation-model-card' );
 	}
 
+	public function i_can_create_a_reverse_relationship_and_see_the_fields( AcceptanceTester $i ) {
+		$i->see( 'Relationship', '.field-list div.type' );
+		$i->see( 'Company', '.field-list div.widest' );
+
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=company' );
+		$i->fillField( [ 'name' => 'atlas-content-modeler[company][company]' ], 'WP Engine' );
+
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 1 );
+
+		$i->see( 'Post published.' );
+		$i->wait( 1 );
+
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=employee' );
+		$i->see( 'Company', 'div.field.relationship' );
+		$i->click( '#atlas-content-modeler[employee][company]' );
+		$i->see( 'Select Company', 'div.ReactModal__Content.ReactModal__Content--after-open h2' );
+		$i->wait( 3 );
+		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
+		$i->click( 'button.action-button' );
+		$i->wait( 3 );
+
+		$i->see( 'WP Engine', 'div.relation-model-card' );
+		$i->see( 'Change Linked Companies' );
+	}
+
 	public function i_can_create_an_employee_and_see_many_to_many_relation_field( AcceptanceTester $i ) {
 		$i->see( 'Relationship', '.field-list div.type' );
 		$i->see( 'Company', '.field-list div.widest' );
