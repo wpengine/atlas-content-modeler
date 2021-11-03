@@ -125,14 +125,85 @@ const RelationshipFields = ({
 						<div className="radio-row">
 							<input
 								type="radio"
+								id="one-to-one"
+								name="cardinality"
+								value="one-to-one"
+								ref={register}
+								defaultChecked={
+									data?.cardinality === "one-to-one" ||
+									typeof data?.cardinality === "undefined"
+								}
+								disabled={editing}
+							/>
+							<label className="radio" htmlFor="one-to-one">
+								{__("One to One", "atlas-content-modeler")}
+								<span>
+									{sprintf(
+										__(
+											/*
+											 * translators:
+											 * 1: Singular name of the model (e.g. Country)
+											 * 2: Singular name of the related model (e.g. Capital City).
+											 */
+											"One %1$s can have one %2$s.",
+											"atlas-content-modeler"
+										),
+										models[modelId].singular,
+										models[selectedReference]?.singular
+											? models[selectedReference].singular
+											: __(
+													"related item",
+													"atlas-content-modeler"
+											  )
+									)}
+								</span>
+							</label>
+						</div>
+						<div className="radio-row">
+							<input
+								type="radio"
+								id="one-to-many"
+								name="cardinality"
+								value="one-to-many"
+								ref={register}
+								defaultChecked={
+									data?.cardinality === "one-to-many"
+								}
+								disabled={editing}
+							/>
+							<label className="radio" htmlFor="one-to-many">
+								{__("One to Many", "atlas-content-modeler")}
+								<span>
+									{sprintf(
+										__(
+											/*
+											 * translators:
+											 * 1: Singular name of the current model (e.g. Office)
+											 * 1: Plural name of the related model (e.g. Employees) or “related items” if no related model is selected.
+											 */
+											"One %1$s can have many %2$s.",
+											"atlas-content-modeler"
+										),
+										models[modelId].singular,
+										models[selectedReference]?.plural
+											? models[selectedReference].plural
+											: __(
+													"related items",
+													"atlas-content-modeler"
+											  )
+									)}
+								</span>
+							</label>
+						</div>
+						<div className="radio-row">
+							<input
+								type="radio"
 								id="many-to-one"
 								name="cardinality"
 								value="many-to-one"
 								ref={register}
 								defaultChecked={
-									data?.cardinality === "many-to-one" ||
-									data?.cardinality === "one-to-one" ||
-									typeof data?.cardinality === "undefined"
+									data?.cardinality === "many-to-one"
 								}
 								disabled={editing}
 							/>
@@ -166,6 +237,9 @@ const RelationshipFields = ({
 								id="many-to-many"
 								name="cardinality"
 								value="many-to-many"
+								defaultChecked={
+									data?.cardinality === "many-to-many"
+								}
 								ref={register}
 								disabled={editing}
 							/>
@@ -192,15 +266,6 @@ const RelationshipFields = ({
 									)}
 								</span>
 							</label>
-						</div>
-						<div className="radio-row">
-							<span>
-								*{" "}
-								{__(
-									"More options are coming soon.",
-									"atlas-content-modeler"
-								)}
-							</span>
 						</div>
 					</fieldset>
 				</div>
