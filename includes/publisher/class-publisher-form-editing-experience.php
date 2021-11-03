@@ -216,6 +216,8 @@ final class FormEditingExperience {
 				$models[ $field['reference'] ]['fields'][ $field['id'] ] = $field;
 				// Overriding reference.
 				$models[ $field['reference'] ]['fields'][ $field['id'] ]['reference'] = $slug;
+				// Put reference field name into reverse label.
+				$models[ $field['reference'] ]['fields'][ $field['id'] ]['name'] = $field['reverseName'];
 			}
 		}
 
