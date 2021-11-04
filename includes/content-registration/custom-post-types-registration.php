@@ -516,7 +516,9 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						if ( is_array( $value ) ) {
 							$list_values = array();
 							foreach ( $value as $v ) {
-								array_push( $list_values, implode( array_values( $v ) ) );
+								if ( is_array( $v ) ) {
+									array_push( $list_values, implode( array_values( $v ) ) );
+								}
 							}
 							return $list_values;
 						}
