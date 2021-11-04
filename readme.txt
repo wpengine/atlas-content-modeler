@@ -6,7 +6,7 @@ Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
-Contributors: antpb, apmatthe, chriswiegman, kevinwhoffman, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, wpengine
+Contributors: antpb, apmatthe, chriswiegman, jasonkonen, kevinwhoffman, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, wpengine
 
 A WordPress plugin to create custom post types, custom fields, and custom taxonomies for headless WordPress sites.
 
