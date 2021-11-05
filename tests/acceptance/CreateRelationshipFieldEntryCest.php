@@ -3,35 +3,14 @@ use Codeception\Util\Locator;
 
 class CreateRelationshipFieldEntryCest {
 
-	public function _before( \AcceptanceTester $i ) {
+	public function _before( AcceptanceTester $i ) {
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'Company', 'Companies' );
-		$i->wait( 1 );
-		$i->click( 'Text', '.field-buttons' );
-		$i->checkOption( 'input[name="isTitle"]' );
-		$i->fillField( [ 'name' => 'name' ], 'Company' );
-		$i->click( '.open-field button.primary' );
-
-		$i->haveContentModel( 'Employee', 'Employees' );
-		$i->wait( 1 );
-		$i->click( 'Relationship', '.field-buttons' );
-		$i->wait( 1 );
-		$i->fillField( [ 'name' => 'name' ], 'Company' );
-		$i->selectOption( '#reference', 'Companies' );
-		$i->click( 'input#one-to-one' );
-		$i->click( '.open-field button.primary' );
-		$i->wait( 1 );
-		$i->click( Locator::lastElement( '.add-item' ) );
-		$i->click( 'Relationship', '.field-buttons' );
-		$i->wait( 1 );
-		$i->fillField( [ 'name' => 'name' ], 'Many Companies' );
-		$i->selectOption( '#reference', 'Companies' );
-		$i->click( 'input#many-to-many' );
-		$i->click( '.open-field button.primary' );
-		$i->wait( 1 );
 	}
 
+	/**
+	 * @before create_company_employee_models
+	 */
 	public function i_can_create_an_employee_and_see_many_to_one_relation_field( AcceptanceTester $i ) {
 		$i->see( 'Relationship', '.field-list div.type' );
 		$i->see( 'Company', '.field-list div.widest' );
@@ -50,32 +29,9 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'WP Engine', 'div.relation-model-card' );
 	}
 
-	public function i_can_create_a_reverse_relationship_and_see_the_fields( AcceptanceTester $i ) {
-		$i->see( 'Relationship', '.field-list div.type' );
-		$i->see( 'Company', '.field-list div.widest' );
-
-		$i->amOnPage( '/wp-admin/post-new.php?post_type=company' );
-		$i->fillField( [ 'name' => 'atlas-content-modeler[company][company]' ], 'WP Engine' );
-
-		$i->click( 'Publish', '#publishing-action' );
-		$i->wait( 1 );
-
-		$i->see( 'Post published.' );
-		$i->wait( 1 );
-
-		$i->amOnPage( '/wp-admin/post-new.php?post_type=employee' );
-		$i->see( 'Company', 'div.field.relationship' );
-		$i->click( '#atlas-content-modeler[employee][company]' );
-		$i->see( 'Select Company', 'div.ReactModal__Content.ReactModal__Content--after-open h2' );
-		$i->wait( 3 );
-		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
-		$i->click( 'button.action-button' );
-		$i->wait( 3 );
-
-		$i->see( 'WP Engine', 'div.relation-model-card' );
-		$i->see( 'Change Linked Companies' );
-	}
-
+	/**
+	 * @before create_company_employee_models
+	 */
 	public function i_can_create_an_employee_and_see_many_to_many_relation_field( AcceptanceTester $i ) {
 		$i->see( 'Relationship', '.field-list div.type' );
 		$i->see( 'Company', '.field-list div.widest' );
@@ -97,6 +53,9 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'Another Company Name', 'div.relation-model-card' );
 	}
 
+	/**
+	 * @before create_company_employee_models
+	 */
 	public function i_can_create_a_new_entry_from_an_empty_relationships_modal_table( AcceptanceTester $i ) {
 		// Try to create an employee before any companies have been entered.
 		$i->amOnPage( '/wp-admin/post-new.php?post_type=employee' );
@@ -129,6 +88,7 @@ class CreateRelationshipFieldEntryCest {
 	/**
 	 * Validates that one-to-one and one-to-many cardinality can not be broken.
 	 *
+	 * @before create_company_employee_models
 	 * @param AcceptanceTester $i
 	 * @return void
 	 */
@@ -184,6 +144,87 @@ class CreateRelationshipFieldEntryCest {
 		$i->moveMouseOver( '.unselectable button' );
 		$i->waitForElementVisible( '.tooltip-text' );
 		$i->see( 'is already linked', '.tooltip-text' ); // Company A is already llinked to Employee 1.
+	}
+
+	public function i_can_create_a_reverse_relationship_and_see_the_fields( AcceptanceTester $i ) {
+		// Create a model to check the “to”/“B” side of the relationship.
+		$i->haveContentModel( 'Right', 'Rights' );
+
+		// Create a model to check the “from”/“A” side of the relationship.
+		$i->haveContentModel( 'Left', 'Lefts' );
+
+		// Add a relationship field to the Left model that references Right.
+		$i->wait( 1 );
+		$i->click( 'Relationship', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Rights' );
+		$i->selectOption( '#reference', 'Rights' );
+		$i->click( 'input#many-to-many' );
+
+		/**
+		 * Enable the reverse reference and set a label that should be visible
+		 * on the “Right” side.
+		 */
+		$i->click( '#enable-reverse' );
+		$i->wait( 1 );
+		$i->see( 'Reverse Display Name' );
+		$i->fillField( [ 'name' => 'reverseName' ], 'ThisIsTheReverseReference' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
+
+		// Visit the Lefts publisher entry screen.
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=left' );
+
+		// Confirm that the forward relationship field title label is correct.
+		$i->see( 'Rights', '#field-rights label' );
+
+		// Confirm that the forward relationship field button label is correct.
+		$i->see( 'Link Rights', '#field-rights .button-primary' );
+
+		// Visit the Rights publisher entry screen.
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=right' );
+
+		// Confirm that the reverse relationship field title label is correct.
+		$i->see( 'ThisIsTheReverseReference', '#field-rights label' );
+
+		// Confirm that the reverse relationship field button label is correct.
+		$i->see( 'Link Lefts', '#field-rights .button-primary' );
+	}
+
+	/**
+	 * Create company and employee models used in most tests above.
+	 *
+	 * Annotate tests that need this using the before keyword:
+	 * https://codeception.com/docs/07-AdvancedUsage#beforeafter-annotations
+	 *
+	 * @param \AcceptanceTester $i
+	 * @return void
+	 */
+	protected function create_company_employee_models( \AcceptanceTester $i ) {
+		$i->haveContentModel( 'Company', 'Companies' );
+		$i->wait( 1 );
+		$i->click( 'Text', '.field-buttons' );
+		$i->checkOption( 'input[name="isTitle"]' );
+		$i->fillField( [ 'name' => 'name' ], 'Company' );
+		$i->click( '.open-field button.primary' );
+
+		$i->haveContentModel( 'Employee', 'Employees' );
+		$i->wait( 1 );
+		$i->click( 'Relationship', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Company' );
+		$i->selectOption( '#reference', 'Companies' );
+		$i->click( 'input#one-to-one' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
+		$i->click( Locator::lastElement( '.add-item' ) );
+		$i->click( 'Relationship', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Many Companies' );
+		$i->selectOption( '#reference', 'Companies' );
+		$i->click( 'input#many-to-many' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
 	}
 
 	/**
