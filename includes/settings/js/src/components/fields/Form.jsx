@@ -72,6 +72,13 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		? false
 		: useReservedSlugs(toGraphQLType(models[model]?.singular, true));
 
+	const isAppropriateType = (value) => {
+		if (getValues("numberType") === "integer") {
+			const disallowedCharacters = /[.]/g;
+			return !disallowedCharacters.test(value);
+		}
+	};
+
 	const advancedSettings = {
 		text: {
 			component: TextSettings,
@@ -102,11 +109,15 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				minValue: {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
+					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
+					},
 				},
 				maxValue: {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
 						maxBelowMin: (v) => {
 							const min = parseNumber(getValues("minValue"));
 							const max = parseNumber(v);
@@ -122,6 +133,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
 						maxBelowStep: (v) => {
 							if (getValues("maxValue") === "") {
 								return true;
