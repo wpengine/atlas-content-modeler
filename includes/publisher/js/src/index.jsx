@@ -10,7 +10,7 @@ const container = document.getElementById("atlas-content-modeler-fields-app");
 if (container && models.hasOwnProperty(postType)) {
 	const model = models[postType];
 	const urlParams = new URLSearchParams(window.location.search);
-	console.log(atlasContentModelerFormEditingExperience);
+
 	ReactDOM.render(
 		<App model={model} mode={urlParams.get("action")} />,
 		container
