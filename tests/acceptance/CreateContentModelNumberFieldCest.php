@@ -35,4 +35,29 @@ class CreateContentModelNumberFieldCest {
 		$i->fillField( [ 'name' => 'step' ], '2' );
 		$i->dontSee( 'Step must be lower than max.', '.error' );
 	}
+
+	public function i_must_use_intergers_for_advanced_interger_field_settings( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->haveContentModel( 'Candy', 'Candies' );
+		$i->wait( 1 );
+
+		$i->click( 'Number', '.field-buttons' );
+		$i->wait( 1 );
+
+		$i->click( 'button.settings' );
+		$i->fillField( [ 'name' => 'minValue' ], '1.2' );
+		$i->see( 'The value must be an integer.', '.error' );
+		$i->fillField( [ 'name' => 'minValue' ], '1' );
+		$i->dontSee( 'The value must be an integer.', '.error' );
+
+		$i->fillField( [ 'name' => 'maxValue' ], '1.2' );
+		$i->see( 'The value must be an integer.', '.error' );
+		$i->fillField( [ 'name' => 'maxValue' ], '1' );
+		$i->dontSee( 'The value must be an integer.', '.error' );
+
+		$i->fillField( [ 'name' => 'step' ], '1.2' );
+		$i->see( 'The value must be an integer.', '.error' );
+		$i->fillField( [ 'name' => 'step' ], '1' );
+		$i->dontSee( 'The value must be an integer.', '.error' );
+	}
 }
