@@ -488,7 +488,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						model={model}
 					/>
 				)}
-
 				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
@@ -508,6 +507,34 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 								"atlas-content-modeler"
 							)}
 						</label>
+						{["media"].includes(type) && (
+							<div>
+								<input
+									name="featured-image"
+									type="checkbox"
+									id={`featured-image-${id}`}
+									ref={register}
+									defaultChecked={
+										storedData?.required === true
+									}
+								/>
+								<label
+									htmlFor={`featured-image-${id}`}
+									className="checkbox featured-image"
+								>
+									{__(
+										"Set as featured image",
+										"atlas-content-modeler"
+									)}
+								</label>
+								<p className="help featured-image">
+									{__(
+										"Limits media selection to image types.",
+										"atlas-content-modeler"
+									)}
+								</p>
+							</div>
+						)}
 					</div>
 				)}
 			</div>
