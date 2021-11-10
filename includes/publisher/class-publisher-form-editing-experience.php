@@ -12,6 +12,7 @@ namespace WPE\AtlasContentModeler;
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
+use function WPE\AtlasContentModeler\append_reverse_relationship_fields;
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 
@@ -197,32 +198,7 @@ final class FormEditingExperience {
 		wp_enqueue_editor();
 
 		$models = $this->models;
-
-		// Get model fields that have a back reference to current post type.
-		foreach ( $models as $slug => $model ) {
-			if ( empty( $model['fields'] ) ) {
-				continue;
-			}
-
-			foreach ( $model['fields'] as $field ) {
-				if ( $field['type'] !== 'relationship' || ! $field['enableReverse'] ) {
-					continue;
-				}
-
-				if ( $field['reference'] !== $post->post_type ) {
-					continue;
-				}
-
-				/**
-				 *  Fields below are manually adjusted to correctly display labels in UI.
-				 */
-				$models[ $field['reference'] ]['fields'][ $field['id'] ] = $field;
-				// Overriding reference.
-				$models[ $field['reference'] ]['fields'][ $field['id'] ]['reference'] = $slug;
-				// Put reference field name into reverse label.
-				$models[ $field['reference'] ]['fields'][ $field['id'] ]['name'] = $field['reverseName'];
-			}
-		}
+		$models = append_reverse_relationship_fields( $models, $this->screen->post_type );
 
 		// Adds the wp-json rest base for utilizing model data in admin.
 		foreach ( $models as $model => $data ) {
