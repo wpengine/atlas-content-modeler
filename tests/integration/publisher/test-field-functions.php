@@ -87,15 +87,20 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 
 	public function test_get_field_type_from_slug(): void {
 		$slug_to_find = 'findme';
+		$post_type    = 'cats';
 
-		$fields = [
-			[
-				'type' => 'text',
-				'slug' => 'test',
-			],
-			[
-				'type' => 'media',
-				'slug' => $slug_to_find,
+		$models = [
+			$post_type => [
+				'fields' => [
+					[
+						'type' => 'text',
+						'slug' => 'test',
+					],
+					[
+						'type' => 'media',
+						'slug' => $slug_to_find,
+					],
+				],
 			],
 		];
 
@@ -103,40 +108,94 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 
 		$this->assertSame(
 			$expected,
-			get_field_type_from_slug( $slug_to_find, $fields )
+			get_field_type_from_slug( $slug_to_find, $models, $post_type )
 		);
 	}
 
 	public function test_get_field_type_from_slug_missing_type(): void {
 		$slug_to_find = 'findme';
+		$post_type    = 'cats';
 
-		$fields = [
-			[ 'slug' => 'test' ],
-			[ 'slug' => $slug_to_find ],
+		$models = [
+			$post_type => [
+				'fields' => [
+					[ 'slug' => 'test' ],
+					[ 'slug' => $slug_to_find ],
+				],
+			],
 		];
 
 		$expected = 'unknown';
 
 		$this->assertSame(
 			$expected,
-			get_field_type_from_slug( $slug_to_find, $fields )
+			get_field_type_from_slug( $slug_to_find, $models, $post_type )
 		);
 	}
 
 	public function test_get_field_type_from_slug_no_slug_matches(): void {
 		$slug_to_find = 'findme';
+		$post_type    = 'cats';
 
-		$fields = [
-			[ 'slug' => 'test' ],
-			[ 'slug' => 'test2' ],
-			[ 'slug' => 'test3' ],
+		$models = [
+			$post_type => [
+				'fields' => [
+					[ 'slug' => 'test' ],
+					[ 'slug' => 'test2' ],
+					[ 'slug' => 'test3' ],
+				],
+			],
 		];
 
 		$expected = 'unknown';
 
 		$this->assertSame(
 			$expected,
-			get_field_type_from_slug( $slug_to_find, $fields )
+			get_field_type_from_slug( $slug_to_find, $models, $post_type )
+		);
+	}
+
+	/**
+	 * Checks that the 'relationship' type is returned for relationship fields
+	 * that are stored in another model with a reference to the current model.
+	 */
+	public function test_get_field_type_from_slug_reverse_relationship(): void {
+		$slug_to_find = 'findme';
+
+		$models = [
+			'left'  => [
+				'fields' => [
+					/**
+					 * This field will also appear in the 'right' model on
+					 * publisher entry screens as a reverse relationship,
+					 * even though it is stored with 'left'.
+					 */
+					[
+						'id'            => 123,
+						'slug'          => $slug_to_find,
+						'type'          => 'relationship',
+						'reference'     => 'right',
+						'enableReverse' => true,
+					],
+				],
+			],
+			/**
+			 * This model has no fields, but will display the relationship
+			 * field from the 'left' model on publisher screens, because that
+			 * field references the 'right' model and has 'enableReverse'.
+			 */
+			'right' => [],
+		];
+
+		/**
+		 * Searching for fields in the 'right' model should include reverse
+		 * relationship fields from other models that reference 'right'.
+		 */
+		$expected = 'relationship';
+
+		$this->assertSame(
+			$expected,
+			get_field_type_from_slug( $slug_to_find, $models, 'right' )
 		);
 	}
 
