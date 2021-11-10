@@ -525,7 +525,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 									onChange={(event) => {
 										/**
 										 * Unchecks other fields when checking a field.
-										 * Only one field can be the title field.
+										 * Only one field can be the featured image field.
 										 */
 										if (event.target.checked) {
 											dispatch({
@@ -539,10 +539,10 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 										if (!event.target.checked) {
 											/**
 											 * When unchecking a field that was not the original
-											 * title, restore isTitle on the original title
+											 * media, restore isFeatured on the original media
 											 * field if there is one. Prevents an issue where
-											 * checking “is title” then unchecking it removes
-											 * isTitle from the original.
+											 * checking “is featured image then unchecking it removes
+											 * isFeatured from the original.
 											 */
 											if (
 												originalMediaFieldId.current &&
@@ -561,7 +561,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 
 											/**
 											 * At this point we're just unchecking the original
-											 * title field.
+											 * media field.
 											 */
 											dispatch({
 												type: "setFieldProperties",
