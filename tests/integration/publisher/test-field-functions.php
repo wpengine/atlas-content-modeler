@@ -9,6 +9,7 @@ use function WPE\AtlasContentModeler\order_fields;
 use function WPE\AtlasContentModeler\get_entry_title_field;
 use function WPE\AtlasContentModeler\sanitize_field;
 use function WPE\AtlasContentModeler\get_field_type_from_slug;
+use function WPE\AtlasContentModeler\append_reverse_relationship_fields;
 
 /**
  * Class FieldFunctionTestCases
@@ -228,5 +229,104 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 				sanitize_field( $type, $input )
 			);
 		}
+	}
+
+	public function test_append_reverse_relationship_fields(): void {
+		$expected_reverse_name = 'Test Reverse Name';
+
+		$left_model = [
+			'fields' => [
+				/**
+				 * This relationship field should be appended to the 'right'
+				 * model's fields because it refers to that model and is
+				 * enabled as a back reference.
+				 */
+				'456' => [
+					'id'            => 456,
+					'name'          => 'Original Name',
+					'reference'     => 'right',
+					'slug'          => 'refersToRight',
+					'type'          => 'relationship',
+					'enableReverse' => true,
+					'reverseName'   => $expected_reverse_name,
+				],
+			],
+		];
+
+		$right_model = [
+			'fields' => [
+				'123' => [
+					'id'   => 123,
+					'slug' => 'name',
+					'type' => 'text',
+				],
+			],
+		];
+
+		$models = [
+			'left'  => $left_model,
+			'right' => $right_model,
+		];
+
+		$expected = [
+			'left'  => $left_model,
+			'right' => [
+				'fields' => [
+					'123' => [
+						'id'   => 123,
+						'slug' => 'name',
+						'type' => 'text',
+					],
+					'456' => [
+						'id'            => 456,
+						'name'          => $expected_reverse_name, // Changed from 'Original Name'.
+						'reference'     => 'left', // Changed from 'right'.
+						'slug'          => 'refersToRight',
+						'type'          => 'relationship',
+						'enableReverse' => true,
+						'reverseName'   => $expected_reverse_name,
+					],
+				],
+			],
+		];
+
+		$this->assertSame(
+			$expected,
+			append_reverse_relationship_fields( $models, 'right' )
+		);
+	}
+
+	/**
+	 * An edge-case test to check that relationship fields with a back reference
+	 * to their own model will never be added to the field list for that model.
+	 * Doing so could either make them appear twice or overwrite the name with
+	 * the reverseName in error.
+	 */
+	public function test_append_reverse_relationship_fields_do_not_append_to_self(): void {
+		$models = [
+			'left' => [
+				'fields' => [
+					/**
+					 * This relationship field has a backreference to the same
+					 * model it is stored on. It should not be appended to that
+					 * model because this would duplicate the fields.
+					 */
+					'456' => [
+						'id'            => 456,
+						'name'          => 'Original Name',
+						'reverseName'   => 'Reverse Name',
+						'reference'     => 'left',
+						'slug'          => 'refersToRight',
+						'type'          => 'relationship',
+						'enableReverse' => true,
+					],
+				],
+			],
+		];
+
+		$this->assertSame(
+			$models, // Should be unchanged, ignoring the back reference.
+			append_reverse_relationship_fields( $models, 'left' )
+		);
 	}
 }
