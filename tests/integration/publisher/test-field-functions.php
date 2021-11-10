@@ -6,7 +6,6 @@
  */
 
 use function WPE\AtlasContentModeler\order_fields;
-use function WPE\AtlasContentModeler\get_top_level_fields;
 use function WPE\AtlasContentModeler\get_entry_title_field;
 use function WPE\AtlasContentModeler\sanitize_field;
 use function WPE\AtlasContentModeler\get_field_type_from_slug;
