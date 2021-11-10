@@ -344,13 +344,8 @@ final class FormEditingExperience {
 
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
-			$field_id = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
-
-			$field_type = get_field_type_from_slug(
-				$field_id,
-				$this->models[ $post->post_type ]['fields'] ?? []
-			);
-
+			$field_id    = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
+			$field_type  = get_field_type_from_slug( $field_id, $this->models, $post->post_type );
 			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ) );
 
 			if ( 'relationship' === $field_type ) {
@@ -372,7 +367,8 @@ final class FormEditingExperience {
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
 				$field_type = get_field_type_from_slug(
 					$slug,
-					$this->models[ $post->post_type ]['fields'] ?? []
+					$this->models,
+					$post->post_type
 				);
 
 				if ( 'relationship' === $field_type ) {
@@ -428,7 +424,8 @@ final class FormEditingExperience {
 	public function save_relationship_field( string $field_id, WP_Post $post, string $field_value ): void {
 		$field = get_field_from_slug(
 			$field_id,
-			$this->models[ $post->post_type ]['fields'] ?? []
+			$this->models,
+			$post->post_type
 		);
 
 		$registry      = ContentConnect::instance()->get_registry();
