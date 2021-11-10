@@ -146,7 +146,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'is already linked', '.tooltip-text' ); // Company A is already llinked to Employee 1.
 	}
 
-	public function i_can_create_a_reverse_relationship_and_see_the_fields( AcceptanceTester $i ) {
+	public function i_can_create_a_reverse_relationship_and_update_the_fields( AcceptanceTester $i ) {
 		// Create a model to check the “to”/“B” side of the relationship.
 		$i->haveContentModel( 'Right', 'Rights' );
 
@@ -181,6 +181,10 @@ class CreateRelationshipFieldEntryCest {
 		// Confirm that the forward relationship field button label is correct.
 		$i->see( 'Link Rights', '#field-rights .button-primary' );
 
+		// Publish the “lefts” post.
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+
 		// Visit the Rights publisher entry screen.
 		$i->amOnPage( '/wp-admin/post-new.php?post_type=right' );
 
@@ -189,6 +193,34 @@ class CreateRelationshipFieldEntryCest {
 
 		// Confirm that the reverse relationship field button label is correct.
 		$i->see( 'Link Lefts', '#field-rights .button-primary' );
+
+		// Link the right entry to the published “left” entry.
+		$i->click( '#atlas-content-modeler[right][rights]' );
+		$i->see( 'Select Lefts', 'div.ReactModal__Content.ReactModal__Content--after-open h2' );
+		$i->waitForElementVisible( 'td.checkbox input' );
+		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
+		$i->click( 'button.action-button' );
+
+		// Confirm the linked entry is visible when closing the modal.
+		$i->waitForElementVisible( 'div.relation-model-card' );
+		$i->see( 'No Title', 'div.relation-model-card' );
+
+		// Confirm the linked entry is visible after publishing the “rights” post.
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+		$i->waitForElementVisible( 'div.relation-model-card' );
+		$i->see( 'No Title', 'div.relation-model-card' );
+
+		// Remove the linked entry from the “rights” side and update it.
+		$i->waitForElementVisible( '.dropdown .options' );
+		$i->click( '.dropdown .options' );
+		$i->waitForElementVisible( '.dropdown-content .delete' );
+		$i->click( '.dropdown-content .delete' );
+		$i->waitForElementNotVisible( '.dropdown .options' );
+		$i->dontSee( 'No Title', 'div.relation-model-card' ); // Linked entry was removed.
+		$i->click( 'Update', '#publishing-action' );
+		$i->wait( 2 );
+		$i->dontSee( 'No Title', 'div.relation-model-card' ); // Linked entry still gone after saving the page.
 	}
 
 	/**
