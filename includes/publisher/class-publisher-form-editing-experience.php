@@ -197,8 +197,7 @@ final class FormEditingExperience {
 
 		wp_enqueue_editor();
 
-		$models = $this->models;
-		$models = append_reverse_relationship_fields( $models, $this->screen->post_type );
+		$models = append_reverse_relationship_fields( $this->models, $this->screen->post_type );
 
 		// Adds the wp-json rest base for utilizing model data in admin.
 		foreach ( $models as $model => $data ) {
