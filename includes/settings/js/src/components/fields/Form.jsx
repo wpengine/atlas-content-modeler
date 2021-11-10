@@ -17,6 +17,7 @@ import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator, useReservedSlugs } from "../../hooks";
 import { toValidApiId, toGraphQLType } from "../../formats";
 import { __ } from "@wordpress/i18n";
+import { getFeaturedFieldId } from "../../queries";
 
 const { apiFetch } = wp;
 const { cloneDeep, isEqual } = lodash;
@@ -314,6 +315,10 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		}
 	}
 
+	const currentModel = query.get("id");
+	const fields = models[currentModel]?.fields;
+	const originalMediaFieldId = useRef(getFeaturedFieldId(fields));
+
 	return (
 		<form
 			onSubmit={handleSubmit(apiAddField)}
@@ -510,13 +515,67 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						{["media"].includes(type) && (
 							<div>
 								<input
-									name="featured-image"
+									name="isFeatured"
 									type="checkbox"
 									id={`featured-image-${id}`}
 									ref={register}
 									defaultChecked={
 										storedData?.required === true
 									}
+									onChange={(event) => {
+										/**
+										 * Unchecks other fields when checking a field.
+										 * Only one field can be the title field.
+										 */
+										if (event.target.checked) {
+											dispatch({
+												type: "setFeaturedImageField",
+												id: id,
+												model: currentModel,
+											});
+											return;
+										}
+
+										if (!event.target.checked) {
+											/**
+											 * When unchecking a field that was not the original
+											 * title, restore isTitle on the original title
+											 * field if there is one. Prevents an issue where
+											 * checking “is title” then unchecking it removes
+											 * isTitle from the original.
+											 */
+											if (
+												originalMediaFieldId.current &&
+												originalMediaFieldId.current !==
+													id
+											) {
+												dispatch({
+													type:
+														"setFeaturedImageField",
+													id:
+														originalMediaFieldId.current,
+													model: currentModel,
+												});
+												return;
+											}
+
+											/**
+											 * At this point we're just unchecking the original
+											 * title field.
+											 */
+											dispatch({
+												type: "setFieldProperties",
+												id: id,
+												model: currentModel,
+												properties: [
+													{
+														name: "isFeatured",
+														value: false,
+													},
+												],
+											});
+										}
+									}}
 								/>
 								<label
 									htmlFor={`featured-image-${id}`}

@@ -73,11 +73,14 @@ export function reducer(state, action) {
 			};
 			return { ...state };
 		case "setTitleField":
+		case "setFeaturedImageField":
 			const fields = state[action.model]["fields"];
+			const setType =
+				action.type === "setTitleField" ? "isTitle" : "isFeatured";
 			Object.values(fields).forEach((field) => {
-				state[action.model]["fields"][field.id]["isTitle"] = false;
+				state[action.model]["fields"][field.id][setType] = false;
 			});
-			state[action.model]["fields"][action.id]["isTitle"] = true;
+			state[action.model]["fields"][action.id][setType] = true;
 			return { ...state };
 		case "setFieldProperties":
 			action.properties.forEach((property) => {
