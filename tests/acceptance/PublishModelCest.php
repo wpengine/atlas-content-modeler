@@ -210,8 +210,9 @@ class PublishModelCest {
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
 
-		// Check that the author meta box was moved to the sidebar by default.
+		// Check that the meta boxes were moved to the sidebar by default.
 		$i->see( 'Author', '#side-sortables' );
+		$i->see( 'Slug', '#side-sortables' );
 
 		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][color]' ], 'Gray' );
 		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][age]' ], '100' );
