@@ -14,8 +14,8 @@ use function WPE\AtlasContentModeler\ContentRegistration\update_registered_conte
  */
 class SettingsFunctionsTestCases extends WP_UnitTestCase {
 
-	public function tearDown(): void {
-		parent::tearDown();
+	public function tear_down(): void {
+		parent::tear_down();
 		delete_option( 'atlas_content_modeler_post_types' );
 	}
 

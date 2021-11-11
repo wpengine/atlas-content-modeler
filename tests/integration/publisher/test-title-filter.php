@@ -12,8 +12,8 @@ class TestTitleFilter extends WP_UnitTestCase {
 
 	private $form_editing_experience;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
 	}

@@ -55,8 +55,8 @@ class TestRestWPTaxonomy extends WP_UnitTestCase {
 			),
 	);
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		global $wp_rest_server;
 		$this->server = $wp_rest_server = new \WP_REST_Server();
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
@@ -150,8 +150,8 @@ class TestRestWPTaxonomy extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'private-visibility', $data );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
