@@ -18,8 +18,8 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	private $models;
 	private $all_registered_post_types;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		/**
 		 * Reset the WPGraphQL schema before each test.
@@ -43,8 +43,8 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$this->post_ids = $this->get_post_ids();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		delete_option( 'atlas_content_modeler_post_types' );
 		$this->all_registered_post_types = null;

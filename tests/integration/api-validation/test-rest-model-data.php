@@ -16,8 +16,8 @@ class RestModelDataTests extends WP_UnitTestCase {
 	private $private_route       = '/privates';
 	private $post_ids;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		update_registered_content_types( $this->get_models() );
 
@@ -45,8 +45,8 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$this->post_ids = $this->get_post_ids();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
