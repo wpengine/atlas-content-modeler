@@ -16,8 +16,8 @@ class TestContentCreation extends WP_UnitTestCase {
 	private $models;
 	private $post_ids;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		/**
 		 * Reset the WPGraphQL schema before each test.
