@@ -26,8 +26,8 @@ class TestGraphQLTaxonomyEndpoint extends WP_UnitTestCase {
 			),
 	);
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		register();
 	}
@@ -92,8 +92,8 @@ class TestGraphQLTaxonomyEndpoint extends WP_UnitTestCase {
 		$this->assertEquals( 'private-visibilities', $graphql['data']['taxonomy']['name'] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		delete_option( $this->taxonomy_option );
 	}
