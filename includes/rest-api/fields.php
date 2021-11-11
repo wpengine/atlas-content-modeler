@@ -105,31 +105,54 @@ function cleanup_detached_relationship_references( string $slug ) {
  */
 function content_model_field_exists( string $slug, string $id, string $model_id ): bool {
 	$models = get_registered_content_types();
+	$model  = $models[ $model_id ] ?? [];
 
-	foreach ( $models as $current_model => $model ) {
-		if ( ! isset( $model['fields'] ) ) {
+	if ( ! isset( $model['fields'] ) ) {
+		return false;
+	}
+
+	foreach ( $model['fields'] as $field ) {
+		if ( $field['id'] === $id ) {
 			continue;
 		}
 
-		foreach ( $model['fields'] as $field ) {
-			if ( $current_model === $model_id && $field['id'] === $id ) {
-				continue;
-			}
+		if ( $field['slug'] === $slug ) {
+			return true;
+		}
+	}
 
-			if ( $model_id === $current_model &&
-			$field['slug'] === $slug ) {
-				return true;
-			}
+	return false;
+}
 
-			if ( 'relationship' === $field['type'] &&
-				$model_id === $field['reference'] &&
-				isset( $field['enableReverse'] ) &&
-				true === $field['enableReverse'] &&
-				isset( $field['reverseSlug'] ) &&
-				$slug === $field['reverseSlug']
-			) {
-				return true;
-			}
+/**
+ * Checks if a relationship field has the same reverse slug as other
+ * relationship fields in the same model.
+ *
+ * @param array $candidate_field The field to check other relationship fields
+ *                               for a reverse slug collision with.
+ * @return bool True if another relationship field has the same reverse slug
+ *              and relates to the same model.
+ */
+function content_model_reverse_slug_exists( $candidate_field ) {
+	$models = get_registered_content_types();
+	$fields = $models[ $candidate_field['model'] ]['fields'] ?? [];
+
+	foreach ( $fields as $current_field ) {
+		$reverse_enabled = $current_field['enableReverse'] ?? false;
+
+		if (
+			$current_field['type'] !== 'relationship' ||
+			$current_field['id'] === $candidate_field['id'] ||
+			! $reverse_enabled
+		) {
+			continue;
+		}
+
+		if (
+			( $current_field['reverseSlug'] ?? '' ) === ( $candidate_field['reverseSlug'] ?? false ) &&
+			( $current_field['reference'] ?? '' ) === ( $candidate_field['reference'] ?? false )
+		) {
+			return true;
 		}
 	}
 

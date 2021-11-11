@@ -14,8 +14,8 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 	private $route     = '/atlas/content-model-field';
 	private $test_models;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		$this->test_models = $this->get_models();
 
@@ -41,8 +41,8 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$this->post_ids = $this->get_post_ids();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
@@ -204,7 +204,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$this->assertEquals( 400, $response->get_status() );
 		$this->assertArrayHasKey( 'message', $data );
-		$this->assertEquals( 'Another field in the model public-fields model has the same API identifier.', $data['message'] );
+		$this->assertEquals( 'A field in the public-fields model has the same identifier.', $data['message'] );
 
 		// Attempt to create a reverse relationship that would conflict with the slug of an existing reverse relationship from the same model.
 		$field = array(
@@ -226,7 +226,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$this->assertEquals( 400, $response->get_status() );
 		$this->assertArrayHasKey( 'message', $data );
-		$this->assertEquals( 'Another field in the model public-fields model has the same API identifier.', $data['message'] );
+		$this->assertEquals( 'A relationship field in this model has the same identifier.', $data['message'] );
 	}
 
 	/**

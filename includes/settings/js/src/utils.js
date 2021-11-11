@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { getFieldOrder, sanitizeFields } from "./queries";
-import { toValidApiId } from "./formats";
+import { toGraphQLType } from "./formats";
 import { __ } from "@wordpress/i18n";
 
 /**
@@ -93,19 +93,6 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
 };
 
 /**
- * Generates the GraphQL type name from the model's singular name.
- *
- * GraphQL's "types" have an initial capital.
- *
- * @param {object} singularName The model's singular name.
- * @return {string} The GraphQL type name.
- */
-export const getGraphQLType = (singularName = "") =>
-	toValidApiId(singularName).replace(/^[a-z]/, (match) =>
-		match.toUpperCase()
-	);
-
-/**
  * Generates a link to open WPGraphQL's GraphiQL query editor in WP admin.
  *
  * Prefills the GraphiQL query with a request for the first 10 posts of the
@@ -115,11 +102,11 @@ export const getGraphQLType = (singularName = "") =>
  * @return {string} The GraphiQL URL with query param prefilled.
  */
 export const getGraphiQLLink = (modelData) => {
-	const graphQLType = getGraphQLType(modelData.singular);
+	const graphQLType = toGraphQLType(modelData.singular, true);
 	const fragmentName = `${graphQLType}Fields`;
 	const rootToTypeConnectionFieldName =
 		modelData.singular !== modelData.plural
-			? toValidApiId(modelData.plural)
+			? toGraphQLType(modelData.plural)
 			: "all" + graphQLType;
 
 	const fields = sanitizeFields(modelData?.fields);

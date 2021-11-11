@@ -5,7 +5,7 @@ import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import { showSuccess } from "../toasts";
 import { useInputGenerator } from "../hooks";
-import { toPostTypeSlug as toSanitizedKey } from "../formats";
+import { toSanitizedKey } from "../formats";
 
 const { apiFetch } = wp;
 const { isEqual, pick } = lodash;
@@ -28,13 +28,15 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 		},
 	});
 
+	const SLUG_MAX_LENGTH = 32;
+
 	const {
 		setFieldsAreLinked,
 		setInputGeneratorSourceValue,
 		onChangeGeneratedValue,
 	} = useInputGenerator({
 		setGeneratedValue: (value) => setValue("slug", value),
-		format: toSanitizedKey,
+		format: (key) => toSanitizedKey(key, SLUG_MAX_LENGTH),
 	});
 
 	const successMessage = editingTaxonomy
@@ -281,7 +283,7 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 					readOnly={editingTaxonomy !== null}
 					ref={register({
 						required: true,
-						maxLength: 32,
+						maxLength: SLUG_MAX_LENGTH,
 					})}
 					onChange={(e) => {
 						onChangeGeneratedValue(e.target.value);
@@ -303,9 +305,13 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 						<span className="error">
 							<Icon type="error" />
 							<span role="alert">
-								{__(
-									"Exceeds max length of 32",
-									"atlas-content-modeler"
+								{sprintf(
+									__(
+										// Translators: the maximum character length.
+										"Exceeds max length of %d",
+										"atlas-content-modeler"
+									),
+									SLUG_MAX_LENGTH
 								)}
 							</span>
 						</span>

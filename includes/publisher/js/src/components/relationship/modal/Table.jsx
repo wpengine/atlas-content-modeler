@@ -11,7 +11,14 @@ export default function Table({
 	chosenEntries,
 	handleSelect,
 }) {
-	const { models, adminUrl } = atlasContentModelerFormEditingExperience;
+	const {
+		models,
+		adminUrl,
+		postType,
+	} = atlasContentModelerFormEditingExperience;
+
+	const entryName =
+		models[postType]?.singular ?? __("Entry", "atlas-content-modeler");
 
 	const createNewEntryLabel = sprintf(
 		__(
@@ -22,6 +29,84 @@ export default function Table({
 		models[field.reference]?.singular ??
 			__("entry", "atlas-content-modeler")
 	);
+
+	/**
+	 * Gets related posts of the given entry, excluding the current post
+	 * that is being edited.
+	 *
+	 * @param {object} entry Post data for the current table row entry.
+	 * @returns {array} Post IDs related to the entry.
+	 */
+	const relatedPosts = (entry) => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const editedPostId = urlParams.get("post");
+
+		return (
+			entry?.acm_related_posts?.filter((id) => id != editedPostId) ?? []
+		);
+	};
+
+	/**
+	 * Checks if the passed `entry` is already connected to posts other than
+	 * the one being edited.
+	 *
+	 * Allows posts with existing relationships to be made unselectable for
+	 * one-to-one and one-to-many relationship fields.
+	 *
+	 * @param {object} entry Post data for the current table row entry.
+	 * @returns {boolean} True if there are related posts.
+	 */
+	const entryHasRelatedPosts = (entry) => {
+		const related = relatedPosts(entry);
+
+		return related?.length > 0;
+	};
+
+	/**
+	 * Displays a link to edit the post that is related to the passed `entry`.
+	 *
+	 * @param {object} entry Post data for the current row.
+	 * @returns ReactElement
+	 */
+	const RelatedPostLink = ({ entry }) => {
+		const related = relatedPosts(entry);
+
+		if (related?.length < 1) {
+			return "";
+		}
+
+		/**
+		 * There should only be one link for the one-to-one and one-to-many
+		 * cardinality types where we're checking for related links, so just
+		 * use the first array item as the related post id.
+		 */
+		const [id] = related;
+
+		return (
+			<p>
+				<a
+					href={`${adminUrl}post.php?post=${id}&action=edit`}
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label={sprintf(
+						__(
+							// translators: the entry name, such as “Cat”.
+							"View the linked %s in a new tab.",
+							"atlas-content-modeler"
+						),
+						entryName
+					)}
+				>
+					{sprintf(
+						// translators: the entry name, such as “Cat”.
+						__("View the linked %s", "atlas-content-modeler"),
+						entryName
+					)}
+				</a>
+				.
+			</p>
+		);
+	};
 
 	return (
 		<table className="table table-striped mt-2">
@@ -73,30 +158,75 @@ export default function Table({
 						),
 						title?.rendered
 					);
+					const notSelectable =
+						(field?.cardinality === "one-to-one" ||
+							field?.cardinality === "one-to-many") &&
+						entryHasRelatedPosts(entry);
+
 					return (
-						<tr key={id}>
-							<td className="checkbox">
-								<input
-									type={
-										field.cardinality == "one-to-many" ||
-										field.cardinality == "many-to-many"
-											? "checkbox"
-											: "radio"
-									}
-									name="selected-entry"
-									id={`entry-${id}`}
-									value={id}
-									aria-label={selectEntryLabel}
-									defaultChecked={chosenEntries.includes(
-										id.toString()
-									)}
-									onChange={handleSelect}
-								/>
-							</td>
+						<tr
+							key={id}
+							className={notSelectable ? "unselectable" : ""}
+						>
+							{notSelectable ? (
+								<td className="info tooltip">
+									<button
+										type="button"
+										aria-label={sprintf(
+											__(
+												// translators:
+												// 1: entry title, such as “John Smith”.
+												// 2: entry type, such as “Cat”.
+												"“%s” is not selectable. It is already linked to a %2$s.",
+												"atlas-content-modeler"
+											),
+											title?.rendered,
+											entryName
+										)}
+									>
+										<Icon type="info" />
+									</button>
+									<span className="tooltip-text">
+										{sprintf(
+											__(
+												// translators:
+												// 1: entry title, such as “John Smith”.
+												// 2: entry type, such as “Cat”.
+												"“%1$s” is already linked to a %2$s.",
+												"atlas-content-modeler"
+											),
+											title?.rendered,
+											entryName
+										)}
+										<RelatedPostLink entry={entry} />
+									</span>
+								</td>
+							) : (
+								<td className="checkbox">
+									<input
+										type={
+											field.cardinality ===
+												"one-to-many" ||
+											field.cardinality === "many-to-many"
+												? "checkbox"
+												: "radio"
+										}
+										name="selected-entry"
+										id={`entry-${id}`}
+										value={id}
+										aria-label={selectEntryLabel}
+										defaultChecked={chosenEntries.includes(
+											id.toString()
+										)}
+										onChange={handleSelect}
+									/>
+								</td>
+							)}
 							<td>
 								<label
 									htmlFor={`entry-${id}`}
 									aria-label={selectEntryLabel}
+									aria-disabled={notSelectable}
 								>
 									{title?.rendered}
 								</label>
@@ -105,6 +235,7 @@ export default function Table({
 								<label
 									htmlFor={`entry-${id}`}
 									aria-label={selectEntryLabel}
+									aria-disabled={notSelectable}
 								>
 									{date.dateI18n("F j, Y", modified)}
 								</label>

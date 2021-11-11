@@ -2,11 +2,11 @@
 Requires at least: 5.7
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
-Contributors: antpb, apmatthe, chriswiegman, kevinwhoffman, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, wpengine
+Contributors: antpb, apmatthe, chriswiegman, jasonkonen, kevinwhoffman, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, wpengine
 
 A WordPress plugin to create custom post types, custom fields, and custom taxonomies for headless WordPress sites.
 
@@ -52,6 +52,18 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 = Where can I submit bug reports and feature requests? =
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 == Changelog ==
+
+= 0.9.0 - 2021-11-03 =
+
+* **Added:** Fields now have an optional description which can be used to inform publishers what a field is for. The description is displayed above the field on the post entry screen.
+* **Added:** Relationship field now supports one-to-one and one-to-many connections.
+* **Fixed:** ACM now prevents field slugs from conflicting with reserved slugs already used by WPGraphQL.
+* **Fixed:** One-to-one field cardinality is now properly enforced.
+* **Fixed:** API Identifier character limit is now properly enforced.
+* **Fixed:** API Identifier validation now properly accounts for dashes and underscores.
+* **Fixed:** Reverse API Identifier conflict detection no longer causes conflicts with the field being edited.
+* **Fixed:** Added `publicly_queryable` parameter when registering custom post types. This fixes an issue caused by changes in [WPGraphQL #2134](https://github.com/wp-graphql/wp-graphql/issues/2134).
+* **Changed:** Posts without a title field no longer have their title saved as "Auto Draft". The fallback title is now entry[post id goes here].
 
 = 0.8.0 - 2021-10-13 =
 

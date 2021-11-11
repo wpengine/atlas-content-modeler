@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
-import { useLocationSearch, getGraphQLType } from "../../utils";
+import { useLocationSearch } from "../../utils";
 import Icon from "acm-icons";
 import TextFields from "./TextFields";
 import {
@@ -15,7 +15,7 @@ import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator, useReservedSlugs } from "../../hooks";
-import { toValidApiId } from "../../formats";
+import { toValidApiId, toGraphQLType } from "../../formats";
 import { __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
@@ -70,7 +70,14 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const originalValues = useRef({});
 	const reservedSlugs = editing
 		? false
-		: useReservedSlugs(getGraphQLType(models[model]?.singular));
+		: useReservedSlugs(toGraphQLType(models[model]?.singular, true));
+
+	const isAppropriateType = (value) => {
+		if (getValues("numberType") === "integer") {
+			const disallowedCharacters = /[.]/g;
+			return !disallowedCharacters.test(value);
+		}
+	};
 
 	const advancedSettings = {
 		text: {
@@ -102,11 +109,15 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				minValue: {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
+					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
+					},
 				},
 				maxValue: {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
 						maxBelowMin: (v) => {
 							const min = parseNumber(getValues("minValue"));
 							const max = parseNumber(v);
@@ -122,6 +133,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
 						maxBelowStep: (v) => {
 							if (getValues("maxValue") === "") {
 								return true;
@@ -278,8 +290,19 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				) {
 					setError("reference", { type: "invalidRelatedModel" });
 				}
-				if (err.code === "wpe_duplicate_field_reverse_slug") {
-					setError("reverseSlug", { type: "reverseIdExists" });
+				if (
+					err.code === "atlas_content_modeler_reverse_slug_conflict"
+				) {
+					setError("reverseSlug", {
+						type: "reverseIdConflicts",
+						message: err.message,
+					});
+				}
+				if (err.code === "atlas_content_modeler_reverse_slug_in_use") {
+					setError("reverseSlug", {
+						type: "reverseIdInUse",
+						message: err.message,
+					});
 				}
 				if (err.code === "atlas_content_modeler_reserved_field_slug") {
 					setError("slug", { type: "nameReserved" });

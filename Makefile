@@ -77,7 +77,7 @@ install-composer:
 install-npm: | build-docker
 	if [ ! -d ./node_modules/ ]; then \
 		echo "installing node dependencies for plugin"; \
-		$(DOCKER_RUN) $(NODE_IMAGE) npm install; \
+		$(DOCKER_RUN) $(NODE_IMAGE) npm ci; \
 	fi
 
 .PHONY: test

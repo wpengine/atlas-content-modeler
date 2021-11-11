@@ -11,7 +11,8 @@ namespace WPE\AtlasContentModeler;
 
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
-use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
+use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
+use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -73,12 +74,13 @@ final class FormEditingExperience {
 
 		add_action( 'init', [ $this, 'remove_post_type_supports' ] );
 		add_action( 'rest_api_init', [ $this, 'support_title_in_rest_responses' ] );
+		add_action( 'rest_api_init', [ $this, 'add_related_posts_to_rest_responses' ] );
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 		add_action( 'edit_form_after_title', [ $this, 'render_app_container' ] );
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
-		add_action( 'wp_insert_post', [ $this, 'set_slug' ], 10, 3 );
+		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
 		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
@@ -106,6 +108,40 @@ final class FormEditingExperience {
 	public function support_title_in_rest_responses(): void {
 		foreach ( $this->models as $model => $info ) {
 			add_post_type_support( $model, 'title' );
+		}
+	}
+
+	/**
+	 * Adds related posts to each ACM post in REST response data.
+	 *
+	 * Related posts are linked to other posts via an ACM relationship field.
+	 *
+	 * A REST GET request for /wp-json/wp/v2/cats?per_page=5&page=1&field_id=123
+	 * will return a list of cats. Each cat gains an `acm_related_posts`
+	 * property with an array of entry IDs that the cat is linked to via a
+	 * relationship field with the passed field_id of "123".
+	 *
+	 * The `acm_related_posts` property is used to prevent publishers from
+	 * picking posts in the relationship modal that would violate one-to-one or
+	 * one-to-many cardinality rules.
+	 *
+	 * @since 0.9.0
+	 * @return void
+	 */
+	public function add_related_posts_to_rest_responses(): void {
+		foreach ( $this->models as $model => $info ) {
+			register_rest_field(
+				$model,
+				'acm_related_posts',
+				array(
+					'get_callback' => function( $post, $attr, $request ) {
+						$params   = $request->get_query_params();
+						$field_id = $params['field_id'] ?? 0;
+
+						return get_related_ids_by_name( $post['id'], $field_id );
+					},
+				)
+			);
 		}
 	}
 
@@ -247,7 +283,7 @@ final class FormEditingExperience {
 	 * @param bool    $update  Whether this is an existing post being updated.
 	 * @return void
 	 */
-	public function set_slug( int $post_ID, WP_Post $post, bool $update ): void {
+	public function set_post_attributes( int $post_ID, WP_Post $post, bool $update ): void {
 		if ( true === $update ) {
 			// @todo Perhaps check that the slug has not been changed outside of the editor.
 			return;
@@ -264,8 +300,9 @@ final class FormEditingExperience {
 
 		wp_update_post(
 			array(
-				'ID'        => $post_ID,
-				'post_name' => $model_post_slug,
+				'ID'         => $post_ID,
+				'post_name'  => $model_post_slug,
+				'post_title' => 'entry' . $post_ID,
 			)
 		);
 	}

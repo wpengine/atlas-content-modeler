@@ -21,10 +21,10 @@ class TestPublisherScriptDependencies extends WP_UnitTestCase {
 		],
 	];
 
-	public function setUp() {
+	public function set_up() {
 		wp_set_current_user( 1 );
 
-		parent::setUp();
+		parent::set_up();
 
 		update_registered_content_types( $this->models );
 
@@ -39,8 +39,8 @@ class TestPublisherScriptDependencies extends WP_UnitTestCase {
 		do_action( 'admin_enqueue_scripts', 'post.php' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		delete_option( 'atlas_content_modeler_post_types' );
 	}
