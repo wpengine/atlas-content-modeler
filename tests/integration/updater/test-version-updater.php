@@ -47,6 +47,7 @@ class UpdaterTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\VersionUpdater\update_plugin()
 	 */
 	public function test_update_plugin_no_saved_version(): void {
+		delete_option( 'atlas_content_modeler_current_version' );
 		self::assertTrue( VersionUpdater\update_plugin() );
 		self::assertEquals( get_option( 'atlas_content_modeler_current_version' ), $this->versions['current'] );
 	}
