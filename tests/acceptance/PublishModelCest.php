@@ -211,6 +211,8 @@ class PublishModelCest {
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
 
+		$i->click( '.notice-dismiss', '#feedbackBanner' );
+		$i->wait( 1 );
 		$i->click( 'Screen Options', '#screen-options-link-wrap' );
 		$i->wait( 1 );
 		$i->checkOption( 'slugdiv-hide' );
