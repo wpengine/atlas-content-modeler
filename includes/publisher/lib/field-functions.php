@@ -136,6 +136,18 @@ function append_reverse_relationship_fields( array $models, string $post_type ):
 			 */
 			$models[ $field['reference'] ]['fields'][ $field['id'] ]['reference'] = $slug;
 			$models[ $field['reference'] ]['fields'][ $field['id'] ]['name']      = $field['reverseName'] ?? $slug;
+
+			/**
+			 * Reverse cardinality for the back reference.
+			 * - one-to-many becomes many-to-one on the “Right” side.
+			 * - many-to-one becomes one-to-many on the “Right” side.
+			 * - one-to-one and many-to-many are unchanged.
+			 */
+			if ( $field['cardinality'] === 'one-to-many' ) {
+				$models[ $field['reference'] ]['fields'][ $field['id'] ]['cardinality'] = 'many-to-one';
+			} elseif ( $field['cardinality'] === 'many-to-one' ) {
+				$models[ $field['reference'] ]['fields'][ $field['id'] ]['cardinality'] = 'one-to-many';
+			}
 		}
 	}
 
