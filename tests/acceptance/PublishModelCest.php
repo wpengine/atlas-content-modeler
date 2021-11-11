@@ -213,6 +213,7 @@ class PublishModelCest {
 		$i->click( 'Screen Options', '#screen-options-link-wrap' );
 		$i->wait( 1 );
 		$i->checkOption( 'slugdiv-hide' );
+		$i->wait( 1 );
 
 		// Check that the meta boxes were moved to the sidebar by default.
 		$i->see( 'Author', '#side-sortables' );
