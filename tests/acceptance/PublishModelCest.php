@@ -3,6 +3,7 @@ use Codeception\Util\Locator;
 class PublishModelCest {
 
 	public function _before( \AcceptanceTester $i ) {
+		$i->resizeWindow( 1024, 1024 );
 		$i->maximizeWindow();
 
 		// First we create a model with fields.
