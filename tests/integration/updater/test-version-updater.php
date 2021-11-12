@@ -14,8 +14,8 @@ class UpdaterTestCases extends WP_UnitTestCase {
 
 	protected $versions;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		$file_data      = get_file_data( ATLAS_CONTENT_MODELER_FILE, array( 'Version' => 'Version' ) );
 		$plugin_version = $file_data['Version'];
@@ -27,8 +27,8 @@ class UpdaterTestCases extends WP_UnitTestCase {
 		);
 	}
 
-	public function tearDown(): void {
-		parent::tearDown();
+	public function tear_down(): void {
+		parent::tear_down();
 
 		delete_option( 'atlas_content_modeler_current_version' );
 	}
@@ -47,6 +47,7 @@ class UpdaterTestCases extends WP_UnitTestCase {
 	 * @covers ::\WPE\AtlasContentModeler\VersionUpdater\update_plugin()
 	 */
 	public function test_update_plugin_no_saved_version(): void {
+		delete_option( 'atlas_content_modeler_current_version' );
 		self::assertTrue( VersionUpdater\update_plugin() );
 		self::assertEquals( get_option( 'atlas_content_modeler_current_version' ), $this->versions['current'] );
 	}

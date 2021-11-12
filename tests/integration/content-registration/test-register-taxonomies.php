@@ -55,8 +55,8 @@ class RegisterTaxonomiesTestCases extends WP_UnitTestCase {
 			),
 	);
 
-	public function tearDown(): void {
-		parent::tearDown();
+	public function tear_down(): void {
+		parent::tear_down();
 		delete_option( $this->taxonomy_option );
 	}
 

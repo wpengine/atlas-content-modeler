@@ -58,8 +58,8 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		],
 	];
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		global $wp_rest_server;
 		$this->server = $wp_rest_server = new \WP_REST_Server();
 		update_option( $this->taxonomy_option, $this->starting_taxonomies );
@@ -182,8 +182,8 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		self::assertSame( 'Test Changing Plural Name', $taxonomies['ingredient']['plural'] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		delete_option( $this->taxonomy_option );
 	}
 }
