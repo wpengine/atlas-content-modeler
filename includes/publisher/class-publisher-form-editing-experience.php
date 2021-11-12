@@ -394,6 +394,18 @@ final class FormEditingExperience {
 					}
 				}
 			}
+
+			if ( 'media' === $field_type &&
+			is_field_featured_image(
+				$slug,
+				$this->models[ $post->post_type ]['fields'] ?? []
+			) &&
+			isset( $posted_values[ $slug ] ) ) {
+				if ( ! set_post_thumbnail( $post, $posted_values[ $slug ] ) ) {
+					/* translators: %s: atlas content modeler field slug */
+					$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
+				}
+			}
 		}
 
 		foreach ( $posted_values as $key => $value ) {
