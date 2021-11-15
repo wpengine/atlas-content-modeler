@@ -250,7 +250,7 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 					'type'          => 'relationship',
 					'enableReverse' => true,
 					'reverseName'   => $expected_reverse_name,
-					'cardinality'   => 'many-to-many',
+					'cardinality'   => 'one-to-many',
 				],
 			],
 		];
@@ -287,7 +287,7 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 						'type'          => 'relationship',
 						'enableReverse' => true,
 						'reverseName'   => $expected_reverse_name,
-						'cardinality'   => 'many-to-many',
+						'cardinality'   => 'many-to-one', // Cardinality is reversed.
 					],
 				],
 			],
