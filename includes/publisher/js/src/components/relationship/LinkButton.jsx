@@ -16,12 +16,18 @@ export default function LinkButton({
 			: /* translators: the name of the related model, such as "Car" or "Cars" */
 			  __("Link %s", "atlas-content-modeler");
 
-	const buttonLabelModel =
-		field?.cardinality === "one-to-one"
-			? models[field.reference]?.singular ??
-			  __("Reference", "atlas-content-modeler")
-			: models[field.reference]?.plural ??
-			  __("References", "atlas-content-modeler");
+	let buttonLabelModel =
+		models[field.reference]?.singular ??
+		__("Reference", "atlas-content-modeler");
+
+	if (
+		field?.cardinality === "many-to-many" ||
+		field?.cardinality === "one-to-many"
+	) {
+		buttonLabelModel =
+			models[field.reference]?.plural ??
+			__("References", "atlas-content-modeler");
+	}
 
 	const buttonLabel = sprintf(buttonLabelBase, buttonLabelModel);
 
