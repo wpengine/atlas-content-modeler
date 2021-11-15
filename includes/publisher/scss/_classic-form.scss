@@ -363,9 +363,15 @@ $button-primary: #002838;
 	}
 }
 
-#feedbackBanner.notice {
-	border-left-width: 1px;
-	border-left-color: #c3c4c7;
+#feedbackBanner {
+	@media (min-width: 770px) {
+		margin-top: 30px;
+	}
+
+	&.notice {
+		border-left-width: 1px;
+		border-left-color: #c3c4c7;
+	}
 }
 
 @media (min-width: 1350px) {

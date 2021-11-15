@@ -613,22 +613,6 @@ final class FormEditingExperience {
 	}
 
 	/**
-	 * Hides the “Screen Options” drop-down on post types registered by this plugin.
-	 *
-	 * @param bool       $show_screen The current state of the screen options dropdown.
-	 * @param \WP_Screen $screen Information about the current screen.
-	 *
-	 * @return bool The new state of the screen options dropdown. (False to disable.)
-	 */
-	public function hide_screen_options( bool $show_screen, $screen ): bool {
-		if ( in_array( $screen->post_type, array_keys( $this->models ), true ) ) {
-			return false;
-		}
-
-		return $show_screen;
-	}
-
-	/**
 	 * Moves the meta boxes to the sidebar.
 	 *
 	 * Improves usability by moving the meta box away from the main editor area
