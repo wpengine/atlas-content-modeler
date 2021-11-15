@@ -88,6 +88,18 @@ class CreateRelationshipFieldEntryCest {
 	/**
 	 * Validates that one-to-one and one-to-many cardinality can not be broken.
 	 *
+	 * • If you’re editing a One-to-one from the A side, you can only select
+	 *   Bs that aren’t already connected to As:
+	 *   - A1 is connected to B1
+	 *   - A2 cannot also be connected to B1. B1 should be unselectable
+	 *     when editing A2.
+	 *
+	 * • If you’re editing a One-to-many from the A side, you can only select
+	 *   Bs that aren't connected to another A:
+	 *   - A1 is connected to B1 and B2.
+	 *   - A2 cannot also be connected to B1 or B2. B1 and B2 should be
+	 *     unselectable when editing A2.
+	 *
 	 * @before create_company_employee_models
 	 * @param AcceptanceTester $i
 	 * @return void
@@ -143,7 +155,125 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( '.unselectable button' );
 		$i->moveMouseOver( '.unselectable button' );
 		$i->waitForElementVisible( '.tooltip-text' );
-		$i->see( 'is already linked', '.tooltip-text' ); // Company A is already llinked to Employee 1.
+		$i->see( 'is already linked', '.tooltip-text' ); // Company A is already linked to Employee 1.
+	}
+
+	/**
+	 * Validates that one-to-one and one-to-many cardinality can not be broken
+	 * when editing a relationship on the reverse side.
+	 *
+	 * • If you’re editing a One-to-one from the B side, you can only select
+	 *   As that aren’t already connected to Bs:
+	 *   - B1 is connected to A1.
+	 *   - B2 cannot also be connected to A1. A1 should be unselectable
+	 *     when editing B2.
+	 *
+	 * • If you’re editing a Many-to-one from the B side (where it becomes a
+	 *   One-to-many field), you can only select As that aren't already
+	 *   connected to Bs.
+	 *   - B1 is connected to A1 and A2.
+	 *   - B2 cannot also be connected to A1 or A2. A1 and A2 should be
+	 *     unselectable when editing B2.
+	 *
+	 * @param AcceptanceTester $i
+	 * @return void
+	 */
+	public function i_cannot_choose_an_entry_on_the_reverse_side_that_is_linked_to_another_entry( AcceptanceTester $i ) {
+		// Create a model to test restrictions from the reverse side of the relationship.
+		$i->haveContentModel( 'Right', 'Rights' );
+
+		// Create a model to set up relationship fields linking Left to Right.
+		$i->haveContentModel( 'Left', 'Lefts' );
+
+		// Add a one-to-one relationship field to the Left model that references Right, including a reverse reference.
+		$i->waitForElement( '.field-buttons' );
+		$i->click( 'Relationship', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Rights One To One' );
+		$i->selectOption( '#reference', 'Rights' );
+		$i->click( 'input#one-to-one' );
+		$i->click( '#enable-reverse' );
+		$i->wait( 1 );
+		$i->see( 'Reverse Display Name' );
+		$i->fillField( [ 'name' => 'reverseName' ], 'Lefts One To One' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
+
+		// Add a many-to-one relationship field to the Left model that references Right, including a reverse reference.
+		$i->click( Locator::lastElement( '.add-item' ) );
+		$i->click( 'Relationship', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Rights Many To One' );
+		$i->selectOption( '#reference', 'Rights' );
+		$i->click( 'input#many-to-one' );
+		$i->click( '#enable-reverse' );
+		$i->wait( 1 );
+		$i->see( 'Reverse Display Name' );
+		$i->fillField( [ 'name' => 'reverseName' ], 'Lefts One To Many' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
+
+		// Publish a new Rights post.
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=right' );
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+
+		// Create two new Left posts.
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=left' );
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=left' );
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+
+		// Create a new Right post, linking both fields to the Lefts posts.
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=right' );
+
+		// Link the new Right Left to the first Left via the one-to-one field.
+		$i->click( '#atlas-content-modeler[right][rightsOneToOne]' );
+		$i->waitForElementVisible( 'td.checkbox input' );
+		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
+		$i->click( 'button.action-button' );
+		$i->wait( 1 );
+
+		// Link the new Right to both Lefts via the many-to-one field.
+		$i->click( '#atlas-content-modeler[right][rightsManyToOne]' );
+		$i->waitForElementVisible( 'td.checkbox input' );
+		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
+		$i->click( Locator::elementAt( 'td.checkbox input', 2 ) );
+		$i->click( 'button.action-button' );
+		$i->wait( 1 );
+
+		// Save changes to the Right post.
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+
+		// Start to create a second Rights post.
+		$i->amOnPage( '/wp-admin/post-new.php?post_type=right' );
+
+		/**
+		 * Confirm that a Left is not available for selection in the
+		 * one-to-one field (it is already connected to the other Right).
+		 */
+		$i->click( '#atlas-content-modeler[right][rightsOneToOne]' );
+		$i->waitForElementVisible( '.unselectable button' );
+		$i->moveMouseOver( '.unselectable button' );
+		$i->waitForElementVisible( '.tooltip-text' );
+		$i->see( 'is already linked', '.tooltip-text' );
+		$i->seeNumberOfElements( '.unselectable button', 1 ); // Only one Left should be unselectable.
+		$i->click( 'button.tertiary' ); // Closes the modal.
+
+		/**
+		 * Confirm that both Lefts are not available in the many-to-one field
+		 * (they are already connected to the other Right).
+		 */
+		$i->click( '#atlas-content-modeler[right][rightsManyToOne]' );
+		$i->waitForElementVisible( '.unselectable button' );
+		$i->moveMouseOver( '.unselectable button' );
+		$i->waitForElementVisible( '.tooltip-text' );
+		$i->see( 'is already linked', '.tooltip-text' );
+		$i->seeNumberOfElements( '.unselectable button', 2 ); // Both Lefts should be unselectable.
 	}
 
 	public function i_can_create_a_reverse_relationship_and_update_the_fields( AcceptanceTester $i ) {
