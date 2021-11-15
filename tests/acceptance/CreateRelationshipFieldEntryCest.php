@@ -90,7 +90,7 @@ class CreateRelationshipFieldEntryCest {
 	 *
 	 * • If you’re editing a One-to-one from the A side, you can only select
 	 *   Bs that aren’t already connected to As:
-	 *   - A1 is connected to B1
+	 *   - A1 is connected to B1.
 	 *   - A2 cannot also be connected to B1. B1 should be unselectable
 	 *     when editing A2.
 	 *
@@ -230,7 +230,7 @@ class CreateRelationshipFieldEntryCest {
 		// Create a new Right post, linking both fields to the Lefts posts.
 		$i->amOnPage( '/wp-admin/post-new.php?post_type=right' );
 
-		// Link the new Right Left to the first Left via the one-to-one field.
+		// Link the new Right to the first Left via the one-to-one field.
 		$i->click( '#atlas-content-modeler[right][rightsOneToOne]' );
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
