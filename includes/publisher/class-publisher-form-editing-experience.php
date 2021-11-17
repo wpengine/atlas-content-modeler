@@ -12,6 +12,7 @@ namespace WPE\AtlasContentModeler;
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
+use function WPE\AtlasContentModeler\append_reverse_relationship_fields;
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 
@@ -84,10 +85,9 @@ final class FormEditingExperience {
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
 		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
-		add_filter( 'screen_options_show_screen', [ $this, 'hide_screen_options' ], 10, 2 );
 		add_action( 'load-post.php', [ $this, 'feedback_notice_handler' ] );
 		add_action( 'load-post-new.php', [ $this, 'feedback_notice_handler' ] );
-		add_action( 'do_meta_boxes', [ $this, 'move_author_meta_box' ] );
+		add_action( 'do_meta_boxes', [ $this, 'move_meta_boxes' ] );
 		add_action( 'do_meta_boxes', [ $this, 'remove_thumbnail_meta_box' ] );
 	}
 
@@ -208,7 +208,7 @@ final class FormEditingExperience {
 
 		wp_enqueue_editor();
 
-		$models = $this->models;
+		$models = append_reverse_relationship_fields( $this->models, $this->screen->post_type );
 
 		// Adds the wp-json rest base for utilizing model data in admin.
 		foreach ( $models as $model => $data ) {
@@ -354,13 +354,8 @@ final class FormEditingExperience {
 
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
-			$field_id = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
-
-			$field_type = get_field_type_from_slug(
-				$field_id,
-				$this->models[ $post->post_type ]['fields'] ?? []
-			);
-
+			$field_id    = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
+			$field_type  = get_field_type_from_slug( $field_id, $this->models, $post->post_type );
 			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ) );
 
 			if ( 'relationship' === $field_type ) {
@@ -381,7 +376,8 @@ final class FormEditingExperience {
 		foreach ( $all_field_slugs as $slug ) {
 			$field_type = get_field_type_from_slug(
 				$slug,
-				$this->models[ $post->post_type ]['fields'] ?? []
+				$this->models,
+				$post->post_type
 			);
 
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
@@ -459,7 +455,8 @@ final class FormEditingExperience {
 	public function save_relationship_field( string $field_id, WP_Post $post, string $field_value ): void {
 		$field = get_field_from_slug(
 			$field_id,
-			$this->models[ $post->post_type ]['fields'] ?? []
+			$this->models,
+			$post->post_type
 		);
 
 		$registry      = ContentConnect::instance()->get_registry();
@@ -679,7 +676,7 @@ final class FormEditingExperience {
 	}
 
 	/**
-	 * Moves the author meta box to the sidebar.
+	 * Moves the meta boxes to the sidebar.
 	 *
 	 * Improves usability by moving the meta box away from the main editor area
 	 * so that it does not appear there before the publisher React application.
@@ -687,18 +684,29 @@ final class FormEditingExperience {
 	 * Users can still override meta box position. Their preference is stored
 	 * in the user meta table under a key named `meta-box-order_[post-slug]`.
 	 */
-	public function move_author_meta_box(): void {
+	public function move_meta_boxes(): void {
 		// Only change placement for post types created by this plugin.
 		if ( ! array_key_exists( $this->screen->post_type, $this->models ) ) {
 			return;
 		}
 
 		remove_meta_box( 'authordiv', null, 'normal' );
+		remove_meta_box( 'slugdiv', null, 'normal' );
 
 		add_meta_box(
 			'authordiv',
 			__( 'Author' ), // phpcs:ignore -- use translation from WordPress Core.
 			'post_author_meta_box',
+			null,
+			'side', // Move to the sidebar.
+			'default',
+			array( '__back_compat_meta_box' => true )
+		);
+
+		add_meta_box(
+			'slugdiv',
+			__( 'Slug' ), // phpcs:ignore -- use translation from WordPress Core.
+			'post_slug_meta_box',
 			null,
 			'side', // Move to the sidebar.
 			'default',
