@@ -300,12 +300,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 										value={item.slug}
 										defaultChecked={
 											field.value &&
-											field.value.some(function (slug) {
-												return (
-													Object.keys(slug)[0] ===
-													item.slug
-												);
-											})
+											field.value.some(
+												(slug) => slug === item.slug
+											)
 										}
 									/>
 									<span className="error">
