@@ -53,6 +53,11 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 == Changelog ==
 
+= 0.10.0 - 2021-11-18 =
+* **Added:** Relationship fields with reverse references enabled are now editable from the reverse side. Tick “Configure Reverse Reference” when creating your relationship field to use reverse references.
+* **Added:** Post slugs are now editable in ACM entries. Enable them via Screen Options when editing a post.
+* **Fixed:** Integer number fields can no longer use decimal values for the step, minimum and maximum settings.
+
 = 0.9.0 - 2021-11-03 =
 
 * **Added:** Fields now have an optional description which can be used to inform publishers what a field is for. The description is displayed above the field on the post entry screen.
