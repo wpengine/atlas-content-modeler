@@ -334,7 +334,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${item.name}]`}
 										value={item.slug}
 										defaultChecked={
-											field.value === item.slug
+											field.value[0] === item.slug
 										}
 									/>
 									<span className="error">
