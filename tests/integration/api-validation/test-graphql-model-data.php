@@ -99,6 +99,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertArrayHasKey( 'booleanRequired', $results['data']['publicsFields']['nodes'][0] );
 			self::assertTrue( $results['data']['publicsFields']['nodes'][0]['booleanRequired'] );
 
+			var_dump( $results['data']['publicsFields']['nodes'][0] ); // phpcs:ignore
+
 			self::assertArrayHasKey( 'featuredImageId', $results['data']['publicsFields']['nodes'][0] );
 			self::assertArrayHasKey( 'featuredImageDatabaseId', $results['data']['publicsFields']['nodes'][0] );
 			self::assertArrayHasKey( 'featuredImage', $results['data']['publicsFields']['nodes'][0] );
