@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.9.0
+Stable tag: 0.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -52,6 +52,11 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 = Where can I submit bug reports and feature requests? =
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 == Changelog ==
+
+= 0.10.0 - 2021-11-18 =
+* **Added:** Relationship fields with reverse references enabled are now editable from the reverse side. Tick “Configure Reverse Reference” when creating your relationship field to use reverse references.
+* **Added:** Post slugs are now editable in ACM entries. Enable them via Screen Options when editing a post.
+* **Fixed:** Integer number fields can no longer use decimal values for the step, minimum and maximum settings.
 
 = 0.9.0 - 2021-11-03 =
 
