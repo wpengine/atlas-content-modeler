@@ -1,5 +1,5 @@
 DOCKER_RUN       := docker run --rm
-COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer
+COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer:1
 NODE_IMAGE       := -w /home/node/app -v "$$(pwd):/home/node/app" --user node atlascontentmodeler_node_image
 HAS_CHROMEDRIVER := $(shell command -v chromedriver 2> /dev/null)
 CURRENTUSER      := $$(id -u)
