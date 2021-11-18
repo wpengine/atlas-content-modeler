@@ -60,11 +60,6 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
                             numberIntergerRequired
                             dateRequired
                             booleanRequired
-							featuredImage {
-								node {
-									id
-								}
-							}
 							featuredImageDatabaseId
 							featuredImageId
 							manytoManyRelationship {
