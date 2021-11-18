@@ -85,6 +85,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 				]
 			);
 
+			var_dump( $results ); // phpcs:ignore
+
 			self::assertArrayHasKey( 'databaseId', $results['data']['publicsFields']['nodes'][0] );
 
 			self::assertArrayHasKey( 'title', $results['data']['publicsFields']['nodes'][0] );
