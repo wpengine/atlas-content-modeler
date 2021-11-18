@@ -84,8 +84,6 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 				]
 			);
 
-			var_dump( $results ); // phpcs:ignore
-
 			self::assertArrayHasKey( 'databaseId', $results['data']['publicsFields']['nodes'][0] );
 
 			self::assertArrayHasKey( 'title', $results['data']['publicsFields']['nodes'][0] );
@@ -105,7 +103,6 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'featuredImageId', $results['data']['publicsFields']['nodes'][0] );
 			self::assertArrayHasKey( 'featuredImageDatabaseId', $results['data']['publicsFields']['nodes'][0] );
-			self::assertArrayHasKey( 'featuredImage', $results['data']['publicsFields']['nodes'][0] );
 
 			self::assertArrayHasKey( 'manytoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationship'] );
