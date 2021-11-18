@@ -80,4 +80,30 @@ class CreateContentModelMediaFieldCest {
 		$i->seeInField( '#slug', 'thePrimaryImage' );
 		$i->dontSeeCheckboxIsChecked( 'isFeatured ' );
 	}
+
+	/**
+	 * Ensure a featured image field is properly denoted in publisher.
+	 */
+	public function i_can_denote_a_featured_image_field_in_publisher( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->haveContentModel( 'Candy', 'Candies' );
+		$i->wait( 1 );
+
+		$i->click( 'Media', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'The Primary Image' );
+		$i->see( '17/50', 'span.count' );
+		$i->seeInField( '#slug', 'thePrimaryImage' );
+		$i->checkOption( 'isFeatured' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
+
+		$i->see( 'Media', '.field-list div.type' );
+		$i->see( 'The Primary Image', '.field-list div.widest' );
+
+		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
+		$i->click( 'Add New', '.wrap' );
+		$i->wait( 1 );
+		$i->seeInField( '.button-primary', 'Add Featured Image' );
+	}
 }
