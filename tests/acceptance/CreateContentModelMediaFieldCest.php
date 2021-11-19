@@ -25,7 +25,7 @@ class CreateContentModelMediaFieldCest {
 	/**
 	 * Ensure a user can add a featured image media field to the model and see it within the list.
 	 */
-	public function i_can_add_a_featured_imag_emedia_field_to_a_content_model( AcceptanceTester $i ) {
+	public function i_can_add_a_featured_image_media_field_to_a_content_model( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
 		$i->haveContentModel( 'Candy', 'Candies' );
 		$i->wait( 1 );
