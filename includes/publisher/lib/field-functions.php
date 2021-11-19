@@ -74,7 +74,7 @@ function get_field_from_slug( string $slug, array $models, string $post_type ): 
 }
 
 /**
- * Determins if the field is the featured image or not.
+ * Determines if the field is the featured image or not.
  *
  * @param string $slug The slug of the field to look for.
  * @param array  $fields Fields to search for the `$slug`.
