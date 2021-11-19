@@ -104,7 +104,7 @@ final class FormEditingExperience {
 				foreach ( $config['fields'] as $field ) {
 					if ( 'media' === $field['type'] && isset( $field['isFeatured'] ) && true === $field['isFeatured'] ) {
 						$remove_thumbnail = false;
-						continue;
+						break;
 					}
 				}
 				if ( $remove_thumbnail ) {
