@@ -74,7 +74,25 @@ function get_field_from_slug( string $slug, array $models, string $post_type ): 
 }
 
 /**
- * Gets the field type from the field $slug.
+ * Determines if the field is the featured image or not.
+ *
+ * @param string $slug The slug of the field to look for.
+ * @param array  $fields Fields to search for the `$slug`.
+ *
+ * @return bool True if the field is the featured image or false
+ */
+function is_field_featured_image( string $slug, array $fields ): bool {
+	foreach ( $fields as $field ) {
+		if ( $field['slug'] === $slug ) {
+			return isset( $field['isFeatured'] ) ? $field['isFeatured'] : false;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Gets the field from the field slug.
  *
  * @param string $slug Field slug to look for the 'type' property.
  * @param array  $models Models with field properties to search for the `$slug`.

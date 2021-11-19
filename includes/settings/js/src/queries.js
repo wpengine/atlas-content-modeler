@@ -116,6 +116,20 @@ export function getTitleFieldId(fields = {}) {
 }
 
 /**
+ * Gets the field the user ticked “use this field as the featured image” for.
+ *
+ * @param {Object} fields Fields to check for the isFeatured property.
+ * @return {String} The id of the featured image field or an empty string.
+ */
+export function getFeaturedFieldId(fields = {}) {
+	const fieldWithFeaturedImage = Object.values(fields).find(
+		(field) => field?.isFeatured === true
+	);
+
+	return fieldWithFeaturedImage ? fieldWithFeaturedImage.id : "";
+}
+
+/**
  * Gives information about the open field.
  *
  * @param {Object} fields Fields to check the open state of.

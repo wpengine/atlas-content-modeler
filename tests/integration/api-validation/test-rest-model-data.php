@@ -89,6 +89,8 @@ class RestModelDataTests extends WP_UnitTestCase {
 
 		self::assertArrayHasKey( 'mediaRequired', $response_data['acm_fields'] );
 		self::assertArrayHasKey( 'mediaPDF', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'mediaFeatured', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'featured_media', $response_data );
 	}
 
 	/**

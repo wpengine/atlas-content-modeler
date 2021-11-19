@@ -60,6 +60,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
                             numberIntergerRequired
                             dateRequired
                             booleanRequired
+							featuredImageDatabaseId
+							featuredImageId
 							manytoManyRelationship {
 								nodes {
 									id
@@ -98,6 +100,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'booleanRequired', $results['data']['publicsFields']['nodes'][0] );
 			self::assertTrue( $results['data']['publicsFields']['nodes'][0]['booleanRequired'] );
+
+			self::assertArrayHasKey( 'featuredImageId', $results['data']['publicsFields']['nodes'][0] );
+			self::assertArrayHasKey( 'featuredImageDatabaseId', $results['data']['publicsFields']['nodes'][0] );
 
 			self::assertArrayHasKey( 'manytoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationship'] );

@@ -88,17 +88,29 @@ final class FormEditingExperience {
 		add_action( 'load-post.php', [ $this, 'feedback_notice_handler' ] );
 		add_action( 'load-post-new.php', [ $this, 'feedback_notice_handler' ] );
 		add_action( 'do_meta_boxes', [ $this, 'move_meta_boxes' ] );
+		add_action( 'do_meta_boxes', [ $this, 'remove_thumbnail_meta_box' ] );
 	}
 
 	/**
 	 * Removes unneeded post type features.
 	 */
 	public function remove_post_type_supports(): void {
-		foreach ( $this->models as $model => $info ) {
+		foreach ( $this->models as $model => $config ) {
 			remove_post_type_support( $model, 'editor' );
 			remove_post_type_support( $model, 'title' );
 			remove_post_type_support( $model, 'custom-fields' );
-			remove_post_type_support( $model, 'thumbnail' );
+			$remove_thumbnail = true;
+			if ( isset( $config['fields'] ) ) {
+				foreach ( $config['fields'] as $field ) {
+					if ( 'media' === $field['type'] && isset( $field['isFeatured'] ) && true === $field['isFeatured'] ) {
+						$remove_thumbnail = false;
+						break;
+					}
+				}
+				if ( $remove_thumbnail ) {
+					remove_post_type_support( $model, 'thumbnail' );
+				}
+			}
 		}
 	}
 
@@ -362,13 +374,13 @@ final class FormEditingExperience {
 		);
 
 		foreach ( $all_field_slugs as $slug ) {
-			if ( ! array_key_exists( $slug, $posted_values ) ) {
-				$field_type = get_field_type_from_slug(
-					$slug,
-					$this->models,
-					$post->post_type
-				);
+			$field_type = get_field_type_from_slug(
+				$slug,
+				$this->models,
+				$post->post_type
+			);
 
+			if ( ! array_key_exists( $slug, $posted_values ) ) {
 				if ( 'relationship' === $field_type ) {
 					if ( ! in_array(
 						$slug,
@@ -387,6 +399,27 @@ final class FormEditingExperience {
 					if ( ! $deleted ) {
 						/* translators: %s: atlas content modeler field slug */
 						$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+					}
+				}
+			}
+
+			if ( 'media' === $field_type &&
+				is_field_featured_image(
+					$slug,
+					$this->models[ $post->post_type ]['fields'] ?? []
+				) &&
+				isset( $posted_values[ $slug ] )
+			) {
+				if ( '' === $posted_values[ $slug ] ) {
+					if ( ! delete_post_thumbnail( $post ) ) {
+						/* translators: %s: atlas content modeler field slug */
+						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
+					}
+				} else {
+					delete_post_thumbnail( $post ); // Delete first is innefficient but avoids weird behavior of set which otherwise treats an existing thumbnail as a bug.
+					if ( ! set_post_thumbnail( $post, $posted_values[ $slug ] ) ) {
+						/* translators: %s: atlas content modeler field slug */
+						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
 					}
 				}
 			}
@@ -608,6 +641,22 @@ final class FormEditingExperience {
 		// Use a generated title when entry title fields or field data are absent.
 		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'atlas-content-modeler' );
 		return $post_type_singular . ' ' . $id;
+	}
+
+	/**
+	 * Removes the featured image meta box.
+	 *
+	 * Adding featured image support to the media field creates a confusing
+	 * UX whereas WordPress wants to add its own meta box to the sidebar
+	 * for the functionality. This removes that metabox.
+	 */
+	public function remove_thumbnail_meta_box(): void {
+		// Only remove for for post types created by this plugin.
+		if ( ! array_key_exists( $this->screen->post_type, $this->models ) ) {
+			return;
+		}
+
+		remove_meta_box( 'postimagediv', null, 'side' );
 	}
 
 	/**
