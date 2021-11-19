@@ -416,7 +416,7 @@ final class FormEditingExperience {
 						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $post->post_type );
 					}
 				} else {
-					delete_post_thumbnail( $post ); // Delete first is innefficient but avoids werid behavior of set which otherwise treats an existing thumbnail as a bug.
+					delete_post_thumbnail( $post ); // Delete first is innefficient but avoids weird behavior of set which otherwise treats an existing thumbnail as a bug.
 					if ( ! set_post_thumbnail( $post, $posted_values[ $slug ] ) ) {
 						/* translators: %s: atlas content modeler field slug */
 						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $post->post_type );
