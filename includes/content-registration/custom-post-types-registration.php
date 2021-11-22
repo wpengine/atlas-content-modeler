@@ -511,23 +511,6 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return (float) $value;
 					}
 
-					if ( 'multipleChoice' === $field['original_type'] ) {
-
-						// We need to return the values of multiple selects differently to build a proper array of strings.
-						if ( is_array( $value ) ) {
-							$list_values = array();
-							foreach ( $value as $v ) {
-								if ( is_array( $v ) ) {
-									array_push( $list_values, implode( array_values( $v ) ) );
-								}
-							}
-							return $list_values;
-						}
-
-						// Return the single value if it is a single select.
-						return array( $value );
-					}
-
 					if ( $field['type'] === 'MediaItem' ) {
 						return DataSource::resolve_post_object( (int) $value, $context );
 					}
