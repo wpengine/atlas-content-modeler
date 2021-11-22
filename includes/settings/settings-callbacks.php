@@ -127,7 +127,7 @@ function enqueue_settings_assets( $hook ) {
 		'atlas-content-modeler-app',
 		'atlasContentModeler',
 		array(
-			'appPath'             => $admin_path . '?page=atlas-content-modeler',
+			'appPath'             => $admin_path . 'admin.php?page=atlas-content-modeler',
 			'taxonomies'          => get_option( 'atlas_content_modeler_taxonomies', array() ),
 			'initialState'        => get_registered_content_types(),
 			'reservedFieldSlugs'  => include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-field-slugs.php',
