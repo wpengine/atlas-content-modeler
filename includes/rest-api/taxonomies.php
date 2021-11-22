@@ -36,7 +36,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	if ( in_array( $params['slug'], $reserved_tax_terms, true ) ) {
 		return new WP_Error(
 			'atlas_content_modeler_reserved_taxonomy_term',
-			__( 'Identifier in use or reserved.', 'atlas-content-modeler' ),
+			__( 'Taxonomy slug is reserved.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
 	}
