@@ -7,7 +7,7 @@ const TaxonomiesTableHead = () => {
 		<thead>
 			<tr>
 				<th>{__("Name", "atlas-content-modeler")}</th>
-				<th>{__("Slug", "atlas-content-modeler")}</th>
+				<th>{__("ID", "atlas-content-modeler")}</th>
 				<th>{__("Models", "atlas-content-modeler")}</th>
 				<th className="action">
 					{__("Action", "atlas-content-modeler")}
