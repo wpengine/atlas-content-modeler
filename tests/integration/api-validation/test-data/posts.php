@@ -90,8 +90,8 @@ function populate_post( $post_id, $model, $test_class ) {
 	update_post_meta( $post_id, 'mediaPDF', $ids[ $model . '_pdf_id' ] );
 	update_post_meta( $post_id, 'boolean', 'false' );
 	update_post_meta( $post_id, 'booleanRequired', 'true' );
-	update_post_meta( $post_id, 'multiSingle', 'a:1:{i:0;s:4:"kiwi";}' );
-	update_post_meta( $post_id, 'multipleMulti', 'a:2:{i:0;s:5:"apple";i:1;s:6:"banana";}' );
+	update_post_meta( $post_id, 'multiSingle', [ 'kiwi' ] );
+	update_post_meta( $post_id, 'multipleMulti', [ 'apple', 'banana' ] );
 
 	$image_meta = array(
 		'width'  => 1000,
