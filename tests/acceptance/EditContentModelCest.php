@@ -32,8 +32,12 @@ class EditContentModelCest {
 		$i->see( 'Cats', '.model-list' );
 		$i->see( 'Cats are better than candy.', '.model-list' );
 
-		// Check the icon in the WP admin sidebar was updated.
+		// Check the icon in the WP admin sidebar was updated without refreshing the page.
 		$classes = $i->grabAttributeFrom( '#menu-posts-candy .wp-menu-image', 'class' );
 		$i->assertContains( 'dashicons-admin-media', $classes );
+
+		// Check the label in the WP admin sidebar was updated without refreshing the page.
+		$menu_label = $i->grabTextFrom( '#menu-posts-candy .wp-menu-name' );
+		$i->assertEquals( 'Cats', $menu_label );
 	}
 }
