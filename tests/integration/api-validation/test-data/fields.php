@@ -327,5 +327,19 @@ function get_test_fields() {
 			),
 			'required'        => true,
 		),
+		'1637243600'    => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'media',
+			'id'              => '1637243600',
+			'position'        => '190000',
+			'name'            => 'Media-Featured',
+			'slug'            => 'mediaFeatured',
+			'required'        => false,
+			'minChars'        => '',
+			'maxChars'        => '',
+			'allowedTypes'    => '',
+			'isFeatured'      => true,
+		),
 	);
 }

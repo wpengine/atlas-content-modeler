@@ -41,6 +41,33 @@ export function removeSidebarMenuItem(slug) {
 }
 
 /**
+ * Updates the sidebar post type menu item if the icon or label changed.
+ *
+ * @param {Object} model - The original content model information.
+ * @param {Object} data - The updated content model data posted from the edit form.
+ */
+export function updateSidebarMenuItem(model, data) {
+	const { model_icon = "dashicons-admin-post", plural } = data;
+
+	// Update the post type menu label.
+	if (model.plural !== plural) {
+		document.querySelector(
+			`li#menu-posts-${model.slug} .wp-menu-name`
+		).innerHTML = plural;
+	}
+
+	// Update the post type menu icon.
+	if (model.model_icon !== model_icon) {
+		const menuIcon = document.querySelector(
+			`li#menu-posts-${model.slug} .wp-menu-image`
+		);
+
+		menuIcon.classList.remove(model.model_icon);
+		menuIcon.classList.add(model_icon);
+	}
+}
+
+/**
  * Generates the HTML for the content model menu item.
  *
  * @param {Object} model - The content model.

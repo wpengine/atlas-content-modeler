@@ -17,6 +17,7 @@ import { ModelsContext } from "../../ModelsContext";
 import { useInputGenerator, useReservedSlugs } from "../../hooks";
 import { toValidApiId, toGraphQLType } from "../../formats";
 import { __ } from "@wordpress/i18n";
+import { getFeaturedFieldId } from "../../queries";
 
 const { apiFetch } = wp;
 const { cloneDeep, isEqual } = lodash;
@@ -328,6 +329,10 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		}
 	}
 
+	const currentModel = query.get("id");
+	const fields = models[currentModel]?.fields;
+	const originalMediaFieldId = useRef(getFeaturedFieldId(fields));
+
 	return (
 		<form
 			onSubmit={handleSubmit(apiAddField)}
@@ -502,7 +507,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						model={model}
 					/>
 				)}
-
 				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
@@ -522,6 +526,88 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 								"atlas-content-modeler"
 							)}
 						</label>
+						{["media"].includes(type) && (
+							<div>
+								<input
+									name="isFeatured"
+									type="checkbox"
+									id={`featured-image-${id}`}
+									ref={register}
+									defaultChecked={
+										storedData?.required === true
+									}
+									onChange={(event) => {
+										/**
+										 * Unchecks other fields when checking a field.
+										 * Only one field can be the featured image field.
+										 */
+										if (event.target.checked) {
+											dispatch({
+												type: "setFeaturedImageField",
+												id: id,
+												model: currentModel,
+											});
+											return;
+										}
+
+										if (!event.target.checked) {
+											/**
+											 * When unchecking a field that was not the original
+											 * media, restore isFeatured on the original media
+											 * field if there is one. Prevents an issue where
+											 * checking “is featured image then unchecking it removes
+											 * isFeatured from the original.
+											 */
+											if (
+												originalMediaFieldId.current &&
+												originalMediaFieldId.current !==
+													id
+											) {
+												dispatch({
+													type:
+														"setFeaturedImageField",
+													id:
+														originalMediaFieldId.current,
+													model: currentModel,
+												});
+												return;
+											}
+
+											/**
+											 * At this point we're just unchecking the original
+											 * media field.
+											 */
+											dispatch({
+												type: "setFieldProperties",
+												id: id,
+												model: currentModel,
+												properties: [
+													{
+														name: "isFeatured",
+														value: false,
+													},
+												],
+											});
+										}
+									}}
+								/>
+								<label
+									htmlFor={`featured-image-${id}`}
+									className="checkbox featured-image"
+								>
+									{__(
+										"Set as featured image",
+										"atlas-content-modeler"
+									)}
+								</label>
+								<p className="help featured-image">
+									{__(
+										"Limits media selection to image types.",
+										"atlas-content-modeler"
+									)}
+								</p>
+							</div>
+						)}
 					</div>
 				)}
 			</div>

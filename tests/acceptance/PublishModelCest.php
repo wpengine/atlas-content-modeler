@@ -3,6 +3,7 @@ use Codeception\Util\Locator;
 class PublishModelCest {
 
 	public function _before( \AcceptanceTester $i ) {
+		$i->resizeWindow( 1024, 1024 );
 		$i->maximizeWindow();
 
 		// First we create a model with fields.
@@ -210,8 +211,14 @@ class PublishModelCest {
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
 
-		// Check that the author meta box was moved to the sidebar by default.
+		$i->click( 'Screen Options', '#screen-options-link-wrap' );
+		$i->wait( 1 );
+		$i->checkOption( 'slugdiv-hide' );
+		$i->wait( 1 );
+
+		// Check that the meta boxes were moved to the sidebar by default.
 		$i->see( 'Author', '#side-sortables' );
+		$i->see( 'Slug', '#side-sortables' );
 
 		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][color]' ], 'Gray' );
 		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][age]' ], '100' );
