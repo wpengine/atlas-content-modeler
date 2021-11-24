@@ -259,7 +259,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					});
 				}
 				if (err.code === "wpe_option_slug_duplicate") {
-					err.additional_errors[0].message.map((index) => {
+					err.data.duplicates.map((index) => {
 						setError("multipleChoice" + index, {
 							type: "multipleChoiceSlugDuplicate" + index,
 						});
