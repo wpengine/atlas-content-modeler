@@ -105,7 +105,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && ! $params['choices'] ) {
 		return new WP_Error(
 			'wpe_invalid_multi_options',
-			__( 'Multiple Choice update failed. Options need to be created before updating a Multiple Choice field.', 'atlas-content-modeler' ),
+			__( 'Multiple Choice update failed. Choices need to be created before updating a Multiple Choice field.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
 	}
