@@ -166,20 +166,21 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 
 	// Check if a slug name is a duplicate.
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
-		$problem_option_slug_index = [];
+		$problem_option_slugs = [];
 		foreach ( $params['choices'] as $index => $choice ) {
 			if ( content_model_multi_option_slug_exists( $params['choices'], $choice['slug'], $index ) ) {
-				$problem_option_slug_index[] = $index;
+				$problem_option_slugs[] = $index;
 			}
 		}
-		if ( $problem_option_slug_index ) {
-			$problem_duplicate_slug = new WP_Error(
+		if ( $problem_option_slugs ) {
+			return new WP_Error(
 				'wpe_option_slug_duplicate',
 				__( 'Another choice in this field has the same API identifier.', 'atlas-content-modeler' ),
-				array( 'status' => 400 )
+				array(
+					'status'     => 400,
+					'duplicates' => $problem_option_slugs,
+				)
 			);
-			$problem_duplicate_slug->add( 'problem_option_slug_index', $problem_option_slug_index );
-			return $problem_duplicate_slug;
 		}
 	}
 
