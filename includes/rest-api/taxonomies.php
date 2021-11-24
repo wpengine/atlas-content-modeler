@@ -21,13 +21,23 @@ use WP_Error;
  */
 function save_taxonomy( array $params, bool $is_update ) {
 	// Sanitize key allows hyphens, but it's close enough to register_taxonomy() requirements.
-	$params['slug'] = isset( $params['slug'] ) ? sanitize_key( $params['slug'] ) : '';
+	$params['slug']     = isset( $params['slug'] ) ? sanitize_key( $params['slug'] ) : '';
+	$reserved_tax_terms = include ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-taxonomy-terms.php';
 
 	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
 		return new WP_Error(
 			'atlas_content_modeler_invalid_id',
 			esc_html__( 'Taxonomy slug must be between 1 and 32 characters in length.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
+		);
+	}
+
+	// Prevents use of reserved taxonomy terms as slugs during new taxonomy creation.
+	if ( in_array( $params['slug'], $reserved_tax_terms, true ) ) {
+		return new WP_Error(
+			'atlas_content_modeler_reserved_taxonomy_term',
+			__( 'Taxonomy slug is reserved.', 'atlas-content-modeler' ),
+			array( 'status' => 400 )
 		);
 	}
 

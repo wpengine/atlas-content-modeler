@@ -113,11 +113,26 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 
 		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( json_encode( $this->test_taxonomies['category'] ) );
+		$request->set_body( json_encode( $this->test_taxonomies['ingredient'] ) );
+		$response = $this->server->dispatch( $request );
+
+		// Try to recreate the taxonomy to check that a duplicate cannot be created.
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
 		self::assertSame( 'atlas_content_modeler_taxonomy_exists', $response->data['code'] );
+	}
+
+	public function test_cannot_create_taxonomy_when_slug_conflicts_with_reserved_taxonomy_term(): void {
+		wp_set_current_user( 1 );
+
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $this->test_taxonomies['category'] ) );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'atlas_content_modeler_reserved_taxonomy_term', $response->data['code'] );
 	}
 
 	public function test_cannot_create_taxonomy_when_slug_conflicts_with_existing_acm_taxonomy(): void {

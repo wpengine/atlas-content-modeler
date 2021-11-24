@@ -137,9 +137,12 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 				showSuccess(sprintf(successMessage, res.taxonomy.plural));
 			})
 			.catch((err) => {
-				if (err.code === "atlas_content_modeler_taxonomy_exists") {
+				if (
+					err.code === "atlas_content_modeler_taxonomy_exists" ||
+					err.code === "atlas_content_modeler_reserved_taxonomy_term"
+				) {
 					setError("slug", {
-						type: "idExists",
+						type: "invalidSlug",
 						message: err.message,
 					});
 				}
@@ -316,7 +319,7 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 							</span>
 						</span>
 					)}
-					{errors.slug && errors.slug.type === "idExists" && (
+					{errors.slug && errors.slug.type === "invalidSlug" && (
 						<span className="error">
 							<Icon type="error" />
 							<span role="alert">{errors.slug.message}</span>

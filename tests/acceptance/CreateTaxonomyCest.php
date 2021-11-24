@@ -99,6 +99,19 @@ class CreateTaxonomyCest {
 		$i->see( 'A taxonomy with this Taxonomy ID already exists' );
 	}
 
+	public function i_can_not_create_a_taxonomy_if_the_slug_is_a_reserved_term( AcceptanceTester $i ) {
+		$i->amOnTaxonomyListingsPage();
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'singular' ], 'Author' );
+		$i->fillField( [ 'name' => 'plural' ], 'Authors' );
+		$i->click( '.checklist .checkbox' ); // The “goose” model.
+		$i->click( '.card-content button.primary' );
+		$i->wait( 1 );
+
+		$i->see( 'Taxonomy slug is reserved.' );
+	}
+
 	public function i_can_see_a_generated_slug_when_creating_a_second_taxonomy_after_editing_the_slug_in_the_first( AcceptanceTester $i ) {
 		$i->amOnTaxonomyListingsPage();
 		$i->wait( 1 );
