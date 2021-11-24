@@ -184,7 +184,6 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	}
 
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
-		$options_name_index = -1;
 		$problem_name_index = [];
 		foreach ( $params['choices'] as $index => $choice ) {
 			if ( content_model_multi_option_exists( $params['choices'], $choice['name'], $index ) ) {
