@@ -41,24 +41,6 @@ function save_taxonomy( array $params, bool $is_update ) {
 		);
 	}
 
-	if ( function_exists( 'graphql' ) ) {
-		$results = do_graphql_request(
-			'
-			query GetTypeAndFields($taxonomy: String!) {
-				__field(name: $taxonomy) {
-					fields {
-						name
-					}
-				}
-			}
-			',
-			'GetTypeAndFields',
-			array(
-				'taxonomy' => 'Rabbit',
-			)
-		);
-	}
-
 	$acm_taxonomies     = get_option( 'atlas_content_modeler_taxonomies', array() );
 	$wp_taxonomies      = get_taxonomies();
 	$non_acm_taxonomies = array_diff( array_keys( $wp_taxonomies ), array_keys( $acm_taxonomies ) );
