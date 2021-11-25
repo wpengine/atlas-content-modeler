@@ -117,13 +117,14 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			}
 		}
 		if ( ! empty( $problem_index ) ) {
-			$problem_error_name_blank = new WP_Error(
+			return new WP_Error(
 				'wpe_option_name_undefined',
 				__( 'Multiple Choice Field update failed, please set a name for your choice before saving.', 'atlas-content-modeler' ),
-				array( 'status' => 400 )
+				array(
+					'status'       => 400,
+					'problemIndex' => $problem_index,
+				)
 			);
-			$problem_error_name_blank->add( 'problem_index', $problem_index );
-			return $problem_error_name_blank;
 		}
 	}
 	// Check if a slug is defined for each choice on save.
@@ -134,14 +135,17 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 				$problem_index[] = $index;
 			}
 		}
+
+		// Check if a choice slug is blank.
 		if ( ! empty( $problem_index ) ) {
-			$problem_error_slug_blank = new WP_Error(
+			return new WP_Error(
 				'wpe_option_slug_undefined',
 				__( 'Multiple Choice Field update failed, please set a slug for your choice before saving.', 'atlas-content-modeler' ),
-				array( 'status' => 400 )
+				array(
+					'status'       => 400,
+					'problemIndex' => $problem_index,
+				)
 			);
-			$problem_error_slug_blank->add( 'problem_index', $problem_index );
-			return $problem_error_slug_blank;
 		}
 	}
 
@@ -154,17 +158,18 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			}
 		}
 		if ( $problem_name_index ) {
-			$problem_duplicate_name = new WP_Error(
+			return new WP_Error(
 				'wpe_duplicate_content_model_multi_option_id',
 				__( 'Another choice in this field has the same name.', 'atlas-content-modeler' ),
-				array( 'status' => 400 )
+				array(
+					'status'     => 400,
+					'duplicates' => $problem_name_index,
+				)
 			);
-			$problem_duplicate_name->add( 'problem_name_index', $problem_name_index );
-			return $problem_duplicate_name;
 		}
 	}
 
-	// Check if a slug name is a duplicate.
+	// Check if a choice API identifier is a duplicate.
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
 		$problem_option_slugs = [];
 		foreach ( $params['choices'] as $index => $choice ) {
@@ -192,13 +197,14 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			}
 		}
 		if ( $problem_name_index ) {
-			$problem_duplicate_name = new WP_Error(
+			return new WP_Error(
 				'wpe_duplicate_content_model_multi_option_id',
 				__( 'Another option in this field has the same API identifier.', 'atlas-content-modeler' ),
-				array( 'status' => 400 )
+				array(
+					'status'     => 400,
+					'duplicates' => $problem_name_index,
+				)
 			);
-			$problem_duplicate_name->add( 'problem_name_index', $problem_name_index );
-			return $problem_duplicate_name;
 		}
 	}
 
