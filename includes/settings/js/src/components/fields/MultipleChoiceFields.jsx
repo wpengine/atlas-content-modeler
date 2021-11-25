@@ -234,14 +234,13 @@ function MultipleChoiceFields({
 															remove(index);
 														}}
 													>
-														<a>
+														<a
+															aria-label={__(
+																"Remove choice.",
+																"atlas-content-modeler"
+															)}
+														>
 															<TrashIcon size="small" />{" "}
-															<span>
-																{__(
-																	"Remove choice.",
-																	"atlas-content-modeler"
-																)}
-															</span>
 														</a>
 													</button>
 												)}
