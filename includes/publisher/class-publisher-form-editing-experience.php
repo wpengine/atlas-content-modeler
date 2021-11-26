@@ -75,7 +75,7 @@ final class FormEditingExperience {
 
 		add_action( 'init', [ $this, 'remove_post_type_supports' ] );
 		add_action( 'rest_api_init', [ $this, 'support_title_in_api_responses' ] );
-		add_action( 'graphql_process_http_request', [ $this, 'support_title_in_api_responses' ] );
+		add_action( 'init_graphql_request', [ $this, 'support_title_in_api_responses' ] );
 		add_action( 'rest_api_init', [ $this, 'add_related_posts_to_rest_responses' ] );
 		add_filter( 'use_block_editor_for_post_type', [ $this, 'disable_block_editor' ], 10, 2 );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
