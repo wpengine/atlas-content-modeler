@@ -515,6 +515,11 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return DataSource::resolve_post_object( (int) $value, $context );
 					}
 
+					// If the multiple choice field has no saved data, return an empty array.
+					if ( $field['original_type'] === 'multipleChoice' && empty( $value ) ) {
+							return [];
+					}
+
 					// fixes caption shortcode for graphql output.
 					if ( $rich_text ) {
 						return do_shortcode( $value );
