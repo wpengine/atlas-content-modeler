@@ -58,8 +58,7 @@ function atlas_content_modeler_loader(): void {
 
 	\WPE\AtlasContentModeler\VersionUpdater\update_plugin();
 
-	$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
-	$form_editing_experience->bootstrap();
+	new \WPE\AtlasContentModeler\FormEditingExperience();
 
 	// Bootstrap relationships library.
 	acm_content_connect_autoloader();
