@@ -25,8 +25,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
 		// Initialize the publisher logic, which includes additional filters.
-		$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
-		$form_editing_experience->bootstrap();
+		new \WPE\AtlasContentModeler\FormEditingExperience();
 
 		// @todo why is this not running automatically?
 		do_action( 'init' );

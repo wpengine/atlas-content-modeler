@@ -1,5 +1,5 @@
 <?php
-use Codeception\Util\Locator;
+
 class AdvancedSettingsCest {
 
 	public function _before( \AcceptanceTester $i ) {
