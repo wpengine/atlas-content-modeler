@@ -490,6 +490,11 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$field['original_type'] = $field['type'];
 			$field['type']          = $gql_field_type;
 
+			// When you have multiple items in an array returned we need to define them as a list of strings.
+			if ( 'list' === $field['type'] ) {
+				$field['type'] = array( 'list_of' => 'String' );
+			}
+
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
 				if ( 'relationship' !== $field['original_type'] ) {
 					$value = get_post_meta( $post->databaseId, $field['slug'], true );
@@ -508,6 +513,11 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 
 					if ( $field['type'] === 'MediaItem' ) {
 						return DataSource::resolve_post_object( (int) $value, $context );
+					}
+
+					// If the multiple choice field has no saved data, return an empty array.
+					if ( $field['original_type'] === 'multipleChoice' && empty( $value ) ) {
+							return [];
 					}
 
 					// fixes caption shortcode for graphql output.
@@ -678,8 +688,6 @@ function get_connection_name( string $from_type, string $to_type, string $from_f
  * @param string $field_type The HTML field type.
  *
  * @access private
- *
- * @return string|null
  */
 function map_html_field_type_to_graphql_field_type( string $field_type ): ?string {
 	if ( empty( $field_type ) ) {
@@ -693,6 +701,8 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'date':
 		case 'richtext':
 			return 'String';
+		case 'multipleChoice':
+			return 'list';
 		case 'number':
 			return 'Float';
 		case 'boolean':

@@ -184,3 +184,29 @@ function content_model_multi_option_exists( array $names, string $current_choice
 	}
 	return false;
 }
+
+/**
+ * Checks if a duplicate model identifier (slug) exists in the multiple option field.
+ *
+ * @param array  $slugs  The available field slug names.
+ * @param string $current_choice  The currently checked field choice name.
+ * @param int    $current_index The content index for the current choice being validated.
+ * @return bool
+ */
+function content_model_multi_option_slug_exists( array $slugs, string $current_choice, int $current_index ): bool {
+	if ( ! isset( $slugs ) ) {
+		return false;
+	}
+	if ( $slugs ) {
+		if ( $slugs[ $current_index ] ) {
+			unset( $slugs[ $current_index ] );
+		}
+
+		foreach ( $slugs as $choice ) {
+			if ( $choice['slug'] === $current_choice ) {
+				return true;
+			}
+		}
+	}
+	return false;
+}

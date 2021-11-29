@@ -60,9 +60,11 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							databaseId
 							title
 							richText
-                            numberIntergerRequired
-                            dateRequired
-                            booleanRequired
+							numberIntergerRequired
+							dateRequired
+							multiSingle
+							multipleMulti
+							booleanRequired
 							featuredImageDatabaseId
 							featuredImageId
 							manytoManyRelationship {
@@ -115,6 +117,12 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'manytoOneRelationship', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoOneRelationship'] );
+
+			self::assertArrayHasKey( 'multiSingle', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['multiSingle'] );
+
+			self::assertArrayHasKey( 'multipleMulti', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['multipleMulti'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}

@@ -16,6 +16,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\update_registered_conte
 use function WPE\AtlasContentModeler\REST_API\Fields\shape_field_args;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_field_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_multi_option_exists;
+use function WPE\AtlasContentModeler\REST_API\Fields\content_model_multi_option_slug_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_reverse_slug_exists;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
@@ -104,47 +105,106 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && ! $params['choices'] ) {
 		return new WP_Error(
 			'wpe_invalid_multi_options',
-			'Multiple Choice update failed. Options need to be created before updating a Multiple Choice field.',
+			__( 'Multiple Choice update failed. Choices need to be created before updating a Multiple Choice field.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
 	}
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
-		$options_index = -1;
 		$problem_index = [];
-		foreach ( $params['choices'] as $choice ) {
-			++$options_index;
+		foreach ( $params['choices'] as $index => $choice ) {
 			if ( $choice['name'] === '' ) {
-				$problem_index[] = $options_index;
+				$problem_index[] = $index;
 			}
 		}
-		if ( $problem_index ) {
-			$problem_error_name_blank = new WP_Error(
+		if ( ! empty( $problem_index ) ) {
+			return new WP_Error(
 				'wpe_option_name_undefined',
-				'Multiple Choice Field update failed, please set a name for your choice before saving.',
-				array( 'status' => 400 )
+				__( 'Multiple Choice Field update failed, please set a name for your choice before saving.', 'atlas-content-modeler' ),
+				array(
+					'status'       => 400,
+					'problemIndex' => $problem_index,
+				)
 			);
-			$problem_error_name_blank->add( 'problem_index', $problem_index );
-			return $problem_error_name_blank;
+		}
+	}
+	// Check if a slug is defined for each choice on save.
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$problem_index = [];
+		foreach ( $params['choices'] as $index => $choice ) {
+			if ( $choice['slug'] === '' ) {
+				$problem_index[] = $index;
+			}
+		}
+
+		// Check if a choice slug is blank.
+		if ( ! empty( $problem_index ) ) {
+			return new WP_Error(
+				'wpe_option_slug_undefined',
+				__( 'Multiple Choice Field update failed, please set a slug for your choice before saving.', 'atlas-content-modeler' ),
+				array(
+					'status'       => 400,
+					'problemIndex' => $problem_index,
+				)
+			);
+		}
+	}
+
+	// Check if a choice name is a duplicate.
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$problem_name_index = [];
+		foreach ( $params['choices'] as $index => $choice ) {
+			if ( content_model_multi_option_exists( $params['choices'], $choice['name'], $index ) ) {
+				$problem_name_index[] = $index;
+			}
+		}
+		if ( $problem_name_index ) {
+			return new WP_Error(
+				'wpe_duplicate_content_model_multi_option_id',
+				__( 'Another choice in this field has the same name.', 'atlas-content-modeler' ),
+				array(
+					'status'     => 400,
+					'duplicates' => $problem_name_index,
+				)
+			);
+		}
+	}
+
+	// Check if a choice API identifier is a duplicate.
+	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
+		$problem_option_slugs = [];
+		foreach ( $params['choices'] as $index => $choice ) {
+			if ( content_model_multi_option_slug_exists( $params['choices'], $choice['slug'], $index ) ) {
+				$problem_option_slugs[] = $index;
+			}
+		}
+		if ( $problem_option_slugs ) {
+			return new WP_Error(
+				'wpe_option_slug_duplicate',
+				__( 'Another choice in this field has the same API identifier.', 'atlas-content-modeler' ),
+				array(
+					'status'     => 400,
+					'duplicates' => $problem_option_slugs,
+				)
+			);
 		}
 	}
 
 	if ( isset( $params['type'] ) && $params['type'] === 'multipleChoice' && $params['choices'] ) {
-		$options_name_index = -1;
 		$problem_name_index = [];
-		foreach ( $params['choices'] as $choice ) {
-			++$options_name_index;
-			if ( content_model_multi_option_exists( $params['choices'], $choice['name'], $options_name_index ) ) {
-				$problem_name_index[] = $options_name_index;
+		foreach ( $params['choices'] as $index => $choice ) {
+			if ( content_model_multi_option_exists( $params['choices'], $choice['name'], $index ) ) {
+				$problem_name_index[] = $index;
 			}
 		}
 		if ( $problem_name_index ) {
-			$problem_duplicate_name = new WP_Error(
+			return new WP_Error(
 				'wpe_duplicate_content_model_multi_option_id',
-				'Another option in this field has the same API identifier.',
-				array( 'status' => 400 )
+				__( 'Another option in this field has the same API identifier.', 'atlas-content-modeler' ),
+				array(
+					'status'     => 400,
+					'duplicates' => $problem_name_index,
+				)
 			);
-			$problem_duplicate_name->add( 'problem_name_index', $problem_name_index );
-			return $problem_duplicate_name;
 		}
 	}
 

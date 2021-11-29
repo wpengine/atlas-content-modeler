@@ -245,16 +245,30 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					setError("slug", { type: "idExists" });
 				}
 				if (err.code === "wpe_option_name_undefined") {
-					err.additional_errors[0].message.map((index) => {
+					err.data.problemIndex.map((index) => {
 						setError("multipleChoice" + index, {
 							type: "multipleChoiceNameEmpty" + index,
+						});
+					});
+				}
+				if (err.code === "wpe_option_slug_undefined") {
+					err.data.problemIndex.map((index) => {
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceSlugEmpty" + index,
+						});
+					});
+				}
+				if (err.code === "wpe_option_slug_duplicate") {
+					err.data.duplicates.map((index) => {
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceSlugDuplicate" + index,
 						});
 					});
 				}
 				if (
 					err.code === "wpe_duplicate_content_model_multi_option_id"
 				) {
-					err.additional_errors[0].message.map((index) => {
+					err.data.duplicates.map((index) => {
 						setError("multipleChoiceName" + index, {
 							type: "multipleChoiceNameDuplicate" + index,
 						});

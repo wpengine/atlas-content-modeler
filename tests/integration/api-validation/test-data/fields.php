@@ -269,6 +269,64 @@ function get_test_fields() {
 			'reverseName'     => 'PPosts',
 			'reverseSlug'     => 'pposts' . random_int( 0, PHP_INT_MAX ),
 		),
+		'1636398361391' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'multipleChoice',
+			'id'              => '1636398361391',
+			'position'        => '190000',
+			'name'            => 'multiple-choice-single',
+			'slug'            => 'multiSingle',
+			'listType'        => 'single',
+			'choices'         =>
+				array(
+					0 =>
+					array(
+						'name' => 'red apple',
+						'slug' => 'apple',
+					),
+					1 =>
+					array(
+						'name' => 'yellow banana',
+						'slug' => 'banana',
+					),
+					2 =>
+					array(
+						'name' => 'green kiwi',
+						'slug' => 'kiwi',
+					),
+				),
+			'required'        => true,
+		),
+		'1636398361392' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'multipleChoice',
+			'id'              => '1636398361392',
+			'position'        => '200000',
+			'name'            => 'multiple-choice-multi',
+			'slug'            => 'multipleMulti',
+			'listType'        => 'multiple',
+			'choices'         =>
+			array(
+				0 =>
+				array(
+					'name' => 'red apple',
+					'slug' => 'apple',
+				),
+				1 =>
+				array(
+					'name' => 'yellow banana',
+					'slug' => 'banana',
+				),
+				2 =>
+				array(
+					'name' => 'green kiwi',
+					'slug' => 'kiwi',
+				),
+			),
+			'required'        => true,
+		),
 		'1637243600'    => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,

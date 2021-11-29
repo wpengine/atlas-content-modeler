@@ -213,7 +213,8 @@ function sanitize_field( string $type, $value ) {
 				}
 				return $options_object;
 			}
-			return $value;
+			$options_object[] = $value;
+			return $options_object;
 		default:
 			return $value;
 	}
