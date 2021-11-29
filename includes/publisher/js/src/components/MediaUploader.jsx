@@ -143,14 +143,6 @@ export default function MediaUploader({ modelSlug, field, required }) {
 					{__(field.description, "atlas-content-modeler")}
 				</p>
 			)}
-			<input
-				type="text"
-				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-				id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-				className="hidden"
-				readOnly={true}
-				value={value}
-			/>
 			<div>
 				{mediaUrl && (
 					<>
