@@ -24,6 +24,10 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		// Start each test with a fresh relationships registry.
 		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
+		// Initialize the publisher logic, which includes additional filters.
+		$form_editing_experience = new \WPE\AtlasContentModeler\FormEditingExperience();
+		$form_editing_experience->bootstrap();
+
 		// @todo why is this not running automatically?
 		do_action( 'init' );
 
@@ -87,7 +91,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertArrayHasKey( 'databaseId', $results['data']['publicsFields']['nodes'][0] );
 
 			self::assertArrayHasKey( 'title', $results['data']['publicsFields']['nodes'][0] );
-			self::assertSame( $results['data']['publicsFields']['nodes'][0]['title'], 'Test dog with fields' );
+			self::assertSame( $results['data']['publicsFields']['nodes'][0]['title'], 'This is required single line text' );
 
 			self::assertArrayHasKey( 'richText', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['richText'], 'This is a rich text field' );
