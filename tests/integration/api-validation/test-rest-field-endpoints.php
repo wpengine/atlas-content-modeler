@@ -472,7 +472,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertEquals( 400, $response->get_status() );
-		self::assertSame( 'wpe_invalid_content_model', $response->get_data()['code'] );
+		self::assertSame( 'acm_invalid_content_model', $response->get_data()['code'] );
 	}
 
 	/**

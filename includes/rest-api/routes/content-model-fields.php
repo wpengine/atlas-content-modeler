@@ -51,7 +51,7 @@ function dispatch_patch_content_model_fields( WP_REST_Request $request ) {
 
 	if ( empty( $params['fields'] ) ) {
 		return new WP_Error(
-			'wpe_missing_fields_data',
+			'acm_missing_fields_data',
 			__( 'Expected a fields key with fields to update.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
@@ -61,7 +61,7 @@ function dispatch_patch_content_model_fields( WP_REST_Request $request ) {
 
 	if ( empty( $content_types[ $slug ] ) ) {
 		return new WP_Error(
-			'wpe_invalid_content_model',
+			'acm_invalid_content_model',
 			__( 'The specified content model does not exist.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);

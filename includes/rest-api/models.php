@@ -151,14 +151,14 @@ function get_model_args( string $post_type_slug, array $args ) {
 function update_model( string $post_type_slug, array $args ) {
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
-			'wpe_invalid_content_model_id',
+			'acm_invalid_content_model_id',
 			__( 'Invalid content model ID.', 'atlas-content-modeler' )
 		);
 	}
 
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		return new WP_Error(
-			'wpe_invalid_content_model_arguments',
+			'acm_invalid_content_model_arguments',
 			__( 'Please provide singular and plural labels when creating a content model.', 'atlas-content-modeler' )
 		);
 	}
@@ -166,7 +166,7 @@ function update_model( string $post_type_slug, array $args ) {
 	$content_types = get_registered_content_types();
 	if ( empty( $content_types[ $post_type_slug ] ) ) {
 		return new WP_Error(
-			'wpe_invalid_content_model_id',
+			'acm_invalid_content_model_id',
 			__( 'Invalid content model ID.', 'atlas-content-modeler' )
 		);
 	}

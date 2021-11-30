@@ -149,7 +149,7 @@ function dispatch_update_content_model( WP_REST_Request $request ) {
 
 	if ( empty( $content_types[ $slug ] ) ) {
 		return new WP_Error(
-			'wpe_invalid_content_model_id',
+			'acm_invalid_content_model_id',
 			__( 'Invalid content model ID.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
