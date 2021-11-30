@@ -2,7 +2,7 @@
 
 ## 0.11.0 - 2021-12-01
 ### Added
-- You can now set Featured Image when using Media Field.
+- You can now set Featured Image when using Media Field [WPGraphQL Media Doc](https://www.wpgraphql.com/docs/media/).
 - Ability to select choice in a list using the new Multiple Choice Field (beta).
 
 ### Fixed

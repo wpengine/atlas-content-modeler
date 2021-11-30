@@ -55,7 +55,7 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 = 0.11.0 - 2021-12-01 =
 
-* **Added:** You can now set Featured Image when using Media Field.
+* **Added:** You can now set Featured Image when using Media Field [WPGraphQL Media Doc](https://www.wpgraphql.com/docs/media/).
 * **Added:** Ability to select choice in a list using the new Multiple Choice Field (beta).
 * **Fixed:** Post titles are now available in WPGraphQL responses.
 * **Fixed:** Prevent reserved taxonomy slugs from being used as taxonomy slug.
