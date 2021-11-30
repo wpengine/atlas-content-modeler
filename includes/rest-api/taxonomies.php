@@ -26,7 +26,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 
 	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
 		return new WP_Error(
-			'atlas_content_modeler_invalid_id',
+			'acm_invalid_taxonomy_id',
 			esc_html__( 'Taxonomy slug must be between 1 and 32 characters in length.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -35,7 +35,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	// Prevents use of reserved taxonomy terms as slugs during new taxonomy creation.
 	if ( in_array( $params['slug'], $reserved_tax_terms, true ) ) {
 		return new WP_Error(
-			'atlas_content_modeler_reserved_taxonomy_term',
+			'acm_reserved_taxonomy_term',
 			__( 'Taxonomy slug is reserved.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
@@ -48,7 +48,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	// Prevents creation of a taxonomy if one with the same slug exists that was not created in ACM.
 	if ( in_array( $params['slug'], $non_acm_taxonomies, true ) ) {
 		return new WP_Error(
-			'atlas_content_modeler_taxonomy_exists',
+			'acm_taxonomy_exists',
 			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -57,7 +57,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	// Allows updates of existing ACM taxonomies, but prevents creation of ACM taxonomies with identical slugs.
 	if ( ! $is_update && array_key_exists( $params['slug'], $acm_taxonomies ) ) {
 		return new WP_Error(
-			'atlas_content_modeler_taxonomy_exists',
+			'acm_taxonomy_exists',
 			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -65,7 +65,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 
 	if ( empty( $params['singular'] ) || empty( $params['plural'] ) ) {
 		return new WP_Error(
-			'atlas_content_modeler_invalid_labels',
+			'acm_invalid_labels',
 			esc_html__( 'Please provide singular and plural labels when creating a taxonomy.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -85,7 +85,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 
 	if ( ! $created ) {
 		return new WP_Error(
-			'atlas_content_modeler_taxonomy_not_created',
+			'acm_taxonomy_not_created',
 			esc_html__( 'Taxonomy not created. Reason unknown.', 'atlas-content-modeler' )
 		);
 	}

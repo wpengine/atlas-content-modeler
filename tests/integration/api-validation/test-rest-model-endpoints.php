@@ -88,7 +88,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request );
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'atlas_content_modeler_already_exists', $response->data['code'] );
+		self::assertSame( 'acm_model_exists', $response->data['code'] );
 	}
 
 	/**

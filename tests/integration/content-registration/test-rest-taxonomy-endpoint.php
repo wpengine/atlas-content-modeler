@@ -120,7 +120,7 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'atlas_content_modeler_taxonomy_exists', $response->data['code'] );
+		self::assertSame( 'acm_taxonomy_exists', $response->data['code'] );
 	}
 
 	public function test_cannot_create_taxonomy_when_slug_conflicts_with_reserved_taxonomy_term(): void {
@@ -132,7 +132,7 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'atlas_content_modeler_reserved_taxonomy_term', $response->data['code'] );
+		self::assertSame( 'acm_reserved_taxonomy_term', $response->data['code'] );
 	}
 
 	public function test_cannot_create_taxonomy_when_slug_conflicts_with_existing_acm_taxonomy(): void {
@@ -144,7 +144,7 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'atlas_content_modeler_taxonomy_exists', $response->data['code'] );
+		self::assertSame( 'acm_taxonomy_exists', $response->data['code'] );
 	}
 
 	public function test_cannot_create_taxonomy_without_slug(): void {
@@ -156,7 +156,7 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'atlas_content_modeler_invalid_id', $response->data['code'] );
+		self::assertSame( 'acm_invalid_taxonomy_id', $response->data['code'] );
 	}
 
 	public function test_cannot_create_taxonomy_without_singular_name(): void {
@@ -168,7 +168,7 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'atlas_content_modeler_invalid_labels', $response->data['code'] );
+		self::assertSame( 'acm_invalid_labels', $response->data['code'] );
 	}
 
 	public function test_cannot_create_taxonomy_without_plural_name(): void {
@@ -180,7 +180,7 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'atlas_content_modeler_invalid_labels', $response->data['code'] );
+		self::assertSame( 'acm_invalid_labels', $response->data['code'] );
 	}
 
 	public function test_can_update_taxonomy_with_put_request(): void {

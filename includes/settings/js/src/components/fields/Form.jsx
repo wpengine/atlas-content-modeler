@@ -241,24 +241,24 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				hasDirtyField.current = false;
 			})
 			.catch((err) => {
-				if (err.code === "wpe_duplicate_content_model_field_id") {
+				if (err.code === "acm_duplicate_content_model_field_id") {
 					setError("slug", { type: "idExists" });
 				}
-				if (err.code === "wpe_option_name_undefined") {
+				if (err.code === "acm_option_name_undefined") {
 					err.data.problemIndex.map((index) => {
 						setError("multipleChoice" + index, {
 							type: "multipleChoiceNameEmpty" + index,
 						});
 					});
 				}
-				if (err.code === "wpe_option_slug_undefined") {
+				if (err.code === "acm_option_slug_undefined") {
 					err.data.problemIndex.map((index) => {
 						setError("multipleChoice" + index, {
 							type: "multipleChoiceSlugEmpty" + index,
 						});
 					});
 				}
-				if (err.code === "wpe_option_slug_duplicate") {
+				if (err.code === "acm_option_slug_duplicate") {
 					err.data.duplicates.map((index) => {
 						setError("multipleChoice" + index, {
 							type: "multipleChoiceSlugDuplicate" + index,
@@ -266,7 +266,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					});
 				}
 				if (
-					err.code === "wpe_duplicate_content_model_multi_option_id"
+					err.code === "acm_duplicate_content_model_multi_option_id"
 				) {
 					err.data.duplicates.map((index) => {
 						setError("multipleChoiceName" + index, {
@@ -274,10 +274,10 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						});
 					});
 				}
-				if (err.code === "wpe_invalid_multi_options") {
+				if (err.code === "acm_invalid_multi_options") {
 					setError("multipleChoice", { type: "multipleChoiceEmpty" });
 				}
-				if (err.code === "wpe_invalid_content_model") {
+				if (err.code === "acm_invalid_content_model") {
 					console.error(
 						__(
 							"Attempted to create a field in a model that no longer exists.",
@@ -285,27 +285,22 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						)
 					);
 				}
-				if (
-					err.code ===
-					"atlas_content_modeler_invalid_related_content_model"
-				) {
+				if (err.code === "acm_invalid_related_content_model") {
 					setError("reference", { type: "invalidRelatedModel" });
 				}
-				if (
-					err.code === "atlas_content_modeler_reverse_slug_conflict"
-				) {
+				if (err.code === "acm_reverse_slug_conflict") {
 					setError("reverseSlug", {
 						type: "reverseIdConflicts",
 						message: err.message,
 					});
 				}
-				if (err.code === "atlas_content_modeler_reverse_slug_in_use") {
+				if (err.code === "acm_reverse_slug_in_use") {
 					setError("reverseSlug", {
 						type: "reverseIdInUse",
 						message: err.message,
 					});
 				}
-				if (err.code === "atlas_content_modeler_reserved_field_slug") {
+				if (err.code === "acm_reserved_field_slug") {
 					setError("slug", { type: "nameReserved" });
 				}
 			});

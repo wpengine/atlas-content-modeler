@@ -138,8 +138,8 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 			})
 			.catch((err) => {
 				if (
-					err.code === "atlas_content_modeler_taxonomy_exists" ||
-					err.code === "atlas_content_modeler_reserved_taxonomy_term"
+					err.code === "acm_taxonomy_exists" ||
+					err.code === "acm_reserved_taxonomy_term"
 				) {
 					setError("slug", {
 						type: "invalidSlug",

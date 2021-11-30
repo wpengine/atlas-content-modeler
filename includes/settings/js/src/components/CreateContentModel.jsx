@@ -72,7 +72,7 @@ export default function CreateContentModel() {
 				}
 			})
 			.catch((err) => {
-				if (err.code === "atlas_content_modeler_already_exists") {
+				if (err.code === "acm_model_exists") {
 					setError("slug", {
 						type: "idExists",
 						message: err.message,
