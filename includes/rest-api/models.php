@@ -158,7 +158,7 @@ function update_model( string $post_type_slug, array $args ) {
 
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		return new WP_Error(
-			'acm_invalid_content_model_arguments',
+			'acm_invalid_labels',
 			__( 'Please provide singular and plural labels when creating a content model.', 'atlas-content-modeler' )
 		);
 	}
