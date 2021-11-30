@@ -78,7 +78,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		in_array( $params['slug'], $reserved_field_slugs, true )
 	) {
 		return new WP_Error(
-			'atlas_content_modeler_reserved_field_slug',
+			'acm_reserved_field_slug',
 			__( 'Identifier in use or reserved.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);
@@ -87,7 +87,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	if ( isset( $params['type'] ) && $params['type'] === 'relationship' ) {
 		if ( empty( $params['reference'] ) || empty( $params['cardinality'] ) ) {
 			return new WP_Error(
-				'atlas_content_modeler_missing_field_argument',
+				'acm_missing_field_argument',
 				__( 'The relationship field requires a reference and cardinality argument.', 'atlas-content-modeler' ),
 				array( 'status' => 400 )
 			);
@@ -95,7 +95,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 
 		if ( empty( $content_types[ $params['reference'] ] ) ) {
 			return new WP_Error(
-				'atlas_content_modeler_invalid_related_content_model',
+				'acm_invalid_related_content_model',
 				__( 'The related content model no longer exists.', 'atlas-content-modeler' ),
 				array( 'status' => 400 )
 			);
@@ -234,7 +234,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		)
 	) {
 		return new WP_Error(
-			'atlas_content_modeler_reverse_slug_conflict',
+			'acm_reverse_slug_conflict',
 			sprintf(
 				/* translators: %s: reference id of the referenced to field */
 				__( 'A field in the %s model has the same identifier.', 'atlas-content-modeler' ),
@@ -251,7 +251,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 		content_model_reverse_slug_exists( $params )
 	) {
 		return new WP_Error(
-			'atlas_content_modeler_reverse_slug_in_use',
+			'acm_reverse_slug_in_use',
 			__( 'A relationship field in this model has the same identifier.', 'atlas-content-modeler' ),
 			array( 'status' => 400 )
 		);

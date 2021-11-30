@@ -34,7 +34,7 @@ function create_model( string $post_type_slug, array $args ) {
 
 	if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
 		return new WP_Error(
-			'atlas_content_modeler_already_exists',
+			'acm_already_exists',
 			__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -76,7 +76,7 @@ function create_models( array $models ) {
 
 		if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
 			return new WP_Error(
-				'atlas_content_modeler_already_exists',
+				'acm_already_exists',
 				// translators: The name of the model.
 				sprintf( __( 'A model with slug ‘%s’ already exists.', 'atlas-content-modeler' ), $args['slug'] ),
 				[ 'status' => 400 ]
@@ -108,7 +108,7 @@ function get_model_args( string $post_type_slug, array $args ) {
 
 	if ( empty( $post_type_slug ) || strlen( $post_type_slug ) > 20 ) {
 		return new WP_Error(
-			'atlas_content_modeler_invalid_id',
+			'acm_invalid_id',
 			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -116,7 +116,7 @@ function get_model_args( string $post_type_slug, array $args ) {
 
 	if ( empty( $args['singular'] ) || empty( $args['plural'] ) ) {
 		return new WP_Error(
-			'atlas_content_modeler_invalid_labels',
+			'acm_invalid_labels',
 			__( 'Please provide singular and plural labels when creating a content model.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -202,7 +202,7 @@ function delete_model( string $post_type_slug ) {
 
 	if ( empty( $post_type_slug ) || empty( $content_types[ $post_type_slug ] ) ) {
 		return new WP_Error(
-			'atlas_content_modeler_invalid_id',
+			'acm_invalid_id',
 			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -229,7 +229,7 @@ function delete_model( string $post_type_slug ) {
 
 		if ( ! $updated ) {
 			return new WP_Error(
-				'atlas_content_modeler_taxonomies_not_updated',
+				'acm_taxonomies_not_updated',
 				__( 'Model deletion aborted. Failed to remove model from associated taxonomies.', 'atlas-content-modeler' )
 			);
 		}
@@ -242,7 +242,7 @@ function delete_model( string $post_type_slug ) {
 
 	if ( ! $updated ) {
 		return new WP_Error(
-			'atlas_content_modeler_model_not_deleted',
+			'acm_model_not_deleted',
 			__( 'Model not deleted. Reason unknown.', 'atlas-content-modeler' )
 		);
 	}

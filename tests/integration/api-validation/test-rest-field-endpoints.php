@@ -498,7 +498,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$data     = $response->get_data();
 
 		$this->assertEquals( 400, $response->get_status() );
-		$this->assertEquals( 'atlas_content_modeler_missing_field_argument', $data['code'] );
+		$this->assertEquals( 'acm_missing_field_argument', $data['code'] );
 	}
 
 	/**
@@ -524,7 +524,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$data     = $response->get_data();
 
 		$this->assertEquals( 400, $response->get_status() );
-		$this->assertEquals( 'atlas_content_modeler_missing_field_argument', $data['code'] );
+		$this->assertEquals( 'acm_missing_field_argument', $data['code'] );
 	}
 
 	/**
@@ -551,7 +551,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$data     = $response->get_data();
 
 		$this->assertEquals( 400, $response->get_status() );
-		$this->assertEquals( 'atlas_content_modeler_invalid_related_content_model', $data['code'] );
+		$this->assertEquals( 'acm_invalid_related_content_model', $data['code'] );
 	}
 
 	public function test_using_reserved_field_slug_generates_error() {
@@ -573,6 +573,6 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$data     = $response->get_data();
 
 		$this->assertEquals( 400, $response->get_status() );
-		$this->assertEquals( 'atlas_content_modeler_reserved_field_slug', $data['code'] );
+		$this->assertEquals( 'acm_reserved_field_slug', $data['code'] );
 	}
 }
