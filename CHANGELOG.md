@@ -1,5 +1,21 @@
 # Atlas Content Modeler Changelog
 
+## 0.11.0 - 2021-12-01
+### Added
+- You can now set Featured Image when using Media Field.
+- Ability to select choice in a list using the new Multiple Choice Field (beta).
+
+### Fixed
+- Post titles are now available in WPGraphQL responses.
+- Prevent reserved taxonomy slugs from being used as taxonomy slug.
+- Used consistent labels to describe the taxonomy ID.
+- Changing model plural name now updates the sidebar menu item automatically.
+- Issue where sidebar menu doesn't expand under certain conditions.
+
+### Changed
+- Standardized WP_Error codes.
+- Removed dead code.
+
 ## 0.10.0 - 2021-11-18
 ### Added
 - Relationship fields with reverse references enabled are now editable from the reverse side. Tick “Configure Reverse Reference” when creating your relationship field to use reverse references.
