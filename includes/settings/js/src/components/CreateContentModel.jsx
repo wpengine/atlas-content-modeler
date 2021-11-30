@@ -72,7 +72,7 @@ export default function CreateContentModel() {
 				}
 			})
 			.catch((err) => {
-				if (err.code === "acm_already_exists") {
+				if (err.code === "acm_model_exists") {
 					setError("slug", {
 						type: "idExists",
 						message: err.message,

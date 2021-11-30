@@ -34,7 +34,7 @@ function create_model( string $post_type_slug, array $args ) {
 
 	if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
 		return new WP_Error(
-			'acm_already_exists',
+			'acm_model_exists',
 			__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -76,7 +76,7 @@ function create_models( array $models ) {
 
 		if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
 			return new WP_Error(
-				'acm_already_exists',
+				'acm_model_exists',
 				// translators: The name of the model.
 				sprintf( __( 'A model with slug ‘%s’ already exists.', 'atlas-content-modeler' ), $args['slug'] ),
 				[ 'status' => 400 ]
