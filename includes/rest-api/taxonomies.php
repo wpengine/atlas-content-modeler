@@ -26,7 +26,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 
 	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
 		return new WP_Error(
-			'acm_invalid_id',
+			'acm_invalid_taxonomy_id',
 			esc_html__( 'Taxonomy slug must be between 1 and 32 characters in length.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);

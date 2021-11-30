@@ -156,7 +156,7 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
-		self::assertSame( 'acm_invalid_id', $response->data['code'] );
+		self::assertSame( 'acm_invalid_taxonomy_id', $response->data['code'] );
 	}
 
 	public function test_cannot_create_taxonomy_without_singular_name(): void {

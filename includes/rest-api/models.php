@@ -108,7 +108,7 @@ function get_model_args( string $post_type_slug, array $args ) {
 
 	if ( empty( $post_type_slug ) || strlen( $post_type_slug ) > 20 ) {
 		return new WP_Error(
-			'acm_invalid_id',
+			'acm_invalid_model_id',
 			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
@@ -202,7 +202,7 @@ function delete_model( string $post_type_slug ) {
 
 	if ( empty( $post_type_slug ) || empty( $content_types[ $post_type_slug ] ) ) {
 		return new WP_Error(
-			'acm_invalid_id',
+			'acm_invalid_model_id',
 			__( 'Please provide a valid Model ID.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
