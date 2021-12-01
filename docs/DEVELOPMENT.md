@@ -166,7 +166,7 @@ A running WordPress test site will be needed to run browser tests against. This 
 
 Developers with full GitHub repository access can create public releases.
 
-Before tagging a release, make sure to notify the FaustJS and WPGraphQL teams ahead of time. For normal releases, a 24 hour notice is desirable. For releases containing changes that break backwards compatibility, a one week notice is desirable.
+Before tagging a release, make sure to notify other WP Engine teams ahead of time in the `#oss-releases` channel in Slack. For normal releases, a 24 hour notice is desirable. For releases containing changes that break backwards compatibility, a one week notice is desirable.
 
 ### To release the plugin
 
