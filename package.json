@@ -7,19 +7,13 @@
       "source": "includes/settings/js/src/index.jsx",
       "distDir": "includes/settings/dist/",
       "publicUrl": ".",
-      "sourceMap": true,
-      "context": "browser",
-      "outputFormat": "global",
-      "isLibrary": false
+      "sourceMap": true
     },
     "publisher": {
       "source": "includes/publisher/js/src/index.jsx",
       "distDir": "includes/publisher/dist/",
       "publicUrl": ".",
-      "sourceMap": true,
-      "context": "browser",
-      "outputFormat": "global",
-      "isLibrary": false
+      "sourceMap": true
     }
   },
   "scripts": {
