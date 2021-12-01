@@ -7,13 +7,19 @@
       "source": "includes/settings/js/src/index.jsx",
       "distDir": "includes/settings/dist/",
       "publicUrl": ".",
-      "sourceMap": true
+      "sourceMap": true,
+      "context": "browser",
+      "outputFormat": "global",
+      "isLibrary": false
     },
     "publisher": {
       "source": "includes/publisher/js/src/index.jsx",
       "distDir": "includes/publisher/dist/",
       "publicUrl": ".",
-      "sourceMap": true
+      "sourceMap": true,
+      "context": "browser",
+      "outputFormat": "global",
+      "isLibrary": false
     }
   },
   "scripts": {
@@ -40,9 +46,7 @@
     "@babel/plugin-syntax-jsx": "^7.12.13",
     "@wordpress/api-fetch": "^3.21.5",
     "bootstrap": "^5.0.1",
-    "react": "^17.0.1",
     "react-beautiful-dnd": "^13.1.0",
-    "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.4",
     "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
