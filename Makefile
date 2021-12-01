@@ -1,7 +1,8 @@
 DOCKER_RUN       := docker run --rm
-COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer:1
+COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer:1 ## :1 required for v1
 NODE_IMAGE       := -w /home/node/app -v "$$(pwd):/home/node/app" --user node atlascontentmodeler_node_image
 HAS_CHROMEDRIVER := $(shell command -v chromedriver 2> /dev/null)
+HAS_COMPOSER := $(shell command -v composer 2> /dev/null)
 CURRENTUSER      := $$(id -u)
 CURRENTGROUP     := $$(id -g)
 
@@ -37,7 +38,7 @@ build-docker-phpunit:
 	fi
 
 .PHONY: build-npm
-build-npm: | install-npm
+build-npm: | install-npm ## check for correct version of node and npm (around docker_run)
 	@echo "Building plugin assets"
 	$(DOCKER_RUN) $(NODE_IMAGE) npm run build
 
@@ -66,10 +67,11 @@ help:  ## Display help
 			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 		}' $(MAKEFILE_LIST) | sort
 
-.PHONY: install-composer
+.PHONY: install-composer ## must be v1
 install-composer:
 	if [ ! -d ./vendor/ ]; then \
 		echo "installing composer dependencies for plugin"; \
+		## if here for if composer is already installed, grep for version
 		$(DOCKER_RUN) $(COMPOSER_IMAGE) install --ignore-platform-reqs; \
 	fi
 
