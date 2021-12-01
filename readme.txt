@@ -55,14 +55,14 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 = 0.11.0 - 2021-12-01 =
 
-* **Added:** You can now set Featured Image when using Media Field [WPGraphQL Media Doc](https://www.wpgraphql.com/docs/media/).
-* **Added:** Ability to select choice in a list using the new Multiple Choice Field (beta).
+* **Added:** Set any Media Field as the [Featured Image](https://www.wpgraphql.com/docs/media/#query-a-post-with-its-featured-image) for its model.
+* **Added:** Create checkbox and radio button lists with the new Multiple Choice Field (beta).
 * **Fixed:** Post titles are now available in WPGraphQL responses.
 * **Fixed:** Prevent reserved taxonomy slugs from being used as taxonomy slug.
 * **Fixed:** Used consistent labels to describe the taxonomy ID.
 * **Fixed:** Changing model plural name now updates the sidebar menu item automatically.
 * **Fixed:** Issue where sidebar menu doesn't expand under certain conditions.
-* **Changed:** Standardized WP_Error codes.
+* **Changed:** Standardized WP_Error codes for internal REST endpoints. All error statuses now use an acm_ prefix instead of a mix of wpe_ and atlas_content_modeler_.
 * **Changed:** Removed dead code.
 
 = 0.10.0 - 2021-11-18 =
