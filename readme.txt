@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 5.8
 Requires PHP: 7.2
-Stable tag: 0.10.0
+Stable tag: 0.11.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,7 +53,20 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 == Changelog ==
 
+= 0.11.0 - 2021-12-01 =
+
+* **Added:** Set any Media Field as the [Featured Image](https://www.wpgraphql.com/docs/media/#query-a-post-with-its-featured-image) for its model.
+* **Added:** Create checkbox and radio button lists with the new Multiple Choice Field (beta).
+* **Fixed:** Post titles are now available in WPGraphQL responses.
+* **Fixed:** Prevent reserved taxonomy slugs from being used as taxonomy slug.
+* **Fixed:** Used consistent labels to describe the taxonomy ID.
+* **Fixed:** Changing model plural name now updates the sidebar menu item automatically.
+* **Fixed:** Issue where sidebar menu doesn't expand under certain conditions.
+* **Changed:** Standardized WP_Error codes for internal REST endpoints. All error statuses now use an acm_ prefix instead of a mix of wpe_ and atlas_content_modeler_.
+* **Changed:** Removed dead code.
+
 = 0.10.0 - 2021-11-18 =
+
 * **Added:** Relationship fields with reverse references enabled are now editable from the reverse side. Tick “Configure Reverse Reference” when creating your relationship field to use reverse references.
 * **Added:** Post slugs are now editable in ACM entries. Enable them via Screen Options when editing a post.
 * **Fixed:** Integer number fields can no longer use decimal values for the step, minimum and maximum settings.
