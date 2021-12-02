@@ -45,15 +45,6 @@ final class FormEditingExperience {
 	private $screen;
 
 	/**
-	 * The post type of the post on this screen.
-	 *
-	 * @var string
-	 *
-	 * @deprecated To be removed in favor of $this->screen.
-	 */
-	private $current_screen_post_type;
-
-	/**
 	 * Error messages related to saving posts.
 	 *
 	 * @var string
@@ -165,8 +156,6 @@ final class FormEditingExperience {
 	 */
 	public function current_screen( $screen ): void {
 		$this->screen = $screen;
-		// @todo remove this and refactor code below that references it.
-		$this->current_screen_post_type = $screen->post_type;
 	}
 
 	/**
@@ -176,7 +165,7 @@ final class FormEditingExperience {
 	 */
 	public function enqueue_assets( string $hook ): void {
 		// Bail if this isn't a model created by our plugin.
-		if ( ! array_key_exists( $this->current_screen_post_type, $this->models ) ) {
+		if ( ! array_key_exists( $this->screen->post_type, $this->models ) ) {
 			return;
 		}
 
@@ -216,16 +205,16 @@ final class FormEditingExperience {
 			$models[ $model ]['wp_rest_base'] = sanitize_key( $data['plural'] );
 		}
 
-		$model = $models[ $this->current_screen_post_type ];
+		$model = $models[ $this->screen->post_type ];
 
 		// Add existing field values to models data.
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
 				if ( isset( $post->ID ) ) {
 					if ( 'relationship' === $field['type'] ) {
-						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post, $field );
+						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post, $field );
 					} else {
-						$models[ $this->current_screen_post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
 					}
 				}
 			}
@@ -236,7 +225,7 @@ final class FormEditingExperience {
 			'atlasContentModelerFormEditingExperience',
 			[
 				'models'            => $models,
-				'postType'          => $this->current_screen_post_type,
+				'postType'          => $this->screen->post_type,
 				'allowedMimeTypes'  => get_allowed_mime_types(),
 				'adminUrl'          => admin_url(),
 				'postHasReferences' => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
