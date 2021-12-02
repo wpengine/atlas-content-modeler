@@ -17,7 +17,7 @@ Atlas Content Modeler (ACM) is a content modeling solution for WordPress. Using 
 Developers get a modern content modeling system that automatically integrates with WPGraphQL and the WordPress REST API. No need to write code or install other plugins!
 
 ### For Publishers
-Publishers get friendly and familiar content entry pages
+Publishers get friendly and familiar content entry pages.
 
 == Installation ==
 This plugin can be installed directly from your WordPress site.
