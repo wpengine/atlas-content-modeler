@@ -26,7 +26,7 @@ Publishers get friendly and familiar content entry pages.
 
 ## Setup
 
-1. [Download the latest copy of the Atlas Content Modeler plugin here](https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download).
+1. [Download the latest copy of the Atlas Content Modeler plugin here](https://downloads.wordpress.org/plugin/atlas-content-modeler.latest-stable.zip).
 2. Install and activate the plugin in your WordPress admin area at Plugins → Add New by clicking “Upload Plugin”.
 3. We recommend that developers also install and activate the [WPGraphQL plugin](https://wordpress.org/plugins/wp-graphql/) to be able to fetch model entries with GraphQL.
 

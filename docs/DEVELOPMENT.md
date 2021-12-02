@@ -164,7 +164,9 @@ A running WordPress test site will be needed to run browser tests against. This 
 
 ## Deployment
 
-Developers with full GitHub repository access can create public releases:
+Developers with full GitHub repository access can create public releases.
+
+Before tagging a release, make sure to notify other WP Engine teams ahead of time in the `#oss-releases` channel in Slack. For normal releases, a 24 hour notice is desirable. For releases containing changes that break backwards compatibility, a one week notice is desirable.
 
 ### To release the plugin
 
@@ -182,4 +184,4 @@ git push --tags
 
 CircleCI will build and deploy the plugin zip. The latest version is available here:
 
-`https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download`
+`https://wordpress.org/plugins/atlas-content-modeler/`
