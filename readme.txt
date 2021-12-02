@@ -20,7 +20,7 @@ Developers get a modern content modeling system that automatically integrates wi
 Publishers get friendly and familiar content entry pages.
 
 == Installation ==
-This plugin can be installed directly from your WordPress site.
+This plugin can be installed directly from your WordPress site
 
 1. Log in to your WordPress site and navigate to **Plugins &rarr; Add New**.
 2. Type "Atlas Content Modeler" into the Search box.
