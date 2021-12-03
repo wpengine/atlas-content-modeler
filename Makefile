@@ -1,6 +1,7 @@
 DOCKER_RUN       := docker run --rm
 COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer:1 ## :1 required for v1
 NODE_IMAGE       := -w /home/node/app -v "$$(pwd):/home/node/app" --user node atlascontentmodeler_node_image
+NODE_VERSION	 := $(shell command -v node 2> /dev/null)
 HAS_CHROMEDRIVER := $(shell command -v chromedriver 2> /dev/null)
 HAS_COMPOSER := $(shell command -v composer 2> /dev/null)
 CURRENTUSER      := $$(id -u)
