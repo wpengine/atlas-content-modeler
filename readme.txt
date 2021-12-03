@@ -8,7 +8,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
 Contributors: antpb, apmatthe, chriswiegman, jasonkonen, kevinwhoffman, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, wpengine
 
-A WordPress plugin to create custom post types, custom fields, and custom taxonomies for headless WordPress sites.
+A WordPress plugin to create custom post types, custom fields, and custom taxonomies for headless WordPress sites
 
 == Description ==
 Atlas Content Modeler (ACM) is a content modeling solution for WordPress. Using an intuitive interface, you can create custom post types, as well as custom fields and taxonomies for those post types, with ease.
