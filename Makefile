@@ -68,7 +68,7 @@ help:  ## Display help
 			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 		}' $(MAKEFILE_LIST) | sort
 
-.PHONY: install-composer ## must be v1
+.PHONY: install-composer ## must be v1, need to check version
 install-composer:
 	if [ ! -d ./vendor/ ]; then \
 		echo "installing composer dependencies for plugin"; \
