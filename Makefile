@@ -72,8 +72,9 @@ help:  ## Display help
 install-composer:
 	if [ ! -d ./vendor/ ]; then \
 		echo "installing composer dependencies for plugin"; \
-		## if here for if composer is already installed, grep for version
-		$(DOCKER_RUN) $(COMPOSER_IMAGE) install --ignore-platform-reqs; \
+		if [! HAS_COMPOSER]; then \
+			$(DOCKER_RUN) $(COMPOSER_IMAGE) install --ignore-platform-reqs; \
+		fi
 	fi
 
 .PHONY: install-npm
