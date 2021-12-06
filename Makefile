@@ -3,7 +3,8 @@ COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer:1 ## :
 NODE_IMAGE       := -w /home/node/app -v "$$(pwd):/home/node/app" --user node atlascontentmodeler_node_image
 NODE_VERSION	 := $(shell command -v node 2> /dev/null)
 HAS_CHROMEDRIVER := $(shell command -v chromedriver 2> /dev/null)
-HAS_COMPOSER := $(shell command -v composer 2> /dev/null)
+HAS_COMPOSER := $(shell command --version composer 2> /dev/null)
+COMPOSER_VERSION := $$composer --version)
 CURRENTUSER      := $$(id -u)
 CURRENTGROUP     := $$(id -g)
 
@@ -72,16 +73,23 @@ help:  ## Display help
 install-composer:
 	if [ ! -d ./vendor/ ]; then \
 		echo "installing composer dependencies for plugin"; \
-		if [! HAS_COMPOSER]; then \
+		if [ $(HAS_COMPOSER) ]; then \
+			echo "success"; \
+			composer install --ignore-platform-reqs; \
+		else \
 			$(DOCKER_RUN) $(COMPOSER_IMAGE) install --ignore-platform-reqs; \
-		fi
+		fi; \
 	fi
 
 .PHONY: install-npm
 install-npm: | build-docker
 	if [ ! -d ./node_modules/ ]; then \
 		echo "installing node dependencies for plugin"; \
-		$(DOCKER_RUN) $(NODE_IMAGE) npm ci; \
+		if [ $(NODE_VERSION) ]; then \
+			npm ci; \
+		else \
+			$(DOCKER_RUN) $(NODE_IMAGE) npm ci; \
+		fi
 	fi
 
 .PHONY: test
