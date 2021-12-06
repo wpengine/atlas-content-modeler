@@ -233,13 +233,6 @@ jobs:
           command: |
             sudo apt-get update -yq
             sudo apt-get install default-mysql-client
-
-      - run:
-          name: Install MySQL PHP extension
-          command: |
-            sudo apt-get update -yq
-            sudo apt-get install docker-php-ext-install mysqli zip pdo_mysql
-
       - run:
           # Our primary container isn't MYSQL so run a sleep command until it's ready.
           name: Waiting for MySQL to be ready
