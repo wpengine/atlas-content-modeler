@@ -231,6 +231,7 @@ jobs:
       - run:
           name: Install mysql_client
           command: |
+            sudo apt-get update -yq
             sudo apt-get install default-mysql-client
 
       - run:
