@@ -3,7 +3,7 @@ COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer:1 ## :
 NODE_IMAGE       := -w /home/node/app -v "$$(pwd):/home/node/app" --user node atlascontentmodeler_node_image
 NODE_VERSION	 := $(shell command -v node 2> /dev/null)
 HAS_CHROMEDRIVER := $(shell command -v chromedriver 2> /dev/null)
-HAS_COMPOSER := $(shell command --version composer 2> /dev/null)
+HAS_COMPOSER := $(shell command -v composer --version | grep "Composer version 1" 2> /dev/null)
 COMPOSER_VERSION := $$composer --version)
 CURRENTUSER      := $$(id -u)
 CURRENTGROUP     := $$(id -g)
@@ -71,15 +71,17 @@ help:  ## Display help
 
 .PHONY: install-composer ## must be v1, need to check version
 install-composer:
+ifdef HAS_COMPOSER ## add version
 	if [ ! -d ./vendor/ ]; then \
 		echo "installing composer dependencies for plugin"; \
-		if [ $(HAS_COMPOSER) ]; then \
-			echo "success"; \
-			composer install --ignore-platform-reqs; \
-		else \
-			$(DOCKER_RUN) $(COMPOSER_IMAGE) install --ignore-platform-reqs; \
-		fi; \
+		composer install --ignore-platform-reqs; \
 	fi
+else
+	if [ ! -d ./vendor/ ]; then \
+		echo "installing composer dependencies for plugin - docker"; \
+		$(DOCKER_RUN) $(COMPOSER_IMAGE) install --ignore-platform-reqs; \
+	fi
+endif
 
 .PHONY: install-npm
 install-npm: | build-docker
