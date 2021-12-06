@@ -5,8 +5,8 @@
 version: 2.1
 orbs:
   wp-product-orb: wpengine/wp-product-orb@1.3.0
-  php: cimg/php@7.4.26
-  node: cimg/node@16.13.1
+  php: cimg/php:7.4.26
+  node: cimg/node:16.13.1
 
 commands:
   set_version_variable:
