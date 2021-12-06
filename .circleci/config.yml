@@ -238,7 +238,7 @@ jobs:
           name: Install MySQL PHP extension
           command: |
             sudo apt-get update -yq
-            sudo docker-php-ext-install mysqli zip pdo_mysql
+            sudo apt-get install docker-php-ext-install mysqli zip pdo_mysql
 
       - run:
           # Our primary container isn't MYSQL so run a sleep command until it's ready.
