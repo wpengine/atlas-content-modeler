@@ -229,7 +229,7 @@ jobs:
       - attach_workspace:
           at: .
 
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
       - run:
           name: Install mysql_client
           command: |
