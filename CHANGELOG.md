@@ -1,4 +1,7 @@
 # Atlas Content Modeler Changelog
+## Unreleased
+### Fixed
+- Improved display of admin notices on pages in the Content Modeler admin menu.
 
 ## 0.11.0 - 2021-12-01
 ### Added
