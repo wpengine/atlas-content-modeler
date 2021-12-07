@@ -421,7 +421,7 @@ jobs:
   plugin-test-content-connect:
     docker:
       - image: cimg/php:7.4
-      - image: circleci/mysql:5.7
+      - image: cimg/mysql:5.7
         environment:
           MYSQL_DATABASE: wp_database
           MYSQL_USER: wp_user
