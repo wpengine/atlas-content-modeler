@@ -85,14 +85,17 @@ endif
 
 .PHONY: install-npm
 install-npm: | build-docker
+ifdef HAS_NODE ## add version
 	if [ ! -d ./node_modules/ ]; then \
 		echo "installing node dependencies for plugin"; \
-		if [ $(NODE_VERSION) ]; then \
-			npm ci; \
-		else \
-			$(DOCKER_RUN) $(NODE_IMAGE) npm ci; \
-		fi
+		npm ci; \
 	fi
+else
+	if [ ! -d ./node_modules/ ]; then \
+		echo "installing node dependencies for plugin"; \
+		$(DOCKER_RUN) $(NODE_IMAGE) npm ci; \
+	fi
+endif
 
 .PHONY: test
 test: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit test-content-connect ## Build all assets and run all testing except end-to-end testing
