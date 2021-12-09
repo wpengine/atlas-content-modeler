@@ -30,5 +30,6 @@ namespace WPE\AtlasContentModeler\Settings;
 			</div>
 		</div>
 	</header>
+	<hr class="wp-header-end">
 	<div id="root"></div>
 </div>
