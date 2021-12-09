@@ -25,35 +25,6 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						id={`is-repeatable-${fieldId}`}
 						ref={register}
 						checked={data?.isRepeatable === true}
-						onChange={(event) => {
-							/**
-							 * Unchecks other fields when checking a field.
-							 * Only one field can be the title field.
-							 */
-							if (event.target.checked) {
-								dispatch({
-									type: "setRepeatableField",
-									id: fieldId,
-									model: currentModel,
-								});
-								return;
-							}
-
-							if (!event.target.checked) {
-								/**
-								 * At this point we're just unchecking the original
-								 * title field.
-								 */
-								dispatch({
-									type: "setFieldProperties",
-									id: fieldId,
-									model: currentModel,
-									properties: [
-										{ name: "isRepeatable", value: false },
-									],
-								});
-							}
-						}}
 					/>
 					<label
 						htmlFor={`is-repeatable-${fieldId}`}
