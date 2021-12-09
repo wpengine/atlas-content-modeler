@@ -1,8 +1,12 @@
 import React, { useState, useRef } from "react";
+import { useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Relationship from "./relationship";
 import Icon from "acm-icons";
+import AddIcon from "../../../../components/icons/AddIcon";
+import TrashIcon from "../../../../components/icons/TrashIcon";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
@@ -77,6 +81,36 @@ export default function Field(props) {
 }
 
 function fieldMarkup(field, modelSlug, errors, validate) {
+	const storedData = field.value;
+	const {
+		register,
+		handleSubmit,
+		errors,
+		setValue,
+		getValues,
+		clearErrors,
+		control,
+		setError,
+		reset,
+		trigger,
+		watch,
+	} = useForm({
+		mode: "onChange",
+		defaultValues: storedData,
+	});
+
+	let { fields, append, remove } = useFieldArray({
+		control,
+		name: "value",
+	});
+	if (field.value === undefined ) {
+		field.value = [""];
+		append({ value: "" }, false);
+	}
+	if (fields.length < 1){
+		fields = storedData;
+	}
+
 	switch (field.type) {
 		case "relationship":
 			return (
@@ -95,6 +129,185 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "text":
+			// console.log(field);
+			console.log("repeatable", field.isRepeatable);
+			if ( field.isRepeatable ){			
+				return (
+					<div className={"field"}>
+						<label>
+							{field.name}
+						</label>
+						<fieldset>
+							<div
+								id="multipleChoices"
+								className="d-flex flex-column d-sm-flex flex-sm-row"
+							>
+								<div className="multiple-option-container">
+									<ul>
+										{fields.map((item, index) => {
+											console.log(item);
+											return (
+												<div
+													key={item.id}
+													className={`field multiple-option-container-single`}
+												>
+													<label
+														htmlFor={"multipleChoice" + index}
+													>
+														{__(
+															"Item ",
+															"atlas-content-modeler"
+														)}
+														{index + 1}
+													</label>
+													<br />
+													<p className="help">
+														{__(
+															"The display name of your item",
+															"atlas-content-modeler"
+														)}
+													</p>
+													<div
+														className={`${
+															errors["multipleChoice" + index]
+																? "field has-error"
+																: "field"
+														} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
+													>
+														<div
+															className="me-sm-5"
+															name="multiples"
+														>
+															<input
+																ref={register()}
+																name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][value]`}
+																placeholder={__(
+																	"Item Name",
+																	"atlas-content-modeler"
+																)}
+																type="text"
+																onKeyPress={(event) => {
+																	if (
+																		event.key ===
+																		"Enter"
+																	) {
+																		console.log(fields);
+																		event.preventDefault();
+																	}
+																}}
+																// need to figure out how to init the value.
+																defaultValue={
+																	`${item.value}`
+																}
+																onChange={(e) => {
+																	// clearNameErrors(
+																	// 	errors,
+																	// 	index
+																	// );
+																}}
+															/>
+														</div>
+														<div
+															className={`value[${index}].remove-container`}
+														>
+															{fields.length > 1 && (
+																<button
+																	className="remove-item tertiary no-border"
+																	onClick={(event) => {
+																		event.preventDefault();
+																		remove(index);
+																	}}
+																>
+																	<a
+																		aria-label={__(
+																			"Remove item.",
+																			"atlas-content-modeler"
+																		)}
+																	>
+																		<TrashIcon size="small" />{" "}
+																	</a>
+																</button>
+															)}
+														</div>
+													</div>
+													{/* {errors["multipleChoice" + index] &&
+														errors["multipleChoice" + index]
+															.type ===
+															"multipleChoiceNameEmpty" +
+																index && (
+															<span className="error">
+																<Icon type="error" />
+																<span role="alert">
+																	{__(
+																		"Must set a name.",
+																		"atlas-content-modeler"
+																	)}
+																</span>
+															</span>
+														)} */}
+													{/* {errors["multipleChoiceName" + index] &&
+														errors["multipleChoiceName" + index]
+															.type ===
+															"multipleChoiceNameDuplicate" +
+																index && (
+															<span className="error">
+																<Icon type="error" />
+																<span role="alert">
+																	{__(
+																		"Cannot have duplicate choice names.",
+																		"atlas-content-modeler"
+																	)}
+																</span>
+															</span>
+														)} */}
+												</div>
+											);
+										})}
+										<div className="field">
+											<button
+												className="add-option tertiary no-border"
+												onClick={(event) => {
+													event.preventDefault();
+													append({ value: "" });
+												}}
+											>
+												<a>
+													<AddIcon noCircle />{" "}
+													<span>
+														{field.value.length > 0
+															? __(
+																	"Add another item",
+																	"atlas-content-modeler"
+																)
+															: __(
+																	"Add an item",
+																	"atlas-content-modeler"
+																)}
+													</span>
+												</a>
+											</button>
+											{errors.multipleChoice &&
+												errors.multipleChoice.type ===
+													"multipleChoiceEmpty" && (
+													<span className="error">
+														<Icon type="error" />
+														<span role="alert">
+															{__(
+																"Must create a choice first.",
+																"atlas-content-modeler"
+															)}
+														</span>
+													</span>
+												)}
+										</div>
+									</ul>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				);
+			}
+
 			const textProps = {
 				type: `${field.type}`,
 				name: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
@@ -170,7 +383,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				// call global validate
 				validate(event, field);
 			}
-
 			return (
 				<>
 					<label
