@@ -240,8 +240,14 @@ input[type="radio"] {
 	margin: 5px 8px 0 0;
 }
 
-.atlas-content-modeler-admin-page .radio-row label span {
+.atlas-content-modeler-admin-page .radio-row label span,
+.atlas-content-modeler-admin-page label.repeatable span {
 	color: $color-gray-mid;
 	display: block;
 	font-size: 13px;
+}
+
+.atlas-content-modeler-admin-page label.repeatable span {
+	margin-left: 28px;
+	margin-top: 5px;
 }

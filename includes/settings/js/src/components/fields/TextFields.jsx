@@ -5,7 +5,7 @@ import React, { useContext, useRef } from "react";
 import { getTitleFieldId } from "../../queries";
 import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 
 const TextFields = ({ register, data, editing, fieldId }) => {
 	const { models, dispatch } = useContext(ModelsContext);
@@ -16,75 +16,101 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 
 	return (
 		<>
-			{!data?.parent && (
-				<div className="field">
-					<legend>Title Field</legend>
-					<input
-						name="isTitle"
-						type="checkbox"
-						id={`is-title-${fieldId}`}
-						ref={register}
-						checked={data?.isTitle === true}
-						onChange={(event) => {
+			<div className="field">
+				<legend>Title Field</legend>
+				<input
+					name="isTitle"
+					type="checkbox"
+					id={`is-title-${fieldId}`}
+					ref={register}
+					checked={data?.isTitle === true}
+					onChange={(event) => {
+						/**
+						 * Unchecks other fields when checking a field.
+						 * Only one field can be the title field.
+						 */
+						if (event.target.checked) {
+							dispatch({
+								type: "setTitleField",
+								id: fieldId,
+								model: currentModel,
+							});
+							return;
+						}
+
+						if (!event.target.checked) {
 							/**
-							 * Unchecks other fields when checking a field.
-							 * Only one field can be the title field.
+							 * When unchecking a field that was not the original
+							 * title, restore isTitle on the original title
+							 * field if there is one. Prevents an issue where
+							 * checking “is title” then unchecking it removes
+							 * isTitle from the original.
 							 */
-							if (event.target.checked) {
+							if (
+								originalTitleFieldId.current &&
+								originalTitleFieldId.current !== fieldId
+							) {
 								dispatch({
 									type: "setTitleField",
-									id: fieldId,
+									id: originalTitleFieldId.current,
 									model: currentModel,
 								});
 								return;
 							}
 
-							if (!event.target.checked) {
-								/**
-								 * When unchecking a field that was not the original
-								 * title, restore isTitle on the original title
-								 * field if there is one. Prevents an issue where
-								 * checking “is title” then unchecking it removes
-								 * isTitle from the original.
-								 */
-								if (
-									originalTitleFieldId.current &&
-									originalTitleFieldId.current !== fieldId
-								) {
-									dispatch({
-										type: "setTitleField",
-										id: originalTitleFieldId.current,
-										model: currentModel,
-									});
-									return;
-								}
+							/**
+							 * At this point we're just unchecking the original
+							 * title field.
+							 */
+							dispatch({
+								type: "setFieldProperties",
+								id: fieldId,
+								model: currentModel,
+								properties: [{ name: "isTitle", value: false }],
+							});
+						}
+					}}
+				/>
+				<label
+					htmlFor={`is-title-${fieldId}`}
+					className="checkbox is-title"
+				>
+					{__(
+						"Use this field as the entry title",
+						"atlas-content-modeler"
+					)}
+				</label>
+			</div>
 
-								/**
-								 * At this point we're just unchecking the original
-								 * title field.
-								 */
-								dispatch({
-									type: "setFieldProperties",
-									id: fieldId,
-									model: currentModel,
-									properties: [
-										{ name: "isTitle", value: false },
-									],
-								});
-							}
-						}}
+			{!editing && data?.repeatable !== true && (
+				<div className="field">
+					<legend>Repeatable</legend>
+					<input
+						name="repeatable"
+						type="checkbox"
+						id={`repeatable-${fieldId}`}
+						ref={register}
+						defaultChecked={data?.repeatable === true}
+						disabled={editing}
 					/>
 					<label
-						htmlFor={`is-title-${fieldId}`}
-						className="checkbox is-title"
+						htmlFor={`repeatable-${fieldId}`}
+						className="checkbox repeatable"
 					>
 						{__(
-							"Use this field as the entry title",
+							"Make this field repeatable",
 							"atlas-content-modeler"
 						)}
+						<span>
+							{__(
+								"Allows the publisher to add multiple text entries, stored as an array.",
+								"atlas-content-modeler"
+							)}
+						</span>
 					</label>
 				</div>
 			)}
+
 			<div className={editing ? "field read-only editing" : "field"}>
 				<legend>Input Type</legend>
 				<fieldset>
