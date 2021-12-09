@@ -81,35 +81,29 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 					)}
 				</label>
 			</div>
-
-			{!editing && data?.repeatable !== true && (
-				<div className="field">
-					<legend>Repeatable</legend>
-					<input
-						name="repeatable"
-						type="checkbox"
-						id={`repeatable-${fieldId}`}
-						ref={register}
-						defaultChecked={data?.repeatable === true}
-						disabled={editing}
-					/>
-					<label
-						htmlFor={`repeatable-${fieldId}`}
-						className="checkbox repeatable"
-					>
+			<div className="field">
+				<legend>Repeatable</legend>
+				<input
+					name="repeatable"
+					type="checkbox"
+					id={`repeatable-${fieldId}`}
+					ref={register}
+					defaultChecked={data?.repeatable === true}
+					disabled={editing}
+				/>
+				<label
+					htmlFor={`repeatable-${fieldId}`}
+					className="checkbox repeatable"
+				>
+					{__("Make this field repeatable", "atlas-content-modeler")}
+					<span>
 						{__(
-							"Make this field repeatable",
+							"Allows the publisher to add multiple text entries, stored as an array.",
 							"atlas-content-modeler"
 						)}
-						<span>
-							{__(
-								"Allows the publisher to add multiple text entries, stored as an array.",
-								"atlas-content-modeler"
-							)}
-						</span>
-					</label>
-				</div>
-			)}
+					</span>
+				</label>
+			</div>
 
 			<div className={editing ? "field read-only editing" : "field"}>
 				<legend>Input Type</legend>
