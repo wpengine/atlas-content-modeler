@@ -24,7 +24,8 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						type="checkbox"
 						id={`is-repeatable-${fieldId}`}
 						ref={register}
-						checked={data?.isRepeatable === true}
+						defaultChecked={data?.isRepeatable === true}
+						disabled={editing}
 					/>
 					<label
 						htmlFor={`is-repeatable-${fieldId}`}
