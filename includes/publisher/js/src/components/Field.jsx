@@ -1,6 +1,4 @@
 import React, { useState, useRef } from "react";
-import { useFieldArray } from "react-hook-form";
-import { useForm } from "react-hook-form";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Relationship from "./relationship";
@@ -81,36 +79,6 @@ export default function Field(props) {
 }
 
 function fieldMarkup(field, modelSlug, errors, validate) {
-	const storedData = field.value;
-	const {
-		register,
-		handleSubmit,
-		errors,
-		setValue,
-		getValues,
-		clearErrors,
-		control,
-		setError,
-		reset,
-		trigger,
-		watch,
-	} = useForm({
-		mode: "onChange",
-		defaultValues: storedData,
-	});
-
-	let { fields, append, remove } = useFieldArray({
-		control,
-		name: "value",
-	});
-	if (field.value === undefined ) {
-		field.value = [""];
-		append({ value: "" }, false);
-	}
-	if (fields.length < 1){
-		fields = storedData;
-	}
-
 	switch (field.type) {
 		case "relationship":
 			return (
@@ -129,14 +97,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "text":
-			// console.log(field);
-			console.log("repeatable", field.isRepeatable);
-			if ( field.isRepeatable ){			
+			if (field.isRepeatable) {
+				const [values, setValues] = useState(field?.value || [""]);
 				return (
 					<div className={"field"}>
-						<label>
-							{field.name}
-						</label>
+						<label>{field.name}</label>
 						<fieldset>
 							<div
 								id="multipleChoices"
@@ -144,15 +109,17 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 							>
 								<div className="multiple-option-container">
 									<ul>
-										{fields.map((item, index) => {
-											console.log(item);
+										{values.map((item, index) => {
 											return (
 												<div
-													key={item.id}
+													key={index}
 													className={`field multiple-option-container-single`}
 												>
 													<label
-														htmlFor={"multipleChoice" + index}
+														htmlFor={
+															"multipleChoice" +
+															index
+														}
 													>
 														{__(
 															"Item ",
@@ -169,7 +136,10 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 													</p>
 													<div
 														className={`${
-															errors["multipleChoice" + index]
+															errors[
+																"multipleChoice" +
+																	index
+															]
 																? "field has-error"
 																: "field"
 														} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
@@ -179,43 +149,77 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 															name="multiples"
 														>
 															<input
-																ref={register()}
-																name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][value]`}
+																name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 																placeholder={__(
 																	"Item Name",
 																	"atlas-content-modeler"
 																)}
 																type="text"
-																onKeyPress={(event) => {
+																onKeyPress={(
+																	event
+																) => {
 																	if (
 																		event.key ===
 																		"Enter"
 																	) {
-																		console.log(fields);
 																		event.preventDefault();
 																	}
 																}}
-																// need to figure out how to init the value.
-																defaultValue={
-																	`${item.value}`
+																value={
+																	values[
+																		index
+																	]
 																}
-																onChange={(e) => {
-																	// clearNameErrors(
-																	// 	errors,
-																	// 	index
-																	// );
+																onChange={(
+																	event
+																) => {
+																	// Update the value of the item.
+																	const newValue =
+																		event
+																			.currentTarget
+																			.value;
+																	setValues(
+																		(
+																			oldValues
+																		) => {
+																			let newValues = [
+																				...oldValues,
+																			];
+																			newValues[
+																				index
+																			] = newValue;
+																			return newValues;
+																		}
+																	);
 																}}
 															/>
 														</div>
 														<div
 															className={`value[${index}].remove-container`}
 														>
-															{fields.length > 1 && (
+															{values.length >
+																1 && (
 																<button
 																	className="remove-item tertiary no-border"
-																	onClick={(event) => {
+																	onClick={(
+																		event
+																	) => {
 																		event.preventDefault();
-																		remove(index);
+																		// Removes the value at the given index.
+																		setValues(
+																			(
+																				currentValues
+																			) => {
+																				const newValues = [
+																					...currentValues,
+																				];
+																				newValues.splice(
+																					index,
+																					1
+																				);
+																				return newValues;
+																			}
+																		);
 																	}}
 																>
 																	<a
@@ -268,7 +272,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 												className="add-option tertiary no-border"
 												onClick={(event) => {
 													event.preventDefault();
-													append({ value: "" });
+													// Adds a new empty value to display another text field.
+													setValues((oldValues) => [
+														...oldValues,
+														"",
+													]);
 												}}
 											>
 												<a>
@@ -278,11 +286,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 															? __(
 																	"Add another item",
 																	"atlas-content-modeler"
-																)
+															  )
 															: __(
 																	"Add an item",
 																	"atlas-content-modeler"
-																)}
+															  )}
 													</span>
 												</a>
 											</button>

@@ -72,8 +72,8 @@ export function reducer(state, action) {
 				editing: false,
 			};
 			return { ...state };
-			case "setTitleField":
-			case "setFeaturedImageField":
+		case "setTitleField":
+		case "setFeaturedImageField":
 			const fields = state[action.model]["fields"];
 			const setType =
 				action.type === "setTitleField" ? "isTitle" : "isFeatured";
@@ -87,12 +87,6 @@ export function reducer(state, action) {
 				state[action.model]["fields"][action.id][property.name] =
 					property.value;
 			});
-			return { ...state };
-		case "setRepeatableField":
-			const fields = state[action.model]["fields"];
-			const setType =
-				action.type === "setRepeatableField" && "isRepeatable";
-			state[action.model]["fields"][action.id][setType] = true;
 			return { ...state };
 		case "removeField":
 			if (action?.originalState) {
