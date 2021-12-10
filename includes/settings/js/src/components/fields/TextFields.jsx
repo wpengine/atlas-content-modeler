@@ -84,11 +84,11 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 			<div className="field">
 				<legend>Repeatable</legend>
 				<input
-					name="repeatable"
+					name="isRepeatable"
 					type="checkbox"
 					id={`repeatable-${fieldId}`}
 					ref={register}
-					defaultChecked={data?.repeatable === true}
+					defaultChecked={data?.isRepeatable === true}
 					disabled={editing}
 				/>
 				<label
