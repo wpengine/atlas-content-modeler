@@ -566,7 +566,12 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 	}
 
 	$models = get_registered_content_types();
-	if ( array_key_exists( $post->post_type, $models ) && isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
+	if ( ! array_key_exists( $post->post_type, $models ) ) {
+		// Return early if not an ACM model.
+		return $is_private;
+	}
+
+	if ( isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
 		$post_type  = get_post_type_object( $post->post_type );
 		$is_private = ! user_can( $current_user, $post_type->cap->read_post, $post->ID );
 	}
