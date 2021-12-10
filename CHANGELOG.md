@@ -1,5 +1,8 @@
 # Atlas Content Modeler Changelog
 ## Unreleased
+### Added
+- Debug info is now added to GraphQL responses when GraphQL Debug Mode is enabled and a request for Private models is made as an unauthenticated user.
+
 ### Fixed
 - Improved display of admin notices on pages in the Content Modeler admin menu.
 
