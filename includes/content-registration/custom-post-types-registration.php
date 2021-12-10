@@ -44,6 +44,37 @@ function register_content_types(): void {
 	}
 }
 
+add_action( 'init', __NAMESPACE__ . '\register_repeatable_models' );
+/**
+ * Registers the models and fields that back repeatable fields.
+ *
+ * Some fields such as text fields can be marked “repeatable”.
+ * When this option is enabled, we generate a hidden custom post type
+ * and store repeating entries as separate posts with accompanying meta.
+ *
+ * For example, a repeating text field with a slug of 'shoppingList' will be
+ * stored as a `shoppingListRepeater` model, containing single entries each
+ * with text stored in `shoppingList` post meta.
+ *
+ * This potentially allows repeating fields to be shared between models, and
+ * converted to visible models that could be extended with additional fields.
+ */
+function register_repeatable_models(): void {
+	$repeaters = get_repeater_fields();
+
+	foreach ( $repeaters as $repeater ) {
+		$repeater['singular'] = $repeater['name'];
+		$repeater['plural']   = $repeater['name'] . 's'; // TODO: Fields don't have a plural name. We'll need a smarter pluralize function here. This is for a proof of concept only.
+		$repeater['show_ui']  = false; // Do not expose in the WP admin. We'll add posts via the repeating field UI in the publisher app.
+		$args                 = generate_custom_post_type_args( $repeater );
+		$slug                 = substr( $repeater['slug'] . 'Repeater', 0, 20 ); // Post type slugs must be below 20 characters.
+
+		register_post_type( $slug, $args );
+
+		// TODO: Create and register fields with REST and WPGraphQL here.
+	}
+}
+
 /**
  * Registers custom meta with the specific custom post type.
  *
@@ -388,6 +419,26 @@ function get_registered_content_types(): array {
 	}
 
 	return $updated_models;
+}
+
+/**
+ * Gets repeater fields from all models.
+ *
+ * @return array The repeater fields or an empty array.
+ */
+function get_repeater_fields(): array {
+	$models    = get_registered_content_types();
+	$repeaters = [];
+
+	foreach ( $models as $model ) {
+		foreach ( ( $model['fields'] ?? [] ) as $field ) {
+			if ( ( $field['isRepeatable'] ?? false ) === true ) {
+				$repeaters[] = $field;
+			}
+		}
+	}
+
+	return $repeaters;
 }
 
 /**
