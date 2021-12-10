@@ -571,6 +571,15 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 		$is_private = ! user_can( $current_user, $post_type->cap->read_post, $post->ID );
 	}
 
+	if ( $is_private && empty( $current_user->ID ) ) {
+		graphql_debug(
+			esc_html__( 'The request was unauthenticated, but this site contains private Atlas Content Modeler models. If you see empty results, try authenticating the request or making your ACM models public.', 'atlas-content-modeler' ),
+			[
+				'type' => 'ACM_UNAUTHORIZED_REQUEST',
+			]
+		);
+	}
+
 	return $is_private;
 }
 
