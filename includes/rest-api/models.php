@@ -176,6 +176,15 @@ function update_model( string $post_type_slug, array $args ) {
 	// Updating the slug is unsupported.
 	$new_args['slug'] = $post_type_slug;
 
+	/**
+	 * If no changes, return true.
+	 * Why? update_option returns false and does not update
+	 * when the new values match the old values.
+	 */
+	if ( $content_types[ $post_type_slug ] === $new_args ) {
+		return true;
+	}
+
 	$content_types[ $post_type_slug ] = $new_args;
 
 	$updated = update_registered_content_types( $content_types );
