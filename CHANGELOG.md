@@ -5,6 +5,7 @@
 
 ### Fixed
 - Improved display of admin notices on pages in the Content Modeler admin menu.
+- Saving a model that has no changes no longer causes an error to be displayed.
 
 ## 0.11.0 - 2021-12-01
 ### Added
