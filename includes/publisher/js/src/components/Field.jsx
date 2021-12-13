@@ -76,6 +76,125 @@ export default function Field(props) {
 	);
 }
 
+function SingleTextField({ field, modelSlug, errors, validate }) {
+	const textProps = {
+		type: `${field.type}`,
+		name: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
+		id: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
+		defaultValue: field.value,
+		required: field.required,
+		onChange: (event) => validate(event, field),
+		minLength: field?.minChars,
+		maxLength: field?.maxChars,
+	};
+
+	return (
+		<>
+			<label
+				htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+			>
+				{field.name}
+			</label>
+			{field?.required && (
+				<p className="required">
+					*{__("Required", "atlas-content-modeler")}
+				</p>
+			)}
+			{field?.description && (
+				<p className="help mb-0">{field.description}</p>
+			)}
+			{field?.inputType === "multi" ? (
+				<textarea {...textProps} />
+			) : (
+				<input {...textProps} />
+			)}
+			<span className="error">
+				<Icon type="error" />
+				<span role="alert">{errors[field.slug] ?? defaultError}</span>
+			</span>
+		</>
+	);
+}
+
+function RepeatingTextField({ field, modelSlug, errors, validate }) {
+	const [values, setValues] = useState(field?.value || { unsaved1: "" });
+
+	return (
+		<>
+			<label>{field.name}</label>
+			{Object.entries(values ?? {}).map(([key, value], index) => {
+				return (
+					<div key={index} className="d-flex">
+						<input
+							name={`atlas-content-modeler[${modelSlug}][${field.slug}][${key}]`}
+							placeholder={sprintf(
+								// translators: the item number, such as 1.
+								__("Item %s", "atlas-content-modeler"),
+								index + 1
+							)}
+							type="text"
+							onKeyPress={(event) => {
+								if (event.key === "Enter") {
+									event.preventDefault();
+								}
+							}}
+							value={value}
+							onChange={(event) => {
+								// Update the value of the item.
+								const newValue = event.currentTarget.value;
+								setValues((oldValues) => {
+									let newValues = { ...oldValues };
+									newValues[key] = newValue;
+									return newValues;
+								});
+							}}
+						/>
+						{Object.values(values).length > 1 && (
+							<button
+								className="remove-option tertiary no-border"
+								onClick={(event) => {
+									event.preventDefault();
+									// Remove the value.
+									setValues((currentValues) => {
+										const newValues = { ...currentValues };
+										delete newValues[key];
+										return newValues;
+									});
+								}}
+							>
+								<a>
+									<span>
+										{__("Remove", "atlas-content-modeler")}
+									</span>
+								</a>
+							</button>
+						)}
+					</div>
+				);
+			})}
+
+			<button
+				className="add-option tertiary no-border"
+				onClick={(event) => {
+					event.preventDefault();
+					// Adds a new empty value to display another text field.
+					setValues((currentValues) => {
+						const newValues = { ...currentValues };
+						newValues[
+							`unsaved${Object.values(currentValues)?.length + 1}`
+						] = "";
+						return newValues;
+					});
+				}}
+			>
+				<a>
+					<span>{__("Add another", "atlas-content-modeler")}</span>
+				</a>
+			</button>
+		</>
+	);
+}
+
 function fieldMarkup(field, modelSlug, errors, validate) {
 	switch (field.type) {
 		case "relationship":
@@ -95,44 +214,24 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "text":
-			const textProps = {
-				type: `${field.type}`,
-				name: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
-				id: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
-				defaultValue: field.value,
-				required: field.required,
-				onChange: (event) => validate(event, field),
-				minLength: field?.minChars,
-				maxLength: field?.maxChars,
-			};
+			if (field?.isRepeatable) {
+				return (
+					<RepeatingTextField
+						field={field}
+						modelSlug={modelSlug}
+						errors={errors}
+						validate={validate}
+					/>
+				);
+			}
 
 			return (
-				<>
-					<label
-						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-					>
-						{field.name}
-					</label>
-					{field?.required && (
-						<p className="required">
-							*{__("Required", "atlas-content-modeler")}
-						</p>
-					)}
-					{field?.description && (
-						<p className="help mb-0">{field.description}</p>
-					)}
-					{field?.inputType === "multi" ? (
-						<textarea {...textProps} />
-					) : (
-						<input {...textProps} />
-					)}
-					<span className="error">
-						<Icon type="error" />
-						<span role="alert">
-							{errors[field.slug] ?? defaultError}
-						</span>
-					</span>
-				</>
+				<SingleTextField
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+				/>
 			);
 		case "number":
 			let numberOptions = {};
