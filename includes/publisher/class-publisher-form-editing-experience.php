@@ -353,6 +353,44 @@ final class FormEditingExperience {
 				$this->save_relationship_field( $field_id, $post, $field_value );
 				$saved_relationships[] = $field_id;
 			}
+
+			// Save repeating text fields as post entries with post meta.
+			if ( 'text' === $field_type && is_array( $field_value ) ) {
+				$updated_repeater_values = [];
+
+				foreach ( $field_value as $repeating_text_id => $repeating_text_value ) {
+					// Save new entries.
+					if ( str_contains( strval( $repeating_text_id ), 'unsaved' ) ) {
+						// Insert new posts into the database.
+						$repeater_post_type = substr( $field_id . 'Repeater', 0, 20 ); // Post type slugs must be below 20 characters.
+
+						$saved_repeating_entry_id                             = wp_insert_post(
+							[
+								'post_type'   => $repeater_post_type,
+								'post_status' => 'publish',
+								'meta_input'  => [ $field_id => $repeating_text_value ], // TODO: sanitize repeating text value.
+							]
+						);
+						$updated_repeater_values[ $saved_repeating_entry_id ] = $repeating_text_value;
+					} else {
+						// Update existing entries.
+						update_post_meta( intval( $repeating_text_id ), $field_id, $repeating_text_value );
+						$updated_repeater_values[ $repeating_text_id ] = $repeating_text_value;
+					}
+				}
+
+				// Delete repeater fields that are absent from posted data.
+				$existing_repeater_data = get_post_meta( $post_id, sanitize_text_field( $field_id ), true );
+				if ( is_array( $existing_repeater_data ) ) {
+					foreach ( array_keys( $existing_repeater_data ) as $existing_repeater_key ) {
+						if ( ! array_key_exists( $existing_repeater_key, $field_value ) ) {
+							wp_delete_post( $existing_repeater_key );
+						}
+					}
+				}
+
+				$field_value = $updated_repeater_values;
+			}
 		}
 
 		// Delete any meta values missing from the submitted data.
