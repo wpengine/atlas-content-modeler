@@ -344,11 +344,11 @@ final class FormEditingExperience {
 
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
-			$field_id    = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
-			$field_type  = get_field_type_from_slug( $field_id, $this->models, $post->post_type );
-			// @todo antpb: look here for sending the field settings. 
+			$field_id   = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
+			$field_type = get_field_type_from_slug( $field_id, $this->models, $post->post_type );
+			// @todo antpb: look here for sending the field settings.
 			$field_repeatable = get_field_repeatable_from_slug( $field_id, $this->models, $post->post_type );
-			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ), $field_repeatable );
+			$field_value      = sanitize_field( $field_type, wp_unslash( $field_value ), $field_repeatable );
 
 			if ( 'relationship' === $field_type ) {
 				unset( $posted_values[ $field_id ] );

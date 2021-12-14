@@ -107,18 +107,18 @@ function get_field_type_from_slug( string $slug, array $models, string $post_typ
 }
 
 /**
-* Gets the field settings from the field slug.
-*
-* @param string $slug Field slug to look for the 'type' property.
-* @param array  $models Models with field properties to search for the `$slug`.
-* @param string $post_type Current post type on the publisher screen.
-*
-* @return string Field type if found, or 'unknown'.
-*/
+ * Gets the field settings from the field slug.
+ *
+ * @param string $slug Field slug to look for the 'type' property.
+ * @param array  $models Models with field properties to search for the `$slug`.
+ * @param string $post_type Current post type on the publisher screen.
+ *
+ * @return string Field type if found, or 'unknown'.
+ */
 function get_field_repeatable_from_slug( string $slug, array $models, string $post_type ): bool {
- $field = get_field_from_slug( $slug, $models, $post_type );
+	$field = get_field_from_slug( $slug, $models, $post_type );
 
- return $field['isRepeatable'];
+	return $field['isRepeatable'];
 }
 
 /**

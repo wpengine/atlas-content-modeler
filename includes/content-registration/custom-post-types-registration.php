@@ -495,7 +495,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$field['type'] = array( 'list_of' => 'String' );
 			}
 
-			if ($field['isRepeatable']) {
+			if ( $field['isRepeatable'] ) {
 				$field['type'] = array( 'list_of' => 'String' );
 			}
 
