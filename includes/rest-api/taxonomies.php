@@ -22,6 +22,8 @@ use WP_Error;
 function save_taxonomy( array $params, bool $is_update ) {
 	// Sanitize key allows hyphens, but it's close enough to register_taxonomy() requirements.
 	$params['slug']     = isset( $params['slug'] ) ? sanitize_key( $params['slug'] ) : '';
+	$params['singular'] = isset( $params['singular'] ) ? sanitize_key( $params['singular'] ) : '';
+	$params['plural']   = isset( $params['plural'] ) ? sanitize_key( $params['plural'] ) : '';
 	$reserved_tax_terms = include ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-taxonomy-terms.php';
 
 	if ( empty( $params['slug'] ) || strlen( $params['slug'] ) > 32 ) {
