@@ -32,10 +32,20 @@ function create_model( string $post_type_slug, array $args ) {
 	$existing_content_types = get_post_types();
 	$content_types          = get_registered_content_types();
 
+	// Check for slug conflicts.
 	if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
 		return new WP_Error(
 			'acm_model_exists',
 			__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	// Check for label conflicts.
+	if ( ( ! empty( $content_types[ $args['singular'] ] ) || array_key_exists( $args['singular'], $existing_content_types ) ) || ( ! empty( $content_types[ $args['plural'] ] ) || array_key_exists( $args['plural'], $existing_content_types ) ) ) {
+		return new WP_Error(
+			'acm_model_exists',
+			__( 'A content model with this Model Label already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}

@@ -63,6 +63,15 @@ function save_taxonomy( array $params, bool $is_update ) {
 		);
 	}
 
+	// Check for label conflicts.
+	if ( ! $is_update && ( array_key_exists( $params['plural'], $acm_taxonomies ) || array_key_exists( $params['singular'], $acm_taxonomies ) ) ) {
+		return new WP_Error(
+			'acm_taxonomy_exists',
+			esc_html__( 'A taxonomy with this Taxonomy label already exists.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
 	if ( empty( $params['singular'] ) || empty( $params['plural'] ) ) {
 		return new WP_Error(
 			'acm_invalid_labels',
