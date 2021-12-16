@@ -7,8 +7,8 @@ class EditFieldCest {
 	 */
 	public function i_cannot_edit_a_field_slug_after_the_field_has_been_created( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );

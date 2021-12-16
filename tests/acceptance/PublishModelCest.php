@@ -1,15 +1,15 @@
 <?php
+
 use Codeception\Util\Locator;
+
 class PublishModelCest {
 
 	public function _before( \AcceptanceTester $i ) {
 		$i->resizeWindow( 1024, 1024 );
 		$i->maximizeWindow();
-
-		// First we create a model with fields.
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese', 'geese go honk' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'goose', 'geese', [ 'description' => 'Geese go honk' ] );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 	}
 
 	public function i_see_submission_errors_in_number_fields_when_input_is_missing_for_the_number_type( \AcceptanceTester $i ) {

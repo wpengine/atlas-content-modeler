@@ -1,4 +1,5 @@
 <?php
+
 use Codeception\Util\Locator;
 
 class TrashEntryCest {
@@ -6,10 +7,9 @@ class TrashEntryCest {
 	public function _before( \AcceptanceTester $i ) {
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
-
 		$i->haveContentModel( 'goose', 'geese' );
-		$i->haveContentModel( 'mouse', 'mice' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'mouse', 'mice' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		// Create a relationship field in mouse linking to geese.
 		$i->click( 'Relationship', '.field-buttons' );

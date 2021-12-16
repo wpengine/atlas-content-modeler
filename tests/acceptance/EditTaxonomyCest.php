@@ -5,9 +5,8 @@ class EditTaxonomyCest {
 	public function _before( \AcceptanceTester $i ) {
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
-		$i->wait( 1 );
-		$i->haveContentModel( 'Goose', 'Geese' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Goose', 'Geese' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose' ] );
 		$i->wait( 1 );
 		$i->amOnTaxonomyListingsPage();

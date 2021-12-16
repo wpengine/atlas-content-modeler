@@ -5,8 +5,8 @@ class DeleteTaxonomyCest {
 	public function _before( \AcceptanceTester $i ) {
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
-		$i->wait( 1 );
-		$i->haveContentModel( 'Goose', 'Geese' );
+		$content_model = $i->haveContentModel( 'Goose', 'Geese' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 	}
 
 	/**

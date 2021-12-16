@@ -11,8 +11,8 @@ class OpenInGraphiQLCest {
 	 * query when the model has no fields.
 	 */
 	public function i_can_open_model_with_no_fields_in_graphiql( AcceptanceTester $i ) {
-		$i->haveContentModel( 'Dog', 'Dogs' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Dog', 'Dogs' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( '.heading .options' ); // Model options button.
 		$i->click( '.show-in-graphiql' );
@@ -29,8 +29,8 @@ class OpenInGraphiQLCest {
 	 * query, including the model's fields.
 	 */
 	public function i_can_open_a_model_with_fields_in_graphiql( AcceptanceTester $i ) {
-		$i->haveContentModel( 'Dog', 'Dogs' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Dog', 'Dogs' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );
@@ -53,8 +53,8 @@ class OpenInGraphiQLCest {
 	 * query when the model singular and plural names are not capitalized.
 	 */
 	public function i_can_open_model_with_lowercased_model_names_in_graphiql( AcceptanceTester $i ) {
-		$i->haveContentModel( 'cat', 'cats' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'cat', 'cats' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( '.heading .options' ); // Model options button.
 		$i->click( '.show-in-graphiql' );
@@ -71,8 +71,8 @@ class OpenInGraphiQLCest {
 	 * query when the model singular and plural names are identical.
 	 */
 	public function i_can_open_model_with_same_singular_and_plural_name_in_graphiql( AcceptanceTester $i ) {
-		$i->haveContentModel( 'deer', 'deer' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'deer', 'deer' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( '.heading .options' ); // Model options button.
 		$i->click( '.show-in-graphiql' );

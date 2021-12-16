@@ -73,19 +73,16 @@ class AcceptanceTester extends \Codeception\Actor {
 	 * @param string $singular    Singular content model name.
 	 * @param string $plural      Plural content model name.
 	 * @param string $description Content model description.
+	 *
+	 * @return array The content model.
 	 */
-	public function haveContentModel( $singular, $plural, $description = '' ) {
-		$this->amOnPage( '/wp-admin/admin.php?page=atlas-content-modeler&view=create-model' );
-		$this->wait( 1 );
+	public function haveContentModel( string $singular, string $plural, array $args = [] ) {
+		$content_model                            = $this->makeContentModel( $singular, $plural, $args );
+		$content_models                           = $this->grabContentModels();
+		$content_models[ $content_model['slug'] ] = $content_model;
+		$this->haveOptionInDatabase( 'atlas_content_modeler_post_types', $content_models );
 
-		$this->fillField( [ 'name' => 'singular' ], $singular );
-		$this->fillField( [ 'name' => 'plural' ], $plural );
-
-		if ( $description ) {
-			$this->fillField( [ 'name' => 'description' ], $description );
-		}
-
-		$this->click( '.card-content button.primary' );
+		return $content_model;
 	}
 
 	/**
@@ -107,5 +104,45 @@ class AcceptanceTester extends \Codeception\Actor {
 		}
 
 		$this->click( '.card-content button.primary' );
+	}
+
+	/**
+	 * Make a non-persistant content model.
+	 *
+	 * @param string $singular The singular model name.
+	 * @param string $plural   The plural model name.
+	 * @param array  $args     Optional content model args.
+	 *
+	 * @return array The content model.
+	 */
+	public function makeContentModel( string $singular, string $plural, array $args = [] ) {
+		$content_model = array_merge(
+			[
+				'show_in_rest'    => true,
+				'show_in_graphql' => true,
+				'slug'            => strtolower( $singular ),
+				'api_visibility'  => 'private',
+				'model_icon'      => 'dashicons-admin-post',
+				'description'     => '',
+				'fields'          => [],
+			],
+			$args
+		);
+
+		$content_model['singular'] = $singular;
+		$content_model['plural']   = $plural;
+
+		return $content_model;
+	}
+
+	/**
+	 * Retrieve all content models from the options database.
+	 *
+	 * @return array Associative list of content models.
+	 */
+	public function grabContentModels() {
+		$content_models = $this->grabOptionFromDatabase( 'atlas_content_modeler_post_types' );
+
+		return ! empty( $content_models ) ? $content_models : [];
 	}
 }
