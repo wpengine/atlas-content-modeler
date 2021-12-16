@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\REST_API\Taxonomies;
 
 use WP_Error;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 
 /**
  * Saves a taxonomy.
@@ -20,6 +21,9 @@ use WP_Error;
  * @since 0.6.0
  */
 function save_taxonomy( array $params, bool $is_update ) {
+	// Get models for checking slug, plural and singular labels.
+	$content_types = get_registered_content_types();
+
 	// Sanitize key allows hyphens, but it's close enough to register_taxonomy() requirements.
 	$params['slug']     = isset( $params['slug'] ) ? sanitize_key( $params['slug'] ) : '';
 	$params['singular'] = isset( $params['singular'] ) ? sanitize_key( $params['singular'] ) : '';
@@ -35,7 +39,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	}
 
 	// Prevents use of reserved taxonomy terms as slugs during new taxonomy creation.
-	if ( in_array( $params['slug'], $reserved_tax_terms, true ) ) {
+	if ( in_array( $params['slug'], $reserved_tax_terms, true ) || in_array( $params['slug'], $content_types, true ) ) {
 		return new WP_Error(
 			'acm_reserved_taxonomy_term',
 			__( 'Taxonomy slug is reserved.', 'atlas-content-modeler' ),
@@ -66,7 +70,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	}
 
 	// Check for label conflicts.
-	if ( ! $is_update && ( array_key_exists( $params['plural'], $acm_taxonomies ) || array_key_exists( $params['singular'], $acm_taxonomies ) ) ) {
+	if ( ! $is_update && ( array_key_exists( $params['plural'], $acm_taxonomies ) || array_key_exists( $params['singular'], $acm_taxonomies ) || in_array( $params['singular'], $content_types, true ) || in_array( $params['plural'], $content_types, true ) ) ) {
 		return new WP_Error(
 			'acm_taxonomy_exists',
 			esc_html__( 'A taxonomy with this Taxonomy label already exists.', 'atlas-content-modeler' ),
