@@ -172,7 +172,8 @@ function get_model_args( string $post_type_slug, array $args ) {
  * @return bool|WP_Error
  */
 function update_model( string $post_type_slug, array $args ) {
-	$taxonomies = get_acm_taxonomies();
+	$taxonomies    = get_acm_taxonomies();
+	$content_types = get_registered_content_types();
 
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
@@ -185,6 +186,16 @@ function update_model( string $post_type_slug, array $args ) {
 		return new WP_Error(
 			'acm_invalid_labels',
 			__( 'Please provide singular and plural labels when creating a content model.', 'atlas-content-modeler' )
+		);
+	}
+
+	// Check for collisions of labels in taxonomies and models for update.
+	if ( ( array_key_exists( $args['singular'], $content_types ) ) || ( array_key_exists( $args['plural'], $content_types ) ) || ( array_key_exists( $args['singular'], $taxonomies ) || array_key_exists( $args['plural'], $taxonomies ) ) ) {
+		return new WP_Error(
+			'acm_model_exists',
+			// translators: The name of the model.
+			__( 'A model with that label already exists.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
 		);
 	}
 
