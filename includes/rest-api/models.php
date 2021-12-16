@@ -33,8 +33,8 @@ function create_model( string $post_type_slug, array $args ) {
 	$content_types          = get_registered_content_types();
 	$taxonomies             = get_acm_taxonomies();
 
-	// Check for slug conflicts.
-	if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
+	// Check for slug conflicts in models and taxonomies.
+	if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) || array_key_exists( $args['slug'], $taxonomies ) ) {
 		return new WP_Error(
 			'acm_model_exists',
 			__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
@@ -42,8 +42,8 @@ function create_model( string $post_type_slug, array $args ) {
 		);
 	}
 
-	// Check for label conflicts.
-	if ( ( ! empty( $content_types[ $args['singular'] ] ) || array_key_exists( $args['singular'], $existing_content_types ) ) || ( ! empty( $content_types[ $args['plural'] ] ) || array_key_exists( $args['plural'], $existing_content_types ) ) ) {
+	// Check for label conflicts in models and taxonomies.
+	if ( ( ! empty( $content_types[ $args['singular'] ] ) || array_key_exists( $args['singular'], $existing_content_types ) ) || ( ! empty( $content_types[ $args['plural'] ] ) || array_key_exists( $args['plural'], $existing_content_types ) ) || ( array_key_exists( $args['singular'], $taxonomies ) || array_key_exists( $args['plural'], $taxonomies ) ) ) {
 		return new WP_Error(
 			'acm_model_exists',
 			__( 'A content model with this Model Label already exists.', 'atlas-content-modeler' ),
