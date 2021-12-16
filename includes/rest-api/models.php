@@ -86,11 +86,22 @@ function create_models( array $models ) {
 			return $args;
 		}
 
-		if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
+		// Check for slug collisions in taxonomies and models.
+		if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) || array_key_exists( $args['slug'], $taxonomies ) ) {
 			return new WP_Error(
 				'acm_model_exists',
 				// translators: The name of the model.
 				sprintf( __( 'A model with slug ‘%s’ already exists.', 'atlas-content-modeler' ), $args['slug'] ),
+				[ 'status' => 400 ]
+			);
+		}
+
+		// Check for collisions of labels in taxonomies and models.
+		if ( ( ! empty( $content_types[ $args['singular'] ] ) || array_key_exists( $args['singular'], $existing_content_types ) ) || ( ! empty( $content_types[ $args['plural'] ] ) || array_key_exists( $args['plural'], $existing_content_types ) ) || ( array_key_exists( $args['singular'], $taxonomies ) || array_key_exists( $args['plural'], $taxonomies ) ) ) {
+			return new WP_Error(
+				'acm_model_exists',
+				// translators: The name of the model.
+				__( 'A model with that label already exists.', 'atlas-content-modeler' ),
 				[ 'status' => 400 ]
 			);
 		}
