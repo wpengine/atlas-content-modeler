@@ -39,7 +39,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	}
 
 	// Prevents use of reserved taxonomy terms as slugs during new taxonomy creation.
-	if ( in_array( $params['slug'], $reserved_tax_terms, true ) || in_array( $params['slug'], $content_types, true ) ) {
+	if ( in_array( $params['slug'], $reserved_tax_terms, true ) ) {
 		return new WP_Error(
 			'acm_reserved_taxonomy_term',
 			__( 'Taxonomy slug is reserved.', 'atlas-content-modeler' ),
@@ -52,7 +52,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 	$non_acm_taxonomies = array_diff( array_keys( $wp_taxonomies ), array_keys( $acm_taxonomies ) );
 
 	// Prevents creation of a taxonomy if one with the same slug exists that was not created in ACM.
-	if ( in_array( $params['slug'], $non_acm_taxonomies, true ) ) {
+	if ( in_array( $params['slug'], $non_acm_taxonomies, true ) || in_array( $params['slug'], $content_types, true ) ) {
 		return new WP_Error(
 			'acm_taxonomy_exists',
 			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
@@ -60,8 +60,8 @@ function save_taxonomy( array $params, bool $is_update ) {
 		);
 	}
 
-	// Allows updates of existing ACM taxonomies, but prevents creation of ACM taxonomies with identical slugs.
-	if ( ! $is_update && array_key_exists( $params['slug'], $acm_taxonomies ) ) {
+	// Allows updates of existing ACM taxonomies, but prevents creation of ACM taxonomies with identical slugs and models.
+	if ( ! $is_update && array_key_exists( $params['slug'], $acm_taxonomies ) || in_array( $params['slug'], $content_types, true ) ) {
 		return new WP_Error(
 			'acm_taxonomy_exists',
 			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
@@ -69,7 +69,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 		);
 	}
 
-	// Check for label conflicts.
+	// Check for label conflicts in taxonomies and models.
 	if ( ! $is_update && ( array_key_exists( $params['plural'], $acm_taxonomies ) || array_key_exists( $params['singular'], $acm_taxonomies ) || in_array( $params['singular'], $content_types, true ) || in_array( $params['plural'], $content_types, true ) ) ) {
 		return new WP_Error(
 			'acm_taxonomy_exists',
@@ -78,6 +78,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 		);
 	}
 
+	// Check for required singular and plural params.
 	if ( empty( $params['singular'] ) || empty( $params['plural'] ) ) {
 		return new WP_Error(
 			'acm_invalid_labels',

@@ -31,6 +31,7 @@ function create_model( string $post_type_slug, array $args ) {
 
 	$existing_content_types = get_post_types();
 	$content_types          = get_registered_content_types();
+	$taxonomies             = get_acm_taxonomies();
 
 	// Check for slug conflicts.
 	if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) ) {
@@ -72,6 +73,7 @@ function create_model( string $post_type_slug, array $args ) {
 function create_models( array $models ) {
 	$existing_content_types = get_post_types();
 	$content_types          = get_registered_content_types();
+	$taxonomies             = get_acm_taxonomies();
 
 	foreach ( $models as $model ) {
 		if ( ! is_array( $model ) ) {
@@ -159,6 +161,8 @@ function get_model_args( string $post_type_slug, array $args ) {
  * @return bool|WP_Error
  */
 function update_model( string $post_type_slug, array $args ) {
+	$taxonomies = get_acm_taxonomies();
+
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
 			'acm_invalid_content_model_id',
