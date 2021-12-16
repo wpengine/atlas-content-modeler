@@ -86,24 +86,21 @@ class AcceptanceTester extends \Codeception\Actor {
 	}
 
 	/**
-	 * Create a Taxonomy.
+	 * Create a content model taxonomy.
 	 *
 	 * @param string $singular Singular taxonomy name.
 	 * @param string $plural   Plural taxonomy name.
 	 * @param array  $types    Slug name of the models that have this taxonomy.
+	 *
+	 * @return array List content model taxonomies.
 	 */
-	public function haveTaxonomy( $singular, $plural, array $types ) {
-		$this->amOnTaxonomyListingsPage();
-		$this->wait( 1 );
+	public function haveTaxonomy( string $singular, string $plural, array $args = [] ): array {
+		$taxonomy                        = $this->makeModelTaxonomy( $singular, $plural, $args );
+		$taxonomies                      = $this->grabContentModelTaxonomies();
+		$taxonomies[ $taxonomy['slug'] ] = $taxonomy;
+		$this->haveOptionInDatabase( 'atlas_content_modeler_taxonomies', $taxonomies );
 
-		$this->fillField( [ 'name' => 'singular' ], $singular );
-		$this->fillField( [ 'name' => 'plural' ], $plural );
-
-		foreach ( $types as $type ) {
-			$this->click( ".checklist .checkbox input[value={$type}]" );
-		}
-
-		$this->click( '.card-content button.primary' );
+		return $taxonomy;
 	}
 
 	/**
@@ -136,6 +133,34 @@ class AcceptanceTester extends \Codeception\Actor {
 	}
 
 	/**
+	 * Make a non-persistant content model taxonomy.
+	 *
+	 * @param string $singular The singular content model taxonomy name.
+	 * @param string $plural   The plural content model taxonomy name.
+	 * @param array  $args     Optional content model taxonomy args.
+	 *
+	 * @return array The content model taxonomy.
+	 */
+	public function makeModelTaxonomy( string $singular, string $plural, array $args = [] ): array {
+		$taxonomy = array_merge(
+			[
+				'show_in_rest'    => true,
+				'show_in_graphql' => true,
+				'hierarchical'    => false,
+				'slug'            => strtolower( $singular ),
+				'api_visibility'  => 'private',
+				'types'           => [],
+			],
+			$args
+		);
+
+		$taxonomy['singular'] = $singular;
+		$taxonomy['plural']   = $plural;
+
+		return $taxonomy;
+	}
+
+	/**
 	 * Retrieve all content models from the options database.
 	 *
 	 * @return array Associative list of content models.
@@ -144,5 +169,16 @@ class AcceptanceTester extends \Codeception\Actor {
 		$content_models = $this->grabOptionFromDatabase( 'atlas_content_modeler_post_types' );
 
 		return ! empty( $content_models ) ? $content_models : [];
+	}
+
+	/**
+	 * Retrieve all content model taxonomies from the options database.
+	 *
+	 * @return array Associative list of content model taxonomies.
+	 */
+	public function grabContentModelTaxonomies() {
+		$taxonomies = $this->grabOptionFromDatabase( 'atlas_content_modeler_taxonomies' );
+
+		return ! empty( $taxonomies ) ? $taxonomies : [];
 	}
 }

@@ -7,7 +7,7 @@ class EditTaxonomyCest {
 		$i->loginAsAdmin();
 		$content_model = $i->haveContentModel( 'Goose', 'Geese' );
 		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
-		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose' ] );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose' ] ] );
 		$i->wait( 1 );
 		$i->amOnTaxonomyListingsPage();
 		$i->wait( 1 );

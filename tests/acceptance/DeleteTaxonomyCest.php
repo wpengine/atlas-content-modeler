@@ -2,19 +2,14 @@
 
 class DeleteTaxonomyCest {
 
-	public function _before( \AcceptanceTester $i ) {
-		$i->maximizeWindow();
-		$i->loginAsAdmin();
-		$content_model = $i->haveContentModel( 'Goose', 'Geese' );
-		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
-	}
-
 	/**
 	 * Ensure a user can delete ACM taxonomies.
 	 */
 	public function i_can_delete_a_taxonomy( AcceptanceTester $i ) {
-		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose' ] );
-		$i->wait( 1 );
+		$i->maximizeWindow();
+		$i->loginAsAdmin();
+		$i->haveContentModel( 'Goose', 'Geese' );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose' ] ] );
 		$i->amOnTaxonomyListingsPage();
 		$i->wait( 1 );
 

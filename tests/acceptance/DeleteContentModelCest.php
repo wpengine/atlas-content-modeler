@@ -34,8 +34,7 @@ class DeleteContentModelCest {
 	 */
 	public function i_see_that_associated_taxonomies_are_updated_when_model_is_deleted( AcceptanceTester $i ) {
 		$i->haveContentModel( 'Moose', 'Moose' );
-		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose', 'moose' ] );
-		$i->wait( 1 );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose', 'moose' ] ] );
 
 		$i->amOnWPEngineContentModelPage();
 		$i->click( '.model-list button.options' );
