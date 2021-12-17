@@ -6,9 +6,7 @@ class DeleteContentModelCest {
 		$i->resizeWindow( 1024, 1024 );
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
-		$i->wait( 1 );
 		$i->haveContentModel( 'Goose', 'Geese' );
-		$i->wait( 1 );
 	}
 
 	/**
@@ -36,9 +34,7 @@ class DeleteContentModelCest {
 	 */
 	public function i_see_that_associated_taxonomies_are_updated_when_model_is_deleted( AcceptanceTester $i ) {
 		$i->haveContentModel( 'Moose', 'Moose' );
-		$i->wait( 1 );
-		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose', 'moose' ] );
-		$i->wait( 1 );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose', 'moose' ] ] );
 
 		$i->amOnWPEngineContentModelPage();
 		$i->click( '.model-list button.options' );
@@ -66,8 +62,8 @@ class DeleteContentModelCest {
 
 	public function i_see_relationship_fields_for_a_deleted_model_are_automatically_removed( AcceptanceTester $i ) {
 		// Create a Mouse model with a “Geese Friends” relationship field.
-		$i->haveContentModel( 'Mouse', 'Mice' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Mouse', 'Mice' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 		$i->click( 'Relation', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Geese Friends' );

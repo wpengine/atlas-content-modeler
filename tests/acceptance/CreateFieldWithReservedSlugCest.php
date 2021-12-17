@@ -1,4 +1,5 @@
 <?php
+
 use Codeception\Util\Locator;
 
 class CreateFieldWithReservedSlugCest {
@@ -9,8 +10,8 @@ class CreateFieldWithReservedSlugCest {
 	 */
 	public function i_can_not_create_a_field_with_a_reserved_default_slug( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );
@@ -34,8 +35,8 @@ class CreateFieldWithReservedSlugCest {
 	 */
 	public function i_can_not_create_a_field_with_a_reserved_dynamic_slug( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );

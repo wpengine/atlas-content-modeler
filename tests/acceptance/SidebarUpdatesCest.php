@@ -16,14 +16,11 @@ class SidebarUpdatesCest {
 	 */
 	public function the_sidebar_adds_new_post_types_upon_creation( AcceptanceTester $i ) {
 		$i->dontSeeElementInDOM( '#menu-posts-goose' );
+		$i->dontSeeElementInDOM( '#menu-posts-moose' );
 
 		$i->haveContentModel( 'Goose', 'Geese' );
-		$i->wait( 1 );
-
-		$i->seeElementInDOM( '#menu-posts-goose' );
-
 		$i->haveContentModel( 'Moose', 'Moose' );
-		$i->wait( 1 );
+		$i->amOnWPEngineContentModelPage();
 
 		$i->seeElementInDOM( '#menu-posts-goose' );
 		$i->seeElementInDOM( '#menu-posts-moose' );
@@ -35,12 +32,10 @@ class SidebarUpdatesCest {
 	public function the_sidebar_removes_post_types_upon_deletion( AcceptanceTester $i ) {
 		$i->haveContentModel( 'Moose', 'Moose' );
 		$i->haveContentModel( 'Goose', 'Geese' );
-		$i->wait( 1 );
+		$i->amOnWPEngineContentModelPage();
 
 		$i->seeElementInDOM( '#menu-posts-goose' );
 		$i->seeElementInDOM( '#menu-posts-moose' );
-
-		$i->amOnWPEngineContentModelPage();
 
 		// Delete Moose.
 		$i->click( '.model-list button.options' );
@@ -65,10 +60,8 @@ class SidebarUpdatesCest {
 	public function the_sidebar_adds_new_taxonomies_upon_creation( AcceptanceTester $i ) {
 		$i->haveContentModel( 'Moose', 'Moose' );
 		$i->haveContentModel( 'Goose', 'Geese' );
-		$i->wait( 1 );
-
-		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose' ] );
-		$i->wait( 1 );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose' ] ] );
+		$i->amOnTaxonomyListingsPage();
 
 		// The new taxonomy is assigned to Goose.
 		$i->seeElementInDOM( '#menu-posts-goose a', [ 'href' => 'edit-tags.php?taxonomy=breed&post_type=goose' ] );
@@ -77,8 +70,8 @@ class SidebarUpdatesCest {
 		// The new taxonomy is not assigned to Moose.
 		$i->dontSeeElementInDOM( '#menu-posts-moose a', [ 'href' => 'edit-tags.php?taxonomy=breed&post_type=moose' ] );
 
-		$i->haveTaxonomy( 'Region', 'Regions', [ 'goose', 'moose' ] );
-		$i->wait( 1 );
+		$i->haveTaxonomy( 'Region', 'Regions', [ 'types' => [ 'goose', 'moose' ] ] );
+		$i->amOnTaxonomyListingsPage();
 
 		// The new taxonomy is added to Goose and existing taxonomies are still present.
 		$i->seeElementInDOM( '#menu-posts-goose a', [ 'href' => 'edit-tags.php?taxonomy=region&post_type=goose' ] );
@@ -99,10 +92,8 @@ class SidebarUpdatesCest {
 	public function the_sidebar_updates_taxonomies_upon_editing( AcceptanceTester $i ) {
 		$i->haveContentModel( 'Moose', 'Moose' );
 		$i->haveContentModel( 'Goose', 'Geese' );
-		$i->wait( 1 );
-
-		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose' ] );
-		$i->wait( 1 );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose' ] ] );
+		$i->amOnTaxonomyListingsPage();
 
 		$i->moveMouseOver( [ 'css' => '#menu-posts-goose' ] );
 		$i->see( 'Breeds', [ 'css' => '#menu-posts-goose a' ] );
@@ -144,10 +135,8 @@ class SidebarUpdatesCest {
 	public function the_sidebar_removes_taxonomies_upon_deletion( AcceptanceTester $i ) {
 		$i->haveContentModel( 'Moose', 'Moose' );
 		$i->haveContentModel( 'Goose', 'Geese' );
-		$i->wait( 1 );
-
-		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose', 'moose' ] );
-		$i->wait( 1 );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose', 'moose' ] ] );
+		$i->amOnTaxonomyListingsPage();
 
 		$i->moveMouseOver( [ 'css' => '#menu-posts-goose' ] );
 		$i->see( 'Breeds', [ 'css' => '#menu-posts-goose a' ] );

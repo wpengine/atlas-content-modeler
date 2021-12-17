@@ -1,14 +1,12 @@
 <?php
-use Codeception\Util\Locator;
+
 class RequiredFieldsCest {
 
 	public function i_can_set_required_fields_and_see_submission_errors( AcceptanceTester $i ) {
 		$i->maximizeWindow();
-
-		// Create a model with a required 'name' field.
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'goose', 'geese' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );

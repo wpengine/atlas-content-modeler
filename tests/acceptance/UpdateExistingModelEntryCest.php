@@ -4,10 +4,9 @@ class UpdateExistingModelEntryCest {
 
 	public function i_can_update_an_existing_model_entry( AcceptanceTester $i ) {
 		$i->maximizeWindow();
-		// First we create a model with fields.
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese', 'Geese go honk' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'goose', 'geese', [ 'description' => 'Geese go honk' ] );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
