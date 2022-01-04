@@ -28,6 +28,7 @@ function atlas_content_modeler_rest_init(): void {
 		'routes/content-model-fields.php',
 		'routes/taxonomy.php',
 		'routes/dismiss-feedback-banner.php',
+		'routes/analytics.php',
 	);
 
 	foreach ( $rest_files as $file ) {
