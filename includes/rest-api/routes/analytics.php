@@ -39,15 +39,18 @@ function register_rest_routes(): void {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_ga_analytics( WP_REST_Request $request ) {
-	$form_data = [];
+	$params    = $request->get_params();
+	$form_data = $params['form_data'];
 
-	if ( ! $created ) {
-		return new WP_Error( 'atlas-content-modeler-feedback-notice-dismiss-error', esc_html__( 'Feedback banner metadata was not set. Reason unknown.', 'atlas-content-modeler' ) );
+	$request = wp_remote_post( 'https://www.google-analytics.com/collect', $form_data );
+
+	if ( ! $request ) {
+		return new WP_Error( 'atlas-content-modeler-ga-analytics-error', esc_html__( 'GA was not sent. Reason unknown.', 'atlas-content-modeler' ) );
 	}
 
 	return rest_ensure_response(
 		[
-			'success' => $created,
+			'success' => $request,
 		]
 	);
 }
