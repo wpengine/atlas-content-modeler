@@ -10,14 +10,7 @@ export default function App({ model, mode }) {
 	// GA config
 	let gaConfig = {
 		measurement_id: "G-S056CLLZ34",
-		events: [
-			{
-				name: "some_event",
-				params: {
-					anonymize_ip: true,
-				},
-			},
-		],
+		secretKey: "",
 	};
 
 	/**
@@ -37,19 +30,26 @@ export default function App({ model, mode }) {
 	 * 'ev' => 0,  # Event value, must be an integer
 	 * ];
 	 */
-	function ga(formData) {
+	function ga(eventData) {
 		// add anonymize ip to every single event param object
 		const defaultEventParams = { anonymize_ip: true };
 		// map defaults to all events
-		formData.events.map((event) => {
+		eventData.events.map((event) => {
 			return { ...event.params, ...defaultEventParams };
 		});
+
+		const gaData = {
+			gaEvent: eventData,
+			secretKey: gaConfig.secretKey,
+			measurement_id: gaConfig.measurement_id,
+		};
+
 		// call ga api
 		return apiFetch({
 			path: "/wpe/atlas/ga_analytics",
 			method: "POST",
 			_wpnonce: wpApiSettings.nonce,
-			formData,
+			eventData,
 		}).then((res) => {
 			if (res.success) {
 				alert("Dispatched - " + formData);
@@ -61,14 +61,12 @@ export default function App({ model, mode }) {
 
 	useEffect(() => {
 		// test
-		const formData = {
-			t: "event", // pageview?
-			ec: "Console",
-			ea: "Submit",
-			el: "Test Form Submission",
+		const eventData = {
+			name: "test_event_2021",
+			params: {},
 		};
 
-		ga(formData);
+		ga(eventData);
 	}, []);
 
 	return (
