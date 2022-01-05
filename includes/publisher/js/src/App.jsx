@@ -7,6 +7,19 @@ export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 	const [trashPostModalIsOpen, setTrashPostModalIsOpen] = useState(false);
 
+	// GA config
+	let gaConfig = {
+		measurement_id: "G-S056CLLZ34",
+		events: [
+			{
+				name: "some_event",
+				params: {
+					anonymize_ip: true,
+				},
+			},
+		],
+	};
+
 	/**
 	 * Sends call to GA endpoint
 	 * @param {*} formData - All data for the GA call
@@ -25,6 +38,13 @@ export default function App({ model, mode }) {
 	 * ];
 	 */
 	function ga(formData) {
+		// add anonymize ip to every single event param object
+		const defaultEventParams = { anonymize_ip: true };
+		// map defaults to all events
+		formData.events.map((event) => {
+			return { ...event.params, ...defaultEventParams };
+		});
+		// call ga api
 		return apiFetch({
 			path: "/wpe/atlas/ga_analytics",
 			method: "POST",
@@ -42,7 +62,7 @@ export default function App({ model, mode }) {
 	useEffect(() => {
 		// test
 		const formData = {
-			t: "event",
+			t: "event", // pageview?
 			ec: "Console",
 			ea: "Submit",
 			el: "Test Form Submission",
