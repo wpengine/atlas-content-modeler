@@ -170,4 +170,15 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	public function test_model_supports_author(): void {
 		self::assertTrue( post_type_supports( 'public', 'author' ) );
 	}
+
+	public function test_flush_rewrite_rules_called_after_updating_model(): void {
+		global $wp_rewrite;
+
+		$wp_rewrite = $this->createMock( WP_Rewrite::class );
+		$wp_rewrite->expects( $this->once() )
+			->method( 'flush_rules' )
+			->with( true );
+
+		update_registered_content_types( [] );
+	}
 }

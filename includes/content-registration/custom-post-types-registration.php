@@ -403,7 +403,13 @@ function get_registered_content_types(): array {
  * @return bool
  */
 function update_registered_content_types( array $args ): bool {
-	return update_option( 'atlas_content_modeler_post_types', $args );
+	$updated = update_option( 'atlas_content_modeler_post_types', $args );
+
+	if ( $updated ) {
+		flush_rewrite_rules();
+	}
+
+	return $updated;
 }
 
 /**
