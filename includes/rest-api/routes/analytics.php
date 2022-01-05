@@ -42,6 +42,12 @@ function dispatch_ga_analytics( WP_REST_Request $request ) {
 	$params    = $request->get_params();
 	$form_data = $params['form_data'];
 
+	// set env params for our GA account
+	// urlencode?
+	$form_data['v']   = 1;
+	$form_data['tid'] = 1;
+	$form_data['cid'] = 1;
+
 	$request = wp_remote_post( 'https://www.google-analytics.com/collect', $form_data );
 
 	if ( ! $request ) {

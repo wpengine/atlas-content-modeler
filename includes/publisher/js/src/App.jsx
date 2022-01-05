@@ -7,6 +7,50 @@ export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 	const [trashPostModalIsOpen, setTrashPostModalIsOpen] = useState(false);
 
+	/**
+	 * Sends call to GA endpoint
+	 * @param {*} formData - All data for the GA call
+	 *
+	 * formData = [
+	 * 'v' => '1',  # API Version.
+	 * 'tid' => $trackingId,  # Tracking ID / Property ID.
+	 * # Anonymous Client Identifier. Ideally, this should be a UUID that
+	 * # is associated with particular user, device, or browser instance.
+	 * 'cid' => '555',
+	 * 't' => 'event',  # Event hit type.
+	 * 'ec' => 'Poker',  # Event category.
+	 * 'ea' => 'Royal Flush',  # Event action.
+	 * 'el' => 'Hearts',  # Event label.
+	 * 'ev' => 0,  # Event value, must be an integer
+	 * ];
+	 */
+	function ga(formData) {
+		return apiFetch({
+			path: "/wpe/atlas/ga_analytics",
+			method: "POST",
+			_wpnonce: wpApiSettings.nonce,
+			formData,
+		}).then((res) => {
+			if (res.success) {
+				alert("Dispatched - " + formData);
+			} else {
+				alert("GA Failed");
+			}
+		});
+	}
+
+	useEffect(() => {
+		// test
+		const formData = {
+			t: "event",
+			ec: "Console",
+			ea: "Submit",
+			el: "Test Form Submission",
+		};
+
+		ga(formData);
+	}, []);
+
 	return (
 		<div className="app classic-form" style={{ marginTop: "20px" }}>
 			<div className="flex-parent">
