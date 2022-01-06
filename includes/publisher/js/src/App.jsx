@@ -49,7 +49,7 @@ export default function App({ model, mode }) {
 			path: "/wpe/atlas/ga_analytics",
 			method: "POST",
 			_wpnonce: wpApiSettings.nonce,
-			eventData,
+			gaData,
 		}).then((res) => {
 			if (res.success) {
 				alert("Dispatched - " + formData);

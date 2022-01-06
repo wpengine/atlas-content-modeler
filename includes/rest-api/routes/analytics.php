@@ -40,7 +40,7 @@ function register_rest_routes(): void {
  */
 function dispatch_ga_analytics( WP_REST_Request $request ) {
 	$params = $request->get_params();
-	$body   = [];
+	$body   = $params[''];
 
 	$request = wp_remote_post( 'https://www.google-analytics.com/mp/collect?measurement_id=' . $form_data['measurement_id'] . '&amp;api_secret=' . $form_data['api_secret'], $body );
 

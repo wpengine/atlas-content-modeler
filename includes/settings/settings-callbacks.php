@@ -52,6 +52,15 @@ function register_admin_menu_page(): void {
 		'atlas-content-modeler&amp;view=tools',
 		'__return_null'
 	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
+		esc_html__( 'Settings', 'atlas-content-modeler' ),
+		esc_html__( 'Settings', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler&amp;view=settings',
+		'__return_null'
+	);
 }
 
 add_filter( 'parent_file', __NAMESPACE__ . '\maybe_override_submenu_file' );
@@ -78,6 +87,10 @@ function maybe_override_submenu_file( $parent_file ) {
 
 	if ( $page === 'atlas-content-modeler' && $view === 'tools' ) {
 		$submenu_file = 'atlas-content-modeler&amp;view=tools'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	}
+
+	if ( $page === 'atlas-content-modeler' && $view === 'settings' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=settings'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
 	}
 
 	return $parent_file;
