@@ -42,15 +42,16 @@ function dispatch_ga_analytics( WP_REST_Request $request ) {
 	$params = $request->get_params();
 	$body   = $request->get_body();
 
-	$request = wp_remote_post( 'https://www.google-analytics.com/mp/collect?measurement_id=' . $body['measurement_id'] . '&amp;api_secret=' . $body['secret_key'], $body['ga_event'] );
+	$response = wp_remote_post( 'https://www.google-analytics.com/mp/collect?measurement_id=' . $body['measurement_id'] . '&amp;api_secret=' . $body['secret_key'], $body['ga_event'] );
 
-	if ( ! $request ) {
+	if ( ! $response ) {
 		return new WP_Error( 'atlas-content-modeler-ga-analytics-error', esc_html__( 'GA was not sent. Reason unknown.', 'atlas-content-modeler' ) );
 	}
 
 	return rest_ensure_response(
 		[
-			'success' => $request,
+			'success'  => true,
+			'response' => $response,
 		]
 	);
 }

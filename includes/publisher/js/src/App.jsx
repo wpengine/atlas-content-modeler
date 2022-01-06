@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Fields from "./components/Fields";
 import { __ } from "@wordpress/i18n";
 import TrashPostModal from "./components/TrashPostModal";
+const { wp } = window;
+const { apiFetch } = wp;
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
@@ -46,7 +48,7 @@ export default function App({ model, mode }) {
 
 		// call ga api
 		return apiFetch({
-			path: "/wpe/atlas/ga_analytics",
+			path: "/wpe/atlas/ga-analytics",
 			method: "POST",
 			_wpnonce: wpApiSettings.nonce,
 			gaData,
