@@ -40,9 +40,9 @@ function register_rest_routes(): void {
  */
 function dispatch_ga_analytics( WP_REST_Request $request ) {
 	$params = $request->get_params();
-	$body   = $params[''];
+	$body   = $request->get_body();
 
-	$request = wp_remote_post( 'https://www.google-analytics.com/mp/collect?measurement_id=' . $form_data['measurement_id'] . '&amp;api_secret=' . $form_data['api_secret'], $body );
+	$request = wp_remote_post( 'https://www.google-analytics.com/mp/collect?measurement_id=' . $body['measurement_id'] . '&amp;api_secret=' . $body['secret_key'], $body['ga_event'] );
 
 	if ( ! $request ) {
 		return new WP_Error( 'atlas-content-modeler-ga-analytics-error', esc_html__( 'GA was not sent. Reason unknown.', 'atlas-content-modeler' ) );

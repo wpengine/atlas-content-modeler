@@ -39,8 +39,8 @@ export default function App({ model, mode }) {
 		});
 
 		const gaData = {
-			gaEvent: eventData,
-			secretKey: gaConfig.secretKey,
+			ga_event: eventData,
+			secret_key: gaConfig.secretKey,
 			measurement_id: gaConfig.measurement_id,
 		};
 
@@ -62,8 +62,13 @@ export default function App({ model, mode }) {
 	useEffect(() => {
 		// test
 		const eventData = {
-			name: "test_event_2021",
-			params: {},
+			client_id: "aaa.bbb", // need to generate random client id - domain?
+			events: [
+				{
+					name: "publish_post",
+					params: {},
+				},
+			],
 		};
 
 		ga(eventData);
