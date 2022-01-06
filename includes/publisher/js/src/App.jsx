@@ -11,7 +11,7 @@ export default function App({ model, mode }) {
 
 	// GA config
 	let gaConfig = {
-		measurement_id: "G-S056CLLZ34",
+		measurementId: "G-S056CLLZ34",
 		secretKey: "",
 	};
 
@@ -43,7 +43,7 @@ export default function App({ model, mode }) {
 		const gaData = {
 			ga_event: eventData,
 			secret_key: gaConfig.secretKey,
-			measurement_id: gaConfig.measurement_id,
+			measurement_id: gaConfig.measurementId,
 		};
 
 		// call ga api
