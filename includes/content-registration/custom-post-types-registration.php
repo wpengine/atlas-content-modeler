@@ -406,7 +406,7 @@ function update_registered_content_types( array $args ): bool {
 	$updated = update_option( 'atlas_content_modeler_post_types', $args );
 
 	if ( $updated ) {
-		flush_rewrite_rules();
+		flush_rewrite_rules( false );
 	}
 
 	return $updated;

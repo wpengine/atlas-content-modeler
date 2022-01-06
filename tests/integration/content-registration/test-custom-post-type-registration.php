@@ -177,7 +177,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$wp_rewrite = $this->createMock( WP_Rewrite::class );
 		$wp_rewrite->expects( $this->once() )
 			->method( 'flush_rules' )
-			->with( true );
+			->with( false );
 
 		update_registered_content_types( [] );
 	}
