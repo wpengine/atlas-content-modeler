@@ -755,6 +755,9 @@ function is_protected_meta( bool $protected, string $meta_key, string $meta_type
 	}
 
 	$fields = wp_list_pluck( get_registered_content_types(), 'fields' );
+	if ( empty( $fields ) ) {
+		return $protected;
+	}
 	$fields = array_merge( ...array_values( $fields ) );
 	$slugs  = wp_list_pluck( $fields, 'slug' );
 
