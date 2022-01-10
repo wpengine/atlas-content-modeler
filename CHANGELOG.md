@@ -1,4 +1,7 @@
 # Atlas Content Modeler Changelog
+## Unreleased
+### Fixed
+- Prevent PHP fatal errors on sites running < PHP 7.4 under certain conditions when no models exist.
 
 ## 0.12.0 - 2021-12-15
 ### Added
