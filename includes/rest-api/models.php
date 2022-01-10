@@ -13,6 +13,7 @@ use WP_Error;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
+use function WPE\AtlasContentModeler\REST_API\GraphQL\root_type_exists;
 
 /**
  * Creates a custom content model.
@@ -31,22 +32,30 @@ function create_model( string $post_type_slug, array $args ) {
 
 	$existing_content_types = get_post_types();
 	$content_types          = get_registered_content_types();
-	$taxonomies             = get_acm_taxonomies();
 
-	// Check for slug conflicts in models and taxonomies.
-	if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) || array_key_exists( $args['slug'], $taxonomies ) ) {
+	if (
+		! empty( $content_types[ $args['slug'] ] )
+		|| array_key_exists( $args['slug'], $existing_content_types )
+	) {
 		return new WP_Error(
 			'acm_model_exists',
-			__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
+			esc_html__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
 
-	// Check for label conflicts in models and taxonomies.
-	if ( ( ! empty( $content_types[ $args['singular'] ] ) || array_key_exists( $args['singular'], $existing_content_types ) ) || ( ! empty( $content_types[ $args['plural'] ] ) || array_key_exists( $args['plural'], $existing_content_types ) ) || ( array_key_exists( $args['singular'], $taxonomies ) || array_key_exists( $args['plural'], $taxonomies ) ) ) {
+	if ( root_type_exists( $args['singular'] ?? '' ) ) {
 		return new WP_Error(
-			'acm_model_exists',
-			__( 'A content model with this Model Label already exists.', 'atlas-content-modeler' ),
+			'acm_singular_label_exists',
+			esc_html__( 'The singular label is already in use.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	if ( root_type_exists( $args['plural'] ?? '' ) ) {
+		return new WP_Error(
+			'acm_plural_label_exists',
+			esc_html__( 'The plural label is already in use.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -73,7 +82,6 @@ function create_model( string $post_type_slug, array $args ) {
 function create_models( array $models ) {
 	$existing_content_types = get_post_types();
 	$content_types          = get_registered_content_types();
-	$taxonomies             = get_acm_taxonomies();
 
 	foreach ( $models as $model ) {
 		if ( ! is_array( $model ) ) {
@@ -86,22 +94,32 @@ function create_models( array $models ) {
 			return $args;
 		}
 
-		// Check for slug collisions in taxonomies and models.
-		if ( ! empty( $content_types[ $args['slug'] ] ) || array_key_exists( $args['slug'], $existing_content_types ) || array_key_exists( $args['slug'], $taxonomies ) ) {
+		if (
+			! empty( $content_types[ $args['slug'] ] )
+			|| array_key_exists( $args['slug'], $existing_content_types )
+		) {
 			return new WP_Error(
 				'acm_model_exists',
 				// translators: The name of the model.
-				sprintf( __( 'A model with slug ‘%s’ already exists.', 'atlas-content-modeler' ), $args['slug'] ),
+				sprintf( esc_html__( 'A model with slug ‘%s’ already exists.', 'atlas-content-modeler' ), $args['slug'] ),
 				[ 'status' => 400 ]
 			);
 		}
 
-		// Check for collisions of labels in taxonomies and models.
-		if ( ( ! empty( $content_types[ $args['singular'] ] ) || array_key_exists( $args['singular'], $existing_content_types ) ) || ( ! empty( $content_types[ $args['plural'] ] ) || array_key_exists( $args['plural'], $existing_content_types ) ) || ( array_key_exists( $args['singular'], $taxonomies ) || array_key_exists( $args['plural'], $taxonomies ) ) ) {
+		if ( root_type_exists( $args['singular'] ?? '' ) ) {
 			return new WP_Error(
-				'acm_model_exists',
-				// translators: The name of the model.
-				__( 'A model with that label already exists.', 'atlas-content-modeler' ),
+				'acm_singular_label_exists',
+				// translators: singular label of the model, such as "cat".
+				sprintf( esc_html__( 'A singular label of “%s” is already in use.', 'atlas-content-modeler' ), $args['singular'] ),
+				[ 'status' => 400 ]
+			);
+		}
+
+		if ( root_type_exists( $args['plural'] ?? '' ) ) {
+			return new WP_Error(
+				'acm_plural_label_exists',
+				// translators: plural label of the model, such as "cats".
+				sprintf( esc_html__( 'A plural label of “%s” is already in use.', 'atlas-content-modeler' ), $args['plural'] ),
 				[ 'status' => 400 ]
 			);
 		}
@@ -172,9 +190,6 @@ function get_model_args( string $post_type_slug, array $args ) {
  * @return bool|WP_Error
  */
 function update_model( string $post_type_slug, array $args ) {
-	$taxonomies    = get_acm_taxonomies();
-	$content_types = get_registered_content_types();
-
 	if ( empty( $post_type_slug ) ) {
 		return new WP_Error(
 			'acm_invalid_content_model_id',
@@ -189,12 +204,24 @@ function update_model( string $post_type_slug, array $args ) {
 		);
 	}
 
-	// Check for collisions of labels in taxonomies and models for update.
-	if ( ( array_key_exists( $args['singular'], $content_types ) ) || ( array_key_exists( $args['plural'], $content_types ) ) || ( array_key_exists( $args['singular'], $taxonomies ) || array_key_exists( $args['plural'], $taxonomies ) ) ) {
+	if (
+		model_property_changed( $post_type_slug, 'singular', $args['singular'] )
+		&& root_type_exists( $args['singular'] )
+	) {
 		return new WP_Error(
-			'acm_model_exists',
-			// translators: The name of the model.
-			__( 'A model with that label already exists.', 'atlas-content-modeler' ),
+			'acm_singular_label_exists',
+			__( 'The singular label is already in use.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	if (
+		model_property_changed( $post_type_slug, 'plural', $args['plural'] )
+		&& root_type_exists( $args['plural'] )
+	) {
+		return new WP_Error(
+			'acm_plural_label_exists',
+			__( 'The plural label is already in use.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -293,4 +320,21 @@ function delete_model( string $post_type_slug ) {
 	}
 
 	return $model;
+}
+
+/**
+ * Determines if a new model property value differs from the old one.
+ *
+ * Used for extra validation against modified properties, such as checking that
+ * an updated singular label does not conflict with root GraphQL fields.
+ *
+ * @param string $slug The model ID.
+ * @param string $property The property to check.
+ * @param mixed  $new_value The property's new value.
+ * @return bool
+ */
+function model_property_changed( string $slug, string $property, $new_value ): bool {
+	$acm_models = get_registered_content_types();
+
+	return ( $acm_models[ $slug ][ $property ] ?? null ) !== $new_value;
 }
