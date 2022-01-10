@@ -9,29 +9,6 @@ import { updateSidebarMenuItem } from "../utils";
 const { apiFetch } = wp;
 
 /**
- * Updates a model via the REST API.
- *
- * @param slug Model slug.
- * @param data Model data.
- */
-function updateModel(slug = "", data = {}) {
-	if (!slug.length || Object.keys(data).length === 0) {
-		return;
-	}
-
-	const updated = apiFetch({
-		path: `/wpe/atlas/content-model/${slug}`,
-		method: "PATCH",
-		_wpnonce: wpApiSettings.nonce,
-		data,
-	}).then((res) => {
-		return res;
-	});
-
-	return updated;
-}
-
-/**
  * The modal component for editing a content model.
  *
  * @param {Object} model The model to edit.
@@ -55,6 +32,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 		handleSubmit,
 		errors,
 		setValue,
+		setError,
 		formState: { isSubmitting },
 	} = useForm();
 
@@ -73,6 +51,42 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			boxSizing: "border-box",
 		},
 	};
+
+	/**
+	 * Updates a model via the REST API.
+	 *
+	 * @param slug Model slug.
+	 * @param data Model data.
+	 */
+	function updateModel(slug = "", data = {}) {
+		if (!slug.length || Object.keys(data).length === 0) {
+			return;
+		}
+
+		return apiFetch({
+			path: `/wpe/atlas/content-model/${slug}`,
+			method: "PATCH",
+			_wpnonce: wpApiSettings.nonce,
+			data,
+		})
+			.then((res) => {
+				return res;
+			})
+			.catch((err) => {
+				if (err.code === "acm_singular_label_exists") {
+					setError("singular", {
+						type: "exists",
+						message: err.message,
+					});
+				}
+				if (err.code === "acm_plural_label_exists") {
+					setError("plural", {
+						type: "exists",
+						message: err.message,
+					});
+				}
+			});
+	}
 
 	useEffect(() => {
 		Modal.setAppElement("#root");
@@ -96,10 +110,12 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			<form
 				onSubmit={handleSubmit(async (data) => {
 					const mergedData = { ...model, ...data };
-					updateSidebarMenuItem(model, data);
-					await updateModel(data.slug, mergedData);
-					dispatch({ type: "updateModel", data: mergedData });
-					setIsOpen(false);
+					const result = await updateModel(data.slug, mergedData);
+					if (result?.success) {
+						updateSidebarMenuItem(model, data);
+						dispatch({ type: "updateModel", data: mergedData });
+						setIsOpen(false);
+					}
 				})}
 			>
 				<div className="row">
@@ -149,6 +165,15 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 												"Exceeds max length.",
 												"atlas-content-modeler"
 											)}
+										</span>
+									</span>
+								)}
+							{errors.singular &&
+								errors.singular.type === "exists" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{errors.singular.message}
 										</span>
 									</span>
 								)}
@@ -206,6 +231,14 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 										</span>
 									</span>
 								)}
+							{errors.plural && errors.plural.type === "exists" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{errors.plural.message}
+									</span>
+								</span>
+							)}
 							<span>&nbsp;</span>
 							<span className="count">{pluralCount}/50</span>
 						</p>
