@@ -6,6 +6,7 @@ import { removeSidebarMenuItem } from "../utils";
 import { getRelationships } from "../queries";
 import { showError } from "../toasts";
 import { useHistory } from "react-router-dom";
+import { sendEvent } from "../../../../shared-assets/js/analytics";
 
 const { apiFetch } = wp;
 
@@ -118,6 +119,11 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 					await deleteModel(slug)
 						.then((res) => {
 							if (res.success) {
+								sendEvent({
+									category: "Models",
+									action: "Deleted a Model",
+								});
+
 								removeSidebarMenuItem(slug);
 								taxonomiesDispatch({
 									type: "removeModel",
