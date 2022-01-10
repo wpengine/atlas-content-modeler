@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
 import { useInputGenerator } from "../hooks";
-import { toPostTypeSlug } from "../formats";
+import { toSanitizedKey } from "../formats";
 import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
@@ -38,7 +38,7 @@ export default function CreateContentModel() {
 		onChangeGeneratedValue,
 	} = useInputGenerator({
 		setGeneratedValue: (value) => setValue("slug", value),
-		format: toPostTypeSlug,
+		format: toSanitizedKey,
 	});
 
 	function apiCreateModel(data) {
@@ -78,7 +78,7 @@ export default function CreateContentModel() {
 				}
 			})
 			.catch((err) => {
-				if (err.code === "atlas_content_modeler_already_exists") {
+				if (err.code === "acm_model_exists") {
 					setError("slug", {
 						type: "idExists",
 						message: err.message,

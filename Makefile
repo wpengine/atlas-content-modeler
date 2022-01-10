@@ -1,5 +1,5 @@
 DOCKER_RUN       := docker run --rm
-COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer
+COMPOSER_IMAGE   := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer:1
 NODE_IMAGE       := -w /home/node/app -v "$$(pwd):/home/node/app" --user node atlascontentmodeler_node_image
 HAS_CHROMEDRIVER := $(shell command -v chromedriver 2> /dev/null)
 CURRENTUSER      := $$(id -u)
@@ -77,11 +77,11 @@ install-composer:
 install-npm: | build-docker
 	if [ ! -d ./node_modules/ ]; then \
 		echo "installing node dependencies for plugin"; \
-		$(DOCKER_RUN) $(NODE_IMAGE) npm install; \
+		$(DOCKER_RUN) $(NODE_IMAGE) npm ci; \
 	fi
 
 .PHONY: test
-test: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit ## Build all assets and run all testing except end-to-end testing
+test: install-npm install-composer test-js-lint test-php-lint test-js-jest test-php-unit test-content-connect ## Build all assets and run all testing except end-to-end testing
 
 .PHONY: test-build
 test-build: build test-js-lint test-php-lint test-js-jest test-php-unit ## Run all testing except end-to-end testing
@@ -151,10 +151,42 @@ test-php-unit: | install-composer build-docker-phpunit ## Run PHPunit tests
 		docker-compose -f ./docker-compose-phpunit.yml down; \
 	fi
 	docker-compose -f ./docker-compose-phpunit.yml up -d
-	docker-compose \
-		-f ./docker-compose-phpunit.yml\
-		exec \
-		-w /app \
-		phpunit \
-		bash -c "composer test"
+	if [ -z "$(TEST)" ]; then \
+		docker-compose \
+			-f ./docker-compose-phpunit.yml \
+			exec \
+			-w /app \
+			phpunit \
+			bash -c "composer test"; \
+	else \
+		docker-compose \
+			-f ./docker-compose-phpunit.yml \
+			exec \
+			-w /app \
+			phpunit \
+			bash -c "vendor/bin/phpunit $(TEST)"; \
+	fi
+	docker-compose -f ./docker-compose-phpunit.yml down
+
+.PHONY: test-content-connect
+test-content-connect: | install-composer build-docker-phpunit ## Run PHPunit tests
+	if [ "$$(docker ps | grep atlas-content-modeler_docker_phpunitdatabase_1)" ]; then \
+		docker-compose -f ./docker-compose-phpunit.yml down; \
+	fi
+	docker-compose -f ./docker-compose-phpunit.yml up -d
+	if [ -z "$(TEST)" ]; then \
+		docker-compose \
+			-f ./docker-compose-phpunit.yml \
+			exec \
+			-w /app \
+			phpunit \
+			bash -c "vendor/bin/phpunit --configuration phpunit.content-connect.xml"; \
+	else \
+		docker-compose \
+			-f ./docker-compose-phpunit.yml \
+			exec \
+			-w /app \
+			phpunit \
+			bash -c "vendor/bin/phpunit --configuration phpunit.content-connect.xml $(TEST)"; \
+	fi
 	docker-compose -f ./docker-compose-phpunit.yml down

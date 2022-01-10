@@ -25,6 +25,7 @@ module.exports = {
 	// add your custom rules here
 	ignorePatterns: ["**/dist", "**/includes/settings/scss/bootstrap"],
 	rules: {
+		"no-console": ["error", { allow: ["warn", "error"] }],
 		"react/prop-types": 0,
 		"react/no-unescaped-entities": 0,
 		"react/no-children-prop": 0,

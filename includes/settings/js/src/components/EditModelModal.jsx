@@ -6,28 +6,10 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
+import { updateSidebarMenuItem } from "../utils";
 
 const $ = window.jQuery;
 const { apiFetch } = wp;
-
-/**
- * Update sidebar model item for icon changes
- */
-function updateSidebarMenuItem(model, data) {
-	let { model_icon } = data || "dashicons-admin-post";
-	if (model.model_icon !== model_icon) {
-		// update sidebar icon
-		$(`li#menu-posts-${model.slug}`)
-			.find(".wp-menu-image")
-			.removeClass(function (index, className) {
-				return (className.match(/(^|\s)dashicons-\S+/g) || []).join(
-					" "
-				);
-			})
-			.addClass("dashicons-before")
-			.addClass(`${model_icon}`);
-	}
-}
 
 /**
  * Updates a model via the REST API.
@@ -66,6 +48,10 @@ function updateModel(slug = "", data = {}) {
  * @returns {JSX.Element} Modal
  */
 export function EditModelModal({ model, isOpen, setIsOpen }) {
+	if (typeof model?.singular === "undefined") {
+		return ""; // Prevents a crash when a model is deleted from its own page.
+	}
+
 	const [singularCount, setSingularCount] = useState(model.singular.length);
 	const [pluralCount, setPluralCount] = useState(model.plural.length);
 	const [descriptionCount, setDescriptionCount] = useState(
@@ -96,6 +82,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 		},
 	};
 
+	useEffect(() => {
+		Modal.setAppElement("#root");
+	}, []);
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -114,9 +104,9 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			<form
 				onSubmit={handleSubmit(async (data) => {
 					const mergedData = { ...model, ...data };
+					updateSidebarMenuItem(model, data);
 					await updateModel(data.slug, mergedData);
 					dispatch({ type: "updateModel", data: mergedData });
-					updateSidebarMenuItem(model, data);
 					setIsOpen(false);
 				})}
 			>

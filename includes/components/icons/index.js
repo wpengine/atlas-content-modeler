@@ -5,10 +5,14 @@ import CloseIcon from "./CloseIcon";
 import DateIcon from "./DateIcon";
 import DownArrow from "./DownArrow";
 import ErrorIcon from "./ErrorIcon";
+import ExternalLinkIcon from "./ExternalLink";
+import InfoIcon from "./InfoIcon";
+import LinkIcon from "./LinkIcon";
 import MediaIcon from "./MediaIcon";
 import MultipleChoiceIcon from "./MultipleChoiceIcon";
 import NumberIcon from "./NumberIcon";
 import OptionsIcon from "./OptionsIcon";
+import RelationshipIcon from "./RelationshipIcon";
 import ReorderIcon from "./ReorderIcon";
 import RichTextIcon from "./RichTextIcon";
 import SettingsIcon from "./SettingsIcon";
@@ -30,6 +34,12 @@ export default function Icon({ type, size }) {
 			return <DownArrow />;
 		case "error":
 			return <ErrorIcon size={size} />;
+		case "external-link":
+			return <ExternalLinkIcon />;
+		case "info":
+			return <InfoIcon />;
+		case "link":
+			return <LinkIcon />;
 		case "media":
 			return <MediaIcon />;
 		case "multipleChoice":
@@ -38,6 +48,8 @@ export default function Icon({ type, size }) {
 			return <NumberIcon />;
 		case "options":
 			return <OptionsIcon />;
+		case "relationship":
+			return <RelationshipIcon />;
 		case "reorder":
 			return <ReorderIcon />;
 		case "richtext":

@@ -1,68 +1,62 @@
 <?php
 
-class EditTaxonomyCest
-{
-	public function _before(\AcceptanceTester $I)
-	{
-		$I->maximizeWindow();
-		$I->loginAsAdmin();
-		$I->wait(1);
-		$I->haveContentModel('Goose', 'Geese');
-		$I->wait(1);
-		$I->haveTaxonomy('Breed', 'Breeds', ['goose']);
-		$I->wait(1);
-		$I->amOnTaxonomyListingsPage();
-		$I->wait(1);
-		$I->click('.action button.options');
-		$I->see('Edit', '.dropdown-content');
-		$I->click('Edit', '.action .dropdown-content');
-		$I->wait(1);
+class EditTaxonomyCest {
+
+	public function _before( \AcceptanceTester $i ) {
+		$i->maximizeWindow();
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'Goose', 'Geese' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose' ] ] );
+		$i->wait( 1 );
+		$i->amOnTaxonomyListingsPage();
+		$i->wait( 1 );
+		$i->click( '.action button.options' );
+		$i->see( 'Edit', '.dropdown-content' );
+		$i->click( 'Edit', '.action .dropdown-content' );
+		$i->wait( 1 );
 	}
 
-	public function i_can_edit_a_taxonomy(AcceptanceTester $I)
-	{
-		$I->seeInField('#singular','Breed');
+	public function i_can_edit_a_taxonomy( AcceptanceTester $i ) {
+		$i->seeInField( '#singular', 'Breed' );
 
-		$I->fillField(['name' => 'singular'], 'Br33d');
-		$I->fillField(['name' => 'plural'], 'Br33ds');
-		$I->wait(1);
-		$I->seeInField('#slug','breed'); // Editing the singular field does not change the slug.
+		$i->fillField( [ 'name' => 'singular' ], 'Br33d' );
+		$i->fillField( [ 'name' => 'plural' ], 'Br33ds' );
+		$i->wait( 1 );
+		$i->seeInField( '#slug', 'breed' ); // Editing the singular field does not change the slug.
 
-		$I->click('Update');
-		$I->wait(1);
-		$I->see('taxonomy was updated');
-		$I->see('Br33ds', '.taxonomy-list');
-		$I->seeInField('#singular', ''); // Form is reset.
+		$i->click( 'Update' );
+		$i->wait( 1 );
+		$i->see( 'taxonomy was updated' );
+		$i->see( 'Br33ds', '.taxonomy-list' );
+		$i->seeInField( '#singular', '' ); // Form is reset.
 	}
 
-	public function i_see_the_edit_form_reset_if_no_changes_were_made(AcceptanceTester $I)
-	{
+	public function i_see_the_edit_form_reset_if_no_changes_were_made( AcceptanceTester $i ) {
 		// Just submit the edit form without making changes.
-		$I->click('Update');
-		$I->wait(1);
-		$I->dontSee('taxonomy was updated'); // No changes were made, so no toast should appear.
-		$I->seeInField('#singular', ''); // Form is reset.
+		$i->click( 'Update' );
+		$i->wait( 1 );
+		$i->dontSee( 'taxonomy was updated' ); // No changes were made, so no toast should appear.
+		$i->seeInField( '#singular', '' ); // Form is reset.
 	}
 
-	public function i_see_the_edit_form_reset_if_the_form_state_is_unchanged(AcceptanceTester $I)
-	{
-		$I->click('#model-checklist .checkbox'); // Untick the selected model.
-		$I->wait(1);
-		$I->click('#model-checklist .checkbox'); // Retick the model. The form should not be dirty now.
-		$I->wait(1);
+	public function i_see_the_edit_form_reset_if_the_form_state_is_unchanged( AcceptanceTester $i ) {
+		$i->click( '#model-checklist .checkbox' ); // Untick the selected model.
+		$i->wait( 1 );
+		$i->click( '#model-checklist .checkbox' ); // Retick the model. The form should not be dirty now.
+		$i->wait( 1 );
 
-		$I->click('Update');
-		$I->wait(1);
-		$I->dontSee('taxonomy was updated'); // No changes were made, so no toast should appear.
-		$I->seeInField('#singular', ''); // Form is reset.
+		$i->click( 'Update' );
+		$i->wait( 1 );
+		$i->dontSee( 'taxonomy was updated' ); // No changes were made, so no toast should appear.
+		$i->seeInField( '#singular', '' ); // Form is reset.
 	}
 
-	public function i_see_the_taxonomies_index_when_navigating_back_from_the_edit_form(AcceptanceTester $I)
-	{
-		$I->moveBack(); // Immediately navigate back from the edit form.
-		$I->wait(1);
-		$I->see('Taxonomies'); // Main taxonomies screen, not the Models screen.
-		$I->see('Add New');
-		$I->seeInField('#singular', ''); // Form is empty.
+	public function i_see_the_taxonomies_index_when_navigating_back_from_the_edit_form( AcceptanceTester $i ) {
+		$i->moveBack(); // Immediately navigate back from the edit form.
+		$i->wait( 1 );
+		$i->see( 'Taxonomies' ); // Main taxonomies screen, not the Models screen.
+		$i->see( 'Add New' );
+		$i->seeInField( '#singular', '' ); // Form is empty.
 	}
 }

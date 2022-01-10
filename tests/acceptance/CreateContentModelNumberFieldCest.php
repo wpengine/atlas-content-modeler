@@ -1,25 +1,57 @@
 <?php
 
-class CreateContentModelNumberFieldCest
-{
-    /**
-     * Ensure a user can add a number field to the model and see it within the list.
-     */
-    public function i_can_add_a_number_field_to_a_content_model(AcceptanceTester $I)
-    {
-        $I->loginAsAdmin();
-        $I->haveContentModel('Candy', 'Candies');
-        $I->wait(1);
+class CreateContentModelNumberFieldCest {
 
-        $I->click('Number', '.field-buttons');
-		$I->wait(1);
-		$I->fillField(['name' => 'name'], 'Count');
-        $I->see('5/50', 'span.count');
-        $I->seeInField('#slug','count');
-        $I->click('.open-field button.primary');
-        $I->wait(1);
+	public function _before( \AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'Employee', 'Employees' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+	}
 
-        $I->see('Number', '.field-list div.type');
-        $I->see('Count', '.field-list div.widest');
-    }
+	/**
+	 * Ensure a user can add a number field to the model and see it within the list.
+	 */
+	public function i_can_add_a_number_field_to_a_content_model( AcceptanceTester $i ) {
+		$i->click( 'Number', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Count' );
+		$i->see( '5/50', 'span.count' );
+		$i->seeInField( '#slug', 'count' );
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
+
+		$i->see( 'Number', '.field-list div.type' );
+		$i->see( 'Count', '.field-list div.widest' );
+	}
+
+	public function i_can_add_a_step_setting_without_a_max_setting( AcceptanceTester $i ) {
+		$i->click( 'Number', '.field-buttons' );
+		$i->wait( 1 );
+
+		$i->click( 'button.settings' );
+		$i->fillField( [ 'name' => 'minValue' ], '1' );
+		$i->fillField( [ 'name' => 'step' ], '2' );
+		$i->dontSee( 'Step must be lower than max.', '.error' );
+	}
+
+	public function i_must_use_intergers_for_advanced_interger_field_settings( AcceptanceTester $i ) {
+		$i->click( 'Number', '.field-buttons' );
+		$i->wait( 1 );
+
+		$i->click( 'button.settings' );
+		$i->fillField( [ 'name' => 'minValue' ], '1.2' );
+		$i->see( 'The value must be an integer.', '.error' );
+		$i->fillField( [ 'name' => 'minValue' ], '1' );
+		$i->dontSee( 'The value must be an integer.', '.error' );
+
+		$i->fillField( [ 'name' => 'maxValue' ], '1.2' );
+		$i->see( 'The value must be an integer.', '.error' );
+		$i->fillField( [ 'name' => 'maxValue' ], '1' );
+		$i->dontSee( 'The value must be an integer.', '.error' );
+
+		$i->fillField( [ 'name' => 'step' ], '1.2' );
+		$i->see( 'The value must be an integer.', '.error' );
+		$i->fillField( [ 'name' => 'step' ], '1' );
+		$i->dontSee( 'The value must be an integer.', '.error' );
+	}
 }

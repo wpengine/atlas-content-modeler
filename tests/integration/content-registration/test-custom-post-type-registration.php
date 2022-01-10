@@ -18,8 +18,18 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	private $models;
 	private $all_registered_post_types;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
+
+		/**
+		 * Reset the WPGraphQL schema before each test.
+		 * Lazy loading types only loads part of the schema,
+		 * so we refresh for each test.
+		 */
+		WPGraphQL::clear_schema();
+
+		// Start each test with a fresh relationships registry.
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
 		$this->models = $this->get_models();
 
@@ -33,8 +43,8 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$this->post_ids = $this->get_post_ids();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		delete_option( 'atlas_content_modeler_post_types' );
 		$this->all_registered_post_types = null;
@@ -57,11 +67,31 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		self::assertSame( 10, has_action( 'init', 'WPE\AtlasContentModeler\ContentRegistration\register_content_types' ) );
 	}
 
+	/**
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\register_relationships()
+	 */
+	public function test_relationship_registration_init_hook(): void {
+		self::assertSame( 10, has_action( 'acm_content_connect_init', 'WPE\AtlasContentModeler\ContentRegistration\register_relationships' ) );
+	}
+
 	public function test_defined_custom_post_types_are_registered(): void {
 		self::assertArrayHasKey( 'public', $this->all_registered_post_types );
 		self::assertArrayHasKey( 'public-fields', $this->all_registered_post_types );
 		self::assertArrayHasKey( 'private', $this->all_registered_post_types );
 		self::assertArrayHasKey( 'private-fields', $this->all_registered_post_types );
+	}
+
+	public function test_relationships_are_registered(): void {
+		$registry = \WPE\AtlasContentModeler\ContentConnect\Helpers\get_registry();
+
+		foreach ( $this->models as $post_type => $model ) {
+			foreach ( $model['fields'] as $field ) {
+				if ( $field['type'] === 'relationship' ) {
+					$relationship = $registry->get_post_to_post_relationship( $post_type, $field['reference'], $field['id'] );
+					self::assertInstanceOf( 'WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost', $relationship );
+				}
+			}
+		}
 	}
 
 	public function test_custom_post_type_labels_match_expected_format(): void {
@@ -91,7 +121,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 			array(
 				'singular'   => 'Public',
 				'plural'     => 'Publics',
-				'model_icon' => 'dashicons-saved',
+				'model_icon' => 'dashicons-admin-post',
 			)
 		);
 		$expected_args  = $this->all_registered_post_types['public'];
@@ -132,5 +162,23 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	public function test_fields_not_attached_to_a_model_are_not_affected(): void {
 		self::assertFalse( is_protected_meta( false, 'this-key-is-unprotected-and-not-ours-and-should-remain-unprotected', 'post' ) );
 		self::assertTrue( is_protected_meta( true, 'this-key-is-already-protected-and-should-remain-protected', 'post' ) );
+	}
+
+	/**
+	 * @covers ::\WPE\AtlasContentModeler\ContentRegistration\is_protected_meta()
+	 */
+	public function test_model_supports_author(): void {
+		self::assertTrue( post_type_supports( 'public', 'author' ) );
+	}
+
+	public function test_flush_rewrite_rules_called_after_updating_model(): void {
+		global $wp_rewrite;
+
+		$wp_rewrite = $this->createMock( WP_Rewrite::class );
+		$wp_rewrite->expects( $this->once() )
+			->method( 'flush_rules' )
+			->with( false );
+
+		update_registered_content_types( [] );
 	}
 }

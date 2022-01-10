@@ -1,3 +1,4 @@
+$color-gray-mid: #405e6a;
 $form-purple: #7e5cef;
 $form-default-border-gray: #9db7d1;
 $error-red: #d21b46;
@@ -124,17 +125,19 @@ $button-primary: #002838;
 			margin-bottom: 15px;
 		}
 
-		input.button {
+		input.button,
+		button.link-button {
 			background: $button-primary;
 			font-size: 16px;
+			font-weight: 600;
 			line-height: 16px;
 			margin-top: 15px;
 			padding: 16px 24px;
-		}
 
-		input.button:focus,
-		input.button:hover {
-			background: lighten($button-primary, 5);
+			&:focus,
+			&:hover {
+				background: lighten($button-primary, 5);
+			}
 		}
 
 		label,
@@ -230,7 +233,8 @@ $button-primary: #002838;
 			display: block;
 			position: relative;
 			padding-left: 35px;
-			margin-top: 12px;
+			margin-top: 9px;
+			line-height: 26px;
 			cursor: pointer;
 			font-size: 14px;
 			-webkit-user-select: none;
@@ -328,8 +332,12 @@ $button-primary: #002838;
 			margin-right: 8px;
 		}
 
+		.help {
+			color: $color-gray-mid;
+		}
+
 		.required {
-			color: #405e6a;
+			color: $color-gray-mid;
 			font-size: 12px;
 			margin-bottom: 0;
 		}
@@ -356,9 +364,15 @@ $button-primary: #002838;
 	}
 }
 
-#feedbackBanner.notice {
-	border-left-width: 1px;
-	border-left-color: #c3c4c7;
+#feedbackBanner {
+	@media (min-width: 770px) {
+		margin-top: 30px;
+	}
+
+	&.notice {
+		border-left-width: 1px;
+		border-left-color: #c3c4c7;
+	}
 }
 
 @media (min-width: 1350px) {

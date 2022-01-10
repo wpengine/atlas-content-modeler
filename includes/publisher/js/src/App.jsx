@@ -2,22 +2,15 @@ import React, { useEffect } from "react";
 import Fields from "./components/Fields";
 import { __ } from "@wordpress/i18n";
 import { sendPageView } from "acm-analytics";
+import TrashPostModal from "./components/TrashPostModal";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
+	const [trashPostModalIsOpen, setTrashPostModalIsOpen] = useState(false);
 
 	useEffect(() => {
 		sendPageView("ACM Publisher Entry");
 	}, []);
-
-	/**
-	 * Navigate to the post new php file for current slug
-	 * @param e
-	 */
-	function clickHandler(e) {
-		e.preventDefault();
-		window.location.href = `/wp-admin/post-new.php?post_type=${model.slug}`;
-	}
 
 	return (
 		<div className="app classic-form" style={{ marginTop: "20px" }}>
@@ -52,6 +45,10 @@ export default function App({ model, mode }) {
 			<div className="d-flex flex-column">
 				<Fields model={model} />
 			</div>
+			<TrashPostModal
+				isOpen={trashPostModalIsOpen}
+				setIsOpen={setTrashPostModalIsOpen}
+			/>
 		</div>
 	);
 }

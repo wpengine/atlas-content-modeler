@@ -14,12 +14,15 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 	private $route     = '/atlas/content-model-field';
 	private $test_models;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		$this->test_models = $this->get_models();
 
 		update_registered_content_types( $this->test_models );
+
+		// Start each test with a fresh relationships registry.
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
 		// @todo why is this not running automatically?
 		do_action( 'init' );
@@ -38,8 +41,8 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$this->post_ids = $this->get_post_ids();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
@@ -153,6 +156,80 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test we can't add a field with a duplicate relationship slug to a given model
+	 */
+	public function test_reverse_relationship_slugs_must_be_unique_to_each_model() {
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+
+		// Insert a successful relationship with a reverse relationship.
+		$field = array(
+			'type'          => 'relationship',
+			'id'            => '3427364',
+			'model'         => 'private-fields',
+			'position'      => '0',
+			'name'          => 'Relationship',
+			'slug'          => 'reverseRelationship',
+			'reference'     => 'public-fields',
+			'enableReverse' => true,
+			'cardinality'   => 'many-to-many',
+			'reverseName'   => 'Reverse',
+			'reverseSlug'   => 'reverseIt',
+		);
+		$request->set_body( json_encode( $field ) );
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertEquals( true, $data['success'] );
+
+		// Attempt to insert a reverse relationship that would conflict with the slug of a non-relationship field.
+		$field = array(
+			'type'          => 'relationship',
+			'id'            => '456343234',
+			'model'         => 'private-fields',
+			'position'      => '0',
+			'name'          => 'Relationship',
+			'slug'          => 'relationship',
+			'reference'     => 'public-fields',
+			'enableReverse' => true,
+			'cardinality'   => 'many-to-many',
+			'reverseName'   => 'Reverse',
+			'reverseSlug'   => 'singleLine',
+		);
+		$request->set_body( json_encode( $field ) );
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertArrayHasKey( 'message', $data );
+		$this->assertEquals( 'A field in the public-fields model has the same identifier.', $data['message'] );
+
+		// Attempt to create a reverse relationship that would conflict with the slug of an existing reverse relationship from the same model.
+		$field = array(
+			'type'          => 'relationship',
+			'id'            => '123456789',
+			'model'         => 'private-fields',
+			'position'      => '0',
+			'name'          => 'Relationship2',
+			'slug'          => 'reverseIt',
+			'reference'     => 'public-fields',
+			'enableReverse' => true,
+			'cardinality'   => 'many-to-many',
+			'reverseName'   => 'Reverse',
+			'reverseSlug'   => 'reverseIt',
+		);
+		$request->set_body( json_encode( $field ) );
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertArrayHasKey( 'message', $data );
+		$this->assertEquals( 'A relationship field in this model has the same identifier.', $data['message'] );
+	}
+
+	/**
 	 * Test crud operations for a field
 	 */
 	public function test_field_can_be_created_and_updated_and_deleted() {
@@ -261,8 +338,8 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$model          = 'public-fields';
 		$new_field_data = [
 			'fields' => [
-				'1628084952497' => [ 'position' => '10' ],
-				'1628084963946' => [ 'position' => '20' ],
+				'1630411218064' => [ 'position' => '10' ],
+				'1630411257237' => [ 'position' => '20' ],
 			],
 		];
 
@@ -276,8 +353,8 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$this->assertArrayHasKey( 'success', $data );
 		$this->assertEquals( true, $data['success'] );
-		$this->assertEquals( 10, $models[ $model ]['fields']['1628084952497']['position'] );
-		$this->assertEquals( 20, $models[ $model ]['fields']['1628084963946']['position'] );
+		$this->assertEquals( 10, $models[ $model ]['fields']['1630411218064']['position'] );
+		$this->assertEquals( 20, $models[ $model ]['fields']['1630411257237']['position'] );
 	}
 
 	/**
@@ -361,7 +438,7 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertArrayHasKey( 'isTitle', $models[ $model ]['fields']['222'] );
-		$this->assertArrayNotHasKey( 'isTitle', $models[ $model ]['fields']['1628084420404'] );
+		$this->assertArrayNotHasKey( 'isTitle', $models[ $model ]['fields']['1630411257237'] );
 	}
 
 	/**
@@ -395,6 +472,107 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertEquals( 400, $response->get_status() );
-		self::assertSame( 'wpe_invalid_content_model', $response->get_data()['code'] );
+		self::assertSame( 'acm_invalid_content_model', $response->get_data()['code'] );
+	}
+
+	/**
+	 * Ensures a new relationship field requires a reference to a related model
+	 */
+	public function test_attempt_to_create_relationship_field_without_reference_gives_error() {
+		$relationship_field_missing_reference = [
+			'type'        => 'relationship',
+			'id'          => '111',
+			'model'       => 'public',
+			'position'    => '123',
+			'name'        => 'Related',
+			'slug'        => 'related',
+			'cardinality' => 'many-to-one',
+		];
+
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $relationship_field_missing_reference ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertEquals( 'acm_missing_field_argument', $data['code'] );
+	}
+
+	/**
+	 * Ensure creating a field without cardinality fails
+	 */
+	public function test_attempt_to_create_relationship_field_without_cardinality_gives_error() {
+		$relationship_field_missing_cardinality = [
+			'type'      => 'relationship',
+			'id'        => '111',
+			'model'     => 'public',
+			'position'  => '123',
+			'name'      => 'Related',
+			'slug'      => 'related',
+			'reference' => 'rabbits',
+		];
+
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $relationship_field_missing_cardinality ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertEquals( 'acm_missing_field_argument', $data['code'] );
+	}
+
+	/**
+	 * Ensure creating relationship on non-existent model fails
+	 */
+	public function test_attempt_to_create_relationship_field_with_missing_reference_model_gives_error() {
+		$relationship_field_missing_cardinality = [
+			'type'        => 'relationship',
+			'id'          => '111',
+			'model'       => 'public',
+			'position'    => '123',
+			'name'        => 'Related',
+			'slug'        => 'related',
+			'cardinality' => 'many-to-one',
+			'reference'   => 'does-not-exist',
+		];
+
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $relationship_field_missing_cardinality ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertEquals( 'acm_invalid_related_content_model', $data['code'] );
+	}
+
+	public function test_using_reserved_field_slug_generates_error() {
+		$field_with_reserved_slug = [
+			'slug'     => 'title',
+			'type'     => 'text',
+			'id'       => '111',
+			'model'    => 'public',
+			'position' => '123',
+			'name'     => 'Title',
+		];
+
+		wp_set_current_user( 1 );
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $field_with_reserved_slug ) );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 400, $response->get_status() );
+		$this->assertEquals( 'acm_reserved_field_slug', $data['code'] );
 	}
 }

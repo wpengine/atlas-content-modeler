@@ -1,12 +1,12 @@
 # Contributing
 
-**Required Software**
-- [Composer]()
-- [Nodejs]()
+## Required Software
+- [Composer](https://getcomposer.org/download/)
+- [Nodejs](https://nodejs.org/en/)
 
-**Optional Software** Required for end-2-end testing
-- [Docker Desktop]()
-- [Chromedriver]()
+## Optional Software for end-2-end testing
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [Chromedriver](https://formulae.brew.sh/cask/chromedriver)
 
 ## Project Setup
 
@@ -28,6 +28,19 @@ Install npm packages
 ```
 npm install
 ```
+
+### Which Node.js version should I use?
+
+We recommend using a Node.js version manager such as Fast Node Manager ([fnm](https://github.com/Schniz/fnm)) to ensure your version of Node.js matches ours when working on Atlas Content Modeler.
+
+[Install fnm](https://github.com/Schniz/fnm#installation), close and reopen your shell, then run these commands from the Atlas Content Modeler project root:
+
+```
+fnm install
+fnm use
+```
+
+`node -v` will then return the same version from this project's `.nvmrc`.
 
 ## Testing
 
@@ -51,10 +64,22 @@ make help
 TEST=<test> make test-e2e
 ```
 
-example:
+Example:
 
 ```
 TEST=CreateContentModelMediaFieldCest:i_can_add_a_media_field_to_a_content_model make test-e2e
+```
+
+#### Running a single PHP unit test
+
+```
+TEST=<test> make test-php-unit
+```
+
+Example:
+
+```
+TEST=tests/integration/api-validation/test-graphql-endpoints.php make test-php-unit
 ```
 
 ### Manual test setup
@@ -139,12 +164,15 @@ A running WordPress test site will be needed to run browser tests against. This 
 
 ## Deployment
 
-Developers with full GitHub repository access can create public releases:
+Developers with full GitHub repository access can create public releases.
+
+Before tagging a release, make sure to notify other WP Engine teams ahead of time in the `#oss-releases` channel in Slack. For normal releases, a 24 hour notice is desirable. For releases containing changes that break backwards compatibility, a one week notice is desirable.
 
 ### To release the plugin
 
 1. Create a PR to update the version and changelog. [Example release PR](https://github.com/wpengine/atlas-content-modeler/pull/100).
-2. When the release PR is approved and merged, tag the commit you wish to publish with the release version in the form `x.y.z`. [Example release tag](https://github.com/wpengine/atlas-content-modeler/releases/tag/0.2.0).
+2. If necessary, update the required PHP and WordPress versions listed in the header of the plugin's main file.
+3. When the release PR is approved and merged, tag the commit you wish to publish with the release version in the form `x.y.z`. [Example release tag](https://github.com/wpengine/atlas-content-modeler/releases/tag/0.2.0).
 
 You can tag in GitHub by creating a release, or via the command line locally:
 
@@ -156,4 +184,4 @@ git push --tags
 
 CircleCI will build and deploy the plugin zip. The latest version is available here:
 
-`https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download`
+`https://wordpress.org/plugins/atlas-content-modeler/`

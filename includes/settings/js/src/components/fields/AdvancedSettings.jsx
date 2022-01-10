@@ -3,7 +3,7 @@
  */
 import React from "react";
 import Icon from "../../../../../components/icons";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 
 const MediaSettings = ({
 	errors,
@@ -151,6 +151,19 @@ const NumberSettings = ({
 									</span>
 								</span>
 							)}
+							{errors.minValue &&
+								errors.minValue.type ===
+									"isAppropriateType" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"The value must be an integer.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
 						</p>
 					</div>
 
@@ -199,6 +212,19 @@ const NumberSettings = ({
 										<span role="alert">
 											{__(
 												"Max must be more than min.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							{errors.maxValue &&
+								errors.maxValue.type ===
+									"isAppropriateType" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"The value must be an integer.",
 												"atlas-content-modeler"
 											)}
 										</span>
@@ -260,6 +286,18 @@ const NumberSettings = ({
 									<span role="alert">
 										{__(
 											"Min plus Step can't be larger than Max.",
+											"atlas-content-modeler"
+										)}
+									</span>
+								</span>
+							)}
+						{errors.step &&
+							errors.step.type === "isAppropriateType" && (
+								<span className="error">
+									<Icon type="error" />
+									<span role="alert">
+										{__(
+											"The value must be an integer.",
 											"atlas-content-modeler"
 										)}
 									</span>

@@ -9,61 +9,69 @@ use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register;
  */
 class TestRestWPTaxonomy extends WP_UnitTestCase {
 	/**
-	 * @var WP_REST_Server Server instance to send requests from.
+	 * Server instance to send requests from.
+	 *
+	 * @var WP_REST_Server
 	 */
 	private $server;
 
 	/**
-	 * @var string The option name for ACM taxonomies.
+	 * The option name for ACM taxonomies.
+	 *
+	 * @var string
 	 */
 	private $taxonomy_option = 'atlas_content_modeler_taxonomies';
 
 	/**
-	 * @var array IDs of terms to use in REST requests.
+	 * IDs of terms to use in REST requests.
+	 *
+	 * @var array
 	 */
 	private $term_ids = [];
 
 	/**
-	 * @var array Taxonomies to test against.
+	 * Taxonomies to test against.
+	 *
+	 * @var array
 	 */
 	private $sample_taxonomies = array(
-		'show-in-rest' =>
+		'show-in-rest'       =>
 			array(
-				'slug' => 'show-in-rest',
+				'slug'           => 'show-in-rest',
 				'api_visibility' => 'public',
-				'show_in_rest' => true,
+				'show_in_rest'   => true,
 			),
-		'hide-in-rest' =>
-			array (
-				'slug' => 'hide-in-rest',
+		'hide-in-rest'       =>
+			array(
+				'slug'           => 'hide-in-rest',
 				'api_visibility' => 'public',
-				'show_in_rest' => false,
+				'show_in_rest'   => false,
 			),
 		'private-visibility' =>
 			array(
-				'slug' => 'private-visibility',
+				'slug'           => 'private-visibility',
 				'api_visibility' => 'private',
-				'show_in_rest' => true,
+				'show_in_rest'   => true,
 			),
 	);
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		global $wp_rest_server;
-		$this->server = $wp_rest_server = new \WP_REST_Server;
+		$this->server = $wp_rest_server = new \WP_REST_Server();
 		update_option( $this->taxonomy_option, $this->sample_taxonomies );
 		register();
 		do_action( 'rest_api_init' );
 
 		// Adds terms to each taxonomy to test visibility of term REST endpoints.
 		foreach ( $this->sample_taxonomies as $taxonomy => $_unused ) {
-			$term = wp_insert_term( $taxonomy . '-term', $taxonomy );
+			$term                        = wp_insert_term( $taxonomy . '-term', $taxonomy );
 			$this->term_ids[ $taxonomy ] = $term['term_id'];
 		}
 	}
 
 	public function test_terms_are_visible_if_show_in_rest_is_true() {
-		$request  = new WP_REST_Request( 'GET', "/wp/v2/show-in-rest/{$this->term_ids['show-in-rest']}" );
+		$request = new WP_REST_Request( 'GET', "/wp/v2/show-in-rest/{$this->term_ids['show-in-rest']}" );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -74,7 +82,7 @@ class TestRestWPTaxonomy extends WP_UnitTestCase {
 	}
 
 	public function test_terms_are_not_visible_if_show_in_rest_is_false() {
-		$request  = new WP_REST_Request( 'GET', "/wp/v2/hide-in-rest/{$this->term_ids['hide-in-rest']}" );
+		$request = new WP_REST_Request( 'GET', "/wp/v2/hide-in-rest/{$this->term_ids['hide-in-rest']}" );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -86,7 +94,7 @@ class TestRestWPTaxonomy extends WP_UnitTestCase {
 
 	public function test_terms_are_not_visible_by_default_if_api_visibility_is_private() {
 		wp_set_current_user( null );
-		$request  = new WP_REST_Request( 'GET', "/wp/v2/private-visibility/{$this->term_ids['private-visibility']}" );
+		$request = new WP_REST_Request( 'GET', "/wp/v2/private-visibility/{$this->term_ids['private-visibility']}" );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -104,7 +112,7 @@ class TestRestWPTaxonomy extends WP_UnitTestCase {
 		register();
 		do_action( 'rest_api_init' );
 
-		$request  = new WP_REST_Request( 'GET', "/wp/v2/private-visibility/{$this->term_ids['private-visibility']}" );
+		$request = new WP_REST_Request( 'GET', "/wp/v2/private-visibility/{$this->term_ids['private-visibility']}" );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -119,7 +127,7 @@ class TestRestWPTaxonomy extends WP_UnitTestCase {
 		register();
 		do_action( 'rest_api_init' );
 
-		$request  = new WP_REST_Request( 'GET', "/wp/v2/taxonomies" );
+		$request = new WP_REST_Request( 'GET', '/wp/v2/taxonomies' );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -133,7 +141,7 @@ class TestRestWPTaxonomy extends WP_UnitTestCase {
 		register();
 		do_action( 'rest_api_init' );
 
-		$request  = new WP_REST_Request( 'GET', "/wp/v2/taxonomies" );
+		$request = new WP_REST_Request( 'GET', '/wp/v2/taxonomies' );
 
 		$response = $this->server->dispatch( $request );
 		$data     = $response->get_data();
@@ -142,12 +150,12 @@ class TestRestWPTaxonomy extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'private-visibility', $data );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
-		$this->server = null;
+		$this->server   = null;
 		delete_option( $this->taxonomy_option );
 		foreach ( $this->term_ids as $taxonomy => $id ) {
 			wp_delete_term( $id, $taxonomy );

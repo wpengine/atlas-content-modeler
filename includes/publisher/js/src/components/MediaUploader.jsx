@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Icon from "../../../../components/icons";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 
 export default function MediaUploader({ modelSlug, field, required }) {
 	// state
@@ -72,6 +72,16 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		return allowedTypes ? `${allowedTypes.split(",").join(", ")}` : "";
 	}
 
+	function getMediaButtonText(field) {
+		return field?.isFeatured
+			? mediaUrl
+				? __("Change Featured Image", "atlas-content-modeler")
+				: __("Add Featured Image", "atlas-content-modeler")
+			: mediaUrl
+			? __("Change Media", "atlas-content-modeler")
+			: __("Upload Media", "atlas-content-modeler");
+	}
+
 	/**
 	 * Click handler to use wp media uploader
 	 * @param e - event
@@ -89,9 +99,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		}
 
 		const getMediaModalTitle = () => {
-			const title = mediaUrl
-				? __("Change Media", "atlas-content-modeler")
-				: __("Upload Media", "atlas-content-modeler");
+			const title = getMediaButtonText(field);
 			if (allowedTypes) {
 				return `${title} (${getAllowedTypesForUi().toUpperCase()})`;
 			}
@@ -130,14 +138,11 @@ export default function MediaUploader({ modelSlug, field, required }) {
 				{field.name}
 			</label>
 			{field?.required && <p className="required">*Required</p>}
-			<input
-				type="text"
-				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-				id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-				className="hidden"
-				readOnly={true}
-				value={value}
-			/>
+			{field?.description && (
+				<p className="help mb-2">
+					{__(field.description, "atlas-content-modeler")}
+				</p>
+			)}
 			<div>
 				{mediaUrl && (
 					<>
@@ -168,17 +173,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 							type="button"
 							className="button button-primary button-large"
 							style={{ marginTop: "5px" }}
-							defaultValue={
-								mediaUrl
-									? __(
-											"Change Media",
-											"atlas-content-modeler"
-									  )
-									: __(
-											"Upload Media",
-											"atlas-content-modeler"
-									  )
-							}
+							defaultValue={getMediaButtonText(field)}
 							onClick={(e) => clickHandler(e)}
 						/>
 
@@ -200,7 +195,12 @@ export default function MediaUploader({ modelSlug, field, required }) {
 							className="btn-delete"
 							onClick={(e) => deleteImage(e)}
 						>
-							{__("Remove Media", "atlas-content-modeler")}
+							{field?.isFeatured
+								? __(
+										"Remove Featured Image",
+										"atlas-content-modeler"
+								  )
+								: __("Remove Media", "atlas-content-modeler")}
 						</a>
 					)}
 				</div>

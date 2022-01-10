@@ -7,8 +7,8 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 
 	private $test_models;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		$this->test_models = $this->get_models();
 
@@ -21,14 +21,17 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 		 */
 		WPGraphQL::clear_schema();
 
+		// Start each test with a fresh relationships registry.
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
+
 		// @todo why is this not running automatically?
 		do_action( 'init' );
 
 		$this->post_ids = $this->get_post_ids();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		delete_option( 'atlas_content_modeler_post_types' );
 	}
@@ -47,6 +50,9 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 	 * Ensure a private model's data is not publicly queryable in GraphQL
 	 */
 	public function test_post_type_with_private_api_visibility_cannot_be_read_via_graphql_when_not_authenticated(): void {
+		$graphql_settings                       = get_option( 'graphql_general_settings', [] );
+		$graphql_settings['debug_mode_enabled'] = 'on';
+		update_option( 'graphql_general_settings', $graphql_settings );
 		try {
 			$results = graphql(
 				[
@@ -63,6 +69,7 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 			);
 
 			self::assertEmpty( $results['data']['privatesFields']['nodes'] );
+			self::assertSame( $results['extensions']['debug'][0]['type'], 'ACM_UNAUTHORIZED_REQUEST' );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
@@ -89,6 +96,31 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 			);
 
 			self::assertSame( $results['data']['privatesFields']['nodes'][0]['databaseId'], $this->post_ids['private_fields_post_id'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	/**
+	 * Ensure GraphQL includes support data like author
+	 */
+	public function test_graphql_can_query_by_author_id(): void {
+		try {
+			$results = graphql(
+				[
+					'query' => '
+				{
+					privatesFields(where: {author: 1}) {
+						nodes {
+							databaseId
+						}
+					}
+				}
+				',
+				]
+			);
+
+			self::assertArrayHasKey( 'privatesFields', $results['data'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}

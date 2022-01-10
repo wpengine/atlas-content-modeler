@@ -16,10 +16,16 @@ class RestModelDataTests extends WP_UnitTestCase {
 	private $private_route       = '/privates';
 	private $post_ids;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		update_registered_content_types( $this->get_models() );
+
+		// Start each test with a fresh relationships registry.
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
+
+		// Initialize the publisher logic, which includes additional filters.
+		new \WPE\AtlasContentModeler\FormEditingExperience();
 
 		// @todo why is this not running automatically?
 		do_action( 'init' );
@@ -38,8 +44,8 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$this->post_ids = $this->get_post_ids();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
@@ -69,7 +75,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'acm_fields', $response_data );
 
 		self::assertArrayHasKey( 'singleLineRequired', $response_data['acm_fields'] );
-		self::assertSame( $response_data['acm_fields']['singleLineRequired'], 'This is required single line text' );
+		self::assertSame( 'This is required single line text', $response_data['acm_fields']['singleLineRequired'] );
 
 		self::assertArrayHasKey( 'numberIntergerRequired', $response_data['acm_fields'] );
 		self::assertEquals( '13', $response_data['acm_fields']['numberIntergerRequired'] );
@@ -82,6 +88,8 @@ class RestModelDataTests extends WP_UnitTestCase {
 
 		self::assertArrayHasKey( 'mediaRequired', $response_data['acm_fields'] );
 		self::assertArrayHasKey( 'mediaPDF', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'mediaFeatured', $response_data['acm_fields'] );
+		self::assertArrayHasKey( 'featured_media', $response_data );
 	}
 
 	/**
@@ -108,13 +116,13 @@ class RestModelDataTests extends WP_UnitTestCase {
 			'source_url',
 		];
 
-		// Images and files have same structure
+		// Images and files have same structure.
 		foreach ( $expected_keys as $key ) {
 			self::assertArrayHasKey( $key, $image );
 			self::assertArrayHasKey( $key, $file );
 		}
 
-		// Images
+		// Images.
 		self::assertArrayHasKey( 'rendered', $image['caption'] );
 		self::assertEquals( 'image', $image['media_type'] );
 		self::assertEquals( 'image/png', $image['mime_type'] );
@@ -122,7 +130,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'sizes', $image['media_details'] );
 		self::assertEquals( 2, count( $image['media_details']['sizes'] ) );
 
-		// Files
+		// Files.
 		self::assertArrayHasKey( 'rendered', $file['caption'] );
 		self::assertEquals( 'file', $file['media_type'] );
 		self::assertEquals( 'application/pdf', $file['mime_type'] );
@@ -145,7 +153,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_route . '/' . $this->post_ids['public_post_id'] );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		self::assertSame( $response_data['title']['rendered'], 'Test dog' );
+		self::assertEquals( $this->post_ids['public_post_id'], $response_data['slug'] );
 	}
 
 	/**
@@ -166,8 +174,8 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_route . '/' . $this->post_ids['draft_public_post_id'] );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		self::assertSame( $response->get_status(), 200 );
-		self::assertSame( $response_data['title']['rendered'], 'Draft dog' );
+		self::assertSame( 200, $response->get_status() );
+		self::assertEquals( $this->post_ids['draft_public_post_id'], $response_data['slug'] );
 	}
 
 	/**
@@ -187,7 +195,18 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->private_route . '/' . $this->post_ids['private_post_id'] );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		self::assertSame( $response->get_status(), 200 );
-		self::assertSame( $response_data['title']['rendered'], 'Test cat' );
+		self::assertSame( 200, $response->get_status() );
+		self::assertEquals( $this->post_ids['private_post_id'], $response_data['slug'] );
+	}
+
+	/**
+	 * Ensures the acm_related_posts REST field was registered and is present in returned post data.
+	 */
+	public function test_rest_fields_include_acm_related_posts(): void {
+		wp_set_current_user( 1 );
+		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_fields_route . '/' . $this->post_ids['public_fields_post_id'] );
+		$response      = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+		self::assertIsArray( $response_data['acm_related_posts'] );
 	}
 }

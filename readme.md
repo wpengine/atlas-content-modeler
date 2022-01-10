@@ -2,7 +2,7 @@
 
 A WordPress plugin to create custom post types and fields for headless WordPress sites.
 
-[Download the latest plugin zip file](https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download).
+[Download the latest plugin zip file](https://downloads.wordpress.org/plugin/atlas-content-modeler.latest-stable.zip).
 
 ---
 
@@ -20,12 +20,13 @@ Publishers get friendly and familiar content entry pages.
 
 ## Requirements
 
-- WordPress 5.2 or higher.
+- WordPress 5.7 or higher.
 - PHP 7.2 or higher.
+- We recommend that you set Permalinks to a value other than “Plain” in your WordPress dashboard at Settings → Permalinks.
 
 ## Setup
 
-1. [Download the latest copy of the Atlas Content Modeler plugin here](https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download).
+1. [Download the latest copy of the Atlas Content Modeler plugin here](https://downloads.wordpress.org/plugin/atlas-content-modeler.latest-stable.zip).
 2. Install and activate the plugin in your WordPress admin area at Plugins → Add New by clicking “Upload Plugin”.
 3. We recommend that developers also install and activate the [WPGraphQL plugin](https://wordpress.org/plugins/wp-graphql/) to be able to fetch model entries with GraphQL.
 
@@ -109,9 +110,10 @@ Change the API Visibility of a model at any time by choosing “Edit” from the
 Requests sent in a GraphiQL session in the WordPress admin area are authenticated by default. This makes GraphiQL a good place to experiment with queries for private model data.
 
 ## Next steps
+- Learn more by [reading the documentation](https://developers.wpengine.com/docs/atlas-content-modeler).
 - Click ”Send Feedback” at the top of the Content Modeler page in your WordPress admin area to share your thoughts with us.
 - [File bugs or feature requests](https://github.com/wpengine/atlas-content-modeler/issues/new/choose) in GitHub.
-- Create a headless WordPress site using the [Headless Framework](https://github.com/wpengine/headless-framework) by WP Engine.
+- Create a headless WordPress site using [Faust.js](https://github.com/wpengine/faustjs) by WP Engine.
 - Discover the [Atlas headless WordPress hosting platform](https://wpengine.com/atlas) by WP Engine.
 - Watch a video introducing the [WordPress REST API](https://www.youtube.com/watch?v=uJf-fu3VbKw).
 - Watch a video introducing [WPGraphQL](https://www.youtube.com/watch?v=N7H-a1232ow).

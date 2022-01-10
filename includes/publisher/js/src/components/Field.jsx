@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
-import Icon from "../../../../components/icons";
+import Relationship from "./relationship";
+import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
@@ -77,6 +78,14 @@ export default function Field(props) {
 
 function fieldMarkup(field, modelSlug, errors, validate) {
 	switch (field.type) {
+		case "relationship":
+			return (
+				<Relationship
+					field={field}
+					modelSlug={modelSlug}
+					required={field.required}
+				/>
+			);
 		case "media":
 			return (
 				<MediaUploader
@@ -104,13 +113,19 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					{field?.required && <p className="required">*Required</p>}
+					{field?.required && (
+						<p className="required">
+							*{__("Required", "atlas-content-modeler")}
+						</p>
+					)}
+					{field?.description && (
+						<p className="help mb-0">{field.description}</p>
+					)}
 					{field?.inputType === "multi" ? (
 						<textarea {...textProps} />
 					) : (
 						<input {...textProps} />
 					)}
-
 					<span className="error">
 						<Icon type="error" />
 						<span role="alert">
@@ -163,7 +178,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					{field?.required && <p className="required">*Required</p>}
+					{field?.required && (
+						<p className="required">
+							*{__("Required", "atlas-content-modeler")}
+						</p>
+					)}
+					{field?.description && (
+						<p className="help mb-0">{field.description}</p>
+					)}
 					<input
 						ref={numberInputRef}
 						type={`${field.type}`}
@@ -191,7 +213,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					>
 						{field.name}
 					</label>
-					{field?.required && <p className="required">*Required</p>}
+					{field?.required && (
+						<p className="required">
+							*{__("Required", "atlas-content-modeler")}
+						</p>
+					)}
+					{field?.description && (
+						<p className="help mb-0">{field.description}</p>
+					)}
 					<input
 						type={`${field.type}`}
 						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -221,6 +250,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			const [checked, setChecked] = useState(field.value === "on");
 			return (
 				<>
+					{field?.description && (
+						<p className="help mb-3">{field.description}</p>
+					)}
 					<label
 						className="check-container"
 						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -249,23 +281,27 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				return (
 					<fieldset>
 						<legend>{field.name}</legend>
+						{field?.description && (
+							<p className="help mb-0">{field.description}</p>
+						)}
 						{field.choices.map((item, index) => {
 							return (
 								<label
 									key={index}
 									className="check-container multi-check-container"
-									htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+									htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.slug}]`}
 								>
 									{item.name}
 									<input
 										type="checkbox"
-										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
-										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.name}]`}
+										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.slug}]`}
+										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}][${item.slug}]`}
 										placeholder="Option Name"
+										value={item.slug}
 										defaultChecked={
 											field.value &&
 											field.value.some(
-												(name) => name == item.name
+												(slug) => slug === item.slug
 											)
 										}
 									/>
@@ -285,6 +321,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				return (
 					<fieldset>
 						<legend>{field.name}</legend>
+						{field?.description && (
+							<p className="help mb-0">{field.description}</p>
+						)}
 						{field.choices.map((item, index) => {
 							return (
 								<label className="radio-container" key={index}>
@@ -293,9 +332,9 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 										type="radio"
 										name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${item.name}]`}
-										value={item.name}
+										value={item.slug}
 										defaultChecked={
-											field.value === item.name
+											field.value[0] === item.slug
 										}
 									/>
 									<span className="error">

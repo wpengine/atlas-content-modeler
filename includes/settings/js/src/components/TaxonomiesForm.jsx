@@ -5,7 +5,7 @@ import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import { showSuccess } from "../toasts";
 import { useInputGenerator } from "../hooks";
-import { toPostTypeSlug as toSanitizedKey } from "../formats";
+import { toSanitizedKey } from "../formats";
 
 const { apiFetch } = wp;
 const { isEqual, pick } = lodash;
@@ -28,13 +28,15 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 		},
 	});
 
+	const SLUG_MAX_LENGTH = 32;
+
 	const {
 		setFieldsAreLinked,
 		setInputGeneratorSourceValue,
 		onChangeGeneratedValue,
 	} = useInputGenerator({
 		setGeneratedValue: (value) => setValue("slug", value),
-		format: toSanitizedKey,
+		format: (key) => toSanitizedKey(key, SLUG_MAX_LENGTH),
 	});
 
 	const successMessage = editingTaxonomy
@@ -135,9 +137,12 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 				showSuccess(sprintf(successMessage, res.taxonomy.plural));
 			})
 			.catch((err) => {
-				if (err.code === "atlas_content_modeler_taxonomy_exists") {
+				if (
+					err.code === "acm_taxonomy_exists" ||
+					err.code === "acm_reserved_taxonomy_term"
+				) {
 					setError("slug", {
-						type: "idExists",
+						type: "invalidSlug",
 						message: err.message,
 					});
 				}
@@ -281,7 +286,7 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 					readOnly={editingTaxonomy !== null}
 					ref={register({
 						required: true,
-						maxLength: 32,
+						maxLength: SLUG_MAX_LENGTH,
 					})}
 					onChange={(e) => {
 						onChangeGeneratedValue(e.target.value);
@@ -303,14 +308,18 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 						<span className="error">
 							<Icon type="error" />
 							<span role="alert">
-								{__(
-									"Exceeds max length of 32",
-									"atlas-content-modeler"
+								{sprintf(
+									__(
+										// Translators: the maximum character length.
+										"Exceeds max length of %d",
+										"atlas-content-modeler"
+									),
+									SLUG_MAX_LENGTH
 								)}
 							</span>
 						</span>
 					)}
-					{errors.slug && errors.slug.type === "idExists" && (
+					{errors.slug && errors.slug.type === "invalidSlug" && (
 						<span className="error">
 							<Icon type="error" />
 							<span role="alert">{errors.slug.message}</span>

@@ -1,5 +1,4 @@
-@import "variables";
-
+@import "../../../includes/shared-assets/scss/_variables";
 .Toastify {
 	display: flex;
 	justify-content: center;
@@ -36,6 +35,15 @@
 
 .Toastify__toast-body .close:focus {
 	box-shadow: none;
+}
+
+.Toastify__toast-body ul {
+	list-style: disc;
+	margin-left: 20px;
+}
+
+.Toastify__toast-body ul li > ul {
+	list-style: circle;
 }
 
 .Toastify__toast-container--top-center {

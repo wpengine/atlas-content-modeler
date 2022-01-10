@@ -5,7 +5,8 @@ const supportedFields = {
 	date: "Date",
 	media: "Media",
 	boolean: "Boolean",
-	// multipleChoice: "Multiple Choice",
+	relationship: "Relationship (Beta)",
+	multipleChoice: "Multiple Choice (Beta)",
 };
 
 export default supportedFields;

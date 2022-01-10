@@ -6,6 +6,7 @@
  * references and avoids the associated errors it throws otherwise.
  */
 
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
 class PHPUnit_Framework_TestCase extends \PHPUnit\Framework\TestCase {}
 class PHPUnit_Framework_Exception extends \PHPUnit\Framework\Exception {}
 class PHPUnit_Framework_ExpectationFailedException extends \PHPUnit\Framework\ExpectationFailedException {}

@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { useLocationSearch } from "../../utils";
-import Icon from "../../../../../components/icons";
+import Icon from "acm-icons";
 import TextFields from "./TextFields";
 import {
 	MediaSettings,
@@ -11,25 +11,28 @@ import {
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
+import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
-import { useInputGenerator } from "../../hooks";
-import { toValidApiId } from "../../formats";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
+import { useInputGenerator, useReservedSlugs } from "../../hooks";
+import { toValidApiId, toGraphQLType } from "../../formats";
+import { getFeaturedFieldId } from "../../queries";
 
 const { apiFetch } = wp;
-const { cloneDeep } = lodash;
+const { cloneDeep, isEqual } = lodash;
 
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
 	multipleChoice: MultipleChoiceFields,
+	relationship: RelationshipFields,
 };
 
 Modal.setAppElement("#root");
 
-function Form({ id, position, type, editing, storedData }) {
+function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const {
 		register,
 		handleSubmit,
@@ -47,6 +50,9 @@ function Form({ id, position, type, editing, storedData }) {
 		defaultValues: storedData,
 	});
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
+	const [descriptionCount, setDescriptionCount] = useState(
+		storedData?.description?.length || 0
+	);
 	const [optionsModalIsOpen, setOptionsModalIsOpen] = useState(false);
 	const { models, dispatch } = useContext(ModelsContext);
 	const query = useLocationSearch();
@@ -63,6 +69,17 @@ function Form({ id, position, type, editing, storedData }) {
 	});
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
 	const [previousState, setPreviousState] = useState(storedData);
+	const originalValues = useRef({});
+	const reservedSlugs = editing
+		? false
+		: useReservedSlugs(toGraphQLType(models[model]?.singular, true));
+
+	const isAppropriateType = (value) => {
+		if (getValues("numberType") === "integer") {
+			const disallowedCharacters = /[.]/g;
+			return !disallowedCharacters.test(value);
+		}
+	};
 
 	const advancedSettings = {
 		text: {
@@ -94,11 +111,15 @@ function Form({ id, position, type, editing, storedData }) {
 				minValue: {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
+					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
+					},
 				},
 				maxValue: {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
 						maxBelowMin: (v) => {
 							const min = parseNumber(getValues("minValue"));
 							const max = parseNumber(v);
@@ -114,7 +135,11 @@ function Form({ id, position, type, editing, storedData }) {
 					setValueAs: (v) =>
 						v || parseNumber(v) === 0 ? parseNumber(v) : "",
 					validate: {
+						isAppropriateType: (v) => isAppropriateType(v),
 						maxBelowStep: (v) => {
+							if (getValues("maxValue") === "") {
+								return true;
+							}
 							const max = parseNumber(
 								Math.abs(getValues("maxValue"))
 							);
@@ -185,6 +210,14 @@ function Form({ id, position, type, editing, storedData }) {
 		}
 	}, [register, advancedSettings]);
 
+	/**
+	 * Store original field values for comparison. Workaround for React Hook
+	 * Form v6, whose `isDirty` property is true if a checkbox is toggled twice.
+	 */
+	useEffect(() => {
+		originalValues.current = getValues();
+	}, []);
+
 	function parseNumber(num) {
 		return currentNumberType === "decimal"
 			? parseFloat(num)
@@ -218,31 +251,46 @@ function Form({ id, position, type, editing, storedData }) {
 					// Just close the field as if it was updated.
 					dispatch({ type: "closeField", id: data.id, model });
 				}
+				hasDirtyField.current = false;
 			})
 			.catch((err) => {
-				if (err.code === "wpe_duplicate_content_model_field_id") {
+				if (err.code === "acm_duplicate_content_model_field_id") {
 					setError("slug", { type: "idExists" });
 				}
-				if (err.code === "wpe_option_name_undefined") {
-					err.additional_errors[0].message.map((index) => {
+				if (err.code === "acm_option_name_undefined") {
+					err.data.problemIndex.map((index) => {
 						setError("multipleChoice" + index, {
 							type: "multipleChoiceNameEmpty" + index,
 						});
 					});
 				}
+				if (err.code === "acm_option_slug_undefined") {
+					err.data.problemIndex.map((index) => {
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceSlugEmpty" + index,
+						});
+					});
+				}
+				if (err.code === "acm_option_slug_duplicate") {
+					err.data.duplicates.map((index) => {
+						setError("multipleChoice" + index, {
+							type: "multipleChoiceSlugDuplicate" + index,
+						});
+					});
+				}
 				if (
-					err.code === "wpe_duplicate_content_model_multi_option_id"
+					err.code === "acm_duplicate_content_model_multi_option_id"
 				) {
-					err.additional_errors[0].message.map((index) => {
+					err.data.duplicates.map((index) => {
 						setError("multipleChoiceName" + index, {
 							type: "multipleChoiceNameDuplicate" + index,
 						});
 					});
 				}
-				if (err.code === "wpe_invalid_multi_options") {
+				if (err.code === "acm_invalid_multi_options") {
 					setError("multipleChoice", { type: "multipleChoiceEmpty" });
 				}
-				if (err.code === "wpe_invalid_content_model") {
+				if (err.code === "acm_invalid_content_model") {
 					console.error(
 						__(
 							"Attempted to create a field in a model that no longer exists.",
@@ -250,11 +298,59 @@ function Form({ id, position, type, editing, storedData }) {
 						)
 					);
 				}
+				if (err.code === "acm_invalid_related_content_model") {
+					setError("reference", { type: "invalidRelatedModel" });
+				}
+				if (err.code === "acm_reverse_slug_conflict") {
+					setError("reverseSlug", {
+						type: "reverseIdConflicts",
+						message: err.message,
+					});
+				}
+				if (err.code === "acm_reverse_slug_in_use") {
+					setError("reverseSlug", {
+						type: "reverseIdInUse",
+						message: err.message,
+					});
+				}
+				if (err.code === "acm_reserved_field_slug") {
+					setError("slug", { type: "nameReserved" });
+				}
 			});
 	}
 
+	/**
+	 * Checks the current slug (API Identifier) does not conflict with
+	 * known reserved field slugs, such as “id” and “author”.
+	 */
+	function checkReservedSlugs() {
+		// Slugs can not be changed on fields being edited, only new fields.
+		if (editing) {
+			return;
+		}
+
+		if (
+			reservedSlugs &&
+			reservedSlugs.current?.includes(getValues("slug"))
+		) {
+			setError("slug", { type: "nameReserved" });
+		}
+	}
+
+	const currentModel = query.get("id");
+	const fields = models[currentModel]?.fields;
+	const originalMediaFieldId = useRef(getFeaturedFieldId(fields));
+
 	return (
-		<form onSubmit={handleSubmit(apiAddField)}>
+		<form
+			onSubmit={handleSubmit(apiAddField)}
+			onChange={() => {
+				hasDirtyField.current = !isEqual(
+					originalValues.current,
+					getValues()
+				);
+			}}
+		>
 			<input
 				id="type"
 				name="type"
@@ -302,6 +398,7 @@ function Form({ id, position, type, editing, storedData }) {
 								setNameCount(e.target.value.length);
 								clearErrors("slug");
 							}}
+							onBlur={checkReservedSlugs}
 						/>
 						<p className="field-messages">
 							{errors.name && errors.name.type === "required" && (
@@ -349,6 +446,8 @@ function Form({ id, position, type, editing, storedData }) {
 							onChange={(e) =>
 								onChangeGeneratedValue(e.target.value)
 							}
+							readOnly={editing}
+							onBlur={checkReservedSlugs}
 						/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
@@ -384,12 +483,38 @@ function Form({ id, position, type, editing, storedData }) {
 									</span>
 								</span>
 							)}
+							{errors.slug &&
+								errors.slug.type === "nameReserved" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"Identifier in use or reserved.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
 						</p>
 					</div>
 				</div>
 			</div>
 
 			<div>
+				{type in extraFields && (
+					<ExtraFields
+						editing={editing}
+						data={storedData}
+						control={control}
+						watch={watch}
+						errors={errors}
+						clearErrors={clearErrors}
+						register={register}
+						fieldId={id}
+						setValue={setValue}
+						model={model}
+					/>
+				)}
 				{!["richtext", "multipleChoice"].includes(type) && (
 					<div className="field">
 						<legend>Field Options</legend>
@@ -409,21 +534,142 @@ function Form({ id, position, type, editing, storedData }) {
 								"atlas-content-modeler"
 							)}
 						</label>
+						{["media"].includes(type) && (
+							<div>
+								<input
+									name="isFeatured"
+									type="checkbox"
+									id={`featured-image-${id}`}
+									ref={register}
+									defaultChecked={
+										storedData?.required === true
+									}
+									onChange={(event) => {
+										/**
+										 * Unchecks other fields when checking a field.
+										 * Only one field can be the featured image field.
+										 */
+										if (event.target.checked) {
+											dispatch({
+												type: "setFeaturedImageField",
+												id: id,
+												model: currentModel,
+											});
+											return;
+										}
+
+										if (!event.target.checked) {
+											/**
+											 * When unchecking a field that was not the original
+											 * media, restore isFeatured on the original media
+											 * field if there is one. Prevents an issue where
+											 * checking “is featured image then unchecking it removes
+											 * isFeatured from the original.
+											 */
+											if (
+												originalMediaFieldId.current &&
+												originalMediaFieldId.current !==
+													id
+											) {
+												dispatch({
+													type:
+														"setFeaturedImageField",
+													id:
+														originalMediaFieldId.current,
+													model: currentModel,
+												});
+												return;
+											}
+
+											/**
+											 * At this point we're just unchecking the original
+											 * media field.
+											 */
+											dispatch({
+												type: "setFieldProperties",
+												id: id,
+												model: currentModel,
+												properties: [
+													{
+														name: "isFeatured",
+														value: false,
+													},
+												],
+											});
+										}
+									}}
+								/>
+								<label
+									htmlFor={`featured-image-${id}`}
+									className="checkbox featured-image"
+								>
+									{__(
+										"Set as featured image",
+										"atlas-content-modeler"
+									)}
+								</label>
+								<p className="help featured-image">
+									{__(
+										"Limits media selection to image types.",
+										"atlas-content-modeler"
+									)}
+								</p>
+							</div>
+						)}
 					</div>
 				)}
+			</div>
 
-				{type in extraFields && (
-					<ExtraFields
-						editing={editing}
-						data={storedData}
-						control={control}
-						watch={watch}
-						errors={errors}
-						clearErrors={clearErrors}
-						register={register}
-						fieldId={id}
-					/>
-				)}
+			<div className="d-flex flex-column d-sm-flex flex-sm-row">
+				<div className="d-flex flex-column d-sm-flex flex-sm-row">
+					<div
+						className={`${
+							errors.description ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="description">
+							Description{" "}
+							<span style={{ fontWeight: "normal" }}>
+								(Optional)
+							</span>
+						</label>
+						<br />
+						<textarea
+							aria-invalid={errors.description ? "true" : "false"}
+							className="text-area-single-line mt-4"
+							id="description"
+							name="description"
+							rows="4"
+							defaultValue={storedData?.description}
+							placeholder={__(
+								"Add a description",
+								"atlas-content-modeler"
+							)}
+							ref={register({ maxLength: 250 })}
+							onChange={(e) => {
+								setDescriptionCount(e.target.value.length);
+							}}
+						/>
+						<p className="field-messages">
+							{errors.description &&
+								errors.description.type === "maxLength" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"Exceeds max length.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							<span>&nbsp;</span>
+							<span className="description-count">
+								{descriptionCount}/250
+							</span>
+						</p>
+					</div>
+				</div>
 			</div>
 
 			<div className="buttons d-flex flex-row">
@@ -436,6 +682,7 @@ function Form({ id, position, type, editing, storedData }) {
 					className="tertiary"
 					onClick={(event) => {
 						event.preventDefault();
+						hasDirtyField.current = false;
 						editing
 							? dispatch({
 									type: "closeField",

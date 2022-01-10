@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\ContentRegistration;
 
 use InvalidArgumentException;
+use WPGraphQL\Data\Connection\PostObjectConnectionResolver;
 use WPGraphQL\Model\Post;
 use WPGraphQL\Registry\TypeRegistry;
 use WPGraphQL\Data\DataSource;
@@ -69,6 +70,52 @@ function register_meta_types( string $post_type_slug, array $fields ): void {
 			},
 		]
 	);
+}
+
+add_action( 'acm_content_connect_init', __NAMESPACE__ . '\\register_relationships' );
+/**
+ * Registers relationship fields.
+ *
+ * @param \WPE\AtlasContentModeler\ContentConnect\Registry $registry The relationships registry.
+ * @return void
+ */
+function register_relationships( $registry ) {
+	$models = get_registered_content_types();
+
+	if ( ! $models ) {
+		return;
+	}
+
+	foreach ( $models as $model => $args ) {
+		if ( ! isset( $args['fields'] ) ) {
+			continue;
+		}
+
+		foreach ( $args['fields'] as $field ) {
+			if ( $field['type'] === 'relationship' ) {
+				$args = [
+					'is_bidirectional' => true,
+					'cardinality'      => $field['cardinality'],
+					'from'             => [
+						'enable_ui' => true,
+						'sortable'  => false,
+						'labels'    => [
+							'name' => $field['name'],
+						],
+					],
+				];
+
+				try {
+					$registry->define_post_to_post( $model, $field['reference'], $field['id'], $args );
+				} catch ( \Exception $e ) {
+					/**
+					 * Either the relationship already exists,
+					 * or the referenced post type was deleted.
+					 */
+				}
+			}
+		}
+	}
 }
 
 /**
@@ -278,6 +325,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'singular_name'         => ucfirst( $singular ),
 		'description'           => $args['description'] ?? '',
 		'public'                => $args['public'] ?? false,
+		'publicly_queryable'    => ( $args['api_visibility'] ?? 'private' ) === 'public',
 		'show_ui'               => $args['show_ui'] ?? true,
 		'show_in_rest'          => $args['show_in_rest'] ?? true,
 		'rest_base'             => $args['rest_base'] ?? sanitize_key( $plural ),
@@ -285,6 +333,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'show_in_menu'          => $args['show_in_menu'] ?? true,
 		'supports'              => $args['supports'] ??
 								[
+									'author',
 									'title',
 									'editor',
 									'thumbnail',
@@ -354,7 +403,13 @@ function get_registered_content_types(): array {
  * @return bool
  */
 function update_registered_content_types( array $args ): bool {
-	return update_option( 'atlas_content_modeler_post_types', $args );
+	$updated = update_option( 'atlas_content_modeler_post_types', $args );
+
+	if ( $updated ) {
+		flush_rewrite_rules( false );
+	}
+
+	return $updated;
 }
 
 /**
@@ -413,22 +468,24 @@ add_action( 'graphql_register_types', __NAMESPACE__ . '\register_content_fields_
  * @param TypeRegistry $type_registry The WPGraphQL Type Registry.
  */
 function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
-	$gql_post_types = get_graphql_enabled_post_types();
+	$models = get_graphql_enabled_post_types();
 
-	foreach ( $gql_post_types as $post_type => $post_type_args ) {
-		if ( empty( $post_type_args['fields'] ) ) {
+	foreach ( $models as $model ) {
+		if ( empty( $model['fields'] ) ) {
 			continue;
 		}
 
-		foreach ( $post_type_args['fields'] as $key => $field ) {
+		foreach ( $model['fields'] as $field ) {
 			if ( empty( $field['show_in_graphql'] ) || empty( $field['slug'] ) ) {
 				continue;
 			}
 
-			$rich_text = false;
+			$rich_text = $field['type'] === 'richtext';
 
-			if ( 'richtext' === $field['type'] ) {
-				$rich_text = true;
+			if ( 'relationship' === $field['type'] && isset( $models[ $field['reference'] ] ) ) {
+				$reference_model = $models[ $field['reference'] ];
+				register_relationship_connection( $model, $reference_model, $field );
+				continue;
 			}
 
 			$gql_field_type = map_html_field_type_to_graphql_field_type( $field['type'] );
@@ -436,33 +493,46 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				continue;
 			}
 
-			$field['type'] = $gql_field_type;
+			$field['original_type'] = $field['type'];
+			$field['type']          = $gql_field_type;
+
+			// When you have multiple items in an array returned we need to define them as a list of strings.
+			if ( 'list' === $field['type'] ) {
+				$field['type'] = array( 'list_of' => 'String' );
+			}
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
-				$value = get_post_meta( $post->databaseId, $field['slug'], true );
+				if ( 'relationship' !== $field['original_type'] ) {
+					$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
-				/**
-				 * If WPGraphQL expects a float and something else is returned instead
-				 * it causes a runaway PHP process and it eventually dies due to
-				 * to timeout issues. Casting to a float is a temporary fix until
-				 * we get a proper fix upstream or build something more robust here.
-				 *
-				 * @todo
-				 */
-				if ( $field['type'] === 'Float' ) {
-					return (float) $value;
+					/**
+					 * If WPGraphQL expects a float and something else is returned instead
+					 * it causes a runaway PHP process and it eventually dies due to
+					 * to timeout issues. Casting to a float is a temporary fix until
+					 * we get a proper fix upstream or build something more robust here.
+					 *
+					 * @todo
+					 */
+					if ( $field['type'] === 'Float' ) {
+						return (float) $value;
+					}
+
+					if ( $field['type'] === 'MediaItem' ) {
+						return DataSource::resolve_post_object( (int) $value, $context );
+					}
+
+					// If the multiple choice field has no saved data, return an empty array.
+					if ( $field['original_type'] === 'multipleChoice' && empty( $value ) ) {
+							return [];
+					}
+
+					// fixes caption shortcode for graphql output.
+					if ( $rich_text ) {
+						return do_shortcode( $value );
+					}
+
+					return $value;
 				}
-
-				if ( $field['type'] === 'MediaItem' ) {
-					return DataSource::resolve_post_object( (int) $value, $context );
-				}
-
-				// fixes caption shortcode for graphql output.
-				if ( $rich_text ) {
-					return do_shortcode( $value );
-				}
-
-				return $value;
 			};
 
 			// @todo
@@ -470,7 +540,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			unset( $field['name'] );
 
 			register_graphql_field(
-				camelcase( $post_type_args['singular'] ),
+				camelcase( $model['singular'] ),
 				camelcase( $field['slug'] ),
 				$field
 			);
@@ -502,21 +572,142 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 	}
 
 	$models = get_registered_content_types();
-	if ( array_key_exists( $post->post_type, $models ) && isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
+	if ( ! array_key_exists( $post->post_type, $models ) ) {
+		// Return early if not an ACM model.
+		return $is_private;
+	}
+
+	if ( isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
 		$post_type  = get_post_type_object( $post->post_type );
 		$is_private = ! user_can( $current_user, $post_type->cap->read_post, $post->ID );
+	}
+
+	if ( $is_private && empty( $current_user->ID ) ) {
+		graphql_debug(
+			esc_html__( 'The request was unauthenticated, but this site contains private Atlas Content Modeler models. If you see empty results, try authenticating the request or making your ACM models public.', 'atlas-content-modeler' ),
+			[
+				'type' => 'ACM_UNAUTHORIZED_REQUEST',
+			]
+		);
 	}
 
 	return $is_private;
 }
 
 /**
+ * Registers the relationship field as a GraphQL connection.
+ *
+ * @param array $parent_model The model config of the parent.
+ * @param array $reference_model The model config of the connection's destination.
+ * @param array $field The field data.
+ */
+function register_relationship_connection( array $parent_model, array $reference_model, array $field ) {
+	$connections = array(
+		array(
+			'from_type'  => camelcase( $parent_model['singular'] ),
+			'to_type'    => camelcase( $reference_model['singular'] ),
+			'slug'       => $field['slug'],
+			'one_to_one' => ( $field['cardinality'] === 'one-to-one' || $field['cardinality'] === 'many-to-one' ),
+			'reference'  => $field['reference'],
+			'name'       => $field['id'],
+		),
+	);
+
+	if ( isset( $field['enableReverse'] ) && true === $field['enableReverse'] ) {
+		$connections[] = array(
+			'from_type'  => camelcase( $reference_model['singular'] ),
+			'to_type'    => camelcase( $parent_model['singular'] ),
+			'slug'       => $field['reverseSlug'],
+			'one_to_one' => false,
+			'reference'  => $parent_model['slug'],
+			'name'       => $field['id'],
+		);
+	}
+
+	foreach ( $connections as $connection_args ) {
+		$connection_type_name = get_connection_name( $connection_args['from_type'], $connection_args['to_type'], $connection_args['slug'] );
+
+		register_graphql_connection(
+			array(
+				'fromType'           => $connection_args['from_type'],
+				'toType'             => $connection_args['to_type'],
+				'fromFieldName'      => $connection_args['slug'],
+				'oneToOne'           => $connection_args['one_to_one'],
+				'resolve'            => static function ( Post $post, $args, $context, $info ) use ( $connection_args ) {
+					$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+
+					$relationship = $registry->get_post_to_post_relationship(
+						sanitize_key( $connection_args['to_type'] ),
+						sanitize_key( $connection_args['from_type'] ),
+						$connection_args['name']
+					);
+
+					if ( false === $relationship ) {
+						return array();
+					}
+
+					$relationship_ids = $relationship->get_related_object_ids( $post->ID );
+
+					if ( empty( $relationship_ids ) ) {
+						return array();
+					}
+
+					$resolver = new PostObjectConnectionResolver(
+						$post,
+						$args,
+						$context,
+						$info
+					);
+
+					$resolver->set_query_arg(
+						'post__in',
+						$relationship_ids
+					);
+
+					if ( $connection_args['one_to_one'] ) {
+						return $resolver->one_to_one()->get_connection();
+					}
+
+					return $resolver->get_connection();
+				},
+				'connectionTypeName' => $connection_type_name,
+			)
+		);
+	}
+}
+
+/**
+ * Creates a unique name for the connection
+ *
+ * @param string $from_type The post type the connection is from.
+ * @param string $to_type The post type the connection is to.
+ * @param string $from_field_name  Acts as an alternative 'toType' if connection type already defined using $to_type.
+ *
+ * @return string
+ */
+function get_connection_name( string $from_type, string $to_type, string $from_field_name ): string {
+
+	// Create connection name using $from_type + To + $to_type + Connection.
+	$connection_name = ucfirst( $from_type ) . 'To' . ucfirst( $to_type ) . 'Connection';
+
+	$type_registry = \WPGraphQL::get_type_registry();
+
+	// If connection type already exists with that connection name. Set connection name using
+	// $from_field_name + To + $to_type + Connection.
+	if ( $type_registry->has_type( $connection_name ) ) {
+		$connection_name = ucfirst( $from_type ) . 'To' . ucfirst( $from_field_name ) . 'Connection';
+	}
+
+	return $connection_name;
+}
+
+
+/**
  * Maps an HTML field type to a WPGraphQL field type.
  *
  * @param string $field_type The HTML field type.
- * @access private
  *
- * @return string|null
+ * @access private
  */
 function map_html_field_type_to_graphql_field_type( string $field_type ): ?string {
 	if ( empty( $field_type ) ) {
@@ -530,6 +721,8 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'date':
 		case 'richtext':
 			return 'String';
+		case 'multipleChoice':
+			return 'list';
 		case 'number':
 			return 'Float';
 		case 'boolean':
@@ -562,6 +755,9 @@ function is_protected_meta( bool $protected, string $meta_key, string $meta_type
 	}
 
 	$fields = wp_list_pluck( get_registered_content_types(), 'fields' );
+	if ( empty( $fields ) ) {
+		return $protected;
+	}
 	$fields = array_merge( ...array_values( $fields ) );
 	$slugs  = wp_list_pluck( $fields, 'slug' );
 

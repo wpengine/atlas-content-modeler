@@ -7,14 +7,6 @@ exports[`MediaUploader tests Renders a matching snapshot 1`] = `
   >
     Photo
   </label>
-  <input
-    className="hidden"
-    id="atlas-content-modeler[goose][photo]"
-    name="atlas-content-modeler[goose][photo]"
-    readOnly={true}
-    type="text"
-    value="100"
-  />
   <div>
     
     <div

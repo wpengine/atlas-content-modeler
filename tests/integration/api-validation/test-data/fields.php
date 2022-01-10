@@ -2,80 +2,79 @@
 /**
  * Sample field data for testing
  */
-
 function get_test_fields() {
 	return array(
-		'1628083572151' => array(
+		'1630411218064' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'text',
-			'id'              => '1628083572151',
+			'id'              => '1630411218064',
 			'position'        => '0',
 			'name'            => 'Single-Line',
 			'slug'            => 'singleLine',
-			'required'        => false,
 			'inputType'       => 'single',
+			'required'        => false,
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1628084420404' => array(
+		'1630411257237' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'text',
-			'id'              => '1628084420404',
+			'id'              => '1630411257237',
 			'position'        => '10000',
 			'name'            => 'Single-Line-Required',
 			'slug'            => 'singleLineRequired',
-			'required'        => true,
 			'isTitle'         => true,
 			'inputType'       => 'single',
+			'required'        => true,
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1628084435181' => array(
+		'1630411276223' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'text',
-			'id'              => '1628084435181',
+			'id'              => '1630411276223',
 			'position'        => '20000',
 			'name'            => 'Single-Line-Limited',
 			'slug'            => 'singleLineLimited',
-			'required'        => false,
 			'isTitle'         => false,
 			'inputType'       => 'single',
+			'required'        => false,
 			'minChars'        => 10,
-			'maxChars'        => 280,
+			'maxChars'        => 200,
 		),
-		'1628084465380' => array(
+		'1630411296844' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'text',
-			'id'              => '1628084465380',
+			'id'              => '1630411296844',
 			'position'        => '30000',
 			'name'            => 'Multi-Line',
 			'slug'            => 'multiLine',
-			'required'        => false,
 			'isTitle'         => false,
 			'inputType'       => 'multi',
+			'required'        => false,
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1628084488045' => array(
+		'1630411306418' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'richtext',
-			'id'              => '1628084488045',
+			'id'              => '1630411306418',
 			'position'        => '40000',
 			'name'            => 'Rich-Text',
 			'slug'            => 'richText',
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1628084499767' => array(
+		'1630411318747' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'number',
-			'id'              => '1628084499767',
+			'id'              => '1630411318747',
 			'position'        => '50000',
 			'name'            => 'Number-Integer',
 			'slug'            => 'numberInteger',
@@ -87,11 +86,11 @@ function get_test_fields() {
 			'maxValue'        => '',
 			'step'            => '',
 		),
-		'1628084512254' => array(
+		'1630411332185' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'number',
-			'id'              => '1628084512254',
+			'id'              => '1630411332185',
 			'position'        => '60000',
 			'name'            => 'Number-Decimal',
 			'slug'            => 'numberDecimal',
@@ -103,11 +102,11 @@ function get_test_fields() {
 			'maxValue'        => '',
 			'step'            => '',
 		),
-		'1628084527723' => array(
+		'1630411352654' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'number',
-			'id'              => '1628084527723',
+			'id'              => '1630411352654',
 			'position'        => '70000',
 			'name'            => 'Number-Interger-Required',
 			'slug'            => 'numberIntergerRequired',
@@ -119,11 +118,11 @@ function get_test_fields() {
 			'maxValue'        => '',
 			'step'            => '',
 		),
-		'1628084535867' => array(
+		'1630411364971' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'number',
-			'id'              => '1628084535867',
+			'id'              => '1630411364971',
 			'position'        => '80000',
 			'name'            => 'Number-Integer-Limited',
 			'slug'            => 'numberIntegerLimited',
@@ -135,23 +134,23 @@ function get_test_fields() {
 			'maxValue'        => 10,
 			'step'            => 2,
 		),
-		'1628084760779' => array(
+		'1630411384975' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'date',
-			'id'              => '1628084760779',
+			'id'              => '1630411384975',
 			'position'        => '90000',
 			'name'            => 'Date',
-			'slug'            => 'date',
+			'slug'            => 'dateNotRequired',
 			'required'        => false,
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1628084773117' => array(
+		'1630411395253' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'date',
-			'id'              => '1628084773117',
+			'id'              => '1630411395253',
 			'position'        => '100000',
 			'name'            => 'Date-Required',
 			'slug'            => 'dateRequired',
@@ -159,11 +158,11 @@ function get_test_fields() {
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1628084908530' => array(
+		'1630411405899' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'media',
-			'id'              => '1628084908530',
+			'id'              => '1630411405899',
 			'position'        => '110000',
 			'name'            => 'Media',
 			'slug'            => 'media',
@@ -172,11 +171,11 @@ function get_test_fields() {
 			'maxChars'        => '',
 			'allowedTypes'    => '',
 		),
-		'1628084918406' => array(
+		'1630411419039' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'media',
-			'id'              => '1628084918406',
+			'id'              => '1630411419039',
 			'position'        => '120000',
 			'name'            => 'Media-Required',
 			'slug'            => 'mediaRequired',
@@ -185,11 +184,11 @@ function get_test_fields() {
 			'maxChars'        => '',
 			'allowedTypes'    => '',
 		),
-		'1628084929251' => array(
+		'1630411429321' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'media',
-			'id'              => '1628084929251',
+			'id'              => '1630411429321',
 			'position'        => '130000',
 			'name'            => 'Media-PDF',
 			'slug'            => 'mediaPDF',
@@ -198,11 +197,11 @@ function get_test_fields() {
 			'maxChars'        => '',
 			'allowedTypes'    => 'pdf',
 		),
-		'1628084952497' => array(
+		'1630411446543' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'boolean',
-			'id'              => '1628084952497',
+			'id'              => '1630411446543',
 			'position'        => '140000',
 			'name'            => 'Boolean',
 			'slug'            => 'boolean',
@@ -210,11 +209,11 @@ function get_test_fields() {
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1628084963946' => array(
+		'1630411456473' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
 			'type'            => 'boolean',
-			'id'              => '1628084963946',
+			'id'              => '1630411456473',
 			'position'        => '150000',
 			'name'            => 'Boolean-Required',
 			'slug'            => 'booleanRequired',
@@ -222,18 +221,125 @@ function get_test_fields() {
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1628083572341' => array(
-			'show_in_rest'    => false,
-			'show_in_graphql' => false,
-			'type'            => 'text',
-			'id'              => '1628083572341',
+		'1630411556098' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'relationship',
+			'id'              => '1630411556098',
 			'position'        => '160000',
-			'name'            => 'Hidden-Field',
-			'slug'            => 'hiddenField',
+			'name'            => 'many-to-one-Relationship',
+			'slug'            => 'manytoOneRelationship',
 			'required'        => false,
-			'inputType'       => 'single',
 			'minChars'        => '',
 			'maxChars'        => '',
+			'reference'       => 'private',
+			'cardinality'     => 'many-to-one',
+			'description'     => '',
+		),
+		'1630411590613' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'relationship',
+			'id'              => '1630411590613',
+			'position'        => '170000',
+			'name'            => 'many-to-many-Relationship',
+			'slug'            => 'manytoManyRelationship',
+			'required'        => false,
+			'minChars'        => '',
+			'maxChars'        => '',
+			'reference'       => 'public',
+			'cardinality'     => 'many-to-many',
+			'description'     => '',
+		),
+		'1630411592343' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'relationship',
+			'id'              => '1630411592343',
+			'position'        => '180000',
+			'name'            => 'Many-to-Many-Relationship-Reverse',
+			'slug'            => 'manytoManyRelationshipReverse',
+			'required'        => false,
+			'minChars'        => '',
+			'maxChars'        => '',
+			'reference'       => 'public',
+			'cardinality'     => 'many-to-many',
+			'description'     => '',
+			'enableReverse'   => true,
+			'reverseName'     => 'PPosts',
+			'reverseSlug'     => 'pposts' . random_int( 0, PHP_INT_MAX ),
+		),
+		'1636398361391' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'multipleChoice',
+			'id'              => '1636398361391',
+			'position'        => '190000',
+			'name'            => 'multiple-choice-single',
+			'slug'            => 'multiSingle',
+			'listType'        => 'single',
+			'choices'         =>
+				array(
+					0 =>
+					array(
+						'name' => 'red apple',
+						'slug' => 'apple',
+					),
+					1 =>
+					array(
+						'name' => 'yellow banana',
+						'slug' => 'banana',
+					),
+					2 =>
+					array(
+						'name' => 'green kiwi',
+						'slug' => 'kiwi',
+					),
+				),
+			'required'        => true,
+		),
+		'1636398361392' => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'multipleChoice',
+			'id'              => '1636398361392',
+			'position'        => '200000',
+			'name'            => 'multiple-choice-multi',
+			'slug'            => 'multipleMulti',
+			'listType'        => 'multiple',
+			'choices'         =>
+			array(
+				0 =>
+				array(
+					'name' => 'red apple',
+					'slug' => 'apple',
+				),
+				1 =>
+				array(
+					'name' => 'yellow banana',
+					'slug' => 'banana',
+				),
+				2 =>
+				array(
+					'name' => 'green kiwi',
+					'slug' => 'kiwi',
+				),
+			),
+			'required'        => true,
+		),
+		'1637243600'    => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'media',
+			'id'              => '1637243600',
+			'position'        => '190000',
+			'name'            => 'Media-Featured',
+			'slug'            => 'mediaFeatured',
+			'required'        => false,
+			'minChars'        => '',
+			'maxChars'        => '',
+			'allowedTypes'    => '',
+			'isFeatured'      => true,
 		),
 	);
 }

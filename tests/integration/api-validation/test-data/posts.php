@@ -2,7 +2,6 @@
 /**
  * Saves mock post data for processing
  */
-
 function create_test_posts( $test_class ) {
 	$ids = array();
 
@@ -91,6 +90,10 @@ function populate_post( $post_id, $model, $test_class ) {
 	update_post_meta( $post_id, 'mediaPDF', $ids[ $model . '_pdf_id' ] );
 	update_post_meta( $post_id, 'boolean', 'false' );
 	update_post_meta( $post_id, 'booleanRequired', 'true' );
+	update_post_meta( $post_id, 'multiSingle', [ 'kiwi' ] );
+	update_post_meta( $post_id, 'multipleMulti', [ 'apple', 'banana' ] );
+	update_post_meta( $post_id, 'featured', $ids[ $model . '_image_id' ] );
+	update_post_meta( $post_id, '_thumbnail_id', $ids[ $model . '_image_id' ] );
 
 	$image_meta = array(
 		'width'  => 1000,

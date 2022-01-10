@@ -1,4 +1,90 @@
 # Atlas Content Modeler Changelog
+## Unreleased
+### Fixed
+- Prevent PHP fatal errors on sites running < PHP 7.4 under certain conditions when no models exist.
+
+## 0.12.0 - 2021-12-15
+### Added
+- Debug info is now added to GraphQL responses when GraphQL Debug Mode is enabled and a request for Private models is made as an unauthenticated user.
+
+### Fixed
+- Improved display of admin notices on pages in the Content Modeler admin menu.
+- Saving a model that has no changes no longer causes an error to be displayed.
+
+## 0.11.0 - 2021-12-01
+### Added
+- Set any Media Field as the [Featured Image](https://www.wpgraphql.com/docs/media/#query-a-post-with-its-featured-image) for its model.
+- Create checkbox and radio button lists with the new Multiple Choice Field (beta).
+
+### Fixed
+- Post titles are now available in WPGraphQL responses.
+- Prevent reserved taxonomy slugs from being used as taxonomy slug.
+- Used consistent labels to describe the taxonomy ID.
+- Changing model plural name now updates the sidebar menu item automatically.
+- Issue where sidebar menu doesn't expand under certain conditions.
+
+### Changed
+- Standardized WP_Error codes for internal REST endpoints. All error statuses now use an acm_ prefix instead of a mix of wpe_ and atlas_content_modeler_.
+- Removed dead code.
+
+## 0.10.0 - 2021-11-18
+### Added
+- Relationship fields with reverse references enabled are now editable from the reverse side. Tick “Configure Reverse Reference” when creating your relationship field to use reverse references.
+- Post slugs are now editable in ACM entries. Enable them via Screen Options when editing a post.
+
+### Fixed
+- Integer number fields can no longer use decimal values for the step, minimum and maximum settings.
+
+## 0.9.0 - 2021-11-03
+### Added
+- Fields now have an optional description which can be used to inform publishers what a field is for. The description is displayed above the field on the post entry screen.
+- Relationship field now supports one-to-one and one-to-many connections.
+
+### Fixed
+- ACM now prevents field slugs from conflicting with reserved slugs already used by WPGraphQL.
+- One-to-one field cardinality is now properly enforced.
+- API Identifier character limit is now properly enforced.
+- API Identifier validation now properly accounts for dashes and underscores.
+- Reverse API Identifier conflict detection no longer causes conflicts with the field being edited.
+- Added `publicly_queryable` parameter when registering custom post types. This fixes an issue caused by changes in [WPGraphQL #2134](https://github.com/wp-graphql/wp-graphql/issues/2134).
+
+### Changed
+- Posts without a title field no longer have their title saved as "Auto Draft". The fallback title is now entry[post id goes here].
+
+## 0.8.0 - 2021-10-13
+
+### Added
+- Share models between sites using the new Export and Import models feature. Visit Content Modeler → Tools to get started.
+- Added "author" support to custom post types. This unlocks new functionality such as assigning specific users to a post, and querying posts by author in WPGraphQL.
+
+### Fixed
+- Fixed bug where the model icon could not be changed when editing an existing model.
+- Fixed bug in the Number field where you could not define a Step value without also defining a Max value.
+- Improved duplicate field slug detection to ensure forward and reverse slugs for the Relationship field are unique in WPGraphQL.
+
+### Changed
+- The `@wordpress/i18n` package is no longer bundled in the plugin's scripts, relying on the version that ships with WordPress instead.
+
+## 0.7.0 - 2021-10-04
+
+### Added
+- Relationship Field: one-to-one and one-to-many relationships were renamed to many-to-one and many-to-many to accurately reflect their function.
+- Relationship Field: fields can now optionally include reverse references.
+- Relationship Field: added [Beta] flag as the feature takes shape.
+- Chore: set "Requires at least" to WordPress version 5.7
+- Chore: set "Requires PHP" to version 7.2
+
+### Fixed
+- Fixed bug where the app prompted about "Unsaved changes" when no changes had been made.
+
+## 0.6.0 - 2021-09-09
+
+### Added
+- Create one-to-one and one-to-many relationships between model entries with the new Relationship field.
+- A plugin icon will appear on the plugin update page during future updates.
+
+### Fixed
+- Improved modal scroll behavior and positioning.
 
 ## 0.5.0 - 2021-08-12
 

@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { getFieldOrder, sanitizeFields } from "./queries";
-import { toValidApiId } from "./formats";
-import { sprintf, __ } from "@wordpress/i18n";
+import { toGraphQLType } from "./formats";
+import { __ } from "@wordpress/i18n";
 
 /**
  * Parses query string and returns value.
@@ -37,6 +37,33 @@ export function removeSidebarMenuItem(slug) {
 	const menuItem = document.querySelector(`[id="menu-posts-${slug}"]`);
 	if (menuItem) {
 		menuItem.remove();
+	}
+}
+
+/**
+ * Updates the sidebar post type menu item if the icon or label changed.
+ *
+ * @param {Object} model - The original content model information.
+ * @param {Object} data - The updated content model data posted from the edit form.
+ */
+export function updateSidebarMenuItem(model, data) {
+	const { model_icon = "dashicons-admin-post", plural } = data;
+
+	// Update the post type menu label.
+	if (model.plural !== plural) {
+		document.querySelector(
+			`li#menu-posts-${model.slug} .wp-menu-name`
+		).innerHTML = plural;
+	}
+
+	// Update the post type menu icon.
+	if (model.model_icon !== model_icon) {
+		const menuIcon = document.querySelector(
+			`li#menu-posts-${model.slug} .wp-menu-image`
+		);
+
+		menuIcon.classList.remove(model.model_icon);
+		menuIcon.classList.add(model_icon);
 	}
 }
 
@@ -102,14 +129,11 @@ export const maybeCloseDropdown = (setDropdownOpen, timer) => {
  * @return {string} The GraphiQL URL with query param prefilled.
  */
 export const getGraphiQLLink = (modelData) => {
-	const graphQLType = toValidApiId(modelData.singular).replace(
-		/^[a-z]/g,
-		(match) => match.toUpperCase() // GraphQL's "Types" are all capitalized.
-	);
+	const graphQLType = toGraphQLType(modelData.singular, true);
 	const fragmentName = `${graphQLType}Fields`;
 	const rootToTypeConnectionFieldName =
 		modelData.singular !== modelData.plural
-			? toValidApiId(modelData.plural)
+			? toGraphQLType(modelData.plural)
 			: "all" + graphQLType;
 
 	const fields = sanitizeFields(modelData?.fields);

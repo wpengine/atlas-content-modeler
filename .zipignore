@@ -21,7 +21,6 @@ deploy.sh
 *grunt*
 *node_modules*
 *tests*
-*vendor*
 *composer.json*
 *composer.lock*
 *package-lock.json*
@@ -34,3 +33,6 @@ deploy.sh
 *.husky/*
 *docker-composer-phpunit.yml
 *Makefile
+*assets/wporg/*
+*.svnignore
+*vendor*

@@ -1,32 +1,25 @@
 <?php
 
-class DeleteTaxonomyCest
-{
-	public function _before(\AcceptanceTester $I)
-	{
-		$I->maximizeWindow();
-		$I->loginAsAdmin();
-		$I->wait(1);
-		$I->haveContentModel('Goose', 'Geese');
-	}
+class DeleteTaxonomyCest {
 
 	/**
 	 * Ensure a user can delete ACM taxonomies.
 	 */
-	public function i_can_delete_a_taxonomy(AcceptanceTester $I)
-	{
-		$I->haveTaxonomy('Breed', 'Breeds', [ 'goose' ]);
-		$I->wait(1);
-		$I->amOnTaxonomyListingsPage();
-		$I->wait(1);
+	public function i_can_delete_a_taxonomy( AcceptanceTester $i ) {
+		$i->maximizeWindow();
+		$i->loginAsAdmin();
+		$i->haveContentModel( 'Goose', 'Geese' );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose' ] ] );
+		$i->amOnTaxonomyListingsPage();
+		$i->wait( 1 );
 
-		$I->click('.action button.options');
-		$I->see('Delete', '.dropdown-content');
-        $I->click('Delete', '.action .dropdown-content');
+		$i->click( '.action button.options' );
+		$i->see( 'Delete', '.dropdown-content' );
+		$i->click( 'Delete', '.action .dropdown-content' );
 
-		$I->see("Are you sure you want to delete the Breeds taxonomy?");
-		$I->click('Delete', '.atlas-content-modeler-delete-field-modal-container');
-		$I->wait(1);
-		$I->see("You currently have no taxonomies.");
+		$i->see( 'Are you sure you want to delete the Breeds taxonomy?' );
+		$i->click( 'Delete', '.atlas-content-modeler-delete-field-modal-container' );
+		$i->wait( 1 );
+		$i->see( 'You currently have no taxonomies.' );
 	}
 }

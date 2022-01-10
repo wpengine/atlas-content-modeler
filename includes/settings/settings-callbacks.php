@@ -43,6 +43,15 @@ function register_admin_menu_page(): void {
 		'atlas-content-modeler&amp;view=taxonomies',
 		'__return_null'
 	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
+		esc_html__( 'Tools', 'atlas-content-modeler' ),
+		esc_html__( 'Tools', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler&amp;view=tools',
+		'__return_null'
+	);
 }
 
 add_filter( 'parent_file', __NAMESPACE__ . '\maybe_override_submenu_file' );
@@ -65,6 +74,10 @@ function maybe_override_submenu_file( $parent_file ) {
 
 	if ( $page === 'atlas-content-modeler' && $view === 'taxonomies' ) {
 		$submenu_file = 'atlas-content-modeler&amp;view=taxonomies'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	}
+
+	if ( $page === 'atlas-content-modeler' && $view === 'tools' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=tools'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
 	}
 
 	return $parent_file;
@@ -114,12 +127,16 @@ function enqueue_settings_assets( $hook ) {
 		'atlas-content-modeler-app',
 		'atlasContentModeler',
 		array(
-			'appPath'             => $admin_path . '?page=atlas-content-modeler',
+			'appPath'             => $admin_path . 'admin.php?page=atlas-content-modeler',
 			'taxonomies'          => get_option( 'atlas_content_modeler_taxonomies', array() ),
 			'initialState'        => get_registered_content_types(),
-			'isGraphiQLAvailable' => is_plugin_active( 'wp-graphql/wp-graphql.php' )
-				&& function_exists( 'get_graphql_setting' )
-				&& get_graphql_setting( 'graphiql_enabled' ) !== 'off',
+			'reservedFieldSlugs'  => include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-field-slugs.php',
+			'isWPGraphQLActive'   => is_plugin_active( 'wp-graphql/wp-graphql.php' ),
+			'isGraphiQLAvailable' => function_exists( 'get_graphql_setting' )
+										&& get_graphql_setting( 'graphiql_enabled' ) !== 'off',
+			'graphQLUrl'          => function_exists( 'get_graphql_setting' )
+										? get_site_url() . '/' . get_graphql_setting( 'graphql_endpoint', 'graphql' )
+										: get_site_url() . '/graphql',
 		)
 	);
 

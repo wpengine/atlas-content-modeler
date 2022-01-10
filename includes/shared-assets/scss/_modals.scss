@@ -1,0 +1,16 @@
+.atlas-content-modeler-modal h2,
+.atlas-content-modeler-modal h3,
+.atlas-content-modeler-modal label {
+	color: $color-text;
+}
+
+.atlas-content-modeler-field-settings-modal-container {
+	h3 {
+		font-size: 15px;
+		font-weight: 700;
+	}
+
+	.ReactModal__Content--after-open p.field-messages:last-of-type {
+		margin-bottom: 0;
+	}
+}

@@ -6,7 +6,58 @@ version: 2.1
 orbs:
   wp-product-orb: wpengine/wp-product-orb@1.3.0
   php: circleci/php@1.1.0
-  node: circleci/node@4.1.0
+  node: circleci/node@4.9.0
+  browser-tools: circleci/browser-tools@1.2.3
+
+commands:
+  set_version_variable:
+    description: "Set the VERSION environment variable"
+    steps:
+      - run:
+          command: |
+            echo "export VERSION=$(grep 'Version:' ~/project/atlas-content-modeler/atlas-content-modeler.php | awk -F: '{print $2}' | sed 's/^\s//')" >> ${BASH_ENV}
+
+  svn_setup:
+    description: "Set up SVN"
+    steps:
+      - set_version_variable
+      - run: sudo apt-get update && sudo apt-get install subversion
+      - run: svn co https://plugins.svn.wordpress.org/atlas-content-modeler --depth=empty .
+      - run: svn up trunk
+      - run: svn up tags --depth=empty
+      - run: svn up assets
+      - run: find ./trunk -not -path "./trunk" -delete
+      - run: mkdir ~/project/unzip-temp
+      - run: unzip ~/project/build/atlas-content-modeler.${VERSION}.zip -d ~/project/unzip-temp
+      - run: cp -r ~/project/unzip-temp/atlas-content-modeler/. ./trunk
+      - run: cp -r ~/project/atlas-content-modeler/assets/wporg/* ./assets
+      - run: rm -rf node_modules/
+      - run: cp ~/project/atlas-content-modeler/.svnignore ./trunk
+      - run: svn propset svn:ignore -F ./trunk/.svnignore ./trunk
+      - run: svn propset svn:ignore -F ./trunk/.svnignore ./tags
+
+  svn_create_tag:
+    description: "Create an SVN tag"
+    steps:
+      - set_version_variable
+      - run: svn cp trunk tags/${VERSION}
+
+  svn_set_mimes:
+    description: "Set MIMES for SVN"
+    steps:
+      - run: svn propset svn:mime-type image/png ./assets/*.png
+      - run: svn propset svn:mime-type image/jpeg ./assets/*.jpg
+
+  svn_add_changes:
+    description: "Add changes to SVN"
+    steps:
+      - run: svn add --force .
+
+  svn_commit:
+    description: "Commit changes to SVN"
+    steps:
+      - set_version_variable
+      - run: svn ci -m "Tagging ${VERSION} from GitHub" --no-auth-cache --non-interactive --username "${SVN_USERNAME}" --password "${SVN_PASSWORD}"
 
 jobs:
   plugin-checkout:
@@ -47,6 +98,7 @@ jobs:
       - php/install-composer
       - php/install-packages:
           app-dir: <<parameters.slug>>
+          install-flags: --no-interaction --prefer-dist --ignore-platform-reqs
       - run:
           name: Remove composer setup file
           command: |
@@ -166,8 +218,8 @@ jobs:
 
   plugin-test-e2e:
     docker:
-      - image: circleci/php:7.4-node-browsers
-      - image: circleci/mysql:5.7-ram
+      - image: cimg/php:7.4-browsers
+      - image: cimg/mysql:5.7
         environment:
           MYSQL_ROOT_PASSWORD: wordpress
           MYSQL_DATABASE: wordpress
@@ -177,15 +229,12 @@ jobs:
       - attach_workspace:
           at: .
 
+      - browser-tools/install-chrome
       - run:
           name: Install mysql_client
           command: |
+            sudo apt-get update -yq
             sudo apt-get install default-mysql-client
-
-      - run:
-          name: Install MySQL PHP extension
-          command: sudo docker-php-ext-install mysqli zip pdo_mysql
-
       - run:
           # Our primary container isn't MYSQL so run a sleep command until it's ready.
           name: Waiting for MySQL to be ready
@@ -333,7 +382,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - php/install-composer
       - run:
           name: Run Code Sniffer sniffs
           command: /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
@@ -342,7 +390,7 @@ jobs:
   plugin-test-unit:
     docker:
       - image: cimg/php:7.4
-      - image: circleci/mysql:5.7
+      - image: cimg/mysql:5.7
         environment:
           MYSQL_DATABASE: wp_database
           MYSQL_USER: wp_user
@@ -354,13 +402,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - php/install-composer
-      - php/install-packages:
-          app-dir: <<parameters.slug>>
-      - run:
-          name: Remove composer setup file
-          command: |
-            rm -v composer-setup.php
       - run:
           name: Install Subversion package
           command: |
@@ -375,6 +416,37 @@ jobs:
           name: Run testing suite
           command: |
             composer test
+          working_directory: <<parameters.slug>>
+
+  plugin-test-content-connect:
+    docker:
+      - image: cimg/php:7.4
+      - image: cimg/mysql:5.7
+        environment:
+          MYSQL_DATABASE: wp_database
+          MYSQL_USER: wp_user
+          MYSQL_PASSWORD: wp_pass
+          MYSQL_ROOT_PASSWORD: password
+    parameters:
+      slug:
+        type: string
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install Subversion package
+          command: |
+            sudo apt-get update -yq
+            sudo apt-get install subversion -yq
+      - run:
+          name: Setup WordPress testing framework
+          command: |
+            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
+          working_directory: <<parameters.slug>>
+      - run:
+          name: Run content connect testing suite
+          command: |
+            vendor/bin/phpunit --configuration phpunit.content-connect.xml
           working_directory: <<parameters.slug>>
 
   plugin-deploy:
@@ -401,6 +473,18 @@ jobs:
           zip: build/<<parameters.slug>>.$BUILD_VERSION.zip
           json: build/<<parameters.slug>>.$BUILD_VERSION.json
           version: $BUILD_VERSION
+
+  plugin-deploy-wporg:
+    executor: php/default
+    working_directory: ~/project/svn_deploy
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - svn_setup
+      - svn_create_tag
+      - svn_add_changes
+      - svn_set_mimes
+      - svn_commit
 
 workflows:
   # Workflows defined for each package and plugin.
@@ -456,6 +540,7 @@ workflows:
       - plugin-build-zip:
           slug: atlas-content-modeler
           requires:
+            - plugin-build-composer
             - plugin-build-npm
             - plugin-build-pot
           # Run this job on every commit/PR so the plugin is available as a build artifact
@@ -463,13 +548,13 @@ workflows:
             tags:
               only: /.*/
       - plugin-test-e2e:
-          requires:
-            - plugin-build-zip
-            - plugin-build-composer
-          # run this job for any build, any branch
-          filters:
-            tags:
-              only: /.*/
+           requires:
+             - plugin-build-zip
+             - plugin-build-composer
+           # run this job for any build, any branch
+           filters:
+             tags:
+               only: /.*/
       - plugin-test-jest:
           slug: atlas-content-modeler
           requires:
@@ -503,38 +588,59 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-deploy:
-          name: "plugin-deploy-staging"
+      - plugin-test-content-connect:
           slug: atlas-content-modeler
           requires:
             - plugin-build-zip
-            - plugin-build-json
-            - plugin-test-e2e
-            - plugin-test-lint-js
-            - plugin-test-lint-php
-            - plugin-test-jest
-            - plugin-test-unit
+            - plugin-build-composer
+          # run this job for any build, any branch
           filters:
-            branches:
-              only:
-                - main
-                - canary
             tags:
               only: /.*/
-          context: wpe-ldap-creds
-          auth_url: https://auth-staging.wpengine.io/v1/tokens
-          upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
       - plugin-deploy:
-          name: "plugin-deploy-production"
-          slug: atlas-content-modeler
-          requires:
-            - "plugin-deploy-staging"
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              # tag ex. 1.0.0
-              only: /^\S+/
-          context: wpe-ldap-creds
-          auth_url: https://auth.wpengine.io/v1/tokens
-          upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+           name: "plugin-deploy-staging"
+           slug: atlas-content-modeler
+           requires:
+             - plugin-build-zip
+             - plugin-build-json
+             - plugin-test-e2e
+             - plugin-test-lint-js
+             - plugin-test-lint-php
+             - plugin-test-jest
+             - plugin-test-unit
+             - plugin-test-content-connect
+           filters:
+             branches:
+               only:
+                 - main
+                 - canary
+             tags:
+               only: /.*/
+           context: wpe-ldap-creds
+           auth_url: https://auth-staging.wpengine.io/v1/tokens
+           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
+      - plugin-deploy:
+           name: "plugin-deploy-production"
+           slug: atlas-content-modeler
+           requires:
+             - "plugin-deploy-staging"
+           filters:
+             branches:
+               ignore: /.*/
+             tags:
+               # tag ex. 1.0.0
+               only: /^\S+/
+           context: wpe-ldap-creds
+           auth_url: https://auth.wpengine.io/v1/tokens
+           upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+      - plugin-deploy-wporg:
+           name: "plugin-deploy-wporg-production"
+           requires:
+             - "plugin-deploy-staging"
+           filters:
+             branches:
+               ignore: /.*/
+             tags:
+               # tag ex. 1.0.0
+               only: /^\S+/
+           context: wpe-wporg-svn-creds
