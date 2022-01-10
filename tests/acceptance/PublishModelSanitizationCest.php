@@ -1,14 +1,12 @@
 <?php
-use Codeception\Util\Locator;
+
 class PublishModelSanitizationCest {
 
 	public function i_can_publish_a_model_and_fields_are_sanitized( AcceptanceTester $i ) {
 		$i->maximizeWindow();
-
-		// Create a model.
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese', 'Geese go honk' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'goose', 'geese', [ 'description' => 'Geese go honk' ] );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		// Add a text field.
 		$i->click( 'Text', '.field-buttons' );

@@ -7,8 +7,8 @@ class CreateFieldWithIsTitleCest {
 	 */
 	public function i_can_create_a_content_model_text_field_with_is_title( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );

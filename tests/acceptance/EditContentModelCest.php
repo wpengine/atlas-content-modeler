@@ -1,12 +1,14 @@
 <?php
+
 class EditContentModelCest {
+
 	public function i_can_update_an_existing_content_model( AcceptanceTester $i ) {
 		$i->resizeWindow( 1024, 1024 );
 		$i->loginAsAdmin();
 
 		// First, create a new model.
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		// Invoke edit mode.
 		$i->amOnWPEngineContentModelPage();
@@ -40,4 +42,5 @@ class EditContentModelCest {
 		$menu_label = $i->grabTextFrom( '#menu-posts-candy .wp-menu-name' );
 		$i->assertEquals( 'Cats', $menu_label );
 	}
+
 }

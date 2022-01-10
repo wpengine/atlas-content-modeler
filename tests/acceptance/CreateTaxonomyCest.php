@@ -7,7 +7,6 @@ class CreateTaxonomyCest {
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
 		$i->haveContentModel( 'goose', 'geese' );
-		$i->wait( 1 );
 	}
 
 	public function i_can_navigate_to_the_taxonomies_page( AcceptanceTester $i ) {

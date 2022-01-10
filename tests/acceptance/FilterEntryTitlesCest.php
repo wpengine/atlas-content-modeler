@@ -1,7 +1,15 @@
 <?php
+
 use Codeception\Util\Locator;
 
 class FilterEntryTitlesCest {
+
+	public function _before( \AcceptanceTester $i ) {
+		$i->maximizeWindow();
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'goose', 'geese', [ 'description' => 'Geese go honk' ] );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+	}
 
 	/**
 	 * If the user specifies a text field to use as the entry title, check that
@@ -10,12 +18,6 @@ class FilterEntryTitlesCest {
 	 * @param AcceptanceTester $i
 	 */
 	public function i_see_the_defined_entry_title_field_value_in_the_entry_list( AcceptanceTester $i ) {
-		$i->maximizeWindow();
-
-		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese', 'Geese go honk' );
-		$i->wait( 1 );
-
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Fave Foods' );
 		$i->click( '.open-field button.primary' );
@@ -53,12 +55,6 @@ class FilterEntryTitlesCest {
 	 * @param AcceptanceTester $i
 	 */
 	public function i_see_a_fallback_title_if_there_is_no_entry_title_field( AcceptanceTester $i ) {
-		$i->maximizeWindow();
-
-		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese', 'Geese go honk' );
-		$i->wait( 1 );
-
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Fave Foods' );
 		$i->click( '.open-field button.primary' );
@@ -94,12 +90,6 @@ class FilterEntryTitlesCest {
 	 * @param AcceptanceTester $i
 	 */
 	public function i_see_a_fallback_title_if_the_title_field_is_empty( AcceptanceTester $i ) {
-		$i->maximizeWindow();
-
-		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese', 'Geese go honk' );
-		$i->wait( 1 );
-
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Name' );
 		// Set the 'name' field as the entry title field.

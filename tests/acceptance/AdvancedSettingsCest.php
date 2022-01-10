@@ -4,10 +4,9 @@ class AdvancedSettingsCest {
 
 	public function _before( \AcceptanceTester $i ) {
 		$i->maximizeWindow();
-
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'goose', 'geese' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 	}
 
 	public function i_can_set_min_max_character_counts_for_text_fields( \AcceptanceTester $i ) {
