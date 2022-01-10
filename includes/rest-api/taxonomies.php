@@ -79,7 +79,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 		if ( root_type_exists( $params['singular'] ) ) {
 			return new WP_Error(
 				'acm_singular_label_exists',
-				esc_html__( 'The singular label is already in use.', 'atlas-content-modeler' ),
+				esc_html__( 'The singular name is already in use.', 'atlas-content-modeler' ),
 				[ 'status' => 400 ]
 			);
 		}
@@ -124,7 +124,7 @@ function save_taxonomy( array $params, bool $is_update ) {
  * Determines if a new taxonomy property value differs from the old one.
  *
  * Used for extra validation against modified properties, such as checking that
- * an updated singular label does not conflict with root GraphQL fields.
+ * an updated singular name does not conflict with root GraphQL fields.
  *
  * @param string $slug The taxonomy ID.
  * @param string $property The property to check.
