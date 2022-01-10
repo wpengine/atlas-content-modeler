@@ -47,7 +47,7 @@ function create_model( string $post_type_slug, array $args ) {
 	if ( root_type_exists( $args['singular'] ?? '' ) ) {
 		return new WP_Error(
 			'acm_singular_label_exists',
-			esc_html__( 'The singular name is already in use.', 'atlas-content-modeler' ),
+			esc_html__( 'The singular name is in use.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -55,7 +55,7 @@ function create_model( string $post_type_slug, array $args ) {
 	if ( root_type_exists( $args['plural'] ?? '' ) ) {
 		return new WP_Error(
 			'acm_plural_label_exists',
-			esc_html__( 'The plural name is already in use.', 'atlas-content-modeler' ),
+			esc_html__( 'The plural name is in use.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -110,7 +110,7 @@ function create_models( array $models ) {
 			return new WP_Error(
 				'acm_singular_label_exists',
 				// translators: singular name of the model, such as "cat".
-				sprintf( esc_html__( 'A singular name of “%s” is already in use.', 'atlas-content-modeler' ), $args['singular'] ),
+				sprintf( esc_html__( 'A singular name of “%s” is in use.', 'atlas-content-modeler' ), $args['singular'] ),
 				[ 'status' => 400 ]
 			);
 		}
@@ -119,7 +119,7 @@ function create_models( array $models ) {
 			return new WP_Error(
 				'acm_plural_label_exists',
 				// translators: plural name of the model, such as "cats".
-				sprintf( esc_html__( 'A plural name of “%s” is already in use.', 'atlas-content-modeler' ), $args['plural'] ),
+				sprintf( esc_html__( 'A plural name of “%s” is in use.', 'atlas-content-modeler' ), $args['plural'] ),
 				[ 'status' => 400 ]
 			);
 		}
@@ -210,7 +210,7 @@ function update_model( string $post_type_slug, array $args ) {
 	) {
 		return new WP_Error(
 			'acm_singular_label_exists',
-			__( 'The singular name is already in use.', 'atlas-content-modeler' ),
+			__( 'The singular name is in use.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
@@ -221,7 +221,7 @@ function update_model( string $post_type_slug, array $args ) {
 	) {
 		return new WP_Error(
 			'acm_plural_label_exists',
-			__( 'The plural name is already in use.', 'atlas-content-modeler' ),
+			__( 'The plural name is in use.', 'atlas-content-modeler' ),
 			[ 'status' => 400 ]
 		);
 	}
