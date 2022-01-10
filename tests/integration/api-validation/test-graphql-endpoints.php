@@ -69,7 +69,7 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 			);
 
 			self::assertEmpty( $results['data']['privatesFields']['nodes'] );
-			self::assertSame( $results['extensions']['debug'][0]['type'], 'ACM_UNAUTHORIZED_REQUEST' );
+			self::assertContains( 'ACM_UNAUTHORIZED_REQUEST', array_column( $results['extensions']['debug'], 'type' ) );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
