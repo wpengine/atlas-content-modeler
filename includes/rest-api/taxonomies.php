@@ -92,7 +92,7 @@ function save_taxonomy( array $params, bool $is_update ) {
 		if ( root_type_exists( $params['plural'] ) ) {
 			return new WP_Error(
 				'acm_plural_label_exists',
-				esc_html__( 'The plural label is in use.', 'atlas-content-modeler' ),
+				esc_html__( 'The plural name is in use.', 'atlas-content-modeler' ),
 				[ 'status' => 400 ]
 			);
 		}
