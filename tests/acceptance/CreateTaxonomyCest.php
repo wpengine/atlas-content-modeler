@@ -98,6 +98,31 @@ class CreateTaxonomyCest {
 		$i->see( 'A taxonomy with this Taxonomy ID already exists' );
 	}
 
+	public function i_can_not_create_a_taxonomy_with_a_reserved_singular_name( AcceptanceTester $i ) {
+		$i->amOnTaxonomyListingsPage();
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'singular' ], 'Post' ); // 'Post' is a reserved name.
+		$i->fillField( [ 'name' => 'plural' ], 'Breeds' );
+		$i->fillField( [ 'name' => 'slug' ], 'breed' );
+		$i->click( '.checklist .checkbox' ); // The “goose” model.
+		$i->click( '.card-content button.primary' );
+		$i->wait( 1 );
+		$i->see( 'singular name is in use' );
+	}
+
+	public function i_can_not_create_a_taxonomy_with_a_reserved_plural_name( AcceptanceTester $i ) {
+		$i->amOnTaxonomyListingsPage();
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'singular' ], 'Breed' );
+		$i->fillField( [ 'name' => 'plural' ], 'Posts' ); // 'Posts' is a reserved name.
+		$i->click( '.checklist .checkbox' ); // The “goose” model.
+		$i->click( '.card-content button.primary' );
+		$i->wait( 1 );
+		$i->see( 'plural name is in use' );
+	}
+
 	public function i_can_not_create_a_taxonomy_if_the_slug_is_a_reserved_term( AcceptanceTester $i ) {
 		$i->amOnTaxonomyListingsPage();
 		$i->wait( 1 );
