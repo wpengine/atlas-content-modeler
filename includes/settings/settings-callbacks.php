@@ -103,8 +103,6 @@ function render_admin_menu_page() {
 	include_once __DIR__ . '/views/admin-menu-page.php';
 }
 
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
-
 /**
  * Decides if feedback banner scripts should be loaded.
  *
@@ -117,6 +115,7 @@ function should_show_feedback_banner(): bool {
 	return ! ( ! empty( $time_dismissed ) && ( $time_dismissed + WEEK_IN_SECONDS * 2 > time() ) );
 }
 
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
 /**
  * Registers and enqueues admin scripts and styles.
  *
