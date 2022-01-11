@@ -18,8 +18,8 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 	private $route     = '/atlas/content-models';
 	private $test_models;
 
-	public function set_up(): void {
-		parent::set_up();
+	public function setUp(): void {
+		parent::setUp();
 
 		$this->test_models = $this->get_models();
 
@@ -43,8 +43,8 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 	}
 
-	public function tear_down() {
-		parent::tear_down();
+	public function tearDown() {
+		parent::tearDown();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
@@ -138,5 +138,73 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'cheeses', $models );
 		self::assertArrayHasKey( 'rabbits', $models );
 		self::assertArrayHasKey( 'bookreviews', $models );
+	}
+
+	public function test_cannot_create_models_if_singular_label_conflicts_with_reserved_names(): void {
+		wp_set_current_user( 1 );
+
+		$test_models = array(
+			// The first model is fine.
+			array(
+				'slug'        => 'bookreviews',
+				'singular'    => 'Book Review 1',
+				'plural'      => 'Book Reviews 1',
+				'description' => 'Reviews of books.',
+			),
+			// But this model contains a singular label conflict.
+			array(
+				'slug'        => 'bad-model',
+				'singular'    => 'Post', // 'Post' is a reserved term. This causes the whole update to fail.
+				'plural'      => 'Tests',
+				'description' => 'Bad model.',
+			),
+		);
+
+		$request = new WP_REST_Request( 'PUT', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $test_models ) );
+		$response = $this->server->dispatch( $request );
+
+		$data   = $response->get_data();
+		$models = get_registered_content_types();
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_singular_label_exists', $data['code'] );
+		self::assertSame( 'A singular name of “Post” is in use.', $data['message'] );
+		self::assertArrayNotHasKey( 'bookreviews', $models ); // No models were saved because one from the set was invalid.
+	}
+
+	public function test_cannot_create_models_if_plural_label_conflicts_with_reserved_names(): void {
+		wp_set_current_user( 1 );
+
+		$test_models = array(
+			// The first model is fine.
+			array(
+				'slug'        => 'bookreviews',
+				'singular'    => 'Book Review 1',
+				'plural'      => 'Book Reviews 1',
+				'description' => 'Reviews of books.',
+			),
+			// But this model contains a plural label conflict.
+			array(
+				'slug'        => 'bad-model',
+				'singular'    => 'Test',
+				'plural'      => 'Posts', // 'Posts' is a reserved term. This causes the whole update to fail.
+				'description' => 'Bad model.',
+			),
+		);
+
+		$request = new WP_REST_Request( 'PUT', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $test_models ) );
+		$response = $this->server->dispatch( $request );
+
+		$data   = $response->get_data();
+		$models = get_registered_content_types();
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_plural_label_exists', $data['code'] );
+		self::assertSame( 'A plural name of “Posts” is in use.', $data['message'] );
+		self::assertArrayNotHasKey( 'bookreviews', $models ); // No models were saved because one from the set was invalid.
 	}
 }
