@@ -32,4 +32,31 @@ class CreateContentModelCest {
 		$i->see( 'Candies', '.model-list' );
 		$i->see( 'My candy content model', '.model-list' );
 	}
+
+	public function i_see_a_warning_if_the_model_singular_name_is_reserved( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->amOnWPEngineCreateContentModelPage();
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'singular' ], 'Post' ); // 'post' is in use.
+		$i->fillField( [ 'name' => 'plural' ], 'Candies' );
+		$i->fillField( [ 'name' => 'slug' ], 'Candy' );
+		$i->click( '.card-content button.primary' );
+		$i->wait( 1 );
+
+		$i->see( 'singular name is in use', '.card-content' );
+	}
+
+	public function i_see_a_warning_if_the_model_plural_name_is_reserved( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->amOnWPEngineCreateContentModelPage();
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'singular' ], 'Candy' );
+		$i->fillField( [ 'name' => 'plural' ], 'Posts' ); // 'posts' is in use.
+		$i->click( '.card-content button.primary' );
+		$i->wait( 1 );
+
+		$i->see( 'plural name is in use', '.card-content' );
+	}
 }
