@@ -176,3 +176,44 @@ function enqueue_settings_assets( $hook ) {
 		}
 	}
 }
+
+add_action( 'init', __NAMESPACE__ . '\register_plugin_settings' );
+/**
+ * Registers the plugin's settings.
+ *
+ * @return void
+ */
+function register_plugin_settings(): void {
+	register_setting(
+		'atlas_content_modeler_settings',
+		'atlas_content_modeler_usage_tracking',
+		[
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_text_field',
+			'show_in_rest'      => true,
+			'default'           => '0',
+		]
+	);
+}
+
+add_action( 'admin_init', __NAMESPACE__ . '\register_settings_fields' );
+/**
+ * Registers the plugin's settings sections and fields.
+ *
+ * @return void
+ */
+function register_settings_fields(): void {
+	add_settings_section(
+		'atlas_content_modeler_general_section',
+		esc_html__( 'General', 'atlas-content-modeler' ),
+		null, // rendered by React.
+		'atlas_content_modeler_settings'
+	);
+
+	add_settings_field(
+		'atlas_content_modeler_usage_tracking',
+		esc_html__( 'Analytics', 'atlas-content-modeler' ),
+		null, // rendered by React.
+		'atlas_content_modeler_general_section'
+	);
+}
