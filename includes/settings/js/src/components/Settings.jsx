@@ -1,13 +1,19 @@
-import React from "react";
-import { sprintf, __ } from "@wordpress/i18n";
-const { wp } = window;
-const { apiFetch } = wp;
+/* global atlasContentModeler */
+import React, { useState } from "react";
+import { __ } from "@wordpress/i18n";
+const { dispatch } = window.wp.data;
 
 export default function Settings() {
-	function onChangeValue(event) {
-		if (event.target.checked) {
-			alert(event.target.value);
-		}
+	const [usageTracking, setUsageTracking] = useState(
+		atlasContentModeler.usageTrackingEnabled
+	);
+
+	function saveUsageTrackingSetting(event) {
+		// @todo catch save errors
+		dispatch("core").saveSite({
+			atlas_content_modeler_usage_tracking: event.target.value,
+		});
+		setUsageTracking(event.target.value);
 	}
 
 	return (
@@ -37,15 +43,19 @@ export default function Settings() {
 										<div className="col-xs-12">
 											<label
 												className="radio"
-												htmlFor="optin"
+												htmlFor="atlas-content-modeler-settings[usageTrackingDisabled]"
 											>
 												<input
 													type="radio"
-													id="optin"
-													name="optin"
-													value="false"
-													defaultChecked
-													onChange={onChangeValue}
+													id="atlas-content-modeler-settings[usageTrackingDisabled]"
+													name="atlas-content-modeler-settings[usageTracking]"
+													value="0"
+													checked={
+														usageTracking === "0"
+													}
+													onChange={
+														saveUsageTrackingSetting
+													}
 												></input>
 												{__(
 													"Disabled",
@@ -56,14 +66,17 @@ export default function Settings() {
 										<div className="col-xs-12">
 											<input
 												type="radio"
-												id="optin"
-												name="optin"
-												value="true"
-												onChange={onChangeValue}
+												id="atlas-content-modeler-settings[usageTrackingEnabled]"
+												name="atlas-content-modeler-settings[usageTracking]"
+												value="1"
+												checked={usageTracking === "1"}
+												onChange={
+													saveUsageTrackingSetting
+												}
 											></input>
 											<label
 												className="radio"
-												htmlFor="optin"
+												htmlFor="atlas-content-modeler-settings[usageTrackingEnabled]"
 											>
 												{__(
 													"Enabled",
