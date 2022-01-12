@@ -18,8 +18,8 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 	private $route     = '/atlas/content-models';
 	private $test_models;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 
 		$this->test_models = $this->get_models();
 
@@ -43,8 +43,8 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		wp_set_current_user( null );
 		global $wp_rest_server;
 		$wp_rest_server = null;
