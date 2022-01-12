@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 5.8.2
 Requires PHP: 7.2
-Stable tag: 0.12.0
+Stable tag: 0.12.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -52,6 +52,11 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 = Where can I submit bug reports and feature requests? =
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 == Changelog ==
+
+= 0.13.0 - 2022-01-12 =
+
+* **Fixed:** Prevent PHP fatal errors on sites running < PHP 7.4 under certain conditions when no models exist.
+* **Fixed:** Prevent model and taxonomy creation and updates if singular or plural labels conflict with existing WPGraphQL fields.
 
 = 0.12.0 - 2021-12-15 =
 

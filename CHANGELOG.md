@@ -1,5 +1,6 @@
 # Atlas Content Modeler Changelog
-## Unreleased
+
+## 0.12.1 - 2022-01-12
 ### Fixed
 - Prevent PHP fatal errors on sites running < PHP 7.4 under certain conditions when no models exist.
 - Prevent model and taxonomy creation and updates if singular or plural labels conflict with existing WPGraphQL fields.
