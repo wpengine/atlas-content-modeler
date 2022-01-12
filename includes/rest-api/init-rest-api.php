@@ -18,6 +18,7 @@ add_action( 'init', __NAMESPACE__ . '\atlas_content_modeler_rest_init' );
 function atlas_content_modeler_rest_init(): void {
 	$rest_files = array(
 		// Business logic to manipulate models, fields and taxonomies.
+		'graphql.php',
 		'models.php',
 		'fields.php',
 		'taxonomies.php',

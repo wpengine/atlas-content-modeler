@@ -59,4 +59,18 @@ class EditTaxonomyCest {
 		$i->see( 'Add New' );
 		$i->seeInField( '#singular', '' ); // Form is empty.
 	}
+
+	public function i_can_not_update_a_taxonomy_with_a_reserved_singular_name( AcceptanceTester $i ) {
+		$i->fillField( [ 'name' => 'singular' ], 'Post' ); // 'Post' is a reserved name.
+		$i->click( 'Update' );
+		$i->wait( 1 );
+		$i->see( 'singular name is in use' );
+	}
+
+	public function i_can_not_update_a_taxonomy_with_a_reserved_plural_name( AcceptanceTester $i ) {
+		$i->fillField( [ 'name' => 'plural' ], 'Posts' ); // 'Posts' is a reserved name.
+		$i->click( 'Update' );
+		$i->wait( 1 );
+		$i->see( 'plural name is in use' );
+	}
 }
