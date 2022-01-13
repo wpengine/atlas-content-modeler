@@ -17,7 +17,7 @@ export default function App({ model, mode }) {
 		const newPost = queryParams.get("acm-post-published");
 		if (newPost) {
 			sendEvent({
-				category: "test_api",
+				category: "post",
 				action: "publish_post",
 			});
 		}
