@@ -50,10 +50,12 @@ export default function CreateContentModel() {
 		})
 			.then((res) => {
 				if (res.success) {
-					sendEvent({
-						category: "Models",
-						action: `Created a Model`,
-					});
+					if (atlasContentModeler.usageTrackingEnabled) {
+						sendEvent({
+							category: "Models",
+							action: "model_created",
+						});
+					}
 
 					dispatch({ type: "addModel", data: res.model });
 					history.push(
