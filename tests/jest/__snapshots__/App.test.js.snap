@@ -11,7 +11,7 @@ exports[`App Renders a matching snapshot 1`] = `
     className="app-card"
   >
     <section
-      className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+      className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row css-1pjtado-Header"
     >
       <h2>
         Content Models

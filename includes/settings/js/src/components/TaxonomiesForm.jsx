@@ -146,6 +146,18 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 						message: err.message,
 					});
 				}
+				if (err.code === "acm_singular_label_exists") {
+					setError("singular", {
+						type: "exists",
+						message: err.message,
+					});
+				}
+				if (err.code === "acm_plural_label_exists") {
+					setError("plural", {
+						type: "exists",
+						message: err.message,
+					});
+				}
 			});
 	};
 
@@ -209,6 +221,12 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 							</span>
 						</span>
 					)}
+					{errors.singular && errors.singular.type === "exists" && (
+						<span className="error">
+							<Icon type="error" />
+							<span role="alert">{errors.singular.message}</span>
+						</span>
+					)}
 					<span>&nbsp;</span>
 					<span className="count">{singularCount}/50</span>
 				</p>
@@ -260,6 +278,12 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 									"atlas-content-modeler"
 								)}
 							</span>
+						</span>
+					)}
+					{errors.plural && errors.plural.type === "exists" && (
+						<span className="error">
+							<Icon type="error" />
+							<span role="alert">{errors.plural.message}</span>
 						</span>
 					)}
 					<span>&nbsp;</span>

@@ -1,15 +1,23 @@
-import React, { useContext, useEffect } from "react";
+/** @jsx jsx */
+import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { sanitizeFields } from "../queries";
 import { sendPageView } from "acm-analytics";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 import { sprintf, __ } from "@wordpress/i18n";
+import { jsx, css } from "@emotion/react";
 
 function Header({ showButtons = true }) {
 	let history = useHistory();
 	return (
-		<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
+		<section
+			css={css`
+				justify-content: space-between;
+				margin-bottom: 28px;
+			`}
+			className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+		>
 			<h2>Content Models</h2>
 			{showButtons && (
 				<button

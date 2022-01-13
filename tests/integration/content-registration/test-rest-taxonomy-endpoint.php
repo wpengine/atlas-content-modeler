@@ -29,32 +29,52 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 	 * @var array Taxonomies used in tests.
 	 */
 	protected $test_taxonomies = [
-		'category'        => [
+		'category'                   => [
 			'slug'     => 'category',
 			'singular' => 'Test Existing WP Core Taxonomy',
 			'plural'   => 'Test Existing WP Core Taxonomies',
 		],
-		'ingredient'      => [
+		'ingredient'                 => [
 			'slug'     => 'ingredient',
 			'singular' => 'Test Changing Singular Name',
 			'plural'   => 'Test Changing Plural Name',
 		],
-		'new'             => [
+		'ingredientReservedSingular' => [
+			'slug'     => 'ingredient',
+			'singular' => 'post', // 'post' is reserved.
+			'plural'   => 'tests',
+		],
+		'ingredientReservedPlural'   => [
+			'slug'     => 'ingredient',
+			'singular' => 'test',
+			'plural'   => 'posts', // 'posts' is reserved.
+		],
+		'new'                        => [
 			'slug'     => 'new',
 			'singular' => 'New',
 			'plural'   => 'News',
 		],
-		'missingSlug'     => [
+		'missingSlug'                => [
 			'singular' => 'Missing Slug',
 			'plural'   => 'Missing Slugs',
 		],
-		'missingSingular' => [
+		'missingSingular'            => [
 			'slug'   => 'missingSingular',
 			'plural' => 'Missing Singulars',
 		],
-		'missingPlural'   => [
+		'missingPlural'              => [
 			'slug'     => 'missingPlural',
 			'singular' => 'Missing Plural',
+		],
+		'reservedSingular'           => [
+			'slug'     => 'reservedSingular',
+			'singular' => 'post', // 'post' is reserved.
+			'plural'   => 'tests',
+		],
+		'reservedPlural'             => [
+			'slug'     => 'reservedPlural',
+			'singular' => 'test',
+			'plural'   => 'posts', // 'posts' is reserved.
 		],
 	];
 
@@ -183,6 +203,30 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		self::assertSame( 'acm_invalid_labels', $response->data['code'] );
 	}
 
+	public function test_cannot_create_taxonomy_with_reserved_singular_name(): void {
+		wp_set_current_user( 1 );
+
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $this->test_taxonomies['reservedSingular'] ) );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_singular_label_exists', $response->data['code'] );
+	}
+
+	public function test_cannot_create_taxonomy_with_reserved_plural_name(): void {
+		wp_set_current_user( 1 );
+
+		$request = new WP_REST_Request( 'POST', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $this->test_taxonomies['reservedPlural'] ) );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_plural_label_exists', $response->data['code'] );
+	}
+
 	public function test_can_update_taxonomy_with_put_request(): void {
 		wp_set_current_user( 1 );
 
@@ -195,6 +239,30 @@ class TestRestTaxonomyEndpoint extends WP_UnitTestCase {
 		self::assertSame( 200, $response->get_status() );
 		self::assertSame( 'Test Changing Singular Name', $taxonomies['ingredient']['singular'] );
 		self::assertSame( 'Test Changing Plural Name', $taxonomies['ingredient']['plural'] );
+	}
+
+	public function test_cannot_update_taxonomy_with_reserved_singular_label(): void {
+		wp_set_current_user( 1 );
+
+		$request = new WP_REST_Request( 'PUT', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $this->test_taxonomies['ingredientReservedSingular'] ) );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_singular_label_exists', $response->data['code'] );
+	}
+
+	public function test_cannot_update_taxonomy_with_reserved_plural_label(): void {
+		wp_set_current_user( 1 );
+
+		$request = new WP_REST_Request( 'PUT', "/{$this->namespace}/{$this->route}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $this->test_taxonomies['ingredientReservedPlural'] ) );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_plural_label_exists', $response->data['code'] );
 	}
 
 	public function tear_down() {
