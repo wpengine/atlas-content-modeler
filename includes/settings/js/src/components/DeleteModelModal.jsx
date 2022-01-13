@@ -1,3 +1,4 @@
+/* global atlasContentModeler */
 import React, { useEffect, useContext } from "react";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
@@ -119,11 +120,12 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 					await deleteModel(slug)
 						.then((res) => {
 							if (res.success) {
-								sendEvent({
-									category: "Models",
-									action: "Deleted a Model",
-								});
-
+								if (atlasContentModeler.usageTrackingEnabled) {
+									sendEvent({
+										category: "Models",
+										action: "model_deleted",
+									});
+								}
 								removeSidebarMenuItem(slug);
 								taxonomiesDispatch({
 									type: "removeModel",
