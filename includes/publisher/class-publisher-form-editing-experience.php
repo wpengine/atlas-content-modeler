@@ -225,11 +225,12 @@ final class FormEditingExperience {
 			'atlas-content-modeler-form-editing-experience',
 			'atlasContentModelerFormEditingExperience',
 			[
-				'models'            => $models,
-				'postType'          => $this->screen->post_type,
-				'allowedMimeTypes'  => get_allowed_mime_types(),
-				'adminUrl'          => admin_url(),
-				'postHasReferences' => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
+				'models'               => $models,
+				'postType'             => $this->screen->post_type,
+				'allowedMimeTypes'     => get_allowed_mime_types(),
+				'adminUrl'             => admin_url(),
+				'postHasReferences'    => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
+				'usageTrackingEnabled' => acm_usage_tracking_enabled(),
 			]
 		);
 
