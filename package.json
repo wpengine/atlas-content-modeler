@@ -88,6 +88,9 @@
     },
     "@wordpress/i18n": {
       "global": "wp.i18n"
+    },
+    "@wordpress/data": {
+      "global": "wp.data"
     }
   }
 }
