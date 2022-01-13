@@ -1,7 +1,8 @@
+/* global atlasContentModelerFormEditingExperience */
 import React, { useEffect, useState } from "react";
 import Fields from "./components/Fields";
 import { __ } from "@wordpress/i18n";
-import { sendPageView } from "acm-analytics";
+import { sendPageView, sendEvent } from "acm-analytics";
 import TrashPostModal from "./components/TrashPostModal";
 
 export default function App({ model, mode }) {
@@ -9,7 +10,17 @@ export default function App({ model, mode }) {
 	const [trashPostModalIsOpen, setTrashPostModalIsOpen] = useState(false);
 
 	useEffect(() => {
-		sendPageView("ACM Publisher Entry");
+		if (!atlasContentModelerFormEditingExperience.usageTrackingEnabled) {
+			return;
+		}
+		const queryParams = new URLSearchParams(window.location.search);
+		const newPost = queryParams.get("acm-post-published");
+		if (newPost) {
+			sendEvent({
+				category: "test_api",
+				action: "publish_post",
+			});
+		}
 	}, []);
 
 	return (
