@@ -49,6 +49,7 @@
 				<element value="atlas_content_modeler" />
 				<element value="ATLAS_CONTENT_MODELER" />
 				<element value="WPE\AtlasContentModeler" />
+				<element value="acm" />
 			</property>
 		</properties>
 	</rule>
