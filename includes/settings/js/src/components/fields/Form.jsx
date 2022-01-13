@@ -1,3 +1,4 @@
+/* global atlasContentModeler */
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
@@ -233,23 +234,18 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		})
 			.then((res) => {
 				if (res.success) {
-					if (editing) {
-						sendEvent({
-							category: "Fields",
-							action: `Edited a Field`,
-						});
-					} else {
-						sendEvent({
-							category: "Fields",
-							action: `Created a Field`,
-						});
-					}
-
 					dispatch({ type: "updateField", data, model });
 				} else {
 					// The user pressed “Update” but no data changed.
 					// Just close the field as if it was updated.
 					dispatch({ type: "closeField", id: data.id, model });
+				}
+				if (atlasContentModeler.usageTrackingEnabled) {
+					const action = editing ? "updated" : "created";
+					sendEvent({
+						category: "Fields",
+						action: `field_${action}`,
+					});
 				}
 				hasDirtyField.current = false;
 			})
