@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { sanitizeFields } from "../queries";
-import { sendPageView } from "acm-analytics";
+import { sendEvent } from "acm-analytics";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 import { __ } from "@wordpress/i18n";
 import { jsx, css } from "@emotion/react";
@@ -40,7 +40,12 @@ export default function ViewContentModelsList() {
 	const history = useHistory();
 
 	useEffect(() => {
-		sendPageView("ACM Models Home");
+		if (atlasContentModeler.usageTrackingEnabled) {
+			sendEvent({
+				category: "Models",
+				action: "view_models_list",
+			});
+		}
 	}, []);
 
 	return (

@@ -1,8 +1,6 @@
-/* global atlasContentModeler */
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
-import { sendEvent } from "acm-analytics";
 import "react-toastify/dist/ReactToastify.css";
 
 import CreateContentModel from "./components/CreateContentModel.jsx";
@@ -15,16 +13,6 @@ import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
 
 export default function App() {
-	useEffect(() => {
-		if (!atlasContentModeler.usageTrackingEnabled) {
-			return;
-		}
-		sendEvent({
-			category: "Models",
-			action: "view_models_list",
-		});
-	}, []);
-
 	return (
 		<div className="app atlas-content-modeler">
 			<ModelsContextProvider>
