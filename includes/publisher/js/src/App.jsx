@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Fields from "./components/Fields";
 import { __ } from "@wordpress/i18n";
-import { sendPageView, sendEvent } from "acm-analytics";
+import { sendEvent } from "acm-analytics";
 import TrashPostModal from "./components/TrashPostModal";
 
 export default function App({ model, mode }) {
