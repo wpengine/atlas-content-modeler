@@ -45,6 +45,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-beautiful-dnd": "^13.1.0",
+    "react-ga4": "^1.0.5",
     "react-hook-form": "^6.15.4",
     "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
@@ -69,7 +70,6 @@
     "parcel": "^2.0.1",
     "postcss": "^8.2.6",
     "prettier": "^2.2.1",
-    "react-ga4": "^1.0.5",
     "react-test-renderer": "^17.0.1",
     "sass": "^1.32.8"
   },
