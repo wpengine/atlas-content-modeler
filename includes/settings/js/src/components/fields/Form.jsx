@@ -14,7 +14,7 @@ import MultipleChoiceFields from "./MultipleChoiceFields";
 import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
 import { useInputGenerator, useReservedSlugs } from "../../hooks";
 import { toValidApiId, toGraphQLType } from "../../formats";
