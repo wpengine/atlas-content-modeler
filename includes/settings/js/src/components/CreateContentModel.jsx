@@ -1,6 +1,7 @@
-import React, { useEffect, useContext, useState } from "react";
+/* global atlasContentModeler */
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
 import { useInputGenerator } from "../hooks";
