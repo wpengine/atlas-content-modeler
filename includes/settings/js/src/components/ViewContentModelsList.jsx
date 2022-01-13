@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { sanitizeFields } from "../queries";
 import { sendPageView } from "acm-analytics";
 import { ContentModelDropdown } from "./ContentModelDropdown";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 import { jsx, css } from "@emotion/react";
 
 function Header({ showButtons = true }) {
