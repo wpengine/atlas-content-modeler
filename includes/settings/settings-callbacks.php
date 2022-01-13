@@ -149,7 +149,7 @@ function enqueue_settings_assets( $hook ) {
 			'graphQLUrl'           => function_exists( 'get_graphql_setting' )
 										? get_site_url() . '/' . get_graphql_setting( 'graphql_endpoint', 'graphql' )
 										: get_site_url() . '/graphql',
-			'usageTrackingEnabled' => get_option( 'atlas_content_modeler_usage_tracking', false ),
+			'usageTrackingEnabled' => acm_usage_tracking_enabled(),
 		)
 	);
 
