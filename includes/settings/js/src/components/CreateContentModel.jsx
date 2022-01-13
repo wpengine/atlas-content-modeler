@@ -31,7 +31,6 @@ export default function CreateContentModel() {
 	const history = useHistory();
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
-	const [icon, setIcon] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
 	const {
