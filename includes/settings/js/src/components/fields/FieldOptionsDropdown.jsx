@@ -1,3 +1,4 @@
+/* global atlasContentModeler */
 import React, {
 	useState,
 	useContext,
@@ -137,10 +138,12 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 							body: JSON.stringify({ model: model.slug }),
 							_wpnonce: wpApiSettings.nonce,
 						}).then(() => {
-							sendEvent({
-								category: "Fields",
-								action: `Deleted a Field`,
-							});
+							if (atlasContentModeler.usageTrackingEnabled) {
+								sendEvent({
+									category: "Fields",
+									action: "field_deleted",
+								});
+							}
 						});
 						setModalIsOpen(false);
 						dispatch({
