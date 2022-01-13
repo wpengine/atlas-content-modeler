@@ -1,7 +1,7 @@
 /* global atlasContentModeler */
 import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
-const { dispatch } = window.wp.data;
+import { dispatch } from "@wordpress/data";
 
 export default function Settings() {
 	const [usageTracking, setUsageTracking] = useState(
