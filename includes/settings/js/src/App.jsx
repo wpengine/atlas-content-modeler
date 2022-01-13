@@ -1,5 +1,5 @@
 /* global atlasContentModeler */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
 import { sendEvent } from "acm-analytics";
