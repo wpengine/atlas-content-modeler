@@ -8,7 +8,6 @@ import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
 import { updateSidebarMenuItem } from "../utils";
 
-const $ = window.jQuery;
 const { apiFetch } = wp;
 
 /**
