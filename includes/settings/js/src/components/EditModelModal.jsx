@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
 import { updateSidebarMenuItem } from "../utils";
 
