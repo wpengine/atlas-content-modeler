@@ -51,7 +51,8 @@ export default function Settings() {
 													name="atlas-content-modeler-settings[usageTracking]"
 													value="0"
 													checked={
-														usageTracking === "0"
+														usageTracking === "0" ||
+														!usageTracking
 													}
 													onChange={
 														saveUsageTrackingSetting
