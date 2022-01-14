@@ -240,13 +240,11 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					// Just close the field as if it was updated.
 					dispatch({ type: "closeField", id: data.id, model });
 				}
-				if (atlasContentModeler.usageTrackingEnabled) {
-					const action = editing ? "updated" : "created";
-					sendEvent({
-						category: "Fields",
-						action: `field_${action}`,
-					});
-				}
+				const action = editing ? "updated" : "created";
+				sendEvent({
+					category: "Fields",
+					action: `field_${action}`,
+				});
 				hasDirtyField.current = false;
 			})
 			.catch((err) => {

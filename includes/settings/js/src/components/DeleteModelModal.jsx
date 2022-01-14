@@ -120,12 +120,10 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 					await deleteModel(slug)
 						.then((res) => {
 							if (res.success) {
-								if (atlasContentModeler.usageTrackingEnabled) {
-									sendEvent({
-										category: "Models",
-										action: "model_deleted",
-									});
-								}
+								sendEvent({
+									category: "Models",
+									action: "model_deleted",
+								});
 								removeSidebarMenuItem(slug);
 								taxonomiesDispatch({
 									type: "removeModel",

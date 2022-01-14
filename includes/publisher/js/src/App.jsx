@@ -10,9 +10,6 @@ export default function App({ model, mode }) {
 	const [trashPostModalIsOpen, setTrashPostModalIsOpen] = useState(false);
 
 	useEffect(() => {
-		if (!atlasContentModelerFormEditingExperience.usageTrackingEnabled) {
-			return;
-		}
 		const queryParams = new URLSearchParams(window.location.search);
 		const newPost = queryParams.get("acm-post-published");
 		if (newPost) {

@@ -7,6 +7,12 @@ import ReactGA from "react-ga4";
 
 const ANALYTICS_ID = "G-S056CLLZ34";
 
+const telemetryEnabled =
+	(typeof atlasContentModelerFormEditingExperience !== "undefined" &&
+		atlasContentModelerFormEditingExperience?.usageTrackingEnabled) ||
+	(typeof atlasContentModeler !== "undefined" &&
+		atlasContentModeler?.usageTrackingEnabled);
+
 const maybeInitializeAnalytics = () => {
 	if (!ReactGA?.isInitialized) {
 		ReactGA.initialize(ANALYTICS_ID, {
@@ -17,13 +23,17 @@ const maybeInitializeAnalytics = () => {
 
 export const sendEvent = (data) => {
 	maybeInitializeAnalytics();
-	return ReactGA.event(data);
+	if (telemetryEnabled) {
+		return ReactGA.event(data);
+	}
 };
 
 export const sendPageView = (page = "") => {
 	maybeInitializeAnalytics();
-	return ReactGA.send({
-		hitType: "pageview",
-		page,
-	});
+	if (telemetryEnabled) {
+		return ReactGA.send({
+			hitType: "pageview",
+			page,
+		});
+	}
 };

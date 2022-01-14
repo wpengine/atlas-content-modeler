@@ -40,12 +40,10 @@ export default function ViewContentModelsList() {
 	const history = useHistory();
 
 	useEffect(() => {
-		if (atlasContentModeler.usageTrackingEnabled) {
-			sendEvent({
-				category: "Models",
-				action: "view_models_list",
-			});
-		}
+		sendEvent({
+			category: "Models",
+			action: "view_models_list",
+		});
 	}, []);
 
 	return (

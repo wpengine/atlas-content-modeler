@@ -72,12 +72,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			data,
 		})
 			.then((res) => {
-				if (atlasContentModeler.usageTrackingEnabled) {
-					sendEvent({
-						category: "Models",
-						action: "model_updated",
-					});
-				}
+				sendEvent({
+					category: "Models",
+					action: "model_updated",
+				});
 				return res;
 			})
 			.catch((err) => {
