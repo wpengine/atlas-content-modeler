@@ -9,16 +9,6 @@
  * Settings callbacks test cases.
  */
 class SettingsCallbacksTestCases extends WP_UnitTestCase {
-	public function set_up() {
-		parent::set_up();
-		wp_set_current_user( 1 );
-	}
-
-	public function tear_down() {
-		parent::tear_down();
-		wp_set_current_user( null );
-	}
-
 	/**
 	 * @covers ::\WPE\AtlasContentModeler\Settings\register_plugin_settings
 	 * @covers ::\WPE\AtlasContentModeler\Settings\register_settings_fields
