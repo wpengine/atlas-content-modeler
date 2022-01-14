@@ -32,4 +32,26 @@ class PublisherCallbacksTestCases extends WP_UnitTestCase {
 		self::assertSame( 10, has_action( 'do_meta_boxes', [ $this->class, 'remove_thumbnail_meta_box' ] ) );
 		self::assertSame( 10, has_action( 'transition_post_status', [ $this->class, 'maybe_add_location_callback' ] ) );
 	}
+
+	/**
+	 * @covers ::\WPE\AtlasContentModeler\FormEditingExperience\add_published_query_arg_to_location()
+	 */
+	public function test_add_published_query_arg_to_location_returns_adjusted_url_when_usage_tracking_enabled(): void {
+		update_option( 'atlas_content_modeler_usage_tracking', true );
+		self::assertSame(
+			'/?acm-post-published=true',
+			$this->class->add_published_query_arg_to_location( '/' )
+		);
+	}
+
+	/**
+	 * @covers ::\WPE\AtlasContentModeler\FormEditingExperience\add_published_query_arg_to_location()
+	 */
+	public function test_add_published_query_arg_to_location_returns_original_url_when_usage_tracking_disabled(): void {
+		delete_option( 'atlas_content_modeler_usage_tracking' );
+		self::assertSame(
+			'/',
+			$this->class->add_published_query_arg_to_location( '/' )
+		);
+	}
 }
