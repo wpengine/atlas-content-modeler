@@ -68,6 +68,13 @@ class AcceptanceTester extends \Codeception\Actor {
 	}
 
 	/**
+	 * Visit the Settings page.
+	 */
+	public function amOnPluginSettingsPage() {
+		$this->amOnWPEngineContentModelPage( '&view=settings' );
+	}
+
+	/**
 	 * Create a Content Model.
 	 *
 	 * @param string $singular    Singular content model name.
