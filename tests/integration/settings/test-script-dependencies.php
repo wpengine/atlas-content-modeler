@@ -26,7 +26,13 @@ class TestSettingsScriptDependencies extends WP_UnitTestCase {
 		wp_set_current_user( null );
 	}
 
-	public function test_wp_data_script_is_enqueued_on_the_settings_view(): void {
+	public function test_dependency_scripts_are_enqueued_on_the_settings_view(): void {
+		self::assertTrue( wp_script_is( 'wp-api', 'enqueued' ) );
+		self::assertTrue( wp_script_is( 'wp-api-fetch', 'enqueued' ) );
+		self::assertTrue( wp_script_is( 'react', 'enqueued' ) );
+		self::assertTrue( wp_script_is( 'react-dom', 'enqueued' ) );
+		self::assertTrue( wp_script_is( 'lodash', 'enqueued' ) );
+		self::assertTrue( wp_script_is( 'wp-i18n', 'enqueued' ) );
 		self::assertTrue( wp_script_is( 'wp-core-data', 'enqueued' ) );
 	}
 }
