@@ -1,25 +1,19 @@
 /* global atlasContentModelerFormEditingExperience */
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Icon from "../../../../components/icons";
 import { __ } from "@wordpress/i18n";
 const { wp } = window;
 
-export default function RichTextEditor({
-	field,
-	modelSlug,
-	errors,
-	validate,
-	defaultError,
-}) {
+export default function RichTextEditor({ field, modelSlug, defaultError }) {
 	const fieldId = `atlas-content-modeler-${modelSlug}-${field.slug}`;
-
-	useEffect(() => {
-		if (
-			atlasContentModelerFormEditingExperience?.models ||
-			atlasContentModelerFormEditingExperience?.models[
-				atlasContentModelerFormEditingExperience.postType
-			]
-		) {
+	const editorReadyTimer = useRef(null);
+	const editorReadyTime = 500;
+	const initializeEditorWhenReady = () => {
+		/**
+		 * WP defines getDefaultSettings() in an admin footer script tag after
+		 * admin scripts are enqueued, so we must wait for it to be available.
+		 */
+		if (typeof wp?.oldEditor?.getDefaultSettings === "function") {
 			wp.oldEditor.initialize(fieldId, {
 				...wp.oldEditor.getDefaultSettings(),
 				tinymce: {
@@ -30,8 +24,27 @@ export default function RichTextEditor({
 				mediaButtons: true,
 				quicktags: false,
 			});
+		} else {
+			editorReadyTimer.current = setTimeout(
+				initializeEditorWhenReady,
+				editorReadyTime
+			);
 		}
-	}, []);
+	};
+
+	useEffect(() => {
+		if (
+			atlasContentModelerFormEditingExperience?.models ||
+			atlasContentModelerFormEditingExperience?.models[
+				atlasContentModelerFormEditingExperience.postType
+			]
+		) {
+			initializeEditorWhenReady();
+			return () => {
+				clearTimeout(editorReadyTimer.current);
+			};
+		}
+	}, [editorReadyTimer, editorReadyTime, initializeEditorWhenReady]);
 
 	return (
 		<>
