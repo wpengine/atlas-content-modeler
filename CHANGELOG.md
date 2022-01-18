@@ -1,5 +1,9 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Added
+- Opt-in anonymous usage tracking to help us make Atlas Content Modeler better.
+
 ## 0.12.1 - 2022-01-12
 ### Fixed
 - Prevent PHP fatal errors on sites running < PHP 7.4 under certain conditions when no models exist.
