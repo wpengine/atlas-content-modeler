@@ -111,160 +111,147 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 									<ul>
 										{values.map((item, index) => {
 											return (
-												<div
+												<table
 													key={index}
-													className={`field multiple-option-container-single`}
+													className="table table-striped mt-2"
 												>
-													<label
-														htmlFor={
-															"multipleChoice" +
-															index
-														}
-													>
-														{__(
-															"Item ",
-															"atlas-content-modeler"
-														)}
-														{index + 1}
-													</label>
-													<br />
-													<p className="help">
-														{__(
-															"The display name of your item",
-															"atlas-content-modeler"
-														)}
-													</p>
-													<div
-														className={`${
-															errors[
-																"multipleChoice" +
-																	index
-															]
-																? "field has-error"
-																: "field"
-														} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
-													>
-														<div
-															className="me-sm-5"
-															name="multiples"
-														>
-															<input
-																name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-																placeholder={__(
-																	"Item Name",
+													<thead>
+														<tr>
+															<th>
+																{__(
+																	"Title",
 																	"atlas-content-modeler"
 																)}
-																type="text"
-																onKeyPress={(
-																	event
-																) => {
-																	if (
-																		event.key ===
-																		"Enter"
-																	) {
-																		event.preventDefault();
-																	}
-																}}
-																value={
-																	values[
-																		index
-																	]
-																}
-																onChange={(
-																	event
-																) => {
-																	// Update the value of the item.
-																	const newValue =
-																		event
-																			.currentTarget
-																			.value;
-																	setValues(
-																		(
-																			oldValues
-																		) => {
-																			let newValues = [
-																				...oldValues,
-																			];
-																			newValues[
-																				index
-																			] = newValue;
-																			return newValues;
-																		}
-																	);
-																}}
-															/>
-														</div>
+															</th>
+														</tr>
+													</thead>
+													<tbody>
 														<div
-															className={`value[${index}].remove-container`}
+															key={index}
+															className={`field multiple-option-container-single`}
 														>
-															{values.length >
-																1 && (
-																<button
-																	className="remove-item tertiary no-border"
-																	onClick={(
-																		event
-																	) => {
-																		event.preventDefault();
-																		// Removes the value at the given index.
-																		setValues(
-																			(
-																				currentValues
-																			) => {
-																				const newValues = [
-																					...currentValues,
-																				];
-																				newValues.splice(
-																					index,
-																					1
-																				);
-																				return newValues;
-																			}
-																		);
-																	}}
+															<label
+																htmlFor={
+																	"multipleChoice" +
+																	index
+																}
+															>
+																{__(
+																	"Item ",
+																	"atlas-content-modeler"
+																)}
+																{index + 1}
+															</label>
+															<br />
+															<p className="help">
+																{__(
+																	"The display name of your item",
+																	"atlas-content-modeler"
+																)}
+															</p>
+															<div
+																className={`${
+																	errors[
+																		"multipleChoice" +
+																			index
+																	]
+																		? "field has-error"
+																		: "field"
+																} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
+															>
+																<div
+																	className="me-sm-5"
+																	name="multiples"
 																>
-																	<a
-																		aria-label={__(
-																			"Remove item.",
+																	<input
+																		name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																		placeholder={__(
+																			"Item Name",
 																			"atlas-content-modeler"
 																		)}
-																	>
-																		<TrashIcon size="small" />{" "}
-																	</a>
-																</button>
-															)}
+																		type="text"
+																		onKeyPress={(
+																			event
+																		) => {
+																			if (
+																				event.key ===
+																				"Enter"
+																			) {
+																				event.preventDefault();
+																			}
+																		}}
+																		value={
+																			values[
+																				index
+																			]
+																		}
+																		onChange={(
+																			event
+																		) => {
+																			// Update the value of the item.
+																			const newValue =
+																				event
+																					.currentTarget
+																					.value;
+																			setValues(
+																				(
+																					oldValues
+																				) => {
+																					let newValues = [
+																						...oldValues,
+																					];
+																					newValues[
+																						index
+																					] = newValue;
+																					return newValues;
+																				}
+																			);
+																		}}
+																	/>
+																</div>
+																<div
+																	className={`value[${index}].remove-container`}
+																>
+																	{values.length >
+																		1 && (
+																		<button
+																			className="remove-item tertiary no-border"
+																			onClick={(
+																				event
+																			) => {
+																				event.preventDefault();
+																				// Removes the value at the given index.
+																				setValues(
+																					(
+																						currentValues
+																					) => {
+																						const newValues = [
+																							...currentValues,
+																						];
+																						newValues.splice(
+																							index,
+																							1
+																						);
+																						return newValues;
+																					}
+																				);
+																			}}
+																		>
+																			<a
+																				aria-label={__(
+																					"Remove item.",
+																					"atlas-content-modeler"
+																				)}
+																			>
+																				<TrashIcon size="small" />{" "}
+																			</a>
+																		</button>
+																	)}
+																</div>
+															</div>
 														</div>
-													</div>
-													{/* {errors["multipleChoice" + index] &&
-														errors["multipleChoice" + index]
-															.type ===
-															"multipleChoiceNameEmpty" +
-																index && (
-															<span className="error">
-																<Icon type="error" />
-																<span role="alert">
-																	{__(
-																		"Must set a name.",
-																		"atlas-content-modeler"
-																	)}
-																</span>
-															</span>
-														)} */}
-													{/* {errors["multipleChoiceName" + index] &&
-														errors["multipleChoiceName" + index]
-															.type ===
-															"multipleChoiceNameDuplicate" +
-																index && (
-															<span className="error">
-																<Icon type="error" />
-																<span role="alert">
-																	{__(
-																		"Cannot have duplicate choice names.",
-																		"atlas-content-modeler"
-																	)}
-																</span>
-															</span>
-														)} */}
-												</div>
+													</tbody>
+												</table>
 											);
 										})}
 										<div className="field">
@@ -294,19 +281,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 													</span>
 												</a>
 											</button>
-											{errors.multipleChoice &&
-												errors.multipleChoice.type ===
-													"multipleChoiceEmpty" && (
-													<span className="error">
-														<Icon type="error" />
-														<span role="alert">
-															{__(
-																"Must create a choice first.",
-																"atlas-content-modeler"
-															)}
-														</span>
-													</span>
-												)}
 										</div>
 									</ul>
 								</div>

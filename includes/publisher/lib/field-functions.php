@@ -107,7 +107,7 @@ function get_field_type_from_slug( string $slug, array $models, string $post_typ
 }
 
 /**
- * Gets the field settings from the field slug.
+ * Gets the field property of isRepeatable from the field slug.
  *
  * @param string $slug Field slug to look for the 'type' property.
  * @param array  $models Models with field properties to search for the `$slug`.
@@ -192,6 +192,7 @@ function append_reverse_relationship_fields( array $models, string $post_type ):
  *
  * @param string $type The type of field.
  * @param mixed  $value The unsanitized field value already processed by `wp_unslash()`.
+ * @param bool   $field_repeatable If the current field is repeatable.
  *
  * @return mixed The sanitized field value.
  */

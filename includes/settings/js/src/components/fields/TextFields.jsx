@@ -1,7 +1,7 @@
 /**
  * Additional form fields for the Text field type.
  */
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { getTitleFieldId } from "../../queries";
 import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
@@ -13,6 +13,9 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 	const currentModel = query.get("id");
 	const fields = models[currentModel]?.fields;
 	const originalTitleFieldId = useRef(getTitleFieldId(fields));
+	const [showRepeatable, setShowRepeatable] = useState(
+		data?.isRepeatable === true
+	);
 
 	return (
 		<>
@@ -24,7 +27,8 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						type="checkbox"
 						id={`is-repeatable-${fieldId}`}
 						ref={register}
-						defaultChecked={data?.isRepeatable === true}
+						defaultChecked={showRepeatable}
+						onChange={() => setShowRepeatable(!showRepeatable)}
 						disabled={editing}
 					/>
 					<label
@@ -133,13 +137,20 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 							</span>
 						</label>
 					</div>
-					<div className="radio-row">
+					<div
+						className={
+							!showRepeatable
+								? "d-flex flex-column d-sm-flex flex-sm-row"
+								: "d-none"
+						}
+					>
 						<input
 							type="radio"
 							id="multi"
 							name="inputType"
 							value="multi"
 							ref={register}
+							onChange={() => setShowRepeatable(false)}
 							defaultChecked={data?.inputType === "multi"}
 							disabled={editing}
 						/>
