@@ -7,7 +7,7 @@ import { removeSidebarMenuItem } from "../utils";
 import { getRelationships } from "../queries";
 import { showError } from "../toasts";
 import { useHistory } from "react-router-dom";
-import { sendEvent } from "../../../../shared-assets/js/analytics";
+import { sendEvent } from "acm-analytics";
 
 const { apiFetch } = wp;
 
