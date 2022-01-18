@@ -7,32 +7,33 @@ const { wp } = window;
 export default function RichTextEditor({ field, modelSlug, defaultError }) {
 	const fieldId = `atlas-content-modeler-${modelSlug}-${field.slug}`;
 	const editorReadyTimer = useRef(null);
-	const editorReadyTime = 500;
-	const initializeEditorWhenReady = () => {
-		/**
-		 * WP defines getDefaultSettings() in an admin footer script tag after
-		 * admin scripts are enqueued, so we must wait for it to be available.
-		 */
-		if (typeof wp?.oldEditor?.getDefaultSettings === "function") {
-			wp.oldEditor.initialize(fieldId, {
-				...wp.oldEditor.getDefaultSettings(),
-				tinymce: {
-					height: "300",
-					toolbar1:
-						"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_media",
-				},
-				mediaButtons: true,
-				quicktags: false,
-			});
-		} else {
-			editorReadyTimer.current = setTimeout(
-				initializeEditorWhenReady,
-				editorReadyTime
-			);
-		}
-	};
 
 	useEffect(() => {
+		const editorReadyTime = 500;
+		const initializeEditorWhenReady = () => {
+			/**
+			 * WP defines getDefaultSettings() in an admin footer script tag after
+			 * admin scripts are enqueued, so we must wait for it to be available.
+			 */
+			if (typeof wp?.oldEditor?.getDefaultSettings === "function") {
+				wp.oldEditor.initialize(fieldId, {
+					...wp.oldEditor.getDefaultSettings(),
+					tinymce: {
+						height: "300",
+						toolbar1:
+							"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_media",
+					},
+					mediaButtons: true,
+					quicktags: false,
+				});
+			} else {
+				editorReadyTimer.current = setTimeout(
+					initializeEditorWhenReady,
+					editorReadyTime
+				);
+			}
+		};
+
 		if (
 			atlasContentModelerFormEditingExperience?.models ||
 			atlasContentModelerFormEditingExperience?.models[
@@ -40,11 +41,11 @@ export default function RichTextEditor({ field, modelSlug, defaultError }) {
 			]
 		) {
 			initializeEditorWhenReady();
-			return () => {
-				clearTimeout(editorReadyTimer.current);
-			};
 		}
-	}, [editorReadyTimer, editorReadyTime, initializeEditorWhenReady]);
+		return () => {
+			clearTimeout(editorReadyTimer.current);
+		};
+	}, [fieldId, editorReadyTimer]);
 
 	return (
 		<>
