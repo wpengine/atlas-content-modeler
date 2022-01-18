@@ -2,7 +2,7 @@
 
 ## Unreleased
 ### Added
-- Opt-in anonymous usage tracking to help us make Atlas Content Modeler better.
+- Opt-in anonymous usage tracking to help us make Atlas Content Modeler better (disabled by default).
 
 ## 0.12.1 - 2022-01-12
 ### Fixed
