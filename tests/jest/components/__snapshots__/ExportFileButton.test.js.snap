@@ -1,10 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ExportFileButton tests Renders a matching snapshot 1`] = `
-<button
-  className="button dark-blue button-primary link-button"
+<DarkButton
   onClick={[Function]}
 >
   Export
-</button>
+</DarkButton>
 `;

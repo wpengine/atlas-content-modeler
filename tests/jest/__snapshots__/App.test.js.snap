@@ -27,6 +27,7 @@ exports[`App Renders a matching snapshot 1`] = `
           You currently have no Content Models.
         </p>
         <button
+          className="css-1cfhljd-Button"
           onClick={[Function]}
         >
           Get Started
