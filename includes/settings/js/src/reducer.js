@@ -77,7 +77,7 @@ export function reducer(state, action) {
 			Object.values(fields).forEach((field) => {
 				state[action.model]["fields"][field.id]["isFeatured"] = false;
 			});
-			state[action.model]["fields"][action.id][setType] = true;
+			state[action.model]["fields"][action.id]["isFeatured"] = true;
 			return { ...state };
 		case "setFieldProperties":
 			action.properties.forEach((property) => {
