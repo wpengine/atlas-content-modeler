@@ -3,38 +3,6 @@ li.open-field {
 	display: block;
 }
 
-.field-buttons {
-	display: flex;
-	padding: 16px 32px;
-}
-
-.field-buttons button {
-	align-items: center;
-	display: flex;
-	margin-right: 8px;
-	padding: 10px 16px;
-}
-
-.field-buttons button svg {
-	margin-right: 9px;
-}
-
-.field-buttons button.active svg path,
-.field-buttons button.active:focus svg path,
-.field-buttons button.active:hover svg path {
-	fill: $color-white;
-}
-
-.field-buttons button:focus svg path,
-.field-buttons button:hover svg path {
-	fill: $color-primary;
-}
-
-.field-buttons button.active {
-	color: $color-white;
-	background: $color-text;
-}
-
 .field-form {
 	box-shadow: inset 0 5px 5px -5px rgba(0, 0, 0, 0.15);
 	padding: 32px;
