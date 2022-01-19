@@ -4,8 +4,9 @@ import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { sanitizeFields } from "../queries";
 import { ContentModelDropdown } from "./ContentModelDropdown";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 import { jsx, css } from "@emotion/react";
+import { Button } from "../../../../shared-assets/js/components/Buttons";
 
 function Header({ showButtons = true }) {
 	let history = useHistory();
@@ -19,7 +20,7 @@ function Header({ showButtons = true }) {
 		>
 			<h2>Content Models</h2>
 			{showButtons && (
-				<button
+				<Button
 					onClick={() =>
 						history.push(
 							atlasContentModeler.appPath + "&view=create-model"
@@ -27,7 +28,7 @@ function Header({ showButtons = true }) {
 					}
 				>
 					{__("New Model", "atlas-content-modeler")}
-				</button>
+				</Button>
 			)}
 		</section>
 	);
@@ -54,7 +55,7 @@ export default function ViewContentModelsList() {
 								"atlas-content-modeler"
 							)}
 						</p>
-						<button
+						<Button
 							onClick={() =>
 								history.push(
 									atlasContentModeler.appPath +
@@ -63,7 +64,7 @@ export default function ViewContentModelsList() {
 							}
 						>
 							{__("Get Started", "atlas-content-modeler")}
-						</button>
+						</Button>
 					</div>
 				)}
 			</section>

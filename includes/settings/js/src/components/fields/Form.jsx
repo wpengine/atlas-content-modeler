@@ -18,6 +18,11 @@ import { useInputGenerator, useReservedSlugs } from "../../hooks";
 import { toValidApiId, toGraphQLType } from "../../formats";
 import { __ } from "@wordpress/i18n";
 import { getFeaturedFieldId } from "../../queries";
+import {
+	Button,
+	TertiaryButton,
+	LinkButton,
+} from "../../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 const { cloneDeep, isEqual } = lodash;
@@ -660,13 +665,12 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 			</div>
 
 			<div className="buttons d-flex flex-row">
-				<button type="submit" className="primary first mr-1 mr-sm-2">
+				<Button type="submit" className="first mr-1 mr-sm-2">
 					{editing
 						? __("Update", "atlas-content-modeler")
 						: __("Create", "atlas-content-modeler")}
-				</button>
-				<button
-					className="tertiary"
+				</Button>
+				<TertiaryButton
 					onClick={(event) => {
 						event.preventDefault();
 						hasDirtyField.current = false;
@@ -686,11 +690,11 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					}}
 				>
 					Cancel
-				</button>
+				</TertiaryButton>
 				{type in advancedSettings && (
 					<>
-						<button
-							className="settings d-flex flex-row"
+						<LinkButton
+							className="d-flex flex-row"
 							onClick={(event) => {
 								event.preventDefault();
 								setOptionsModalIsOpen(true);
@@ -698,7 +702,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						>
 							<Icon type="settings" />
 							{__("Advanced Settings", "atlas-content-modeler")}
-						</button>
+						</LinkButton>
 						<Modal
 							isOpen={optionsModalIsOpen}
 							contentLabel="Advanced Settings"
@@ -719,7 +723,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							/>
 
 							<div className="d-flex flex-row mt-5">
-								<button
+								<Button
 									onClick={async () => {
 										const fieldsAreValid = await trigger(
 											Object.keys(
@@ -732,11 +736,11 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 										}
 									}}
 									type="submit"
-									className="primary first mr-1 mr-sm-2"
+									className="first mr-1 mr-sm-2"
 								>
 									{__("Done", "atlas-content-modeler")}
-								</button>
-								<button
+								</Button>
+								<TertiaryButton
 									onClick={() => {
 										const resetValues = getValues();
 										Object.keys(
@@ -749,10 +753,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 										reset(resetValues);
 										setOptionsModalIsOpen(false);
 									}}
-									className="tertiary"
 								>
 									{__("Cancel", "atlas-content-modeler")}
-								</button>
+								</TertiaryButton>
 							</div>
 						</Modal>
 					</>

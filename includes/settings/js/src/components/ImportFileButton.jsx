@@ -1,6 +1,7 @@
 import React from "react";
 import { __ } from "@wordpress/i18n";
 import { showError } from "../toasts";
+import { DarkButton } from "../../../../shared-assets/js/components/Buttons";
 
 export default function ImportFileButton({
 	errorMessage,
@@ -91,15 +92,12 @@ export default function ImportFileButton({
 				onChange={onChangeHandler}
 			/>
 
-			<button
-				className={
-					buttonClasses ||
-					"button dark-blue button-primary link-button"
-				}
+			<DarkButton
+				className={buttonClasses}
 				onClick={(event) => importClickHandler(event)}
 			>
 				{buttonTitle || __("Select File", "atlas-content-modeler")}
-			</button>
+			</DarkButton>
 		</>
 	);
 }

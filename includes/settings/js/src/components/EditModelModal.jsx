@@ -6,6 +6,11 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { __ } from "@wordpress/i18n";
 import { updateSidebarMenuItem } from "../utils";
+import {
+	Button,
+	TertiaryButton,
+} from "../../../../shared-assets/js/components/Buttons";
+
 const { apiFetch } = wp;
 
 /**
@@ -398,16 +403,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					</p>
 				</div>
 
-				<button
-					type="submit"
-					disabled={isSubmitting}
-					className="primary first"
-				>
+				<Button type="submit" disabled={isSubmitting} className="first">
 					{__("Save", "atlas-content-modeler")}
-				</button>
-				<button
-					href="#"
-					className="tertiary"
+				</Button>
+				<TertiaryButton
 					disabled={isSubmitting}
 					onClick={(event) => {
 						event.preventDefault();
@@ -415,7 +414,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					}}
 				>
 					{__("Cancel", "atlas-content-modeler")}
-				</button>
+				</TertiaryButton>
 			</form>
 		</Modal>
 	);

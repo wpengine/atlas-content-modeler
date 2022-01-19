@@ -10,6 +10,10 @@ import Modal from "react-modal";
 import { ModelsContext } from "../../ModelsContext";
 import { maybeCloseDropdown } from "../../utils";
 import { sprintf, __ } from "@wordpress/i18n";
+import {
+	WarningButton,
+	TertiaryButton,
+} from "../../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 
@@ -125,10 +129,10 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 						model.plural
 					)}
 				</p>
-				<button
+				<WarningButton
 					type="submit"
 					form={field.id}
-					className="first warning"
+					className="first"
 					onClick={async () => {
 						apiFetch({
 							path: `/wpe/atlas/content-model-field/${field.id}`,
@@ -145,15 +149,14 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 					}}
 				>
 					{__("Delete", "atlas-content-modeler")}
-				</button>
-				<button
-					className="tertiary"
+				</WarningButton>
+				<TertiaryButton
 					onClick={() => {
 						setModalIsOpen(false);
 					}}
 				>
 					{__("Cancel", "atlas-content-modeler")}
-				</button>
+				</TertiaryButton>
 			</Modal>
 		</span>
 	);

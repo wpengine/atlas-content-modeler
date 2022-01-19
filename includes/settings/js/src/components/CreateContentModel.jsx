@@ -9,6 +9,10 @@ import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
+import {
+	Button,
+	TertiaryButton,
+} from "../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 
@@ -97,12 +101,12 @@ export default function CreateContentModel() {
 		<div className="app-card">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>New Content Model</h2>
-				<button
+				<Button
 					className="tertiary"
 					onClick={() => history.push(atlasContentModeler.appPath)}
 				>
 					{__("View All Models", "atlas-content-modeler")}
-				</button>
+				</Button>
 			</section>
 			<section className="card-content">
 				<form onSubmit={handleSubmit(apiCreateModel)}>
@@ -397,22 +401,21 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<button
+					<Button
 						type="submit"
 						disabled={isSubmitting}
-						className="primary first"
+						className="first"
 					>
 						Create
-					</button>
-					<button
-						className="tertiary"
+					</Button>
+					<TertiaryButton
 						disabled={isSubmitting}
 						onClick={() =>
 							history.push(atlasContentModeler.appPath)
 						}
 					>
 						Cancel
-					</button>
+					</TertiaryButton>
 				</form>
 			</section>
 		</div>
