@@ -74,7 +74,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			.then((res) => {
 				sendEvent({
 					category: "Models",
-					action: "model_updated",
+					action: "Model Updated",
 				});
 				return res;
 			})

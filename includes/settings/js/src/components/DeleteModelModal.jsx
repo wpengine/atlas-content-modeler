@@ -122,7 +122,7 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 							if (res.success) {
 								sendEvent({
 									category: "Models",
-									action: "model_deleted",
+									action: "Model Deleted",
 								});
 								removeSidebarMenuItem(slug);
 								taxonomiesDispatch({

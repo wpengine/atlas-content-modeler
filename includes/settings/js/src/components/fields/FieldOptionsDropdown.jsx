@@ -140,7 +140,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 						}).then(() => {
 							sendEvent({
 								category: "Fields",
-								action: "field_deleted",
+								action: "Field Deleted",
 							});
 						});
 						setModalIsOpen(false);

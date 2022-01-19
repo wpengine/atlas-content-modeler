@@ -52,7 +52,7 @@ export default function CreateContentModel() {
 				if (res.success) {
 					sendEvent({
 						category: "Models",
-						action: "model_created",
+						action: "Model Created",
 					});
 
 					dispatch({ type: "addModel", data: res.model });

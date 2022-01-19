@@ -15,7 +15,7 @@ export default function App({ model, mode }) {
 		if (newPost) {
 			sendEvent({
 				category: "post",
-				action: "publish_post",
+				action: "Post Published",
 			});
 		}
 	}, []);

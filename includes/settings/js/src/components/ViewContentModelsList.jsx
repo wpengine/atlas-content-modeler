@@ -42,7 +42,7 @@ export default function ViewContentModelsList() {
 	useEffect(() => {
 		sendEvent({
 			category: "Models",
-			action: "view_models_list",
+			action: "View Models List",
 		});
 	}, []);
 
