@@ -1,7 +1,7 @@
 /**
  * Additional form fields for the Text field type.
  */
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import { getTitleFieldId } from "../../queries";
 import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
@@ -12,14 +12,12 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 	const query = useLocationSearch();
 	const currentModel = query.get("id");
 	const fields = models[currentModel]?.fields;
-	const originalTitleFieldId = useRef(getTitleFieldId(fields));
-	const shouldShowTitleField =
-		!originalTitleFieldId.current ||
-		originalTitleFieldId.current === fieldId;
+	const titleFieldId = getTitleFieldId(fields);
+	const showTitleField = !titleFieldId || titleFieldId === fieldId;
 
 	return (
 		<>
-			{shouldShowTitleField && (
+			{showTitleField && (
 				<div className="field">
 					<legend>Title Field</legend>
 					<input
@@ -28,7 +26,7 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						id={`is-title-${fieldId}`}
 						ref={register}
 						defaultChecked={data?.isTitle === true}
-						disabled={!!originalTitleFieldId.current}
+						disabled={!!titleFieldId}
 					/>
 					<label
 						htmlFor={`is-title-${fieldId}`}
