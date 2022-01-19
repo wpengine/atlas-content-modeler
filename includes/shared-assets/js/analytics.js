@@ -14,7 +14,7 @@ const telemetryEnabled =
 		atlasContentModeler?.usageTrackingEnabled);
 
 const maybeInitializeAnalytics = () => {
-	if (!ReactGA?.isInitialized) {
+	if (telemetryEnabled && !ReactGA?.isInitialized) {
 		ReactGA.initialize(ANALYTICS_ID, {
 			gtagOptions: { anonymize_ip: true },
 		});
@@ -22,15 +22,15 @@ const maybeInitializeAnalytics = () => {
 };
 
 export const sendEvent = (data) => {
-	maybeInitializeAnalytics();
 	if (telemetryEnabled) {
+		maybeInitializeAnalytics();
 		return ReactGA.event(data);
 	}
 };
 
 export const sendPageView = (page = "") => {
-	maybeInitializeAnalytics();
 	if (telemetryEnabled) {
+		maybeInitializeAnalytics();
 		return ReactGA.send({
 			hitType: "pageview",
 			page,
