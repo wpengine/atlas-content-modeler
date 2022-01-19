@@ -3,6 +3,8 @@
 ## Unreleased
 ### Added
 - Opt-in anonymous usage tracking to help us make Atlas Content Modeler better (disabled by default).
+### Fixed
+- Ensure Rich Text fields load for publishers even if WordPress Core editor scripts are slow to execute.
 
 ## 0.12.1 - 2022-01-12
 ### Fixed
