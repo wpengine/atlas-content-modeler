@@ -6,6 +6,7 @@ class TestRelationshipsDB extends WP_UnitTestCase {
 		global $wpdb;
 		parent::tear_down();
 		$table = $wpdb->prefix . 'acm_post_to_post';
+		$wpdb->query( "LOCK TABLES $table WRITE" );
 		$wpdb->query( "DROP TABLE IF EXISTS $table" );
 	}
 
