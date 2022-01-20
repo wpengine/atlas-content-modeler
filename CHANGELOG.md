@@ -4,6 +4,9 @@
 ### Fixed
 - Ensure Rich Text fields load for publishers even if WordPress Core editor scripts are slow to execute.
 
+### Changed
+- The title field of a model can no longer be changed once set, unless you delete the original title field. This prepares upcoming work to save title field data to WordPress post titles, allowing title field content to be searchable.
+
 ## 0.12.1 - 2022-01-12
 ### Fixed
 - Prevent PHP fatal errors on sites running < PHP 7.4 under certain conditions when no models exist.
