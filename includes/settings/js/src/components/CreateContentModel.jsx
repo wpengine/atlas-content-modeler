@@ -1,6 +1,7 @@
-import React, { useEffect, useContext, useState } from "react";
+/* global atlasContentModeler */
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
 import { useInputGenerator } from "../hooks";
@@ -9,6 +10,7 @@ import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
+import { sendEvent } from "acm-analytics";
 
 const { apiFetch } = wp;
 
@@ -29,7 +31,6 @@ export default function CreateContentModel() {
 	const history = useHistory();
 	const [singularCount, setSingularCount] = useState(0);
 	const [pluralCount, setPluralCount] = useState(0);
-	const [icon, setIcon] = useState(0);
 	const [descriptionCount, setDescriptionCount] = useState(0);
 	const { dispatch } = useContext(ModelsContext);
 	const {
@@ -49,6 +50,11 @@ export default function CreateContentModel() {
 		})
 			.then((res) => {
 				if (res.success) {
+					sendEvent({
+						category: "Models",
+						action: "Model Created",
+					});
+
 					dispatch({ type: "addModel", data: res.model });
 					history.push(
 						atlasContentModeler.appPath +

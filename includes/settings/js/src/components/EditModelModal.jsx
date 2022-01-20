@@ -5,7 +5,9 @@ import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { __ } from "@wordpress/i18n";
+import { sendEvent } from "acm-analytics";
 import { updateSidebarMenuItem } from "../utils";
+
 const { apiFetch } = wp;
 
 /**
@@ -70,6 +72,10 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 			data,
 		})
 			.then((res) => {
+				sendEvent({
+					category: "Models",
+					action: "Model Updated",
+				});
 				return res;
 			})
 			.catch((err) => {

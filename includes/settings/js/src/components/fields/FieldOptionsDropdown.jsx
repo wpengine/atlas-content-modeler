@@ -1,3 +1,4 @@
+/* global atlasContentModeler */
 import React, {
 	useState,
 	useContext,
@@ -10,6 +11,7 @@ import Modal from "react-modal";
 import { ModelsContext } from "../../ModelsContext";
 import { maybeCloseDropdown } from "../../utils";
 import { sprintf, __ } from "@wordpress/i18n";
+import { sendEvent } from "acm-analytics";
 
 const { apiFetch } = wp;
 
@@ -135,6 +137,11 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 							method: "DELETE",
 							body: JSON.stringify({ model: model.slug }),
 							_wpnonce: wpApiSettings.nonce,
+						}).then(() => {
+							sendEvent({
+								category: "Fields",
+								action: "Field Deleted",
+							});
 						});
 						setModalIsOpen(false);
 						dispatch({

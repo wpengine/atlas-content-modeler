@@ -81,6 +81,7 @@ final class FormEditingExperience {
 		add_action( 'load-post-new.php', [ $this, 'feedback_notice_handler' ] );
 		add_action( 'do_meta_boxes', [ $this, 'move_meta_boxes' ] );
 		add_action( 'do_meta_boxes', [ $this, 'remove_thumbnail_meta_box' ] );
+		add_action( 'transition_post_status', [ $this, 'maybe_add_location_callback' ], 10, 3 );
 	}
 
 	/**
@@ -224,11 +225,12 @@ final class FormEditingExperience {
 			'atlas-content-modeler-form-editing-experience',
 			'atlasContentModelerFormEditingExperience',
 			[
-				'models'            => $models,
-				'postType'          => $this->screen->post_type,
-				'allowedMimeTypes'  => get_allowed_mime_types(),
-				'adminUrl'          => admin_url(),
-				'postHasReferences' => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
+				'models'               => $models,
+				'postType'             => $this->screen->post_type,
+				'allowedMimeTypes'     => get_allowed_mime_types(),
+				'adminUrl'             => admin_url(),
+				'postHasReferences'    => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
+				'usageTrackingEnabled' => acm_usage_tracking_enabled(),
 			]
 		);
 
@@ -686,5 +688,49 @@ final class FormEditingExperience {
 			'default',
 			array( '__back_compat_meta_box' => true )
 		);
+	}
+
+	/**
+	 * Adds a callback to the `redirect_post_location` filter
+	 * when a post transitions to the 'publish' status.
+	 *
+	 * @param string   $new_status New post status.
+	 * @param string   $old_status Old post status.
+	 * @param \WP_Post $post       Post object.
+	 * @return void
+	 */
+	public function maybe_add_location_callback( string $new_status, string $old_status, \WP_Post $post ): void {
+		if ( ! acm_usage_tracking_enabled() ) {
+			return;
+		}
+
+		if ( ! array_key_exists( $post->post_type, get_registered_content_types() ) ) {
+			return;
+		}
+
+		if ( $old_status !== 'publish' && $new_status === 'publish' ) {
+			add_filter( 'redirect_post_location', [ $this, 'add_published_query_arg_to_location' ] );
+		}
+	}
+
+	/**
+	 * Adds a query arg to the post edit URL when a
+	 * post is saved, which is used to send usage
+	 * tracking events when enabled.
+	 *
+	 * Runs on the `redirect_post_location` hook.
+	 *
+	 * @param string $location The destination URL.
+	 *
+	 * @return string
+	 */
+	public function add_published_query_arg_to_location( string $location ): string {
+		remove_filter( 'redirect_post_location', __NAMESPACE__ . '\add_published_query_arg_to_location' );
+		if ( ! acm_usage_tracking_enabled() ) {
+			return $location;
+		}
+		$location = remove_query_arg( 'acm-post-published', $location );
+		$location = add_query_arg( 'acm-post-published', 'true', $location );
+		return $location;
 	}
 }

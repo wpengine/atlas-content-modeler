@@ -1,3 +1,4 @@
+/* global atlasContentModeler */
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
@@ -14,9 +15,10 @@ import MultipleChoiceFields from "./MultipleChoiceFields";
 import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
+import { __ } from "@wordpress/i18n";
+import { sendEvent } from "acm-analytics";
 import { useInputGenerator, useReservedSlugs } from "../../hooks";
 import { toValidApiId, toGraphQLType } from "../../formats";
-import { __ } from "@wordpress/i18n";
 import { getFeaturedFieldId } from "../../queries";
 
 const { apiFetch } = wp;
@@ -238,6 +240,11 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					// Just close the field as if it was updated.
 					dispatch({ type: "closeField", id: data.id, model });
 				}
+				const action = editing ? "Updated" : "Created";
+				sendEvent({
+					category: "Fields",
+					action: ` Field ${action}`,
+				});
 				hasDirtyField.current = false;
 			})
 			.catch((err) => {
