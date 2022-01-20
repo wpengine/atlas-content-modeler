@@ -107,21 +107,6 @@ function get_field_type_from_slug( string $slug, array $models, string $post_typ
 }
 
 /**
- * Gets the field property of isRepeatable from the field slug.
- *
- * @param string $slug Field slug to look for the 'type' property.
- * @param array  $models Models with field properties to search for the `$slug`.
- * @param string $post_type Current post type on the publisher screen.
- *
- * @return string Field type if found, or 'unknown'.
- */
-function get_field_repeatable_from_slug( string $slug, array $models, string $post_type ): bool {
-	$field = get_field_from_slug( $slug, $models, $post_type );
-
-	return $field['isRepeatable'];
-}
-
-/**
  * Appends relationship fields from other models to a model's field list for all
  * relationship fields with a back reference to the $post_type.
  *
@@ -192,14 +177,13 @@ function append_reverse_relationship_fields( array $models, string $post_type ):
  *
  * @param string $type The type of field.
  * @param mixed  $value The unsanitized field value already processed by `wp_unslash()`.
- * @param bool   $field_repeatable If the current field is repeatable.
  *
  * @return mixed The sanitized field value.
  */
-function sanitize_field( string $type, $value, $field_repeatable ) {
+function sanitize_field( string $type, $value ) {
 	switch ( $type ) {
 		case 'text':
-			if ( $field_repeatable ) {
+			if ( is_array( $value ) ) {
 				return $value;
 			}
 			return wp_strip_all_tags( $value );
