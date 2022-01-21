@@ -1,6 +1,5 @@
 /** @jsx jsx */
-import React, { useState } from "react";
-import { styled, jsx, css } from "@emotion/react";
+import { styled, jsx } from "@emotion/react";
 import Modal from "react-modal";
 
 export const ModalDecorator = ({ className, ...props }) => {
@@ -42,7 +41,7 @@ export const StyledDeleteModal = styled(ModelDecorator)`
 		padding-left: 2rem;
 
 		li.warning {
-			color: $color-warning;
+			color: #d21b46;
 			font-weight: 700;
 		}
 	}
@@ -91,32 +90,3 @@ export const StyledEditModal = styled(ModalDecorator)`
 		margin: 0;
 	}
 `;
-
-export const MyComponent = () => {
-	const [showModal, setShowModal] = useState(false);
-
-	const openModal = (e) => {
-		e.stopPropagation();
-		setShowModal(true);
-	};
-
-	const closeModal = (e) => {
-		e.stopPropagation();
-		setShowModal(false);
-	};
-
-	return (
-		<>
-			<div>hello</div>
-
-			<StyledModal
-				isOpen={showModal}
-				contentLabel="Message"
-				onRequestClose={closeModal}
-			>
-				<div>Welcome</div>
-				<button onClick={closeModal}>Close</button>
-			</StyledModal>
-		</>
-	);
-};
