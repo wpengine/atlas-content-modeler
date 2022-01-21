@@ -1,12 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
 import { updateSidebarMenuItem } from "../utils";
+import { StyledModal } from "../../../../shared-assets/js/components/Modal";
 
 const { apiFetch } = wp;
 
@@ -99,7 +99,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 	}, []);
 
 	return (
-		<Modal
+		<StyledModal
 			isOpen={isOpen}
 			contentLabel={`Editing the ${model.plural} content model`}
 			parentSelector={() => {
@@ -423,6 +423,6 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					{__("Cancel", "atlas-content-modeler")}
 				</button>
 			</form>
-		</Modal>
+		</StyledModal>
 	);
 }
