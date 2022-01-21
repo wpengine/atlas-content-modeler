@@ -43,7 +43,11 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 				</div>
 			)}
 			{!data?.parent && (
-				<div className={showRepeatable ? "field  read-only editing" : "field"}>
+				<div
+					className={
+						showRepeatable ? "field  read-only editing" : "field"
+					}
+				>
 					<legend>Title Field</legend>
 					<input
 						name="isTitle"
@@ -139,7 +143,9 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						</label>
 					</div>
 					<div
-						className={"radio-row d-flex flex-column d-sm-flex flex-sm-row"}
+						className={
+							"radio-row d-flex flex-column d-sm-flex flex-sm-row"
+						}
 					>
 						<input
 							type="radio"
