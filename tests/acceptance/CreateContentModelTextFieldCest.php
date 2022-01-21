@@ -23,6 +23,37 @@ class CreateContentModelTextFieldCest {
 		$i->see( 'Color', '.field-list div.widest' );
 	}
 
+	/**
+	 * Ensure a user can add a text field to the model with a repeatable property.
+	 */
+	public function i_can_create_a_content_model_text_repeatable_field( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+
+		$i->click( 'Text', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'Color' );
+
+		// Set the Input Type to “multiple lines” instead of “Single line”.
+		$i->click( '.is-repeatable' );
+
+		// Save the field.
+		$i->click( '.open-field button.primary' );
+		$i->wait( 1 );
+
+		// Create a new Candies entry.
+		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
+		$i->click( 'Add New', '.wrap' );
+		$i->wait( 1 );
+
+		// Check that the “Color” field uses a textarea instead of an input field.
+		$i->seeElement(
+			'input',
+			[ 'name' => 'atlas-content-modeler[candy][color][0]' ]
+		);
+	}
+
 	public function i_can_create_a_content_model_text_field_as_a_textarea( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
 		$content_model = $i->haveContentModel( 'Candy', 'Candies' );

@@ -104,10 +104,10 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 						<label>{field.name}</label>
 						<fieldset>
 							<div
-								id="multipleChoices"
+								id="repeaterText"
 								className="d-flex flex-column d-sm-flex flex-sm-row"
 							>
-								<div className="multiple-option-container">
+								<div className="repeater-text-field">
 									<ul>
 										{values.map((item, index) => {
 											return (
@@ -128,11 +128,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 													<tbody>
 														<div
 															key={index}
-															className={`field multiple-option-container-single`}
+															className={`field text-repeater-container-single`}
 														>
 															<label
 																htmlFor={
-																	"multipleChoice" +
+																	"repeaterText" +
 																	index
 																}
 															>
@@ -152,7 +152,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 															<div
 																className={`${
 																	errors[
-																		"multipleChoice" +
+																		"repeaterText" +
 																			index
 																	]
 																		? "field has-error"
@@ -161,7 +161,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 															>
 																<div
 																	className="me-sm-5"
-																	name="multiples"
+																	name="repeaters"
 																>
 																	<input
 																		name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
