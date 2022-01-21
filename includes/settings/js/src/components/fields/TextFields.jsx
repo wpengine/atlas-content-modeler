@@ -12,9 +12,9 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 	const query = useLocationSearch();
 	const currentModel = query.get("id");
 	const fields = models[currentModel]?.fields;
-const titleFieldId = getTitleFieldId(fields);
-const showTitleField = !titleFieldId || titleFieldId === fieldId;
-const [showRepeatable, setShowRepeatable] = useState(
+	const titleFieldId = getTitleFieldId(fields);
+	const showTitleField = !titleFieldId || titleFieldId === fieldId;
+	const [showRepeatable, setShowRepeatable] = useState(
 		data?.isRepeatable === true
 	);
 	return (
@@ -52,11 +52,10 @@ const [showRepeatable, setShowRepeatable] = useState(
 					<input
 						name="isTitle"
 						type="checkbox"
-						disabled={showRepeatable}
 						id={`is-title-${fieldId}`}
 						ref={register}
 						defaultChecked={data?.isTitle === true}
-						disabled={!!titleFieldId}
+						disabled={!!titleFieldId || showRepeatable}
 					/>
 					<label
 						htmlFor={`is-title-${fieldId}`}
