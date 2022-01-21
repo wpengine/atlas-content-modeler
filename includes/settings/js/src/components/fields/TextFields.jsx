@@ -43,11 +43,12 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 				</div>
 			)}
 			{!data?.parent && (
-				<div className="field">
+				<div className={showRepeatable ? "field  read-only editing" : "field"}>
 					<legend>Title Field</legend>
 					<input
 						name="isTitle"
 						type="checkbox"
+						disabled={showRepeatable}
 						id={`is-title-${fieldId}`}
 						ref={register}
 						checked={data?.isTitle === true}
@@ -138,11 +139,7 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						</label>
 					</div>
 					<div
-						className={
-							!showRepeatable
-								? "d-flex flex-column d-sm-flex flex-sm-row"
-								: "d-none"
-						}
+						className={"radio-row d-flex flex-column d-sm-flex flex-sm-row"}
 					>
 						<input
 							type="radio"
@@ -150,7 +147,6 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 							name="inputType"
 							value="multi"
 							ref={register}
-							onChange={() => setShowRepeatable(false)}
 							defaultChecked={data?.inputType === "multi"}
 							disabled={editing}
 						/>
