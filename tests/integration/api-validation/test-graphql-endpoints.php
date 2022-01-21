@@ -50,6 +50,9 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 	 * Ensure a private model's data is not publicly queryable in GraphQL
 	 */
 	public function test_post_type_with_private_api_visibility_cannot_be_read_via_graphql_when_not_authenticated(): void {
+		$graphql_settings                       = get_option( 'graphql_general_settings', [] );
+		$graphql_settings['debug_mode_enabled'] = 'on';
+		update_option( 'graphql_general_settings', $graphql_settings );
 		try {
 			$results = graphql(
 				[
@@ -66,6 +69,7 @@ class GraphQLEndpointTests extends WP_UnitTestCase {
 			);
 
 			self::assertEmpty( $results['data']['privatesFields']['nodes'] );
+			self::assertContains( 'ACM_UNAUTHORIZED_REQUEST', array_column( $results['extensions']['debug'], 'type' ) );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}

@@ -1,4 +1,5 @@
 <?php
+
 use Codeception\Util\Locator;
 
 class CreateRelationshipFieldEntryCest {
@@ -183,7 +184,8 @@ class CreateRelationshipFieldEntryCest {
 		$i->haveContentModel( 'Right', 'Rights' );
 
 		// Create a model to set up relationship fields linking Left to Right.
-		$i->haveContentModel( 'Left', 'Lefts' );
+		$content_model = $i->haveContentModel( 'Left', 'Lefts' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		// Add a one-to-one relationship field to the Left model that references Right, including a reverse reference.
 		$i->waitForElement( '.field-buttons' );
@@ -281,10 +283,10 @@ class CreateRelationshipFieldEntryCest {
 		$i->haveContentModel( 'Right', 'Rights' );
 
 		// Create a model to check the “from”/“A” side of the relationship.
-		$i->haveContentModel( 'Left', 'Lefts' );
+		$content_model = $i->haveContentModel( 'Left', 'Lefts' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		// Add a relationship field to the Left model that references Right.
-		$i->wait( 1 );
 		$i->click( 'Relationship', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Rights' );
@@ -363,14 +365,16 @@ class CreateRelationshipFieldEntryCest {
 	 * @return void
 	 */
 	protected function create_company_employee_models( \AcceptanceTester $i ) {
-		$i->haveContentModel( 'Company', 'Companies' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Company', 'Companies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+		$i->wait( 2 );
 		$i->click( 'Text', '.field-buttons' );
 		$i->checkOption( 'input[name="isTitle"]' );
 		$i->fillField( [ 'name' => 'name' ], 'Company' );
 		$i->click( '.open-field button.primary' );
-
-		$i->haveContentModel( 'Employee', 'Employees' );
+		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Employee', 'Employees' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 		$i->wait( 1 );
 		$i->click( 'Relationship', '.field-buttons' );
 		$i->wait( 1 );
@@ -386,7 +390,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->selectOption( '#reference', 'Companies' );
 		$i->click( 'input#many-to-many' );
 		$i->click( '.open-field button.primary' );
-		$i->wait( 1 );
+		$i->wait( 2 );
 	}
 
 	/**

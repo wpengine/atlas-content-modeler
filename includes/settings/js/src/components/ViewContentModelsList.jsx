@@ -1,14 +1,23 @@
-import React, { useContext, useState } from "react";
+/** @jsx jsx */
+import React, { useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { sanitizeFields } from "../queries";
+import { sendEvent } from "acm-analytics";
 import { ContentModelDropdown } from "./ContentModelDropdown";
-import { sprintf, __ } from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
+import { jsx, css } from "@emotion/react";
 
 function Header({ showButtons = true }) {
 	let history = useHistory();
 	return (
-		<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
+		<section
+			css={css`
+				justify-content: space-between;
+				margin-bottom: 28px;
+			`}
+			className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+		>
 			<h2>Content Models</h2>
 			{showButtons && (
 				<button
@@ -29,6 +38,13 @@ export default function ViewContentModelsList() {
 	const { models } = useContext(ModelsContext);
 	const hasModels = Object.keys(models || {}).length > 0;
 	const history = useHistory();
+
+	useEffect(() => {
+		sendEvent({
+			category: "Models",
+			action: "View Models List",
+		});
+	}, []);
 
 	return (
 		<div className="app-card">

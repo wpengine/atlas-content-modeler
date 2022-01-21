@@ -2,14 +2,16 @@
 
 class CreateContentModelNumberFieldCest {
 
+	public function _before( \AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'Employee', 'Employees' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+	}
+
 	/**
 	 * Ensure a user can add a number field to the model and see it within the list.
 	 */
 	public function i_can_add_a_number_field_to_a_content_model( AcceptanceTester $i ) {
-		$i->loginAsAdmin();
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
-
 		$i->click( 'Number', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Count' );
@@ -23,10 +25,6 @@ class CreateContentModelNumberFieldCest {
 	}
 
 	public function i_can_add_a_step_setting_without_a_max_setting( AcceptanceTester $i ) {
-		$i->loginAsAdmin();
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
-
 		$i->click( 'Number', '.field-buttons' );
 		$i->wait( 1 );
 
@@ -37,10 +35,6 @@ class CreateContentModelNumberFieldCest {
 	}
 
 	public function i_must_use_intergers_for_advanced_interger_field_settings( AcceptanceTester $i ) {
-		$i->loginAsAdmin();
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
-
 		$i->click( 'Number', '.field-buttons' );
 		$i->wait( 1 );
 

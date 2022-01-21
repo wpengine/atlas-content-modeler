@@ -1,3 +1,4 @@
+/* global atlasContentModeler */
 import React, { useEffect, useContext } from "react";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
@@ -6,6 +7,7 @@ import { removeSidebarMenuItem } from "../utils";
 import { getRelationships } from "../queries";
 import { showError } from "../toasts";
 import { useHistory } from "react-router-dom";
+import { sendEvent } from "acm-analytics";
 
 const { apiFetch } = wp;
 
@@ -118,6 +120,10 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 					await deleteModel(slug)
 						.then((res) => {
 							if (res.success) {
+								sendEvent({
+									category: "Models",
+									action: "Model Deleted",
+								});
 								removeSidebarMenuItem(slug);
 								taxonomiesDispatch({
 									type: "removeModel",

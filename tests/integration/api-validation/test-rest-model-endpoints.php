@@ -91,6 +91,44 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		self::assertSame( 'acm_model_exists', $response->data['code'] );
 	}
 
+	public function test_cannot_create_model_if_singular_name_is_reserved(): void {
+		wp_set_current_user( 1 );
+		$model_with_reserved_singular_label = array(
+			'slug'     => 'new',
+			'singular' => 'post', // 'post' is reserved.
+			'plural'   => 'cats',
+		);
+
+		// Attempt to create the model.
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $model_with_reserved_singular_label ) );
+		$this->server->dispatch( $request );
+
+		$response = $this->server->dispatch( $request );
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_singular_label_exists', $response->data['code'] );
+	}
+
+	public function test_cannot_create_model_if_plural_name_is_reserved(): void {
+		wp_set_current_user( 1 );
+		$model_with_reserved_singular_label = array(
+			'slug'     => 'new',
+			'singular' => 'cat',
+			'plural'   => 'posts', // 'posts' is reserved.
+		);
+
+		// Attempt to create the model.
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $model_with_reserved_singular_label ) );
+		$this->server->dispatch( $request );
+
+		$response = $this->server->dispatch( $request );
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_plural_label_exists', $response->data['code'] );
+	}
+
 	/**
 	 * Tests that a model can be created via the REST API.
 	 *
@@ -190,6 +228,50 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		self::assertSame( 200, $response->get_status() );
 		self::assertSame( $this->test_models['public']['slug'], $models['public']['slug'] );
 		self::assertSame( $new_model['singular'], $models['public']['singular'] );
+	}
+
+	public function test_cannot_update_model_if_singular_name_is_reserved(): void {
+		wp_set_current_user( 1 );
+
+		$model = 'public'; // Update an existing model.
+
+		$model_with_reserved_singular_label = array(
+			'slug'     => $model,
+			'singular' => 'post', // 'post' is reserved.
+			'plural'   => 'cats',
+		);
+
+		// Attempt to update the model.
+		$request = new WP_REST_Request( 'PATCH', $this->namespace . $this->route . '/' . $model );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $model_with_reserved_singular_label ) );
+		$this->server->dispatch( $request );
+
+		$response = $this->server->dispatch( $request );
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_singular_label_exists', $response->data['code'] );
+	}
+
+	public function test_cannot_update_model_if_plural_name_is_reserved(): void {
+		wp_set_current_user( 1 );
+
+		$model = 'public'; // Update an existing model.
+
+		$model_with_reserved_singular_label = array(
+			'slug'     => $model,
+			'singular' => 'cat',
+			'plural'   => 'posts', // 'posts' is reserved.
+		);
+
+		// Attempt to update the model.
+		$request = new WP_REST_Request( 'PATCH', $this->namespace . $this->route . '/' . $model );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $model_with_reserved_singular_label ) );
+		$this->server->dispatch( $request );
+
+		$response = $this->server->dispatch( $request );
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_plural_label_exists', $response->data['code'] );
 	}
 
 	/**

@@ -7,7 +7,7 @@
  * Author URI: https://wpengine.com/
  * Text Domain: atlas-content-modeler
  * Domain Path: /languages
- * Version: 0.11.0
+ * Version: 0.12.1
  * Requires at least: 5.7
  * Requires PHP: 7.2
  * License: GPLv2 or later
@@ -63,4 +63,13 @@ function atlas_content_modeler_loader(): void {
 	// Bootstrap relationships library.
 	acm_content_connect_autoloader();
 	\WPE\AtlasContentModeler\ContentConnect\Plugin::instance();
+}
+
+/**
+ * Determines if opt-in usage tracking is enabled.
+ *
+ * @return bool True if enabled, false if not.
+ */
+function acm_usage_tracking_enabled(): bool {
+	return (bool) get_option( 'atlas_content_modeler_usage_tracking', false );
 }

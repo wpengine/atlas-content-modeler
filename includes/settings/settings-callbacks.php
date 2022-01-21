@@ -52,6 +52,15 @@ function register_admin_menu_page(): void {
 		'atlas-content-modeler&amp;view=tools',
 		'__return_null'
 	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
+		esc_html__( 'Settings', 'atlas-content-modeler' ),
+		esc_html__( 'Settings', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler&amp;view=settings',
+		'__return_null'
+	);
 }
 
 add_filter( 'parent_file', __NAMESPACE__ . '\maybe_override_submenu_file' );
@@ -80,6 +89,10 @@ function maybe_override_submenu_file( $parent_file ) {
 		$submenu_file = 'atlas-content-modeler&amp;view=tools'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
 	}
 
+	if ( $page === 'atlas-content-modeler' && $view === 'settings' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=settings'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	}
+
 	return $parent_file;
 }
 
@@ -89,8 +102,6 @@ function maybe_override_submenu_file( $parent_file ) {
 function render_admin_menu_page() {
 	include_once __DIR__ . '/views/admin-menu-page.php';
 }
-
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
 
 /**
  * Decides if feedback banner scripts should be loaded.
@@ -104,6 +115,7 @@ function should_show_feedback_banner(): bool {
 	return ! ( ! empty( $time_dismissed ) && ( $time_dismissed + WEEK_IN_SECONDS * 2 > time() ) );
 }
 
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_settings_assets' );
 /**
  * Registers and enqueues admin scripts and styles.
  *
@@ -116,7 +128,7 @@ function enqueue_settings_assets( $hook ) {
 	wp_register_script(
 		'atlas-content-modeler-app',
 		ATLAS_CONTENT_MODELER_URL . 'includes/settings/dist/index.js',
-		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash', 'wp-i18n' ],
+		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash', 'wp-i18n', 'wp-core-data' ],
 		$plugin['Version'],
 		true
 	);
@@ -127,16 +139,17 @@ function enqueue_settings_assets( $hook ) {
 		'atlas-content-modeler-app',
 		'atlasContentModeler',
 		array(
-			'appPath'             => $admin_path . 'admin.php?page=atlas-content-modeler',
-			'taxonomies'          => get_option( 'atlas_content_modeler_taxonomies', array() ),
-			'initialState'        => get_registered_content_types(),
-			'reservedFieldSlugs'  => include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-field-slugs.php',
-			'isWPGraphQLActive'   => is_plugin_active( 'wp-graphql/wp-graphql.php' ),
-			'isGraphiQLAvailable' => function_exists( 'get_graphql_setting' )
+			'appPath'              => $admin_path . 'admin.php?page=atlas-content-modeler',
+			'taxonomies'           => get_option( 'atlas_content_modeler_taxonomies', array() ),
+			'initialState'         => get_registered_content_types(),
+			'reservedFieldSlugs'   => include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'settings/reserved-field-slugs.php',
+			'isWPGraphQLActive'    => is_plugin_active( 'wp-graphql/wp-graphql.php' ),
+			'isGraphiQLAvailable'  => function_exists( 'get_graphql_setting' )
 										&& get_graphql_setting( 'graphiql_enabled' ) !== 'off',
-			'graphQLUrl'          => function_exists( 'get_graphql_setting' )
+			'graphQLUrl'           => function_exists( 'get_graphql_setting' )
 										? get_site_url() . '/' . get_graphql_setting( 'graphql_endpoint', 'graphql' )
 										: get_site_url() . '/graphql',
+			'usageTrackingEnabled' => acm_usage_tracking_enabled(),
 		)
 	);
 
@@ -162,4 +175,45 @@ function enqueue_settings_assets( $hook ) {
 			wp_enqueue_script( 'atlas-content-modeler-feedback-banner' );
 		}
 	}
+}
+
+add_action( 'init', __NAMESPACE__ . '\register_plugin_settings' );
+/**
+ * Registers the plugin's settings.
+ *
+ * @return void
+ */
+function register_plugin_settings(): void {
+	register_setting(
+		'atlas_content_modeler_settings',
+		'atlas_content_modeler_usage_tracking',
+		[
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_text_field',
+			'show_in_rest'      => true,
+			'default'           => '0',
+		]
+	);
+}
+
+add_action( 'admin_init', __NAMESPACE__ . '\register_settings_fields' );
+/**
+ * Registers the plugin's settings sections and fields.
+ *
+ * @return void
+ */
+function register_settings_fields(): void {
+	add_settings_section(
+		'atlas_content_modeler_general_section',
+		esc_html__( 'General', 'atlas-content-modeler' ),
+		null, // rendered by React.
+		'atlas_content_modeler_settings'
+	);
+
+	add_settings_field(
+		'atlas_content_modeler_usage_tracking',
+		esc_html__( 'Analytics', 'atlas-content-modeler' ),
+		null, // rendered by React.
+		'atlas_content_modeler_general_section'
+	);
 }

@@ -7,8 +7,8 @@ class CreateContentModelBooleanFieldCest {
 	 */
 	public function i_can_create_a_content_model_boolean_field( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'Candy', 'Candies' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 
 		$i->click( 'Boolean', '.field-buttons' );
 		$i->wait( 1 );

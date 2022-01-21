@@ -5,10 +5,9 @@ class EditTaxonomyCest {
 	public function _before( \AcceptanceTester $i ) {
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
-		$i->wait( 1 );
-		$i->haveContentModel( 'Goose', 'Geese' );
-		$i->wait( 1 );
-		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'goose' ] );
+		$content_model = $i->haveContentModel( 'Goose', 'Geese' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+		$i->haveTaxonomy( 'Breed', 'Breeds', [ 'types' => [ 'goose' ] ] );
 		$i->wait( 1 );
 		$i->amOnTaxonomyListingsPage();
 		$i->wait( 1 );
@@ -59,5 +58,19 @@ class EditTaxonomyCest {
 		$i->see( 'Taxonomies' ); // Main taxonomies screen, not the Models screen.
 		$i->see( 'Add New' );
 		$i->seeInField( '#singular', '' ); // Form is empty.
+	}
+
+	public function i_can_not_update_a_taxonomy_with_a_reserved_singular_name( AcceptanceTester $i ) {
+		$i->fillField( [ 'name' => 'singular' ], 'Post' ); // 'Post' is a reserved name.
+		$i->click( 'Update' );
+		$i->wait( 1 );
+		$i->see( 'singular name is in use' );
+	}
+
+	public function i_can_not_update_a_taxonomy_with_a_reserved_plural_name( AcceptanceTester $i ) {
+		$i->fillField( [ 'name' => 'plural' ], 'Posts' ); // 'Posts' is a reserved name.
+		$i->click( 'Update' );
+		$i->wait( 1 );
+		$i->see( 'plural name is in use' );
 	}
 }

@@ -403,7 +403,13 @@ function get_registered_content_types(): array {
  * @return bool
  */
 function update_registered_content_types( array $args ): bool {
-	return update_option( 'atlas_content_modeler_post_types', $args );
+	$updated = update_option( 'atlas_content_modeler_post_types', $args );
+
+	if ( $updated ) {
+		flush_rewrite_rules( false );
+	}
+
+	return $updated;
 }
 
 /**
@@ -570,9 +576,23 @@ function graphql_data_is_private( bool $is_private, string $model_name, $post, $
 	}
 
 	$models = get_registered_content_types();
-	if ( array_key_exists( $post->post_type, $models ) && isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
+	if ( ! array_key_exists( $post->post_type, $models ) ) {
+		// Return early if not an ACM model.
+		return $is_private;
+	}
+
+	if ( isset( $models[ $post->post_type ]['api_visibility'] ) && 'private' === $models[ $post->post_type ]['api_visibility'] ) {
 		$post_type  = get_post_type_object( $post->post_type );
 		$is_private = ! user_can( $current_user, $post_type->cap->read_post, $post->ID );
+	}
+
+	if ( $is_private && empty( $current_user->ID ) ) {
+		graphql_debug(
+			esc_html__( 'The request was unauthenticated, but this site contains private Atlas Content Modeler models. If you see empty results, try authenticating the request or making your ACM models public.', 'atlas-content-modeler' ),
+			[
+				'type' => 'ACM_UNAUTHORIZED_REQUEST',
+			]
+		);
 	}
 
 	return $is_private;
@@ -739,6 +759,9 @@ function is_protected_meta( bool $protected, string $meta_key, string $meta_type
 	}
 
 	$fields = wp_list_pluck( get_registered_content_types(), 'fields' );
+	if ( empty( $fields ) ) {
+		return $protected;
+	}
 	$fields = array_merge( ...array_values( $fields ) );
 	$slugs  = wp_list_pluck( $fields, 'slug' );
 

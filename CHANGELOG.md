@@ -1,5 +1,27 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Added
+- Opt-in anonymous usage tracking to help us make Atlas Content Modeler better (disabled by default).
+### Fixed
+- Ensure Rich Text fields load for publishers even if WordPress Core editor scripts are slow to execute.
+
+### Changed
+- The title field of a model can no longer be changed once set, unless you delete the original title field. This prepares upcoming work to save title field data to WordPress post titles, allowing title field content to be searchable.
+
+## 0.12.1 - 2022-01-12
+### Fixed
+- Prevent PHP fatal errors on sites running < PHP 7.4 under certain conditions when no models exist.
+- Prevent model and taxonomy creation and updates if singular or plural labels conflict with existing WPGraphQL fields.
+
+## 0.12.0 - 2021-12-15
+### Added
+- Debug info is now added to GraphQL responses when GraphQL Debug Mode is enabled and a request for Private models is made as an unauthenticated user.
+
+### Fixed
+- Improved display of admin notices on pages in the Content Modeler admin menu.
+- Saving a model that has no changes no longer causes an error to be displayed.
+
 ## 0.11.0 - 2021-12-01
 ### Added
 - Set any Media Field as the [Featured Image](https://www.wpgraphql.com/docs/media/#query-a-post-with-its-featured-image) for its model.

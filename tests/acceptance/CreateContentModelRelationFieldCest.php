@@ -1,4 +1,5 @@
 <?php
+
 use Codeception\Util\Locator;
 
 class CreateContentModelRelationFieldCest {
@@ -6,15 +7,17 @@ class CreateContentModelRelationFieldCest {
 	public function _before( \AcceptanceTester $i ) {
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'Employee', 'Employees' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'Employee', 'Employees' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+
 		// Create a text field to check for reverse relationship conflicts with a reference model.
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'conflictsWithEmployeesSlug' );
 		$i->click( '.open-field button.primary' );
 		$i->wait( 1 );
 
-		$i->haveContentModel( 'Company', 'Companies' );
+		$content_model = $i->haveContentModel( 'Company', 'Companies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 		$i->wait( 1 );
 		$i->click( 'Relation', '.field-buttons' );
 		$i->wait( 1 );

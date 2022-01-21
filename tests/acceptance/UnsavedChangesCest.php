@@ -1,14 +1,15 @@
 <?php
+
 use Codeception\Util\Locator;
+
 class UnsavedChangesCest {
 
 	public function _before( \AcceptanceTester $i ) {
 		$i->resizeWindow( 1024, 1024 );
 		$i->maximizeWindow();
-
 		$i->loginAsAdmin();
-		$i->haveContentModel( 'goose', 'geese' );
-		$i->wait( 1 );
+		$content_model = $i->haveContentModel( 'goose', 'geese' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
 	}
 
 	public function i_see_an_unsaved_changes_prompt_when_opening_another_field( \AcceptanceTester $i ) {

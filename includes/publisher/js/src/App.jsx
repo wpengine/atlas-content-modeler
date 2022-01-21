@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+/* global atlasContentModelerFormEditingExperience */
+import React, { useEffect, useState } from "react";
 import Fields from "./components/Fields";
 import { __ } from "@wordpress/i18n";
+import { sendEvent } from "acm-analytics";
 import TrashPostModal from "./components/TrashPostModal";
 
 export default function App({ model, mode }) {
 	const isEditMode = mode === "edit";
 	const [trashPostModalIsOpen, setTrashPostModalIsOpen] = useState(false);
+
+	useEffect(() => {
+		const queryParams = new URLSearchParams(window.location.search);
+		const newPost = queryParams.get("acm-post-published");
+		if (newPost) {
+			sendEvent({
+				category: "post",
+				action: "Post Published",
+			});
+		}
+	}, []);
 
 	return (
 		<div className="app classic-form" style={{ marginTop: "20px" }}>
