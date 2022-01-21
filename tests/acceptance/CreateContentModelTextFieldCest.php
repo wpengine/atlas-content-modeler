@@ -47,7 +47,7 @@ class CreateContentModelTextFieldCest {
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
 
-		// Check that the “Color” field uses a textarea instead of an input field.
+		// Check that the first input in the index of available list items is rendering indicating a multiple being set.
 		$i->seeElement(
 			'input',
 			[ 'name' => 'atlas-content-modeler[candy][color][0]' ]
