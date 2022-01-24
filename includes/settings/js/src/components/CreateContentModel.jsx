@@ -11,7 +11,10 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
-import { Button } from "../../../../shared-assets/js/components/Buttons";
+import {
+	Button,
+	TertiaryButton,
+} from "../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 
@@ -412,15 +415,15 @@ export default function CreateContentModel() {
 					>
 						Create
 					</Button>
-					<button
-						className="tertiary"
+					<TertiaryButton
 						disabled={isSubmitting}
 						onClick={() =>
 							history.push(atlasContentModeler.appPath)
 						}
+						data-testid="create-model-cancel-button"
 					>
 						Cancel
-					</button>
+					</TertiaryButton>
 				</form>
 			</section>
 		</div>
