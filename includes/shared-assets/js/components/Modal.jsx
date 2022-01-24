@@ -15,26 +15,8 @@ export const ModalDecorator = ({ className, ...props }) => {
 	return <Modal {...styles} {...props} />;
 };
 
-export const StyledModal = styled(ModalDecorator)`
-	h2 {
-		font-size: 24px;
-		margin-top: 0;
-	}
-
-	.ReactModal__Content--after-open p:last-of-type {
-		margin-bottom: 40px;
-	}
-`;
-
-export const StyledDeleteModal = styled(ModelDecorator)`
-	h2 {
-		font-size: 24px;
-		margin-top: 0;
-	}
-
-	.ReactModal__Content--after-open p:last-of-type {
-		margin-bottom: 40px;
-	}
+export const AcmModal = styled(ModalDecorator)`
+	overflow: hidden;
 
 	ul {
 		list-style-type: disc;
@@ -45,10 +27,15 @@ export const StyledDeleteModal = styled(ModelDecorator)`
 			font-weight: 700;
 		}
 	}
-`;
 
-export const StyledEditModal = styled(ModalDecorator)`
-	overflow: hidden;
+	h2 {
+		font-size: 24px;
+		margin-top: 0;
+	}
+
+	.ReactModal__Content--after-open p:last-of-type {
+		margin-bottom: 40px;
+	}
 
 	.ReactModal__Overlay--after-open {
 		width: 100%;
