@@ -40,7 +40,7 @@ function get_test_fields() {
 			'name'            => 'Single-Line-Text-Repeater',
 			'slug'            => 'singleLineTextRepeater',
 			'isTitle'         => false,
-			'isRepeatable'		=> true,
+			'isRepeatable'    => true,
 			'inputType'       => 'single',
 			'required'        => false,
 			'minChars'        => '',
