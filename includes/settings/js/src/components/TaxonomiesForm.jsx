@@ -6,6 +6,7 @@ import Icon from "../../../../components/icons";
 import { showSuccess } from "../toasts";
 import { useInputGenerator } from "../hooks";
 import { toSanitizedKey } from "../formats";
+import { Button } from "../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 const { isEqual, pick } = lodash;
@@ -491,13 +492,14 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 				</p>
 			</div>
 			{!editingTaxonomy && (
-				<button
+				<Button
 					type="submit"
 					disabled={isSubmitting}
-					className="primary first"
+					className="first"
+					data-testid="create-taxonomy-button"
 				>
 					{__("Create", "atlas-content-modeler")}
-				</button>
+				</Button>
 			)}
 			{editingTaxonomy && (
 				<>
