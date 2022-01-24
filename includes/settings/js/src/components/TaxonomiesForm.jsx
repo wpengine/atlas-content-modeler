@@ -6,7 +6,10 @@ import Icon from "../../../../components/icons";
 import { showSuccess } from "../toasts";
 import { useInputGenerator } from "../hooks";
 import { toSanitizedKey } from "../formats";
-import { Button } from "../../../../shared-assets/js/components/Buttons";
+import {
+	Button,
+	TertiaryButton,
+} from "../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 const { isEqual, pick } = lodash;
@@ -511,9 +514,9 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 					>
 						{__("Update", "atlas-content-modeler")}
 					</Button>
-					<button
+					<TertiaryButton
 						disabled={isSubmitting}
-						className="tertiary"
+						data-testid="cancel-taxonomy-button"
 						onClick={(e) => {
 							e.preventDefault();
 							scrollTo(0, 0);
@@ -521,7 +524,7 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 						}}
 					>
 						{__("Cancel", "atlas-content-modeler")}
-					</button>
+					</TertiaryButton>
 				</>
 			)}
 		</form>
