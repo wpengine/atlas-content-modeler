@@ -11,6 +11,7 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
+import { Button } from "../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 
@@ -403,13 +404,14 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<button
+					<Button
 						type="submit"
 						disabled={isSubmitting}
-						className="primary first"
+						className="first"
+						data-testid="create-model-button"
 					>
 						Create
-					</button>
+					</Button>
 					<button
 						className="tertiary"
 						disabled={isSubmitting}
