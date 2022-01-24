@@ -107,12 +107,12 @@ export default function CreateContentModel() {
 		<div className="app-card">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>New Content Model</h2>
-				<button
-					className="tertiary"
+				<TertiaryButton
 					onClick={() => history.push(atlasContentModeler.appPath)}
+					data-testid="view-all-models-button"
 				>
 					{__("View All Models", "atlas-content-modeler")}
-				</button>
+				</TertiaryButton>
 			</section>
 			<section className="card-content">
 				<form onSubmit={handleSubmit(apiCreateModel)}>
