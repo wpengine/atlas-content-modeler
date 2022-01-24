@@ -106,7 +106,7 @@ class SidebarUpdatesCest {
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'plural' ], 'Br33ds' );
 		$i->click( '.checklist .checkbox input[value=moose]' );
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="update-taxonomy-button"]' );
 		$i->wait( 1 );
 
 		// The edited taxonomy should be updated on both models.
@@ -120,7 +120,7 @@ class SidebarUpdatesCest {
 		$i->click( 'Edit', '.action .dropdown-content' );
 		$i->wait( 1 );
 		$i->click( '.checklist .checkbox input[value=goose]' ); // Remove from goose.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="update-taxonomy-button"]' );
 		$i->wait( 1 );
 
 		$i->moveMouseOver( [ 'css' => '#menu-posts-goose' ] );

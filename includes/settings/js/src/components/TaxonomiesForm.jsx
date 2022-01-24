@@ -503,13 +503,14 @@ const TaxonomiesForm = ({ editingTaxonomy, cancelEditing }) => {
 			)}
 			{editingTaxonomy && (
 				<>
-					<button
+					<Button
 						type="submit"
 						disabled={isSubmitting}
-						className="primary first"
+						className="first"
+						data-testid="update-taxonomy-button"
 					>
 						{__("Update", "atlas-content-modeler")}
-					</button>
+					</Button>
 					<button
 						disabled={isSubmitting}
 						className="tertiary"
