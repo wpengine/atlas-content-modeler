@@ -12,6 +12,7 @@ import { maybeCloseDropdown } from "../utils";
 import { sprintf, __ } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
 import { showError } from "../toasts";
+import { WarningButton } from "../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 
@@ -147,7 +148,8 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 				<button
 					type="submit"
 					form={taxonomy.slug}
-					className="first warning"
+					className="first"
+					data-testid="delete-taxonomy-button"
 					onClick={async () => {
 						let hasError = false;
 
