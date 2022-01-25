@@ -5,6 +5,7 @@ import { useLocationSearch } from "../utils";
 import { ModelsContext } from "../ModelsContext";
 import TaxonomiesTable from "./TaxonomiesTable";
 import TaxonomiesForm from "./TaxonomiesForm";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 export default function Taxonomies() {
 	const { taxonomies } = useContext(ModelsContext);
@@ -91,7 +92,7 @@ export default function Taxonomies() {
 	};
 
 	return (
-		<div className="app-card taxonomies-view">
+		<Card className="taxonomies-view">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>
 					{editingTaxonomy ? (
@@ -139,6 +140,6 @@ export default function Taxonomies() {
 					)}
 				</div>
 			</section>
-		</div>
+		</Card>
 	);
 }

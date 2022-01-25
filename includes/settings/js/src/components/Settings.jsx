@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
 import { dispatch } from "@wordpress/data";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 export default function Settings() {
 	const [usageTracking, setUsageTracking] = useState(
@@ -17,7 +18,7 @@ export default function Settings() {
 	}
 
 	return (
-		<div className="app-card settings-view">
+		<Card className="settings-view">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>{__("Settings", "atlas-content-modeler")}</h2>
 			</section>
@@ -92,6 +93,6 @@ export default function Settings() {
 					</div>
 				</form>
 			</section>
-		</div>
+		</Card>
 	);
 }
