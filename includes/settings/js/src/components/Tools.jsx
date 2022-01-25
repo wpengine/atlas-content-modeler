@@ -4,6 +4,7 @@ import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
 import { insertSidebarMenuItem } from "../utils";
+import { Card } from "../../../../shared-assets/js/components/card";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -249,7 +250,7 @@ export default function Tools() {
 	}
 
 	return (
-		<div className="app-card tools-view">
+		<Card className="tools-view">
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>{__("Tools", "atlas-content-modeler")}</h2>
 			</section>
@@ -299,6 +300,6 @@ export default function Tools() {
 					</div>
 				</div>
 			</section>
-		</div>
+		</Card>
 	);
 }

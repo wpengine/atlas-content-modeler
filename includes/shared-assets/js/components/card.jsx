@@ -9,22 +9,22 @@ export function Card(props) {
 
 		svg.add:focus circle,
 		svg.add:hover circle {
-			fill: $color-primary-hover;
+			fill: #5c43ae;
 		}
 
 		svg.add-small:focus circle,
 		svg.add-small:hover circle {
 			fill: #fff;
-			stroke: $color-primary;
+			stroke: #7e5cef;
 		}
 
 		svg.add-small:focus path,
 		svg.add-small:hover path {
-			fill: $color-primary;
+			fill: #7e5cef;
 		}
 
 		h2 {
-			color: $color-text;
+			color: #002838;
 			font-size: 28px;
 			font-weight: bold;
 			line-height: 45px;
@@ -32,11 +32,11 @@ export function Card(props) {
 			margin-top: 0;
 
 			a {
-				color: $color-primary;
+				color: #7e5cef;
 				text-decoration: none;
 				&:focus,
 				&:hover {
-					color: $color-primary-hover;
+					color: #5c43ae;
 				}
 			}
 		}
@@ -62,8 +62,8 @@ export function Card(props) {
 		}
 
 		.card-content li {
-			border-left: 5px solid $color-highlight;
-			border-radius: $radius;
+			border-left: 5px solid #0ecad4;
+			border-radius: 2px;
 			box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 			line-height: 20px;
 		}
