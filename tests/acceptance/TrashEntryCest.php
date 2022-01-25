@@ -16,7 +16,7 @@ class TrashEntryCest {
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Goose Friend' );
 		$i->selectOption( '#reference', 'geese' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 	}
 

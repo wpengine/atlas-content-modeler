@@ -17,7 +17,7 @@ class UnsavedChangesCest {
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Name' );
-		$i->click( 'button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Start to create a second field.

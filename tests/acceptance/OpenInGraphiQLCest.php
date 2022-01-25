@@ -35,7 +35,7 @@ class OpenInGraphiQLCest {
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Wags per minute' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( '.heading .options' ); // Model options button.

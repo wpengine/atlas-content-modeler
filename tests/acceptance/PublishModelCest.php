@@ -15,7 +15,7 @@ class PublishModelCest {
 	public function i_see_submission_errors_in_number_fields_when_input_is_missing_for_the_number_type( \AcceptanceTester $i ) {
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Integer' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
@@ -23,7 +23,7 @@ class PublishModelCest {
 		$i->fillField( [ 'name' => 'name' ], 'Decimal' );
 		$i->click( 'input#decimal' );
 		$i->checkOption( 'required' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Next we create an entry for our new model.
@@ -48,14 +48,14 @@ class PublishModelCest {
 	public function i_see_no_submission_errors_in_number_fields_when_input_is_missing_for_the_number_type( \AcceptanceTester $i ) {
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Integer' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Decimal' );
 		$i->click( 'input#decimal' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Next we create an entry for our new model.
@@ -87,7 +87,7 @@ class PublishModelCest {
 		$i->click( '.ReactModal__Content button.primary' );
 		$i->wait( 1 );
 
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
@@ -100,7 +100,7 @@ class PublishModelCest {
 		$i->fillField( [ 'name' => 'step' ], '1.1' );
 		$i->click( '.ReactModal__Content button.primary' );
 
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Next we create an entry for our new model.
@@ -133,7 +133,7 @@ class PublishModelCest {
 		$i->click( '.ReactModal__Content button.primary' );
 		$i->wait( 1 );
 
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
@@ -146,7 +146,7 @@ class PublishModelCest {
 		$i->fillField( [ 'name' => 'step' ], '1.1' );
 		$i->click( '.ReactModal__Content button.primary' );
 
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Next we create an entry for our new model.
@@ -173,37 +173,37 @@ class PublishModelCest {
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
 		$i->fillField( [ 'name' => 'description' ], 'This is the description.' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Rich Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Description' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Rich Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Another rich text field' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Age' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Date', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Date of Birth' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Boolean', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Flies south for winter?' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Next we create an entry for our new model.

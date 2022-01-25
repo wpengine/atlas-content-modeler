@@ -670,7 +670,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 			<div className="buttons d-flex flex-row">
 				<Button
 					type="submit"
-					className="primary mr-1 mr-sm-2"
+					className="first mr-1 mr-sm-2"
 					data-testid="edit-model-update-create-button"
 				>
 					{editing
