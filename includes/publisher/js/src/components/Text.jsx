@@ -14,6 +14,15 @@ export default function Text({ field, modelSlug, defaultError }) {
 		return (
 			<div className={"field"}>
 				<label>{field.name}</label>
+				{field?.required && (
+					<p className="required">
+						*{__("Required", "atlas-content-modeler")}
+					</p>
+				)}
+				{field?.description && (
+					<p className="help mb-0">{field.description}</p>
+				)}
+
 				<fieldset>
 					<div
 						id="repeaterText"
