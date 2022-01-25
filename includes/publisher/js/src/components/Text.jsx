@@ -75,51 +75,90 @@ export default function Text({ field, modelSlug, defaultError }) {
 															className="me-sm-5"
 															name="repeaters"
 														>
-															<input
-																name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-																placeholder={__(
-																	"Item Name",
-																	"atlas-content-modeler"
-																)}
-																type="text"
-																onKeyPress={(
-																	event
-																) => {
-																	if (
-																		event.key ===
-																		"Enter"
-																	) {
-																		event.preventDefault();
-																	}
-																}}
-																value={
-																	values[
-																		index
-																	]
-																}
-																onChange={(
-																	event
-																) => {
-																	// Update the value of the item.
-																	const newValue =
+															{field.inputType ===
+															"single" ? (
+																<input
+																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																	placeholder={__(
+																		"Item Name",
+																		"atlas-content-modeler"
+																	)}
+																	type="text"
+																	onKeyPress={(
 																		event
-																			.currentTarget
-																			.value;
-																	setValues(
-																		(
-																			oldValues
-																		) => {
-																			let newValues = [
-																				...oldValues,
-																			];
-																			newValues[
-																				index
-																			] = newValue;
-																			return newValues;
+																	) => {
+																		if (
+																			event.key ===
+																			"Enter"
+																		) {
+																			event.preventDefault();
 																		}
-																	);
-																}}
-															/>
+																	}}
+																	value={
+																		values[
+																			index
+																		]
+																	}
+																	onChange={(
+																		event
+																	) => {
+																		// Update the value of the item.
+																		const newValue =
+																			event
+																				.currentTarget
+																				.value;
+																		setValues(
+																			(
+																				oldValues
+																			) => {
+																				let newValues = [
+																					...oldValues,
+																				];
+																				newValues[
+																					index
+																				] = newValue;
+																				return newValues;
+																			}
+																		);
+																	}}
+																/>
+															) : (
+																<textarea
+																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																	placeholder={__(
+																		"Item Name",
+																		"atlas-content-modeler"
+																	)}
+																	type="text"
+																	value={
+																		values[
+																			index
+																		]
+																	}
+																	onChange={(
+																		event
+																	) => {
+																		// Update the value of the item.
+																		const newValue =
+																			event
+																				.currentTarget
+																				.value;
+																		setValues(
+																			(
+																				oldValues
+																			) => {
+																				let newValues = [
+																					...oldValues,
+																				];
+																				newValues[
+																					index
+																				] = newValue;
+																				return newValues;
+																			}
+																		);
+																	}}
+																/>
+															)}
 														</div>
 														<div
 															className={`value[${index}].remove-container`}
