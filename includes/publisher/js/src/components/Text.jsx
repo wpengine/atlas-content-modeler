@@ -22,54 +22,31 @@ export default function Text({ field, modelSlug, defaultError }) {
 				{field?.description && (
 					<p className="help mb-0">{field.description}</p>
 				)}
-
 				<fieldset>
-					<div
-						id="repeaterText"
-						className="d-flex flex-column d-sm-flex flex-sm-row"
-					>
+					<div id="repeaterText" className="text-table flex-row">
 						<div className="repeater-text-field">
 							<ul>
-								{values.map((item, index) => {
-									return (
-										<table
-											key={index}
-											className="table table-striped mt-2"
-										>
-											<thead>
-												<tr>
-													<th>
-														{__(
-															"Title",
-															"atlas-content-modeler"
-														)}
-													</th>
-												</tr>
-											</thead>
-											<tbody>
+								<table
+									key="1"
+									className="table table-striped mt-2"
+								>
+									<thead>
+										<tr>
+											<th>
+												{__(
+													field?.name,
+													"atlas-content-modeler"
+												)}
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{values.map((item, index) => {
+											return (
 												<div
 													key={index}
 													className={`field text-repeater-container-single`}
 												>
-													<label
-														htmlFor={
-															"repeaterText" +
-															index
-														}
-													>
-														{__(
-															"Item ",
-															"atlas-content-modeler"
-														)}
-														{index + 1}
-													</label>
-													<br />
-													<p className="help">
-														{__(
-															"The display name of your item",
-															"atlas-content-modeler"
-														)}
-													</p>
 													<div
 														className={`${
 															errors[
@@ -78,10 +55,10 @@ export default function Text({ field, modelSlug, defaultError }) {
 															]
 																? "field has-error"
 																: "field"
-														} d-flex flex-column d-sm-flex flex-sm-row me-sm-5`}
+														} d-flex flex-row repeater-input d-lg-flex`}
 													>
 														<div
-															className="me-sm-5"
+															className="me-lg-1"
 															name="repeaters"
 														>
 															{field.inputType ===
@@ -170,7 +147,7 @@ export default function Text({ field, modelSlug, defaultError }) {
 															)}
 														</div>
 														<div
-															className={`value[${index}].remove-container`}
+															className={`value[${index}].remove-container p-2 me-sm-1`}
 														>
 															{values.length >
 																1 && (
@@ -210,38 +187,38 @@ export default function Text({ field, modelSlug, defaultError }) {
 														</div>
 													</div>
 												</div>
-											</tbody>
-										</table>
-									);
-								})}
-								<div className="field">
-									<button
-										className="add-option tertiary no-border"
-										onClick={(event) => {
-											event.preventDefault();
-											// Adds a new empty value to display another text field.
-											setValues((oldValues) => [
-												...oldValues,
-												"",
-											]);
-										}}
-									>
-										<a>
-											<AddIcon noCircle />{" "}
-											<span>
-												{field.value.length > 0
-													? __(
-															"Add another item",
-															"atlas-content-modeler"
-													  )
-													: __(
-															"Add an item",
-															"atlas-content-modeler"
-													  )}
-											</span>
-										</a>
-									</button>
-								</div>
+											);
+										})}
+										<div className="field">
+											<button
+												className="add-option tertiary no-border"
+												onClick={(event) => {
+													event.preventDefault();
+													// Adds a new empty value to display another text field.
+													setValues((oldValues) => [
+														...oldValues,
+														"",
+													]);
+												}}
+											>
+												<a>
+													<AddIcon noCircle />{" "}
+													<span>
+														{field.value.length > 0
+															? __(
+																	"Add another item",
+																	"atlas-content-modeler"
+															  )
+															: __(
+																	"Add an item",
+																	"atlas-content-modeler"
+															  )}
+													</span>
+												</a>
+											</button>
+										</div>
+									</tbody>
+								</table>
 							</ul>
 						</div>
 					</div>
