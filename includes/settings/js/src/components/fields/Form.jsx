@@ -20,6 +20,7 @@ import { sendEvent } from "acm-analytics";
 import { useInputGenerator, useReservedSlugs } from "../../hooks";
 import { toValidApiId, toGraphQLType } from "../../formats";
 import { getFeaturedFieldId } from "../../queries";
+import { Button } from "../../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 const { cloneDeep, isEqual } = lodash;
@@ -667,11 +668,15 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 			</div>
 
 			<div className="buttons d-flex flex-row">
-				<button type="submit" className="primary first mr-1 mr-sm-2">
+				<Button
+					type="submit"
+					className="primary mr-1 mr-sm-2"
+					data-testid="edit-model-update-create-button"
+				>
 					{editing
 						? __("Update", "atlas-content-modeler")
 						: __("Create", "atlas-content-modeler")}
-				</button>
+				</Button>
 				<button
 					className="tertiary"
 					onClick={(event) => {
