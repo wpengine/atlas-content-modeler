@@ -24,7 +24,7 @@ export default function Text({ field, modelSlug, defaultError }) {
 				)}
 				<fieldset>
 					<div id="repeaterText" className="text-table flex-row">
-						<div className="repeater-text-field">
+						<div className="repeater-text-field flex-row">
 							<ul>
 								<table
 									key="1"
@@ -45,7 +45,7 @@ export default function Text({ field, modelSlug, defaultError }) {
 											return (
 												<div
 													key={index}
-													className={`field text-repeater-container-single`}
+													className={`field text-repeater-container-single d-flex flex-fill flex-row`}
 												>
 													<div
 														className={`${
@@ -55,7 +55,7 @@ export default function Text({ field, modelSlug, defaultError }) {
 															]
 																? "field has-error"
 																: "field"
-														} d-flex flex-row repeater-input d-lg-flex`}
+														} d-flex flex-row repeater-input flex-fill d-lg-flex`}
 													>
 														<div
 															className="me-lg-1"
