@@ -17,7 +17,7 @@ class CreateContentModelMediaFieldCest {
 		$i->fillField( [ 'name' => 'name' ], 'Product Photo' );
 		$i->see( '13/50', 'span.count' );
 		$i->seeInField( '#slug', 'productPhoto' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Media', '.field-list div.type' );
@@ -34,7 +34,7 @@ class CreateContentModelMediaFieldCest {
 		$i->see( '17/50', 'span.count' );
 		$i->seeInField( '#slug', 'thePrimaryImage' );
 		$i->checkOption( 'isFeatured' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Media', '.field-list div.type' );
@@ -51,7 +51,7 @@ class CreateContentModelMediaFieldCest {
 		$i->see( '17/50', 'span.count' );
 		$i->seeInField( '#slug', 'thePrimaryImage' );
 		$i->checkOption( 'isFeatured' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Media', '.field-list div.type' );
@@ -66,7 +66,7 @@ class CreateContentModelMediaFieldCest {
 		$i->see( '16/50', 'span.count' );
 		$i->seeInField( '#slug', 'theSecondImage' );
 		$i->checkOption( 'isFeatured' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->clickWithLeftButton( '.field-list button.edit', -5, -5 );
@@ -85,7 +85,7 @@ class CreateContentModelMediaFieldCest {
 		$i->see( '17/50', 'span.count' );
 		$i->seeInField( '#slug', 'thePrimaryImage' );
 		$i->checkOption( 'isFeatured' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Media', '.field-list div.type' );

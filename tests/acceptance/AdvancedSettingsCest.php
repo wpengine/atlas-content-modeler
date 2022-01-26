@@ -64,7 +64,7 @@ class AdvancedSettingsCest {
 		$i->fillField( [ 'name' => 'minChars' ], '10' );
 		$i->click( '.ReactModal__Content button.primary' ); // Save Advanced Settings.
 		$i->wait( 1 );
-		$i->click( 'button.primary' ); // Save the field.
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' ); // Save the field.
 
 		// Create an entry in the publisher app.
 		$i->amOnPage( '/wp-admin/edit.php?post_type=goose' );
@@ -142,7 +142,7 @@ class AdvancedSettingsCest {
 
 		$i->click( '.ReactModal__Content button.primary' ); // Save Advanced Settings.
 		$i->wait( 1 );
-		$i->click( 'button.primary' ); // Save the field.
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' ); // Save the field.
 		$i->wait( 1 );
 
 		// Offsets are used here to prevent “other element would receive the click”

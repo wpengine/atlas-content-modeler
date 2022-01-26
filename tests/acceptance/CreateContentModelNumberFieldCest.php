@@ -17,7 +17,7 @@ class CreateContentModelNumberFieldCest {
 		$i->fillField( [ 'name' => 'name' ], 'Count' );
 		$i->see( '5/50', 'span.count' );
 		$i->seeInField( '#slug', 'count' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Number', '.field-list div.type' );

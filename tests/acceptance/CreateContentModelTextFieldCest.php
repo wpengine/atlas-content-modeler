@@ -16,7 +16,7 @@ class CreateContentModelTextFieldCest {
 		$i->see( '5/50', 'span.count' );
 		$i->seeInField( '#slug', 'color' );
 		$i->fillField( [ 'name' => 'description' ], 'Description.' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Text', '.field-list div.type' );
@@ -37,7 +37,7 @@ class CreateContentModelTextFieldCest {
 		$i->click( '#multi' );
 
 		// Save the field.
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Create a new Candies entry.

@@ -113,7 +113,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->fillField( [ 'name' => 'name' ], 'onetomany' );
 		$i->selectOption( '#reference', 'Companies' );
 		$i->click( 'input#one-to-many' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$this->create_company( $i, 'Company A' );
@@ -198,7 +198,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->wait( 1 );
 		$i->see( 'Reverse Display Name' );
 		$i->fillField( [ 'name' => 'reverseName' ], 'Lefts One To One' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Add a many-to-one relationship field to the Left model that references Right, including a reverse reference.
@@ -212,7 +212,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->wait( 1 );
 		$i->see( 'Reverse Display Name' );
 		$i->fillField( [ 'name' => 'reverseName' ], 'Lefts One To Many' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Publish a new Rights post.
@@ -301,7 +301,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->wait( 1 );
 		$i->see( 'Reverse Display Name' );
 		$i->fillField( [ 'name' => 'reverseName' ], 'ThisIsTheReverseReference' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Visit the Lefts publisher entry screen.
@@ -371,7 +371,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->click( 'Text', '.field-buttons' );
 		$i->checkOption( 'input[name="isTitle"]' );
 		$i->fillField( [ 'name' => 'name' ], 'Company' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$content_model = $i->haveContentModel( 'Employee', 'Employees' );
 		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
@@ -381,7 +381,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->fillField( [ 'name' => 'name' ], 'Company' );
 		$i->selectOption( '#reference', 'Companies' );
 		$i->click( 'input#one-to-one' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Relationship', '.field-buttons' );
@@ -389,7 +389,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->fillField( [ 'name' => 'name' ], 'Many Companies' );
 		$i->selectOption( '#reference', 'Companies' );
 		$i->click( 'input#many-to-many' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 2 );
 	}
 

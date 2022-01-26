@@ -69,7 +69,7 @@ class DeleteContentModelCest {
 		$i->fillField( [ 'name' => 'name' ], 'Geese Friends' );
 		$i->selectOption( '#reference', 'Geese' );
 		$i->click( '#many-to-many' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Geese Friends' );
 

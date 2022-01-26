@@ -20,7 +20,10 @@ import { sendEvent } from "acm-analytics";
 import { useInputGenerator, useReservedSlugs } from "../../hooks";
 import { toValidApiId, toGraphQLType } from "../../formats";
 import { getFeaturedFieldId } from "../../queries";
-import { Button } from "../../../../../shared-assets/js/components/Buttons";
+import {
+	Button,
+	TertiaryButton,
+} from "../../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 const { cloneDeep, isEqual } = lodash;
@@ -677,8 +680,8 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						? __("Update", "atlas-content-modeler")
 						: __("Create", "atlas-content-modeler")}
 				</Button>
-				<button
-					className="tertiary"
+				<TertiaryButton
+					data-testid="edit-model-update-create-cancel-button"
 					onClick={(event) => {
 						event.preventDefault();
 						hasDirtyField.current = false;
@@ -698,7 +701,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 					}}
 				>
 					Cancel
-				</button>
+				</TertiaryButton>
 				{type in advancedSettings && (
 					<>
 						<button
