@@ -1,13 +1,14 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.13.0 - 2022-01-26
 ### Added
 - Opt-in anonymous usage tracking to help us make Atlas Content Modeler better (disabled by default).
-### Fixed
-- Ensure Rich Text fields load for publishers even if WordPress Core editor scripts are slow to execute.
 
 ### Changed
 - The title field of a model can no longer be changed once set, unless you delete the original title field. This prepares upcoming work to save title field data to WordPress post titles, allowing title field content to be searchable.
+
+### Fixed
+- Ensure Rich Text fields load for publishers even if WordPress Core editor scripts are slow to execute.
 
 ## 0.12.1 - 2022-01-12
 ### Fixed
