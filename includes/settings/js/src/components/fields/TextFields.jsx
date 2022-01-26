@@ -1,7 +1,7 @@
 /**
  * Additional form fields for the Text field type.
  */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { getTitleFieldId } from "../../queries";
 import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
@@ -14,11 +14,42 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 	const fields = models[currentModel]?.fields;
 	const titleFieldId = getTitleFieldId(fields);
 	const showTitleField = !titleFieldId || titleFieldId === fieldId;
-
+	const [showRepeatable, setShowRepeatable] = useState(
+		data?.isRepeatable === true
+	);
 	return (
 		<>
-			{showTitleField && (
+			{data && (
 				<div className="field">
+					<legend>
+						{__("Repeatable Field", "atlas-content-modeler")}
+					</legend>
+					<input
+						name="isRepeatable"
+						type="checkbox"
+						id={`is-repeatable-${fieldId}`}
+						ref={register}
+						defaultChecked={showRepeatable}
+						onChange={() => setShowRepeatable(!showRepeatable)}
+						disabled={editing}
+					/>
+					<label
+						htmlFor={`is-repeatable-${fieldId}`}
+						className="checkbox is-repeatable"
+					>
+						{__(
+							"Make this field repeatable",
+							"atlas-content-modeler"
+						)}
+					</label>
+				</div>
+			)}
+			{showTitleField && (
+				<div
+					className={
+						showRepeatable ? "field  read-only editing" : "field"
+					}
+				>
 					<legend>Title Field</legend>
 					<input
 						name="isTitle"
@@ -26,7 +57,7 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						id={`is-title-${fieldId}`}
 						ref={register}
 						defaultChecked={data?.isTitle === true}
-						disabled={!!titleFieldId}
+						disabled={!!titleFieldId || showRepeatable}
 					/>
 					<label
 						htmlFor={`is-title-${fieldId}`}
@@ -65,7 +96,11 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 							</span>
 						</label>
 					</div>
-					<div className="radio-row">
+					<div
+						className={
+							"radio-row d-flex flex-column d-sm-flex flex-sm-row"
+						}
+					>
 						<input
 							type="radio"
 							id="multi"

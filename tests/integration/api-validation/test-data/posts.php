@@ -76,6 +76,7 @@ function populate_post( $post_id, $model, $test_class ) {
 
 	update_post_meta( $post_id, 'singleLine', 'This is single line text' );
 	update_post_meta( $post_id, 'singleLineRequired', 'This is required single line text' );
+	update_post_meta( $post_id, 'singleLineTextRepeater', [ 'This is one line of repeater text', 'This is another line of repeater text' ] );
 	update_post_meta( $post_id, 'singleLineLimited', 'This is single line text on a limited field' );
 	update_post_meta( $post_id, 'multiLine', 'This is multi-line text' );
 	update_post_meta( $post_id, 'richText', 'This is a rich text field' );

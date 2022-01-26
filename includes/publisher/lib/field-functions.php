@@ -183,6 +183,9 @@ function append_reverse_relationship_fields( array $models, string $post_type ):
 function sanitize_field( string $type, $value ) {
 	switch ( $type ) {
 		case 'text':
+			if ( is_array( $value ) ) {
+				return array_map( 'wp_strip_all_tags', $value );
+			}
 			return wp_strip_all_tags( $value );
 		case 'richtext':
 			return wp_kses_post( $value );

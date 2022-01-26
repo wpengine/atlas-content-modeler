@@ -5,6 +5,7 @@
 .cache/
 .idea/
 .parcel-cache/
+.vscode
 /vendor/
 composer.json
 dist
