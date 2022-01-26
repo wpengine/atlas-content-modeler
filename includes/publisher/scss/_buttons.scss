@@ -124,27 +124,6 @@ button.warning:hover {
 	border: 1px solid $color-warning-hover;
 }
 
-button.settings {
-	background: transparent;
-	border-color: transparent;
-	color: $color-primary;
-	margin-left: 20px;
-	padding: 14px 0;
-}
-
-button.settings:active,
-button.settings:hover {
-	color: $color-primary-hover;
-
-	svg path {
-		fill: $color-primary-hover;
-	}
-}
-
-button.settings svg {
-	margin-right: 10px;
-}
-
 button.options svg {
 	display: block; // For vertical centering.
 }

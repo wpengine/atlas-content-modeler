@@ -28,7 +28,7 @@ class CreateContentModelNumberFieldCest {
 		$i->click( 'Number', '.field-buttons' );
 		$i->wait( 1 );
 
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minValue' ], '1' );
 		$i->fillField( [ 'name' => 'step' ], '2' );
 		$i->dontSee( 'Step must be lower than max.', '.error' );
@@ -38,7 +38,7 @@ class CreateContentModelNumberFieldCest {
 		$i->click( 'Number', '.field-buttons' );
 		$i->wait( 1 );
 
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minValue' ], '1.2' );
 		$i->see( 'The value must be an integer.', '.error' );
 		$i->fillField( [ 'name' => 'minValue' ], '1' );

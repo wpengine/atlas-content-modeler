@@ -22,6 +22,7 @@ import { toValidApiId, toGraphQLType } from "../../formats";
 import { getFeaturedFieldId } from "../../queries";
 import {
 	Button,
+	LinkButton,
 	TertiaryButton,
 } from "../../../../../shared-assets/js/components/Buttons";
 
@@ -704,8 +705,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				</TertiaryButton>
 				{type in advancedSettings && (
 					<>
-						<button
-							className="settings d-flex flex-row"
+						<LinkButton
+							className="d-flex flex-row"
+							data-testid="edit-model-update-create-settings-button"
 							onClick={(event) => {
 								event.preventDefault();
 								setOptionsModalIsOpen(true);
@@ -713,7 +715,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						>
 							<Icon type="settings" />
 							{__("Advanced Settings", "atlas-content-modeler")}
-						</button>
+						</LinkButton>
 						<Modal
 							isOpen={optionsModalIsOpen}
 							contentLabel="Advanced Settings"

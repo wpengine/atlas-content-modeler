@@ -80,7 +80,7 @@ class PublishModelCest {
 	public function i_see_submission_errors_in_number_fields_when_input_is_less_than_min_for_the_number_type( \AcceptanceTester $i ) {
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Integer' );
-		$i->click( '.open-field button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minValue' ], '0' );
 		$i->fillField( [ 'name' => 'maxValue' ], '10' );
 		$i->fillField( [ 'name' => 'step' ], '1' );
@@ -94,7 +94,7 @@ class PublishModelCest {
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Decimal' );
 		$i->click( 'input#decimal' );
-		$i->click( '.open-field button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minValue' ], '0' );
 		$i->fillField( [ 'name' => 'maxValue' ], '2.5' );
 		$i->fillField( [ 'name' => 'step' ], '1.1' );
@@ -126,7 +126,7 @@ class PublishModelCest {
 	public function i_see_submission_errors_in_number_fields_when_input_is_more_than_max_for_the_number_type( \AcceptanceTester $i ) {
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Integer' );
-		$i->click( '.open-field button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minValue' ], '0' );
 		$i->fillField( [ 'name' => 'maxValue' ], '10' );
 		$i->fillField( [ 'name' => 'step' ], '1' );
@@ -140,7 +140,7 @@ class PublishModelCest {
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Decimal' );
 		$i->click( 'input#decimal' );
-		$i->click( '.open-field button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minValue' ], '0' );
 		$i->fillField( [ 'name' => 'maxValue' ], '2.5' );
 		$i->fillField( [ 'name' => 'step' ], '1.1' );

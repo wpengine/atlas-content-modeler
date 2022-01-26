@@ -16,14 +16,14 @@ class AdvancedSettingsCest {
 		$i->seeInField( '#slug', 'name' );
 
 		// Open and fill Advanced Settings.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minChars' ], '1' );
 		$i->fillField( [ 'name' => 'maxChars' ], '10' );
 		$i->click( '.ReactModal__Content button.primary' );
 		$i->wait( 1 );
 
 		// Open Advanced Settings again and check the options persisted.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->seeInField( 'minChars', '1' );
 		$i->seeInField( 'maxChars', '10' );
 	}
@@ -35,7 +35,7 @@ class AdvancedSettingsCest {
 		$i->seeInField( '#slug', 'name' );
 
 		// Open and fill Advanced Settings.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'maxChars' ], '10' );
 		$i->fillField( [ 'name' => 'minChars' ], '11' );
 		$i->see( 'Max must be more than min' );
@@ -48,7 +48,7 @@ class AdvancedSettingsCest {
 		$i->seeInField( '#slug', 'name' );
 
 		// Open and fill Advanced Settings.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minChars' ], '-1' );
 		$i->see( 'The minimum value is' );
 	}
@@ -60,7 +60,7 @@ class AdvancedSettingsCest {
 		$i->seeInField( '#slug', 'name' );
 
 		// Open and fill Advanced Settings.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minChars' ], '10' );
 		$i->click( '.ReactModal__Content button.primary' ); // Save Advanced Settings.
 		$i->wait( 1 );
@@ -87,7 +87,7 @@ class AdvancedSettingsCest {
 		$i->seeInField( '#slug', 'name' );
 
 		// Open and fill Advanced Settings.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minChars' ], '1' );
 
 		// Cancel the Advanced Settings changes.
@@ -98,7 +98,7 @@ class AdvancedSettingsCest {
 		$i->seeInField( '#slug', 'name' );
 
 		// Check the minChars field in Advanced Settings is now cleared.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->seeInField( '#minChars', '' );
 	}
 
@@ -107,7 +107,7 @@ class AdvancedSettingsCest {
 		$i->wait( 1 );
 
 		// Open and fill Advanced Settings.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minChars' ], '111' );
 
 		// Save the Advanced Settings change but do not save the field yet.
@@ -115,7 +115,7 @@ class AdvancedSettingsCest {
 		$i->wait( 1 );
 
 		// Open Advanced Settings again and update the same field.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minChars' ], '999' );
 
 		// This time, cancel the Advanced Settings changes.
@@ -123,7 +123,7 @@ class AdvancedSettingsCest {
 		$i->wait( 1 );
 
 		// Open Advanced Settings a final time.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 
 		// Expect to see the original saved value (previous state when
 		// “Done” was clicked), not an empty field (initial form state).
@@ -137,7 +137,7 @@ class AdvancedSettingsCest {
 		$i->fillField( [ 'name' => 'name' ], 'Photo' );
 
 		// Open and fill Advanced Settings.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'allowedTypes' ], 'jpg,jpeg,pdf' );
 
 		$i->click( '.ReactModal__Content button.primary' ); // Save Advanced Settings.
@@ -150,7 +150,7 @@ class AdvancedSettingsCest {
 		$i->clickWithLeftButton( '.field-list button.edit', -5, -5 );
 
 		// Open Advanced Settings again.
-		$i->click( 'button.settings' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 
 		// Expect to see saved values.
 		$i->seeInField( '#allowedTypes', 'jpg,jpeg,pdf' );
