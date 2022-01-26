@@ -45,7 +45,7 @@ export default function Text({ field, modelSlug, defaultError }) {
 														} d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 													>
 														<div
-															className="me-lg-1 flex-fill"
+															className="me-lg-1 repeater-input-container flex-fill"
 															name="repeaters"
 														>
 															{field.inputType ===
@@ -53,7 +53,7 @@ export default function Text({ field, modelSlug, defaultError }) {
 																<input
 																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 																	placeholder={__(
-																		`${field.name} Item`,
+																		`Add ${field.name}`,
 																		"atlas-content-modeler"
 																	)}
 																	type="text"

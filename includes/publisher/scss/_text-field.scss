@@ -7,32 +7,43 @@
 		flex: 1 100%;
 	}
 
-	.remove-container, .add-container {
+	.remove-container,
+	.add-container {
 		align-items: center;
 	}
 
-	.repeater-input  {
-    align-items: center !important;
+	.repeater-input {
+		align-items: center !important;
+	}
+
+	button.remove-item {
+		max-height: 30px;
+		padding: 0px 11px;
 	}
 
 	.repeater-input {
-		textarea {
+		textarea, .repeater-input input{
+			width: 100% !important;
 			margin: 0px !important;
 		}
+	}
+
+	.repeater-input-container input[type="text"] {
+		margin: 0px !important;
 	}
 
 	svg.add.add-small.add-small-button {
 		color: #7e5cef;
 	}
 	.add-option a {
-    font-weight: bold;
-    color: #7e5cef;
-    line-height: 23px;
+		font-weight: bold;
+		color: #7e5cef;
+		line-height: 23px;
 	}
 
 	.add-option a span {
-    vertical-align: top;
-    margin-top: 11px;
+		vertical-align: top;
+		margin-top: 11px;
 	}
 
 	.add-option textarea {
@@ -41,7 +52,9 @@
 
 	.add-option {
 		height: 70px;
+		margin-left: 5px;
 	}
+
 	table {
 		border: solid 1px $color-gray-disabled-border;
 		border-spacing: 0;
@@ -61,7 +74,6 @@
 		padding-top: 0;
 		padding-bottom: 0;
 		border: solid 1px $color-gray-disabled-border;
-
 	}
 
 	table td.checkbox,
