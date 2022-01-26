@@ -184,7 +184,7 @@ function sanitize_field( string $type, $value ) {
 	switch ( $type ) {
 		case 'text':
 			if ( is_array( $value ) ) {
-				return $value;
+				return array_map( 'wp_strip_all_tags', $value );
 			}
 			return wp_strip_all_tags( $value );
 		case 'richtext':
