@@ -22,7 +22,8 @@
 	}
 
 	.repeater-input {
-		textarea, .repeater-input input{
+		textarea,
+		.repeater-input input {
 			width: 100% !important;
 			margin: 0px !important;
 		}
@@ -30,6 +31,7 @@
 
 	.repeater-input-container input[type="text"] {
 		margin: 0px !important;
+		width: 100%;
 	}
 
 	svg.add.add-small.add-small-button {
