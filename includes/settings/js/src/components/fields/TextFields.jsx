@@ -21,7 +21,9 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 		<>
 			{data && (
 				<div className="field">
-					<legend>{__("Repeatable Field")}</legend>
+					<legend>
+						{__("Repeatable Field", "atlas-content-modeler")}
+					</legend>
 					<input
 						name="isRepeatable"
 						type="checkbox"
