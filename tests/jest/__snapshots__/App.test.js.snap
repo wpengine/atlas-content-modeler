@@ -8,7 +8,7 @@ exports[`App Renders a matching snapshot 1`] = `
     className="Toastify"
   />
   <div
-    className="app-card"
+    className="css-1oyxnc1-Card"
   >
     <section
       className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row css-1pjtado-Header"
