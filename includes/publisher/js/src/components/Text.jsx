@@ -26,26 +26,13 @@ export default function Text({ field, modelSlug, defaultError }) {
 					<div id="repeaterText" className="text-table flex-row">
 						<div className="repeater-text-field flex-row">
 							<ul>
-								<table
-									key="1"
-									className="table table-striped mt-2"
-								>
-									<thead>
-										<tr>
-											<th>
-												{__(
-													field?.name,
-													"atlas-content-modeler"
-												)}
-											</th>
-										</tr>
-									</thead>
+								<table key="1" className="table mt-2">
 									<tbody>
 										{values.map((item, index) => {
 											return (
-												<div
+												<tr
 													key={index}
-													className={`field text-repeater-container-single d-flex flex-fill flex-row`}
+													className={`field text-repeater-container-single d-flex mt-1 flex-fill flex-row`}
 												>
 													<div
 														className={`${
@@ -55,10 +42,10 @@ export default function Text({ field, modelSlug, defaultError }) {
 															]
 																? "field has-error"
 																: "field"
-														} d-flex flex-row repeater-input flex-fill d-lg-flex`}
+														} d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 													>
 														<div
-															className="me-lg-1"
+															className="me-lg-1 flex-fill"
 															name="repeaters"
 														>
 															{field.inputType ===
@@ -66,7 +53,7 @@ export default function Text({ field, modelSlug, defaultError }) {
 																<input
 																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 																	placeholder={__(
-																		"Item Name",
+																		`${field.name} Item`,
 																		"atlas-content-modeler"
 																	)}
 																	type="text"
@@ -112,7 +99,7 @@ export default function Text({ field, modelSlug, defaultError }) {
 																<textarea
 																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 																	placeholder={__(
-																		"Item Name",
+																		`Add ${field.name}`,
 																		"atlas-content-modeler"
 																	)}
 																	type="text"
@@ -186,12 +173,12 @@ export default function Text({ field, modelSlug, defaultError }) {
 															)}
 														</div>
 													</div>
-												</div>
+												</tr>
 											);
 										})}
-										<div className="field">
+										<tr className="flex add-container">
 											<button
-												className="add-option tertiary no-border"
+												className="add-option mt-1 tertiary no-border"
 												onClick={(event) => {
 													event.preventDefault();
 													// Adds a new empty value to display another text field.
@@ -206,17 +193,17 @@ export default function Text({ field, modelSlug, defaultError }) {
 													<span>
 														{field.value.length > 0
 															? __(
-																	"Add another item",
+																	`Add Another ${field.name}`,
 																	"atlas-content-modeler"
 															  )
 															: __(
-																	"Add an item",
+																	`Add ${field.name}`,
 																	"atlas-content-modeler"
 															  )}
 													</span>
 												</a>
 											</button>
-										</div>
+										</tr>
 									</tbody>
 								</table>
 							</ul>
