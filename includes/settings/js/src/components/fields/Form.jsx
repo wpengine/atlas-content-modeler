@@ -736,7 +736,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							/>
 
 							<div className="d-flex flex-row mt-5">
-								<button
+								<Button
 									onClick={async () => {
 										const fieldsAreValid = await trigger(
 											Object.keys(
@@ -749,11 +749,13 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 										}
 									}}
 									type="submit"
-									className="primary first mr-1 mr-sm-2"
+									className="first mr-1 mr-sm-2"
+									data-testid="model-advanced-settings-done-button"
 								>
 									{__("Done", "atlas-content-modeler")}
-								</button>
-								<button
+								</Button>
+								<TertiaryButton
+									data-testid="model-advanced-settings-cancel-button"
 									onClick={() => {
 										const resetValues = getValues();
 										Object.keys(
@@ -766,10 +768,9 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 										reset(resetValues);
 										setOptionsModalIsOpen(false);
 									}}
-									className="tertiary"
 								>
 									{__("Cancel", "atlas-content-modeler")}
-								</button>
+								</TertiaryButton>
 							</div>
 						</Modal>
 					</>

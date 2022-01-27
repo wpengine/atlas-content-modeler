@@ -84,7 +84,7 @@ class PublishModelCest {
 		$i->fillField( [ 'name' => 'minValue' ], '0' );
 		$i->fillField( [ 'name' => 'maxValue' ], '10' );
 		$i->fillField( [ 'name' => 'step' ], '1' );
-		$i->click( '.ReactModal__Content button.primary' );
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' );
 		$i->wait( 1 );
 
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
@@ -98,7 +98,7 @@ class PublishModelCest {
 		$i->fillField( [ 'name' => 'minValue' ], '0' );
 		$i->fillField( [ 'name' => 'maxValue' ], '2.5' );
 		$i->fillField( [ 'name' => 'step' ], '1.1' );
-		$i->click( '.ReactModal__Content button.primary' );
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' );
 
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
@@ -130,7 +130,7 @@ class PublishModelCest {
 		$i->fillField( [ 'name' => 'minValue' ], '0' );
 		$i->fillField( [ 'name' => 'maxValue' ], '10' );
 		$i->fillField( [ 'name' => 'step' ], '1' );
-		$i->click( '.ReactModal__Content button.primary' );
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' );
 		$i->wait( 1 );
 
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
@@ -144,7 +144,7 @@ class PublishModelCest {
 		$i->fillField( [ 'name' => 'minValue' ], '0' );
 		$i->fillField( [ 'name' => 'maxValue' ], '2.5' );
 		$i->fillField( [ 'name' => 'step' ], '1.1' );
-		$i->click( '.ReactModal__Content button.primary' );
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' );
 
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
