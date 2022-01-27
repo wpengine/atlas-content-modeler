@@ -19,7 +19,7 @@ class AdvancedSettingsCest {
 		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minChars' ], '1' );
 		$i->fillField( [ 'name' => 'maxChars' ], '10' );
-		$i->click( '.ReactModal__Content button.primary' );
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' );
 		$i->wait( 1 );
 
 		// Open Advanced Settings again and check the options persisted.
@@ -62,7 +62,7 @@ class AdvancedSettingsCest {
 		// Open and fill Advanced Settings.
 		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'minChars' ], '10' );
-		$i->click( '.ReactModal__Content button.primary' ); // Save Advanced Settings.
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' ); // Save Advanced Settings.
 		$i->wait( 1 );
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' ); // Save the field.
 
@@ -91,7 +91,7 @@ class AdvancedSettingsCest {
 		$i->fillField( [ 'name' => 'minChars' ], '1' );
 
 		// Cancel the Advanced Settings changes.
-		$i->click( '.ReactModal__Content button.tertiary' );
+		$i->click( 'button[data-testid="model-advanced-settings-cancel-button"]' );
 		$i->wait( 1 );
 
 		// Check the name field still contains the original text.
@@ -111,7 +111,7 @@ class AdvancedSettingsCest {
 		$i->fillField( [ 'name' => 'minChars' ], '111' );
 
 		// Save the Advanced Settings change but do not save the field yet.
-		$i->click( '.ReactModal__Content button.primary' );
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' );
 		$i->wait( 1 );
 
 		// Open Advanced Settings again and update the same field.
@@ -119,7 +119,7 @@ class AdvancedSettingsCest {
 		$i->fillField( [ 'name' => 'minChars' ], '999' );
 
 		// This time, cancel the Advanced Settings changes.
-		$i->click( '.ReactModal__Content button.tertiary' );
+		$i->click( 'button[data-testid="model-advanced-settings-cancel-button"]' );
 		$i->wait( 1 );
 
 		// Open Advanced Settings a final time.
@@ -140,7 +140,7 @@ class AdvancedSettingsCest {
 		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
 		$i->fillField( [ 'name' => 'allowedTypes' ], 'jpg,jpeg,pdf' );
 
-		$i->click( '.ReactModal__Content button.primary' ); // Save Advanced Settings.
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' ); // Save Advanced Settings.
 		$i->wait( 1 );
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' ); // Save the field.
 		$i->wait( 1 );
