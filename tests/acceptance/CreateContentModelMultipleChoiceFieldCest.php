@@ -12,7 +12,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 	 * Ensure a user can add a multile choice field from a model and remove it.
 	 */
 	public function i_can_add_a_multiple_choice_field_to_a_content_model( AcceptanceTester $i ): void {
-		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
+		$i->click( 'Multiple Choice', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->wait( 1 );
@@ -39,7 +39,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 	 * Ensure a user cannot create two options with the same key value api identifier.
 	 */
 	public function i_cannot_add_a_duplicate_identifier_name_for_two_choices( AcceptanceTester $i ): void {
-		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
+		$i->click( 'Multiple Choice', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->fillField( [ 'name' => 'choices[0].name' ], 'dog' );
@@ -60,7 +60,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 	 * Ensure a user cannot save a choice with no name or slug.
 	 */
 	public function i_cannot_save_a_blank_choice( AcceptanceTester $i ): void {
-		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
+		$i->click( 'Multiple Choice', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->fillField( [ 'name' => 'choices[0].name' ], 'dog' );
@@ -79,7 +79,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 	 * Ensure a user cannot create two choices with the same name.
 	 */
 	public function i_cannot_add_a_duplicate_name_for_two_choices( AcceptanceTester $i ): void {
-		$i->click( 'Multiple Choice (Beta)', '.field-buttons' );
+		$i->click( 'Multiple Choice', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Favorite Animal' );
 		$i->wait( 1 );
