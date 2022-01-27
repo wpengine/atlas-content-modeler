@@ -57,6 +57,11 @@ export default function Text({ field, modelSlug, defaultError }) {
 																		"atlas-content-modeler"
 																	)}
 																	type="text"
+																	required={
+																		field?.required
+																			? true
+																			: false
+																	}
 																	onKeyPress={(
 																		event
 																	) => {
@@ -103,6 +108,11 @@ export default function Text({ field, modelSlug, defaultError }) {
 																		"atlas-content-modeler"
 																	)}
 																	type="text"
+																	required={
+																		field?.required
+																			? true
+																			: false
+																	}
 																	value={
 																		values[
 																			index
