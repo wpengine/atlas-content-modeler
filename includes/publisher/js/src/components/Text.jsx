@@ -62,6 +62,12 @@ export default function Text({ field, modelSlug, defaultError }) {
 																			? true
 																			: false
 																	}
+																	minLength={
+																		field?.minChars
+																	}
+																	maxLength={
+																		field?.maxChars
+																	}
 																	onKeyPress={(
 																		event
 																	) => {
@@ -112,6 +118,12 @@ export default function Text({ field, modelSlug, defaultError }) {
 																		field?.required
 																			? true
 																			: false
+																	}
+																	minLength={
+																		field?.minChars
+																	}
+																	maxLength={
+																		field?.maxChars
 																	}
 																	value={
 																		values[
