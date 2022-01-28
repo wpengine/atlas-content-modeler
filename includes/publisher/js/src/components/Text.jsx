@@ -58,7 +58,9 @@ export default function Text({ field, modelSlug, defaultError }) {
 																	)}
 																	type="text"
 																	required={
-																		field?.required
+																		field?.required &&
+																		index <
+																			1
 																			? true
 																			: false
 																	}
@@ -115,7 +117,9 @@ export default function Text({ field, modelSlug, defaultError }) {
 																	)}
 																	type="text"
 																	required={
-																		field?.required
+																		field?.required &&
+																		index <
+																			1
 																			? true
 																			: false
 																	}
