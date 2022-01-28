@@ -219,11 +219,11 @@ export default function Text({ field, modelSlug, defaultError }) {
 													<span>
 														{field.value.length > 0
 															? __(
-																	`Add Another ${field.name}`,
+																	`Add Another`,
 																	"atlas-content-modeler"
 															  )
 															: __(
-																	`Add ${field.name}`,
+																	`Add Item`,
 																	"atlas-content-modeler"
 															  )}
 													</span>
