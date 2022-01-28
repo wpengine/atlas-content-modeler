@@ -17,10 +17,14 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 	const [showRepeatable, setShowRepeatable] = useState(
 		data?.isRepeatable === true
 	);
+	const [showTitle, setShowTitle] = useState(data?.isTitle === true);
+
 	return (
 		<>
 			{data && (
-				<div className="field">
+				<div
+					className={showTitle ? "field  read-only editing" : "field"}
+				>
 					<legend>
 						{__("Repeatable Field", "atlas-content-modeler")}
 					</legend>
@@ -31,7 +35,7 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						ref={register}
 						defaultChecked={showRepeatable}
 						onChange={() => setShowRepeatable(!showRepeatable)}
-						disabled={editing}
+						disabled={editing || showTitle}
 					/>
 					<label
 						htmlFor={`is-repeatable-${fieldId}`}
@@ -56,6 +60,7 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 						type="checkbox"
 						id={`is-title-${fieldId}`}
 						ref={register}
+						onChange={() => setShowTitle(!showTitle)}
 						defaultChecked={data?.isTitle === true}
 						disabled={!!titleFieldId || showRepeatable}
 					/>
