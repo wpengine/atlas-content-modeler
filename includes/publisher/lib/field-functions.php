@@ -184,7 +184,13 @@ function sanitize_field( string $type, $value ) {
 	switch ( $type ) {
 		case 'text':
 			if ( is_array( $value ) ) {
-				return array_map( 'wp_strip_all_tags', $value );
+				$repeater_text_value = [];
+				foreach ( $value as $text_string ) {
+					if ( $text_string !== '' ) {
+						$repeater_text_value[] = $text_string;
+					}
+				}
+				return array_map( 'wp_strip_all_tags', $repeater_text_value );
 			}
 			return wp_strip_all_tags( $value );
 		case 'richtext':
