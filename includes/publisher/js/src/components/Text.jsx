@@ -6,8 +6,13 @@ const { wp } = window;
 import AddIcon from "../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../components/icons/TrashIcon";
 
-export default function Text({ field, modelSlug, defaultError }) {
-	const [errors, setErrors] = useState({});
+export default function Text({
+	field,
+	errors,
+	validate,
+	modelSlug,
+	defaultError,
+}) {
 
 	if (field.isRepeatable) {
 		const [values, setValues] = useState(field?.value || [""]);
