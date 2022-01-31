@@ -98,7 +98,15 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "text":
-			return <Text field={field} modelSlug={modelSlug} />;
+			return (
+				<Text
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
+			);
 		case "number":
 			let numberOptions = {};
 			const numberInputRef = useRef();
