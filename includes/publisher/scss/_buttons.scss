@@ -1,17 +1,4 @@
 @import "../../../includes/shared-assets/scss/_variables";
-button {
-	background: $color-primary;
-	border-radius: $radius;
-	border: 1px solid $color-primary;
-	color: $color-white;
-	cursor: pointer;
-	font-size: 14px;
-	font-weight: 600;
-	height: 52px;
-	line-height: 20px;
-	padding: 14px 24px;
-}
-
 button:disabled,
 button:disabled:hover {
 	background: $color-gray-disabled-background !important;
@@ -21,12 +8,6 @@ button:disabled:hover {
 
 button.first {
 	margin-right: 20px;
-}
-
-button:focus,
-button:hover {
-	background: $color-primary-hover;
-	border: 1px solid $color-primary-hover;
 }
 
 button.secondary {
