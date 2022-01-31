@@ -2,7 +2,7 @@
 
 namespace WPE\AtlasContentModeler\ContentConnect\Tests\Integration\Tables;
 
-class PostToPostTest extends \PHPUnit_Framework_TestCase {
+class PostToPostTest extends \PHPUnit\Framework\TestCase {
 
 	public function test_table_is_created() {
 		global $wpdb;
