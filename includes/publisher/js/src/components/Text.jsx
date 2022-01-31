@@ -13,7 +13,6 @@ export default function Text({
 	modelSlug,
 	defaultError,
 }) {
-
 	if (field.isRepeatable) {
 		const [values, setValues] = useState(field?.value || [""]);
 		return (
