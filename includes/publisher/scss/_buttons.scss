@@ -10,18 +10,6 @@ button.first {
 	margin-right: 20px;
 }
 
-button.secondary {
-	background: $color-text;
-	border: 1px solid $color-text;
-	color: $color-white;
-}
-
-button.secondary:focus,
-button.secondary:hover {
-	background: lighten($color-text, 10%);
-	border: 1px solid lighten($color-text, 10%);
-}
-
 button.tertiary {
 	background: $color-white;
 	border: 1px solid $color-text;
