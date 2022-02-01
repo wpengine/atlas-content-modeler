@@ -50,6 +50,7 @@ function atlas_content_modeler_loader(): void {
 		'publisher/class-publisher-form-editing-experience.php',
 		'updates/version-updates.php',
 		'content-connect/autoload.php',
+		'blueprints/import.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
