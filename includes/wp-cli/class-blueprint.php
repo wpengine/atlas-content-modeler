@@ -15,6 +15,13 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler\WP_CLI;
 
+use function WPE\AtlasContentModeler\Blueprint\Import\unzip_blueprint;
+use function WPE\AtlasContentModeler\Blueprint\Import\get_manifest;
+use function WPE\AtlasContentModeler\Blueprint\Import\check_versions;
+use function WPE\AtlasContentModeler\Blueprint\Import\import_taxonomies;
+use function WPE\AtlasContentModeler\Blueprint\Import\import_posts;
+use function WPE\AtlasContentModeler\REST_API\Models\create_models;
+
 /**
  * Blueprint subcommands for the `wp acm blueprint` WP-CLI command.
  */
@@ -35,14 +42,71 @@ class Blueprint {
 	 */
 	public function import( $args ) {
 		list( $url ) = $args;
-		\WP_CLI::log( 'Fetching zip.' );
-		\WP_CLI::log( 'Unzipping.' );
+		// \WP_CLI::log( 'Fetching zip.' );
+		// TODO: Fetch zip from $url and save to wp_upload_dir().
+
+		\WP_CLI::log( 'Unzipping blueprint.' );
+		// TODO: Replace this with the zip path from the previous step.
+		$upload_dir       = wp_upload_dir();
+		$zip_file         = $upload_dir['path'] . '/acm-rabbits.zip';
+		$blueprint_folder = unzip_blueprint( $zip_file );
+
+		if ( is_wp_error( $blueprint_folder ) ) {
+			\WP_CLI::error(
+				sprintf(
+					// translators: the error message.
+					__( 'Could not unzip blueprint: %s', 'atlas-content-modeler' ),
+					$blueprint_folder->get_error_message()
+				)
+			);
+		}
+
 		\WP_CLI::log( 'Verifying ACM manifest.' );
-		\WP_CLI::log( 'Importing ACM models and fields.' );
-		\WP_CLI::log( 'Importing ACM taxonomies and terms.' );
-		\WP_CLI::log( 'Importing posts.' );
+		$manifest = get_manifest( $blueprint_folder );
+
+		if ( is_wp_error( $manifest ) ) {
+			\WP_CLI::error(
+				$manifest->get_error_message( 'acm_manifest_error' )
+			);
+		}
+
+		\WP_CLI::log( 'Checking minimum versions.' );
+		$version_test = check_versions( $manifest );
+
+		if ( is_wp_error( $version_test ) ) {
+			\WP_CLI::error(
+				$version_test->get_error_message( 'acm_version_error' )
+			);
+		}
+
+		if ( ! empty( $manifest['models'] ?? [] ) ) {
+			\WP_CLI::log( 'Importing ACM models and fields.' );
+
+			$model_import = create_models( $manifest['models'] );
+
+			if ( is_wp_error( $model_import ) ) {
+				\WP_CLI::error( $model_import->get_error_message() );
+			}
+		}
+
+		if ( ! empty( $manifest['taxonomies'] ?? [] ) ) {
+			\WP_CLI::log( 'Importing ACM taxonomies.' );
+
+			$taxonomy_import = import_taxonomies( $manifest['taxonomies'] );
+
+			if ( is_wp_error( $taxonomy_import ) ) {
+				\WP_CLI::error( $taxonomy_import->get_error_message() );
+			}
+		}
+
+		if ( ! empty( $manifest['posts'] ?? [] ) ) {
+			\WP_CLI::log( 'Importing posts.' );
+			$post_ids_old_new = import_posts( $manifest['posts'] );
+		}
+
 		\WP_CLI::log( 'Importing media.' );
 		\WP_CLI::log( 'Importing post meta.' );
+		\WP_CLI::log( 'Importing terms.' );
 		\WP_CLI::log( 'Importing post terms.' );
 		\WP_CLI::log( 'Restoring ACM relationships.' );
 		\WP_CLI::log( 'Done!' );
