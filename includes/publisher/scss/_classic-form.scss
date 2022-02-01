@@ -402,5 +402,11 @@ $button-primary: #002838;
 				width: 60% !important;
 			}
 		}
+		.repeater-input {
+			textarea {
+				width: 100%;
+				margin: 0px;
+			}
+		}
 	}
 }
