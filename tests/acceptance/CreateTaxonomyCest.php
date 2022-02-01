@@ -30,8 +30,9 @@ class CreateTaxonomyCest {
 		$i->fillField( [ 'name' => 'singular' ], 'Breed' );
 		$i->fillField( [ 'name' => 'plural' ], 'Breeds' );
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( 'button[data-testid="create-taxonomy-button"]' );
-		$i->wait( 1 );
+		$i->click( '.card-content button.primary' );
+		$i->wait( 2 );
+
 		$i->see( 'taxonomy was created', '#success' );
 		$i->see( 'Breeds', '.taxonomy-list' );
 		$i->see( 'goose', '.taxonomy-list' );
