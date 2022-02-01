@@ -39,7 +39,7 @@ class CreateContentModelTextFieldCest {
 		$i->click( '.is-repeatable' );
 
 		// Save the field.
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Create a new Candies entry.
