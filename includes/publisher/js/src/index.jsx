@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./../../scss/index.scss";
+import "../../../settings/scss/index.scss";
 
 const { models, postType } = atlasContentModelerFormEditingExperience;
 const container = document.getElementById("atlas-content-modeler-fields-app");
