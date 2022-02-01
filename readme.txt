@@ -54,7 +54,7 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 == Changelog ==
 
-= 0.13.0 - 2022-01-26 =
+= 0.13.0 - 2022-02-01 =
 
 * **Added:** Opt-in anonymous usage tracking to help us make Atlas Content Modeler better (disabled by default).
 * **Changed:** The title field of a model can no longer be changed once set, unless you delete the original title field. This prepares upcoming work to save title field data to WordPress post titles, allowing title field content to be searchable.

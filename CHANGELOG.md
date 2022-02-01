@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## 0.13.0 - 2022-01-26
+## 0.13.0 - 2022-02-01
 ### Added
 - Text Repeater Field - Added repeatable property to single and multi line text fields for returning arrays of publisher defined strings.
 - Opt-in anonymous usage tracking to help us make Atlas Content Modeler better (disabled by default).
