@@ -1,6 +1,11 @@
+/** @jsx jsx */
+import { jsx, css } from "@emotion/react";
 import React, { useEffect, useState } from "react";
 import Icon from "../../../../components/icons";
-import { DarkButton } from "../../../../shared-assets/js/components/Buttons";
+import {
+	DarkButton,
+	LinkButton,
+} from "../../../../shared-assets/js/components/Buttons";
 import { __ } from "@wordpress/i18n";
 
 export default function MediaUploader({ modelSlug, field, required }) {
@@ -190,10 +195,15 @@ export default function MediaUploader({ modelSlug, field, required }) {
 					</div>
 
 					{mediaUrl && (
-						<a
+						<LinkButton
+							css={css`
+								color: #d21b46;
+								&:focus,
+								&:hover {
+									color: #a51537;
+								}
+							`}
 							href="#"
-							style={{ marginLeft: "20px" }}
-							className="btn-delete"
 							onClick={(e) => deleteImage(e)}
 						>
 							{field?.isFeatured
@@ -202,7 +212,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 										"atlas-content-modeler"
 								  )
 								: __("Remove Media", "atlas-content-modeler")}
-						</a>
+						</LinkButton>
 					)}
 				</div>
 
