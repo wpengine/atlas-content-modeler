@@ -12,6 +12,7 @@ namespace WPE\AtlasContentModeler\Blueprint\Import;
 use WP_Error;
 use function WPE\AtlasContentModeler\REST_API\Taxonomies\save_taxonomy;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register as register_taxonomies;
+use function WPE\AtlasContentModeler\get_field_type_from_slug;
 
 /**
  * Unzips the blueprint zip file.
@@ -330,4 +331,82 @@ function import_media( array $media, string $blueprint_folder ) {
 	}
 
 	return $media_ids_old_new;
+}
+
+/**
+ * Imports post meta.
+ *
+ * @param array $manifest The full blueprint manifest.
+ * @param array $post_ids_old_new A map of original post IDs from the manifest
+ *                                and their new ID when imported.
+ * @param array $media_ids_old_new A map of original media IDs from the manifest
+ *                                  and their new ID when imported.
+ * @return void Does not report errors during post meta update.
+ */
+function import_post_meta( array $manifest, array $post_ids_old_new, array $media_ids_old_new ) {
+	$post_meta = $manifest['post_meta'] ?? [];
+
+	foreach ( $post_meta as $original_post_id => $metas ) {
+		foreach ( $metas as $meta ) {
+			$is_thumbnail_meta       = $meta['meta_key'] === '_thumbnail_id';
+			$is_acm_media_field_meta = is_acm_media_field_meta(
+				$manifest,
+				$original_post_id,
+				$meta['meta_key']
+			);
+
+			/**
+			 * Thumbnails and media fields must use the new media ID for media
+			 * imported in the previous step for their meta_key. This replaces
+			 * the original media ID that appears in the manifest from the site
+			 * the blueprint was generated on.
+			 */
+			if ( $is_thumbnail_meta || $is_acm_media_field_meta ) {
+				$meta['meta_value'] = // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+					$media_ids_old_new[ $meta['meta_value'] ]
+					?? $meta['meta_value'];
+			}
+
+			/**
+			 * Update meta for the newly imported post ID, not the original post
+			 * ID stored in the manifest.
+			 */
+			$new_post_id =
+				$post_ids_old_new[ $original_post_id ]
+				?? $original_post_id;
+
+			update_post_meta(
+				(int) $new_post_id,
+				$meta['meta_key'],
+				$meta['meta_value']
+			);
+		}
+	}
+}
+
+/**
+ * Determines if the passed $field_slug is an ACM media field.
+ *
+ * Meta values for ACM media fields contain the original media ID that may need
+ * to be adjusted to use the newly imported media ID before meta is imported.
+ *
+ * @param array  $manifest The full blueprint manifest.
+ * @param int    $post_id Post ID to determine post type.
+ * @param string $field_slug Field slug to determine field type.
+ * @return bool
+ */
+function is_acm_media_field_meta( array $manifest, int $post_id, string $field_slug ): bool {
+	$post_type        = $manifest['posts'][ $post_id ]['post_type'] ?? '';
+	$acm_post_types   = array_keys( $manifest['models'] ?? [] );
+	$is_acm_post_type = in_array( $post_type, $acm_post_types, true );
+
+	if ( ! $is_acm_post_type ) {
+		return false;
+	}
+
+	return 'media' === get_field_type_from_slug(
+		$field_slug,
+		$manifest['models'] ?? [],
+		$post_type
+	);
 }
