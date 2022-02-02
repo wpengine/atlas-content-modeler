@@ -78,7 +78,7 @@
 @media (max-width: $breakpoint-tablet) {
 	.neg-margin-wrapper {
 		.dropdown {
-			margin-left: -80px;
+			margin-left: -80px !important;
 		}
 	}
 }

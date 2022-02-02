@@ -43,7 +43,7 @@ const Options = ({ entry, setSelectedEntries }) => {
 	}, [timer]);
 
 	return (
-		<Dropdown>
+		<Dropdown className="dropdown">
 			<button
 				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
