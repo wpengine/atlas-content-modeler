@@ -258,7 +258,7 @@ function import_terms( array $terms ) {
  *                                and their new ID when imported.
  * @return true|WP_Error True on success, WP_Error if setting any term failed.
  */
-function tag_posts( $post_terms, $post_ids_old_new, $term_ids_old_new ) {
+function tag_posts( array $post_terms, array $post_ids_old_new, array $term_ids_old_new ) {
 	foreach ( $post_terms as $post_id => $terms ) {
 		foreach ( $terms as $term ) {
 			$new_post_id = $post_ids_old_new[ $post_id ] ?? $post_id;
