@@ -1,0 +1,252 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Renders a matching snapshot 1`] = `
+<EmotionCssPropInternal
+  __EMOTION_LABEL_PLEASE_DO_NOT_USE__="Button"
+  __EMOTION_TYPE_PLEASE_DO_NOT_USE__="button"
+  css={
+    Object {
+      "map": undefined,
+      "name": "3jwsd",
+      "next": undefined,
+      "styles": "
+		background: #7e5cef;
+		border-radius: 2px;
+		border: 1px solid #7e5cef;
+		color: #fff;
+		cursor: pointer;
+		font-size: 14px;
+		font-weight: 600;
+		height: 52px;
+		line-height: 20px;
+		padding: 14px 24px;
+		&:hover,
+		&:focus {
+			background: #5c43ae;
+			border: 1px solid #5c43ae;
+		}
+		,
+		&:disabled {
+			background: #f4f7fa !important;
+			border-color: #cfdde9 !important;
+			color: #59767f !important;
+			&:hover {
+				background: #f4f7fa !important;
+				border-color: #cfdde9 !important;
+				color: #59767f !important;
+			}
+		}
+	",
+      "toString": [Function],
+    }
+  }
+>
+  Button content
+</EmotionCssPropInternal>
+`;
+
+exports[`DarkButton Renders a matching snapshot 1`] = `
+<EmotionCssPropInternal
+  __EMOTION_LABEL_PLEASE_DO_NOT_USE__="DarkButton"
+  __EMOTION_TYPE_PLEASE_DO_NOT_USE__={[Function]}
+  css={
+    Object {
+      "map": undefined,
+      "name": "1usopvp",
+      "next": undefined,
+      "styles": "
+		background: #002838;
+		border: 1px solid #002838;
+		color: #fff;
+		&:hover,
+		&:focus {
+			background: #004c6b;
+			border: 1px solid #004c6b;
+		}
+	",
+      "toString": [Function],
+    }
+  }
+>
+  Dark Button content
+</EmotionCssPropInternal>
+`;
+
+exports[`FieldButton active FieldButton Renders a matching snapshot 1`] = `
+<EmotionCssPropInternal
+  __EMOTION_LABEL_PLEASE_DO_NOT_USE__="FieldButton"
+  __EMOTION_TYPE_PLEASE_DO_NOT_USE__={[Function]}
+  className=""
+  css={
+    Object {
+      "map": undefined,
+      "name": "1qvi7mb",
+      "next": undefined,
+      "styles": "
+		align-items: center;
+		display: flex;
+		margin-right: 8px;
+		padding: 10px 16px;
+
+		&:hover svg path,
+		&:focus svg path {
+			fill: #7e5cef;
+		}
+
+		svg {
+			margin-right: 9px;
+		}
+	",
+      "toString": [Function],
+    }
+  }
+>
+  Field Button content
+</EmotionCssPropInternal>
+`;
+
+exports[`FieldButton inactive FieldButton Renders a matching snapshot 1`] = `
+<EmotionCssPropInternal
+  __EMOTION_LABEL_PLEASE_DO_NOT_USE__="FieldButton"
+  __EMOTION_TYPE_PLEASE_DO_NOT_USE__={[Function]}
+  active={true}
+  className=" active"
+  css={
+    Object {
+      "map": undefined,
+      "name": "o1mde8",
+      "next": undefined,
+      "styles": "
+			
+		align-items: center;
+		display: flex;
+		margin-right: 8px;
+		padding: 10px 16px;
+
+		&:hover svg path,
+		&:focus svg path {
+			fill: #7e5cef;
+		}
+
+		svg {
+			margin-right: 9px;
+		}
+	;
+			background: #002838;
+			color: #fff;
+
+			&:hover,
+			&:focus {
+				background: #002838;
+				border: 1px solid #002838;
+				color: #fff;
+			}
+
+			svg path,
+			&:focus svg path,
+			&:hover svg path {
+				fill: #fff;
+			}
+		",
+      "toString": [Function],
+    }
+  }
+>
+  Field Button content
+</EmotionCssPropInternal>
+`;
+
+exports[`LinkButton Renders a matching snapshot 1`] = `
+<EmotionCssPropInternal
+  __EMOTION_LABEL_PLEASE_DO_NOT_USE__="LinkButton"
+  __EMOTION_TYPE_PLEASE_DO_NOT_USE__={[Function]}
+  css={
+    Object {
+      "map": undefined,
+      "name": "thwps8",
+      "next": undefined,
+      "styles": "
+		background: transparent;
+		border-color: transparent;
+		color: #7e5cef;
+		margin-left: 20px;
+		padding: 14px 0;
+
+		&:active,
+		&:hover,
+		&:focus {
+			background: transparent;
+			border-color: transparent;
+			color: #5c43ae;
+
+			svg path {
+				fill: #5c43ae;
+			}
+		}
+
+		svg {
+			margin-right: 10px;
+		}
+	",
+      "toString": [Function],
+    }
+  }
+>
+  Link Button content
+</EmotionCssPropInternal>
+`;
+
+exports[`TertiaryButton Renders a matching snapshot 1`] = `
+<EmotionCssPropInternal
+  __EMOTION_LABEL_PLEASE_DO_NOT_USE__="TertiaryButton"
+  __EMOTION_TYPE_PLEASE_DO_NOT_USE__={[Function]}
+  css={
+    Object {
+      "map": undefined,
+      "name": "2mza3h",
+      "next": undefined,
+      "styles": "
+		background: #fff;
+		border: 1px solid #002838;
+		color: #002838;
+		&:hover,
+		&:focus {
+			background: #fff;
+			border: 1px solid #7e5cef;
+			color: #7e5cef;
+		}
+	",
+      "toString": [Function],
+    }
+  }
+>
+  TertiaryButton Button content
+</EmotionCssPropInternal>
+`;
+
+exports[`WarningButton Renders a matching snapshot 1`] = `
+<EmotionCssPropInternal
+  __EMOTION_LABEL_PLEASE_DO_NOT_USE__="WarningButton"
+  __EMOTION_TYPE_PLEASE_DO_NOT_USE__={[Function]}
+  css={
+    Object {
+      "map": undefined,
+      "name": "98ik2a",
+      "next": undefined,
+      "styles": "
+		background: #d21b46;
+		border: 1px solid #d21b46;
+		color: #fff;
+		&:hover,
+		&:focus {
+			background: #991433;
+			border: 1px solid #991433;
+		}
+	",
+      "toString": [Function],
+    }
+  }
+>
+  Warning Button content
+</EmotionCssPropInternal>
+`;
