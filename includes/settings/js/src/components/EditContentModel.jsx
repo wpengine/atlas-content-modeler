@@ -16,6 +16,7 @@ import {
 	getOpenField,
 } from "../queries";
 import FieldButtons from "./FieldButtons";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 Modal.setAppElement("#root");
 
@@ -68,7 +69,7 @@ export default function EditContentModel() {
 	};
 
 	return (
-		<div className="app-card">
+		<Card>
 			<section className="heading">
 				<h2 className="pr-1 pr-sm-0">
 					<a
@@ -225,6 +226,6 @@ export default function EditContentModel() {
 					</>
 				)}
 			</section>
-		</div>
+		</Card>
 	);
 }
