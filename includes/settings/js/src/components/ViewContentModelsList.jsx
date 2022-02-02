@@ -7,6 +7,7 @@ import { sendEvent } from "acm-analytics";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 import { __ } from "@wordpress/i18n";
 import { jsx, css } from "@emotion/react";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 function Header({ showButtons = true }) {
 	let history = useHistory();
@@ -47,7 +48,7 @@ export default function ViewContentModelsList() {
 	}, []);
 
 	return (
-		<div className="app-card">
+		<Card>
 			<Header showButtons={hasModels} />
 			<section className="card-content">
 				{hasModels ? (
@@ -75,7 +76,7 @@ export default function ViewContentModelsList() {
 					</div>
 				)}
 			</section>
-		</div>
+		</Card>
 	);
 }
 
