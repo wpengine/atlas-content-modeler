@@ -11,6 +11,7 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 const { apiFetch } = wp;
 
@@ -100,7 +101,7 @@ export default function CreateContentModel() {
 	}
 
 	return (
-		<div className="app-card">
+		<Card>
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>New Content Model</h2>
 				<button
@@ -421,6 +422,6 @@ export default function CreateContentModel() {
 					</button>
 				</form>
 			</section>
-		</div>
+		</Card>
 	);
 }

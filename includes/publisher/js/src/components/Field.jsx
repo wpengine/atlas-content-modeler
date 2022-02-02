@@ -2,7 +2,10 @@ import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Relationship from "./relationship";
+import Text from "./Text";
 import Icon from "acm-icons";
+import AddIcon from "../../../../components/icons/AddIcon";
+import TrashIcon from "../../../../components/icons/TrashIcon";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
@@ -95,44 +98,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "text":
-			const textProps = {
-				type: `${field.type}`,
-				name: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
-				id: `atlas-content-modeler[${modelSlug}][${field.slug}]`,
-				defaultValue: field.value,
-				required: field.required,
-				onChange: (event) => validate(event, field),
-				minLength: field?.minChars,
-				maxLength: field?.maxChars,
-			};
-
 			return (
-				<>
-					<label
-						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-					>
-						{field.name}
-					</label>
-					{field?.required && (
-						<p className="required">
-							*{__("Required", "atlas-content-modeler")}
-						</p>
-					)}
-					{field?.description && (
-						<p className="help mb-0">{field.description}</p>
-					)}
-					{field?.inputType === "multi" ? (
-						<textarea {...textProps} />
-					) : (
-						<input {...textProps} />
-					)}
-					<span className="error">
-						<Icon type="error" />
-						<span role="alert">
-							{errors[field.slug] ?? defaultError}
-						</span>
-					</span>
-				</>
+				<Text
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
 			);
 		case "number":
 			let numberOptions = {};
@@ -170,7 +143,6 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				// call global validate
 				validate(event, field);
 			}
-
 			return (
 				<>
 					<label
