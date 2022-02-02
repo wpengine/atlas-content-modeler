@@ -172,7 +172,6 @@ export default function MediaUploader({ modelSlug, field, required }) {
 					<div>
 						<DarkButton
 							data-testid="feature-image-button"
-							className="feature-image-button"
 							style={{ marginTop: "5px" }}
 							onClick={(e) => clickHandler(e)}
 						>
