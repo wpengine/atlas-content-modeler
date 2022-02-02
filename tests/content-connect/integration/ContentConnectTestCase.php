@@ -4,7 +4,7 @@ namespace WPE\AtlasContentModeler\ContentConnect\Tests\Integration;
 
 use WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost;
 
-class ContentConnectTestCase extends \PHPUnit_Framework_TestCase {
+class ContentConnectTestCase extends \PHPUnit\Framework\TestCase {
 
 	public static function setupBeforeClass() {
 		self::insert_dummy_data();

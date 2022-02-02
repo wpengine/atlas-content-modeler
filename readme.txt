@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 5.8.2
 Requires PHP: 7.2
-Stable tag: 0.12.1
+Stable tag: 0.13.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -51,7 +51,15 @@ We recommend that you set Permalinks to a value other than “Plain” in your W
 ACM is primarily intended for headless WordPress applications. For that reason, the WordPress REST API and WPGraphQL are the only two officially supported APIs. That said, it is possible to fetch the data for your models in a traditional WordPress site by using the `rest_do_request()` PHP function that the REST API provides or the `graphql()` PHP function that WPGraphQL provides.
 = Where can I submit bug reports and feature requests? =
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
+
 == Changelog ==
+
+= 0.13.0 - 2022-02-01 =
+
+* **Added:** Text Repeater Field - Added repeatable property to single and multi line text fields for returning arrays of publisher defined strings.
+* **Added:** Opt-in anonymous usage tracking to help us make Atlas Content Modeler better (disabled by default).
+* **Changed:** The title field of a model can no longer be changed once set, unless you delete the original title field. This prepares upcoming work to save title field data to WordPress post titles, allowing title field content to be searchable.
+* **Fixed:** Ensure Rich Text fields load for publishers even if WordPress Core editor scripts are slow to execute.
 
 = 0.12.1 - 2022-01-12 =
 

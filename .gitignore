@@ -4,6 +4,7 @@
 dist
 node_modules
 /vendor/
+.vscode
 .env.testing
 .DS_Store
 Thumbs.db
