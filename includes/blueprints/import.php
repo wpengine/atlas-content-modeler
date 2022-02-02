@@ -282,7 +282,7 @@ function tag_posts( array $post_terms, array $post_ids_old_new, array $term_ids_
  * @param string $blueprint_folder Path to the blueprint folder.
  * @param array  $post_ids_old_new A map of original post IDs from the manifest
  *                                 and their new ID when imported.
- * @return array|WP_Error Map of old and new media ideas on success.
+ * @return array|WP_Error Map of old and new media IDs on success.
  */
 function import_media( array $media, string $blueprint_folder, array $post_ids_old_new ) {
 	/**
