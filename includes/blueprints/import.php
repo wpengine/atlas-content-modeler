@@ -273,3 +273,63 @@ function tag_posts( array $post_terms, array $post_ids_old_new, array $term_ids_
 
 	return true;
 }
+
+/**
+ * Imports media files.
+ *
+ * @param array  $media Paths to media files keyed by original media ID, relative
+ *                      to the folder they were unzipped in.
+ * @param string $blueprint_folder Path to the blueprint folder.
+ * @param array  $post_ids_old_new A map of original post IDs from the manifest
+ *                                 and their new ID when imported.
+ * @return array|WP_Error Map of old and new media ideas on success.
+ */
+function import_media( array $media, string $blueprint_folder, array $post_ids_old_new ) {
+	/**
+	 * Stores media IDs that changed during import.
+	 */
+	$media_ids_old_new = [];
+
+	foreach ( $media as $original_media_id => $relative_file_path ) {
+		$full_file_path = $blueprint_folder . '/' . $relative_file_path;
+
+		if ( ! is_readable( $full_file_path ) ) {
+			return new WP_Error(
+				'acm_media_error',
+				sprintf(
+					// translators: the full path to the media file.
+					__( 'Could not read media file at %s.', 'atlas-content-modeler' ),
+					$full_file_path
+				)
+			);
+		}
+
+		$file_info = wp_check_filetype( $full_file_path );
+
+		$attachment = [
+			'post_title'     => basename( $full_file_path, '.' . $file_info['ext'] ),
+			'post_mime_type' => $file_info['type'],
+		];
+
+		$new_media_id = wp_insert_attachment( $attachment, $full_file_path, 0, true );
+
+		if ( is_wp_error( $new_media_id ) ) {
+			return $new_media_id;
+		}
+
+		// Generates thumbnails for image files if needed.
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+		$attachment_data = wp_generate_attachment_metadata( $new_media_id, $full_file_path );
+		wp_update_attachment_metadata( $new_media_id, $attachment_data );
+
+		/**
+		 * Stores changed media IDs so the correct media reference can be
+		 * inserted into post_meta in a later import step.
+		 */
+		if ( $new_media_id !== $original_media_id ) {
+			$media_ids_old_new[ $original_media_id ] = $new_media_id;
+		}
+	}
+
+	return $media_ids_old_new;
+}

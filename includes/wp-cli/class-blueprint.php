@@ -22,6 +22,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\import_taxonomies;
 use function WPE\AtlasContentModeler\Blueprint\Import\import_posts;
 use function WPE\AtlasContentModeler\Blueprint\Import\import_terms;
 use function WPE\AtlasContentModeler\Blueprint\Import\tag_posts;
+use function WPE\AtlasContentModeler\Blueprint\Import\import_media;
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 
 /**
@@ -126,7 +127,21 @@ class Blueprint {
 			}
 		}
 
-		\WP_CLI::log( 'Importing media.' );
+		$media_ids_old_new = [];
+		if ( ! empty( $manifest['media'] ?? [] ) ) {
+			\WP_CLI::log( 'Importing media.' );
+
+			$media_ids_old_new = import_media(
+				$manifest['media'],
+				$blueprint_folder,
+				$post_ids_old_new
+			);
+
+			if ( is_wp_error( $media_ids_old_new ) ) {
+				\WP_CLI::error( $media_ids_old_new->get_error_message() );
+			}
+		}
+
 		\WP_CLI::log( 'Importing post meta.' );
 		\WP_CLI::log( 'Restoring ACM relationships.' );
 		\WP_CLI::log( 'Done!' );
