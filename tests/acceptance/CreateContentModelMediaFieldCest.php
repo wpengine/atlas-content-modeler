@@ -93,7 +93,7 @@ class CreateContentModelMediaFieldCest {
 
 		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
 		$i->click( 'Add New', '.wrap' );
-		$i->wait( 1 );
-		$i->seeInField( '.button-primary', 'Add Featured Image' );
+		$i->wait( 2 );
+		$i->see( 'Add Featured Image', 'div.media-btns' );
 	}
 }

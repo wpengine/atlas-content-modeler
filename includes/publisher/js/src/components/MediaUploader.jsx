@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Icon from "../../../../components/icons";
+import { DarkButton } from "../../../../shared-assets/js/components/Buttons";
 import { __ } from "@wordpress/i18n";
 
 export default function MediaUploader({ modelSlug, field, required }) {
@@ -169,13 +170,14 @@ export default function MediaUploader({ modelSlug, field, required }) {
 
 				<div className="d-flex flex-row align-items-center media-btns">
 					<div>
-						<input
-							type="button"
-							className="button button-primary button-large"
+						<DarkButton
+							data-testid="feature-image-button"
+							className="feature-image-button"
 							style={{ marginTop: "5px" }}
-							defaultValue={getMediaButtonText(field)}
 							onClick={(e) => clickHandler(e)}
-						/>
+						>
+							{getMediaButtonText(field)}
+						</DarkButton>
 
 						{allowedTypes && (
 							<p className="text-muted">
