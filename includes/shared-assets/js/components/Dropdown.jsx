@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
-// -4 for right: position for settings side
 export function Dropdown(props) {
 	const cssAttributes = css`
 		position: relative;
