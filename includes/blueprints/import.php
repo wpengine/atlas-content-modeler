@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\Blueprint\Import;
 
 use WP_Error;
+use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 use function WPE\AtlasContentModeler\REST_API\Taxonomies\save_taxonomy;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register as register_taxonomies;
 use function WPE\AtlasContentModeler\get_field_type_from_slug;
@@ -409,4 +410,38 @@ function is_acm_media_field_meta( array $manifest, int $post_id, string $field_s
 		$manifest['models'] ?? [],
 		$post_type
 	);
+}
+
+/**
+ * Repopulates the acm_post_to_post table that stores relationships between
+ * posts for ACM relationship fields.
+ *
+ * @param array $relationships Relationships as stored in their raw form in the
+ *                             wp_acm_post_to_post table.
+ * @param array $post_ids_old_new A map of original post IDs from the manifest
+ *                                and their new ID when imported.
+ * @return void
+ */
+function import_acm_relationships( array $relationships, array $post_ids_old_new ) {
+	global $wpdb;
+
+	$table        = ContentConnect::instance()->get_table( 'p2p' );
+	$post_to_post = $table->get_table_name();
+
+	foreach ( $relationships as $relationship ) {
+		// phpcs:disable
+		$wpdb->query(
+			$wpdb->prepare(
+				"
+				INSERT INTO {$post_to_post} (`id1`, `id2`, `name`, `order`)
+				VALUES (%s, %s, %s, %s);
+				",
+				$post_ids_old_new[ $relationship['id1'] ] ?? $relationship['id1'],
+				$post_ids_old_new[ $relationship['id2'] ] ?? $relationship['id2'],
+				$relationship['name'],
+				$relationship['order']
+			)
+		);
+		// phpcs:enable
+	}
 }
