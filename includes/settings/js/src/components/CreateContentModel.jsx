@@ -15,6 +15,7 @@ import {
 	Button,
 	TertiaryButton,
 } from "../../../../shared-assets/js/components/Buttons";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 const { apiFetch } = wp;
 
@@ -104,7 +105,7 @@ export default function CreateContentModel() {
 	}
 
 	return (
-		<div className="app-card">
+		<Card>
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>New Content Model</h2>
 				<TertiaryButton
@@ -426,6 +427,6 @@ export default function CreateContentModel() {
 					</TertiaryButton>
 				</form>
 			</section>
-		</div>
+		</Card>
 	);
 }

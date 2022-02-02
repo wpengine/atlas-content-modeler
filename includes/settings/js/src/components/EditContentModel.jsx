@@ -20,6 +20,7 @@ import {
 	Button,
 	TertiaryButton,
 } from "../../../../shared-assets/js/components/Buttons";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 Modal.setAppElement("#root");
 
@@ -72,7 +73,7 @@ export default function EditContentModel() {
 	};
 
 	return (
-		<div className="app-card">
+		<Card>
 			<section className="heading">
 				<h2 className="pr-1 pr-sm-0">
 					<a
@@ -231,6 +232,6 @@ export default function EditContentModel() {
 					</>
 				)}
 			</section>
-		</div>
+		</Card>
 	);
 }
