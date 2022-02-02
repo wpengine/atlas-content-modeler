@@ -131,11 +131,7 @@ class Blueprint {
 		if ( ! empty( $manifest['media'] ?? [] ) ) {
 			\WP_CLI::log( 'Importing media.' );
 
-			$media_ids_old_new = import_media(
-				$manifest['media'],
-				$blueprint_folder,
-				$post_ids_old_new
-			);
+			$media_ids_old_new = import_media( $manifest['media'], $blueprint_folder );
 
 			if ( is_wp_error( $media_ids_old_new ) ) {
 				\WP_CLI::error( $media_ids_old_new->get_error_message() );
