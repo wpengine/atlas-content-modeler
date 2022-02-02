@@ -1,3 +1,5 @@
+![Atlas Content Modeler](https://user-images.githubusercontent.com/5306336/152238720-4a06a276-d257-4720-87c6-870f5449e707.jpg)
+
 # Atlas Content Modeler by WP Engine
 
 A WordPress plugin to create custom post types and fields for headless WordPress sites.
