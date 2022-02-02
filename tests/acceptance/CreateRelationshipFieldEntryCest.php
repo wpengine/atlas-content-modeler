@@ -311,7 +311,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'Rights', '#field-rights label' );
 
 		// Confirm that the forward relationship field button label is correct.
-		$i->see( 'Link Rights', '#field-rights .button-primary' );
+		$i->see( 'Link Rights', 'button[data-testid="content-model-relationship-button"]' );
 
 		// Publish the “lefts” post.
 		$i->click( 'Publish', '#publishing-action' );
@@ -324,7 +324,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'ThisIsTheReverseReference', '#field-rights label' );
 
 		// Confirm that the reverse relationship field button label is correct.
-		$i->see( 'Link Lefts', '#field-rights .button-primary' );
+		$i->see( 'Link Lefts', 'button[data-testid="content-model-relationship-button"]' );
 
 		// Link the right entry to the published “left” entry.
 		$i->click( '#atlas-content-modeler[right][rights]' );
