@@ -59,9 +59,10 @@ export function TertiaryButton(props) {
 }
 
 export function FieldButton(props) {
-	props.className = props.className ?? "";
+	let properties = Object.assign({}, props);
+	properties.className = props.className ?? "";
 
-	const cssAttributes = css`
+	let cssAttributes = css`
 		align-items: center;
 		display: flex;
 		margin-right: 8px;
@@ -77,7 +78,7 @@ export function FieldButton(props) {
 		}
 	`;
 
-	if (props.active) {
+	if (properties.active) {
 		cssAttributes = css`
 			${cssAttributes}
 			background: #002838;
@@ -97,12 +98,12 @@ export function FieldButton(props) {
 			}
 		`;
 
-		props.className += " active";
+		properties.className += " active";
 	}
 
 	return (
-		<TertiaryButton css={cssAttributes} {...props}>
-			{props.children}
+		<TertiaryButton css={cssAttributes} {...properties}>
+			{properties.children}
 		</TertiaryButton>
 	);
 }
