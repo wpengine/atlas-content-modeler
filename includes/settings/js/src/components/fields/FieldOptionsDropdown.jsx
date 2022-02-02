@@ -12,6 +12,7 @@ import { ModelsContext } from "../../ModelsContext";
 import { maybeCloseDropdown } from "../../utils";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
+import { Dropdown } from "../../../../../shared-assets/js/components/Dropdown";
 
 const { apiFetch } = wp;
 
@@ -61,7 +62,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 	}, [timer]);
 
 	return (
-		<span className="dropdown">
+		<Dropdown>
 			<button
 				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
@@ -162,6 +163,6 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 					{__("Cancel", "atlas-content-modeler")}
 				</button>
 			</Modal>
-		</span>
+		</Dropdown>
 	);
 };
