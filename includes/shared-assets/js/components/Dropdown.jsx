@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
+// -4 for right: position for settings side
 export function Dropdown(props) {
 	const cssAttributes = css`
 		position: relative;
@@ -43,7 +44,6 @@ export function Dropdown(props) {
 			}
 		}
 
-		/* Adjust margin on smaller devices */
 		@media (max-width: 850px) {
 			.neg-margin-wrapper {
 				.dropdown {

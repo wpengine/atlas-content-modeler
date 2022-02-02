@@ -7,7 +7,7 @@ import { sendEvent } from "acm-analytics";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 import { __ } from "@wordpress/i18n";
 import { jsx, css } from "@emotion/react";
-import { Card } from "../../../../shared-assets/js/components/card";
+import { Card } from "../../../../shared-assets/js/components/Card";
 
 function Header({ showButtons = true }) {
 	let history = useHistory();

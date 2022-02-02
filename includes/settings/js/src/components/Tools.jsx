@@ -4,7 +4,7 @@ import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
 import { insertSidebarMenuItem } from "../utils";
-import { Card } from "../../../../shared-assets/js/components/card";
+import { Card } from "../../../../shared-assets/js/components/Card";
 const { wp } = window;
 const { apiFetch } = wp;
 

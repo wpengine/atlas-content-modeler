@@ -16,7 +16,7 @@ import {
 	getOpenField,
 } from "../queries";
 import FieldButtons from "./FieldButtons";
-import { Card } from "../../../../shared-assets/js/components/card";
+import { Card } from "../../../../shared-assets/js/components/Card";
 
 Modal.setAppElement("#root");
 

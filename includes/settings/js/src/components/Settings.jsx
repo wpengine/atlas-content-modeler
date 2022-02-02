@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
 import { dispatch } from "@wordpress/data";
-import { Card } from "../../../../shared-assets/js/components/card";
+import { Card } from "../../../../shared-assets/js/components/Card";
 
 export default function Settings() {
 	const [usageTracking, setUsageTracking] = useState(
