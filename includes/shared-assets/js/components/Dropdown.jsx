@@ -43,14 +43,6 @@ export function Dropdown(props) {
 				color: #991433;
 			}
 		}
-
-		@media (max-width: 850px) {
-			.neg-margin-wrapper {
-				.dropdown {
-					margin-left: -80px;
-				}
-			}
-		}
 	`;
 
 	return <span css={cssAttributes} {...props} />;
