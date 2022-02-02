@@ -11,6 +11,7 @@ namespace WPE\AtlasContentModeler\Blueprint\Import;
 
 use WP_Error;
 use function WPE\AtlasContentModeler\REST_API\Taxonomies\save_taxonomy;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register as register_taxonomies;
 
 /**
  * Unzips the blueprint zip file.
@@ -147,6 +148,14 @@ function import_taxonomies( array $taxonomies ) {
 			return $saved;
 		}
 	}
+
+	/**
+	 * ACM already registers taxonomies on the init hook, but that occurs at the
+	 * beginning of the WP-CLI process/WP hook sequence. We re-register new
+	 * taxonomies here so they are available to later import steps
+	 * (import_terms) within the same PHP process.
+	 */
+	register_taxonomies();
 }
 
 /**
