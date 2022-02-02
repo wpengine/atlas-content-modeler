@@ -5,7 +5,7 @@ import { useLocationSearch } from "../utils";
 import { ModelsContext } from "../ModelsContext";
 import TaxonomiesTable from "./TaxonomiesTable";
 import TaxonomiesForm from "./TaxonomiesForm";
-import { Card } from "../../../../shared-assets/js/components/Card";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 export default function Taxonomies() {
 	const { taxonomies } = useContext(ModelsContext);

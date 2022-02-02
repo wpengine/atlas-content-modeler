@@ -11,7 +11,7 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
-import { Card } from "../../../../shared-assets/js/components/Card";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 const { apiFetch } = wp;
 

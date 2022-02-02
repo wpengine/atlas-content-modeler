@@ -57,56 +57,6 @@
 	padding: 0;
 }
 
-/* Adjust margin on smaller devices */
-// @media (max-width: $breakpoint-tablet) {
-// 	.neg-margin-wrapper {
-// 		.dropdown {
-// 			margin-left: -80px;
-// 		}
-// 	}
-// }
-
-// .dropdown {
-// 	position: relative;
-// 	min-height: 20px;
-// }
-
-// .dropdown-content:not(.hidden) {
-// 	background: $color-white;
-// 	border-radius: 2px;
-// 	box-shadow: 0px 5px 20px rgba(68, 68, 68, 0.15);
-// 	display: flex;
-// 	flex-direction: column;
-// 	height: auto;
-// 	justify-content: center;
-// 	padding: 10px 0;
-// 	position: absolute;
-// 	right: -4px;
-// 	z-index: 100;
-
-// 	a {
-// 		color: $color-primary;
-// 		display: block;
-// 		line-height: 25px;
-// 		padding: 5px 20px;
-// 		text-align: center;
-// 		text-decoration: none;
-// 		white-space: nowrap;
-// 	}
-
-// 	a:hover {
-// 		color: $color-primary-hover;
-// 	}
-
-// 	a.delete {
-// 		color: $color-warning;
-// 	}
-
-// 	a.delete:hover {
-// 		color: $color-warning-hover;
-// 	}
-// }
-
 .ReactModal__Content:focus {
 	box-shadow: none;
 }
