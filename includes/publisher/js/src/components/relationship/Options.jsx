@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Icon from "acm-icons";
 import { maybeCloseDropdown } from "../../../../../settings/js/src/utils";
 import { sprintf, __ } from "@wordpress/i18n";
-import { Dropdown } from "../../../../../shared-assets/js/components/Dropdown";
 
 const Options = ({ entry, setSelectedEntries }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -43,7 +42,7 @@ const Options = ({ entry, setSelectedEntries }) => {
 	}, [timer]);
 
 	return (
-		<Dropdown>
+		<span className="dropdown">
 			<button
 				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
@@ -78,7 +77,7 @@ const Options = ({ entry, setSelectedEntries }) => {
 					{__("Remove", "atlas-content-modeler")}
 				</a>
 			</div>
-		</Dropdown>
+		</span>
 	);
 };
 
