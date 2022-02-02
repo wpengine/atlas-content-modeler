@@ -65,6 +65,9 @@ export function Card(props) {
 		.card-content .subfield-list li.add-item {
 			border-left: none;
 		}
+		.field-list .add-item {
+			box-shadow: none;
+		}
 	`;
 
 	return <div css={cssAttributes} {...props} />;
