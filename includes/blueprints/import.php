@@ -214,3 +214,62 @@ function import_posts( array $posts ) {
 
 	return $post_ids_old_new;
 }
+
+/**
+ * Imports terms.
+ *
+ * @param array $terms Terms to import.
+ * @return array|WP_Error
+ */
+function import_terms( array $terms ) {
+	/**
+	 * Stores term IDs that changed during import.
+	 */
+	$term_ids_old_new = [];
+
+	foreach ( $terms as $term ) {
+		$term_info = [
+			'slug'        => $term['slug'],
+			'description' => $term['description'],
+		];
+
+		$inserted_term = wp_insert_term( $term['name'], $term['taxonomy'], $term_info );
+
+		if ( is_wp_error( $inserted_term ) ) {
+			return $inserted_term;
+		}
+
+		if ( $term['term_id'] !== $inserted_term['term_id'] ) {
+			$term_ids_old_new[ $term['term_id'] ] = $inserted_term['term_id'];
+		}
+	}
+
+	return $term_ids_old_new;
+}
+
+
+/**
+ * Sets terms on posts.
+ *
+ * @param array $post_terms Post term data.
+ * @param array $post_ids_old_new A map of original post IDs from the manifest
+ *                                and their new ID when imported.
+ * @param array $term_ids_old_new A map of original term IDs from the manifest
+ *                                and their new ID when imported.
+ * @return true|WP_Error True on success, WP_Error if setting any term failed.
+ */
+function tag_posts( $post_terms, $post_ids_old_new, $term_ids_old_new ) {
+	foreach ( $post_terms as $post_id => $terms ) {
+		foreach ( $terms as $term ) {
+			$new_post_id = $post_ids_old_new[ $post_id ] ?? $post_id;
+			$new_term_id = $term_ids_old_new[ $term['term_id'] ] ?? $term['term_id'];
+			$result      = wp_set_post_terms( $new_post_id, [ (int) $new_term_id ], $term['taxonomy'], true );
+
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+		}
+	}
+
+	return true;
+}

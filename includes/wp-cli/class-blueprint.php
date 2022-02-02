@@ -20,6 +20,8 @@ use function WPE\AtlasContentModeler\Blueprint\Import\get_manifest;
 use function WPE\AtlasContentModeler\Blueprint\Import\check_versions;
 use function WPE\AtlasContentModeler\Blueprint\Import\import_taxonomies;
 use function WPE\AtlasContentModeler\Blueprint\Import\import_posts;
+use function WPE\AtlasContentModeler\Blueprint\Import\import_terms;
+use function WPE\AtlasContentModeler\Blueprint\Import\tag_posts;
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 
 /**
@@ -99,15 +101,33 @@ class Blueprint {
 			}
 		}
 
+		$post_ids_old_new = [];
 		if ( ! empty( $manifest['posts'] ?? [] ) ) {
 			\WP_CLI::log( 'Importing posts.' );
 			$post_ids_old_new = import_posts( $manifest['posts'] );
 		}
 
+		$term_ids_old_new = [];
+		if ( ! empty( $manifest['terms'] ?? [] ) ) {
+			\WP_CLI::log( 'Importing terms.' );
+			$term_ids_old_new = import_terms( $manifest['terms'] );
+
+			if ( is_wp_error( $term_ids_old_new ) ) {
+				\WP_CLI::error( $term_ids_old_new->get_error_message() );
+			}
+		}
+
+		if ( ! empty( $manifest['post_terms'] ?? [] ) ) {
+			\WP_CLI::log( 'Tagging posts.' );
+			$tag_posts = tag_posts( $manifest['post_terms'], $post_ids_old_new, $term_ids_old_new );
+
+			if ( is_wp_error( $tag_posts ) ) {
+				\WP_CLI::error( $tag_posts->get_error_message() );
+			}
+		}
+
 		\WP_CLI::log( 'Importing media.' );
 		\WP_CLI::log( 'Importing post meta.' );
-		\WP_CLI::log( 'Importing terms.' );
-		\WP_CLI::log( 'Importing post terms.' );
 		\WP_CLI::log( 'Restoring ACM relationships.' );
 		\WP_CLI::log( 'Done!' );
 	}
