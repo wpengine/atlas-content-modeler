@@ -25,7 +25,11 @@ function unzip_blueprint( string $blueprint_path ) {
 	if ( ! is_readable( $blueprint_path ) ) {
 		return new WP_Error(
 			'acm_blueprint_file_not_found',
-			__( 'Could not read blueprint file.', 'atlas-content-modeler' )
+			sprintf(
+				// translators: path to zip file.
+				__( 'Could not read blueprint file at %s.', 'atlas-content-modeler' ),
+				$blueprint_path
+			)
 		);
 	}
 

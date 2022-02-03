@@ -57,13 +57,7 @@ class Blueprint {
 		$blueprint_folder = unzip_blueprint( $zip_file );
 
 		if ( is_wp_error( $blueprint_folder ) ) {
-			\WP_CLI::error(
-				sprintf(
-					// translators: the error message.
-					__( 'Could not unzip blueprint: %s', 'atlas-content-modeler' ),
-					$blueprint_folder->get_error_message()
-				)
-			);
+			\WP_CLI::error( $blueprint_folder->get_error_message() );
 		}
 
 		\WP_CLI::log( 'Verifying ACM manifest.' );
