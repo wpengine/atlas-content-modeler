@@ -15,17 +15,19 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler\WP_CLI;
 
-use function WPE\AtlasContentModeler\Blueprint\Import\unzip_blueprint;
-use function WPE\AtlasContentModeler\Blueprint\Import\get_manifest;
-use function WPE\AtlasContentModeler\Blueprint\Import\check_versions;
-use function WPE\AtlasContentModeler\Blueprint\Import\import_taxonomies;
-use function WPE\AtlasContentModeler\Blueprint\Import\import_posts;
-use function WPE\AtlasContentModeler\Blueprint\Import\import_terms;
-use function WPE\AtlasContentModeler\Blueprint\Import\tag_posts;
-use function WPE\AtlasContentModeler\Blueprint\Import\import_media;
-use function WPE\AtlasContentModeler\Blueprint\Import\import_post_meta;
-use function WPE\AtlasContentModeler\Blueprint\Import\import_acm_relationships;
-use function WPE\AtlasContentModeler\Blueprint\Import\cleanup;
+use function WPE\AtlasContentModeler\Blueprint\Import\{
+	check_versions,
+	cleanup,
+	get_manifest,
+	import_acm_relationships,
+	import_media,
+	import_post_meta,
+	import_posts,
+	import_taxonomies,
+	import_terms,
+	tag_posts,
+	unzip_blueprint
+};
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 
 /**
