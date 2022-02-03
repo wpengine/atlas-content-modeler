@@ -449,3 +449,17 @@ function import_acm_relationships( array $relationships, array $post_ids_old_new
 		// phpcs:enable
 	}
 }
+
+/**
+ * Deletes the blueprint zip file and manifest file.
+ *
+ * Leaves media files in place because they are linked to imported media.
+ *
+ * @param string $blueprint_zip_path Path to the blueprint zip file.
+ * @param string $blueprint_folder_path Path to the blueprint folder.
+ * @return void
+ */
+function cleanup( $blueprint_zip_path, $blueprint_folder_path ) {
+	wp_delete_file( $blueprint_zip_path );
+	wp_delete_file( $blueprint_folder_path . '/acm.json' );
+}

@@ -25,6 +25,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\tag_posts;
 use function WPE\AtlasContentModeler\Blueprint\Import\import_media;
 use function WPE\AtlasContentModeler\Blueprint\Import\import_post_meta;
 use function WPE\AtlasContentModeler\Blueprint\Import\import_acm_relationships;
+use function WPE\AtlasContentModeler\Blueprint\Import\cleanup;
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 
 /**
@@ -39,13 +40,19 @@ class Blueprint {
 	 * <url>
 	 * : The URL of the blueprint zip file to fetch.
 	 *
+	 * [--skip-cleanup]
+	 * : Skips removal of the blueprint zip and manifest files after a
+	 * successful import. Useful when testing blueprints or to leave a
+	 * record of content and files that were installed.
+	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp acm blueprint import https://example.com/path/to/blueprint.zip
 	 *
 	 * @param array $args Options passed to the command.
+	 * @param array $assoc_args Optional flags passed to the command.
 	 */
-	public function import( $args ) {
+	public function import( $args, $assoc_args ) {
 		list( $url ) = $args;
 		// \WP_CLI::log( 'Fetching zip.' );
 		// TODO: Fetch zip from $url and save to wp_upload_dir().
@@ -151,7 +158,12 @@ class Blueprint {
 			);
 		}
 
-		\WP_CLI::log( 'Done!' );
+		if ( ! ( $assoc_args['skip-cleanup'] ?? false ) ) {
+			\WP_CLI::log( 'Deleting zip and manifest.' );
+			cleanup( $zip_file, $blueprint_folder );
+		}
+
+		\WP_CLI::success( 'Import complete.' );
 	}
 
 	/**
@@ -162,6 +174,6 @@ class Blueprint {
 		\WP_CLI::log( 'Collecting entries…' );
 		\WP_CLI::log( 'Collecting media…' );
 		\WP_CLI::log( 'Generating zip…' );
-		\WP_CLI::log( 'Done! Blueprint saved to path/to/file.zip.' );
+		\WP_CLI::success( 'Blueprint saved to path/to/file.zip.' );
 	}
 }
