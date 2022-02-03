@@ -44,7 +44,7 @@ function get_remote_blueprint( string $url ) {
 					'Received unexpected error downloading zip. Error: %s',
 					'atlas-content-modeler'
 				),
-				wp_remote_retrieve_response_message( $response )
+				wp_remote_retrieve_response_code( $response ) . ' ' . wp_remote_retrieve_response_message( $response )
 			),
 			[ 'status' => wp_remote_retrieve_response_code( $response ) ]
 		);
