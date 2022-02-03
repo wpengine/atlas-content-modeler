@@ -98,6 +98,10 @@ export default function MediaUploader({ modelSlug, field, required }) {
 			library.type = getAllowedTypesLongExtension();
 		}
 
+		if (field?.isFeatured) {
+			library.type = ["image"];
+		}
+
 		const getMediaModalTitle = () => {
 			const title = getMediaButtonText(field);
 			if (allowedTypes) {
