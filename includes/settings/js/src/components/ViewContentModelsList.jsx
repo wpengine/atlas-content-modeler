@@ -115,7 +115,7 @@ function ContentModels({ models }) {
 						</p>
 					</span>
 				</Link>
-				<div className="neg-margin-wrapper">
+				<div>
 					<ContentModelDropdown model={models[slug]} />
 				</div>
 			</li>

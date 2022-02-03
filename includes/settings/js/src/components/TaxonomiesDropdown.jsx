@@ -16,6 +16,7 @@ import {
 	WarningButton,
 	TertiaryButton,
 } from "../../../../shared-assets/js/components/Buttons";
+import { Dropdown } from "../../../../shared-assets/js/components/Dropdown";
 
 const { apiFetch } = wp;
 
@@ -67,7 +68,7 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 	}, [timer]);
 
 	return (
-		<span className="dropdown">
+		<Dropdown>
 			<button
 				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
@@ -203,6 +204,6 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 					{__("Cancel", "atlas-content-modeler")}
 				</TertiaryButton>
 			</Modal>
-		</span>
+		</Dropdown>
 	);
 };

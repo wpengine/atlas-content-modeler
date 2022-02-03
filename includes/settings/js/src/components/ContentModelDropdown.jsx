@@ -12,6 +12,7 @@ import { EditModelModal } from "./EditModelModal";
 import { DeleteModelModal } from "./DeleteModelModal";
 import { getGraphiQLLink, maybeCloseDropdown } from "../utils";
 import { __ } from "@wordpress/i18n";
+import { Dropdown } from "../../../../shared-assets/js/components/Dropdown";
 
 export const ContentModelDropdown = ({ model }) => {
 	const { plural, slug } = model;
@@ -45,7 +46,7 @@ export const ContentModelDropdown = ({ model }) => {
 	}, [timer]);
 
 	return (
-		<span className="dropdown">
+		<Dropdown>
 			<button
 				className="options"
 				aria-label={`Options for ${plural} content model`}
@@ -109,6 +110,6 @@ export const ContentModelDropdown = ({ model }) => {
 				isOpen={editModelModalIsOpen}
 				setIsOpen={setEditModelModalIsOpen}
 			/>
-		</span>
+		</Dropdown>
 	);
 };
