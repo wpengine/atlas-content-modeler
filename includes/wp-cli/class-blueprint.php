@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler\WP_CLI;
 
-use function WPE\AtlasContentModeler\Blueprint\Fetch\get_blueprint_from_url;
+use function WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint;
 use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir;
 
 /**
@@ -40,19 +40,14 @@ class Blueprint {
 		list( $url ) = $args;
 		\WP_CLI::log( 'Fetching zip.' );
 
-		if ( empty( $url ) || ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
-			\WP_CLI::error( 'Please provide a valid URL to a blueprint zip file.' );
+		$zip_file = get_remote_blueprint( $url );
+		if ( is_wp_error( $zip_file ) ) {
+			\WP_CLI::error( $zip_file->get_error_message() );
 		}
 
-		$zip_file = get_blueprint_from_url( $url );
-		if ( empty( $zip_file ) ) {
-			return;
-		}
-
-		$destination = trailingslashit( wp_upload_dir()['path'] ) . basename( $url );
-		$valid_file  = save_blueprint_to_upload_dir( $zip_file, $destination );
-		if ( ! $valid_file ) {
-			return;
+		$valid_file = save_blueprint_to_upload_dir( $zip_file, basename( $url ) );
+		if ( is_wp_error( $valid_file ) ) {
+			\WP_CLI::error( $valid_file->get_error_message() );
 		}
 
 		\WP_CLI::log( 'Unzipping.' );
