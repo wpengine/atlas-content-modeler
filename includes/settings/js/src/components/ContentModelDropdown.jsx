@@ -46,7 +46,7 @@ export const ContentModelDropdown = ({ model }) => {
 	}, [timer]);
 
 	return (
-		<Dropdown className="dropdown">
+		<Dropdown>
 			<button
 				className="options"
 				aria-label={`Options for ${plural} content model`}

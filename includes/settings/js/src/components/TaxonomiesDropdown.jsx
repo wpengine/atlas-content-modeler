@@ -64,7 +64,7 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 	}, [timer]);
 
 	return (
-		<Dropdown className="dropdown">
+		<Dropdown>
 			<button
 				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
