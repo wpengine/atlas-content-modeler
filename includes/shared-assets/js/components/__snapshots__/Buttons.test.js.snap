@@ -109,7 +109,6 @@ exports[`FieldButton inactive FieldButton Renders a matching snapshot 1`] = `
 <EmotionCssPropInternal
   __EMOTION_LABEL_PLEASE_DO_NOT_USE__="FieldButton"
   __EMOTION_TYPE_PLEASE_DO_NOT_USE__={[Function]}
-  active={true}
   className=" active"
   css={
     Object {
