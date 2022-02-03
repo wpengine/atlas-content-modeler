@@ -307,7 +307,7 @@ function import_media( array $media, string $blueprint_folder ) {
 		$file_info = wp_check_filetype( $full_file_path );
 
 		$attachment = [
-			'post_title'     => basename( $full_file_path, '.' . $file_info['ext'] ),
+			'post_title'     => sanitize_title( basename( $full_file_path, '.' . $file_info['ext'] ) ),
 			'post_mime_type' => $file_info['type'],
 		];
 
