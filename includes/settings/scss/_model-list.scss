@@ -75,14 +75,6 @@
 	}
 }
 
-@media (max-width: $breakpoint-tablet) {
-	.neg-margin-wrapper {
-		.dropdown {
-			margin-left: -80px !important;
-		}
-	}
-}
-
 .atlas-content-modeler-delete-model-modal-container {
 	ul {
 		list-style-type: disc;

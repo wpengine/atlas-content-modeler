@@ -6,6 +6,10 @@ export function Dropdown(props) {
 		position: relative;
 		min-height: 20px;
 
+		@media (max-width: 850px) {
+			margin-left: -80px;
+		}
+
 		.dropdown-content:not(.hidden) {
 			background: #fff;
 			border-radius: 2px;
