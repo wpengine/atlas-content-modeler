@@ -12,7 +12,7 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 
 	public function test_get_remote_blueprint_returns_WP_Error_when_an_empty_url_is_provided(): void {
 		add_filter( 'pre_http_request', [ $this, 'filter_wp_remote_get_return_value' ], 10, 3 );
-		$response = get_remote_blueprint( 'http://emptybody' );
+		$response = get_remote_blueprint( '' );
 		$this->assertWPError( $response );
 		remove_filter( 'pre_http_request', [ $this, 'filter_wp_remote_get_return_value' ], 10, 3 );
 	}
