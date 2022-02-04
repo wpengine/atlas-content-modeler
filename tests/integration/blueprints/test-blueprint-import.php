@@ -43,7 +43,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 	}
 
 	public function test_check_version_fails_if_needs_newer_wordpress(): void {
-		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-needs-higher-wordpress' );
+		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-needs-newer-wordpress' );
 		$check    = check_versions( $manifest );
 
 		self::assertInstanceOf( 'WP_Error', $check );
@@ -54,7 +54,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 	}
 
 	public function test_check_version_fails_if_needs_newer_acm(): void {
-		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-needs-higher-acm' );
+		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-needs-newer-acm' );
 		$check    = check_versions( $manifest );
 
 		self::assertInstanceOf( 'WP_Error', $check );
