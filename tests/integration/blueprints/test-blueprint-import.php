@@ -19,6 +19,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 	unzip_blueprint
 };
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
+use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 /**
  * Class BlueprintImportTest
@@ -171,6 +172,35 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 				self::assertEquals( $expected_meta_value, $actual_meta_value );
 			}
+		}
+	}
+
+	public function test_import_acm_relationships() {
+		global $wpdb;
+
+		create_models( $this->manifest['models'] );
+		$post_ids_old_new = import_posts( $this->manifest['posts'] );
+
+		import_acm_relationships(
+			$this->manifest['relationships'],
+			$post_ids_old_new
+		);
+
+		$table                  = ContentConnect::instance()->get_table( 'p2p' );
+		$post_to_post           = $table->get_table_name();
+		$imported_relationships = $wpdb->get_results( "SELECT * FROM {$post_to_post};", ARRAY_A ); // phpcs:ignore
+
+		foreach ( $this->manifest['relationships'] as $index => $original_relationship ) {
+			$imported_relationship = $imported_relationships[ $index ];
+			$expected_id1          = $post_ids_old_new[ $original_relationship['id1'] ]
+										?? $original_relationship['id1'];
+			$expected_id2          = $post_ids_old_new[ $original_relationship['id2'] ]
+										?? $original_relationship['id2'];
+			$actual_id1            = $imported_relationship['id1'];
+			$actual_id2            = $imported_relationship['id2'];
+
+			self::assertEquals( $expected_id1, $actual_id1 );
+			self::assertEquals( $expected_id2, $actual_id2 );
 		}
 	}
 
