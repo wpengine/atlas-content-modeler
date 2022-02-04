@@ -25,6 +25,13 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 		remove_filter( 'pre_http_request', [ $this, 'filter_wp_remote_get_return_value' ], 10, 3 );
 	}
 
+	public function test_get_remote_blueprint_returns_WP_Error_when_an_empty_response_body_is_encountered(): void {
+		add_filter( 'pre_http_request', [ $this, 'filter_wp_remote_get_return_value' ], 10, 3 );
+		$response = get_remote_blueprint( 'http://emptybody' );
+		$this->assertWPError( $response );
+		remove_filter( 'pre_http_request', [ $this, 'filter_wp_remote_get_return_value' ], 10, 3 );
+	}
+
 	public function test_get_remote_blueprint_returns_WP_Error_when_a_non_200_response_is_encountered(): void {
 		add_filter( 'pre_http_request', [ $this, 'filter_wp_remote_get_return_value' ], 10, 3 );
 		$response = get_remote_blueprint( 'http://status404' );
