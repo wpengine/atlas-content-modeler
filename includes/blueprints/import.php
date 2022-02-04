@@ -22,6 +22,8 @@ use function WPE\AtlasContentModeler\get_field_type_from_slug;
  * @return string|WP_Error Unzipped blueprint folder path if successful.
  */
 function unzip_blueprint( string $blueprint_path ) {
+	global $wp_filesystem;
+
 	if ( ! is_readable( $blueprint_path ) ) {
 		return new WP_Error(
 			'acm_blueprint_file_not_found',
@@ -33,7 +35,11 @@ function unzip_blueprint( string $blueprint_path ) {
 		);
 	}
 
-	WP_Filesystem();
+	if ( empty( $wp_filesystem ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		\WP_Filesystem();
+	}
+
 	$upload_folder = wp_upload_dir();
 	$target_folder = $upload_folder['path'] . '/' . basename( $blueprint_path, '.zip' );
 	$unzipped_file = unzip_file( $blueprint_path, $target_folder );
