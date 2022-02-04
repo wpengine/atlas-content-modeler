@@ -28,10 +28,14 @@ use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 class BlueprintImportTest extends WP_UnitTestCase {
 
 	private $manifest;
+	private $upload_dir;
+	private $blueprint_folder;
 
 	public function setUp() {
 		parent::setUp();
-		$this->manifest = get_manifest( __DIR__ . '/test-data/blueprint-good' );
+		$this->manifest         = get_manifest( __DIR__ . '/test-data/blueprint-good' );
+		$this->upload_dir       = wp_upload_dir()['path'];
+		$this->blueprint_folder = $this->upload_dir . '/blueprint-good';
 	}
 
 	public function test_get_manifest_gives_manifest_data(): void {
@@ -122,24 +126,66 @@ class BlueprintImportTest extends WP_UnitTestCase {
 	}
 
 	public function test_import_media() {
-		global $wp_filesystem;
-
-		define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords, as this only runs during testing.
-
-		if ( empty( $wp_filesystem ) ) {
-			require_once ABSPATH . '/wp-admin/includes/file.php';
-			\WP_Filesystem();
-		}
-
-		$upload_dir = wp_upload_dir()['path'];
-		copy_dir( __DIR__ . '/test-data/', $upload_dir );
-		$blueprint_folder  = $upload_dir . '/blueprint-good';
-		$media_ids_old_new = import_media( $this->manifest['media'], $blueprint_folder );
+		$this->copy_media_to_wp_uploads();
+		$media_ids_old_new = import_media( $this->manifest['media'], $this->blueprint_folder );
 
 		foreach ( $this->manifest['media'] as $media_id => $media_path ) {
 			$imported_media_data = wp_get_attachment_metadata( $media_ids_old_new[ $media_id ] ?? $media_id );
 			self::assertContains( $media_path, $imported_media_data['file'] ); // File was imported.
 			self::assertNotEmpty( $imported_media_data['sizes'] ); // Thumbnails were created.
 		}
+	}
+
+	public function test_import_post_meta() {
+		create_models( $this->manifest['models'] );
+		import_taxonomies( $this->manifest['taxonomies'] );
+		$post_ids_old_new = import_posts( $this->manifest['posts'] );
+
+		$this->copy_media_to_wp_uploads();
+		$media_ids_old_new = import_media( $this->manifest['media'], $this->blueprint_folder );
+
+		import_post_meta(
+			$this->manifest,
+			$post_ids_old_new,
+			$media_ids_old_new
+		);
+
+		foreach ( $this->manifest['post_meta'] as $original_post_id => $original_metas ) {
+			foreach ( $original_metas as $original_meta ) {
+				$expected_meta_value = $original_meta['meta_value'];
+
+				if (
+					$original_meta['meta_key'] === 'photo' ||
+					$original_meta['meta_key'] === '_thumbnail_id'
+				) {
+					$expected_meta_value =
+						$media_ids_old_new[ $original_meta['meta_value'] ] ??
+						$original_meta['meta_value'];
+				}
+
+				$actual_meta_value = get_post_meta(
+					$post_ids_old_new[ $original_post_id ] ?? $original_post_id,
+					$original_meta['meta_key'],
+					true
+				);
+
+				self::assertEquals( $expected_meta_value, $actual_meta_value );
+			}
+		}
+	}
+
+	private function copy_media_to_wp_uploads() {
+		global $wp_filesystem;
+
+		if ( ! defined( 'FS_METHOD' ) ) {
+			define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords. This only takes effect during testing.
+		}
+
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			\WP_Filesystem();
+		}
+
+		copy_dir( __DIR__ . '/test-data/', $this->upload_dir );
 	}
 }
