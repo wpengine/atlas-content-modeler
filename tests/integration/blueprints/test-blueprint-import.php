@@ -18,6 +18,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 	tag_posts,
 	unzip_blueprint
 };
+use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 
 /**
  * Class BlueprintImportTest
@@ -62,5 +63,24 @@ class BlueprintImportTest extends WP_UnitTestCase {
 			'acm.json requires an ACM version of 100000000000000000000 but the current ACM version is',
 			$check->get_error_message()
 		);
+	}
+
+	public function test_import_taxonomies() {
+		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-good' );
+		import_taxonomies( $manifest['taxonomies'] );
+
+		$taxonomies = get_option( 'atlas_content_modeler_taxonomies' );
+		self::assertArrayHasKey( 'breed', $taxonomies );
+	}
+
+	public function test_import_posts() {
+		$manifest            = get_manifest( __DIR__ . '/test-data/blueprint-good' );
+		$expected_post_count = count( $manifest['posts'] );
+
+		create_models( $manifest['models'] );
+		import_posts( $manifest['posts'] );
+
+		$posts = get_posts( [ 'post_type' => 'rabbit' ] );
+		self::assertCount( $expected_post_count, $posts );
 	}
 }
