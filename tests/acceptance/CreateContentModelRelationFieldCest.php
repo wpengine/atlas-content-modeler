@@ -13,7 +13,7 @@ class CreateContentModelRelationFieldCest {
 		// Create a text field to check for reverse relationship conflicts with a reference model.
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'conflictsWithEmployeesSlug' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$content_model = $i->haveContentModel( 'Company', 'Companies' );
@@ -27,7 +27,7 @@ class CreateContentModelRelationFieldCest {
 	public function i_can_create_a_relation_field( AcceptanceTester $i ) {
 		$i->selectOption( '#reference', 'Employees' );
 		$i->click( '#many-to-many' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Relationship', '.field-list div.type' );
@@ -35,7 +35,7 @@ class CreateContentModelRelationFieldCest {
 	}
 
 	public function i_must_select_a_model_to_create_a_relation_field( AcceptanceTester $i ) {
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Please choose a related model' );
@@ -66,7 +66,7 @@ class CreateContentModelRelationFieldCest {
 
 		$i->fillField( [ 'name' => 'name' ], 'Updated Name' );
 
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Updated Name', '.field-list div.widest' );
@@ -79,14 +79,14 @@ class CreateContentModelRelationFieldCest {
 		// The field cannot be submitted with a description exceeding the maximum length.
 		$i->fillField( [ 'name' => 'description' ], str_repeat( 'a', 251 ) );
 		$i->see( '251/250', '.description-count' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Exceeds max length' );
 
 		// The description saves when corrected.
 		$i->fillField( [ 'name' => 'description' ], 'This text is under the character limit.' );
 		$i->see( '39/250', '.description-count' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Relationship', '.field-list div.type' );
 		$i->see( 'Company Employees', '.field-list div.widest' );
@@ -112,7 +112,7 @@ class CreateContentModelRelationFieldCest {
 		// The field cannot be submitted with a name exceeding the maximum length.
 		$i->fillField( [ 'name' => 'reverseName' ], str_repeat( 'a', 51 ) );
 		$i->see( '51/50', '.reverse-name-count' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Exceeds max length' );
 	}
@@ -124,13 +124,13 @@ class CreateContentModelRelationFieldCest {
 		$i->click( '#enable-reverse' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'reverseName' ], 'conflictsWithEmployeesSlug' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'A field in the employee model has the same identifier' );
 
 		// Resolve the reverse slug conflict and save the field.
 		$i->fillField( [ 'name' => 'reverseName' ], 'resolveConflict' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Company Employees', '.field-list div.widest' ); // Field was created successfully.
 
@@ -144,13 +144,13 @@ class CreateContentModelRelationFieldCest {
 		$i->click( '#enable-reverse' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'reverseName' ], 'resolveConflict' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'A relationship field in this model has the same identifier.' );
 
 		// Resolve the reverse slug conflict.
 		$i->fillField( [ 'name' => 'reverseName' ], 'fixedConflict' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Second Relationship', Locator::lastElement( '.field-list div.widest' ) ); // Second field was created successfully.
 
@@ -160,7 +160,7 @@ class CreateContentModelRelationFieldCest {
 		$i->clickWithLeftButton( '.field-list button.edit', -5, -5 );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Updated Name' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Updated Name', '.field-list div.widest' );
 	}

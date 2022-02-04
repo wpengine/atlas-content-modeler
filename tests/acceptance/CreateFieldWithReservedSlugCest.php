@@ -17,7 +17,7 @@ class CreateFieldWithReservedSlugCest {
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'id' );
 		$i->seeInField( '#slug', 'id' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 
 		$i->waitForElementVisible( '.field-messages .error' );
 		$i->see( 'Identifier in use or reserved', '.field-messages .error' );
@@ -40,7 +40,7 @@ class CreateFieldWithReservedSlugCest {
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->waitForElement( '.add-item' );
 
 		$i->click( Locator::lastElement( '.add-item' ) );

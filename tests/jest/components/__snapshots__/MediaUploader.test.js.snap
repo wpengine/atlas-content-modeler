@@ -13,17 +13,17 @@ exports[`MediaUploader tests Renders a matching snapshot 1`] = `
       className="d-flex flex-row align-items-center media-btns"
     >
       <div>
-        <input
-          className="button button-primary button-large"
-          defaultValue="Upload Media"
+        <DarkButton
+          data-testid="feature-image-button"
           onClick={[Function]}
           style={
             Object {
               "marginTop": "5px",
             }
           }
-          type="button"
-        />
+        >
+          Upload Media
+        </DarkButton>
         <p
           className="text-muted"
         >

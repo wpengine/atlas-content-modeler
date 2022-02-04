@@ -15,7 +15,7 @@ class CreateContentModelBooleanFieldCest {
 		$i->fillField( [ 'name' => 'name' ], 'Accept Terms' );
 		$i->see( '12/50', 'span.count' );
 		$i->seeInField( '#slug', 'acceptTerms' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Boolean', '.field-list div.type' );

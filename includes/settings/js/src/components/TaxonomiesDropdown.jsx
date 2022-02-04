@@ -12,6 +12,10 @@ import { maybeCloseDropdown } from "../utils";
 import { sprintf, __ } from "@wordpress/i18n";
 import { ModelsContext } from "../ModelsContext";
 import { showError } from "../toasts";
+import {
+	WarningButton,
+	TertiaryButton,
+} from "../../../../shared-assets/js/components/Buttons";
 import { Dropdown } from "../../../../shared-assets/js/components/Dropdown";
 
 const { apiFetch } = wp;
@@ -145,10 +149,11 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 						taxonomy.plural
 					)}
 				</p>
-				<button
+				<WarningButton
 					type="submit"
 					form={taxonomy.slug}
-					className="first warning"
+					className="first"
+					data-testid="delete-taxonomy-button"
 					onClick={async () => {
 						let hasError = false;
 
@@ -189,15 +194,15 @@ export const TaxonomiesDropdown = ({ taxonomy }) => {
 					}}
 				>
 					{__("Delete", "atlas-content-modeler")}
-				</button>
-				<button
-					className="tertiary"
+				</WarningButton>
+				<TertiaryButton
+					data-testid="delete-taxonomy-cancel-button"
 					onClick={() => {
 						setModalIsOpen(false);
 					}}
 				>
 					{__("Cancel", "atlas-content-modeler")}
-				</button>
+				</TertiaryButton>
 			</Modal>
 		</Dropdown>
 	);

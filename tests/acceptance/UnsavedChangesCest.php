@@ -17,7 +17,7 @@ class UnsavedChangesCest {
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Name' );
-		$i->click( 'button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Start to create a second field.
@@ -35,7 +35,7 @@ class UnsavedChangesCest {
 		$i->see( 'Unsaved Changes' );
 
 		// Click “Continue Editing” and confirm our changes were preserved.
-		$i->click( '.ReactModal__Content button.primary' );
+		$i->click( 'button[data-testid="model-field-continue-editing-button"]' );
 		$i->seeInField( '#name', 'Hobbies' );
 
 		// Now try adding a new field without saving changes to the current field.
