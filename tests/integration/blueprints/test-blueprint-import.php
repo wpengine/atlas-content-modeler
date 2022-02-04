@@ -79,12 +79,22 @@ class BlueprintImportTest extends WP_UnitTestCase {
 	}
 
 	public function test_import_posts() {
-		$expected_post_count = count( $this->manifest['posts'] );
-
 		create_models( $this->manifest['models'] );
 		import_posts( $this->manifest['posts'] );
 
-		$posts = get_posts( [ 'post_type' => 'rabbit' ] );
+		$posts               = get_posts( [ 'post_type' => 'rabbit' ] );
+		$expected_post_count = count( $this->manifest['posts'] );
+
 		self::assertCount( $expected_post_count, $posts );
+	}
+
+	public function test_import_terms() {
+		import_taxonomies( $this->manifest['taxonomies'] );
+		import_terms( $this->manifest['terms'] );
+
+		$terms               = get_terms( 'breed', [ 'hide_empty' => false ] );
+		$expected_term_count = count( $this->manifest['terms'] );
+
+		self::assertCount( $expected_term_count, $terms );
 	}
 }
