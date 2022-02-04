@@ -33,6 +33,12 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 		remove_filter( 'pre_http_request', [ $this, 'filter_wp_remote_get_return_value' ], 10, 3 );
 	}
 
+	public function test_save_blueprint_to_upload_dir_returns_WP_Error_when_an_invalid_blueprint_file_is_encountered(): void {
+		$saved = save_blueprint_to_upload_dir( 'invalid file', 'test.zip' );
+		$this->assertWPError( $saved );
+		self::assertSame( 'acm_blueprint_unsupported_file_type', $saved->get_error_code() );
+	}
+
 	/**
 	 * Intercepts blueprint download requests and returns a mocked response
 	 * when attached to the `pre_http_request` filter.
