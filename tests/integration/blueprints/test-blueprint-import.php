@@ -120,4 +120,26 @@ class BlueprintImportTest extends WP_UnitTestCase {
 			self::assertSame( $expected_term_name, $actual_term_name );
 		}
 	}
+
+	public function test_import_media() {
+		global $wp_filesystem;
+
+		define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords, as this only runs during testing.
+
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			\WP_Filesystem();
+		}
+
+		$upload_dir = wp_upload_dir()['path'];
+		copy_dir( __DIR__ . '/test-data/', $upload_dir );
+		$blueprint_folder  = $upload_dir . '/blueprint-good';
+		$media_ids_old_new = import_media( $this->manifest['media'], $blueprint_folder );
+
+		foreach ( $this->manifest['media'] as $media_id => $media_path ) {
+			$imported_media_data = wp_get_attachment_metadata( $media_ids_old_new[ $media_id ] ?? $media_id );
+			self::assertContains( $media_path, $imported_media_data['file'] ); // File was imported.
+			self::assertNotEmpty( $imported_media_data['sizes'] ); // Thumbnails were created.
+		}
+	}
 }
