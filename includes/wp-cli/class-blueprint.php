@@ -15,6 +15,9 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler\WP_CLI;
 
+use function WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint;
+use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir;
+
 /**
  * Blueprint subcommands for the `wp acm blueprint` WP-CLI command.
  */
@@ -36,6 +39,17 @@ class Blueprint {
 	public function import( $args ) {
 		list( $url ) = $args;
 		\WP_CLI::log( 'Fetching zip.' );
+
+		$zip_file = get_remote_blueprint( $url );
+		if ( is_wp_error( $zip_file ) ) {
+			\WP_CLI::error( $zip_file->get_error_message() );
+		}
+
+		$valid_file = save_blueprint_to_upload_dir( $zip_file, basename( $url ) );
+		if ( is_wp_error( $valid_file ) ) {
+			\WP_CLI::error( $valid_file->get_error_message() );
+		}
+
 		\WP_CLI::log( 'Unzipping.' );
 		\WP_CLI::log( 'Verifying ACM manifest.' );
 		\WP_CLI::log( 'Importing ACM models and fields.' );
@@ -58,4 +72,6 @@ class Blueprint {
 		\WP_CLI::log( 'Generating zip…' );
 		\WP_CLI::log( 'Done! Blueprint saved to path/to/file.zip.' );
 	}
+
+
 }
