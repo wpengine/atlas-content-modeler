@@ -46,7 +46,7 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 		self::assertSame( 'acm_blueprint_unsupported_file_type', $saved->get_error_code() );
 	}
 
-	public function test_save_blueprint_to_upload_dir_returns_true_when_give_a_valid_blueprint(): void {
+	public function test_save_blueprint_to_upload_dir_saves_file_when_give_a_valid_blueprint(): void {
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$blueprint = file_get_contents( __DIR__ . '/test-data/acm-rabbits.zip' );
 		$saved     = save_blueprint_to_upload_dir( $blueprint, 'acm-rabbits.zip' );
