@@ -17,7 +17,7 @@ use WP_Error;
  * @return string|WP_Error
  */
 function get_remote_blueprint( string $url ) {
-	if ( empty( $url ) || ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
+	if ( ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
 		return new WP_Error(
 			'acm_blueprint_invalid_url',
 			esc_html__( 'Please provide a URL to a blueprint zip file.', 'atlas-content-modeler' ),
