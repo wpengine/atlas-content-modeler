@@ -97,4 +97,27 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 		self::assertCount( $expected_term_count, $terms );
 	}
+
+	public function test_tag_posts() {
+		create_models( $this->manifest['models'] );
+		import_taxonomies( $this->manifest['taxonomies'] );
+
+		$post_ids_old_new = import_posts( $this->manifest['posts'] );
+		$term_ids_old_new = import_terms( $this->manifest['terms'] );
+
+		tag_posts(
+			$this->manifest['post_terms'],
+			$post_ids_old_new,
+			$term_ids_old_new
+		);
+
+		$posts = get_posts( [ 'post_type' => 'rabbit' ] );
+
+		foreach ( $posts as $post ) {
+			$saved_terms        = wp_get_post_terms( $post->ID, 'breed' );
+			$expected_term_name = $this->manifest['post_terms'][ $post_ids_old_new[ $post->ID ] ?? $post->ID ][0]['name'];
+			$actual_term_name   = $saved_terms[0]->name;
+			self::assertSame( $expected_term_name, $actual_term_name );
+		}
+	}
 }
