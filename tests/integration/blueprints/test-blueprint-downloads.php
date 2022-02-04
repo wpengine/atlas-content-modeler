@@ -4,12 +4,6 @@ use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_di
 
 class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 
-	public function set_up() {
-		parent::set_up();
-		require_once ABSPATH . '/wp-includes/http.php';
-		do_action( 'init' );
-	}
-
 	/**
 	 * @covers ::WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint
 	 */
