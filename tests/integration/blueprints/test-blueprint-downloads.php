@@ -41,7 +41,7 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 
 	public function test_save_blueprint_to_upload_dir_returns_true_when_give_a_valid_blueprint(): void {
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		$blueprint = file_get_contents( __DIR__ . '/mocks/acm-rabbits.zip' );
+		$blueprint = file_get_contents( __DIR__ . '/test-data/acm-rabbits.zip' );
 		$saved     = save_blueprint_to_upload_dir( $blueprint, 'acm-rabbits.zip' );
 		self::assertTrue( $saved );
 		self::assertTrue( is_readable( trailingslashit( wp_upload_dir()['path'] ) . 'acm-rabbits.zip' ) );
