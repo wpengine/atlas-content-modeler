@@ -1,6 +1,7 @@
 import React from "react";
 import { __ } from "@wordpress/i18n";
 import Icon from "acm-icons";
+import { DarkButton } from "../../../../../shared-assets/js/components/Buttons";
 
 export default function LinkButton({
 	field,
@@ -33,10 +34,9 @@ export default function LinkButton({
 
 	return (
 		<div className="d-flex flex-row align-items-center media-btns">
-			<button
-				className="button button-primary link-button"
+			<DarkButton
+				data-testid="content-model-relationship-button"
 				style={{ marginTop: "5px" }}
-				type="button"
 				id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 				onClick={(e) => {
 					e.preventDefault();
@@ -47,7 +47,7 @@ export default function LinkButton({
 					<Icon type="link" />
 					<div className="px-2">{buttonLabel}</div>
 				</div>
-			</button>
+			</DarkButton>
 		</div>
 	);
 }

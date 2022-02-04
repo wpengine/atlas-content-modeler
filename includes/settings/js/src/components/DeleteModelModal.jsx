@@ -8,6 +8,10 @@ import { getRelationships } from "../queries";
 import { showError } from "../toasts";
 import { useHistory } from "react-router-dom";
 import { sendEvent } from "acm-analytics";
+import {
+	TertiaryButton,
+	WarningButton,
+} from "../../../../shared-assets/js/components/Buttons";
 
 const { apiFetch } = wp;
 
@@ -111,8 +115,9 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 					plural
 				)}
 			</p>
-			<button
-				className="first warning"
+			<WarningButton
+				className="first"
+				data-testid="delete-model-button"
 				onClick={async () => {
 					// Optimistically remove the model from the UI.
 					dispatch({ type: "removeModel", slug });
@@ -158,15 +163,15 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 				}}
 			>
 				{__("Delete", "atlas-content-modeler")}
-			</button>
-			<button
-				className="tertiary"
+			</WarningButton>
+			<TertiaryButton
+				data-testid="delete-model-cancel-button"
 				onClick={() => {
 					setModalIsOpen(false);
 				}}
 			>
 				{__("Cancel", "atlas-content-modeler")}
-			</button>
+			</TertiaryButton>
 		</Modal>
 	);
 }

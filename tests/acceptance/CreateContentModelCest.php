@@ -24,7 +24,7 @@ class CreateContentModelCest {
 		$i->fillField( [ 'name' => 'plural' ], 'Candies' );
 		$i->fillField( [ 'name' => 'description' ], 'My candy content model' );
 		$i->see( '22/250', 'span.count' );
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-model-button"]' );
 		$i->wait( 1 );
 
 		$i->amOnWPEngineContentModelPage();
@@ -41,7 +41,7 @@ class CreateContentModelCest {
 		$i->fillField( [ 'name' => 'singular' ], 'Post' ); // 'post' is in use.
 		$i->fillField( [ 'name' => 'plural' ], 'Candies' );
 		$i->fillField( [ 'name' => 'slug' ], 'Candy' );
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-model-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'singular name is in use', '.card-content' );
@@ -54,7 +54,7 @@ class CreateContentModelCest {
 
 		$i->fillField( [ 'name' => 'singular' ], 'Candy' );
 		$i->fillField( [ 'name' => 'plural' ], 'Posts' ); // 'posts' is in use.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-model-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'plural name is in use', '.card-content' );

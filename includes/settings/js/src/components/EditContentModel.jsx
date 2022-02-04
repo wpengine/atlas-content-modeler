@@ -16,6 +16,10 @@ import {
 	getOpenField,
 } from "../queries";
 import FieldButtons from "./FieldButtons";
+import {
+	Button,
+	TertiaryButton,
+} from "../../../../shared-assets/js/components/Buttons";
 import { Card } from "../../../../shared-assets/js/components/card";
 
 Modal.setAppElement("#root");
@@ -169,17 +173,19 @@ export default function EditContentModel() {
 									"atlas-content-modeler"
 								)}
 							</p>
-							<button
-								className="first primary"
+							<Button
+								className="first"
+								data-testid="model-field-continue-editing-button"
 								onClick={closeUnsavedChangesModal}
 							>
 								{__(
 									"Continue Editing",
 									"atlas-content-modeler"
 								)}
-							</button>
-							<button
+							</Button>
+							<TertiaryButton
 								className="tertiary"
+								data-testid="model-field-continue-discard-button"
 								onClick={() => {
 									const action = unsavedChangesModal?.field
 										?.editing
@@ -195,7 +201,7 @@ export default function EditContentModel() {
 								}}
 							>
 								{__("Discard Changes", "atlas-content-modeler")}
-							</button>
+							</TertiaryButton>
 						</Modal>
 					</>
 				) : (

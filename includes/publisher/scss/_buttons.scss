@@ -1,44 +1,6 @@
 @import "../../../includes/shared-assets/scss/_variables";
-button {
-	background: $color-primary;
-	border-radius: $radius;
-	border: 1px solid $color-primary;
-	color: $color-white;
-	cursor: pointer;
-	font-size: 14px;
-	font-weight: 600;
-	height: 52px;
-	line-height: 20px;
-	padding: 14px 24px;
-}
-
-button:disabled,
-button:disabled:hover {
-	background: $color-gray-disabled-background !important;
-	border-color: $color-gray-disabled-border !important;
-	color: $color-gray-disabled-text !important;
-}
-
 button.first {
 	margin-right: 20px;
-}
-
-button:focus,
-button:hover {
-	background: $color-primary-hover;
-	border: 1px solid $color-primary-hover;
-}
-
-button.secondary {
-	background: $color-text;
-	border: 1px solid $color-text;
-	color: $color-white;
-}
-
-button.secondary:focus,
-button.secondary:hover {
-	background: lighten($color-text, 10%);
-	border: 1px solid lighten($color-text, 10%);
 }
 
 button.tertiary {
@@ -122,27 +84,6 @@ button.warning:focus,
 button.warning:hover {
 	background: $color-warning-hover;
 	border: 1px solid $color-warning-hover;
-}
-
-button.settings {
-	background: transparent;
-	border-color: transparent;
-	color: $color-primary;
-	margin-left: 20px;
-	padding: 14px 0;
-}
-
-button.settings:active,
-button.settings:hover {
-	color: $color-primary-hover;
-
-	svg path {
-		fill: $color-primary-hover;
-	}
-}
-
-button.settings svg {
-	margin-right: 10px;
 }
 
 button.options svg {

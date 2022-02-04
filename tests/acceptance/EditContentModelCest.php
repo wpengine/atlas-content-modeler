@@ -3,6 +3,7 @@
 class EditContentModelCest {
 
 	public function _before( \AcceptanceTester $i ) {
+		$i->resizeWindow( 1024, 1024 );
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
 
