@@ -204,6 +204,16 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_unzip_blueprint() {
+		$this->copy_media_to_wp_uploads();
+
+		$upload_dir = wp_upload_dir()['path'];
+
+		unzip_blueprint( $upload_dir . '/acm-rabbits.zip' );
+
+		self::assertEquals( true, is_readable( $upload_dir . '/acm-rabbits/acm.json' ) );
+	}
+
 	public function test_cleanup() {
 		$this->copy_media_to_wp_uploads();
 
