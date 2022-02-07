@@ -289,7 +289,6 @@ function import_terms( array $terms ) {
 	];
 }
 
-
 /**
  * Sets terms on posts.
  *
@@ -301,6 +300,12 @@ function import_terms( array $terms ) {
  * @return true|WP_Error True on success, WP_Error if setting any term failed.
  */
 function tag_posts( array $post_terms, array $post_ids_old_new, array $term_ids_old_new ) {
+	$import_errors = false;
+	$errors        = new WP_Error(
+		'acm_term_import_error',
+		__( 'Errors encountered during post tagging.', 'atlas-content-modeler' )
+	);
+
 	foreach ( $post_terms as $post_id => $terms ) {
 		foreach ( $terms as $term ) {
 			$new_post_id = $post_ids_old_new[ $post_id ] ?? $post_id;
@@ -308,9 +313,17 @@ function tag_posts( array $post_terms, array $post_ids_old_new, array $term_ids_
 			$result      = wp_set_post_terms( $new_post_id, [ (int) $new_term_id ], $term['taxonomy'], true );
 
 			if ( is_wp_error( $result ) ) {
-				return $result;
+				$import_errors = true;
+				$errors->add(
+					$result->get_error_code(),
+					$result->get_error_message()
+				);
 			}
 		}
+	}
+
+	if ( $import_errors ) {
+		return $errors;
 	}
 
 	return true;

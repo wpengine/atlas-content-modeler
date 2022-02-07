@@ -144,7 +144,9 @@ class Blueprint {
 			);
 
 			if ( is_wp_error( $tag_posts ) ) {
-				\WP_CLI::error( $tag_posts->get_error_message() );
+				foreach ( $tag_posts as $message ) {
+					\WP_CLI::warning( $message );
+				}
 			}
 		}
 
