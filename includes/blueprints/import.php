@@ -285,7 +285,7 @@ function import_terms( array $terms ) {
 
 	return [
 		'ids'    => $term_ids_old_new,
-		'errors' => $import_errors ?: false,
+		'errors' => $import_errors ? $errors : false,
 	];
 }
 

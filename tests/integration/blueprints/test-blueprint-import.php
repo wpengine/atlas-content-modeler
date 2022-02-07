@@ -118,6 +118,17 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		self::assertFalse( $import_result['errors'] );
 	}
 
+	public function test_import_bad_terms_records_error() {
+		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-bad-terms' );
+		import_taxonomies( $manifest['taxonomies'] );
+		$import_terms = import_terms( $manifest['terms'] );
+
+		self::assertInstanceOf( 'WP_Error', $import_terms['errors'] );
+		$errors = $import_terms['errors']->get_error_codes();
+		self::assertContains( 'acm_term_import_error', $errors );
+		self::assertContains( 'invalid_taxonomy', $errors );
+	}
+
 	public function test_tag_posts() {
 		create_models( $this->manifest['models'] );
 		import_taxonomies( $this->manifest['taxonomies'] );
