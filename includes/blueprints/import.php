@@ -245,13 +245,19 @@ function import_posts( array $posts ) {
  * Imports terms.
  *
  * @param array $terms Terms to import.
- * @return array|WP_Error
+ * @return array
  */
 function import_terms( array $terms ) {
 	/**
 	 * Stores term IDs that changed during import.
 	 */
 	$term_ids_old_new = [];
+
+	$import_errors = false;
+	$errors        = new WP_Error(
+		'acm_term_import_error',
+		__( 'Errors encountered during term import.', 'atlas-content-modeler' )
+	);
 
 	foreach ( $terms as $term ) {
 		$term_info = [
@@ -262,15 +268,25 @@ function import_terms( array $terms ) {
 		$inserted_term = wp_insert_term( $term['name'], $term['taxonomy'], $term_info );
 
 		if ( is_wp_error( $inserted_term ) ) {
-			return $inserted_term;
+			$import_errors = true;
+			$errors->add(
+				$inserted_term->get_error_code(),
+				$inserted_term->get_error_message()
+			);
 		}
 
-		if ( $term['term_id'] !== $inserted_term['term_id'] ) {
+		if (
+			! is_wp_error( $inserted_term )
+			&& $term['term_id'] !== $inserted_term['term_id']
+		) {
 			$term_ids_old_new[ $term['term_id'] ] = $inserted_term['term_id'];
 		}
 	}
 
-	return $term_ids_old_new;
+	return [
+		'ids'    => $term_ids_old_new,
+		'errors' => $import_errors ?: false,
+	];
 }
 
 

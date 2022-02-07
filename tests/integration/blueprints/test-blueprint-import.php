@@ -108,7 +108,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		import_taxonomies( $this->manifest['taxonomies'] );
 
 		$post_ids_old_new = import_posts( $this->manifest['posts'] );
-		$term_ids_old_new = import_terms( $this->manifest['terms'] );
+		$term_ids_old_new = import_terms( $this->manifest['terms'] )['ids'];
 
 		tag_posts(
 			$this->manifest['post_terms'],

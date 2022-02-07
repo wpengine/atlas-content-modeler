@@ -128,14 +128,20 @@ class Blueprint {
 			\WP_CLI::log( 'Importing terms.' );
 			$term_ids_old_new = import_terms( $manifest['terms'] );
 
-			if ( is_wp_error( $term_ids_old_new ) ) {
-				\WP_CLI::error( $term_ids_old_new->get_error_message() );
+			if ( is_wp_error( $term_ids_old_new['errors'] ) ) {
+				foreach ( $term_ids_old_new['errors'] as $message ) {
+					\WP_CLI::warning( $message );
+				}
 			}
 		}
 
 		if ( ! empty( $manifest['post_terms'] ?? [] ) ) {
 			\WP_CLI::log( 'Tagging posts.' );
-			$tag_posts = tag_posts( $manifest['post_terms'], $post_ids_old_new, $term_ids_old_new );
+			$tag_posts = tag_posts(
+				$manifest['post_terms'],
+				$post_ids_old_new,
+				$term_ids_old_new['ids'] ?? []
+			);
 
 			if ( is_wp_error( $tag_posts ) ) {
 				\WP_CLI::error( $tag_posts->get_error_message() );
