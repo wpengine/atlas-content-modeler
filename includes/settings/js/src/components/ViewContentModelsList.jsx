@@ -65,7 +65,7 @@ export default function ViewContentModelsList() {
 								"atlas-content-modeler"
 							)}
 						</p>
-						<button
+						<Button
 							onClick={() =>
 								history.push(
 									atlasContentModeler.appPath +
@@ -74,7 +74,7 @@ export default function ViewContentModelsList() {
 							}
 						>
 							{__("Get Started", "atlas-content-modeler")}
-						</button>
+						</Button>
 					</div>
 				)}
 			</section>
