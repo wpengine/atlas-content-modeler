@@ -34,6 +34,9 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
+		delete_option( 'atlas_content_modeler_post_types' );
+		delete_option( 'atlas_content_modeler_taxonomies' );
+
 		$this->manifest         = get_manifest( __DIR__ . '/test-data/blueprint-good' );
 		$this->upload_dir       = wp_upload_dir()['path'];
 		$this->blueprint_folder = $this->upload_dir . '/blueprint-good';
@@ -81,6 +84,17 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 		$taxonomies = get_option( 'atlas_content_modeler_taxonomies' );
 		self::assertArrayHasKey( 'breed', $taxonomies );
+	}
+
+	public function test_import_duplicate_taxonomies_records_error() {
+		$first_import  = import_taxonomies( $this->manifest['taxonomies'] );
+		$second_import = import_taxonomies( $this->manifest['taxonomies'] );
+
+		self::assertNotInstanceOf( 'WP_Error', $first_import );
+		self::assertInstanceOf( 'WP_Error', $second_import );
+		$errors = $second_import->get_error_codes();
+		self::assertContains( 'acm_taxonomy_import_error', $errors );
+		self::assertContains( 'acm_taxonomy_exists', $errors );
 	}
 
 	public function test_import_posts() {
@@ -239,5 +253,20 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		}
 
 		copy_dir( __DIR__ . '/test-data/', $this->upload_dir );
+	}
+
+	/**
+	 * Unregisters taxonomies to clean up scope between taxonomy tests.
+	 */
+	protected function reset_taxonomies() {
+		foreach ( get_taxonomies() as $tax ) {
+			_unregister_taxonomy( $tax );
+		}
+	}
+
+	public function tearDown() {
+		$this->reset_taxonomies();
+
+		parent::tearDown();
 	}
 }
