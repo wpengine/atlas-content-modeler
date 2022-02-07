@@ -29,6 +29,8 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 	unzip_blueprint
 };
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
+use function WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint;
+use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir;
 
 /**
  * Blueprint subcommands for the `wp acm blueprint` WP-CLI command.
@@ -56,14 +58,20 @@ class Blueprint {
 	 */
 	public function import( $args, $assoc_args ) {
 		list( $url ) = $args;
-		// \WP_CLI::log( 'Fetching zip.' );
-		// TODO: Fetch zip from $url and save to wp_upload_dir().
 
-		\WP_CLI::log( 'Unzipping blueprint.' );
-		// TODO: Replace this with the zip path from the previous step.
-		$upload_dir       = wp_upload_dir();
-		$zip_file         = $upload_dir['path'] . '/acm-rabbits.zip';
-		$blueprint_folder = unzip_blueprint( $zip_file );
+		\WP_CLI::log( 'Fetching zip.' );
+		$zip_file = get_remote_blueprint( $url );
+		if ( is_wp_error( $zip_file ) ) {
+			\WP_CLI::error( $zip_file->get_error_message() );
+		}
+
+		$valid_file = save_blueprint_to_upload_dir( $zip_file, basename( $url ) );
+		if ( is_wp_error( $valid_file ) ) {
+			\WP_CLI::error( $valid_file->get_error_message() );
+		}
+
+		\WP_CLI::log( 'Unzipping.' );
+		$blueprint_folder = unzip_blueprint( $valid_file );
 
 		if ( is_wp_error( $blueprint_folder ) ) {
 			\WP_CLI::error( $blueprint_folder->get_error_message() );
@@ -178,4 +186,6 @@ class Blueprint {
 		\WP_CLI::log( 'Generating zip…' );
 		\WP_CLI::success( 'Blueprint saved to path/to/file.zip.' );
 	}
+
+
 }
