@@ -13,7 +13,7 @@ class DeleteFieldFromModelCest {
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Name' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( '.field-list li .options' );

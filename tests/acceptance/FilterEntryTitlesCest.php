@@ -20,7 +20,7 @@ class FilterEntryTitlesCest {
 	public function i_see_the_defined_entry_title_field_value_in_the_entry_list( AcceptanceTester $i ) {
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Fave Foods' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
@@ -28,7 +28,7 @@ class FilterEntryTitlesCest {
 		$i->fillField( [ 'name' => 'name' ], 'Name' );
 		// Set the 'name' field as the entry title field.
 		$i->click( '.open-field .checkbox.is-title' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Create an entry for the model.
@@ -57,13 +57,13 @@ class FilterEntryTitlesCest {
 	public function i_see_a_fallback_title_if_there_is_no_entry_title_field( AcceptanceTester $i ) {
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Fave Foods' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Name' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Create an entry for the model.
@@ -94,7 +94,7 @@ class FilterEntryTitlesCest {
 		$i->fillField( [ 'name' => 'name' ], 'Name' );
 		// Set the 'name' field as the entry title field.
 		$i->click( '.open-field .checkbox.is-title' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Create an entry for the model.

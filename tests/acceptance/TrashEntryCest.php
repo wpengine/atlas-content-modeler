@@ -16,7 +16,7 @@ class TrashEntryCest {
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'Goose Friend' );
 		$i->selectOption( '#reference', 'geese' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 	}
 
@@ -31,7 +31,7 @@ class TrashEntryCest {
 		$i->click( '#atlas-content-modeler[mouse][gooseFriend]' );
 		$i->wait( 2 );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
-		$i->click( 'button.action-button' );
+		$i->click( 'button[data-testid="relationship-modal-save-button"]' );
 		$i->wait( 2 );
 		$i->click( 'Publish', '#publishing-action' );
 
