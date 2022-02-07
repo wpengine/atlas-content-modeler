@@ -212,7 +212,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 		unzip_blueprint( $upload_dir . '/acm-rabbits.zip' );
 
-		self::assertEquals( true, is_readable( $upload_dir . '/acm-rabbits/acm.json' ) );
+		self::assertTrue( is_readable( $upload_dir . '/acm-rabbits/acm.json' ) );
 	}
 
 	public function test_cleanup() {
@@ -222,8 +222,8 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 		cleanup( $upload_dir . '/acm-rabbits.zip', $upload_dir . '/blueprint-good/' );
 
-		self::assertEquals( false, is_readable( $upload_dir . '/acm-rabbits.zip' ) );
-		self::assertEquals( false, is_readable( $upload_dir . '/blueprint-good/acm.json' ) );
+		self::assertFalse( is_readable( $upload_dir . '/acm-rabbits.zip' ) );
+		self::assertFalse( is_readable( $upload_dir . '/blueprint-good/acm.json' ) );
 	}
 
 	private function copy_media_to_wp_uploads() {
