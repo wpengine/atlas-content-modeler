@@ -302,7 +302,7 @@ function import_terms( array $terms ) {
 function tag_posts( array $post_terms, array $post_ids_old_new, array $term_ids_old_new ) {
 	$import_errors = false;
 	$errors        = new WP_Error(
-		'acm_term_import_error',
+		'acm_tag_import_error',
 		__( 'Errors encountered during post tagging.', 'atlas-content-modeler' )
 	);
 

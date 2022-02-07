@@ -152,6 +152,26 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_import_bad_tag_records_error() {
+		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-bad-tags' );
+		create_models( $manifest['models'] );
+		import_taxonomies( $manifest['taxonomies'] );
+
+		$post_ids_old_new = import_posts( $manifest['posts'] );
+		$term_ids_old_new = import_terms( $manifest['terms'] )['ids'];
+
+		$tag_posts = tag_posts(
+			$manifest['post_terms'],
+			$post_ids_old_new,
+			$term_ids_old_new
+		);
+
+		self::assertInstanceOf( 'WP_Error', $tag_posts );
+		$errors = $tag_posts->get_error_codes();
+		self::assertContains( 'acm_tag_import_error', $errors );
+		self::assertContains( 'invalid_taxonomy', $errors );
+	}
+
 	public function test_import_media() {
 		$this->copy_media_to_wp_uploads();
 		$media_ids_old_new = import_media( $this->manifest['media'], $this->blueprint_folder );
