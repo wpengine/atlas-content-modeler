@@ -51,6 +51,7 @@ function atlas_content_modeler_loader(): void {
 		'updates/version-updates.php',
 		'content-connect/autoload.php',
 		'blueprints/fetch.php',
+		'blueprints/export.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
