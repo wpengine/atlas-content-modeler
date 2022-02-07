@@ -149,15 +149,25 @@ function check_versions( array $manifest ) {
  * Imports ACM taxonomies.
  *
  * @param array $taxonomies Taxonomies in their original stored format.
- * @return WP_Error|void Gives a WP_Error in the case of collision with an
- *                       existing taxonomy.
+ * @return WP_Error|void Gives a WP_Error in the case of collisions with an
+ *                       existing taxonomy or other taxonomy import issues.
  */
 function import_taxonomies( array $taxonomies ) {
+	$import_errors = false;
+	$errors        = new WP_Error(
+		'acm_taxonomy_import_error',
+		__( 'Errors encountered during taxonomy import.', 'atlas-content-modeler' )
+	);
+
 	foreach ( $taxonomies as $taxonomy ) {
 		$saved = save_taxonomy( $taxonomy, false );
 
 		if ( is_wp_error( $saved ) ) {
-			return $saved;
+			$import_errors = true;
+			$errors->add(
+				$saved->get_error_code(),
+				$saved->get_error_message()
+			);
 		}
 	}
 
@@ -168,6 +178,10 @@ function import_taxonomies( array $taxonomies ) {
 	 * (import_terms) within the same PHP process.
 	 */
 	register_taxonomies();
+
+	if ( $import_errors ) {
+		return $errors;
+	}
 }
 
 /**

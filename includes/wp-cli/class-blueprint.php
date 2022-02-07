@@ -111,7 +111,9 @@ class Blueprint {
 			$taxonomy_import = import_taxonomies( $manifest['taxonomies'] );
 
 			if ( is_wp_error( $taxonomy_import ) ) {
-				\WP_CLI::error( $taxonomy_import->get_error_message() );
+				foreach ( $taxonomy_import->get_error_messages() as $message ) {
+					\WP_CLI::warning( $message );
+				}
 			}
 		}
 
