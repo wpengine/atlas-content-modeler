@@ -95,12 +95,13 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 	public function test_import_terms() {
 		import_taxonomies( $this->manifest['taxonomies'] );
-		import_terms( $this->manifest['terms'] );
+		$import_result = import_terms( $this->manifest['terms'] );
 
 		$terms               = get_terms( 'breed', [ 'hide_empty' => false ] );
 		$expected_term_count = count( $this->manifest['terms'] );
 
 		self::assertCount( $expected_term_count, $terms );
+		self::assertFalse( $import_result['errors'] );
 	}
 
 	public function test_tag_posts() {
