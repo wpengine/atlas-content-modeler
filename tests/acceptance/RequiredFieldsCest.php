@@ -13,7 +13,7 @@ class RequiredFieldsCest {
 		$i->fillField( [ 'name' => 'name' ], 'Name' );
 		$i->seeInField( '#slug', 'name' );
 		$i->click( '.open-field label.checkbox.is-required' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Create an entry for the new model.

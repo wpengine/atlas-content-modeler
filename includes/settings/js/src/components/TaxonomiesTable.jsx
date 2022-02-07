@@ -48,7 +48,7 @@ const TaxonomiesTable = ({ taxonomies = {} }) => {
 								<td>{taxonomy?.slug}</td>
 								<td>{taxonomy?.types?.join(", ")}</td>
 								<td className="action right">
-									<div className="neg-margin-wrapper">
+									<div>
 										<TaxonomiesDropdown
 											taxonomy={taxonomy}
 										/>

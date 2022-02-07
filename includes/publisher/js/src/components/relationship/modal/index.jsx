@@ -7,6 +7,10 @@ import Title from "./Title";
 import Table from "./Table";
 import Pagination from "./Pagination";
 import Loader from "../Loader";
+import {
+	Button,
+	TertiaryButton,
+} from "../../../../../../shared-assets/js/components/Buttons";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -229,9 +233,10 @@ export default function RelationshipModal({
 				<p>{__("No entries found.", "atlas-content-modeler")}</p>
 			)}
 			<div className="d-flex flex-row-reverse mt-2">
-				<button
+				<Button
 					type="submit"
-					className="action-button mx-3"
+					className="mx-3"
+					data-testid="relationship-modal-save-button"
 					onClick={(event) => {
 						event.preventDefault();
 						setSelectedEntries(chosenEntries);
@@ -239,10 +244,11 @@ export default function RelationshipModal({
 					}}
 				>
 					{__("Save", "atlas-content-modeler")}
-				</button>
-				<button
+				</Button>
+				<TertiaryButton
 					href="#"
-					className="tertiary mx-0"
+					className="mx-0"
+					data-testid="relationship-modal-cancel-button"
 					onClick={(event) => {
 						event.preventDefault();
 						setChosenEntries(savedEntries.current);
@@ -250,7 +256,7 @@ export default function RelationshipModal({
 					}}
 				>
 					{__("Cancel", "atlas-content-modeler")}
-				</button>
+				</TertiaryButton>
 			</div>
 		</Modal>
 	);

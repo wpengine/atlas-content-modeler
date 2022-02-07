@@ -24,7 +24,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'Select Company', 'div.ReactModal__Content.ReactModal__Content--after-open h2' );
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
-		$i->click( 'button.action-button' );
+		$i->click( 'button[data-testid="relationship-modal-save-button"]' );
 
 		$i->waitForElementVisible( 'div.relation-model-card' );
 		$i->see( 'WP Engine', 'div.relation-model-card' );
@@ -47,7 +47,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
 		$i->click( Locator::elementAt( 'td.checkbox input', 2 ) );
-		$i->click( 'button.action-button' );
+		$i->click( 'button[data-testid="relationship-modal-save-button"]' );
 
 		$i->waitForElementVisible( 'div.relation-model-card' );
 		$i->see( 'WP Engine', 'div.relation-model-card' );
@@ -113,7 +113,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->fillField( [ 'name' => 'name' ], 'onetomany' );
 		$i->selectOption( '#reference', 'Companies' );
 		$i->click( 'input#one-to-many' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$this->create_company( $i, 'Company A' );
@@ -125,14 +125,14 @@ class CreateRelationshipFieldEntryCest {
 		$i->click( '#atlas-content-modeler[employee][company]' );
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
-		$i->click( 'button.action-button' );
+		$i->click( 'button[data-testid="relationship-modal-save-button"]' );
 		$i->wait( 1 );
 
 		// Link Employee 1 to Company A via the one-to-many field.
 		$i->click( '#atlas-content-modeler[employee][onetomany]' );
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
-		$i->click( 'button.action-button' );
+		$i->click( 'button[data-testid="relationship-modal-save-button"]' );
 		$i->wait( 1 );
 
 		$i->click( 'Publish', '#publishing-action' );
@@ -148,7 +148,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->moveMouseOver( '.unselectable button' );
 		$i->waitForElementVisible( '.tooltip-text' );
 		$i->see( 'is already linked', '.tooltip-text' ); // Company A is already linked to Employee 1.
-		$i->click( 'button.tertiary' ); // Closes the modal.
+		$i->click( 'button[data-testid="relationship-modal-cancel-button"]' ); // Closes the modal.
 
 		// Attempt to link Employee 2 to Company A via one-to-many.
 		$i->click( '#atlas-content-modeler[employee][onetomany]' );
@@ -198,7 +198,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->wait( 1 );
 		$i->see( 'Reverse Display Name' );
 		$i->fillField( [ 'name' => 'reverseName' ], 'Lefts One To One' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Add a many-to-one relationship field to the Left model that references Right, including a reverse reference.
@@ -212,7 +212,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->wait( 1 );
 		$i->see( 'Reverse Display Name' );
 		$i->fillField( [ 'name' => 'reverseName' ], 'Lefts One To Many' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Publish a new Rights post.
@@ -236,7 +236,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->click( '#atlas-content-modeler[right][rightsOneToOne]' );
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
-		$i->click( 'button.action-button' );
+		$i->click( 'button[data-testid="relationship-modal-save-button"]' );
 		$i->wait( 1 );
 
 		// Link the new Right to both Lefts via the many-to-one field.
@@ -244,7 +244,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
 		$i->click( Locator::elementAt( 'td.checkbox input', 2 ) );
-		$i->click( 'button.action-button' );
+		$i->click( 'button[data-testid="relationship-modal-save-button"]' );
 		$i->wait( 1 );
 
 		// Save changes to the Right post.
@@ -264,7 +264,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( '.tooltip-text' );
 		$i->see( 'is already linked', '.tooltip-text' );
 		$i->seeNumberOfElements( '.unselectable button', 1 ); // Only one Left should be unselectable.
-		$i->click( 'button.tertiary' ); // Closes the modal.
+		$i->click( 'button[data-testid="relationship-modal-cancel-button"]' ); // Closes the modal.
 
 		/**
 		 * Confirm that both Lefts are not available in the many-to-one field
@@ -301,7 +301,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->wait( 1 );
 		$i->see( 'Reverse Display Name' );
 		$i->fillField( [ 'name' => 'reverseName' ], 'ThisIsTheReverseReference' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Visit the Lefts publisher entry screen.
@@ -311,7 +311,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'Rights', '#field-rights label' );
 
 		// Confirm that the forward relationship field button label is correct.
-		$i->see( 'Link Rights', '#field-rights .button-primary' );
+		$i->see( 'Link Rights', 'button[data-testid="content-model-relationship-button"]' );
 
 		// Publish the “lefts” post.
 		$i->click( 'Publish', '#publishing-action' );
@@ -324,14 +324,14 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'ThisIsTheReverseReference', '#field-rights label' );
 
 		// Confirm that the reverse relationship field button label is correct.
-		$i->see( 'Link Lefts', '#field-rights .button-primary' );
+		$i->see( 'Link Lefts', 'button[data-testid="content-model-relationship-button"]' );
 
 		// Link the right entry to the published “left” entry.
 		$i->click( '#atlas-content-modeler[right][rights]' );
 		$i->see( 'Select Lefts', 'div.ReactModal__Content.ReactModal__Content--after-open h2' );
 		$i->waitForElementVisible( 'td.checkbox input' );
 		$i->click( Locator::elementAt( 'td.checkbox input', 1 ) );
-		$i->click( 'button.action-button' );
+		$i->click( 'button[data-testid="relationship-modal-save-button"]' );
 
 		// Confirm the linked entry is visible when closing the modal.
 		$i->waitForElementVisible( 'div.relation-model-card' );
@@ -344,11 +344,11 @@ class CreateRelationshipFieldEntryCest {
 		$i->see( 'No Title', 'div.relation-model-card' );
 
 		// Remove the linked entry from the “rights” side and update it.
-		$i->waitForElementVisible( '.dropdown .options' );
-		$i->click( '.dropdown .options' );
+		$i->waitForElementVisible( '.options' );
+		$i->click( '.options' );
 		$i->waitForElementVisible( '.dropdown-content .delete' );
 		$i->click( '.dropdown-content .delete' );
-		$i->waitForElementNotVisible( '.dropdown .options' );
+		$i->waitForElementNotVisible( '.options' );
 		$i->dontSee( 'No Title', 'div.relation-model-card' ); // Linked entry was removed.
 		$i->click( 'Update', '#publishing-action' );
 		$i->wait( 2 );
@@ -371,7 +371,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->click( 'Text', '.field-buttons' );
 		$i->checkOption( 'input[name="isTitle"]' );
 		$i->fillField( [ 'name' => 'name' ], 'Company' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$content_model = $i->haveContentModel( 'Employee', 'Employees' );
 		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
@@ -381,7 +381,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->fillField( [ 'name' => 'name' ], 'Company' );
 		$i->selectOption( '#reference', 'Companies' );
 		$i->click( 'input#one-to-one' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->click( Locator::lastElement( '.add-item' ) );
 		$i->click( 'Relationship', '.field-buttons' );
@@ -389,7 +389,7 @@ class CreateRelationshipFieldEntryCest {
 		$i->fillField( [ 'name' => 'name' ], 'Many Companies' );
 		$i->selectOption( '#reference', 'Companies' );
 		$i->click( 'input#many-to-many' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 2 );
 	}
 

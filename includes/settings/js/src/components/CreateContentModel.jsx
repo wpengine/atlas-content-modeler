@@ -11,6 +11,10 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
+import {
+	Button,
+	TertiaryButton,
+} from "../../../../shared-assets/js/components/Buttons";
 import { Card } from "../../../../shared-assets/js/components/card";
 
 const { apiFetch } = wp;
@@ -104,12 +108,12 @@ export default function CreateContentModel() {
 		<Card>
 			<section className="heading flex-wrap d-flex flex-column d-sm-flex flex-sm-row">
 				<h2>New Content Model</h2>
-				<button
-					className="tertiary"
+				<TertiaryButton
 					onClick={() => history.push(atlasContentModeler.appPath)}
+					data-testid="view-all-models-button"
 				>
 					{__("View All Models", "atlas-content-modeler")}
-				</button>
+				</TertiaryButton>
 			</section>
 			<section className="card-content">
 				<form onSubmit={handleSubmit(apiCreateModel)}>
@@ -404,22 +408,23 @@ export default function CreateContentModel() {
 						</p>
 					</div>
 
-					<button
+					<Button
 						type="submit"
 						disabled={isSubmitting}
-						className="primary first"
+						className="first"
+						data-testid="create-model-button"
 					>
 						Create
-					</button>
-					<button
-						className="tertiary"
+					</Button>
+					<TertiaryButton
 						disabled={isSubmitting}
 						onClick={() =>
 							history.push(atlasContentModeler.appPath)
 						}
+						data-testid="create-model-cancel-button"
 					>
 						Cancel
-					</button>
+					</TertiaryButton>
 				</form>
 			</section>
 		</Card>

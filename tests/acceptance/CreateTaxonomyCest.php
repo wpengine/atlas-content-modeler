@@ -30,8 +30,9 @@ class CreateTaxonomyCest {
 		$i->fillField( [ 'name' => 'singular' ], 'Breed' );
 		$i->fillField( [ 'name' => 'plural' ], 'Breeds' );
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 2 );
+
 		$i->see( 'taxonomy was created', '#success' );
 		$i->see( 'Breeds', '.taxonomy-list' );
 		$i->see( 'goose', '.taxonomy-list' );
@@ -51,7 +52,7 @@ class CreateTaxonomyCest {
 
 		$i->fillField( [ 'name' => 'singular' ], 'Breed' );
 		$i->fillField( [ 'name' => 'plural' ], 'Breeds' );
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Please choose at least one model' );
 	}
@@ -62,7 +63,7 @@ class CreateTaxonomyCest {
 
 		$i->fillField( [ 'name' => 'plural' ], 'Breeds' );
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 		$i->see( 'This field is required' );
 	}
@@ -73,7 +74,7 @@ class CreateTaxonomyCest {
 
 		$i->fillField( [ 'name' => 'singular' ], 'Breed' );
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 		$i->see( 'This field is required' );
 	}
@@ -85,14 +86,14 @@ class CreateTaxonomyCest {
 		$i->fillField( [ 'name' => 'singular' ], 'Breed' );
 		$i->fillField( [ 'name' => 'plural' ], 'Breeds' );
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 
 		// Create another taxonomy with the same info.
 		$i->fillField( [ 'name' => 'singular' ], 'Breed' );
 		$i->fillField( [ 'name' => 'plural' ], 'Breeds' );
 		$i->click( '.checklist .checkbox' );
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'A taxonomy with this Taxonomy ID already exists' );
@@ -106,7 +107,7 @@ class CreateTaxonomyCest {
 		$i->fillField( [ 'name' => 'plural' ], 'Breeds' );
 		$i->fillField( [ 'name' => 'slug' ], 'breed' );
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 		$i->see( 'singular name is in use' );
 	}
@@ -118,7 +119,7 @@ class CreateTaxonomyCest {
 		$i->fillField( [ 'name' => 'singular' ], 'Breed' );
 		$i->fillField( [ 'name' => 'plural' ], 'Posts' ); // 'Posts' is a reserved name.
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 		$i->see( 'plural name is in use' );
 	}
@@ -130,7 +131,7 @@ class CreateTaxonomyCest {
 		$i->fillField( [ 'name' => 'singular' ], 'Author' );
 		$i->fillField( [ 'name' => 'plural' ], 'Authors' );
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 
 		$i->see( 'Taxonomy slug is reserved.' );
@@ -145,7 +146,7 @@ class CreateTaxonomyCest {
 		// Edit the slug manually to break the “link” with the singular field.
 		$i->fillField( [ 'name' => 'slug' ], 'myFirst' );
 		$i->click( '.checklist .checkbox' ); // The “goose” model.
-		$i->click( '.card-content button.primary' );
+		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 		$i->see( 'taxonomy was created', '#success' );
 		$i->see( 'Firsts', '.taxonomy-list' );

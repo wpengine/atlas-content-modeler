@@ -8,11 +8,11 @@ exports[`ImportFileButton tests Renders a matching snapshot 1`] = `
     onChange={[Function]}
     type="file"
   />
-  <button
-    className="button dark-blue button-primary link-button"
+  <DarkButton
+    data-testid="export-models-button"
     onClick={[Function]}
   >
     Select File
-  </button>
+  </DarkButton>
 </React.Fragment>
 `;

@@ -12,6 +12,11 @@ import { ModelsContext } from "../../ModelsContext";
 import { maybeCloseDropdown } from "../../utils";
 import { sprintf, __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
+import {
+	TertiaryButton,
+	WarningButton,
+} from "../../../../../shared-assets/js/components/Buttons";
+import { Dropdown } from "../../../../../shared-assets/js/components/Dropdown";
 
 const { apiFetch } = wp;
 
@@ -61,7 +66,7 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 	}, [timer]);
 
 	return (
-		<span className="dropdown">
+		<Dropdown>
 			<button
 				className="options py-sm-0 py-2"
 				onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
@@ -127,10 +132,11 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 						model.plural
 					)}
 				</p>
-				<button
+				<WarningButton
 					type="submit"
 					form={field.id}
-					className="first warning"
+					className="first"
+					data-testid="delete-model-field-button"
 					onClick={async () => {
 						apiFetch({
 							path: `/wpe/atlas/content-model-field/${field.id}`,
@@ -152,16 +158,16 @@ export const FieldOptionsDropdown = ({ field, model }) => {
 					}}
 				>
 					{__("Delete", "atlas-content-modeler")}
-				</button>
-				<button
-					className="tertiary"
+				</WarningButton>
+				<TertiaryButton
+					data-testid="delete-model-field-cancel-button"
 					onClick={() => {
 						setModalIsOpen(false);
 					}}
 				>
 					{__("Cancel", "atlas-content-modeler")}
-				</button>
+				</TertiaryButton>
 			</Modal>
-		</span>
+		</Dropdown>
 	);
 };

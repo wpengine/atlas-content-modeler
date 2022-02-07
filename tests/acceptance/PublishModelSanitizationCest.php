@@ -11,7 +11,7 @@ class PublishModelSanitizationCest {
 		// Add a text field.
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Create a new goose.

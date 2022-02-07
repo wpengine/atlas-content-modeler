@@ -10,37 +10,37 @@ class UpdateExistingModelEntryCest {
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( '.add-item' );
 		$i->click( 'Rich Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Description' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( '.add-item' );
 		$i->click( 'Rich Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Another rich text field' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( '.add-item' );
 		$i->click( 'Number', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Age' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( '.add-item' );
 		$i->click( 'Date', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Date of Birth' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		$i->click( '.add-item' );
 		$i->click( 'Boolean', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Flies south for winter?' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
 		// Next we create an entry for our new model.
