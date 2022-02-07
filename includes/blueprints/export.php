@@ -13,7 +13,7 @@ namespace WPE\AtlasContentModeler\Blueprint\Export;
  * @param array $args Optional overrides for default meta.
  * @return array
  */
-function generate_meta( $args = [] ) {
+function generate_meta( array $args = [] ): array {
 	$acm_blueprint_schema_version = '1.0';
 	$plugin                       = get_plugin_data( ATLAS_CONTENT_MODELER_FILE );
 
