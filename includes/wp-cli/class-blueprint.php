@@ -129,7 +129,7 @@ class Blueprint {
 			$term_ids_old_new = import_terms( $manifest['terms'] );
 
 			if ( is_wp_error( $term_ids_old_new['errors'] ) ) {
-				foreach ( $term_ids_old_new['errors'] as $message ) {
+				foreach ( $term_ids_old_new['errors']->get_error_messages() as $message ) {
 					\WP_CLI::warning( $message );
 				}
 			}
