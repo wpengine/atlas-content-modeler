@@ -60,6 +60,10 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 	 * @covers ::WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir
 	 */
 	public function test_save_blueprint_to_upload_dir_returns_WP_Error_when_an_invalid_blueprint_file_is_encountered(): void {
+		if ( ! defined( 'FS_METHOD' ) ) {
+			define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords. This only takes effect during testing.
+		}
+
 		$saved = save_blueprint_to_upload_dir( 'invalid file', 'test.zip' );
 		$this->assertWPError( $saved );
 		self::assertSame( 'acm_blueprint_unsupported_file_type', $saved->get_error_code() );
@@ -69,10 +73,14 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 	 * @covers ::WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir
 	 */
 	public function test_save_blueprint_to_upload_dir_saves_file_when_give_a_valid_blueprint(): void {
-		$blueprint = $this->get_test_blueprint_zip();
-		$saved     = save_blueprint_to_upload_dir( $blueprint, 'acm-rabbits.zip' );
-		self::assertTrue( $saved );
-		self::assertTrue( is_readable( trailingslashit( wp_upload_dir()['path'] ) . 'acm-rabbits.zip' ) );
+		if ( ! defined( 'FS_METHOD' ) ) {
+			define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords. This only takes effect during testing.
+		}
+
+		$blueprint   = $this->get_test_blueprint_zip();
+		$destination = save_blueprint_to_upload_dir( $blueprint, 'acm-rabbits.zip' );
+		self::assertContains( 'acm-rabbits.zip', $destination );
+		self::assertTrue( is_readable( $destination ) );
 	}
 
 	/**
