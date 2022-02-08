@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "schema": "1.0",
+    "version": "2.0",
+    "requires": {
+      "wordpress": "100000000000000000000",
+      "acm": "0.1.0"
+    },
+    "name": "Blog",
+    "description": "Your blog but headless."
+  }
+}
