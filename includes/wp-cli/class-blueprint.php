@@ -35,6 +35,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_posts,
+	collect_terms,
 	generate_meta,
 	get_acm_temp_dir,
 	write_manifest
@@ -249,6 +250,13 @@ class Blueprint {
 			);
 		}
 		$manifest['posts'] = collect_posts( $post_types );
+
+		if ( ! empty( $manifest['taxonomies'] ?? [] ) ) {
+			\WP_CLI::log( 'Collecting terms.' );
+			$manifest['terms'] = collect_terms(
+				array_keys( $manifest['taxonomies'] )
+			);
+		}
 
 		\WP_CLI::log( 'Collecting media.' );
 

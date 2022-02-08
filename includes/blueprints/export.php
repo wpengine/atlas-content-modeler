@@ -48,7 +48,7 @@ function generate_meta( array $args = [] ): array {
  * @param array $post_types Optional overrides for post types to collect.
  * @return array
  */
-function collect_posts( $post_types = [] ) {
+function collect_posts( array $post_types = [] ): array {
 	if ( empty( $post_types ) ) {
 		$post_types = array_merge(
 			array_keys( get_registered_content_types() ),
@@ -73,6 +73,31 @@ function collect_posts( $post_types = [] ) {
 	}
 
 	return $posts_keyed_by_id;
+}
+
+/**
+ * Collects terms for the passed `$taxonomies`.
+ *
+ * @param array $taxonomies Taxonomy slugs to collect terms for.
+ * @return array Term data.
+ */
+function collect_terms( array $taxonomies ): array {
+	$term_data = [];
+
+	foreach ( $taxonomies as $taxonomy ) {
+		$terms = get_terms( [ 'taxonomy' => $taxonomy ] );
+
+		if ( ! is_wp_error( $terms ) ) {
+			$terms_as_arrays = array_map(
+				fn( $term) => $term->to_array(),
+				$terms
+			);
+
+			$term_data = array_merge( $term_data, $terms_as_arrays );
+		}
+	}
+
+	return $term_data;
 }
 
 /**
