@@ -38,6 +38,7 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_post_tags,
 	collect_posts,
 	collect_terms,
+	collect_media,
 	generate_meta,
 	get_acm_temp_dir,
 	write_manifest
@@ -236,6 +237,7 @@ class Blueprint {
 
 		$meta     = generate_meta( $meta_overrides );
 		$manifest = [ 'meta' => $meta ];
+		$temp_dir = get_acm_temp_dir( $manifest );
 
 		\WP_CLI::log( 'Collecting ACM models.' );
 		$manifest['models'] = get_registered_content_types();
@@ -273,10 +275,15 @@ class Blueprint {
 			$manifest['posts'] ?? []
 		);
 
-		\WP_CLI::log( 'Collecting media.' );
+		if ( ! empty( $manifest['post_meta'] ?? [] ) ) {
+			\WP_CLI::log( 'Collecting media.' );
+			$manifest['media'] = collect_media(
+				$manifest,
+				$temp_dir
+			);
+		}
 
 		\WP_CLI::log( 'Writing acm.json manifest.' );
-		$temp_dir       = get_acm_temp_dir( $manifest );
 		$write_manifest = write_manifest( $manifest, $temp_dir );
 
 		if ( is_wp_error( $write_manifest ) ) {

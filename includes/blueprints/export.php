@@ -9,6 +9,7 @@ namespace WPE\AtlasContentModeler\Blueprint\Export;
 
 use WP_Error;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\Blueprint\Import\is_acm_media_field_meta;
 
 /**
  * Generates meta data for ACM blueprints.
@@ -153,19 +154,168 @@ function collect_post_meta( array $posts ): array {
 	$all_meta = [];
 
 	foreach ( $posts as $post ) {
-		$meta = get_post_meta( $post['ID'] );
+		$meta = get_post_meta( $post['ID'], '', true );
 
 		if ( is_array( $meta ) ) {
 			unset( $meta['_edit_last'] );
 			unset( $meta['_edit_lock'] );
 
 			if ( ! empty( $meta ) ) {
-				$all_meta[ $post['ID'] ] = $meta;
+				foreach ( $meta as $key => $value ) {
+					$all_meta[ $post['ID'] ][] = [
+						'meta_key'   => $key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+						'meta_value' => is_array( $value ) ? $value[0] : $value, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+					];
+				}
 			}
 		}
 	}
 
 	return $all_meta;
+}
+
+/**
+ * Copies all media referenced in post_meta to the passed `$path`
+ * and returns a map of the media ID and image path.
+ *
+ * Post meta that references media includes featured images for posts and
+ * ACM media fields, where post meta values are the ID of the media file.
+ *
+ * @param array  $manifest The ACM manifest file.
+ * @param string $path Root path to copy media to (excluding /media/ subfolder).
+ * @return array|WP_Error Media ids (keys) to relative file path (values),
+ *                        or WP_Error if a media file could not be copied.
+ */
+function collect_media( array $manifest, string $path ) {
+	$media_ids_to_paths = [];
+	$media_copied       = [];
+	$post_meta          = $manifest['post_meta'] ?? [];
+
+	if ( ! empty( $post_meta ) ) {
+		delete_folder( $path . '/media/' );
+	}
+
+	foreach ( $post_meta as $post_id => $metas ) {
+		foreach ( $metas as $meta ) {
+			$is_thumbnail_meta       = $meta['meta_key'] === '_thumbnail_id';
+			$is_acm_media_field_meta = is_acm_media_field_meta(
+				$manifest,
+				$post_id,
+				$meta['meta_key']
+			);
+
+			if ( ! $is_thumbnail_meta && ! $is_acm_media_field_meta ) {
+				continue;
+			}
+
+			$image_path = wp_get_original_image_path( $meta['meta_value'] );
+
+			if ( ! $image_path ) {
+				continue;
+			}
+
+			$media_already_copied = array_key_exists(
+				$image_path,
+				$media_copied
+			);
+
+			if ( $media_already_copied ) {
+				/**
+				 * Different media IDs can point to the same media file path.
+				 * This check ensures we don't duplicate the same media file.
+				 * We just refer to the original copy from subsequent IDs that
+				 * point to the same file.
+				 */
+				$media_ids_to_paths[ $meta['meta_value'] ] = $media_copied[ $image_path ]; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+				continue;
+			}
+
+			$copy_media = copy_media( $image_path, $path, $meta['meta_value'] );
+
+			if ( ! $copy_media['success'] ) {
+				return new WP_Error(
+					'acm_media_write_error',
+					/* translators: full path to file. */
+					sprintf( esc_html__( 'Error saving temporary file to %s', 'atlas-content-modeler' ), $copy_media['path'] )
+				);
+			}
+
+			$media_relative_path                       = $copy_media['path'];
+			$media_copied[ $image_path ]               = $media_relative_path;
+			$media_ids_to_paths[ $meta['meta_value'] ] = $media_relative_path; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+		}
+	}
+
+	return $media_ids_to_paths;
+}
+
+/**
+ * Copy media at the `$image_path` to the `$destination_folder`.
+ *
+ * Used to collect media in a temporary location before it is compressed with
+ * the ACM manifest.
+ *
+ * @param string $image_path Path to the original image.
+ * @param string $destination_folder Path to the blueprint folder.
+ * @param string $media_id The media ID associated with the media.
+ * @return array With 'success' (bool) and 'path' containing the
+ *               location of the copied file.
+ */
+function copy_media( string $image_path, string $destination_folder, string $media_id ): array {
+	global $wp_filesystem;
+
+	if ( empty( $wp_filesystem ) ) {
+		require_once ABSPATH . '/wp-admin/includes/file.php';
+		\WP_Filesystem();
+	}
+
+	$destination_root = trailingslashit( $destination_folder );
+
+	/**
+	 * Append `$media_id` so that two different files both named 'example.jpg'
+	 * in different WP upload subfolders are written to different destinations.
+	 *
+	 * If we copied two files from `uploads/1999/01/example.jpg` and
+	 * `uploads/2022/02/example.jpg` to `media/example.jpg` without the
+	 * unique subfolder, one file would overwrite the other.
+	 */
+	$media_folder = "{$destination_root}media/{$media_id}/";
+
+	if ( ! $wp_filesystem->exists( $media_folder ) ) {
+		wp_mkdir_p( $media_folder );
+	}
+
+	$copy_succeeded = $wp_filesystem->copy(
+		$image_path,
+		$media_folder . basename( $image_path ),
+		true
+	);
+
+	return [
+		'success' => $copy_succeeded,
+		'path'    => str_replace(
+			$destination_root,
+			'',
+			$media_folder . basename( $image_path )
+		),
+	];
+}
+
+/**
+ * Deletes the passed `$path`.
+ *
+ * @param string $path Path to remove.
+ * @return bool True on success, false on failure.
+ */
+function delete_folder( string $path ) {
+	global $wp_filesystem;
+
+	if ( empty( $wp_filesystem ) ) {
+		require_once ABSPATH . '/wp-admin/includes/file.php';
+		\WP_Filesystem();
+	}
+
+	return $wp_filesystem->rmdir( $path, true );
 }
 
 /**
