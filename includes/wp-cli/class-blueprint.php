@@ -234,8 +234,12 @@ class Blueprint {
 		];
 
 		\WP_CLI::log( 'Writing acm.json manifest.' );
-		$temp_dir = get_acm_temp_dir( $manifest );
-		write_manifest( $manifest, $temp_dir );
+		$temp_dir       = get_acm_temp_dir( $manifest );
+		$write_manifest = write_manifest( $manifest, $temp_dir );
+
+		if ( is_wp_error( $write_manifest ) ) {
+			\WP_CLI::error( $write_manifest->get_error_message() );
+		}
 
 		\WP_CLI::log( 'Generating zip.' );
 		\WP_CLI::success( 'Blueprint saved to path/to/file.zip.' );
