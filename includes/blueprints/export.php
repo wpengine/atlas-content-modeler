@@ -89,7 +89,7 @@ function collect_terms( array $taxonomies ): array {
 
 		if ( ! is_wp_error( $terms ) ) {
 			$terms_as_arrays = array_map(
-				fn( $term) => $term->to_array(),
+				fn( $term ) => $term->to_array(),
 				$terms
 			);
 
@@ -98,6 +98,46 @@ function collect_terms( array $taxonomies ): array {
 	}
 
 	return $term_data;
+}
+
+/**
+ * Collects post tags for the passed `$taxonomies` and `$posts`.
+ *
+ * @param array $posts Posts to get tags for.
+ * @param array $taxonomies Taxonomy slugs to collect tags from.
+ * @return array Term arrays keyed by post ID.
+ */
+function collect_post_tags( array $posts, array $taxonomies ): array {
+	$tag_data = [];
+
+	foreach ( $posts as $post ) {
+		$acm_post_types = array_keys( get_registered_content_types() );
+
+		// Only collect tags for ACM post types.
+		if ( ! in_array( $post['post_type'], $acm_post_types, true ) ) {
+			continue;
+		}
+
+		foreach ( $taxonomies as $taxonomy ) {
+			$tags = get_the_terms( $post['ID'], $taxonomy );
+
+			if ( $tags && ! is_wp_error( $tags ) ) {
+				$tags_as_arrays = array_map(
+					fn( $tag ) => $tag->to_array(),
+					$tags
+				);
+			}
+
+			if ( ! empty( $tags_as_arrays ) ) {
+				$tag_data[ $post['ID'] ] = array_merge(
+					$tag_data[ $post['ID'] ] ?? [],
+					$tags_as_arrays
+				);
+			}
+		}
+	}
+
+	return $tag_data;
 }
 
 /**
