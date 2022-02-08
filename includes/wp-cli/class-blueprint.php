@@ -17,7 +17,11 @@ namespace WPE\AtlasContentModeler\WP_CLI;
 
 use function WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint;
 use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir;
-use function WPE\AtlasContentModeler\Blueprint\Export\generate_meta;
+use function WPE\AtlasContentModeler\Blueprint\Export\{
+	generate_meta,
+	get_acm_temp_dir,
+	write_manifest
+};
 
 /**
  * Blueprint subcommands for the `wp acm blueprint` WP-CLI command.
@@ -83,12 +87,13 @@ class Blueprint {
 	 * [--version]
 	 * : Optional blueprint version. Defaults to 1.0.
 	 *
-	 * @param array $args Options passed to the command.
-	 * @param array $assoc_args Optional flags passed to the command.
+	 * @param array $args Options passed to the command, keyed by integer.
+	 * @param array $assoc_args Options keyed by string.
 	 */
 	public function export( $args, $assoc_args ) {
 		$meta_overrides = [];
 
+		\WP_CLI::log( 'Collecting ACM data.' );
 		foreach ( [ 'name', 'description', 'min-wp', 'min-acm', 'version' ] as $key ) {
 			if ( ( $assoc_args[ $key ] ?? false ) ) {
 				$meta_overrides[ $key ] = $assoc_args[ $key ];
@@ -97,10 +102,19 @@ class Blueprint {
 
 		$meta = generate_meta( $meta_overrides );
 
-		\WP_CLI::log( 'Collecting ACM data…' );
-		\WP_CLI::log( 'Collecting entries…' );
-		\WP_CLI::log( 'Collecting media…' );
-		\WP_CLI::log( 'Generating zip…' );
-		\WP_CLI::success( 'Done! Blueprint saved to path/to/file.zip.' );
+		\WP_CLI::log( 'Collecting entries.' );
+		\WP_CLI::log( 'Collecting media.' );
+
+		$manifest = [
+			'meta' => $meta,
+		];
+
+		\WP_CLI::log( 'Writing acm.json manifest.' );
+		$temp_dir = get_acm_temp_dir( $manifest );
+		write_manifest( $manifest, $temp_dir );
+
+		\WP_CLI::log( 'Generating zip.' );
+
+		\WP_CLI::success( 'Blueprint saved to path/to/file.zip.' );
 	}
 }
