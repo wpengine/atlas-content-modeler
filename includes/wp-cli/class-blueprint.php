@@ -31,6 +31,8 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 use function WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint;
 use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\Blueprint\Export\{
 	generate_meta,
 	get_acm_temp_dir,
@@ -224,14 +226,17 @@ class Blueprint {
 			}
 		}
 
-		$meta = generate_meta( $meta_overrides );
+		$meta     = generate_meta( $meta_overrides );
+		$manifest = [ 'meta' => $meta ];
+
+		\WP_CLI::log( 'Collecting ACM models.' );
+		$manifest['models'] = get_registered_content_types();
+
+		\WP_CLI::log( 'Collecting ACM taxonomies.' );
+		$manifest['taxonomies'] = get_acm_taxonomies();
 
 		\WP_CLI::log( 'Collecting entries.' );
 		\WP_CLI::log( 'Collecting media.' );
-
-		$manifest = [
-			'meta' => $meta,
-		];
 
 		\WP_CLI::log( 'Writing acm.json manifest.' );
 		$temp_dir       = get_acm_temp_dir( $manifest );
