@@ -57,7 +57,13 @@ function write_manifest( array $manifest, string $path ) {
 		\WP_Filesystem();
 	}
 
-	$write_path = $path . '/acm.json';
+	$path = trailingslashit( $path );
+
+	if ( ! $wp_filesystem->exists( $path ) ) {
+		wp_mkdir_p( $path );
+	}
+
+	$write_path = $path . 'acm.json';
 	$saved      = $wp_filesystem->put_contents( $write_path, wp_json_encode( $manifest ) );
 
 	if ( ! $saved ) {
