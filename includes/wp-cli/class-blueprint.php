@@ -34,8 +34,9 @@ use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_di
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\Blueprint\Export\{
-	collect_posts,
+	collect_post_meta,
 	collect_post_tags,
+	collect_posts,
 	collect_terms,
 	generate_meta,
 	get_acm_temp_dir,
@@ -266,6 +267,11 @@ class Blueprint {
 				wp_list_pluck( $manifest['terms'], 'taxonomy' )
 			);
 		}
+
+		\WP_CLI::log( 'Collecting post meta.' );
+		$manifest['post_meta'] = collect_post_meta(
+			$manifest['posts'] ?? []
+		);
 
 		\WP_CLI::log( 'Collecting media.' );
 

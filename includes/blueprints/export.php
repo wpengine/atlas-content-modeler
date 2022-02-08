@@ -144,6 +144,31 @@ function collect_post_tags( array $posts, array $taxonomies ): array {
 }
 
 /**
+ * Collects post meta for the provided `$posts`.
+ *
+ * @param array $posts The posts to collect meta for.
+ * @return array
+ */
+function collect_post_meta( array $posts ): array {
+	$all_meta = [];
+
+	foreach ( $posts as $post ) {
+		$meta = get_post_meta( $post['ID'] );
+
+		if ( is_array( $meta ) ) {
+			unset( $meta['_edit_last'] );
+			unset( $meta['_edit_lock'] );
+
+			if ( ! empty( $meta ) ) {
+				$all_meta[ $post['ID'] ] = $meta;
+			}
+		}
+	}
+
+	return $all_meta;
+}
+
+/**
  * Writes the acm.json manifest file to the given `$path`.
  *
  * @param array  $manifest ACM manifest data.
