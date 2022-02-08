@@ -98,7 +98,7 @@ function write_manifest( array $manifest, string $path ) {
 	}
 
 	$write_path = $path . 'acm.json';
-	$saved      = $wp_filesystem->put_contents( $write_path, wp_json_encode( $manifest ) );
+	$saved      = $wp_filesystem->put_contents( $write_path, wp_json_encode( $manifest, JSON_PRETTY_PRINT ) );
 
 	if ( ! $saved ) {
 		return new WP_Error(
