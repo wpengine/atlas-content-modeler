@@ -756,8 +756,21 @@ final class FormEditingExperience {
 	private function get_field_value( array $field, WP_Post $post ) {
 		if ( $field['type'] === 'text' && ! empty( $field['isTitle'] ) ) {
 			// get old value from postmeta with get_post_meta.
+			$old_value = get_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), true );
 			// migrate data to wp_posts.title.
-			// remove old post meta row.
+			if ( $old_value ) {
+				// use old meta, update value of post title.
+				$my_post = array(
+					'ID'         => $post->ID,
+					'post_title' => $old_value,
+				);
+
+				// Update the post into the database.
+				wp_update_post( $my_post );
+				// remove old post meta row.
+				// delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );.
+			}
+
 			// return title.
 			return apply_filters(
 				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Running WP core filter.
