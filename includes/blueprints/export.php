@@ -8,6 +8,7 @@
 namespace WPE\AtlasContentModeler\Blueprint\Export;
 
 use WP_Error;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 
 /**
  * Generates meta data for ACM blueprints.
@@ -39,6 +40,39 @@ function generate_meta( array $args = [] ): array {
 			'acm'       => $args['min-acm'],
 		],
 	];
+}
+
+/**
+ * Collects posts for the manifest file.
+ *
+ * @param array $post_types Optional overrides for post types to collect.
+ * @return array
+ */
+function collect_posts( $post_types = [] ) {
+	if ( empty( $post_types ) ) {
+		$post_types = array_merge(
+			array_keys( get_registered_content_types() ),
+			[ 'post', 'page' ]
+		);
+	}
+
+	$posts = get_posts(
+		[
+			'post_status' => 'publish',
+			'post_type'   => $post_types,
+			'numberposts' => -1, // All posts.
+		]
+	);
+
+	$posts_keyed_by_id = [];
+
+	foreach ( $posts as $post ) {
+		$post = $post->to_array();
+		unset( $post['guid'] ); // Strips the URL of the generating site. GUIDs are regenerated on import.
+		$posts_keyed_by_id[ $post['ID'] ] = $post;
+	}
+
+	return $posts_keyed_by_id;
 }
 
 /**

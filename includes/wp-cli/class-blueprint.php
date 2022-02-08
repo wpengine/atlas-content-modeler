@@ -34,6 +34,7 @@ use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_di
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\Blueprint\Export\{
+	collect_posts,
 	generate_meta,
 	get_acm_temp_dir,
 	write_manifest
@@ -213,6 +214,10 @@ class Blueprint {
 	 * [--version]
 	 * : Optional blueprint version. Defaults to 1.0.
 	 *
+	 * [--cpt-include]
+	 * : Post types to include, separated by commas. Defaults to post, page and
+	 * all registered ACM post types.
+	 *
 	 * @param array $args Options passed to the command, keyed by integer.
 	 * @param array $assoc_args Options keyed by string.
 	 */
@@ -235,7 +240,16 @@ class Blueprint {
 		\WP_CLI::log( 'Collecting ACM taxonomies.' );
 		$manifest['taxonomies'] = get_acm_taxonomies();
 
-		\WP_CLI::log( 'Collecting entries.' );
+		\WP_CLI::log( 'Collecting posts.' );
+		$post_types = [];
+		if ( $assoc_args['cpt-include'] ?? false ) {
+			$post_types = array_map(
+				'trim',
+				explode( ',', $assoc_args['cpt-include'] )
+			);
+		}
+		$manifest['posts'] = collect_posts( $post_types );
+
 		\WP_CLI::log( 'Collecting media.' );
 
 		\WP_CLI::log( 'Writing acm.json manifest.' );
