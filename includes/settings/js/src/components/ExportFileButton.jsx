@@ -1,6 +1,7 @@
 import React from "react";
 import { __ } from "@wordpress/i18n";
 import { showSuccess, showError } from "../toasts";
+import { DarkButton } from "../../../../shared-assets/js/components/Buttons";
 
 export default function ExportFileButton({
 	fileData,
@@ -88,13 +89,11 @@ export default function ExportFileButton({
 	}
 
 	return (
-		<button
-			className={
-				buttonClasses || "button dark-blue button-primary link-button"
-			}
+		<DarkButton
+			data-testid="export-models-button"
 			onClick={(event) => exportClickHandler(event)}
 		>
 			{__(buttonTitle || "Export", "atlas-content-modeler")}
-		</button>
+		</DarkButton>
 	);
 }

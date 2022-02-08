@@ -7,6 +7,7 @@ import { sendEvent } from "acm-analytics";
 import { ContentModelDropdown } from "./ContentModelDropdown";
 import { __ } from "@wordpress/i18n";
 import { jsx, css } from "@emotion/react";
+import { Button } from "../../../../shared-assets/js/components/Buttons";
 import { Card } from "../../../../shared-assets/js/components/card";
 
 function Header({ showButtons = true }) {
@@ -21,7 +22,8 @@ function Header({ showButtons = true }) {
 		>
 			<h2>Content Models</h2>
 			{showButtons && (
-				<button
+				<Button
+					data-testid="new-model-button"
 					onClick={() =>
 						history.push(
 							atlasContentModeler.appPath + "&view=create-model"
@@ -29,7 +31,7 @@ function Header({ showButtons = true }) {
 					}
 				>
 					{__("New Model", "atlas-content-modeler")}
-				</button>
+				</Button>
 			)}
 		</section>
 	);
@@ -63,7 +65,7 @@ export default function ViewContentModelsList() {
 								"atlas-content-modeler"
 							)}
 						</p>
-						<button
+						<Button
 							onClick={() =>
 								history.push(
 									atlasContentModeler.appPath +
@@ -72,7 +74,7 @@ export default function ViewContentModelsList() {
 							}
 						>
 							{__("Get Started", "atlas-content-modeler")}
-						</button>
+						</Button>
 					</div>
 				)}
 			</section>

@@ -1,5 +1,9 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Fixed
+- Featured Image Fields - Previously, featured images allowed for videos and other media to display. Now the modal limits to images in line with how Core featured images work.
+
 ## 0.13.0 - 2022-02-01
 ### Added
 - Text Repeater Field - Added repeatable property to single and multi line text fields for returning arrays of publisher defined strings.

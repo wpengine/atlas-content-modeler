@@ -1,19 +1,11 @@
 import React from "react";
 import supportedFields from "./fields/supportedFields";
 import Icon from "../../../../components/icons";
+import { FieldButton } from "../../../../shared-assets/js/components/Buttons";
 
 const { cloneDeep } = lodash;
 
 const FieldButtons = ({ activeButton, clickAction, parent }) => {
-	/**
-	 * Returns if current button is active
-	 * @param field
-	 * @returns {string}
-	 */
-	function isActive(field) {
-		return field === activeButton ? "active" : "";
-	}
-
 	const fields = cloneDeep(supportedFields);
 
 	return (
@@ -21,14 +13,15 @@ const FieldButtons = ({ activeButton, clickAction, parent }) => {
 			{Object.keys(fields).map((field) => {
 				const fieldTitle = fields[field];
 				return (
-					<button
+					<FieldButton
 						key={field}
-						className={`tertiary mb-1 ${isActive(field)}`}
+						className={`mb-1`}
 						onClick={() => clickAction(field)}
+						active={field === activeButton}
 					>
 						<Icon type={field} />
 						{fieldTitle}
-					</button>
+					</FieldButton>
 				);
 			})}
 		</div>

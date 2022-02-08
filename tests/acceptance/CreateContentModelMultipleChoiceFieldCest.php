@@ -22,7 +22,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'choices[1].name' ], 'cat' );
 		$i->fillField( [ 'name' => 'choices[1].slug' ], 'catSlug' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Multiple Choice' );
 		$i->see( 'Favorite Animal' );
@@ -48,7 +48,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'choices[1].name' ], 'dog 2' );
 		$i->fillField( [ 'name' => 'choices[1].slug' ], 'dogSlug' );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Cannot have duplicate identifier.' );
 		// Ensure the errors are clearing when changing the problem field.
@@ -67,7 +67,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->fillField( [ 'name' => 'choices[0].slug' ], 'dogSlug' );
 		$i->click( 'Add another choice', '.add-option' );
 		$i->wait( 1 );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Must set a name.' );
 		// Ensure the errors are clearing when changing the problem field.
@@ -93,7 +93,7 @@ class CreateContentModelMultipleChoiceFieldCest {
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'choices[1].slug' ], 'dogSlug2' );
 		$i->wait( 1 );
-		$i->click( '.open-field button.primary' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 		$i->see( 'Cannot have duplicate choice names.' );
 		// Ensure the errors are clearing when changing the problem field.
