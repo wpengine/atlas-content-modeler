@@ -89,7 +89,9 @@ function collect_terms( array $taxonomies ): array {
 
 		if ( ! is_wp_error( $terms ) ) {
 			$terms_as_arrays = array_map(
-				fn( $term ) => $term->to_array(),
+				function( $term ) {
+					return $term->to_array();
+				},
 				$terms
 			);
 
@@ -122,7 +124,9 @@ function collect_post_tags( array $posts, array $taxonomies ): array {
 
 			if ( $tags && ! is_wp_error( $tags ) ) {
 				$tags_as_arrays = array_map(
-					fn( $tag ) => $tag->to_array(),
+					function( $tag ) {
+						return $tag->to_array();
+					},
 					$tags
 				);
 			}
