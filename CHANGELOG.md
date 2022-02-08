@@ -2,11 +2,10 @@
 
 ## Unreleased
 
--   Fixed PHP notice that happens under certain conditions when a featured image is not provided.
-
 ### Fixed
 
 -   Featured Image Fields - Previously, featured images allowed for videos and other media to display. Now the modal limits to images in line with how Core featured images work.
+-   Fixed PHP notice that happens under certain conditions when a featured image is not provided.
 
 ## 0.13.0 - 2022-02-01
 
