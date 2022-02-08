@@ -382,7 +382,8 @@ final class FormEditingExperience {
 						$this->save_relationship_field( $slug, $post, '' );
 					}
 				} else {
-					$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
+					$field    = get_field_from_slug( $slug, $this->models, $post->post_type );
+					$existing = $this->get_field_value( $field, $post );
 					if ( empty( $existing ) ) {
 						continue;
 					}
@@ -438,7 +439,8 @@ final class FormEditingExperience {
 				continue;
 			}
 
-			$updated = update_post_meta( $post_id, $key, $value );
+			$field   = get_field_from_slug( $key, $this->models, $post->post_type );
+			$updated = $this->save_field_value( $field, $value, $post );
 			if ( ! $updated ) {
 				/* translators: %s: atlas content modeler field slug */
 				$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
@@ -741,5 +743,47 @@ final class FormEditingExperience {
 		$location = remove_query_arg( 'acm-post-published', $location );
 		$location = add_query_arg( 'acm-post-published', 'true', $location );
 		return $location;
+	}
+
+	/**
+	 * Gets the value of the specified field for the specified post.
+	 *
+	 * @param array   $field The field.
+	 * @param WP_Post $post The post object.
+	 *
+	 * @return array|int|mixed|string
+	 */
+	private function get_field_value( array $field, WP_Post $post ) {
+		if ( $field['type'] === 'text' && ! empty( $field['isTitle'] ) ) {
+			// get old value from postmeta with get_post_meta.
+			// migrate data to wp_posts.title.
+			// remove old post meta row.
+			// return title.
+			return apply_filters(
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Running WP core filter.
+				'the_title',
+				get_post_field( 'title', $post->ID ),
+				$post->ID
+			);
+		}
+		return get_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), true );
+	}
+
+	/**
+	 * Saves the specified field value.
+	 *
+	 * @param array   $field The field from the model.
+	 * @param mixed   $value The value to be saved.
+	 * @param WP_Post $post The post object.
+	 *
+	 * @return int|void|WP_Error
+	 */
+	private function save_field_value( array $field, $value, WP_Post $post ) {
+		if ( $field['type'] === 'text' && ! empty( $field['isTitle'] ) ) {
+			$post->post_title = $value;
+			return wp_update_post( $post );
+		}
+
+		update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
 	}
 }
