@@ -394,7 +394,8 @@ function write_manifest( array $manifest, string $path ) {
 /**
  * Compress the blueprint files into a zip file at `$path` named `$zip_name`.
  *
- * @param string $path The folder to create the zip file.
+ * @param string $path The location of blueprint files to zip. Also used as the
+ *                     folder where the zip file will be created.
  * @param string $zip_name The name of the zip file, excluding '.zip'.
  * @return string|WP_Error Path to zip file or error if zip creation failed.
  */
@@ -471,7 +472,7 @@ function zip_blueprint( string $path, string $zip_name ) {
  *
  * @param array $manifest The full ACM manifest file, used to determine the
  *                        name of the directory.
- * @return string|WP_error The temporary directory path or an error if the
+ * @return string|WP_Error The temporary directory path or an error if the
  *                         manifest name is missing.
  */
 function get_acm_temp_dir( $manifest ) {

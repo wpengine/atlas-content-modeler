@@ -489,6 +489,28 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertEquals( 'value', $manifest['key'] );
 	}
 
+	public function test_zip_blueprint() {
+		global $wp_filesystem;
+
+		if ( ! defined( 'FS_METHOD' ) ) {
+			define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords. This only takes effect during testing.
+		}
+
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			\WP_Filesystem();
+		}
+
+		$temp_dir = get_temp_dir();
+		copy_dir( __DIR__ . '/test-data/', $temp_dir );
+
+		$zip_path = zip_blueprint( $temp_dir . '/blueprint-good', 'blueprint-good' );
+
+		self::assertIsString( $zip_path );
+		self::assertContains( $temp_dir, $zip_path );
+		self::assertTrue( is_readable( $zip_path ) );
+	}
+
 	private function insert_test_image() {
 		global $wp_filesystem;
 
