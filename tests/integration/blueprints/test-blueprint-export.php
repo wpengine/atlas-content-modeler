@@ -458,7 +458,6 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertSame( 'acm_manifest_name_missing', $dir->get_error_code() );
 	}
 
-
 	public function test_get_acm_temp_dir_contains_meta_name() {
 		$good_manifest = [
 			'meta' => [
@@ -473,6 +472,21 @@ class BlueprintExportTest extends WP_UnitTestCase {
 			sanitize_title_with_dashes( $good_manifest['meta']['name'] ),
 			$dir
 		);
+	}
+
+	public function test_write_manifest() {
+		$temp_dir = get_temp_dir();
+
+		$write_path = write_manifest( [ 'key' => 'value' ], $temp_dir );
+
+		self::assertIsString( $write_path );
+		self::assertContains( $temp_dir, $write_path );
+		self::assertTrue( is_readable( $write_path ) );
+
+		$raw_manifest = file_get_contents( $write_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$manifest     = json_decode( $raw_manifest, true );
+
+		self::assertEquals( 'value', $manifest['key'] );
 	}
 
 	private function insert_test_image() {
