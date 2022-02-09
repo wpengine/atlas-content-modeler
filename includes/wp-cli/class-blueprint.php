@@ -316,15 +316,10 @@ class Blueprint {
 			&& ( $assoc_args['open'] ?? false )
 			&& function_exists( 'shell_exec' )
 		) {
-			\WP_CLI::log(
-				__( 'Opening blueprint temp folder.', 'atlas-content-modeler' )
-			);
+			\WP_CLI::log( 'Opening blueprint temp folder.' );
 			shell_exec( "open {$temp_dir}" ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec
 		}
 
-		\WP_CLI::success(
-			// translators: path to zip file.
-			sprintf( __( 'Blueprint saved to %s.', 'atlas-content-modeler' ), $path_to_zip )
-		);
+		\WP_CLI::success( sprintf( 'Blueprint saved to %s.', $path_to_zip ) );
 	}
 }
