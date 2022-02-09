@@ -26,6 +26,35 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
  */
 class BlueprintExportTest extends WP_UnitTestCase {
 
+	private $models = [
+		'rabbit' => [
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'singular'        => 'Rabbit',
+			'plural'          => 'Rabbits',
+			'slug'            => 'rabbit',
+			'api_visibility'  => 'public',
+			'model_icon'      => 'dashicons-admin-post',
+			'description'     => '',
+			'fields'          => [],
+		],
+	];
+
+	private $taxonomies = [
+		'breed' => [
+			'types'           => [
+				0 => 'rabbit',
+			],
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'hierarchical'    => false,
+			'api_visibility'  => 'private',
+			'singular'        => 'Breed',
+			'plural'          => 'Breeds',
+			'slug'            => 'breed',
+		],
+	];
+
 	public function setUp() {
 		parent::setUp();
 		delete_option( 'atlas_content_modeler_post_types' );
@@ -149,21 +178,7 @@ class BlueprintExportTest extends WP_UnitTestCase {
 	}
 
 	public function test_collect_posts_can_get_acm_entries() {
-		$models = [
-			'rabbit' => [
-				'show_in_rest'    => true,
-				'show_in_graphql' => true,
-				'singular'        => 'Rabbit',
-				'plural'          => 'Rabbits',
-				'slug'            => 'rabbit',
-				'api_visibility'  => 'public',
-				'model_icon'      => 'dashicons-admin-post',
-				'description'     => '',
-				'fields'          => [],
-			],
-		];
-
-		update_option( 'atlas_content_modeler_post_types', $models );
+		update_option( 'atlas_content_modeler_post_types', $this->models );
 
 		$post_id = $this->factory->post->create(
 			[
@@ -186,37 +201,8 @@ class BlueprintExportTest extends WP_UnitTestCase {
 	}
 
 	public function test_collect_terms_with_taxonomies_but_no_terms() {
-		$models = [
-			'rabbit' => [
-				'show_in_rest'    => true,
-				'show_in_graphql' => true,
-				'singular'        => 'Rabbit',
-				'plural'          => 'Rabbits',
-				'slug'            => 'rabbit',
-				'api_visibility'  => 'public',
-				'model_icon'      => 'dashicons-admin-post',
-				'description'     => '',
-				'fields'          => [],
-			],
-		];
-
-		$taxonomies = [
-			'breed' => [
-				'types'           => [
-					0 => 'rabbit',
-				],
-				'show_in_rest'    => true,
-				'show_in_graphql' => true,
-				'hierarchical'    => false,
-				'api_visibility'  => 'private',
-				'singular'        => 'Breed',
-				'plural'          => 'Breeds',
-				'slug'            => 'breed',
-			],
-		];
-
-		update_option( 'atlas_content_modeler_post_types', $models );
-		update_option( 'atlas_content_modeler_taxonomies', $taxonomies );
+		update_option( 'atlas_content_modeler_post_types', $this->models );
+		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
 		register_taxonomies();
 
 		$terms = collect_terms( [ 'breed' ] );
@@ -225,37 +211,8 @@ class BlueprintExportTest extends WP_UnitTestCase {
 	}
 
 	public function test_collect_terms_with_taxonomies_and_unassigned_terms() {
-		$models = [
-			'rabbit' => [
-				'show_in_rest'    => true,
-				'show_in_graphql' => true,
-				'singular'        => 'Rabbit',
-				'plural'          => 'Rabbits',
-				'slug'            => 'rabbit',
-				'api_visibility'  => 'public',
-				'model_icon'      => 'dashicons-admin-post',
-				'description'     => '',
-				'fields'          => [],
-			],
-		];
-
-		$taxonomies = [
-			'breed' => [
-				'types'           => [
-					0 => 'rabbit',
-				],
-				'show_in_rest'    => true,
-				'show_in_graphql' => true,
-				'hierarchical'    => false,
-				'api_visibility'  => 'private',
-				'singular'        => 'Breed',
-				'plural'          => 'Breeds',
-				'slug'            => 'breed',
-			],
-		];
-
-		update_option( 'atlas_content_modeler_post_types', $models );
-		update_option( 'atlas_content_modeler_taxonomies', $taxonomies );
+		update_option( 'atlas_content_modeler_post_types', $this->models );
+		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
 		register_taxonomies();
 
 		wp_create_term( 'American Chinchilla', 'breed' );
@@ -266,37 +223,8 @@ class BlueprintExportTest extends WP_UnitTestCase {
 	}
 
 	public function test_collect_terms_with_taxonomies_and_assigned_terms() {
-		$models = [
-			'rabbit' => [
-				'show_in_rest'    => true,
-				'show_in_graphql' => true,
-				'singular'        => 'Rabbit',
-				'plural'          => 'Rabbits',
-				'slug'            => 'rabbit',
-				'api_visibility'  => 'public',
-				'model_icon'      => 'dashicons-admin-post',
-				'description'     => '',
-				'fields'          => [],
-			],
-		];
-
-		$taxonomies = [
-			'breed' => [
-				'types'           => [
-					0 => 'rabbit',
-				],
-				'show_in_rest'    => true,
-				'show_in_graphql' => true,
-				'hierarchical'    => false,
-				'api_visibility'  => 'private',
-				'singular'        => 'Breed',
-				'plural'          => 'Breeds',
-				'slug'            => 'breed',
-			],
-		];
-
-		update_option( 'atlas_content_modeler_post_types', $models );
-		update_option( 'atlas_content_modeler_taxonomies', $taxonomies );
+		update_option( 'atlas_content_modeler_post_types', $this->models );
+		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
 		register_taxonomies();
 
 		$term_id = $this->factory->term->create(
@@ -325,6 +253,49 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertEquals( $term_id, $terms[0]['term_id'] );
 		self::assertEquals( 'American Chinchilla', $terms[0]['name'] );
 		self::assertEquals( 'chinchilla', $terms[0]['slug'] );
+	}
+
+	public function test_collect_post_tags_empty_posts() {
+		$tags = collect_post_tags( [], [] );
+
+		self::assertEmpty( $tags );
+	}
+
+	public function test_collect_post_tags_with_tagged_post() {
+		update_option( 'atlas_content_modeler_post_types', $this->models );
+		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
+		register_taxonomies();
+
+		$term_id = $this->factory->term->create(
+			[
+				'taxonomy'    => 'breed',
+				'description' => 'test',
+				'slug'        => 'chinchilla',
+				'name'        => 'American Chinchilla',
+			]
+		);
+
+		// Create a post and assign the term to it.
+		$post_id = $this->factory->post->create(
+			[
+				'post_title'  => 'Rabbit',
+				'post_status' => 'publish',
+				'post_type'   => 'rabbit',
+			]
+		);
+
+		wp_set_post_terms( $post_id, [ $term_id ], 'breed' );
+
+		$posts = [
+			$post_id => get_post( $post_id )->to_array(),
+		];
+
+		$tags = collect_post_tags( $posts, [ 'breed' ] );
+
+		self::assertCount( 1, $tags );
+		self::assertEquals( $term_id, $tags[ $post_id ][0]['term_id'] );
+		self::assertEquals( 'American Chinchilla', $tags[ $post_id ][0]['name'] );
+		self::assertEquals( 'chinchilla', $tags[ $post_id ][0]['slug'] );
 	}
 
 }
