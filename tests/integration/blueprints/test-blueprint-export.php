@@ -298,4 +298,55 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertEquals( 'chinchilla', $tags[ $post_id ][0]['slug'] );
 	}
 
+	public function test_collect_post_meta_no_posts() {
+		$post_meta = collect_post_meta( [] );
+
+		self::assertEmpty( $post_meta );
+	}
+
+	public function test_collect_post_meta_empty_meta() {
+		$post_id = $this->factory->post->create(
+			[
+				'post_title'  => 'Post',
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			]
+		);
+
+		$posts = [
+			$post_id => get_post( $post_id )->to_array(),
+		];
+
+		$post_meta = collect_post_meta( $posts );
+
+		self::assertEmpty( $post_meta );
+	}
+
+	public function test_collect_post_meta() {
+		$post_id = $this->factory->post->create(
+			[
+				'post_title'  => 'Post',
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+				'meta_input'  => [
+					'_thumbnail_id' => '123',
+					'hello'         => 'Custom meta',
+				],
+			]
+		);
+
+		$posts = [
+			$post_id => get_post( $post_id )->to_array(),
+		];
+
+		$post_meta = collect_post_meta( $posts );
+		$keys      = wp_list_pluck( $post_meta[ $post_id ], 'meta_key' );
+		$values    = wp_list_pluck( $post_meta[ $post_id ], 'meta_value' );
+
+		self::assertContains( '_thumbnail_id', $keys );
+		self::assertContains( 'hello', $keys );
+		self::assertContains( '123', $values );
+		self::assertContains( 'Custom meta', $values );
+	}
+
 }
