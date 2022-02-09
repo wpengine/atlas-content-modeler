@@ -34,11 +34,12 @@ use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_di
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\Blueprint\Export\{
+	collect_media,
 	collect_post_meta,
 	collect_post_tags,
 	collect_posts,
+	collect_relationships,
 	collect_terms,
-	collect_media,
 	generate_meta,
 	get_acm_temp_dir,
 	write_manifest
@@ -282,6 +283,11 @@ class Blueprint {
 				$temp_dir
 			);
 		}
+
+		\WP_CLI::log( 'Collecting ACM relationships' );
+		$manifest['relationships'] = collect_relationships(
+			$manifest['posts'] ?? []
+		);
 
 		\WP_CLI::log( 'Writing acm.json manifest.' );
 		$write_manifest = write_manifest( $manifest, $temp_dir );

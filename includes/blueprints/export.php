@@ -10,6 +10,7 @@ namespace WPE\AtlasContentModeler\Blueprint\Export;
 use WP_Error;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\Blueprint\Import\is_acm_media_field_meta;
+use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 /**
  * Generates meta data for ACM blueprints.
@@ -316,6 +317,39 @@ function delete_folder( string $path ) {
 	}
 
 	return $wp_filesystem->rmdir( $path, true );
+}
+
+/**
+ * Collects relevant ACM relationships from the wp_acm_post_to_post table.
+ *
+ * Relationships link two or more posts via an ACM relationship field.
+ *
+ * A “relevant” relationship is one that links two post IDs from the passed
+ * `$posts` array. We don't collect other relationships because we don't need
+ * to restore any between posts we are not importing.
+ *
+ * @param array $posts Posts to collect relationships for, keyed by post ID.
+ * @return array
+ */
+function collect_relationships( array $posts ): array {
+	global $wpdb;
+
+	$relevant_relationships = [];
+
+	$table         = ContentConnect::instance()->get_table( 'p2p' );
+	$post_to_post  = $table->get_table_name();
+	$relationships = $wpdb->get_results( "SELECT * FROM {$post_to_post};", ARRAY_A ); // phpcs:ignore
+
+	foreach ( $relationships as $relationship ) {
+		if (
+			array_key_exists( $relationship['id1'], $posts )
+			&& array_key_exists( $relationship['id2'], $posts )
+		) {
+			$relevant_relationships[] = $relationship;
+		}
+	}
+
+	return $relevant_relationships;
 }
 
 /**
