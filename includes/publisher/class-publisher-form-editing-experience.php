@@ -760,15 +760,11 @@ final class FormEditingExperience {
 			// migrate data to wp_posts.title.
 			if ( $old_value ) {
 				// use old meta, update value of post title.
-				$my_post = array(
-					'ID'         => $post->ID,
-					'post_title' => $old_value,
-				);
-
+				$post->post_title = $old_value;
 				// Update the post into the database.
-				wp_update_post( $my_post );
+				wp_update_post( $post );
 				// remove old post meta row.
-				// delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );.
+				delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );
 			}
 
 			// return title.
