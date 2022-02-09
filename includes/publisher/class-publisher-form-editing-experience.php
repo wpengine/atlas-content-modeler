@@ -395,6 +395,7 @@ final class FormEditingExperience {
 				}
 			}
 
+			// Media field.
 			if ( 'media' === $field_type &&
 				is_field_featured_image(
 					$slug,
@@ -402,14 +403,22 @@ final class FormEditingExperience {
 				) &&
 				isset( $posted_values[ $slug ] )
 			) {
-				if ( '' === $posted_values[ $slug ] ) {
-					if ( ! delete_post_thumbnail( $post ) ) {
-						/* translators: %s: atlas content modeler field slug */
-						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
+				// featured image.
+				if ( has_post_thumbnail( $post ) ) {
+					if ( '' === $posted_values[ $slug ] ) {
+						if ( ! delete_post_thumbnail( $post ) ) {
+							/* translators: %s: atlas content modeler field slug */
+							$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
+						}
+					} else {
+						delete_post_thumbnail( $post ); // Delete first is innefficient but avoids weird behavior of set which otherwise treats an existing thumbnail as a bug.
+						if ( ! set_post_thumbnail( $post, $posted_values[ $slug ] ) ) {
+							/* translators: %s: atlas content modeler field slug */
+							$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
+						}
 					}
 				} else {
-					delete_post_thumbnail( $post ); // Delete first is innefficient but avoids weird behavior of set which otherwise treats an existing thumbnail as a bug.
-					if ( ! set_post_thumbnail( $post, $posted_values[ $slug ] ) ) {
+					if ( $posted_values[ $slug ] && ! set_post_thumbnail( $post, $posted_values[ $slug ] ) ) {
 						/* translators: %s: atlas content modeler field slug */
 						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
 					}
