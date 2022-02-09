@@ -42,7 +42,8 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_terms,
 	generate_meta,
 	get_acm_temp_dir,
-	write_manifest
+	write_manifest,
+	zip_blueprint
 };
 
 /**
@@ -223,6 +224,10 @@ class Blueprint {
 	 * : Post types to include, separated by commas. Defaults to post, page and
 	 * all registered ACM post types.
 	 *
+	 * [--open]
+	 * : Open the folder containing the generated zip on success (macOS only,
+	 * requires that `shell_exec()` has not been disabled).
+	 *
 	 * @param array $args Options passed to the command, keyed by integer.
 	 * @param array $assoc_args Options keyed by string.
 	 */
@@ -297,6 +302,29 @@ class Blueprint {
 		}
 
 		\WP_CLI::log( 'Generating zip.' );
-		\WP_CLI::success( 'Blueprint saved to path/to/file.zip.' );
+		$path_to_zip = zip_blueprint(
+			$temp_dir,
+			sanitize_title_with_dashes( $manifest['meta']['name'] )
+		);
+
+		if ( is_wp_error( $path_to_zip ) ) {
+			\WP_CLI::error( $path_to_zip->get_error_message() );
+		}
+
+		if (
+			PHP_OS === 'Darwin'
+			&& ( $assoc_args['open'] ?? false )
+			&& function_exists( 'shell_exec' )
+		) {
+			\WP_CLI::log(
+				__( 'Opening blueprint temp folder.', 'atlas-content-modeler' )
+			);
+			shell_exec( "open {$temp_dir}" ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec
+		}
+
+		\WP_CLI::success(
+			// translators: path to zip file.
+			sprintf( __( 'Blueprint saved to %s.', 'atlas-content-modeler' ), $path_to_zip )
+		);
 	}
 }

@@ -8,6 +8,7 @@
 namespace WPE\AtlasContentModeler\Blueprint\Export;
 
 use WP_Error;
+use ZipArchive;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\Blueprint\Import\is_acm_media_field_meta;
 use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
@@ -386,6 +387,71 @@ function write_manifest( array $manifest, string $path ) {
 	}
 
 	return $write_path;
+}
+
+/**
+ * Compress the blueprint files into a zip file at `$path` named `$zip_name`.
+ *
+ * @param string $path The folder to create the zip file.
+ * @param string $zip_name The name of the zip file, excluding '.zip'.
+ * @return string|WP_Error Path to zip file or error if zip creation failed.
+ */
+function zip_blueprint( string $path, string $zip_name ) {
+	if ( ! class_exists( 'ZipArchive' ) ) {
+		return new WP_Error(
+			'acm_zip_error',
+			esc_html__( 'Unable to create blueprint zip file. ZipArchive not available.', 'atlas-content-modeler' )
+		);
+	}
+
+	$zip      = new ZipArchive();
+	$path     = trailingslashit( $path );
+	$zip_path = $path . $zip_name . '.zip';
+
+	$create_zip = $zip->open( $zip_path, ZipArchive::CREATE );
+
+	if ( ! $create_zip ) {
+		return new WP_Error(
+			'acm_zip_error',
+			esc_html__( 'Unable to create blueprint zip file.', 'atlas-content-modeler' )
+		);
+	}
+
+	$add_manifest = $zip->addFile( $path . '/acm.json', $zip_name . '/acm.json' );
+
+	if ( ! $add_manifest ) {
+		return new WP_Error(
+			'acm_zip_error',
+			esc_html__( 'Could not add manifest to zip file.', 'atlas-content-modeler' )
+		);
+	}
+
+	$add_media = $zip->addGlob(
+		$path . '/media/**/*',
+		0,
+		[
+			'add_path'        => $zip_name . '/media/',
+			'remove_all_path' => true,
+		]
+	);
+
+	if ( ! $add_media ) {
+		return new WP_Error(
+			'acm_zip_error',
+			esc_html__( 'Could not add media to zip file.', 'atlas-content-modeler' )
+		);
+	}
+
+	$save_zip = $zip->close();
+
+	if ( ! $save_zip ) {
+		return new WP_Error(
+			'acm_zip_error',
+			esc_html__( 'Could not save blueprint zip file.', 'atlas-content-modeler' )
+		);
+	}
+
+	return $zip_path;
 }
 
 /**
