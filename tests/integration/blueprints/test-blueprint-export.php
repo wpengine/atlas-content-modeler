@@ -503,7 +503,7 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		$temp_dir = get_temp_dir();
 		copy_dir( __DIR__ . '/test-data/', $temp_dir );
 
-		$zip_path = zip_blueprint( $temp_dir . '/blueprint-good', 'blueprint-good' );
+		$zip_path = zip_blueprint( $temp_dir, 'blueprint-good' );
 
 		self::assertIsString( $zip_path );
 		self::assertContains( $temp_dir, $zip_path );
