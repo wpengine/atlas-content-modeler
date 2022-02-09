@@ -6,6 +6,8 @@
  */
 
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register as register_taxonomies;
+use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
+use function WPE\AtlasContentModeler\Blueprint\Import\import_acm_relationships;
 use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_media,
 	collect_post_meta,
@@ -396,6 +398,53 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertTrue( is_readable( $path . '/' . $media[ $media_id ] ) ); // Media file was copied from WP to temp dir.
 	}
 
+	public function test_collect_relationships_with_no_relationships() {
+		$empty_posts   = [];
+		$relationships = collect_relationships( $empty_posts );
+
+		self::assertEmpty( $relationships );
+	}
+
+	public function test_collect_relationships() {
+		$mocked_post_data = [
+			'123' => [],
+			'124' => [],
+		];
+
+		$mocked_relationship_data = [
+			[
+				'id1'   => 123,
+				'id2'   => 124,
+				'name'  => 'field-id',
+				'order' => 0,
+			],
+			[
+				'id1'   => 124,
+				'id2'   => 123,
+				'name'  => 'field-id',
+				'order' => 0,
+			],
+			[
+				'id1'   => 123,
+				'id2'   => 999,
+				'name'  => 'this-refers-to-an-unrelated-id-and-should-not-be-collected',
+				'order' => 0,
+			],
+		];
+
+		import_acm_relationships( $mocked_relationship_data, [] );
+
+		$relationships = collect_relationships( $mocked_post_data );
+		$names         = wp_list_pluck( $relationships, 'name' );
+
+		self::assertCount( 2, $relationships );
+		self::assertContains( 'field-id', $names );
+		self::assertNotContains(
+			'this-refers-to-an-unrelated-id-and-should-not-be-collected',
+			$names
+		);
+	}
+
 	private function insert_test_image() {
 		global $wp_filesystem;
 
@@ -421,5 +470,4 @@ class BlueprintExportTest extends WP_UnitTestCase {
 
 		return wp_insert_attachment( $attachment, $test_image_path );
 	}
-
 }
