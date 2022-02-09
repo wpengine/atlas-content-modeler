@@ -161,6 +161,8 @@ function collect_post_meta( array $posts ): array {
 		if ( is_array( $meta ) ) {
 			unset( $meta['_edit_last'] );
 			unset( $meta['_edit_lock'] );
+			unset( $meta['_encloseme'] );
+			unset( $meta['_pingme'] );
 
 			if ( ! empty( $meta ) ) {
 				foreach ( $meta as $key => $value ) {
