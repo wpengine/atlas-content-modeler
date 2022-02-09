@@ -397,11 +397,18 @@ function write_manifest( array $manifest, string $path ) {
  * @return string|WP_Error Path to zip file or error if zip creation failed.
  */
 function zip_blueprint( string $path, string $zip_name ) {
+	global $wp_filesystem;
+
 	if ( ! class_exists( 'ZipArchive' ) ) {
 		return new WP_Error(
 			'acm_zip_error',
 			esc_html__( 'Unable to create blueprint zip file. ZipArchive not available.', 'atlas-content-modeler' )
 		);
+	}
+
+	if ( empty( $wp_filesystem ) ) {
+		require_once ABSPATH . '/wp-admin/includes/file.php';
+		\WP_Filesystem();
 	}
 
 	$zip      = new ZipArchive();
@@ -426,20 +433,22 @@ function zip_blueprint( string $path, string $zip_name ) {
 		);
 	}
 
-	$add_media = $zip->addGlob(
-		$path . '/media/**/*',
-		0,
-		[
-			'add_path'        => $zip_name . '/media/',
-			'remove_all_path' => true,
-		]
-	);
-
-	if ( ! $add_media ) {
-		return new WP_Error(
-			'acm_zip_error',
-			esc_html__( 'Could not add media to zip file.', 'atlas-content-modeler' )
+	if ( $wp_filesystem->exists( $path . '/media/' ) ) {
+		$add_media = $zip->addGlob(
+			$path . '/media/**/*',
+			0,
+			[
+				'add_path'    => trailingslashit( $zip_name ),
+				'remove_path' => $path,
+			]
 		);
+
+		if ( ! $add_media ) {
+			return new WP_Error(
+				'acm_zip_error',
+				esc_html__( 'Could not add media to zip file.', 'atlas-content-modeler' )
+			);
+		}
 	}
 
 	$save_zip = $zip->close();
