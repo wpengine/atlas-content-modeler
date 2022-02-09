@@ -349,4 +349,77 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertContains( 'Custom meta', $values );
 	}
 
+	public function test_collect_media_with_no_media() {
+		$empty_manifest = [];
+		$empty_path     = '';
+		$media          = collect_media( $empty_manifest, $empty_path );
+
+		self::assertEmpty( $media );
+	}
+
+	public function test_collect_media() {
+		$media_id = $this->insert_test_image();
+
+		$post_id = $this->factory->post->create(
+			[
+				'post_title'  => 'Post',
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+				'meta_input'  => [
+					'_thumbnail_id' => $media_id,
+				],
+			]
+		);
+
+		$manifest = [
+			'meta'      => [
+				'name' => 'test-media',
+			],
+			'post_meta' => [
+				$post_id => [
+					[
+						'meta_key'   => '_thumbnail_id',
+						'meta_value' => $media_id,
+					],
+				],
+			],
+			'posts'     => [
+				$post_id => get_post( $post_id )->to_array(),
+			],
+		];
+
+		$path  = get_acm_temp_dir( $manifest );
+		$media = collect_media( $manifest, $path );
+
+		self::assertArrayHasKey( $media_id, $media ); // Original media ID was recorded.
+		self::assertEquals( "media/{$media_id}/roger.jpg", $media[ $media_id ] ); // Media path is correct.
+		self::assertTrue( is_readable( $path . '/' . $media[ $media_id ] ) ); // Media file was copied from WP to temp dir.
+	}
+
+	private function insert_test_image() {
+		global $wp_filesystem;
+
+		if ( ! defined( 'FS_METHOD' ) ) {
+			define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords. This only takes effect during testing.
+		}
+
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			\WP_Filesystem();
+		}
+
+		$upload_dir = wp_upload_dir()['path'];
+		copy_dir( __DIR__ . '/test-data/', $upload_dir );
+
+		$test_image_path = $upload_dir . '/blueprint-good/media/roger.jpg';
+		$file_info       = wp_check_filetype( $test_image_path );
+
+		$attachment = [
+			'post_title'     => sanitize_title( basename( $test_image_path, '.' . $file_info['ext'] ) ),
+			'post_mime_type' => $file_info['type'],
+		];
+
+		return wp_insert_attachment( $attachment, $test_image_path );
+	}
+
 }

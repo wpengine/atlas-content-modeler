@@ -180,7 +180,7 @@ function collect_post_meta( array $posts ): array {
 
 /**
  * Copies all media referenced in post_meta to the passed `$path`
- * and returns a map of the media ID and image path.
+ * and returns a map of the media ID and new media file path.
  *
  * Post meta that references media includes featured images for posts and
  * ACM media fields, where post meta values are the ID of the media file.
