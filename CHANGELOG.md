@@ -2,7 +2,8 @@
 
 ## Unreleased
 ### Added
-- New `wp acm blueprint import` WP-CLI command to import ACM data programmatically. This prepares for future work to restore ACM blueprints.
+- New `wp acm blueprint import` WP-CLI command to import ACM data programmatically. This prepares for future work to restore ACM blueprints. See `wp help acm blueprint import` for options.
+- New `wp acm blueprint export` WP-CLI command to export ACM data into a blueprint zip file. See `wp help acm blueprint export` for options.
 
 ### Fixed
 - Featured Image Fields - Previously, featured images allowed for videos and other media to display. Now the modal limits to images in line with how Core featured images work.
