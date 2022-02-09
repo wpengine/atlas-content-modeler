@@ -6,7 +6,6 @@
  */
 
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register as register_taxonomies;
-use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 use function WPE\AtlasContentModeler\Blueprint\Import\import_acm_relationships;
 use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_media,
