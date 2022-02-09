@@ -445,6 +445,36 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_get_acm_temp_dir_missing_manifest_name() {
+		$bad_manifest = [
+			'meta' => [
+				'nome' => 'The nome typo should cause a WP_Error.',
+			],
+		];
+
+		$dir = get_acm_temp_dir( $bad_manifest );
+
+		self::assertInstanceOf( 'WP_Error', $dir );
+		self::assertSame( 'acm_manifest_name_missing', $dir->get_error_code() );
+	}
+
+
+	public function test_get_acm_temp_dir_contains_meta_name() {
+		$good_manifest = [
+			'meta' => [
+				'name' => 'Amazing Blueprint',
+			],
+		];
+
+		$dir = get_acm_temp_dir( $good_manifest );
+
+		self::assertIsString( $dir );
+		self::assertContains(
+			sanitize_title_with_dashes( $good_manifest['meta']['name'] ),
+			$dir
+		);
+	}
+
 	private function insert_test_image() {
 		global $wp_filesystem;
 
@@ -470,4 +500,5 @@ class BlueprintExportTest extends WP_UnitTestCase {
 
 		return wp_insert_attachment( $attachment, $test_image_path );
 	}
+
 }
