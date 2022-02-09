@@ -215,7 +215,7 @@ final class FormEditingExperience {
 					if ( 'relationship' === $field['type'] ) {
 						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post, $field );
 					} else {
-						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_field_value( $field, $post );
 					}
 				}
 			}
