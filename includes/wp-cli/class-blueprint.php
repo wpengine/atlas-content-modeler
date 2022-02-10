@@ -220,7 +220,7 @@ class Blueprint {
 	 * [--version]
 	 * : Optional blueprint version. Defaults to 1.0.
 	 *
-	 * [--cpt-include]
+	 * [--post-types]
 	 * : Post types to include, separated by commas. Defaults to post, page and
 	 * all registered ACM post types.
 	 *
@@ -253,10 +253,10 @@ class Blueprint {
 
 		\WP_CLI::log( 'Collecting posts.' );
 		$post_types = [];
-		if ( $assoc_args['cpt-include'] ?? false ) {
+		if ( $assoc_args['post-types'] ?? false ) {
 			$post_types = array_map(
 				'trim',
-				explode( ',', $assoc_args['cpt-include'] )
+				explode( ',', $assoc_args['post-types'] )
 			);
 		}
 		$manifest['posts'] = collect_posts( $post_types );
