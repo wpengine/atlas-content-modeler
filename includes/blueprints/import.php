@@ -98,7 +98,7 @@ function check_versions( array $manifest ) {
 		return new WP_Error(
 			'acm_version_error',
 			__(
-				'acm.json is missing the required meta.requires.WordPress property.',
+				'acm.json is missing the required meta.requires.wordpress property.', // phpcs:ignore WordPress.WP.CapitalPDangit.Misspelled
 				'atlas-content-modeler'
 			)
 		);
