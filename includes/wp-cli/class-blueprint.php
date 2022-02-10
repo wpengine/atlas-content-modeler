@@ -31,6 +31,21 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 use function WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint;
 use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
+use function WPE\AtlasContentModeler\Blueprint\Export\{
+	collect_media,
+	collect_post_meta,
+	collect_post_tags,
+	collect_posts,
+	collect_relationships,
+	collect_terms,
+	delete_folder,
+	generate_meta,
+	get_acm_temp_dir,
+	write_manifest,
+	zip_blueprint
+};
 
 /**
  * Blueprint subcommands for the `wp acm blueprint` WP-CLI command.
@@ -144,7 +159,7 @@ class Blueprint {
 			);
 
 			if ( is_wp_error( $tag_posts ) ) {
-				foreach ( $tag_posts as $message ) {
+				foreach ( $tag_posts->get_error_messages() as $message ) {
 					\WP_CLI::warning( $message );
 				}
 			}
@@ -188,14 +203,130 @@ class Blueprint {
 
 	/**
 	 * Exports an ACM blueprint using the current state of the site.
+	 *
+	 * [--name]
+	 * : Optional blueprint name. Used in the manifest and zip file name.
+	 * Defaults to “ACM Blueprint” resulting in acm-blueprint.zip.
+	 *
+	 * [--description]
+	 * : Optional description of the blueprint.
+	 *
+	 * [--min-wp]
+	 * : Minimum WordPress version. Defaults to current WordPress version.
+	 *
+	 * [--min-acm]
+	 * : Minimum Atlas Content Modeler plugin version. Defaults to current
+	 * ACM version.
+	 *
+	 * [--version]
+	 * : Optional blueprint version. Defaults to 1.0.
+	 *
+	 * [--post-types]
+	 * : Post types to include, separated by commas. Defaults to post, page and
+	 * all registered ACM post types.
+	 *
+	 * [--open]
+	 * : Open the folder containing the generated zip on success (macOS only,
+	 * requires that `shell_exec()` has not been disabled).
+	 *
+	 * @param array $args Options passed to the command, keyed by integer.
+	 * @param array $assoc_args Options keyed by string.
 	 */
-	public function export() {
-		\WP_CLI::log( 'Collecting ACM data…' );
-		\WP_CLI::log( 'Collecting entries…' );
-		\WP_CLI::log( 'Collecting media…' );
-		\WP_CLI::log( 'Generating zip…' );
-		\WP_CLI::success( 'Blueprint saved to path/to/file.zip.' );
+	public function export( $args, $assoc_args ) {
+		$meta_overrides = [];
+
+		\WP_CLI::log( 'Collecting ACM data.' );
+		foreach ( [ 'name', 'description', 'min-wp', 'min-acm', 'version' ] as $key ) {
+			if ( ( $assoc_args[ $key ] ?? false ) ) {
+				$meta_overrides[ $key ] = $assoc_args[ $key ];
+			}
+		}
+
+		$meta     = generate_meta( $meta_overrides );
+		$manifest = [ 'meta' => $meta ];
+		$temp_dir = get_acm_temp_dir( $manifest );
+
+		if ( is_wp_error( $temp_dir ) ) {
+			\WP_CLI::error( $temp_dir->get_error_message() );
+		}
+
+		delete_folder( $temp_dir ); // Cleans up previous exports.
+
+		\WP_CLI::log( 'Collecting ACM models.' );
+		$manifest['models'] = get_registered_content_types();
+
+		\WP_CLI::log( 'Collecting ACM taxonomies.' );
+		$manifest['taxonomies'] = get_acm_taxonomies();
+
+		\WP_CLI::log( 'Collecting posts.' );
+		$post_types = [];
+		if ( $assoc_args['post-types'] ?? false ) {
+			$post_types = array_map(
+				'trim',
+				explode( ',', $assoc_args['post-types'] )
+			);
+		}
+		$manifest['posts'] = collect_posts( $post_types );
+
+		if ( ! empty( $manifest['taxonomies'] ?? [] ) ) {
+			\WP_CLI::log( 'Collecting terms.' );
+			$manifest['terms'] = collect_terms(
+				array_keys( $manifest['taxonomies'] )
+			);
+		}
+
+		if ( ! empty( $manifest['terms'] ?? [] ) ) {
+			\WP_CLI::log( 'Collecting post tags.' );
+			$manifest['post_terms'] = collect_post_tags(
+				$manifest['posts'] ?? [],
+				wp_list_pluck( $manifest['terms'], 'taxonomy' )
+			);
+		}
+
+		\WP_CLI::log( 'Collecting post meta.' );
+		$manifest['post_meta'] = collect_post_meta(
+			$manifest['posts'] ?? []
+		);
+
+		if ( ! empty( $manifest['post_meta'] ?? [] ) ) {
+			\WP_CLI::log( 'Collecting media.' );
+			$manifest['media'] = collect_media(
+				$manifest,
+				$temp_dir
+			);
+		}
+
+		\WP_CLI::log( 'Collecting ACM relationships' );
+		$manifest['relationships'] = collect_relationships(
+			$manifest['posts'] ?? []
+		);
+
+		\WP_CLI::log( 'Writing acm.json manifest.' );
+		$write_manifest = write_manifest( $manifest, $temp_dir );
+
+		if ( is_wp_error( $write_manifest ) ) {
+			\WP_CLI::error( $write_manifest->get_error_message() );
+		}
+
+		\WP_CLI::log( 'Generating zip.' );
+		$path_to_zip = zip_blueprint(
+			$temp_dir,
+			sanitize_title_with_dashes( $manifest['meta']['name'] )
+		);
+
+		if ( is_wp_error( $path_to_zip ) ) {
+			\WP_CLI::error( $path_to_zip->get_error_message() );
+		}
+
+		if (
+			PHP_OS === 'Darwin'
+			&& ( $assoc_args['open'] ?? false )
+			&& function_exists( 'shell_exec' )
+		) {
+			\WP_CLI::log( 'Opening blueprint temp folder.' );
+			shell_exec( "open {$temp_dir}" ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec
+		}
+
+		\WP_CLI::success( sprintf( 'Blueprint saved to %s.', $path_to_zip ) );
 	}
-
-
 }

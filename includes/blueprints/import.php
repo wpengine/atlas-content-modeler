@@ -41,11 +41,11 @@ function unzip_blueprint( string $blueprint_path ) {
 	}
 
 	$upload_folder = wp_upload_dir();
-	$target_folder = $upload_folder['path'] . '/' . basename( $blueprint_path, '.zip' );
+	$target_folder = $upload_folder['path'];
 	$unzipped_file = unzip_file( $blueprint_path, $target_folder );
 
 	if ( $unzipped_file ) {
-		return $target_folder;
+		return $target_folder . '/' . basename( $blueprint_path, '.zip' );
 	}
 
 	return $unzipped_file; // The WP_Error from the failed unzip attempt.

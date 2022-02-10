@@ -89,7 +89,7 @@ function save_blueprint_to_upload_dir( string $blueprint, string $filename ) {
 	if ( ! $saved ) {
 		return new WP_Error(
 			'acm_blueprint_save_error',
-			/* translators: full path to blueprint file. */
+			/* translators: full path to file. */
 			sprintf( esc_html__( 'Error saving temporary file to %s', 'atlas-content-modeler' ), $temp_destination )
 		);
 	}
