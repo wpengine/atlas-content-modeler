@@ -58,7 +58,11 @@ function save_taxonomy( array $params, bool $is_update ) {
 	if ( in_array( $params['slug'], $non_acm_taxonomies, true ) ) {
 		return new WP_Error(
 			'acm_taxonomy_exists',
-			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
+			sprintf(
+				// translators: taxonomy name.
+				esc_html__( 'A taxonomy with an ID of ‘%s’ already exists.', 'atlas-content-modeler' ),
+				$params['slug']
+			),
 			[ 'status' => 400 ]
 		);
 	}
@@ -67,7 +71,11 @@ function save_taxonomy( array $params, bool $is_update ) {
 	if ( ! $is_update && array_key_exists( $params['slug'], $acm_taxonomies ) ) {
 		return new WP_Error(
 			'acm_taxonomy_exists',
-			esc_html__( 'A taxonomy with this Taxonomy ID already exists.', 'atlas-content-modeler' ),
+			sprintf(
+				// translators: taxonomy name.
+				esc_html__( 'A taxonomy with an ID of ‘%s’ already exists.', 'atlas-content-modeler' ),
+				$params['slug']
+			),
 			[ 'status' => 400 ]
 		);
 	}

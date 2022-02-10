@@ -96,7 +96,7 @@ class CreateTaxonomyCest {
 		$i->click( 'button[data-testid="create-taxonomy-button"]' );
 		$i->wait( 1 );
 
-		$i->see( 'A taxonomy with this Taxonomy ID already exists' );
+		$i->see( 'already exists' );
 	}
 
 	public function i_can_not_create_a_taxonomy_with_a_reserved_singular_name( AcceptanceTester $i ) {

@@ -50,10 +50,18 @@ function atlas_content_modeler_loader(): void {
 		'publisher/class-publisher-form-editing-experience.php',
 		'updates/version-updates.php',
 		'content-connect/autoload.php',
+		'blueprints/import.php',
+		'blueprints/fetch.php',
+		'blueprints/export.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
 			include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
+	}
+
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . '/wp-cli/class-blueprint.php';
+		\WP_CLI::add_command( 'acm blueprint', 'WPE\AtlasContentModeler\WP_CLI\Blueprint' );
 	}
 
 	\WPE\AtlasContentModeler\VersionUpdater\update_plugin();
