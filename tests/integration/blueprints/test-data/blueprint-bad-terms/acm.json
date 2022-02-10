@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "schema": "1.0",
+    "version": "2.0",
+    "requires": {
+      "wordpress": "5.8",
+      "acm": "0.1.0"
+    },
+    "name": "Blog",
+    "description": "Your blog but headless."
+  },
+  "models": {
+    "rabbit": {
+      "show_in_rest": true,
+      "show_in_graphql": true,
+      "singular": "Rabbit",
+      "plural": "Rabbits",
+      "slug": "rabbit",
+      "api_visibility": "private",
+      "model_icon": "dashicons-admin-post",
+      "description": "",
+      "fields": {
+        "1643644234421": {
+          "show_in_rest": true,
+          "show_in_graphql": true,
+          "type": "media",
+          "id": "1643644234421",
+          "position": 10000,
+          "name": "Photo",
+          "slug": "photo",
+          "required": false,
+          "description": "",
+          "minChars": "",
+          "maxChars": "",
+          "isFeatured": true,
+          "allowedTypes": ""
+        },
+        "1643644261520": {
+          "show_in_rest": true,
+          "show_in_graphql": true,
+          "type": "text",
+          "id": "1643644261520",
+          "position": 0,
+          "name": "Name",
+          "slug": "name",
+          "isRepeatable": false,
+          "isTitle": true,
+          "inputType": "single",
+          "required": false,
+          "description": "",
+          "minChars": "",
+          "maxChars": ""
+        },
+        "1643644343024": {
+          "show_in_rest": true,
+          "show_in_graphql": true,
+          "type": "relationship",
+          "id": "1643644343024",
+          "position": 20000,
+          "name": "Friends",
+          "slug": "friends",
+          "required": false,
+          "description": "",
+          "minChars": "",
+          "maxChars": "",
+          "reference": "rabbit",
+          "cardinality": "many-to-many",
+          "enableReverse": true,
+          "reverseName": "Rabbits",
+          "reverseSlug": "rabbits"
+        }
+      }
+    }
+  },
+  "taxonomies": {
+    "breed": {
+      "types": ["rabbit"],
+      "show_in_rest": true,
+      "show_in_graphql": true,
+      "hierarchical": false,
+      "api_visibility": "private",
+      "singular": "Breed",
+      "plural": "Breeds",
+      "slug": "breed"
+    }
+  },
+  "terms": [
+    {
+      "term_id": 4,
+      "name": "Cartoon",
+      "slug": "cartoon",
+      "term_group": 0,
+      "term_taxonomy_id": 4,
+      "taxonomy": "this-taxonomy-does-not-exist",
+      "description": "",
+      "parent": 0,
+      "count": 0,
+      "filter": "raw"
+    },
+    {
+      "term_id": 3,
+      "name": "Human",
+      "slug": "human",
+      "term_group": 0,
+      "term_taxonomy_id": 3,
+      "taxonomy": "this-taxonomy-does-not-exist",
+      "description": "",
+      "parent": 0,
+      "count": 0,
+      "filter": "raw"
+    }
+  ]
+}
