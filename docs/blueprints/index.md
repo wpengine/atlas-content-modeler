@@ -69,16 +69,16 @@ If you'd like to see support for these please [open or add to a discussion](http
 | Error saving temporary file | Check disk space and file permissions. |
 | Error saving file | Check disk space and file permissions. |
 | Provided file type is not supported. | Confirm the provided URL points to a zip file. |
-| Could not read blueprint file | Confirm the blueprint file unzips. Check disk space and file permissions |
+| Could not read blueprint file | Confirm the blueprint file unzips. Check disk space and file permissions. |
 | Could not read an acm.json file in the blueprint folder. | Confirm the blueprint zip contains a file named acm.json in the blueprint root folder when unzipped. |
-| acm.json is missing the required meta.requires.acm property. | Check the acm.json manifest contains a meta.requires.acm property |
-| acm.json is missing the required meta.requires.wordpress property. | Check the acm.json manifest contains a meta.requires.wordpress property |
-| acm.json requires an ACM version of n but the current ACM version is y. | Update ACM to the requested version |
-| acm.json requires a WordPress version of x but the current WordPress version is y. | Update WordPress to the requested version |
+| acm.json is missing the required meta.requires.acm property. | Check the acm.json manifest contains a meta.requires.acm property. |
+| acm.json is missing the required meta.requires.wordpress property. | Check the acm.json manifest contains a meta.requires.wordpress property. |
+| acm.json requires an ACM version of n but the current ACM version is y. | Update ACM to the requested version. |
+| acm.json requires a WordPress version of x but the current WordPress version is y. | Update WordPress to the requested version. |
 | A model with slug ‘x’ already exists | Remove existing ACM models with the shared slug, alter the model slug in the blueprint's acm.json file, or try another blueprint. |
 | A singular name of “x” is in use. | Remove existing ACM models with the shared singular name, alter the model singular name in the blueprint's acm.json file, or try another blueprint. |
 | A plural name of “x” is in use. | Remove existing ACM models with the shared plural name, alter the model plural name in the blueprint's acm.json file, or try another blueprint. |
-| Models not updated. Reason unknown. | Indicates failure to write to the WordPress database. Could be caused by database corruption or database unavailability. Try again, contact your web host for help, or post in the ACM GitHub discussions page with a link to your blueprint file. |
+| Models not updated. Reason unknown. | Indicates failure to write to the WordPress database. Could be caused by database corruption or unavailability. Try again, contact your web host for help, or post in the [ACM GitHub discussions page](https://github.com/wpengine/atlas-content-modeler/discussions) with a link to your blueprint file. |
 | Could not read media file at x | Check the blueprint zip contains media files. Check disk space and file permissions. |
 
 
