@@ -46,42 +46,6 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 							"atlas-content-modeler"
 						)}
 					</label>
-					{showRepeatable && (
-						<>
-							<div>
-								<label htmlFor={`repeatable-min-${fieldId}`}>
-									{__(
-										"Min repeatable fields",
-										"atlas-content-modeler"
-									)}
-								</label>
-								<input
-									type="number"
-									name="minRepeatable"
-									step="1"
-									ref={register}
-									id={`repeatable-min-${fieldId}`}
-									disabled={editing || showTitle}
-								/>
-							</div>
-							<div>
-								<label htmlFor={`repeatable-max-${fieldId}`}>
-									{__(
-										"Max repeatable fields",
-										"atlas-content-modeler"
-									)}
-								</label>
-								<input
-									type="number"
-									name="maxRepeatable"
-									step="1"
-									ref={register}
-									id={`repeatable-max-${fieldId}`}
-									disabled={editing || showTitle}
-								/>
-							</div>
-						</>
-					)}
 				</div>
 			)}
 			{showTitleField && (

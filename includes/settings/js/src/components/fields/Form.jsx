@@ -109,6 +109,24 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						},
 					},
 				},
+				minRepeatable: {
+					min: 0,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
+				},
+				maxRepeatable: {
+					min: 1,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
+					validate: {
+						maxBelowMin: (v) => {
+							const min = parseInt(getValues("minRepeatable"));
+							const max = parseInt(v);
+							if (isNaN(min) || isNaN(max)) {
+								return true;
+							}
+							return max > min;
+						},
+					},
+				},
 			},
 		},
 		number: {
