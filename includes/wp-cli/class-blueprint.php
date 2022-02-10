@@ -40,6 +40,7 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_posts,
 	collect_relationships,
 	collect_terms,
+	delete_folder,
 	generate_meta,
 	get_acm_temp_dir,
 	write_manifest,
@@ -244,6 +245,7 @@ class Blueprint {
 		$meta     = generate_meta( $meta_overrides );
 		$manifest = [ 'meta' => $meta ];
 		$temp_dir = get_acm_temp_dir( $manifest );
+		delete_folder( $temp_dir ); // Cleans up previous exports.
 
 		\WP_CLI::log( 'Collecting ACM models.' );
 		$manifest['models'] = get_registered_content_types();
