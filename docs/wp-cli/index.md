@@ -68,8 +68,8 @@ ACM version.
 Optional blueprint version. Defaults to 1.0.
 
 `[--post-types]`
-Post types to include, separated by commas. Defaults to post, page and
-all registered ACM post types.
+Post types to collect posts for, separated by commas. Defaults to post,
+page and all registered ACM post types.
 
 `[--open]`
 Open the folder containing the generated zip on success (macOS only,
