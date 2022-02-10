@@ -2,7 +2,7 @@
 
 Blueprints describe ACM data to be imported by an automated process. They help to rapidly restore ACM state and WordPress post entries to accelerate user onboarding.
 
-Blueprints can be exported and imported using [ACM’s WP-CLI commands](../blueprints/index.md):
+Blueprints can be exported and imported using [ACM’s WP-CLI commands](../wp-cli/index.md):
 
 - `wp acm blueprint export` will dump the current state of your site to a blueprint zip file.
 - `wp acm blueprint import https://example.com/path/to/blueprint.zip` will import a blueprint from a publicly-accessible URL.
