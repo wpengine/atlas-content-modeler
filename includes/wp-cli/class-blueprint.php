@@ -245,6 +245,11 @@ class Blueprint {
 		$meta     = generate_meta( $meta_overrides );
 		$manifest = [ 'meta' => $meta ];
 		$temp_dir = get_acm_temp_dir( $manifest );
+
+		if ( is_wp_error( $temp_dir ) ) {
+			\WP_CLI::error( $temp_dir->get_error_message() );
+		}
+
 		delete_folder( $temp_dir ); // Cleans up previous exports.
 
 		\WP_CLI::log( 'Collecting ACM models.' );

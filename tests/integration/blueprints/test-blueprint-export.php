@@ -457,6 +457,32 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertSame( 'acm_manifest_name_missing', $dir->get_error_code() );
 	}
 
+	public function test_get_acm_temp_dir_empty_manifest_name() {
+		$bad_manifest = [
+			'meta' => [
+				'name' => '   ',
+			],
+		];
+
+		$dir = get_acm_temp_dir( $bad_manifest );
+
+		self::assertInstanceOf( 'WP_Error', $dir );
+		self::assertSame( 'acm_manifest_name_missing', $dir->get_error_code() );
+	}
+
+	public function test_get_acm_temp_dir_bad_manifest_name() {
+		$bad_manifest = [
+			'meta' => [
+				'name' => '!!!!!!',
+			],
+		];
+
+		$dir = get_acm_temp_dir( $bad_manifest );
+
+		self::assertInstanceOf( 'WP_Error', $dir );
+		self::assertSame( 'acm_manifest_name_bad', $dir->get_error_code() );
+	}
+
 	public function test_get_acm_temp_dir_contains_meta_name() {
 		$good_manifest = [
 			'meta' => [

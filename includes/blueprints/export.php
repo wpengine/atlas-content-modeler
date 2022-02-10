@@ -476,15 +476,26 @@ function zip_blueprint( string $path, string $zip_name ) {
  *                         manifest name is missing.
  */
 function get_acm_temp_dir( $manifest ) {
-	if ( empty( $manifest['meta']['name'] ?? '' ) ) {
+	$manifest_name = trim( $manifest['meta']['name'] ?? '' );
+	if ( empty( $manifest_name ) ) {
 		return new WP_Error(
 			'acm_manifest_name_missing',
-			esc_html__( 'The manifest has no meta.name property.', 'atlas-content-modeler' )
+			esc_html__( 'The manifest has a missing or empty meta.name property.', 'atlas-content-modeler' )
 		);
 	}
 
 	$temp_dir    = get_temp_dir();
-	$folder_name = sanitize_title_with_dashes( $manifest['meta']['name'] );
+	$folder_name = sanitize_title_with_dashes( $manifest_name );
+
+	if ( empty( $folder_name ) ) {
+		return new WP_Error(
+			'acm_manifest_name_bad',
+			esc_html__(
+				'The manifest meta.name resulted in an empty folder name. Check that it contains at least one alphanumeric ASCII character.',
+				'atlas-content-modeler'
+			)
+		);
+	}
 
 	return "{$temp_dir}acm/{$folder_name}/";
 }
