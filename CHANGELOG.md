@@ -1,6 +1,8 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.14.0 - 2022-02-10
+### Added
+- `wp acm blueprint import` and `wp acm blueprint export` WP-CLI commands.
 ### Fixed
 - Featured Image Fields - Previously, featured images allowed for videos and other media to display. Now the modal limits to images in line with how Core featured images work.
 - Fixed PHP notice that happens under certain conditions when a featured image is not provided.

@@ -1,8 +1,8 @@
 === Atlas Content Modeler ===
 Requires at least: 5.7
-Tested up to: 5.8.2
+Tested up to: 5.9
 Requires PHP: 7.2
-Stable tag: 0.13.0
+Stable tag: 0.14.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,6 +53,10 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+= 0.14.0 - 2022-02-10 =
+* **Added:** `wp acm blueprint import` and `wp acm blueprint export` WP-CLI commands.
+* **Fixed:** Featured Image Fields - Previously, featured images allowed for videos and other media to display. Now the modal limits to images in line with how Core featured images work.
+* **Fixed:** Fixed PHP notice that happens under certain conditions when a featured image is not provided.
 
 = 0.13.0 - 2022-02-01 =
 
