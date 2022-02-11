@@ -14,7 +14,15 @@ export default function Text({
 	defaultError,
 }) {
 	if (field.isRepeatable) {
-		const [values, setValues] = useState(field?.value || [""]);
+		const [values, setValues] = useState(
+			field?.value || new Array(field.minRepeatable).fill("", 0)
+		);
+		const showAddButton =
+			!field.maxRepeatable || values.length < field.maxRepeatable;
+		const showDeleteButton = field.minRepeatable
+			? values.length > field.minRepeatable
+			: values.length > 1;
+
 		return (
 			<div className={"field"}>
 				<label>{field.name}</label>
@@ -166,8 +174,7 @@ export default function Text({
 														<div
 															className={`value[${index}].remove-container p-2 me-sm-1`}
 														>
-															{values.length >
-																1 && (
+															{showDeleteButton && (
 																<button
 																	className="remove-item tertiary no-border"
 																	onClick={(
@@ -206,34 +213,39 @@ export default function Text({
 												</tr>
 											);
 										})}
-										<tr className="flex add-container">
-											<button
-												className="add-option mt-1 tertiary no-border"
-												onClick={(event) => {
-													event.preventDefault();
-													// Adds a new empty value to display another text field.
-													setValues((oldValues) => [
-														...oldValues,
-														"",
-													]);
-												}}
-											>
-												<a>
-													<AddIcon noCircle />{" "}
-													<span>
-														{field.value.length > 0
-															? __(
-																	`Add Another`,
-																	"atlas-content-modeler"
-															  )
-															: __(
-																	`Add Item`,
-																	"atlas-content-modeler"
-															  )}
-													</span>
-												</a>
-											</button>
-										</tr>
+										{showAddButton && (
+											<tr className="flex add-container">
+												<button
+													className="add-option mt-1 tertiary no-border"
+													onClick={(event) => {
+														event.preventDefault();
+														// Adds a new empty value to display another text field.
+														setValues(
+															(oldValues) => [
+																...oldValues,
+																"",
+															]
+														);
+													}}
+												>
+													<a>
+														<AddIcon noCircle />{" "}
+														<span>
+															{field.value
+																.length > 0
+																? __(
+																		`Add Another`,
+																		"atlas-content-modeler"
+																  )
+																: __(
+																		`Add Item`,
+																		"atlas-content-modeler"
+																  )}
+														</span>
+													</a>
+												</button>
+											</tr>
+										)}
 									</tbody>
 								</table>
 							</ul>
