@@ -119,9 +119,6 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 				className="first"
 				data-testid="delete-model-button"
 				onClick={async () => {
-					// Optimistically remove the model from the UI.
-					dispatch({ type: "removeModel", slug });
-
 					await deleteModel(slug)
 						.then((res) => {
 							if (res.success) {
@@ -140,9 +137,9 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 										fields: relationships,
 									});
 								}
-							} else {
-								// Restore the model in the UI since deletion failed.
-								dispatch({ type: "addModel", data: model });
+								setModalIsOpen(false);
+								dispatch({ type: "removeModel", slug });
+								history.push(atlasContentModeler.appPath);
 							}
 						})
 						.catch(() => {
@@ -155,11 +152,7 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 									slug
 								)
 							);
-							// Restore the model in the UI since deletion failed.
-							dispatch({ type: "addModel", data: model });
 						});
-
-					history.push(atlasContentModeler.appPath);
 				}}
 			>
 				{__("Delete", "atlas-content-modeler")}
