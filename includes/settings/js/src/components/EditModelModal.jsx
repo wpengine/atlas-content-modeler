@@ -414,7 +414,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					className="first"
 					data-testid="edit-model-save-button"
 				>
-					{__("Saves", "atlas-content-modeler")}
+					{__("Save", "atlas-content-modeler")}
 				</Button>
 				<TertiaryButton
 					href="#"
