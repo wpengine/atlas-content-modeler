@@ -18,7 +18,8 @@ use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_
 
 add_filter( 'gatsby_action_monitor_tracked_post_types', __NAMESPACE__ . '\monitor_acm_post_types' );
 /**
- * Extends post types WPGatsby monitors for changes to include ACM models.
+ * Extends post types WPGatsby monitors for changes to include all ACM models
+ * where api_visibility is 'public'.
  *
  * Without this, Gatsby developers have to stop and start their server to see
  * new, updated, or deleted ACM posts reflected in GraphQL responses.
@@ -36,7 +37,15 @@ add_filter( 'gatsby_action_monitor_tracked_post_types', __NAMESPACE__ . '\monito
  * @return array New list of monitored post types with ACM types added.
  */
 function monitor_acm_post_types( array $original_post_types ): array {
-	$acm_post_types = array_keys( get_registered_content_types() );
+	$acm_post_types = array_keys(
+		array_filter(
+			get_registered_content_types(),
+			function( $acm_post_type ) {
+				return $acm_post_type['api_visibility'] === 'public';
+			}
+		)
+	);
+
 	$acm_post_types = array_combine( $acm_post_types, $acm_post_types ); // So that keys match values, as in the array returned from get_post_types().
 
 	return array_merge( $original_post_types, $acm_post_types );
