@@ -18,6 +18,7 @@ use function WPE\AtlasContentModeler\REST_API\Fields\content_model_field_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_multi_option_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_multi_option_slug_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_reverse_slug_exists;
+use function WPE\AtlasContentModeler\Settings\get_extra_post_types;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
 /**
@@ -93,7 +94,12 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 			);
 		}
 
-		if ( empty( $content_types[ $params['reference'] ] ) ) {
+		$extra_post_types = get_extra_post_types();
+
+		if (
+			empty( $content_types[ $params['reference'] ] )
+			&& empty( $extra_post_types[ $params['reference'] ] )
+		) {
 			return new WP_Error(
 				'acm_invalid_related_content_model',
 				__( 'The related content model no longer exists.', 'atlas-content-modeler' ),
