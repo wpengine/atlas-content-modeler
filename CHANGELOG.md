@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Fixed
+- Gatsby users can now use the “Refresh Data” button in Gatsby GraphiQL or the /__refresh endpoint to update ACM post data.
 - The delete model prompt no longer shows “undefined” in its title during model deletion.
 
 ## 0.14.0 - 2022-02-10
