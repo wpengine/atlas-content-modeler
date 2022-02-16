@@ -74,13 +74,40 @@ const RelationshipFields = ({
 						<option value="">
 							— {__("Choose a model", "atlas-content-modeler")} —
 						</option>
-						{modelsAlphabetical.map((model) => {
-							return (
-								<option key={model.slug} value={model.slug}>
-									{model.plural}
-								</option>
-							);
-						})}
+
+						<optgroup
+							label={__("ACM Models", "atlas-content-modeler")}
+						>
+							{modelsAlphabetical.map((model) => {
+								return (
+									<option key={model.slug} value={model.slug}>
+										{model.plural}
+									</option>
+								);
+							})}
+						</optgroup>
+						{Object.keys(atlasContentModeler?.extraPostTypes ?? {})
+							.length > 0 && (
+							<optgroup
+								label={__(
+									"Other Post Types",
+									"atlas-content-modeler"
+								)}
+							>
+								{Object.values(
+									atlasContentModeler.extraPostTypes
+								).map((model) => {
+									return (
+										<option
+											key={model.slug}
+											value={model.slug}
+										>
+											{model.plural}
+										</option>
+									);
+								})}
+							</optgroup>
+						)}
 					</select>
 					{editing && (
 						<input
