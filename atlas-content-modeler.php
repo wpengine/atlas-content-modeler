@@ -46,6 +46,7 @@ function atlas_content_modeler_loader(): void {
 		'content-registration/custom-post-types-registration.php',
 		'content-registration/register-taxonomies.php',
 		'content-registration/class-wpe-rest-posts-controller.php',
+		'content-registration/gatsby.php',
 		'rest-api/init-rest-api.php',
 		'publisher/class-publisher-form-editing-experience.php',
 		'updates/version-updates.php',
