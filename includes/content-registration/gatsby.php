@@ -41,7 +41,7 @@ function monitor_acm_post_types( array $original_post_types ): array {
 		array_filter(
 			get_registered_content_types(),
 			function( $acm_post_type ) {
-				return $acm_post_type['api_visibility'] === 'public';
+				return ( $acm_post_type['api_visibility'] ?? 'private' ) === 'public';
 			}
 		)
 	);
