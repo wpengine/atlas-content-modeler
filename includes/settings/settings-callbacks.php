@@ -150,6 +150,7 @@ function enqueue_settings_assets( $hook ) {
 										? get_site_url() . '/' . get_graphql_setting( 'graphql_endpoint', 'graphql' )
 										: get_site_url() . '/graphql',
 			'usageTrackingEnabled' => acm_usage_tracking_enabled(),
+			'extraPostTypes'       => get_extra_post_types(),
 		)
 	);
 
@@ -216,4 +217,45 @@ function register_settings_fields(): void {
 		null, // rendered by React.
 		'atlas_content_modeler_general_section'
 	);
+}
+
+/**
+ * Gets extra post types for use in the relationship field's “model to
+ * reference” option. Lets publishers create relationships between core
+ * and custom post types as well as ACM post types.
+ *
+ * @return array
+ */
+function get_extra_post_types(): array {
+	$excludes = array_merge(
+		[ 'attachment' ],
+		array_keys( get_registered_content_types() )
+	);
+
+	$post_types = get_post_types(
+		[
+			'public'  => true,
+			'show_ui' => true,
+		],
+		'objects'
+	);
+
+	$post_types_with_excludes = array_filter(
+		$post_types,
+		function( $post_type ) use ( $excludes ) {
+			return ! in_array( $post_type->name, $excludes, true );
+		}
+	);
+
+	$post_type_data = array_map(
+		function( $post_type ) {
+			return [
+				'slug'   => $post_type->name,
+				'plural' => $post_type->labels->name,
+			];
+		},
+		$post_types_with_excludes
+	);
+
+	return $post_type_data;
 }
