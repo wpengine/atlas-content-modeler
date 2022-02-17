@@ -1,5 +1,9 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Fixed
+- The delete model prompt no longer shows “undefined” in its title during model deletion.
+
 ## 0.14.0 - 2022-02-10
 ### Added
 - New `wp acm blueprint import` WP-CLI command to import ACM data programmatically. This prepares for future work to restore ACM blueprints. See `wp help acm blueprint import` for options.

@@ -18,8 +18,8 @@
   },
   "scripts": {
     "build": "npm run build-settings && npm run build-publisher",
-    "build-settings": "parcel build --target=settings --no-source-maps --no-scope-hoist",
-    "build-publisher": "parcel build --target=publisher --no-source-maps --no-scope-hoist",
+    "build-settings": "PARCEL_WORKERS=0 parcel build --target=settings --no-source-maps --no-scope-hoist",
+    "build-publisher": "PARCEL_WORKERS=0 parcel build --target=publisher --no-source-maps --no-scope-hoist",
     "build-readme": "node scripts/buildReadme.js",
     "clean": "rm -rf .parcel-cache/ includes/publisher/dist/ includes/settings/dist/",
     "start": "parcel watch",
