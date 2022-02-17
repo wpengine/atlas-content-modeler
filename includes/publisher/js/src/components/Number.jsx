@@ -13,7 +13,6 @@ export default function Number({
 	modelSlug,
 	defaultError,
 }) {
-	console.log(field);
 	if (field.isRepeatable) {
 		let numberOptions = {};
 		const numberInputRef = useRef();
