@@ -1,49 +1,80 @@
 /**
  * Additional form fields for the Number field type.
  */
-import React from "react";
+import React, { useContext, useState } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 
-const NumberFields = ({ register, data, editing }) => {
+const NumberFields = ({ register, data, editing, fieldId }) => {
+	const [showRepeatable, setShowRepeatable] = useState(
+		data?.isRepeatable === true
+	);
+
 	return (
-		<div className={editing ? "field read-only editing" : "field"}>
-			<legend>Number Type</legend>
-			<fieldset>
-				<div className="radio-row">
+		<>
+			{data && (
+				<div className={"field"}>
+					<legend>
+						{__("Repeatable Field", "atlas-content-modeler")}
+					</legend>
 					<input
-						type="radio"
-						id="integer"
-						name="numberType"
-						value="integer"
+						name="isRepeatable"
+						type="checkbox"
+						id={`is-repeatable-${fieldId}`}
 						ref={register}
-						defaultChecked={
-							data?.numberType === "integer" ||
-							typeof data?.numberType === "undefined"
-						}
+						defaultChecked={showRepeatable}
+						onChange={() => setShowRepeatable(!showRepeatable)}
 						disabled={editing}
 					/>
-					<label className="radio" htmlFor="integer">
-						{__("Integer", "atlas-content-modeler")}
-						<span>1, 2, 3, 5, 8, 13…</span>
+					<label
+						htmlFor={`is-repeatable-${fieldId}`}
+						className="checkbox is-repeatable"
+					>
+						{__(
+							"Make this field repeatable",
+							"atlas-content-modeler"
+						)}
 					</label>
 				</div>
-				<div className="radio-row">
-					<input
-						type="radio"
-						id="decimal"
-						name="numberType"
-						value="decimal"
-						ref={register}
-						defaultChecked={data?.numberType === "decimal"}
-						disabled={editing}
-					/>
-					<label className="radio" htmlFor="decimal">
-						{__("Decimal", "atlas-content-modeler")}
-						<span>3.14159265389</span>
-					</label>
-				</div>
-			</fieldset>
-		</div>
+			)}
+			<div className={editing ? "field read-only editing" : "field"}>
+				<legend>Number Type</legend>
+				<fieldset>
+					<div className="radio-row">
+						<input
+							type="radio"
+							id="integer"
+							name="numberType"
+							value="integer"
+							ref={register}
+							defaultChecked={
+								data?.numberType === "integer" ||
+								typeof data?.numberType === "undefined"
+							}
+							disabled={editing}
+						/>
+						<label className="radio" htmlFor="integer">
+							{__("Integer", "atlas-content-modeler")}
+							<span>1, 2, 3, 5, 8, 13…</span>
+						</label>
+					</div>
+					<div className="radio-row">
+						<input
+							type="radio"
+							id="decimal"
+							name="numberType"
+							value="decimal"
+							ref={register}
+							defaultChecked={data?.numberType === "decimal"}
+							disabled={editing}
+						/>
+						<label className="radio" htmlFor="decimal">
+							{__("Decimal", "atlas-content-modeler")}
+							<span>3.14159265389</span>
+						</label>
+					</div>
+				</fieldset>
+			</div>
+		</>
 	);
 };
 
