@@ -22,6 +22,7 @@ export default function Text({
 		const showDeleteButton = field.minRepeatable
 			? values.length > field.minRepeatable
 			: values.length > 1;
+		const isSingleFieldRequired = field?.required || field?.isRepeatable;
 
 		return (
 			<div className={"field"}>
@@ -70,11 +71,7 @@ export default function Text({
 																	)}
 																	type="text"
 																	required={
-																		field?.required &&
-																		index <
-																			1
-																			? true
-																			: false
+																		isSingleFieldRequired
 																	}
 																	minLength={
 																		field?.minChars
