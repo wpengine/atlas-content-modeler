@@ -123,7 +123,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							if (isNaN(min) || isNaN(max)) {
 								return true;
 							}
-							return max > min;
+							return max >= min;
 						},
 					},
 				},

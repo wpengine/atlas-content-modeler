@@ -2,10 +2,8 @@ import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Relationship from "./relationship";
-import Text from "./Text";
+import { Text } from "./Text";
 import Icon from "acm-icons";
-import AddIcon from "../../../../components/icons/AddIcon";
-import TrashIcon from "../../../../components/icons/TrashIcon";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
