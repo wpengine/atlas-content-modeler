@@ -16,7 +16,7 @@ export default function Relationship({ field, modelSlug }) {
 	const [selectedEntries, setSelectedEntries] = useState(
 		field.value.split(",").filter(Boolean)
 	);
-	const { models } = atlasContentModelerFormEditingExperience;
+	const { models, restBases } = atlasContentModelerFormEditingExperience;
 
 	/**
 	 * Retrieves related content information for display.
@@ -28,9 +28,7 @@ export default function Relationship({ field, modelSlug }) {
 			include: selectedEntries,
 		});
 
-		const endpoint = `/wp/v2/${
-			models[field.reference]?.wp_rest_base
-		}/?=${query}`;
+		const endpoint = `/wp/v2/${restBases[field.reference]}/?=${query}`;
 
 		const params = {
 			path: endpoint,

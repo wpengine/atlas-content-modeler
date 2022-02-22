@@ -202,13 +202,7 @@ final class FormEditingExperience {
 		wp_enqueue_editor();
 
 		$models = append_reverse_relationship_fields( $this->models, $this->screen->post_type );
-
-		// Adds the wp-json rest base for utilizing model data in admin.
-		foreach ( $models as $model => $data ) {
-			$models[ $model ]['wp_rest_base'] = sanitize_key( $data['plural'] );
-		}
-
-		$model = $models[ $this->screen->post_type ];
+		$model  = $models[ $this->screen->post_type ] ?? [];
 
 		// Add existing field values to models data.
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
@@ -233,6 +227,7 @@ final class FormEditingExperience {
 				'adminUrl'             => admin_url(),
 				'postHasReferences'    => isset( $post->ID ) ? $this->has_relationship_references( (string) $post->ID ) : false,
 				'usageTrackingEnabled' => acm_usage_tracking_enabled(),
+				'restBases'            => array_filter( wp_list_pluck( get_post_types( [], 'objects' ), 'rest_base' ) ),
 			]
 		);
 
