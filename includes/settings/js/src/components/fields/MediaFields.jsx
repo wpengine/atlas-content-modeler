@@ -1,10 +1,17 @@
 /**
  * Additional form fields for the Media field type.
  */
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { getTitleFieldId } from "../../queries";
+import { ModelsContext } from "../../ModelsContext";
+import { useLocationSearch } from "../../utils";
 import { __ } from "@wordpress/i18n";
 
 const MediaFields = ({ register, data, editing, fieldId }) => {
+	const { models } = useContext(ModelsContext);
+	const query = useLocationSearch();
+	const currentModel = query.get("id");
+	const fields = models[currentModel]?.fields;
 	const [showRepeatable, setShowRepeatable] = useState(
 		data?.isRepeatable === true
 	);
