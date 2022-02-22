@@ -166,7 +166,8 @@ final class FormEditingExperience {
 	 */
 	public function enqueue_assets( string $hook ): void {
 		$models = append_reverse_relationship_fields( $this->models, $this->screen->post_type );
-		$fields = $models[ $this->screen->post_type ]['fields'] ?? [];
+		$model  = $models[ $this->screen->post_type ] ?? [];
+		$fields = $model['fields'] ?? [];
 
 		if ( count( $fields ) < 1 ) {
 			return;
@@ -200,9 +201,6 @@ final class FormEditingExperience {
 		);
 
 		wp_enqueue_editor();
-
-		$models = append_reverse_relationship_fields( $this->models, $this->screen->post_type );
-		$model  = $models[ $this->screen->post_type ] ?? [];
 
 		// Add existing field values to models data.
 		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
