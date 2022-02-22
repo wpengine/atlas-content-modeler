@@ -208,15 +208,9 @@ final class FormEditingExperience {
 		$model = $models[ $this->screen->post_type ];
 
 		// Add existing field values to models data.
-		if ( ! empty( $post ) && ! empty( $model['fields'] ) ) {
+		if ( ! empty( $post->ID ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
-				if ( isset( $post->ID ) ) {
-					if ( 'relationship' === $field['type'] ) {
-						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post, $field );
-					} else {
-						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_field_value( $field, $post );
-					}
-				}
+				$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_field_value( $field, $post );
 			}
 		}
 
