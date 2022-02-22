@@ -705,28 +705,50 @@ final class FormEditingExperience {
 	 * @return array|int|mixed|string
 	 */
 	private function get_field_value( array $field, WP_Post $post ) {
-		if ( $field['type'] === 'text' && ! empty( $field['isTitle'] ) ) {
-			// get old value from postmeta with get_post_meta.
-			$old_value = get_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), true );
-			// migrate data to wp_posts.title.
-			if ( $old_value ) {
-				// use old meta, update value of post title.
-				$post->post_title = $old_value;
-				// Update the post into the database.
-				wp_update_post( $post );
-				// remove old post meta row.
-				delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );
-			}
+		switch ( $field['type'] ) {
+			case 'text':
+				if ( empty( $field['isTitle'] ) ) {
+					$value = get_post_meta( $post->ID, $field['slug'], true );
+					break;
+				}
 
-			// return title.
-			return apply_filters(
-				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Running WP core filter.
-				'the_title',
-				get_post_field( 'title', $post->ID ),
-				$post->ID
-			);
+				/**
+				 * We have a title field.
+				 * If the title data is stored in postmeta, this migrates
+				 * it to the posts table where it belongs.
+				 */
+				$meta_value = get_post_meta( $post->ID, $field['slug'], true );
+				if ( ! $meta_value ) {
+					$value = get_post_field( 'post_title', $post->ID );
+					$value = 'Auto Draft' === $value ? '' : $value;
+					break;
+				}
+
+				$post->post_title = $meta_value;
+				$updated          = wp_update_post( $post, true, false );
+				if ( ! is_wp_error( $updated ) ) {
+					delete_post_meta( $post->ID, $field['slug'] );
+					$value = get_post_field( 'post_title', $post->ID );
+					break;
+				}
+				$value = $meta_value; // fallback in case migrating title fails above.
+				break;
+			case 'relationship':
+				$value = $this->get_relationship_field( $post, $field );
+				break;
+			case 'media':
+				if ( ! empty( $field['isFeatured'] ) && has_post_thumbnail( $post ) ) {
+					$value = get_post_thumbnail_id( $post );
+					break;
+				}
+				$value = get_post_meta( $post->ID, $field['slug'], true );
+				break;
+			default:
+				$value = get_post_meta( $post->ID, $field['slug'], true );
+				break;
 		}
-		return get_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), true );
+
+		return $value;
 	}
 
 	/**
