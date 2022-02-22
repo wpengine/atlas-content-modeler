@@ -11,6 +11,7 @@ import {
 	NumberSettings,
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
+import MediaFields from "./MediaFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
 import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
@@ -31,6 +32,7 @@ const { cloneDeep, isEqual } = lodash;
 
 const extraFields = {
 	text: TextFields,
+	media: MediaFields,
 	number: NumberFields,
 	multipleChoice: MultipleChoiceFields,
 	relationship: RelationshipFields,
