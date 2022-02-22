@@ -38,6 +38,10 @@ export default function RelationshipModal({
 	const totalPages = Math.ceil(totalEntries / entriesPerPage);
 	const pageIsVisible = usePageVisibility();
 	const pageLostFocus = useRef(false);
+	const parentSelector =
+		typeof atlasContentModeler !== "undefined"
+			? "atlas-content-modeler-fields-app"
+			: "wpwrap";
 
 	/**
 	 * An entry is “chosen” if it has been ticked in the relationships modal.
@@ -100,10 +104,10 @@ export default function RelationshipModal({
 	}
 
 	async function getEntries(page) {
-		const { models } = atlasContentModelerFormEditingExperience;
+		const { models, restBases } = atlasContentModelerFormEditingExperience;
 
 		const endpoint = `/wp/v2/${
-			models[field.reference]?.wp_rest_base
+			restBases[field.reference]
 		}?per_page=${entriesPerPage}&page=${page}&field_id=${field?.id}`;
 
 		const params = {
@@ -142,7 +146,7 @@ export default function RelationshipModal({
 	 * Hides the main app from screen readers when the modal is open.
 	 */
 	useEffect(() => {
-		Modal.setAppElement("#atlas-content-modeler-fields-app");
+		Modal.setAppElement(`#${parentSelector}`);
 	}, []);
 
 	/**
@@ -199,9 +203,7 @@ export default function RelationshipModal({
 			isOpen={isOpen}
 			contentLabel={`Creating relationship with ${field.name}`}
 			parentSelector={() => {
-				return document.getElementById(
-					"atlas-content-modeler-fields-app"
-				);
+				return document.getElementById(parentSelector);
 			}}
 			portalClassName="atlas-content-modeler-relationship-modal-container atlas-content-modeler"
 			onRequestClose={() => {
