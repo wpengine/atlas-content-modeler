@@ -70,7 +70,7 @@ function populate_post( $post_id, $model, $test_class ) {
 	$ids[ $model . '_pdf_id' ] = $test_class->factory->attachment->create(
 		array(
 			'post_mime_type' => 'application/pdf',
-			'post_title'     => 'PDF Attachement',
+			'post_title'     => 'PDF Attachment',
 		)
 	);
 
