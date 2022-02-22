@@ -1,28 +1,18 @@
 /**
  * Additional form fields for the Media field type.
  */
-import React, { useContext, useState } from "react";
-import { getTitleFieldId } from "../../queries";
-import { ModelsContext } from "../../ModelsContext";
-import { useLocationSearch } from "../../utils";
+import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
 
 const MediaFields = ({ register, data, editing, fieldId }) => {
-	const { models } = useContext(ModelsContext);
-	const query = useLocationSearch();
-	const currentModel = query.get("id");
-	const fields = models[currentModel]?.fields;
 	const [showRepeatable, setShowRepeatable] = useState(
 		data?.isRepeatable === true
 	);
-	const [showTitle, setShowTitle] = useState(data?.isTitle === true);
 
 	return (
 		<>
 			{data && (
-				<div
-					className={showTitle ? "field  read-only editing" : "field"}
-				>
+				<div className={"field"}>
 					<legend>
 						{__("Repeatable Field", "atlas-content-modeler")}
 					</legend>
@@ -33,7 +23,7 @@ const MediaFields = ({ register, data, editing, fieldId }) => {
 						ref={register}
 						defaultChecked={showRepeatable}
 						onChange={() => setShowRepeatable(!showRepeatable)}
-						disabled={editing || showTitle}
+						disabled={editing}
 					/>
 					<label
 						htmlFor={`is-repeatable-${fieldId}`}
