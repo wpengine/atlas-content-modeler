@@ -76,7 +76,6 @@ final class FormEditingExperience {
 		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
-		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
 		add_action( 'load-post.php', [ $this, 'feedback_notice_handler' ] );
 		add_action( 'load-post-new.php', [ $this, 'feedback_notice_handler' ] );
 		add_action( 'do_meta_boxes', [ $this, 'move_meta_boxes' ] );
@@ -602,48 +601,6 @@ final class FormEditingExperience {
 	 */
 	public function render_feedback_notice(): void {
 		include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'shared-assets/views/banners/atlas-content-modeler-feedback-banner.php';
-	}
-
-	/**
-	 * Filters post titles to use the value of the field set as the entry title.
-	 *
-	 * Applies to admin pages as well as WPGraphQL and REST responses.
-	 *
-	 * Uses the post type plus the post ID if there is no field set as the entry
-	 * title, or if that field has no stored value.
-	 *
-	 * @param string $title The original post title.
-	 * @param int    $id    Post ID.
-	 *
-	 * @return string The adjusted post title.
-	 */
-	public function filter_post_titles( string $title, int $id ) {
-		$post_type = get_post_type( $id );
-
-		if ( ! $post_type ) {
-			return $title;
-		}
-
-		// Only filter titles for post types created with this plugin.
-		if ( ! array_key_exists( $post_type, $this->models ) ) {
-			return $title;
-		}
-
-		$fields = $this->models[ $post_type ]['fields'] ?? [];
-
-		$title_field = get_entry_title_field( $fields );
-
-		if ( isset( $title_field['slug'] ) ) {
-			$title_value = get_post_meta( $id, $title_field['slug'], true );
-
-			if ( ! empty( $title_value ) ) {
-				return $title_value;
-			}
-		}
-
-		// Use a generated title when entry title fields or field data are absent.
-		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'atlas-content-modeler' );
-		return $post_type_singular . ' ' . $id;
 	}
 
 	/**
