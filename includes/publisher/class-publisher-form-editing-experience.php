@@ -165,8 +165,10 @@ final class FormEditingExperience {
 	 * @param string $hook The current admin page.
 	 */
 	public function enqueue_assets( string $hook ): void {
-		// Bail if this isn't a model created by our plugin.
-		if ( ! array_key_exists( $this->screen->post_type, $this->models ) ) {
+		$models = append_reverse_relationship_fields( $this->models, $this->screen->post_type );
+		$fields = $models[ $this->screen->post_type ]['fields'] ?? [];
+
+		if ( count( $fields ) < 1 ) {
 			return;
 		}
 
