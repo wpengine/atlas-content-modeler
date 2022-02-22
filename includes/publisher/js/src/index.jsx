@@ -1,6 +1,8 @@
 /* global atlasContentModelerFormEditingExperience */
 import React from "react";
 import ReactDOM from "react-dom";
+import { registerPlugin } from "@wordpress/plugins";
+import BlockEditorSidebar from "./components/sidebar/BlockEditorSidebar";
 import App from "./App";
 import "./../../scss/index.scss";
 import "../../../settings/scss/index.scss";
@@ -29,3 +31,9 @@ if (container && models.hasOwnProperty(postType)) {
 	publishButton.addEventListener("click", addSubmittedClass);
 	form.addEventListener("submit", addSubmittedClass);
 }
+
+if (wp?.plugins?.registerPlugin) {
+	wp?.plugins?.registerPlugin("acm-sidebar", { render: BlockEditorSidebar });
+}
+
+// TODO: Set up the meta box for the Classic Editor here.
