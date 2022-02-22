@@ -14,7 +14,7 @@ export default function Text({
 }) {
 	if (field.isRepeatable) {
 		function getFieldValues() {
-			const minLength = parseInt(field.minRepeatable) || 0;
+			const minLength = parseInt(field.minRepeatable) || 1;
 
 			if (!field?.value) {
 				return new Array(minLength).fill("", 0);
