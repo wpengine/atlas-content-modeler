@@ -505,8 +505,12 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$field['type'] = array( 'list_of' => 'String' );
 			}
 
-			if ( isset( $field['isRepeatable'] ) && $field['isRepeatable'] && 'Float' === $field['type'] ) {
+			if ( isset( $field['isRepeatable'] ) && $field['isRepeatable'] && 'integer' === $field['numberType'] ) {
 				$field['type'] = array( 'list_of' => 'Integer' );
+			}
+
+			if ( isset( $field['isRepeatable'] ) && $field['isRepeatable'] && 'decimal' === $field['numberType'] ) {
+				$field['type'] = array( 'list_of' => 'Float' );
 			}
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
