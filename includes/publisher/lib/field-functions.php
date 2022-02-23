@@ -197,7 +197,18 @@ function sanitize_field( string $type, $value ) {
 			}
 			return implode( ',', $relationships );
 		case 'number':
-			return filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+			if ( is_array( $value ) ) {
+				return array_filter(
+					array_map(
+						function( $val ) {
+							return filter_var( $val, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+						},
+						$value
+					)
+				);
+			}
+			return wp_strip_all_tags( $value );
+			// return filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 		case 'date':
 			$y_m_d_format = '/\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/';
 			if ( preg_match( $y_m_d_format, $value ) ) {

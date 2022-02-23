@@ -14,6 +14,8 @@ export default function Number({
 	defaultError,
 }) {
 	if (field.isRepeatable) {
+		const [values, setValues] = useState(field?.value || [""]);
+
 		let numberOptions = {};
 		const numberInputRef = useRef();
 
@@ -65,104 +67,170 @@ export default function Number({
 				{field?.description && (
 					<p className="help mb-0">{field.description}</p>
 				)}
-				<div className="repeater-text-field flex-row">
-					<table key="1" className="table mt-2">
-						<tbody>
-							{values.map((item, index) => {
-								return (
-									<>
-										<div>
-											<input
-												ref={numberInputRef}
-												type={`${field.type}`}
-												name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-												id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-												defaultValue={field.value}
-												required={field.required}
-												onChange={(event) =>
-													preValidate(event, field)
-												}
-												onKeyDown={(event) =>
-													preValidate(event, field)
-												}
-												{...numberOptions}
-											/>
-											<span className="error">
-												<Icon type="error" />
-												<span role="alert">
-													{errors[field.slug] ??
-														defaultError}
-												</span>
-											</span>
-										</div>
-										<div
-											className={`value[${index}].remove-container p-2 me-sm-1`}
-										>
-											{values.length > 1 && (
-												<button
-													className="remove-item tertiary no-border"
-													onClick={(event) => {
-														event.preventDefault();
-														// Removes the value at the given index.
-														setValues(
-															(currentValues) => {
-																const newValues = [
-																	...currentValues,
-																];
-																newValues.splice(
-																	index,
-																	1
-																);
-																return newValues;
-															}
-														);
-													}}
+				<fieldset>
+					<div id="repeaterNumber" className="text-table flex-row">
+						<div className="repeater-number-field flex-row">
+							<table key="1" className="table mt-2">
+								<tbody>
+									{values.map((item, index) => {
+										return (
+											<>
+												<tr
+													key={index}
+													className={`field number-repeater-container-single d-flex mt-1 flex-fill flex-row`}
 												>
-													<a
-														aria-label={__(
-															"Remove item.",
-															"atlas-content-modeler"
-														)}
+													<div
+														className={`${
+															errors[
+																"repeaterText" +
+																	index
+															]
+																? "field has-error"
+																: "field"
+														} d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 													>
-														<TrashIcon size="small" />{" "}
-													</a>
-												</button>
-											)}
-										</div>
-									</>
-								);
-							})}
-							<tr className="flex add-container">
-								<button
-									className="add-option mt-1 tertiary no-border"
-									onClick={(event) => {
-										event.preventDefault();
-										// Adds a new empty value to display another text field.
-										setValues((oldValues) => [
-											...oldValues,
-											"",
-										]);
-									}}
-								>
-									<a>
-										<AddIcon noCircle />{" "}
-										<span>
-											{field.value.length > 0
-												? __(
-														`Add Another`,
-														"atlas-content-modeler"
-												  )
-												: __(
-														`Add Item`,
-														"atlas-content-modeler"
-												  )}
-										</span>
-									</a>
-								</button>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+														<div
+															className="me-lg-1 repeater-input-container flex-fill"
+															name="repeaters"
+														>
+															<input
+																ref={
+																	numberInputRef
+																}
+																type={`${field.type}`}
+																name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																defaultValue={
+																	field.value
+																}
+																value={
+																	values[
+																		index
+																	]
+																}
+																required={
+																	field.required
+																}
+																onChange={(
+																	event
+																) => {
+																	// Update the value of the item.
+																	const newValue =
+																		event
+																			.currentTarget
+																			.value;
+																	setValues(
+																		(
+																			oldValues
+																		) => {
+																			let newValues = [
+																				...oldValues,
+																			];
+																			newValues[
+																				index
+																			] = newValue;
+																			return newValues;
+																		}
+																	);
+																}}
+																onKeyDown={(
+																	event
+																) =>
+																	preValidate(
+																		event,
+																		field
+																	)
+																}
+																{...numberOptions}
+															/>
+															<span className="error">
+																<Icon type="error" />
+																<span role="alert">
+																	{errors[
+																		field
+																			.slug
+																	] ??
+																		defaultError}
+																</span>
+															</span>
+														</div>
+														<div
+															className={`value[${index}].remove-container p-2 me-sm-1`}
+														>
+															{values.length >
+																1 && (
+																<button
+																	className="remove-item tertiary no-border"
+																	onClick={(
+																		event
+																	) => {
+																		event.preventDefault();
+																		// Removes the value at the given index.
+																		setValues(
+																			(
+																				currentValues
+																			) => {
+																				const newValues = [
+																					...currentValues,
+																				];
+																				newValues.splice(
+																					index,
+																					1
+																				);
+																				return newValues;
+																			}
+																		);
+																	}}
+																>
+																	<a
+																		aria-label={__(
+																			"Remove item.",
+																			"atlas-content-modeler"
+																		)}
+																	>
+																		<TrashIcon size="small" />{" "}
+																	</a>
+																</button>
+															)}
+														</div>
+													</div>
+												</tr>
+											</>
+										);
+									})}
+									<tr className="flex add-container">
+										<button
+											className="add-option mt-1 tertiary no-border"
+											onClick={(event) => {
+												event.preventDefault();
+												// Adds a new empty value to display another text field.
+												setValues((oldValues) => [
+													...oldValues,
+													"",
+												]);
+											}}
+										>
+											<a>
+												<AddIcon noCircle />{" "}
+												<span>
+													{field.value.length > 0
+														? __(
+																`Add Another`,
+																"atlas-content-modeler"
+														  )
+														: __(
+																`Add Item`,
+																"atlas-content-modeler"
+														  )}
+												</span>
+											</a>
+										</button>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</fieldset>
 			</>
 		);
 	}

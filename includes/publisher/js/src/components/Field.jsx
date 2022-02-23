@@ -109,13 +109,15 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "number":
-			<Number
-				field={field}
-				modelSlug={modelSlug}
-				errors={errors}
-				validate={validate}
-				defaultError={defaultError}
-			/>;
+			return (
+				<Number
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
+			);
 		case "date": // @todo split this out for proper browser and datepicker support
 			return (
 				<>
