@@ -13,26 +13,25 @@ export default function Number({
 	modelSlug,
 	defaultError,
 }) {
+	let numberOptions = {};
+	const numberInputRef = useRef();
+
+	if (field?.minValue || field?.minValue === 0) {
+		numberOptions.min = field.minValue ?? 0;
+	}
+	if (field?.maxValue) {
+		numberOptions.max = field.maxValue;
+	}
+	if (field?.step) {
+		numberOptions.step = field.step;
+	} else {
+		field.numberType === "integer"
+			? (numberOptions.step = 1)
+			: (numberOptions.step = "any");
+	}
+
 	if (field.isRepeatable) {
 		const [values, setValues] = useState(field?.value || [""]);
-
-		let numberOptions = {};
-		const numberInputRef = useRef();
-
-		if (field?.minValue || field?.minValue === 0) {
-			numberOptions.min = field.minValue ?? 0;
-		}
-		if (field?.maxValue) {
-			numberOptions.max = field.maxValue;
-		}
-		if (field?.step) {
-			numberOptions.step = field.step;
-		} else {
-			field.numberType === "integer"
-				? (numberOptions.step = 1)
-				: (numberOptions.step = "any");
-		}
-
 		/**
 		 * Check for need to sanitize number fields further before regular validation
 		 * @param event
