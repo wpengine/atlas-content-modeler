@@ -73,6 +73,7 @@ final class FormEditingExperience {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 		add_action( 'edit_form_after_title', [ $this, 'render_app_container' ] );
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
+		add_action( 'updated_post_meta', [ $this, 'update_relationship_fields' ], 10, 4 );
 		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
@@ -307,6 +308,40 @@ final class FormEditingExperience {
 	}
 
 	/**
+	 * Updates relationship table entries when relationship post meta changes.
+	 *
+	 * Relationship data is stored in post meta, but synced to the custom
+	 * wp_acm_post_to_post table for faster relationship access.
+	 *
+	 * @param int    $meta_id ID of updated metadata entry.
+	 * @param int    $post_id ID of the object metadata is for.
+	 * @param string $meta_key Metadata key.
+	 * @param mixed  $meta_value Metadata value. Serialized if non-scalar.
+	 */
+	public function update_relationship_fields( int $meta_id, int $post_id, string $meta_key, $meta_value ): void {
+		$post   = get_post( $post_id );
+		$models = append_reverse_relationship_fields( $this->models, $post->post_type );
+
+		if ( ! array_key_exists( $post->post_type, $models ) ) {
+			return;
+		}
+
+		$fields = $models[ $post->post_type ]['fields'] ?? [];
+
+		foreach ( $fields as $field ) {
+			if ( $field['slug'] !== $meta_key ) {
+				continue;
+			}
+
+			if ( $field['type'] !== 'relationship' ) {
+				continue;
+			}
+
+			$this->save_relationship_field( $field['slug'], $post, (string) $meta_value );
+		}
+	}
+
+	/**
 	 * Saves metadata related to our content models.
 	 *
 	 * @param int     $post_id The post ID.
@@ -337,19 +372,11 @@ final class FormEditingExperience {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- sanitized below before use.
 		$posted_values = $_POST['atlas-content-modeler'][ $post->post_type ];
 
-		$saved_relationships = array();
-
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
 			$field_id    = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
 			$field_type  = get_field_type_from_slug( $field_id, $this->models, $post->post_type );
 			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ) );
-
-			if ( 'relationship' === $field_type ) {
-				unset( $posted_values[ $field_id ] );
-				$this->save_relationship_field( $field_id, $post, $field_value );
-				$saved_relationships[] = $field_id;
-			}
 		}
 
 		// Delete any meta values missing from the submitted data.
@@ -368,25 +395,15 @@ final class FormEditingExperience {
 			);
 
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
-				if ( 'relationship' === $field_type ) {
-					if ( ! in_array(
-						$slug,
-						$saved_relationships,
-						true
-					) ) {
-						$this->save_relationship_field( $slug, $post, '' );
-					}
-				} else {
-					$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
-					if ( empty( $existing ) ) {
-						continue;
-					}
+				$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
+				if ( empty( $existing ) ) {
+					continue;
+				}
 
-					$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
-					if ( ! $deleted ) {
-						/* translators: %s: atlas content modeler field slug */
-						$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
-					}
+				$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
+				if ( ! $deleted ) {
+					/* translators: %s: atlas content modeler field slug */
+					$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
 				}
 			}
 
@@ -449,9 +466,11 @@ final class FormEditingExperience {
 	 * @param string  $field_value The post IDs of the relationship's destination posts.
 	 */
 	public function save_relationship_field( string $field_id, WP_Post $post, string $field_value ): void {
+		$models = append_reverse_relationship_fields( $this->models, $post->post_type );
+
 		$field = get_field_from_slug(
 			$field_id,
-			$this->models,
+			$models,
 			$post->post_type
 		);
 
