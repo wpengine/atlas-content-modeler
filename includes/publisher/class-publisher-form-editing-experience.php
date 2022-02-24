@@ -459,13 +459,15 @@ final class FormEditingExperience {
 		$relationship  = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field['id'] );
 		$related_posts = array();
 
-		if ( $relationship ) {
-			if ( '' !== $field_value ) {
-				$related_posts = explode( ',', $field_value );
-			}
-
-			$relationship->replace_relationships( $post->ID, $related_posts );
+		if ( ! $relationship ) {
+			return false;
 		}
+
+		if ( ! empty( $field_value ) ) {
+			$related_posts = explode( ',', $field_value );
+		}
+
+		return $relationship->replace_relationships( $post->ID, $related_posts );
 	}
 
 	/**
