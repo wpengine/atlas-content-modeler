@@ -31,7 +31,10 @@ if (container && models.hasOwnProperty(postType)) {
 	form.addEventListener("submit", addSubmittedClass);
 }
 
-if (wp?.plugins?.registerPlugin) {
+if (
+	document.body.classList.contains("block-editor-page") &&
+	wp?.plugins?.registerPlugin
+) {
 	wp?.plugins?.registerPlugin("acm-sidebar", { render: BlockEditorSidebar });
 }
 
