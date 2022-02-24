@@ -510,6 +510,25 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			}
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
+				if ( 'text' === $field['original_type'] && ! empty( $field['isTitle'] ) ) {
+					/**
+					 * We have a title field.
+					 * If the title data is stored in postmeta, this migrates
+					 * it to the posts table where it belongs.
+					 */
+					$value = get_post_meta( $post->databaseId, $field['slug'], true );
+					if ( ! empty( $value ) ) {
+						$p             = get_post( $post->databaseId );
+						$p->post_title = $value;
+						$updated       = wp_update_post( $p, true, false );
+						if ( ! is_wp_error( $updated ) ) {
+							delete_post_meta( $post->databaseId, $field['slug'] );
+							return $value;
+						}
+					}
+					return $post->titleRendered;
+				}
+
 				if ( 'relationship' !== $field['original_type'] ) {
 					$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
