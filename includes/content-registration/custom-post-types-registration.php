@@ -550,7 +550,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 
 					// If the multiple choice field has no saved data, return an empty array.
 					if ( $field['original_type'] === 'multipleChoice' && empty( $value ) ) {
-							return [];
+						return [];
 					}
 
 					// fixes caption shortcode for graphql output.
@@ -727,7 +727,6 @@ function get_connection_name( string $from_type, string $to_type, string $from_f
 
 	return $connection_name;
 }
-
 
 /**
  * Maps an HTML field type to a WPGraphQL field type.
