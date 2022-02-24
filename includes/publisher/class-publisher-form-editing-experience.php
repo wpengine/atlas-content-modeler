@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler;
 
+use WP_Error;
 use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
-use function WPE\AtlasContentModeler\append_reverse_relationship_fields;
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 
@@ -273,35 +273,68 @@ final class FormEditingExperience {
 	}
 
 	/**
-	 * Sets the slug for a newly published post to the ID of that post.
+	 * Sets the post_name and post_title values.
 	 *
-	 * @param int     $post_ID The currently saving post ID.
+	 * @param int     $post_id The currently saving post ID.
 	 * @param WP_Post $post    The post object being edited.
 	 * @param bool    $update  Whether this is an existing post being updated.
 	 * @return void
 	 */
-	public function set_post_attributes( int $post_ID, WP_Post $post, bool $update ): void {
-		if ( true === $update ) {
-			// @todo Perhaps check that the slug has not been changed outside of the editor.
+	public function set_post_attributes( int $post_id, WP_Post $post, bool $update ): void {
+		if ( empty( $_POST['atlas-content-modeler'] ) || empty( $_POST['atlas-content-modeler'][ $post->post_type ] ) ) {
 			return;
 		}
 
-		// Only enforce this slug on created models.
 		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
 			return;
 		}
 
-		// An object to add more useful info to the slug, perhaps post_type ID.
-		// @todo Add a filter to change the slug format for default model post slug.
-		$model_post_slug = $post_ID;
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			$this->error_save_post = __( 'You do not have permission to edit this content.', 'atlas-content-modeler' );
+			return;
+		}
 
-		wp_update_post(
-			array(
-				'ID'         => $post_ID,
-				'post_name'  => $model_post_slug,
-				'post_title' => 'entry' . $post_ID,
-			)
-		);
+		if (
+			! isset( $_POST['atlas-content-modeler-pubex-nonce'] ) ||
+			! wp_verify_nonce(
+				sanitize_text_field(
+					wp_unslash( $_POST['atlas-content-modeler-pubex-nonce'] )
+				),
+				'atlas-content-modeler-pubex-nonce'
+			) ) {
+			$this->error_save_post = __( 'Nonce verification failed when saving your content. Please try again.', 'atlas-content-modeler' );
+			return;
+		}
+
+		// Remove action to prevent it from running again when updating the post below.
+		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10 );
+
+		$needs_update = false;
+
+		if ( $post->post_status === 'auto-draft' ) {
+			$post->post_title = '';
+			$post->post_name  = $post->ID;
+			$needs_update     = true;
+		}
+
+		if ( ! $needs_update && strpos( $post->post_name, 'auto-draft' ) !== false ) {
+			if ( $post->post_title === 'Auto Draft' ) {
+				$post->post_title = 'entry' . $post->ID;
+				$post->post_name  = $post->ID;
+			} else {
+				$post->post_name = sanitize_title_with_dashes( $post->post_title );
+			}
+			$needs_update = true;
+		}
+
+		if ( ! $needs_update && $post->post_name === $post->ID && $post->post_title !== 'Auto Draft' ) {
+			$post->post_name = sanitize_title_with_dashes( $post->post_title );
+			$needs_update    = true;
+		}
+
+		if ( $needs_update ) {
+			wp_update_post( $post );
+		}
 	}
 
 	/**
@@ -332,25 +365,21 @@ final class FormEditingExperience {
 			return;
 		}
 
+		// Avoid infinite loop.
+		remove_filter( 'save_post', [ $this, 'save_post' ] );
+
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- sanitized below before use.
 		$posted_values = $_POST['atlas-content-modeler'][ $post->post_type ];
 
-		$saved_relationships = array();
-
 		// Sanitize field values.
 		foreach ( $posted_values as $field_id => &$field_value ) {
+			$field       = get_field_from_slug( $field_id, $this->models, $post->post_type );
 			$field_id    = sanitize_text_field( wp_unslash( $field_id ) ); // retains camelCase.
 			$field_type  = get_field_type_from_slug( $field_id, $this->models, $post->post_type );
 			$field_value = sanitize_field( $field_type, wp_unslash( $field_value ) );
-
-			if ( 'relationship' === $field_type ) {
-				unset( $posted_values[ $field_id ] );
-				$this->save_relationship_field( $field_id, $post, $field_value );
-				$saved_relationships[] = $field_id;
-			}
 		}
 
-		// Delete any meta values missing from the submitted data.
+		// Delete any values missing from the submitted data.
 		$all_field_slugs = array_values(
 			wp_list_pluck(
 				$this->models[ $post->post_type ]['fields'],
@@ -359,80 +388,28 @@ final class FormEditingExperience {
 		);
 
 		foreach ( $all_field_slugs as $slug ) {
-			$field_type = get_field_type_from_slug(
-				$slug,
-				$this->models,
-				$post->post_type
-			);
-
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
-				if ( 'relationship' === $field_type ) {
-					if ( ! in_array(
-						$slug,
-						$saved_relationships,
-						true
-					) ) {
-						$this->save_relationship_field( $slug, $post, '' );
-					}
-				} else {
-					$field    = get_field_from_slug( $slug, $this->models, $post->post_type );
-					$existing = $this->get_field_value( $field, $post );
-					if ( empty( $existing ) ) {
-						continue;
-					}
-
-					$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
-					if ( ! $deleted ) {
-						/* translators: %s: atlas content modeler field slug */
-						$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
-					}
-				}
-			}
-
-			// Media field.
-			if ( 'media' === $field_type &&
-				is_field_featured_image(
-					$slug,
-					$this->models[ $post->post_type ]['fields'] ?? []
-				) &&
-				isset( $posted_values[ $slug ] )
-			) {
-				// featured image.
-				if ( has_post_thumbnail( $post ) ) {
-					if ( '' === $posted_values[ $slug ] ) {
-						if ( ! delete_post_thumbnail( $post ) ) {
-							/* translators: %s: atlas content modeler field slug */
-							$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
-						}
-					} else {
-						delete_post_thumbnail( $post ); // Delete first is innefficient but avoids weird behavior of set which otherwise treats an existing thumbnail as a bug.
-						if ( ! set_post_thumbnail( $post, $posted_values[ $slug ] ) ) {
-							/* translators: %s: atlas content modeler field slug */
-							$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
-						}
-					}
-				} else {
-					if ( $posted_values[ $slug ] && ! set_post_thumbnail( $post, $posted_values[ $slug ] ) ) {
-						/* translators: %s: atlas content modeler field slug */
-						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $posted_values[ $slug ] );
-					}
+				$field   = get_field_from_slug( $slug, $this->models, $post->post_type );
+				$deleted = $this->delete_field_value( $field, $post );
+				if ( ! $deleted ) {
+					/* translators: %s: atlas content modeler field slug */
+					$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
 				}
 			}
 		}
 
 		foreach ( $posted_values as $key => $value ) {
-			$key = sanitize_text_field( $key );
+			$key   = sanitize_text_field( $key );
+			$field = get_field_from_slug( $key, $this->models, $post->post_type );
 			/**
 			 * Check if an existing value matches the submitted value
 			 * and short-circuit the loop. Otherwise `update_post_meta`
 			 * will return `false`, which we use to indicate a failure.
 			 */
-			$existing = get_post_meta( $post_id, $key, true );
-			if ( $existing === $value ) {
+			if ( $value === $this->get_field_value( $field, $post ) ) {
 				continue;
 			}
 
-			$field   = get_field_from_slug( $key, $this->models, $post->post_type );
 			$updated = $this->save_field_value( $field, $value, $post );
 			if ( ! $updated ) {
 				/* translators: %s: atlas content modeler field slug */
@@ -448,7 +425,7 @@ final class FormEditingExperience {
 	 * @param WP_Post $post The post being saved.
 	 * @param string  $field_value The post IDs of the relationship's destination posts.
 	 */
-	public function save_relationship_field( string $field_id, WP_Post $post, string $field_value ): void {
+	public function save_relationship_field( string $field_id, WP_Post $post, string $field_value ): bool {
 		$field = get_field_from_slug(
 			$field_id,
 			$this->models,
@@ -706,7 +683,7 @@ final class FormEditingExperience {
 	 *
 	 * @return array|int|mixed|string
 	 */
-	private function get_field_value( array $field, WP_Post $post ) {
+	private function get_field_value( array $field, $post ) {
 		switch ( $field['type'] ) {
 			case 'text':
 				if ( empty( $field['isTitle'] ) ) {
