@@ -35,7 +35,8 @@ class TestPublisherScriptDependencies extends WP_UnitTestCase {
 
 		set_current_screen( 'post.php' );
 		global $current_screen;
-		$current_screen->post_type = 'recipe';
+		$current_screen->is_block_editor = false;
+		$current_screen->post_type       = 'recipe';
 		do_action( 'admin_enqueue_scripts', 'post.php' );
 	}
 
