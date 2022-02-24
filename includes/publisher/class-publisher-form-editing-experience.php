@@ -760,12 +760,79 @@ final class FormEditingExperience {
 	 *
 	 * @return int|void|WP_Error
 	 */
-	private function save_field_value( array $field, $value, WP_Post $post ) {
-		if ( $field['type'] === 'text' && ! empty( $field['isTitle'] ) ) {
-			$post->post_title = $value;
-			return wp_update_post( $post );
-		}
+	private function save_field_value( array $field, $value, $post ) {
+		switch ( $field['type'] ) {
+			case 'text':
+				/**
+				 * If this is a title field, we migrate the title data from
+				 * the postmeta table to the posts table where it belongs.
+				 */
+				if ( ! empty( $field['isTitle'] ) ) {
+					$post->post_title = $value;
+					// phpcs:disable -- Nonce verified before data is passed to this function.
+					$manual_slug_override = ! empty( sanitize_text_field( wp_unslash( $_POST['post_name'] ) ) );
+					if ( $manual_slug_override && sanitize_title_with_dashes( wp_unslash( $_POST['post_name'] ) ) !== $post->post_name ) {
+						$post->post_name = sanitize_title_with_dashes( wp_unslash( $post->post_title ) );
+					}
+					// phpcs:enable
 
-		update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
+					if ( ! $manual_slug_override &&
+						(
+							empty( $post->post_name ) ||
+							strpos( $post->post_name, 'auto-draft' ) !== false ||
+							strpos( $post->post_name, 'entry' . $post->ID ) !== false ||
+							$post->post_status === 'auto-draft'
+						)
+					) {
+						$post->post_name = sanitize_title_with_dashes( wp_unslash( $post->post_title ) );
+					}
+
+					return wp_update_post( $post );
+				}
+
+				return update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
+
+			case 'relationship':
+				return $this->save_relationship_field( $field['slug'], $post, $value );
+
+			case 'media':
+				if ( ! empty( $field['isFeatured'] ) ) {
+					delete_post_thumbnail( $post );
+					if ( ! set_post_thumbnail( $post, $value ) ) {
+						/* translators: %s: atlas content modeler field slug */
+						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $value );
+					}
+					update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
+					return true;
+				} else {
+					return update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
+				}
+
+			default:
+				return update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
+		}
+	}
+
+	/**
+	 * Deletes the value from the specified field.
+	 *
+	 * @param array   $field The field from the model.
+	 * @param WP_Post $post  The post object.
+	 *
+	 * @return bool|int|\WP_Error
+	 */
+	private function delete_field_value( array $field, $post ) {
+		switch ( $field['type'] ) {
+			case 'text':
+				if ( ! empty( $field['isTitle'] ) ) {
+					$post->post_title = '';
+					return wp_update_post( $post );
+				}
+				return delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );
+			case 'relationship':
+				return $this->save_relationship_field( $field['slug'], $post, '' );
+			default:
+				return delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );
+		}
 	}
 }
