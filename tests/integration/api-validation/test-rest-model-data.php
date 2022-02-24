@@ -156,7 +156,16 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_route . '/' . $this->post_ids['public_post_id'] );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		self::assertEquals( $this->post_ids['public_post_id'], $response_data['slug'] );
+		self::assertEquals( $this->post_ids['public_post_id'], $response_data['id'] );
+	}
+
+	public function test_post_name_slug_matches_expected_value(): void {
+		wp_set_current_user( 1 );
+		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_route . '/' . $this->post_ids['public_post_id'] );
+		$response      = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+		$post          = get_post( $this->post_ids['public_post_id'] );
+		self::assertSame( $post->post_name, $response_data['slug'] );
 	}
 
 	/**
