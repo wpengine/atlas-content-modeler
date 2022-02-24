@@ -77,15 +77,7 @@ class TestContentCreation extends WP_UnitTestCase {
 	 * Ensure post title is correctly set during post creation.
 	 */
 	public function test_correct_post_title(): void {
-		$form = new FormEditingExperience();
-
-		// Get the initial post.
 		$post = get_post( $this->post_ids['public_post_id'] );
-
-		// Set the post attributes and update the post.
-		$form->set_post_attributes( $this->post_ids['public_post_id'], $post, false );
-		$post = get_post( $this->post_ids['public_post_id'] );
-
-		$this->assertStringStartsWith( 'entry', $post->post_title );
+		self::assertSame( $post->post_title, 'Test dog' );
 	}
 }
