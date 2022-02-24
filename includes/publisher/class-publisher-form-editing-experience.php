@@ -170,12 +170,12 @@ final class FormEditingExperience {
 		$model  = $models[ $this->screen->post_type ] ?? [];
 		$fields = $model['fields'] ?? [];
 
-		if ( count( $fields ) < 1 ) {
+		// Only load in the post editor.
+		if ( 'post.php' !== $hook && 'post-new.php' !== $hook ) {
 			return;
 		}
 
-		// Only load in the post editor.
-		if ( 'post.php' !== $hook && 'post-new.php' !== $hook ) {
+		if ( $this->screen->is_block_editor && count( $fields ) < 1 ) {
 			return;
 		}
 
