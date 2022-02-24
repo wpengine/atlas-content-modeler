@@ -17,6 +17,7 @@ export default function Relationship({ field, modelSlug }) {
 		field.value.split(",").filter(Boolean)
 	);
 	const { models, restBases } = atlasContentModelerFormEditingExperience;
+	const isBlockEditor = document.body.classList.contains("block-editor-page");
 
 	/**
 	 * Retrieves related content information for display.
@@ -62,6 +63,12 @@ export default function Relationship({ field, modelSlug }) {
 	 * Gets post information to display to the user outside of the modal.
 	 */
 	useEffect(() => {
+		if (isBlockEditor) {
+			wp.data.dispatch("core/editor").editPost({
+				meta: { [field.slug]: selectedEntries.join() },
+			});
+		}
+
 		if (selectedEntries?.length < 1) {
 			setEntryInfo([]);
 			return;
