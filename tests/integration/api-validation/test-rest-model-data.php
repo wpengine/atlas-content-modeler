@@ -187,7 +187,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
 		self::assertSame( 200, $response->get_status() );
-		self::assertEquals( $this->post_ids['draft_public_post_id'], $response_data['slug'] );
+		self::assertEquals( $this->post_ids['draft_public_post_id'], $response_data['id'] );
 	}
 
 	/**
