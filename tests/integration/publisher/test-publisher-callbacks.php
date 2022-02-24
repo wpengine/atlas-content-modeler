@@ -25,7 +25,6 @@ class PublisherCallbacksTestCases extends WP_UnitTestCase {
 		self::assertSame( 10, has_action( 'wp_insert_post', [ $this->class, 'set_post_attributes' ] ) );
 		self::assertSame( 10, has_filter( 'redirect_post_location', [ $this->class, 'append_error_to_location' ] ) );
 		self::assertSame( 10, has_action( 'admin_notices', [ $this->class, 'display_save_post_errors' ] ) );
-		self::assertSame( 10, has_filter( 'the_title', [ $this->class, 'filter_post_titles' ] ) );
 		self::assertSame( 10, has_action( 'load-post.php', [ $this->class, 'feedback_notice_handler' ] ) );
 		self::assertSame( 10, has_action( 'load-post-new.php', [ $this->class, 'feedback_notice_handler' ] ) );
 		self::assertSame( 10, has_action( 'do_meta_boxes', [ $this->class, 'move_meta_boxes' ] ) );
