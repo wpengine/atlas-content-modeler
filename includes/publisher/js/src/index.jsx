@@ -1,7 +1,6 @@
 /* global atlasContentModelerFormEditingExperience */
 import React from "react";
 import ReactDOM from "react-dom";
-import { registerPlugin } from "@wordpress/plugins";
 import BlockEditorSidebar from "./components/sidebar/BlockEditorSidebar";
 import App from "./App";
 import "./../../scss/index.scss";
