@@ -40,6 +40,42 @@ function register_content_types(): void {
 
 		if ( $fields ) {
 			register_meta_types( $slug, $fields );
+			register_meta( $fields );
+		}
+	}
+}
+
+/**
+ * Registers relationship field meta for post and page types.
+ *
+ * Required for relationship meta to be saved from the Block Editor.
+ *
+ * TODO: extend to other post types, decide if all meta should be registered.
+ * TODO: assess impact of exposing meta at the top level in addition to `acm_fields`.
+ *
+ * @param array $fields Fields to register meta for.
+ */
+function register_meta( array $fields ): void {
+	foreach ( $fields as $field ) {
+		$type           = $field['type'] ?? '';
+		$reference      = $field['reference'] ?? '';
+		$enable_reverse = (bool) ( $field['enableReverse'] ?? false );
+
+		if (
+			$type === 'relationship'
+			&& $enable_reverse
+			&& in_array( $reference, [ 'post', 'page' ], true )
+		) {
+			register_post_meta(
+				$reference,
+				$field['slug'],
+				[
+					'single'        => true,
+					'show_in_rest'  => true,
+					'type'          => 'string',
+					'auth_callback' => '__return_true',
+				]
+			);
 		}
 	}
 }
