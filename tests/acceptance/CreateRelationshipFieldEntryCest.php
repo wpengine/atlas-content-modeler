@@ -335,13 +335,13 @@ class CreateRelationshipFieldEntryCest {
 
 		// Confirm the linked entry is visible when closing the modal.
 		$i->waitForElementVisible( 'div.relation-model-card' );
-		$i->see( 'No Title', 'div.relation-model-card' );
+		$i->see( 'entry', 'div.relation-model-card' );
 
 		// Confirm the linked entry is visible after publishing the “rights” post.
 		$i->click( 'Publish', '#publishing-action' );
 		$i->wait( 2 );
 		$i->waitForElementVisible( 'div.relation-model-card' );
-		$i->see( 'No Title', 'div.relation-model-card' );
+		$i->see( 'entry', 'div.relation-model-card' );
 
 		// Remove the linked entry from the “rights” side and update it.
 		$i->waitForElementVisible( '.options' );
@@ -349,10 +349,10 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( '.dropdown-content .delete' );
 		$i->click( '.dropdown-content .delete' );
 		$i->waitForElementNotVisible( '.options' );
-		$i->dontSee( 'No Title', 'div.relation-model-card' ); // Linked entry was removed.
+		$i->dontSee( 'entry', 'div.relation-model-card' ); // Linked entry was removed.
 		$i->click( 'Update', '#publishing-action' );
 		$i->wait( 2 );
-		$i->dontSee( 'No Title', 'div.relation-model-card' ); // Linked entry still gone after saving the page.
+		$i->dontSee( 'entry', 'div.relation-model-card' ); // Linked entry still gone after saving the page.
 	}
 
 	/**
