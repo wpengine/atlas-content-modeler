@@ -6,26 +6,26 @@ import { sprintf, __ } from "@wordpress/i18n";
 
 const NumberFields = ({ register, data, editing, fieldId }) => {
 	const [showRepeatable, setShowRepeatable] = useState(
-		data?.isRepeatable === true
+		data?.isRepeatableNumber === true
 	);
 	return (
 		<>
 			{data && (
 				<div className={"field"}>
 					<legend>
-						{__("Repeatable Field", "atlas-content-modeler")}
+						{__("Repeatable Number Field", "atlas-content-modeler")}
 					</legend>
 					<input
-						name="isRepeatable"
+						name="isRepeatableNumber"
 						type="checkbox"
-						id={`is-repeatable-${fieldId}`}
+						id={`is-repeatable-number-${fieldId}`}
 						ref={register}
 						value={showRepeatable}
 						onChange={() => setShowRepeatable(!showRepeatable)}
 						disabled={editing}
 					/>
 					<label
-						htmlFor={`is-repeatable-${fieldId}`}
+						htmlFor={`is-repeatable-number-${fieldId}`}
 						className="checkbox is-repeatable"
 					>
 						{__(

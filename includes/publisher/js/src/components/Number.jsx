@@ -2,7 +2,6 @@
 import React, { useState, useRef } from "react";
 import Icon from "../../../../components/icons";
 import { __ } from "@wordpress/i18n";
-const { wp } = window;
 import AddIcon from "../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../components/icons/TrashIcon";
 
@@ -48,9 +47,8 @@ export default function Number({
 		validate(event, field);
 	}
 
-	if (field.isRepeatable) {
+	if (field.isRepeatableNumber) {
 		const [values, setValues] = useState(field?.value || [""]);
-
 		return (
 			<>
 				<label

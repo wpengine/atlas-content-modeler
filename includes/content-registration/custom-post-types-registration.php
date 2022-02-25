@@ -505,7 +505,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$field['type'] = array( 'list_of' => 'String' );
 			}
 
-			if ( isset( $field['isRepeatable'] ) && $field['isRepeatable'] && 'Float' === $field['type'] ) {
+			if ( isset( $field['isRepeatableNumber'] ) && $field['isRepeatableNumber'] && 'Float' === $field['type'] ) {
 				$field['type'] = array( 'list_of' => 'Float' );
 			}
 
