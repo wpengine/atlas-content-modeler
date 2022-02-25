@@ -23,7 +23,7 @@ const TextFields = ({ register, data, editing, fieldId }) => {
 		<>
 			{data && (
 				<div
-					className={showTitle ? "field  read-only editing" : "field"}
+					className={showTitle ? "field read-only editing" : "field"}
 				>
 					<legend>
 						{__("Repeatable Field", "atlas-content-modeler")}

@@ -105,7 +105,7 @@ class Plugin {
 	/**
 	 * Undocumented function
 	 *
-	 * @param array $table Table.
+	 * @param string $table Table.
 	 * @return mixed
 	 */
 	public function get_table( $table ) {
