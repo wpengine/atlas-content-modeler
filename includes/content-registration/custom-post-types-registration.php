@@ -14,6 +14,8 @@ use WPGraphQL\Data\Connection\PostObjectConnectionResolver;
 use WPGraphQL\Model\Post;
 use WPGraphQL\Registry\TypeRegistry;
 use WPGraphQL\Data\DataSource;
+use function WPE\AtlasContentModeler\append_reverse_relationship_fields;
+use function WPE\AtlasContentModeler\Settings\get_extra_post_types;
 
 add_action( 'init', __NAMESPACE__ . '\register_content_types' );
 /**
@@ -504,7 +506,15 @@ add_action( 'graphql_register_types', __NAMESPACE__ . '\register_content_fields_
  * @param TypeRegistry $type_registry The WPGraphQL Type Registry.
  */
 function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
-	$models = get_graphql_enabled_post_types();
+	$models           = get_graphql_enabled_post_types();
+	$extra_post_types = get_extra_post_types();
+
+	foreach ( $extra_post_types as $extra_post_type ) {
+		$models = append_reverse_relationship_fields( $models, $extra_post_type['slug'] );
+		$models[ $extra_post_type['slug'] ]['singular'] = $extra_post_type['singular'];
+		$models[ $extra_post_type['slug'] ]['slug']     = $extra_post_type['slug'];
+		$models[ $extra_post_type['slug'] ]['plural']   = $extra_post_type['plural'];
+	}
 
 	foreach ( $models as $model ) {
 		if ( empty( $model['fields'] ) ) {
@@ -579,8 +589,15 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			// WPGraphQL will use 'name' if present. Our 'name' is display friendly. WPGraphQL needs slug friendly.
 			unset( $field['name'] );
 
+			$model_singular_name = $model['singular'] ?? false;
+
+			if ( ! $model_singular_name ) {
+				$post_type           = get_post_type_object( $model['slug'] );
+				$model_singular_name = $post_type->labels->singular_name;
+			}
+
 			register_graphql_field(
-				camelcase( $model['singular'] ),
+				camelcase( $model_singular_name ),
 				camelcase( $field['slug'] ),
 				$field
 			);

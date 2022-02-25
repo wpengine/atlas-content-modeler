@@ -250,8 +250,9 @@ function get_extra_post_types(): array {
 	$post_type_data = array_map(
 		function( $post_type ) {
 			return [
-				'slug'   => $post_type->name,
-				'plural' => $post_type->labels->name,
+				'slug'     => $post_type->name,
+				'singular' => $post_type->labels->singular_name,
+				'plural'   => $post_type->labels->name,
 			];
 		},
 		$post_types_with_excludes
