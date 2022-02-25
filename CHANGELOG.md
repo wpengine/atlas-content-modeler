@@ -10,6 +10,7 @@
 - Options buttons now use the mouse pointer cursor.
 - The `wp acm blueprint import` command no longer reports “Could not read an acm.json file” if the blueprint zip file was renamed after creation.
 - Fixed issue where it was possible to improperly lead a model ID with a number.
+- Fields configured as the entry title are now saved in the posts table instead of the postmeta table. This addresses several issues related to WPGraphQL queries and post name/slug generation.
 
 ## 0.14.0 - 2022-02-10
 ### Added
