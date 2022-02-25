@@ -8,7 +8,6 @@ const NumberFields = ({ register, data, editing, fieldId }) => {
 	const [showRepeatable, setShowRepeatable] = useState(
 		data?.isRepeatable === true
 	);
-
 	return (
 		<>
 			{data && (
@@ -21,7 +20,7 @@ const NumberFields = ({ register, data, editing, fieldId }) => {
 						type="checkbox"
 						id={`is-repeatable-${fieldId}`}
 						ref={register}
-						defaultChecked={showRepeatable}
+						value={showRepeatable}
 						onChange={() => setShowRepeatable(!showRepeatable)}
 						disabled={editing}
 					/>
