@@ -102,6 +102,7 @@ export default function Relationship({ field, modelSlug }) {
 					field={field}
 					selectedEntries={selectedEntries}
 					setSelectedEntries={setSelectedEntries}
+					required={field?.required}
 				/>
 			) : (
 				"" // No linked entries.

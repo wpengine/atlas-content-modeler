@@ -9,6 +9,7 @@ export default function Entries({
 	field,
 	selectedEntries,
 	setSelectedEntries,
+	required,
 }) {
 	return (
 		<section className="card-content">
@@ -46,12 +47,14 @@ export default function Entries({
 				value={selectedEntries}
 				onChange={() => {}} // Prevents “You provided a `value` prop to a form field without an `onChange` handler.”
 			/>
-			<span className="error">
-				<Icon type="error" />
-				<span role="alert">
-					{__("This field is required", "atlas-content-modeler")}
+			{required && (
+				<span className="error">
+					<Icon type="error" />
+					<span role="alert">
+						{__("This field is required", "atlas-content-modeler")}
+					</span>
 				</span>
-			</span>
+			)}
 		</section>
 	);
 }
