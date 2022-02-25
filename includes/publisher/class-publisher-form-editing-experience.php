@@ -811,6 +811,10 @@ final class FormEditingExperience {
 			case 'relationship':
 				return $this->save_relationship_field( $field['slug'], $post, '' );
 			default:
+				$existing = get_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), true );
+				if ( empty( $existing ) ) {
+					return true;
+				}
 				return delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );
 		}
 	}
