@@ -1,10 +1,9 @@
 /* global atlasContentModelerFormEditingExperience */
-import React, { useState, useRef } from "react";
-import Icon from "../../../../components/icons";
+import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
-const { wp } = window;
-import AddIcon from "../../../../components/icons/AddIcon";
-import TrashIcon from "../../../../components/icons/TrashIcon";
+import Icon from "../../../../../components/icons";
+import TrashIcon from "../../../../../components/icons/TrashIcon";
+import AddRepeatableItemButton from "./AddRepeatableItemButton";
 
 export default function Text({
 	field,
@@ -14,13 +13,43 @@ export default function Text({
 	defaultError,
 }) {
 	if (field.isRepeatable) {
-		const [values, setValues] = useState(field?.value || [""]);
+		function getFieldValues() {
+			const minLength = parseInt(field.minRepeatable) || 1;
+
+			if (!field?.value) {
+				return new Array(minLength).fill("", 0);
+			}
+
+			if (minLength < field.value.length) {
+				return field.value;
+			}
+
+			return field.value.concat(
+				new Array(minLength - field.value.length).fill("", 0)
+			);
+		}
+
+		const [fieldValues, setValues] = useState(getFieldValues());
+
+		const validFieldValues = fieldValues.filter((item) => !!item);
+		const showDeleteButton = field.minRepeatable
+			? fieldValues.length > field.minRepeatable
+			: fieldValues.length > 1;
+		const isMaxInputs =
+			field.maxRepeatable && fieldValues.length === field.maxRepeatable;
+		const isMinRequired =
+			field.minRepeatable &&
+			validFieldValues.length > 0 &&
+			validFieldValues.length < field.minRepeatable;
+		const isRequired = field?.required || isMinRequired;
+
 		return (
 			<div className={"field"}>
 				<label>{field.name}</label>
-				{field?.required && (
+				{isRequired && (
 					<p className="required">
 						*{__("Required", "atlas-content-modeler")}
+						{isMinRequired && ` Minimum of ${field.minRepeatable}`}
 					</p>
 				)}
 				{field?.description && (
@@ -32,7 +61,7 @@ export default function Text({
 							<ul>
 								<table key="1" className="table mt-2">
 									<tbody>
-										{values.map((item, index) => {
+										{fieldValues.map((item, index) => {
 											return (
 												<tr
 													key={index}
@@ -62,11 +91,7 @@ export default function Text({
 																	)}
 																	type="text"
 																	required={
-																		field?.required &&
-																		index <
-																			1
-																			? true
-																			: false
+																		isRequired
 																	}
 																	minLength={
 																		field?.minChars
@@ -85,7 +110,7 @@ export default function Text({
 																		}
 																	}}
 																	value={
-																		values[
+																		fieldValues[
 																			index
 																		]
 																	}
@@ -121,11 +146,7 @@ export default function Text({
 																	)}
 																	type="text"
 																	required={
-																		field?.required &&
-																		index <
-																			1
-																			? true
-																			: false
+																		isRequired
 																	}
 																	minLength={
 																		field?.minChars
@@ -134,7 +155,7 @@ export default function Text({
 																		field?.maxChars
 																	}
 																	value={
-																		values[
+																		fieldValues[
 																			index
 																		]
 																	}
@@ -166,8 +187,7 @@ export default function Text({
 														<div
 															className={`value[${index}].remove-container p-2 me-sm-1`}
 														>
-															{values.length >
-																1 && (
+															{showDeleteButton && (
 																<button
 																	className="remove-item tertiary no-border"
 																	onClick={(
@@ -207,32 +227,12 @@ export default function Text({
 											);
 										})}
 										<tr className="flex add-container">
-											<button
-												className="add-option mt-1 tertiary no-border"
-												onClick={(event) => {
-													event.preventDefault();
-													// Adds a new empty value to display another text field.
-													setValues((oldValues) => [
-														...oldValues,
-														"",
-													]);
-												}}
-											>
-												<a>
-													<AddIcon noCircle />{" "}
-													<span>
-														{field.value.length > 0
-															? __(
-																	`Add Another`,
-																	"atlas-content-modeler"
-															  )
-															: __(
-																	`Add Item`,
-																	"atlas-content-modeler"
-															  )}
-													</span>
-												</a>
-											</button>
+											<AddRepeatableItemButton
+												field={field}
+												values={fieldValues}
+												setValues={setValues}
+												isMaxInputs={isMaxInputs}
+											/>
 										</tr>
 									</tbody>
 								</table>

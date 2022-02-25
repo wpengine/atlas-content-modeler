@@ -5,8 +5,6 @@ import Relationship from "./relationship";
 import Text from "./Text";
 import Number from "./Number";
 import Icon from "acm-icons";
-import AddIcon from "../../../../components/icons/AddIcon";
-import TrashIcon from "../../../../components/icons/TrashIcon";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
