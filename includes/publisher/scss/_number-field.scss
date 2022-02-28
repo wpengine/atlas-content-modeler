@@ -18,6 +18,7 @@
 
 	button.remove-item {
 		max-height: 30px;
+		cursor: pointer;
 		padding: 0px 11px;
 	}
 
@@ -38,6 +39,7 @@
 		color: #7e5cef;
 	}
 	.add-option a {
+		cursor: pointer;
 		font-weight: bold;
 		color: #7e5cef;
 		line-height: 23px;
@@ -64,6 +66,10 @@
 
 	table tr {
 		border-bottom: solid 1px $color-gray-disabled-border;
+	}
+
+	table tr td {
+		border: none;
 	}
 
 	table th {

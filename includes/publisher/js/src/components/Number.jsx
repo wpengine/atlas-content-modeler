@@ -185,32 +185,34 @@ export default function Number({
 										);
 									})}
 									<tr className="flex add-container">
-										<button
-											className="add-option mt-1 tertiary no-border"
-											onClick={(event) => {
-												event.preventDefault();
-												// Adds a new empty value to display another text field.
-												setValues((oldValues) => [
-													...oldValues,
-													"",
-												]);
-											}}
-										>
-											<a>
-												<AddIcon noCircle />{" "}
-												<span>
-													{field.value.length > 0
-														? __(
-																`Add Another`,
-																"atlas-content-modeler"
-														  )
-														: __(
-																`Add Item`,
-																"atlas-content-modeler"
-														  )}
-												</span>
-											</a>
-										</button>
+										<td>
+											<button
+												className="add-option mt-1 tertiary no-border"
+												onClick={(event) => {
+													event.preventDefault();
+													// Adds a new empty value to display another text field.
+													setValues((oldValues) => [
+														...oldValues,
+														"",
+													]);
+												}}
+											>
+												<a>
+													<AddIcon noCircle />{" "}
+													<span>
+														{field.value.length > 0
+															? __(
+																	`Add Another`,
+																	"atlas-content-modeler"
+															  )
+															: __(
+																	`Add Item`,
+																	"atlas-content-modeler"
+															  )}
+													</span>
+												</a>
+											</button>
+										</td>
 									</tr>
 								</tbody>
 							</table>
