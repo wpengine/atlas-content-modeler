@@ -71,7 +71,7 @@ export default function Number({
 								<tbody>
 									{values.map((item, index) => {
 										return (
-											<div
+											<tr
 												key={index}
 												className={`field number-repeater-container-single d-flex mt-1 flex-fill flex-row`}
 											>
@@ -181,7 +181,7 @@ export default function Number({
 														)}
 													</div>
 												</div>
-											</div>
+											</tr>
 										);
 									})}
 									<tr className="flex add-container">
