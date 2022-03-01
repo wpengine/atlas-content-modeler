@@ -286,24 +286,27 @@ export default function MediaUploader({
 																	onClick={(
 																		event
 																	) => {
-																		// Update the value of the item.
-																		const newValue =
+																		singleClickHandler(
 																			event
-																				.currentTarget
-																				.value;
-																		setValues(
-																			(
-																				oldValues
-																			) => {
-																				let newValues = [
-																					...oldValues,
-																				];
-																				newValues[
-																					index
-																				] = newValue;
-																				return newValues;
-																			}
 																		);
+																		// Update the value of the item.
+																		// const newValue =
+																		// 	event
+																		// 		.currentTarget
+																		// 		.value;
+																		// setValues(
+																		// 	(
+																		// 		oldValues
+																		// 	) => {
+																		// 		let newValues = [
+																		// 			...oldValues,
+																		// 		];
+																		// 		newValues[
+																		// 			index
+																		// 		] = newValue;
+																		// 		return newValues;
+																		// 	}
+																		// );
 																	}}
 																>
 																	{getMediaButtonText(
