@@ -53,10 +53,7 @@ function generate_meta( array $args = [] ): array {
  */
 function collect_posts( array $post_types = [] ): array {
 	if ( empty( $post_types ) ) {
-		$post_types = array_merge(
-			array_keys( get_registered_content_types() ),
-			[ 'post', 'page' ]
-		);
+		return [];
 	}
 
 	$posts = get_posts(
@@ -115,6 +112,8 @@ function collect_terms( array $taxonomies ): array {
 function collect_post_tags( array $posts, array $taxonomies ): array {
 	$tag_data       = [];
 	$acm_post_types = array_keys( get_registered_content_types() );
+
+	$core_post_types = [ 'post', 'page' ];
 
 	foreach ( $posts as $post ) {
 		// Only collect tags for ACM post types.

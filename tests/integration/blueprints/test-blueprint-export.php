@@ -123,7 +123,7 @@ class BlueprintExportTest extends WP_UnitTestCase {
 			]
 		);
 
-		$posts = collect_posts();
+		$posts = collect_posts( [ 'post', 'page' ] );
 
 		self::assertCount( 2, $posts );
 		self::assertArrayHasKey( $post_id, $posts );
@@ -151,7 +151,7 @@ class BlueprintExportTest extends WP_UnitTestCase {
 			]
 		);
 
-		$posts = collect_posts();
+		$posts = collect_posts( [ 'post' ] );
 
 		self::assertCount( 1, $posts );
 	}
@@ -189,7 +189,7 @@ class BlueprintExportTest extends WP_UnitTestCase {
 			]
 		);
 
-		$posts = collect_posts();
+		$posts = collect_posts( [ 'rabbit' ] );
 
 		self::assertCount( 1, $posts );
 		self::assertEquals( 'Rabbit', $posts[ $post_id ]['post_title'] );

@@ -259,8 +259,11 @@ class Blueprint {
 		$manifest['taxonomies'] = get_acm_taxonomies();
 
 		\WP_CLI::log( 'Collecting posts.' );
-		$post_types = [];
-		if ( $assoc_args['post-types'] ?? false ) {
+		$post_types = array_merge(
+			array_keys( get_registered_content_types() ),
+			[ 'post', 'page' ]
+		);
+		if ( ! empty( $assoc_args['post-types'] ) ) {
 			$post_types = array_map(
 				'trim',
 				explode( ',', $assoc_args['post-types'] )
