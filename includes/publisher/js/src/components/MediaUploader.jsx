@@ -272,38 +272,18 @@ export default function MediaUploader({
 																className="me-lg-1 repeater-input-container flex-fill"
 																name="repeaters"
 															>
-																<input
+																<img
+																	className="img img-thumbnail"
+																	src={
+																		item.url
+																	}
+																	width="100"
+																	hieght="100"
+																/>
+
+																<DarkButton
 																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-																	placeholder={__(
-																		`Add ${field.name}`,
-																		"atlas-content-modeler"
-																	)}
-																	type="text"
-																	required={
-																		isRequired
-																	}
-																	minLength={
-																		field?.minChars
-																	}
-																	maxLength={
-																		field?.maxChars
-																	}
-																	onKeyPress={(
-																		event
-																	) => {
-																		if (
-																			event.key ===
-																			"Enter"
-																		) {
-																			event.preventDefault();
-																		}
-																	}}
-																	value={
-																		fieldValues[
-																			index
-																		]
-																	}
-																	onChange={(
+																	onClick={(
 																		event
 																	) => {
 																		// Update the value of the item.
@@ -325,7 +305,11 @@ export default function MediaUploader({
 																			}
 																		);
 																	}}
-																/>
+																>
+																	{getMediaButtonText(
+																		field
+																	)}
+																</DarkButton>
 															</div>
 															<div
 																className={`value[${index}].remove-container p-2 me-sm-1`}
