@@ -16,38 +16,35 @@ export default function MediaUploader({
 	errors,
 	defaultError,
 }) {
-	if (true) {
-		// field.isRepeatable
-		function getFieldValues() {
-			const minLength = parseInt(field.minRepeatable) || 1;
+	function getFieldValues() {
+		const minLength = parseInt(field.minRepeatable) || 1;
 
-			if (!field?.value) {
-				return new Array(minLength).fill("", 0);
-			}
-
-			if (minLength < field.value.length) {
-				return field.value;
-			}
-
-			return field.value.concat(
-				new Array(minLength - field.value.length).fill("", 0)
-			);
+		if (!field?.value) {
+			return new Array(minLength).fill("", 0);
 		}
 
-		const [fieldValues, setValues] = useState(getFieldValues());
+		if (minLength < field.value.length) {
+			return field.value;
+		}
 
-		const validFieldValues = fieldValues.filter((item) => !!item);
-		const showDeleteButton = field.minRepeatable
-			? fieldValues.length > field.minRepeatable
-			: fieldValues.length > 1;
-		const isMaxInputs =
-			field.maxRepeatable && fieldValues.length === field.maxRepeatable;
-		const isMinRequired =
-			field.minRepeatable &&
-			validFieldValues.length > 0 &&
-			validFieldValues.length < field.minRepeatable;
-		const isRequired = field?.required || isMinRequired;
+		return field.value.concat(
+			new Array(minLength - field.value.length).fill("", 0)
+		);
 	}
+
+	const [fieldValues, setValues] = useState(getFieldValues());
+
+	const validFieldValues = fieldValues.filter((item) => !!item);
+	const showDeleteButton = field.minRepeatable
+		? fieldValues.length > field.minRepeatable
+		: fieldValues.length > 1;
+	const isMaxInputs =
+		field.maxRepeatable && fieldValues.length === field.maxRepeatable;
+	const isMinRequired =
+		field.minRepeatable &&
+		validFieldValues.length > 0 &&
+		validFieldValues.length < field.minRepeatable;
+	const isRequired = field?.required || isMinRequired;
 
 	// state
 	const [mediaUrl, setMediaUrl] = useState("");
@@ -226,23 +223,21 @@ export default function MediaUploader({
 		});
 
 		media.open().on("select", function () {
+			const imgArr = [];
 			const uploadedMedia = media
 				.state()
 				.get("selection")
-				.each(function (attachment) {
-					const uploadedMedia = media
-						.state()
-						.get("selection")
-						.first();
-					setValue(uploadedMedia.attributes.id);
-
-					setMediaUrl(uploadedMedia.attributes.url);
+				.map(function (attachment) {
+					imgArr.push({
+						id: attachment.attributes.id,
+						url: attachment.attributes.url,
+					});
 				});
+			setValues(imgArr);
 		});
 	}
 
-	if (true) {
-		// field.isRepeatable
+	if (field.isRepeatable) {
 		return (
 			<>
 				<div className={"field"}>
