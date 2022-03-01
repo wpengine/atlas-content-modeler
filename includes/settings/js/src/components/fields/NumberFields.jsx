@@ -1,8 +1,8 @@
 /**
  * Additional form fields for the Number field type.
  */
-import React, { useContext, useState } from "react";
-import { sprintf, __ } from "@wordpress/i18n";
+import React, { useState } from "react";
+import { __ } from "@wordpress/i18n";
 
 const NumberFields = ({ register, data, editing, fieldId }) => {
 	const [showRepeatable, setShowRepeatable] = useState(
@@ -16,6 +16,7 @@ const NumberFields = ({ register, data, editing, fieldId }) => {
 						{__("Repeatable Number Field", "atlas-content-modeler")}
 					</legend>
 					<input
+						// Each name should be unique, so for this field we are using isRepeatableNumber.
 						name="isRepeatableNumber"
 						type="checkbox"
 						id={`is-repeatable-number-${fieldId}`}

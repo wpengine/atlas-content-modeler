@@ -47,7 +47,7 @@ export default function Number({
 		validate(event, field);
 	}
 
-	if (field.isRepeatableNumber) {
+	if (field?.isRepeatableNumber) {
 		const [values, setValues] = useState(field?.value || [""]);
 		return (
 			<>
@@ -86,10 +86,7 @@ export default function Number({
 																: "field"
 														} d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 													>
-														<div
-															className="me-lg-1 repeater-input-container flex-fill"
-															name="repeaters"
-														>
+														<div className="me-lg-1 repeater-input-container flex-fill">
 															<input
 																ref={
 																	numberInputRef
