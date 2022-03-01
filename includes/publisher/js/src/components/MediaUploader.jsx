@@ -7,8 +7,48 @@ import {
 	LinkButton,
 } from "../../../../shared-assets/js/components/Buttons";
 import { __ } from "@wordpress/i18n";
+import TrashIcon from "../../../../components/icons/TrashIcon";
 
-export default function MediaUploader({ modelSlug, field, required }) {
+export default function MediaUploader({
+	modelSlug,
+	field,
+	required,
+	errors,
+	defaultError,
+}) {
+	if (true) {
+		// field.isRepeatable
+		function getFieldValues() {
+			const minLength = parseInt(field.minRepeatable) || 1;
+
+			if (!field?.value) {
+				return new Array(minLength).fill("", 0);
+			}
+
+			if (minLength < field.value.length) {
+				return field.value;
+			}
+
+			return field.value.concat(
+				new Array(minLength - field.value.length).fill("", 0)
+			);
+		}
+
+		const [fieldValues, setValues] = useState(getFieldValues());
+
+		const validFieldValues = fieldValues.filter((item) => !!item);
+		const showDeleteButton = field.minRepeatable
+			? fieldValues.length > field.minRepeatable
+			: fieldValues.length > 1;
+		const isMaxInputs =
+			field.maxRepeatable && fieldValues.length === field.maxRepeatable;
+		const isMinRequired =
+			field.minRepeatable &&
+			validFieldValues.length > 0 &&
+			validFieldValues.length < field.minRepeatable;
+		const isRequired = field?.required || isMinRequired;
+	}
+
 	// state
 	const [mediaUrl, setMediaUrl] = useState("");
 	const [value, setValue] = useState(field.value);
@@ -134,10 +174,245 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		});
 
 		media.open().on("select", function () {
-			const uploadedMedia = media.state().get("selection").first();
-			setValue(uploadedMedia.attributes.id);
-			setMediaUrl(uploadedMedia.attributes.url);
+			// const uploadedMedia = media.state().get("selection").first();
+			// setValue(uploadedMedia.attributes.id);
+			// setMediaUrl(uploadedMedia.attributes.url);
+
+			media
+				.state()
+				.get("selection")
+				.each(function (attachment) {
+					// TODO: need to loop and create entries for the table during this
+					const uploadedMedia = media
+						.state()
+						.get("selection")
+						.first();
+					setValue(uploadedMedia.attributes.id);
+					setMediaUrl(uploadedMedia.attributes.url);
+				});
 		});
+	}
+
+	if (true) {
+		// field.isRepeatable
+		return (
+			<>
+				<div className={"field"}>
+					<label
+						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+					>
+						{field.name}
+					</label>
+					{field?.required && <p className="required">*Required</p>}
+					{field?.description && (
+						<p className="help mb-2">
+							{__(field.description, "atlas-content-modeler")}
+						</p>
+					)}
+
+					<fieldset>
+						<div id="repeaterText" className="text-table flex-row">
+							<div className="repeater-text-field flex-row">
+								<ul>
+									<table key="1" className="table mt-2">
+										<tbody>
+											{fieldValues.map((item, index) => {
+												return (
+													<tr
+														key={index}
+														className={`field text-repeater-container-single d-flex mt-1 flex-fill flex-row`}
+													>
+														<div
+															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
+														>
+															<div
+																className="me-lg-1 repeater-input-container flex-fill"
+																name="repeaters"
+															>
+																<input
+																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																	placeholder={__(
+																		`Add ${field.name}`,
+																		"atlas-content-modeler"
+																	)}
+																	type="text"
+																	required={
+																		isRequired
+																	}
+																	minLength={
+																		field?.minChars
+																	}
+																	maxLength={
+																		field?.maxChars
+																	}
+																	onKeyPress={(
+																		event
+																	) => {
+																		if (
+																			event.key ===
+																			"Enter"
+																		) {
+																			event.preventDefault();
+																		}
+																	}}
+																	value={
+																		fieldValues[
+																			index
+																		]
+																	}
+																	onChange={(
+																		event
+																	) => {
+																		// Update the value of the item.
+																		const newValue =
+																			event
+																				.currentTarget
+																				.value;
+																		setValues(
+																			(
+																				oldValues
+																			) => {
+																				let newValues = [
+																					...oldValues,
+																				];
+																				newValues[
+																					index
+																				] = newValue;
+																				return newValues;
+																			}
+																		);
+																	}}
+																/>
+															</div>
+															<div
+																className={`value[${index}].remove-container p-2 me-sm-1`}
+															>
+																{showDeleteButton && (
+																	<button
+																		className="remove-item tertiary no-border"
+																		onClick={(
+																			event
+																		) => {
+																			event.preventDefault();
+																			// Removes the value at the given index.
+																			setValues(
+																				(
+																					currentValues
+																				) => {
+																					const newValues = [
+																						...currentValues,
+																					];
+																					newValues.splice(
+																						index,
+																						1
+																					);
+																					return newValues;
+																				}
+																			);
+																		}}
+																	>
+																		<a
+																			aria-label={__(
+																				"Remove item.",
+																				"atlas-content-modeler"
+																			)}
+																		>
+																			<TrashIcon size="small" />{" "}
+																		</a>
+																	</button>
+																)}
+															</div>
+														</div>
+													</tr>
+												);
+											})}
+											<tr className="flex add-container">
+												<LinkButton
+													css={css`
+														color: #d21b46;
+														&:focus,
+														&:hover {
+															color: #a51537;
+														}
+													`}
+													href="#"
+													onClick={(e) =>
+														clickHandler(e)
+													}
+												>
+													{__(
+														"+ Add Media",
+														"atlas-content-modeler"
+													)}
+												</LinkButton>
+												{allowedTypes && (
+													<p className="text-muted">
+														{__(
+															"Accepts file types",
+															"atlas-content-modeler"
+														)}
+														:{" "}
+														{getAllowedTypesForUi().toUpperCase()}
+													</p>
+												)}
+											</tr>
+										</tbody>
+									</table>
+								</ul>
+							</div>
+						</div>
+					</fieldset>
+
+					<span className="error">
+						<Icon type="error" />
+						<span role="alert">
+							{__(
+								"This field is required",
+								"atlas-content-modeler"
+							)}
+						</span>
+					</span>
+
+					<div>
+						{mediaUrl && (
+							<>
+								<div className="media-item">
+									{imageRegex.test(mediaUrl) ? (
+										<img
+											onClick={(e) => clickHandler(e)}
+											src={mediaUrl}
+											alt={field.name}
+										/>
+									) : (
+										<a
+											href={mediaUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											[
+											{getFileExtension(
+												mediaUrl
+											).toUpperCase()}
+											] {mediaUrl}
+										</a>
+									)}
+								</div>
+							</>
+						)}
+
+						<input
+							type="text"
+							name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+							id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+							className="hidden"
+							required={required}
+							onChange={() => {}} // Prevents “You provided a `value` prop to a form field without an `onChange` handler.”
+							value={value} // Using defaultValue here prevents images from updating on save.
+						/>
+					</div>
+				</div>
+			</>
+		);
 	}
 
 	return (
