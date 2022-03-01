@@ -132,7 +132,7 @@ export default function MediaUploader({
 	 * Click handler to use wp media uploader
 	 * @param e - event
 	 */
-	function clickHandler(e) {
+	function singleClickHandler(e) {
 		e.preventDefault();
 
 		let library = {
@@ -174,20 +174,68 @@ export default function MediaUploader({
 		});
 
 		media.open().on("select", function () {
-			// const uploadedMedia = media.state().get("selection").first();
-			// setValue(uploadedMedia.attributes.id);
-			// setMediaUrl(uploadedMedia.attributes.url);
+			const uploadedMedia = media.state().get("selection").first();
+			setValue(uploadedMedia.attributes.id);
+			setMediaUrl(uploadedMedia.attributes.url);
+		});
+	}
 
-			media
+	/**
+	 * Click handler to use wp media uploader for repeater
+	 * @param e - event
+	 */
+	function multiClickHandler(e) {
+		e.preventDefault();
+
+		let library = {
+			order: "DESC",
+			orderby: "date",
+		};
+
+		if (allowedTypes) {
+			library.type = getAllowedTypesLongExtension();
+		}
+
+		if (field?.isFeatured) {
+			library.type = ["image"];
+		}
+
+		const getMediaModalTitle = () => {
+			const title = getMediaButtonText(field);
+			if (allowedTypes) {
+				return `${title} (${getAllowedTypesForUi().toUpperCase()})`;
+			}
+
+			return title;
+		};
+
+		// If the media frame already exists, reopen it.
+		if (media) {
+			media.open();
+			return;
+		}
+
+		const media = wp.media({
+			title: getMediaModalTitle(),
+			multiple: true,
+			frame: "select",
+			library: library,
+			button: {
+				text: __("Done", "atlas-content-modeler"),
+			},
+		});
+
+		media.open().on("select", function () {
+			const uploadedMedia = media
 				.state()
 				.get("selection")
 				.each(function (attachment) {
-					// TODO: need to loop and create entries for the table during this
 					const uploadedMedia = media
 						.state()
 						.get("selection")
 						.first();
 					setValue(uploadedMedia.attributes.id);
+
 					setMediaUrl(uploadedMedia.attributes.url);
 				});
 		});
@@ -337,7 +385,7 @@ export default function MediaUploader({
 													`}
 													href="#"
 													onClick={(e) =>
-														clickHandler(e)
+														multiClickHandler(e)
 													}
 												>
 													{__(
@@ -379,7 +427,9 @@ export default function MediaUploader({
 								<div className="media-item">
 									{imageRegex.test(mediaUrl) ? (
 										<img
-											onClick={(e) => clickHandler(e)}
+											onClick={(e) =>
+												singleClickHandler(e)
+											}
 											src={mediaUrl}
 											alt={field.name}
 										/>
@@ -434,7 +484,7 @@ export default function MediaUploader({
 						<div className="media-item">
 							{imageRegex.test(mediaUrl) ? (
 								<img
-									onClick={(e) => clickHandler(e)}
+									onClick={(e) => singleClickHandler(e)}
 									src={mediaUrl}
 									alt={field.name}
 								/>
@@ -457,7 +507,7 @@ export default function MediaUploader({
 						<DarkButton
 							data-testid="feature-image-button"
 							style={{ marginTop: "5px" }}
-							onClick={(e) => clickHandler(e)}
+							onClick={(e) => singleClickHandler(e)}
 						>
 							{getMediaButtonText(field)}
 						</DarkButton>
