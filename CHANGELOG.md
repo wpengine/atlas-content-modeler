@@ -1,6 +1,9 @@
 # Atlas Content Modeler Changelog
 
 ## Unreleased
+### Changed
+- The `wp acm blueprint export` command now stores category and post_tag taxonomy terms for the WordPress core 'post' type.
+
 ### Fixed
 - The delete model prompt no longer shows “undefined” in its title during model deletion.
 
