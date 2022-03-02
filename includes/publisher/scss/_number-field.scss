@@ -1,0 +1,139 @@
+@import "../../../includes/shared-assets/scss/_variables";
+
+.number {
+	.text-table {
+		flex-flow: row wrap;
+		flex: 1 100%;
+		width: 60%;
+	}
+
+	.remove-container,
+	.add-container {
+		align-items: center;
+	}
+
+	.repeater-input {
+		align-items: center !important;
+	}
+
+	button.remove-item {
+		max-height: 30px;
+		cursor: pointer;
+		padding: 0px 11px;
+	}
+	button.add-option {
+		padding: 10px;
+	}
+
+	.repeater-input {
+		textarea,
+		.repeater-input input {
+			width: 100% !important;
+			margin: 0px !important;
+		}
+	}
+
+	.repeater-input-container input[type="number"] {
+		margin: 0px !important;
+		width: 100% !important;
+	}
+
+	svg.add.add-small.add-small-button {
+		color: #7e5cef;
+	}
+	.add-option a {
+		cursor: pointer;
+		font-weight: bold;
+		color: #7e5cef;
+		line-height: 23px;
+	}
+
+	.add-option a span {
+		vertical-align: top;
+		margin-top: 11px;
+	}
+
+	.add-option textarea {
+		margin: 0;
+	}
+
+	.add-option {
+		margin-left: 5px;
+	}
+
+	table {
+		border: solid 1px $color-gray-disabled-border;
+		border-spacing: 0;
+	}
+
+	table tr td {
+		padding: 10px;
+		border: none;
+		width: 100%;
+	}
+
+	table th {
+		text-transform: capitalize;
+		padding-top: 14px;
+		padding-bottom: 14px;
+	}
+
+	table td {
+		padding-top: 0;
+		padding-bottom: 0;
+		border: solid 1px $color-gray-disabled-border;
+	}
+
+	table td.checkbox,
+	table td.info {
+		text-align: center;
+		vertical-align: middle;
+	}
+
+	table td.info {
+		&:hover {
+			cursor: pointer;
+		}
+
+		button {
+			background: none;
+			border: none;
+			margin-left: -3px;
+			padding: 0;
+
+			svg {
+				padding-top: 6px;
+			}
+		}
+	}
+
+	table tr.unselectable {
+		td {
+			border-bottom: 1px solid lighten($color-gray-disabled-border, 8);
+			box-shadow: none;
+		}
+
+		label {
+			color: $color-gray-light;
+			cursor: default;
+		}
+	}
+
+	table td label,
+	table tr.empty td span {
+		display: inline-block;
+		padding-top: 20px;
+		padding-bottom: 20px;
+		width: 100%;
+	}
+
+	table input[type="checkbox"] {
+		border: 1px solid #6b757b;
+		border-radius: 4px;
+		transform: scale(1.5);
+	}
+
+	table input[type="radio"] {
+		transform: scale(1.5);
+	}
+}
