@@ -103,17 +103,17 @@ function collect_terms( array $taxonomies ): array {
 }
 
 /**
- * Collects post tags for the passed `$taxonomies` and `$posts`.
+ * Collects post tags for the passed `$posts`.
  *
  * @param array $posts Posts to get tags for.
- * @param array $taxonomies Taxonomy slugs to collect tags from.
  * @return array Term arrays keyed by post ID.
  */
-function collect_post_tags( array $posts, array $taxonomies ): array {
-	$tag_data   = [];
-	$taxonomies = array_unique( array_merge( $taxonomies, [ 'category', 'post_tag' ] ) ); // Also collect core taxonomies.
+function collect_post_tags( array $posts ): array {
+	$tag_data = [];
 
 	foreach ( $posts as $post ) {
+		$taxonomies = get_post_taxonomies( $post['ID'] );
+
 		foreach ( $taxonomies as $taxonomy ) {
 			if ( ! has_term( '', $taxonomy, $post['ID'] ) ) {
 				continue;
@@ -121,7 +121,7 @@ function collect_post_tags( array $posts, array $taxonomies ): array {
 
 			$tags = get_the_terms( $post['ID'], $taxonomy );
 
-			if ( $tags && ! is_wp_error( $tags ) ) {
+			if ( ! empty( $tags ) && ! is_wp_error( $tags ) ) {
 				$tags_as_arrays = array_map(
 					function( $tag ) {
 						return $tag->to_array();

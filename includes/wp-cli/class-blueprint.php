@@ -281,8 +281,7 @@ class Blueprint {
 		if ( ! empty( $manifest['terms'] ?? [] ) ) {
 			\WP_CLI::log( 'Collecting post tags.' );
 			$manifest['post_terms'] = collect_post_tags(
-				$manifest['posts'] ?? [],
-				wp_list_pluck( $manifest['terms'], 'taxonomy' )
+				$manifest['posts'] ?? []
 			);
 		}
 
