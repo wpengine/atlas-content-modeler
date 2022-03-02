@@ -110,18 +110,15 @@ function collect_terms( array $taxonomies ): array {
  * @return array Term arrays keyed by post ID.
  */
 function collect_post_tags( array $posts, array $taxonomies ): array {
-	$tag_data       = [];
-	$acm_post_types = array_keys( get_registered_content_types() );
-
-	$core_post_types = [ 'post', 'page' ];
+	$tag_data   = [];
+	$taxonomies = array_unique( array_merge( $taxonomies, [ 'category', 'post_tag' ] ) ); // Also collect core taxonomies.
 
 	foreach ( $posts as $post ) {
-		// Only collect tags for ACM post types.
-		if ( ! in_array( $post['post_type'], $acm_post_types, true ) ) {
-			continue;
-		}
-
 		foreach ( $taxonomies as $taxonomy ) {
+			if ( ! has_term( '', $taxonomy, $post['ID'] ) ) {
+				continue;
+			}
+
 			$tags = get_the_terms( $post['ID'], $taxonomy );
 
 			if ( $tags && ! is_wp_error( $tags ) ) {
