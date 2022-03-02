@@ -195,65 +195,30 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertEquals( 'Rabbit', $posts[ $post_id ]['post_title'] );
 	}
 
-	public function collect_terms_with_no_taxonomies() {
+	public function collect_terms_with_empty_post_term_list() {
 		$terms = collect_terms( [] );
 
 		self::assertEmpty( $terms );
 	}
 
-	public function test_collect_terms_with_taxonomies_but_no_terms() {
+	public function test_collect_terms() {
 		update_option( 'atlas_content_modeler_post_types', $this->models );
 		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
 		register_taxonomies();
 
-		$terms = collect_terms( [ 'breed' ] );
+		$term_id    = wp_create_term( 'American Chinchilla', 'breed' );
+		$post_terms = [
+			123 => [
+				'term_id' => $term_id,
+			],
+		];
 
-		self::assertEmpty( $terms );
-	}
+		$terms      = collect_terms( $post_terms );
+		$names      = wp_list_pluck( $terms, 'name' );
+		$taxonomies = wp_list_pluck( $terms, 'taxonomy' );
 
-	public function test_collect_terms_with_taxonomies_and_unassigned_terms() {
-		update_option( 'atlas_content_modeler_post_types', $this->models );
-		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
-		register_taxonomies();
-
-		wp_create_term( 'American Chinchilla', 'breed' );
-
-		$terms = collect_terms( [ 'breed' ] );
-
-		self::assertEmpty( $terms ); // Because the term is not assigned to any post.
-	}
-
-	public function test_collect_terms_with_taxonomies_and_assigned_terms() {
-		update_option( 'atlas_content_modeler_post_types', $this->models );
-		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
-		register_taxonomies();
-
-		$term_id = $this->factory->term->create(
-			[
-				'taxonomy'    => 'breed',
-				'description' => 'test',
-				'slug'        => 'chinchilla',
-				'name'        => 'American Chinchilla',
-			]
-		);
-
-		// Create a post and assign the term to it.
-		$post_id = $this->factory->post->create(
-			[
-				'post_title'  => 'Rabbit',
-				'post_status' => 'publish',
-				'post_type'   => 'rabbit',
-			]
-		);
-
-		wp_set_post_terms( $post_id, [ $term_id ], 'breed' );
-
-		$terms = collect_terms( [ 'breed' ] );
-
-		self::assertCount( 1, $terms );
-		self::assertEquals( $term_id, $terms[0]['term_id'] );
-		self::assertEquals( 'American Chinchilla', $terms[0]['name'] );
-		self::assertEquals( 'chinchilla', $terms[0]['slug'] );
+		self::assertContains( 'American Chinchilla', $names );
+		self::assertContains( 'breed', $taxonomies );
 	}
 
 	public function test_collect_post_tags_empty_posts() {

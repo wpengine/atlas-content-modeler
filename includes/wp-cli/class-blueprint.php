@@ -271,18 +271,16 @@ class Blueprint {
 		}
 		$manifest['posts'] = collect_posts( $post_types );
 
-		if ( ! empty( $manifest['taxonomies'] ?? [] ) ) {
-			\WP_CLI::log( 'Collecting terms.' );
-			$manifest['terms'] = collect_terms(
-				array_keys( $manifest['taxonomies'] )
-			);
-		}
-
-		if ( ! empty( $manifest['terms'] ?? [] ) ) {
+		if ( ! empty( $manifest['posts'] ?? [] ) ) {
 			\WP_CLI::log( 'Collecting post tags.' );
 			$manifest['post_terms'] = collect_post_tags(
 				$manifest['posts'] ?? []
 			);
+		}
+
+		if ( ! empty( $manifest['post_terms'] ?? [] ) ) {
+			\WP_CLI::log( 'Collecting terms.' );
+			$manifest['terms'] = collect_terms( $manifest['post_terms'] );
 		}
 
 		\WP_CLI::log( 'Collecting post meta.' );

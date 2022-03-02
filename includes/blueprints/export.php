@@ -76,26 +76,28 @@ function collect_posts( array $post_types = [] ): array {
 }
 
 /**
- * Collects terms for the passed `$taxonomies`.
+ * Collects terms for the passed `$post_terms`.
  *
- * @param array $taxonomies Taxonomy slugs to collect terms for.
+ * @param array $post_terms Posts keyed by post ID, each containing an array of post terms to collect data for.
  * @return array Term data.
  */
-function collect_terms( array $taxonomies ): array {
+function collect_terms( array $post_terms ): array {
 	$term_data = [];
+	$seen      = [];
 
-	foreach ( $taxonomies as $taxonomy ) {
-		$terms = get_terms( [ 'taxonomy' => $taxonomy ] );
+	foreach ( $post_terms as $terms ) {
+		foreach ( $terms as $term ) {
+			if ( in_array( $term['term_id'], $seen, true ) ) {
+				continue;
+			}
 
-		if ( ! is_wp_error( $terms ) ) {
-			$terms_as_arrays = array_map(
-				function( $term ) {
-					return $term->to_array();
-				},
-				$terms
-			);
+			$wp_term = get_term( $term['term_id'] );
 
-			$term_data = array_merge( $term_data, $terms_as_arrays );
+			if ( ! ( $wp_term instanceof \WP_Term ) ) {
+				continue;
+			}
+
+			$term_data[] = $wp_term->to_array();
 		}
 	}
 
