@@ -98,6 +98,7 @@ function collect_terms( array $post_terms ): array {
 			}
 
 			$term_data[] = $wp_term->to_array();
+			$seen[]      = $term['term_id'];
 		}
 	}
 
