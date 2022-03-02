@@ -123,6 +123,16 @@ export function LinkButton(props) {
 				fill: #5c43ae;
 			}
 		}
+		&:disabled {
+			background: transparent !important;
+			border-color: transparent !important;
+			color: #9db7d1 !important;
+			&:hover {
+				background: transparent !important;
+				border-color: transparent !important;
+				color: #9db7d1 !important;
+			}
+		}
 
 		svg {
 			margin-right: 10px;

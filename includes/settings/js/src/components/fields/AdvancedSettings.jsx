@@ -310,7 +310,15 @@ const NumberSettings = ({
 	);
 };
 
-const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
+const TextSettings = ({
+	errors,
+	field,
+	storedData,
+	setValue,
+	getValues,
+	trigger,
+}) => {
+	const isRepeatable = getValues("isRepeatable");
 	return (
 		<>
 			<h3>{__("Character Limit", "atlas-content-modeler")}</h3>
@@ -408,6 +416,113 @@ const TextSettings = ({ errors, storedData, setValue, getValues, trigger }) => {
 					</p>
 				</div>
 			</div>
+			{isRepeatable && (
+				<div className="d-flex flex-column d-sm-flex flex-sm-row">
+					<div
+						className={`${
+							errors.minRepeatable ? "field has-error" : "field"
+						} me-sm-5`}
+					>
+						<label htmlFor="minRepeatable">
+							{__(
+								"Minimum Repeatable Limit",
+								"atlas-content-modeler"
+							)}
+						</label>
+						<br />
+						<input
+							aria-invalid={
+								errors.minRepeatable ? "true" : "false"
+							}
+							type="number"
+							id="minRepeatable"
+							name="minRepeatable"
+							onChange={async (e) => {
+								setValue("minRepeatable", e.target.value, {
+									shouldValidate: true,
+								});
+								// Validate maxRepeatable in case minRepeatable is now bigger.
+								await trigger("maxRepeatable");
+							}}
+							defaultValue={String(
+								getValues("minRepeatable") ??
+									storedData?.minRepeatable
+							)}
+						/>
+						<p className="field-messages">
+							{errors.minRepeatable &&
+								errors.minRepeatable.type === "min" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"The minimum value is 0.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+						</p>
+					</div>
+
+					<div
+						className={
+							errors.maxRepeatable ? "field has-error" : "field"
+						}
+					>
+						<label htmlFor="maxRepeatable">
+							{__(
+								"Maximum Repeatable Limit",
+								"atlas-content-modeler"
+							)}
+						</label>
+						<br />
+						<input
+							aria-invalid={
+								errors.maxRepeatable ? "true" : "false"
+							}
+							type="number"
+							id="maxRepeatable"
+							name="maxRepeatable"
+							onChange={(e) => {
+								setValue("maxRepeatable", e.target.value, {
+									shouldValidate: true,
+								});
+							}}
+							defaultValue={String(
+								getValues("maxRepeatable") ??
+									storedData?.maxRepeatable
+							)}
+						/>
+						<p className="field-messages">
+							{errors.maxRepeatable &&
+								errors.maxRepeatable.type === "min" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"The minimum value is 1.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+							{errors.maxRepeatable &&
+								errors.maxRepeatable.type === "maxBelowMin" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{__(
+												"Max must be more than min.",
+												"atlas-content-modeler"
+											)}
+										</span>
+									</span>
+								)}
+						</p>
+					</div>
+				</div>
+			)}
 		</>
 	);
 };

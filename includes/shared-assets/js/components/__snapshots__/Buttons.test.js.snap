@@ -162,7 +162,7 @@ exports[`LinkButton Renders a matching snapshot 1`] = `
   css={
     Object {
       "map": undefined,
-      "name": "thwps8",
+      "name": "3dtf95",
       "next": undefined,
       "styles": "
 		background: transparent;
@@ -180,6 +180,16 @@ exports[`LinkButton Renders a matching snapshot 1`] = `
 
 			svg path {
 				fill: #5c43ae;
+			}
+		}
+		&:disabled {
+			background: transparent !important;
+			border-color: transparent !important;
+			color: #9db7d1 !important;
+			&:hover {
+				background: transparent !important;
+				border-color: transparent !important;
+				color: #9db7d1 !important;
 			}
 		}
 
