@@ -262,7 +262,7 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		self::assertEmpty( $tags );
 	}
 
-	public function test_collect_post_tags_with_tagged_post() {
+	public function test_collect_post_tags_from_tagged_acm_post() {
 		update_option( 'atlas_content_modeler_post_types', $this->models );
 		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
 		register_taxonomies();
@@ -291,12 +291,64 @@ class BlueprintExportTest extends WP_UnitTestCase {
 			$post_id => get_post( $post_id )->to_array(),
 		];
 
-		$tags = collect_post_tags( $posts, [ 'breed' ] );
+		$tags     = collect_post_tags( $posts, [ 'breed' ] );
+		$term_ids = wp_list_pluck( $tags[ $post_id ], 'term_id' );
+		$names    = wp_list_pluck( $tags[ $post_id ], 'name' );
+		$slugs    = wp_list_pluck( $tags[ $post_id ], 'slug' );
 
-		self::assertCount( 1, $tags );
-		self::assertEquals( $term_id, $tags[ $post_id ][0]['term_id'] );
-		self::assertEquals( 'American Chinchilla', $tags[ $post_id ][0]['name'] );
-		self::assertEquals( 'chinchilla', $tags[ $post_id ][0]['slug'] );
+		self::assertCount( 1, $tags[ $post_id ] );
+		self::assertContains( $term_id, $term_ids );
+		self::assertContains( 'American Chinchilla', $names );
+		self::assertContains( 'chinchilla', $slugs );
+	}
+
+	public function test_collect_post_tags_and_categories_from_core_post() {
+		// Create a tag.
+		$tag_id = $this->factory->term->create(
+			[
+				'taxonomy'    => 'post_tag',
+				'description' => 'Tag test.',
+				'slug'        => 'tag-test',
+				'name'        => 'Tag Test',
+			]
+		);
+
+		// Create a category.
+		$category_id = $this->factory->term->create(
+			[
+				'taxonomy'    => 'category',
+				'description' => 'Category test.',
+				'slug'        => 'category-test',
+				'name'        => 'Category Test',
+			]
+		);
+
+		// Create a post.
+		$post_id = $this->factory->post->create(
+			[
+				'post_title'  => 'Post',
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			]
+		);
+
+		// Assign the tag and category to it.
+		wp_set_post_terms( $post_id, [ $tag_id ], 'post_tag', true );
+		wp_set_post_terms( $post_id, [ $category_id ], 'category', true );
+
+		$posts = [
+			$post_id => get_post( $post_id )->to_array(),
+		];
+
+		$tags     = collect_post_tags( $posts, [] );
+		$term_ids = wp_list_pluck( $tags[ $post_id ], 'term_id' );
+		$names    = wp_list_pluck( $tags[ $post_id ], 'name' );
+
+		self::assertCount( 3, $tags[ $post_id ] ); // 3 because the post is also tagged 'uncategorized'.
+		self::assertContains( $tag_id, $term_ids );
+		self::assertContains( $category_id, $term_ids );
+		self::assertContains( 'Tag Test', $names );
+		self::assertContains( 'Category Test', $names );
 	}
 
 	public function test_collect_post_meta_no_posts() {
