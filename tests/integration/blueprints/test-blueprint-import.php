@@ -102,7 +102,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		import_posts( $this->manifest['posts'] );
 
 		$posts               = get_posts( [ 'post_type' => 'rabbit' ] );
-		$expected_post_count = count( $this->manifest['posts'] );
+		$expected_post_count = 2; // See 'posts' in tests/integration/blueprints/test-data/blueprint-good/acm.json.
 
 		self::assertCount( $expected_post_count, $posts );
 	}
@@ -111,11 +111,19 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		import_taxonomies( $this->manifest['taxonomies'] );
 		$import_result = import_terms( $this->manifest['post_terms'] );
 
-		$terms               = get_terms( 'breed', [ 'hide_empty' => false ] );
-		$expected_term_count = 2; // See post_terms in tests/integration/blueprints/test-data/blueprint-good/acm.json.
+		$breed_terms               = get_terms( 'breed', [ 'hide_empty' => false ] );
+		$expected_breed_term_count = 2; // See 'post_terms' in tests/integration/blueprints/test-data/blueprint-good/acm.json.
 
-		self::assertCount( $expected_term_count, $terms );
+		$category_terms               = get_terms( 'category', [ 'hide_empty' => false ] );
+		$expected_category_term_count = 2; // "Uncategorized" and "films". See 'post_terms' in tests/integration/blueprints/test-data/blueprint-good/acm.json.
+
+		$post_tag_terms               = get_terms( 'post_tag', [ 'hide_empty' => false ] );
+		$expected_post_tag_term_count = 2; // See 'post_terms' in tests/integration/blueprints/test-data/blueprint-good/acm.json.
+
 		self::assertFalse( $import_result['errors'] );
+		self::assertCount( $expected_breed_term_count, $breed_terms );
+		self::assertCount( $expected_category_term_count, $category_terms );
+		self::assertCount( $expected_post_tag_term_count, $post_tag_terms );
 	}
 
 	public function test_import_bad_terms_records_error() {
