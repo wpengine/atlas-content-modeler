@@ -79,7 +79,7 @@ export default function MediaUploader({
 	 * @returns {any}
 	 */
 	function getFileExtension(file) {
-		return file.split(".").pop();
+		return file ? file.split(".").pop() : "";
 	}
 
 	/**
@@ -272,41 +272,75 @@ export default function MediaUploader({
 																className="me-lg-1 repeater-input-container flex-fill"
 																name="repeaters"
 															>
-																<img
-																	className="img img-thumbnail"
-																	src={
+																<div>
+																	{imageRegex.test(
 																		item.url
-																	}
-																	width="100"
-																	hieght="100"
-																/>
+																	) ? (
+																		<img
+																			height="60"
+																			width="48"
+																			onClick={(
+																				e
+																			) =>
+																				singleClickHandler(
+																					e
+																				)
+																			}
+																			src={
+																				item.url
+																			}
+																			alt={
+																				item.url
+																			}
+																		/>
+																	) : (
+																		<a
+																			href={
+																				item.url
+																			}
+																			target="_blank"
+																			rel="noopener noreferrer"
+																		>
+																			[
+																			{getFileExtension(
+																				item.url
+																			).toUpperCase()}
+																			]{" "}
+																			{
+																				item.url
+																			}
+																		</a>
+																	)}
+																</div>
+															</div>
 
+															<div
+																className="me-lg-1 repeater-input-container flex-fill"
+																name="repeaters"
+															>
 																<DarkButton
 																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 																	onClick={(
 																		event
 																	) => {
-																		singleClickHandler(
+																		// TODO: Update the value of the item.
+																		const newValue =
 																			event
+																				.currentTarget
+																				.value;
+																		setValues(
+																			(
+																				oldValues
+																			) => {
+																				let newValues = [
+																					...oldValues,
+																				];
+																				newValues[
+																					index
+																				] = newValue;
+																				return newValues;
+																			}
 																		);
-																		// Update the value of the item.
-																		// const newValue =
-																		// 	event
-																		// 		.currentTarget
-																		// 		.value;
-																		// setValues(
-																		// 	(
-																		// 		oldValues
-																		// 	) => {
-																		// 		let newValues = [
-																		// 			...oldValues,
-																		// 		];
-																		// 		newValues[
-																		// 			index
-																		// 		] = newValue;
-																		// 		return newValues;
-																		// 	}
-																		// );
 																	}}
 																>
 																	{getMediaButtonText(
@@ -404,34 +438,6 @@ export default function MediaUploader({
 					</span>
 
 					<div>
-						{mediaUrl && (
-							<>
-								<div className="media-item">
-									{imageRegex.test(mediaUrl) ? (
-										<img
-											onClick={(e) =>
-												singleClickHandler(e)
-											}
-											src={mediaUrl}
-											alt={field.name}
-										/>
-									) : (
-										<a
-											href={mediaUrl}
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											[
-											{getFileExtension(
-												mediaUrl
-											).toUpperCase()}
-											] {mediaUrl}
-										</a>
-									)}
-								</div>
-							</>
-						)}
-
 						<input
 							type="text"
 							name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
