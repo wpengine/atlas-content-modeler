@@ -204,7 +204,7 @@ export default function MediaUploader({
 
 		const media = wp.media({
 			title: getMediaModalTitle(),
-			multiple: true,
+			multiple: "add",
 			frame: "select",
 			library: library,
 			selected: selectedIds,
