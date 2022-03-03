@@ -235,7 +235,7 @@ export default function MediaUploader({
 						url: attachment.attributes.url,
 					});
 				});
-			setValues(imgArr);
+			setValues([fieldValues, ...imgArr]);
 		});
 	}
 
@@ -261,7 +261,7 @@ export default function MediaUploader({
 								<ul>
 									<table key="1" className="table mt-2">
 										<tbody>
-											{fieldValues.length > 0 &&
+											{fieldValues?.length > 0 &&
 												fieldValues.map(
 													(item, index) => {
 														return (
