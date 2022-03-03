@@ -278,11 +278,6 @@ class Blueprint {
 			);
 		}
 
-		if ( ! empty( $manifest['post_terms'] ?? [] ) ) {
-			\WP_CLI::log( 'Collecting terms.' );
-			$manifest['terms'] = collect_terms( $manifest['post_terms'] );
-		}
-
 		\WP_CLI::log( 'Collecting post meta.' );
 		$manifest['post_meta'] = collect_post_meta(
 			$manifest['posts'] ?? []

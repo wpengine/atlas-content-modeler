@@ -76,36 +76,6 @@ function collect_posts( array $post_types = [] ): array {
 }
 
 /**
- * Collects terms for the passed `$post_terms`.
- *
- * @param array $post_terms Posts keyed by post ID, each containing an array of post terms to collect data for.
- * @return array Term data.
- */
-function collect_terms( array $post_terms ): array {
-	$term_data = [];
-	$seen      = [];
-
-	foreach ( $post_terms as $terms ) {
-		foreach ( $terms as $term ) {
-			if ( in_array( $term['term_id'], $seen, true ) ) {
-				continue;
-			}
-
-			$wp_term = get_term( $term['term_id'] );
-
-			if ( ! ( $wp_term instanceof \WP_Term ) ) {
-				continue;
-			}
-
-			$term_data[] = $wp_term->to_array();
-			$seen[]      = $term['term_id'];
-		}
-	}
-
-	return $term_data;
-}
-
-/**
  * Collects post tags for the passed `$posts`.
  *
  * @param array $posts Posts to get tags for.

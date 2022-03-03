@@ -13,7 +13,6 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_post_tags,
 	collect_posts,
 	collect_relationships,
-	collect_terms,
 	generate_meta,
 	get_acm_temp_dir,
 	write_manifest,
@@ -193,32 +192,6 @@ class BlueprintExportTest extends WP_UnitTestCase {
 
 		self::assertCount( 1, $posts );
 		self::assertEquals( 'Rabbit', $posts[ $post_id ]['post_title'] );
-	}
-
-	public function collect_terms_with_empty_post_term_list() {
-		$terms = collect_terms( [] );
-
-		self::assertEmpty( $terms );
-	}
-
-	public function test_collect_terms() {
-		update_option( 'atlas_content_modeler_post_types', $this->models );
-		update_option( 'atlas_content_modeler_taxonomies', $this->taxonomies );
-		register_taxonomies();
-
-		$term_id    = wp_create_term( 'American Chinchilla', 'breed' );
-		$post_terms = [
-			123 => [
-				'term_id' => $term_id,
-			],
-		];
-
-		$terms      = collect_terms( $post_terms );
-		$names      = wp_list_pluck( $terms, 'name' );
-		$taxonomies = wp_list_pluck( $terms, 'taxonomy' );
-
-		self::assertContains( 'American Chinchilla', $names );
-		self::assertContains( 'breed', $taxonomies );
 	}
 
 	public function test_collect_post_tags_empty_posts() {
