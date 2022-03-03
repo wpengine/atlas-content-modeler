@@ -39,7 +39,6 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_post_tags,
 	collect_posts,
 	collect_relationships,
-	collect_terms,
 	delete_folder,
 	generate_meta,
 	get_acm_temp_dir,
