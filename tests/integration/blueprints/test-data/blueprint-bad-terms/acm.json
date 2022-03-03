@@ -84,30 +84,22 @@
       "slug": "breed"
     }
   },
-  "terms": [
-    {
-      "term_id": 4,
-      "name": "Cartoon",
-      "slug": "cartoon",
-      "term_group": 0,
-      "term_taxonomy_id": 4,
-      "taxonomy": "this-taxonomy-does-not-exist",
-      "description": "",
-      "parent": 0,
-      "count": 0,
-      "filter": "raw"
-    },
-    {
-      "term_id": 3,
-      "name": "Human",
-      "slug": "human",
-      "term_group": 0,
-      "term_taxonomy_id": 3,
-      "taxonomy": "this-taxonomy-does-not-exist",
-      "description": "",
-      "parent": 0,
-      "count": 0,
-      "filter": "raw"
-    }
-  ]
+  "post_terms": {
+    "81": [
+      {
+        "term_id": 4,
+        "name": "Cartoon",
+        "slug": "cartoon",
+        "taxonomy": "this-taxonomy-does-not-exist"
+      }
+    ],
+    "82": [
+      {
+        "term_id": 3,
+        "name": "Human",
+        "slug": "human",
+        "taxonomy": "this-taxonomy-does-not-exist"
+      }
+    ]
+  }
 }
