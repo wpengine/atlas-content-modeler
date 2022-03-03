@@ -261,139 +261,129 @@ export default function MediaUploader({
 								<ul>
 									<table key="1" className="table mt-2">
 										<tbody>
-											{fieldValues?.length > 0 &&
-												fieldValues.map(
-													(item, index) => {
-														return (
-															<tr
-																key={index}
-																className={`field text-repeater-container-single d-flex mt-1 flex-fill flex-row`}
+											{fieldValues.map((item, index) => {
+												return (
+													<tr
+														key={index}
+														className={`field text-repeater-container-single d-flex mt-1 flex-fill flex-row`}
+													>
+														<div
+															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
+														>
+															<div
+																className="me-lg-1 repeater-input-container"
+																name="repeaters"
 															>
-																<div
-																	className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
-																>
-																	<div
-																		className="me-lg-1 repeater-input-container"
-																		name="repeaters"
-																	>
-																		<div>
-																			<img
-																				height="60"
-																				width="48"
-																				onClick={(
-																					e
-																				) =>
-																					singleClickHandler(
-																						e
-																					)
-																				}
-																				src={
-																					item.url
-																				}
-																				alt={
-																					item.url
-																				}
-																			/>
-																		</div>
-																	</div>
-
-																	<div
-																		className="me-lg-1 repeater-input-container"
-																		name="repeaters"
-																	>
-																		<DarkButton
-																			name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-																			onClick={(
-																				event
-																			) => {
-																				// TODO: Update the value of the item.
-																				const newValue =
-																					event
-																						.currentTarget
-																						.value;
-																				setValues(
-																					(
-																						oldValues
-																					) => {
-																						let newValues = [
-																							...oldValues,
-																						];
-																						newValues[
-																							index
-																						] = newValue;
-																						return newValues;
-																					}
-																				);
-																			}}
-																		>
-																			{getMediaButtonText(
-																				field
-																			)}
-																		</DarkButton>
-																	</div>
-																	<div
-																		className={`value[${index}].remove-container p-2 me-sm-1`}
-																	>
-																		{showDeleteButton && (
-																			<button
-																				className="remove-item tertiary no-border"
-																				onClick={(
-																					event
-																				) => {
-																					event.preventDefault();
-																					// Removes the value at the given index.
-																					setValues(
-																						(
-																							currentValues
-																						) => {
-																							const newValues = [
-																								...currentValues,
-																							];
-																							newValues.splice(
-																								index,
-																								1
-																							);
-																							return newValues;
-																						}
-																					);
-																				}}
-																			>
-																				<a
-																					aria-label={__(
-																						"Remove item.",
-																						"atlas-content-modeler"
-																					)}
-																				>
-																					<TrashIcon size="small" />{" "}
-																				</a>
-																			</button>
-																		)}
-																	</div>
+																<div>
+																	<img
+																		height="60"
+																		width="48"
+																		onClick={(
+																			e
+																		) =>
+																			singleClickHandler(
+																				e
+																			)
+																		}
+																		src={
+																			item.url
+																		}
+																		alt={
+																			item.url
+																		}
+																	/>
 																</div>
-																<div
-																	className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
+															</div>
+
+															<div
+																className="me-lg-1 repeater-input-container"
+																name="repeaters"
+															>
+																<DarkButton
+																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																	onClick={(
+																		event
+																	) => {
+																		// TODO: Update the value of the item.
+																		const newValue =
+																			event
+																				.currentTarget
+																				.value;
+																		setValues(
+																			(
+																				oldValues
+																			) => {
+																				let newValues = [
+																					...oldValues,
+																				];
+																				newValues[
+																					index
+																				] = newValue;
+																				return newValues;
+																			}
+																		);
+																	}}
+																>
+																	{getMediaButtonText(
+																		field
+																	)}
+																</DarkButton>
+															</div>
+															<div
+																className={`value[${index}].remove-container p-2 me-sm-1`}
+															>
+																<button
+																	className="remove-item tertiary no-border"
+																	onClick={(
+																		event
+																	) => {
+																		event.preventDefault();
+																		// Removes the value at the given index.
+																		setValues(
+																			(
+																				currentValues
+																			) => {
+																				const newValues = [
+																					...currentValues,
+																				];
+																				newValues.splice(
+																					index,
+																					1
+																				);
+																				return newValues;
+																			}
+																		);
+																	}}
 																>
 																	<a
-																		href={
-																			item.url
-																		}
-																		target="_blank"
-																		rel="noopener noreferrer"
+																		aria-label={__(
+																			"Remove item.",
+																			"atlas-content-modeler"
+																		)}
 																	>
-																		[
-																		{getFileExtension(
-																			item.url
-																		).toUpperCase()}
-																		]{" "}
-																		{
-																			item.url
-																		}
+																		<TrashIcon size="small" />{" "}
 																	</a>
-																</div>
-															</tr>
-														);
-													}
-												)}
+																</button>
+															</div>
+														</div>
+														<div
+															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
+														>
+															<a
+																href={item.url}
+																target="_blank"
+																rel="noopener noreferrer"
+															>
+																[
+																{getFileExtension(
+																	item.url
+																).toUpperCase()}
+																] {item.url}
+															</a>
+														</div>
+													</tr>
+												);
+											})}
 											<tr className="flex add-container">
 												<LinkButton
 													css={css`
