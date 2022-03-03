@@ -244,14 +244,16 @@ function import_posts( array $posts ) {
 /**
  * Imports terms.
  *
- * @param array $terms Terms to import.
+ * @param array $post_terms Posts keyed by post ID, each with an array of terms to import related to that post.
  * @return array
  */
-function import_terms( array $terms ) {
+function import_terms( array $post_terms ) {
 	/**
 	 * Stores term IDs that changed during import.
 	 */
 	$term_ids_old_new = [];
+
+	$seen = [];
 
 	$import_errors = false;
 	$errors        = new WP_Error(
@@ -259,27 +261,44 @@ function import_terms( array $terms ) {
 		__( 'Errors encountered during term import.', 'atlas-content-modeler' )
 	);
 
-	foreach ( $terms as $term ) {
-		$term_info = [
-			'slug'        => $term['slug'],
-			'description' => $term['description'],
-		];
+	foreach ( $post_terms as $terms ) {
+		foreach ( $terms as $term ) {
+			if (
+				empty( $term['term_id'] )
+				|| empty( $term['name'] )
+				|| empty( $term['taxonomy'] )
+			) {
+				continue;
+			}
 
-		$inserted_term = wp_insert_term( $term['name'], $term['taxonomy'], $term_info );
+			// Prevents import of terms that have already been imported from another post.
+			if ( in_array( $term['term_id'], $seen, true ) ) {
+				continue;
+			}
 
-		if ( is_wp_error( $inserted_term ) ) {
-			$import_errors = true;
-			$errors->add(
-				$inserted_term->get_error_code(),
-				$inserted_term->get_error_message()
-			);
-		}
+			$term_info = [
+				'slug'        => $term['slug'] ?? '',
+				'description' => $term['description'] ?? '',
+			];
 
-		if (
-			! is_wp_error( $inserted_term )
-			&& $term['term_id'] !== $inserted_term['term_id']
-		) {
-			$term_ids_old_new[ $term['term_id'] ] = $inserted_term['term_id'];
+			$inserted_term = wp_insert_term( $term['name'], $term['taxonomy'], $term_info );
+
+			if ( is_wp_error( $inserted_term ) ) {
+				$import_errors = true;
+				$errors->add(
+					$inserted_term->get_error_code(),
+					$inserted_term->get_error_message()
+				);
+			} else {
+				$seen[] = $term['term_id'];
+			}
+
+			if (
+				! is_wp_error( $inserted_term )
+				&& $term['term_id'] !== $inserted_term['term_id']
+			) {
+				$term_ids_old_new[ $term['term_id'] ] = $inserted_term['term_id'];
+			}
 		}
 	}
 

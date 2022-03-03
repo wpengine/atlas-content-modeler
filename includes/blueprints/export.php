@@ -9,7 +9,6 @@ namespace WPE\AtlasContentModeler\Blueprint\Export;
 
 use WP_Error;
 use ZipArchive;
-use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\Blueprint\Import\is_acm_media_field_meta;
 use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
@@ -53,10 +52,7 @@ function generate_meta( array $args = [] ): array {
  */
 function collect_posts( array $post_types = [] ): array {
 	if ( empty( $post_types ) ) {
-		$post_types = array_merge(
-			array_keys( get_registered_content_types() ),
-			[ 'post', 'page' ]
-		);
+		return [];
 	}
 
 	$posts = get_posts(
@@ -79,53 +75,25 @@ function collect_posts( array $post_types = [] ): array {
 }
 
 /**
- * Collects terms for the passed `$taxonomies`.
- *
- * @param array $taxonomies Taxonomy slugs to collect terms for.
- * @return array Term data.
- */
-function collect_terms( array $taxonomies ): array {
-	$term_data = [];
-
-	foreach ( $taxonomies as $taxonomy ) {
-		$terms = get_terms( [ 'taxonomy' => $taxonomy ] );
-
-		if ( ! is_wp_error( $terms ) ) {
-			$terms_as_arrays = array_map(
-				function( $term ) {
-					return $term->to_array();
-				},
-				$terms
-			);
-
-			$term_data = array_merge( $term_data, $terms_as_arrays );
-		}
-	}
-
-	return $term_data;
-}
-
-/**
- * Collects post tags for the passed `$taxonomies` and `$posts`.
+ * Collects post tags for the passed `$posts`.
  *
  * @param array $posts Posts to get tags for.
- * @param array $taxonomies Taxonomy slugs to collect tags from.
  * @return array Term arrays keyed by post ID.
  */
-function collect_post_tags( array $posts, array $taxonomies ): array {
-	$tag_data       = [];
-	$acm_post_types = array_keys( get_registered_content_types() );
+function collect_post_tags( array $posts ): array {
+	$tag_data = [];
 
 	foreach ( $posts as $post ) {
-		// Only collect tags for ACM post types.
-		if ( ! in_array( $post['post_type'], $acm_post_types, true ) ) {
-			continue;
-		}
+		$taxonomies = get_post_taxonomies( $post['ID'] );
 
 		foreach ( $taxonomies as $taxonomy ) {
+			if ( ! has_term( '', $taxonomy, $post['ID'] ) ) {
+				continue;
+			}
+
 			$tags = get_the_terms( $post['ID'], $taxonomy );
 
-			if ( $tags && ! is_wp_error( $tags ) ) {
+			if ( ! empty( $tags ) && ! is_wp_error( $tags ) ) {
 				$tags_as_arrays = array_map(
 					function( $tag ) {
 						return $tag->to_array();

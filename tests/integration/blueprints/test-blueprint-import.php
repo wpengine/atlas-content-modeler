@@ -102,26 +102,34 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		import_posts( $this->manifest['posts'] );
 
 		$posts               = get_posts( [ 'post_type' => 'rabbit' ] );
-		$expected_post_count = count( $this->manifest['posts'] );
+		$expected_post_count = 2; // See 'posts' in tests/integration/blueprints/test-data/blueprint-good/acm.json.
 
 		self::assertCount( $expected_post_count, $posts );
 	}
 
 	public function test_import_terms() {
 		import_taxonomies( $this->manifest['taxonomies'] );
-		$import_result = import_terms( $this->manifest['terms'] );
+		$import_result = import_terms( $this->manifest['post_terms'] );
 
-		$terms               = get_terms( 'breed', [ 'hide_empty' => false ] );
-		$expected_term_count = count( $this->manifest['terms'] );
+		$breed_terms               = get_terms( 'breed', [ 'hide_empty' => false ] );
+		$expected_breed_term_count = 2; // See 'post_terms' in tests/integration/blueprints/test-data/blueprint-good/acm.json.
 
-		self::assertCount( $expected_term_count, $terms );
+		$category_terms               = get_terms( 'category', [ 'hide_empty' => false ] );
+		$expected_category_term_count = 2; // "Uncategorized" and "films". See 'post_terms' in tests/integration/blueprints/test-data/blueprint-good/acm.json.
+
+		$post_tag_terms               = get_terms( 'post_tag', [ 'hide_empty' => false ] );
+		$expected_post_tag_term_count = 2; // See 'post_terms' in tests/integration/blueprints/test-data/blueprint-good/acm.json.
+
 		self::assertFalse( $import_result['errors'] );
+		self::assertCount( $expected_breed_term_count, $breed_terms );
+		self::assertCount( $expected_category_term_count, $category_terms );
+		self::assertCount( $expected_post_tag_term_count, $post_tag_terms );
 	}
 
 	public function test_import_bad_terms_records_error() {
 		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-bad-terms' );
 		import_taxonomies( $manifest['taxonomies'] );
-		$import_terms = import_terms( $manifest['terms'] );
+		$import_terms = import_terms( $manifest['post_terms'] );
 
 		self::assertInstanceOf( 'WP_Error', $import_terms['errors'] );
 		$errors = $import_terms['errors']->get_error_codes();
@@ -134,7 +142,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		import_taxonomies( $this->manifest['taxonomies'] );
 
 		$post_ids_old_new = import_posts( $this->manifest['posts'] );
-		$term_ids_old_new = import_terms( $this->manifest['terms'] )['ids'];
+		$term_ids_old_new = import_terms( $this->manifest['post_terms'] )['ids'];
 
 		tag_posts(
 			$this->manifest['post_terms'],
@@ -142,13 +150,31 @@ class BlueprintImportTest extends WP_UnitTestCase {
 			$term_ids_old_new
 		);
 
-		$posts = get_posts( [ 'post_type' => 'rabbit' ] );
+		$rabbits = get_posts( [ 'post_type' => 'rabbit' ] );
 
-		foreach ( $posts as $post ) {
-			$saved_terms        = wp_get_post_terms( $post->ID, 'breed' );
-			$expected_term_name = $this->manifest['post_terms'][ $post_ids_old_new[ $post->ID ] ?? $post->ID ][0]['name'];
+		foreach ( $rabbits as $rabbit ) {
+			$saved_terms        = wp_get_post_terms( $rabbit->ID, 'breed' );
+			$expected_term_name = $this->manifest['post_terms'][ $post_ids_old_new[ $rabbit->ID ] ?? $rabbit->ID ][0]['name'];
 			$actual_term_name   = $saved_terms[0]->name;
 			self::assertSame( $expected_term_name, $actual_term_name );
+		}
+
+		$posts = get_posts( [ 'post_type' => 'post' ] );
+
+		foreach ( $posts as $post ) {
+			$manifest_terms          = $this->manifest['post_terms'][ $post_ids_old_new[ $post->ID ] ?? $post->ID ];
+			$imported_category_terms = wp_get_post_terms( $post->ID, 'category' );
+			$imported_tag_terms      = wp_get_post_terms( $post->ID, 'post_tag' );
+
+			foreach ( $manifest_terms as $post_term ) {
+				if ( $post_term['taxonomy'] === 'post_tag' ) {
+					self::assertContains( $post_term['name'], wp_list_pluck( $imported_tag_terms, 'name' ) );
+				}
+
+				if ( $post_term['taxonomy'] === 'category' ) {
+					self::assertContains( $post_term['name'], wp_list_pluck( $imported_category_terms, 'name' ) );
+				}
+			}
 		}
 	}
 
@@ -158,7 +184,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		import_taxonomies( $manifest['taxonomies'] );
 
 		$post_ids_old_new = import_posts( $manifest['posts'] );
-		$term_ids_old_new = import_terms( $manifest['terms'] )['ids'];
+		$term_ids_old_new = import_terms( $manifest['post_terms'] )['ids'];
 
 		$tag_posts = tag_posts(
 			$manifest['post_terms'],
