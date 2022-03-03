@@ -199,9 +199,7 @@ export default function MediaUploader({
 		}
 
 		const selectedIds = fieldValues.map((item) => {
-			if (item.id) {
-				return item.id;
-			}
+			return item.id;
 		});
 
 		const media = wp.media({
@@ -215,7 +213,16 @@ export default function MediaUploader({
 			},
 		});
 
-		media.open().on("select", function () {
+		media.on("open", function () {
+			let selection = wp.media.frame.state().get("selection");
+
+			selectedIds.forEach(function (id) {
+				let attachment = wp.media.attachment(id);
+				selection.add(attachment ? [attachment] : []);
+			});
+		});
+
+		media.on("select", function () {
 			const imgArr = [];
 			media
 				.state()
@@ -228,6 +235,8 @@ export default function MediaUploader({
 				});
 			setValues(imgArr);
 		});
+
+		media.open();
 	}
 
 	if (field.isRepeatable && typeof field.isRepeatable === "boolean") {
