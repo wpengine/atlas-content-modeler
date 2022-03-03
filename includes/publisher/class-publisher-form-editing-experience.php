@@ -14,7 +14,8 @@ use WP_Post;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
-
+use function WPE\AtlasContentModeler\get_field_value;
+use function WPE\AtlasContentModeler\save_field_value;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -81,6 +82,7 @@ final class FormEditingExperience {
 		add_action( 'do_meta_boxes', [ $this, 'move_meta_boxes' ] );
 		add_action( 'do_meta_boxes', [ $this, 'remove_thumbnail_meta_box' ] );
 		add_action( 'transition_post_status', [ $this, 'maybe_add_location_callback' ], 10, 3 );
+		add_action( 'the_post', [ $this, 'migrate_post_title' ], 10, 2 );
 	}
 
 	/**
@@ -210,7 +212,7 @@ final class FormEditingExperience {
 		// Add existing field values to models data.
 		if ( ! empty( $post->ID ) && ! empty( $model['fields'] ) ) {
 			foreach ( $model['fields'] as $key => $field ) {
-				$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_field_value( $field, $post );
+				$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = get_field_value( $field, $post );
 			}
 		}
 
@@ -406,11 +408,11 @@ final class FormEditingExperience {
 			 * and short-circuit the loop. Otherwise `update_post_meta`
 			 * will return `false`, which we use to indicate a failure.
 			 */
-			if ( $value === $this->get_field_value( $field, $post ) ) {
+			if ( $value === get_field_value( $field, $post ) ) {
 				continue;
 			}
 
-			$updated = $this->save_field_value( $field, $value, $post );
+			$updated = save_field_value( $field, $value, $post );
 			if ( ! $updated ) {
 				/* translators: %s: atlas content modeler field slug */
 				$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
@@ -445,31 +447,6 @@ final class FormEditingExperience {
 		}
 
 		return $relationship->replace_relationships( $post->ID, $related_posts );
-	}
-
-	/**
-	 * Retrieves the related post ids
-	 *
-	 * @param WP_Post $post The parent post.
-	 * @param array   $field The relationship field.
-	 *
-	 * @return string A comma separated list of connected posts
-	 */
-	public function get_relationship_field( WP_Post $post, array $field ): string {
-		$registry     = ContentConnect::instance()->get_registry();
-		$relationship = $registry->get_post_to_post_relationship(
-			$post->post_type,
-			$field['reference'],
-			$field['id']
-		);
-
-		if ( false === $relationship ) {
-			return '';
-		}
-
-		$relationship_ids = $relationship->get_related_object_ids( $post->ID );
-
-		return implode( ',', $relationship_ids );
 	}
 
 	/**
@@ -676,146 +653,26 @@ final class FormEditingExperience {
 	}
 
 	/**
-	 * Gets the value of the specified field for the specified post.
+	 * Migrates legacy post title data from the
+	 * postmeta table to the posts table.
 	 *
-	 * @param array   $field The field.
-	 * @param WP_Post $post The post object.
-	 *
-	 * @return array|int|mixed|string
+	 * @param \WP_Post  $post The post object.
+	 * @param \WP_Query $query The query object.
+	 * @return void
 	 */
-	private function get_field_value( array $field, $post ) {
-		switch ( $field['type'] ) {
-			case 'text':
-				if ( empty( $field['isTitle'] ) ) {
-					$value = get_post_meta( $post->ID, $field['slug'], true );
-					break;
-				}
-
-				/**
-				 * We have a title field.
-				 * If the title data is stored in postmeta, this migrates
-				 * it to the posts table where it belongs.
-				 */
-				$meta_value = get_post_meta( $post->ID, $field['slug'], true );
-				if ( ! $meta_value ) {
-					$value = get_post_field( 'post_title', $post->ID );
-					$value = 'Auto Draft' === $value ? '' : $value;
-					break;
-				}
-
-				$post->post_title = $meta_value;
-				$updated          = wp_update_post( $post, true, false );
-				if ( ! is_wp_error( $updated ) ) {
-					delete_post_meta( $post->ID, $field['slug'] );
-					$value = get_post_field( 'post_title', $post->ID );
-					break;
-				}
-				$value = $meta_value; // fallback in case migrating title fails above.
-				break;
-			case 'relationship':
-				$value = $this->get_relationship_field( $post, $field );
-				break;
-			case 'media':
-				if ( ! empty( $field['isFeatured'] ) && has_post_thumbnail( $post ) ) {
-					$value = get_post_thumbnail_id( $post );
-					break;
-				}
-				$value = get_post_meta( $post->ID, $field['slug'], true );
-				break;
-			default:
-				$value = get_post_meta( $post->ID, $field['slug'], true );
-				break;
+	public function migrate_post_title( \WP_Post $post, \WP_Query $query ): void {
+		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
+			return;
 		}
 
-		return $value;
-	}
-
-	/**
-	 * Saves the specified field value.
-	 *
-	 * @param array   $field The field from the model.
-	 * @param mixed   $value The value to be saved.
-	 * @param WP_Post $post The post object.
-	 *
-	 * @return int|void|WP_Error
-	 */
-	private function save_field_value( array $field, $value, $post ) {
-		switch ( $field['type'] ) {
-			case 'text':
-				/**
-				 * If this is a title field, we migrate the title data from
-				 * the postmeta table to the posts table where it belongs.
-				 */
-				if ( ! empty( $field['isTitle'] ) ) {
-					$post->post_title = $value;
-					// phpcs:disable -- Nonce verified before data is passed to this function.
-					$manual_slug_override = ! empty( sanitize_text_field( wp_unslash( $_POST['post_name'] ) ) );
-					if ( $manual_slug_override && sanitize_title_with_dashes( wp_unslash( $_POST['post_name'] ) ) !== $post->post_name ) {
-						$post->post_name = sanitize_title_with_dashes( wp_unslash( $post->post_title ) );
-					}
-					// phpcs:enable
-
-					if ( ! $manual_slug_override &&
-						(
-							empty( $post->post_name ) ||
-							strpos( $post->post_name, 'auto-draft' ) !== false ||
-							strpos( $post->post_name, 'entry' . $post->ID ) !== false ||
-							$post->post_status === 'auto-draft'
-						)
-					) {
-						$post->post_name = sanitize_title_with_dashes( wp_unslash( $post->post_title ) );
-					}
-
-					return wp_update_post( $post );
-				}
-
-				return update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
-
-			case 'relationship':
-				return $this->save_relationship_field( $field['slug'], $post, $value );
-
-			case 'media':
-				if ( ! empty( $field['isFeatured'] ) ) {
-					delete_post_thumbnail( $post );
-					if ( ! set_post_thumbnail( $post, $value ) ) {
-						/* translators: %s: atlas content modeler field slug */
-						$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $value );
-					}
-					update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
-					return true;
-				} else {
-					return update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
-				}
-
-			default:
-				return update_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), $value );
+		if ( empty( $this->models[ $post->post_type ]['fields'] ) ) {
+			return;
 		}
-	}
 
-	/**
-	 * Deletes the value from the specified field.
-	 *
-	 * @param array   $field The field from the model.
-	 * @param WP_Post $post  The post object.
-	 *
-	 * @return bool|int|\WP_Error
-	 */
-	private function delete_field_value( array $field, $post ) {
-		switch ( $field['type'] ) {
-			case 'text':
-				if ( ! empty( $field['isTitle'] ) ) {
-					$post->post_title = '';
-					return wp_update_post( $post );
-				}
-				return delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );
-			case 'relationship':
-				return $this->save_relationship_field( $field['slug'], $post, '' );
-			default:
-				$existing = get_post_meta( $post->ID, sanitize_text_field( $field['slug'] ), true );
-				if ( empty( $existing ) ) {
-					return true;
-				}
-				return delete_post_meta( $post->ID, sanitize_text_field( $field['slug'] ) );
+		foreach ( $this->models[ $post->post_type ]['fields'] as $field ) {
+			if ( $field['type'] === 'text' && ! empty( $field['isTitle'] ) ) {
+				get_field_value( $field, $post ); // triggers migration.
+			}
 		}
 	}
 }
