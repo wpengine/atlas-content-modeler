@@ -150,13 +150,31 @@ class BlueprintImportTest extends WP_UnitTestCase {
 			$term_ids_old_new
 		);
 
-		$posts = get_posts( [ 'post_type' => 'rabbit' ] );
+		$rabbits = get_posts( [ 'post_type' => 'rabbit' ] );
 
-		foreach ( $posts as $post ) {
-			$saved_terms        = wp_get_post_terms( $post->ID, 'breed' );
-			$expected_term_name = $this->manifest['post_terms'][ $post_ids_old_new[ $post->ID ] ?? $post->ID ][0]['name'];
+		foreach ( $rabbits as $rabbit ) {
+			$saved_terms        = wp_get_post_terms( $rabbit->ID, 'breed' );
+			$expected_term_name = $this->manifest['post_terms'][ $post_ids_old_new[ $rabbit->ID ] ?? $rabbit->ID ][0]['name'];
 			$actual_term_name   = $saved_terms[0]->name;
 			self::assertSame( $expected_term_name, $actual_term_name );
+		}
+
+		$posts = get_posts( [ 'post_type' => 'post' ] );
+
+		foreach ( $posts as $post ) {
+			$manifest_terms          = $this->manifest['post_terms'][ $post_ids_old_new[ $post->ID ] ?? $post->ID ];
+			$imported_category_terms = wp_get_post_terms( $post->ID, 'category' );
+			$imported_tag_terms      = wp_get_post_terms( $post->ID, 'post_tag' );
+
+			foreach ( $manifest_terms as $post_term ) {
+				if ( $post_term['taxonomy'] === 'post_tag' ) {
+					self::assertContains( $post_term['name'], wp_list_pluck( $imported_tag_terms, 'name' ) );
+				}
+
+				if ( $post_term['taxonomy'] === 'category' ) {
+					self::assertContains( $post_term['name'], wp_list_pluck( $imported_category_terms, 'name' ) );
+				}
+			}
 		}
 	}
 
