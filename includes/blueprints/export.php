@@ -9,7 +9,6 @@ namespace WPE\AtlasContentModeler\Blueprint\Export;
 
 use WP_Error;
 use ZipArchive;
-use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\Blueprint\Import\is_acm_media_field_meta;
 use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
