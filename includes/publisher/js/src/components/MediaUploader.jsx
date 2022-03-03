@@ -16,23 +16,7 @@ export default function MediaUploader({
 	errors,
 	defaultError,
 }) {
-	function getFieldValues() {
-		const minLength = parseInt(field.minRepeatable) || 1;
-
-		if (!field?.value) {
-			return new Array(minLength).fill("", 0);
-		}
-
-		if (minLength < field.value.length) {
-			return field.value;
-		}
-
-		return field.value.concat(
-			new Array(minLength - field.value.length).fill("", 0)
-		);
-	}
-
-	const [fieldValues, setValues] = useState([]); // getFieldValues()
+	const [fieldValues, setValues] = useState([]);
 
 	const validFieldValues = fieldValues.filter((item) => !!item);
 	const showDeleteButton = field.minRepeatable
@@ -214,11 +198,18 @@ export default function MediaUploader({
 			return;
 		}
 
+		const selectedIds = fieldValues.map((item) => {
+			if (item.id) {
+				return item.id;
+			}
+		});
+
 		const media = wp.media({
 			title: getMediaModalTitle(),
 			multiple: true,
 			frame: "select",
 			library: library,
+			selected: selectedIds,
 			button: {
 				text: __("Done", "atlas-content-modeler"),
 			},
@@ -226,7 +217,7 @@ export default function MediaUploader({
 
 		media.open().on("select", function () {
 			const imgArr = [];
-			const uploadedMedia = media
+			media
 				.state()
 				.get("selection")
 				.map(function (attachment) {
@@ -235,7 +226,7 @@ export default function MediaUploader({
 						url: attachment.attributes.url,
 					});
 				});
-			setValues([fieldValues, ...imgArr]);
+			setValues(imgArr);
 		});
 	}
 
