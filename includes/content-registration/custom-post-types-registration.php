@@ -14,6 +14,7 @@ use WPGraphQL\Data\Connection\PostObjectConnectionResolver;
 use WPGraphQL\Model\Post;
 use WPGraphQL\Registry\TypeRegistry;
 use WPGraphQL\Data\DataSource;
+use function WPE\AtlasContentModeler\get_field_value;
 
 add_action( 'init', __NAMESPACE__ . '\register_content_types' );
 /**
@@ -128,11 +129,12 @@ function register_relationships( $registry ) {
  * @return array|mixed The Field's value accounting for field type.
  */
 function handle_content_fields_for_rest_api( int $post_id, array $field, \WP_REST_Request $request ) {
-	$meta_value = get_post_meta( $post_id, $field['slug'], true );
+	$post  = get_post( $post_id );
+	$value = get_field_value( $field, $post );
 
 	switch ( $field['type'] ) {
 		case 'media':
-			$media_item = get_post( $meta_value );
+			$media_item = get_post( $value );
 
 			if ( null === $media_item || 'attachment' !== $media_item->post_type ) {
 				return new \stdClass();
@@ -204,7 +206,7 @@ function handle_content_fields_for_rest_api( int $post_id, array $field, \WP_RES
 
 			return $media_data;
 		default:
-			return $meta_value;
+			return $value;
 	}
 }
 
@@ -510,32 +512,13 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			}
 
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
-				if ( 'text' === $field['original_type'] && ! empty( $field['isTitle'] ) ) {
-					/**
-					 * We have a title field.
-					 * If the title data is stored in postmeta, this migrates
-					 * it to the posts table where it belongs.
-					 */
-					$value = get_post_meta( $post->databaseId, $field['slug'], true );
-					if ( ! empty( $value ) ) {
-						$p             = get_post( $post->databaseId );
-						$p->post_title = $value;
-						$updated       = wp_update_post( $p, true, false );
-						if ( ! is_wp_error( $updated ) ) {
-							delete_post_meta( $post->databaseId, $field['slug'] );
-							return $value;
-						}
-					}
-					return $post->titleRendered;
-				}
-
 				if ( 'relationship' !== $field['original_type'] ) {
-					$value = get_post_meta( $post->databaseId, $field['slug'], true );
+					$value = get_field_value( $field, $post );
 
 					/**
 					 * If WPGraphQL expects a float and something else is returned instead
 					 * it causes a runaway PHP process and it eventually dies due to
-					 * to timeout issues. Casting to a float is a temporary fix until
+					 * timeout issues. Casting to a float is a temporary fix until
 					 * we get a proper fix upstream or build something more robust here.
 					 *
 					 * @todo
