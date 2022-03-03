@@ -56,12 +56,14 @@ export default function MediaUploader({
 
 	// load media file from wp.media service
 	useEffect(() => {
-		wp.media
-			.attachment(value)
-			.fetch()
-			.then(() => {
-				setMediaUrl(wp.media.attachment(value).get("url"));
-			});
+		if (!field.isRepeatable) {
+			wp.media
+				.attachment(value)
+				.fetch()
+				.then(() => {
+					setMediaUrl(wp.media.attachment(value).get("url"));
+				});
+		}
 	}, []);
 
 	/**
@@ -273,44 +275,23 @@ export default function MediaUploader({
 																name="repeaters"
 															>
 																<div>
-																	{imageRegex.test(
-																		item.url
-																	) ? (
-																		<img
-																			height="60"
-																			width="48"
-																			onClick={(
+																	<img
+																		height="60"
+																		width="48"
+																		onClick={(
+																			e
+																		) =>
+																			singleClickHandler(
 																				e
-																			) =>
-																				singleClickHandler(
-																					e
-																				)
-																			}
-																			src={
-																				item.url
-																			}
-																			alt={
-																				item.url
-																			}
-																		/>
-																	) : (
-																		<a
-																			href={
-																				item.url
-																			}
-																			target="_blank"
-																			rel="noopener noreferrer"
-																		>
-																			[
-																			{getFileExtension(
-																				item.url
-																			).toUpperCase()}
-																			]{" "}
-																			{
-																				item.url
-																			}
-																		</a>
-																	)}
+																			)
+																		}
+																		src={
+																			item.url
+																		}
+																		alt={
+																			item.url
+																		}
+																	/>
 																</div>
 															</div>
 
