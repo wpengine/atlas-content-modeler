@@ -269,7 +269,7 @@ export default function MediaUploader({
 															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 														>
 															<div
-																className="me-lg-1 repeater-input-container flex-fill"
+																className="me-lg-1 repeater-input-container"
 																name="repeaters"
 															>
 																<div>
@@ -315,7 +315,7 @@ export default function MediaUploader({
 															</div>
 
 															<div
-																className="me-lg-1 repeater-input-container flex-fill"
+																className="me-lg-1 repeater-input-container"
 																name="repeaters"
 															>
 																<DarkButton
@@ -386,6 +386,21 @@ export default function MediaUploader({
 																	</button>
 																)}
 															</div>
+														</div>
+														<div
+															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
+														>
+															<a
+																href={item.url}
+																target="_blank"
+																rel="noopener noreferrer"
+															>
+																[
+																{getFileExtension(
+																	item.url
+																).toUpperCase()}
+																] {item.url}
+															</a>
 														</div>
 													</tr>
 												);
