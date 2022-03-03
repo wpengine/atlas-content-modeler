@@ -75,7 +75,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'acm_fields', $response_data );
 
 		self::assertArrayHasKey( 'singleLineRequired', $response_data['acm_fields'] );
-		self::assertSame( 'This is required single line text', $response_data['acm_fields']['singleLineRequired'] );
+		self::assertSame( 'Test dog with fields', $response_data['acm_fields']['singleLineRequired'] );
 
 		self::assertArrayHasKey( 'singleLineTextRepeater', $response_data['acm_fields'] );
 		self::assertSame( [ 'This is one line of repeater text', 'This is another line of repeater text' ], $response_data['acm_fields']['singleLineTextRepeater'] );
