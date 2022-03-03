@@ -84,32 +84,6 @@
       "slug": "breed"
     }
   },
-  "terms": [
-    {
-      "term_id": 4,
-      "name": "Cartoon",
-      "slug": "cartoon",
-      "term_group": 0,
-      "term_taxonomy_id": 4,
-      "taxonomy": "breed",
-      "description": "",
-      "parent": 0,
-      "count": 0,
-      "filter": "raw"
-    },
-    {
-      "term_id": 3,
-      "name": "Human",
-      "slug": "human",
-      "term_group": 0,
-      "term_taxonomy_id": 3,
-      "taxonomy": "breed",
-      "description": "",
-      "parent": 0,
-      "count": 0,
-      "filter": "raw"
-    }
-  ],
   "posts": {
     "81": {
       "ID": 81,

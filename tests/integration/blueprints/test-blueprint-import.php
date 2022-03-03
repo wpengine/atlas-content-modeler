@@ -109,10 +109,10 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 	public function test_import_terms() {
 		import_taxonomies( $this->manifest['taxonomies'] );
-		$import_result = import_terms( $this->manifest['terms'] );
+		$import_result = import_terms( $this->manifest['post_terms'] );
 
 		$terms               = get_terms( 'breed', [ 'hide_empty' => false ] );
-		$expected_term_count = count( $this->manifest['terms'] );
+		$expected_term_count = 2; // See post_terms in tests/integration/blueprints/test-data/blueprint-good/acm.json.
 
 		self::assertCount( $expected_term_count, $terms );
 		self::assertFalse( $import_result['errors'] );
@@ -121,7 +121,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 	public function test_import_bad_terms_records_error() {
 		$manifest = get_manifest( __DIR__ . '/test-data/blueprint-bad-terms' );
 		import_taxonomies( $manifest['taxonomies'] );
-		$import_terms = import_terms( $manifest['terms'] );
+		$import_terms = import_terms( $manifest['post_terms'] );
 
 		self::assertInstanceOf( 'WP_Error', $import_terms['errors'] );
 		$errors = $import_terms['errors']->get_error_codes();
@@ -134,7 +134,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		import_taxonomies( $this->manifest['taxonomies'] );
 
 		$post_ids_old_new = import_posts( $this->manifest['posts'] );
-		$term_ids_old_new = import_terms( $this->manifest['terms'] )['ids'];
+		$term_ids_old_new = import_terms( $this->manifest['post_terms'] )['ids'];
 
 		tag_posts(
 			$this->manifest['post_terms'],
@@ -158,7 +158,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		import_taxonomies( $manifest['taxonomies'] );
 
 		$post_ids_old_new = import_posts( $manifest['posts'] );
-		$term_ids_old_new = import_terms( $manifest['terms'] )['ids'];
+		$term_ids_old_new = import_terms( $manifest['post_terms'] )['ids'];
 
 		$tag_posts = tag_posts(
 			$manifest['post_terms'],

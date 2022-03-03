@@ -139,9 +139,9 @@ class Blueprint {
 		}
 
 		$term_ids_old_new = [];
-		if ( ! empty( $manifest['terms'] ?? [] ) ) {
+		if ( ! empty( $manifest['post_terms'] ?? [] ) ) {
 			\WP_CLI::log( 'Importing terms.' );
-			$term_ids_old_new = import_terms( $manifest['terms'] );
+			$term_ids_old_new = import_terms( $manifest['post_terms'] );
 
 			if ( is_wp_error( $term_ids_old_new['errors'] ) ) {
 				foreach ( $term_ids_old_new['errors']->get_error_messages() as $message ) {
