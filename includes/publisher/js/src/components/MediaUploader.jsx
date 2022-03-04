@@ -40,6 +40,8 @@ export default function MediaUploader({
 
 	// load media file from wp.media service
 	useEffect(() => {
+		// TODO: account for multi and single here - [] 0 key for single
+		// get ids and values and set on defaultValues
 		if (!field.isRepeatable) {
 			wp.media
 				.attachment(value)
@@ -66,6 +68,15 @@ export default function MediaUploader({
 	 */
 	function getFileExtension(file) {
 		return file ? file.split(".").pop() : "";
+	}
+
+	/**
+	 * Get file name
+	 * @param file
+	 * @returns {any}
+	 */
+	function getFileName(file) {
+		return file ? file.split("/").pop() : "";
 	}
 
 	/**
@@ -281,7 +292,7 @@ export default function MediaUploader({
 																		onClick={(
 																			e
 																		) =>
-																			singleClickHandler(
+																			multiClickHandler(
 																				e
 																			)
 																		}
@@ -295,7 +306,7 @@ export default function MediaUploader({
 																</div>
 															</div>
 
-															<div
+															{/* <div
 																className="me-lg-1 repeater-input-container"
 																name="repeaters"
 															>
@@ -328,7 +339,7 @@ export default function MediaUploader({
 																		field
 																	)}
 																</DarkButton>
-															</div>
+															</div> */}
 															<div
 																className={`value[${index}].remove-container p-2 me-sm-1`}
 															>
@@ -378,7 +389,10 @@ export default function MediaUploader({
 																{getFileExtension(
 																	item.url
 																).toUpperCase()}
-																] {item.url}
+																]{" "}
+																{getFileName(
+																	item.url
+																)}
 															</a>
 														</div>
 													</tr>
@@ -399,7 +413,7 @@ export default function MediaUploader({
 													}
 												>
 													{__(
-														"+ Add Media",
+														"Manage Media",
 														"atlas-content-modeler"
 													)}
 												</LinkButton>
