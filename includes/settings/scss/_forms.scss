@@ -61,7 +61,7 @@
 }
 
 .atlas-content-modeler-admin-page input:disabled,
-.atlas-content-modeler-admin-page input:read-only {
+.atlas-content-modeler-admin-page .read-only input {
 	background: #f4f7fa;
 	border: 1px solid #cfdde9;
 	color: #59767f;
