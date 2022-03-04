@@ -10,6 +10,10 @@ export function Dropdown(props) {
 			margin-left: -80px;
 		}
 
+		button.options {
+			cursor: pointer;
+		}
+
 		.dropdown-content:not(.hidden) {
 			background: #fff;
 			border-radius: 2px;
