@@ -6,6 +6,7 @@
 
 ### Fixed
 - The delete model prompt no longer shows “undefined” in its title during model deletion.
+- Options buttons now use the mouse pointer cursor.
 
 ## 0.14.0 - 2022-02-10
 ### Added
