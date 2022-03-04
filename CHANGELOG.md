@@ -6,6 +6,7 @@
 
 ### Fixed
 - The delete model prompt no longer shows “undefined” in its title during model deletion.
+- Improved checkbox styling in field settings.
 
 ## 0.14.0 - 2022-02-10
 ### Added
