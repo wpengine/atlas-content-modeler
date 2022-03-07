@@ -247,6 +247,7 @@ function sanitize_field( string $type, $value ) {
  */
 function get_field_value( array $field, $post ) {
 	switch ( $field['type'] ) {
+		case 'String':
 		case 'text':
 			if ( empty( $field['isTitle'] ) ) {
 				$value = get_post_meta( $post->ID, $field['slug'], true );
