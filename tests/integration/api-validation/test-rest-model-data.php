@@ -64,6 +64,21 @@ class RestModelDataTests extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests that title value is available in REST responses
+	 * as the post title and as the field slug under acm_fields.
+	 */
+	public function test_title_field_value_is_available_in_rest_responses_under_title_and_field_slug_properties(): void {
+		wp_set_current_user( 1 );
+		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_fields_route . '/' . $this->post_ids['public_fields_post_id'] );
+		$response      = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+
+		self::assertArrayHasKey( 'singleLineRequired', $response_data['acm_fields'] );
+		self::assertSame( 'Test dog with fields', $response_data['acm_fields']['singleLineRequired'] );
+		self::assertSame( 'Test dog with fields', $response_data['title']['rendered'] );
+	}
+
+	/**
 	 * Test that all fields are accounted for in REST
 	 */
 	public function test_post_meta_that_is_configured_to_show_in_rest_is_accessible(): void {
@@ -73,9 +88,6 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$response_data = $response->get_data();
 
 		self::assertArrayHasKey( 'acm_fields', $response_data );
-
-		self::assertArrayHasKey( 'singleLineRequired', $response_data['acm_fields'] );
-		self::assertSame( 'Test dog with fields', $response_data['acm_fields']['singleLineRequired'] );
 
 		self::assertArrayHasKey( 'singleLineTextRepeater', $response_data['acm_fields'] );
 		self::assertSame( [ 'This is one line of repeater text', 'This is another line of repeater text' ], $response_data['acm_fields']['singleLineTextRepeater'] );
