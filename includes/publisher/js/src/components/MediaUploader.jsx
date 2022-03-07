@@ -3,8 +3,9 @@ import { jsx, css } from "@emotion/react";
 import React, { useEffect, useState } from "react";
 import Icon from "../../../../components/icons";
 import {
-	DarkButton,
 	LinkButton,
+	DarkButton,
+	TertiaryButton,
 } from "../../../../shared-assets/js/components/Buttons";
 import { __ } from "@wordpress/i18n";
 import TrashIcon from "../../../../components/icons/TrashIcon";
@@ -305,41 +306,26 @@ export default function MediaUploader({
 																	/>
 																</div>
 															</div>
-
-															{/* <div
-																className="me-lg-1 repeater-input-container"
-																name="repeaters"
+															<div
+																className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 															>
-																<DarkButton
-																	name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-																	onClick={(
-																		event
-																	) => {
-																		// TODO: Update the value of the item.
-																		const newValue =
-																			event
-																				.currentTarget
-																				.value;
-																		setValues(
-																			(
-																				oldValues
-																			) => {
-																				let newValues = [
-																					...oldValues,
-																				];
-																				newValues[
-																					index
-																				] = newValue;
-																				return newValues;
-																			}
-																		);
-																	}}
+																<a
+																	href={
+																		item.url
+																	}
+																	target="_blank"
+																	rel="noopener noreferrer"
 																>
-																	{getMediaButtonText(
-																		field
+																	[
+																	{getFileExtension(
+																		item.url
+																	).toUpperCase()}
+																	]{" "}
+																	{getFileName(
+																		item.url
 																	)}
-																</DarkButton>
-															</div> */}
+																</a>
+															</div>
 															<div
 																className={`value[${index}].remove-container p-2 me-sm-1`}
 															>
@@ -377,49 +363,27 @@ export default function MediaUploader({
 																</button>
 															</div>
 														</div>
-														<div
-															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
-														>
-															<a
-																href={item.url}
-																target="_blank"
-																rel="noopener noreferrer"
-															>
-																[
-																{getFileExtension(
-																	item.url
-																).toUpperCase()}
-																]{" "}
-																{getFileName(
-																	item.url
-																)}
-															</a>
-														</div>
 													</tr>
 												);
 											})}
 											<tr className="flex add-container">
-												<LinkButton
-													css={css`
-														color: #d21b46;
-														&:focus,
-														&:hover {
-															color: #a51537;
-														}
-													`}
-													href="#"
-													onClick={(e) =>
-														multiClickHandler(e)
-													}
+												<TertiaryButton
+													type="submit"
+													className="mx-3"
+													data-testid="media-uploader-manage-media-button"
+													onClick={(e) => {
+														multiClickHandler(e);
+													}}
 												>
 													{__(
 														"Manage Media",
 														"atlas-content-modeler"
 													)}
-												</LinkButton>
+												</TertiaryButton>
+
 												{/*TODO: still needed?*/}
 												{allowedTypes && (
-													<p className="text-muted">
+													<p className="help text-muted">
 														{__(
 															"Accepts file types",
 															"atlas-content-modeler"
