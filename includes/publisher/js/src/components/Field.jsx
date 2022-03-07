@@ -2,7 +2,8 @@ import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
 import RichTextEditor from "./RichTextEditor";
 import Relationship from "./relationship";
-import { Text } from "./Text";
+import Text from "./Text";
+import Number from "./Number";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
@@ -106,74 +107,14 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 				/>
 			);
 		case "number":
-			let numberOptions = {};
-			const numberInputRef = useRef();
-
-			if (field?.minValue || field?.minValue === 0) {
-				numberOptions.min = field.minValue ?? 0;
-			}
-			if (field?.maxValue) {
-				numberOptions.max = field.maxValue;
-			}
-			if (field?.step) {
-				numberOptions.step = field.step;
-			} else {
-				field.numberType === "integer"
-					? (numberOptions.step = 1)
-					: (numberOptions.step = "any");
-			}
-
-			/**
-			 * Check for need to sanitize number fields further before regular validation
-			 * @param event
-			 * @param field
-			 */
-			function preValidate(event, field) {
-				const disallowedCharacters = /[.]/g;
-
-				if (field.numberType === "integer") {
-					if (disallowedCharacters.test(event.key)) {
-						event.preventDefault();
-						return;
-					}
-				}
-
-				// call global validate
-				validate(event, field);
-			}
 			return (
-				<>
-					<label
-						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-					>
-						{field.name}
-					</label>
-					{field?.required && (
-						<p className="required">
-							*{__("Required", "atlas-content-modeler")}
-						</p>
-					)}
-					{field?.description && (
-						<p className="help mb-0">{field.description}</p>
-					)}
-					<input
-						ref={numberInputRef}
-						type={`${field.type}`}
-						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						defaultValue={field.value}
-						required={field.required}
-						onChange={(event) => preValidate(event, field)}
-						onKeyDown={(event) => preValidate(event, field)}
-						{...numberOptions}
-					/>
-					<span className="error">
-						<Icon type="error" />
-						<span role="alert">
-							{errors[field.slug] ?? defaultError}
-						</span>
-					</span>
-				</>
+				<Number
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
 			);
 		case "date": // @todo split this out for proper browser and datepicker support
 			return (

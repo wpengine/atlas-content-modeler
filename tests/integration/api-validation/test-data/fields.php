@@ -356,5 +356,22 @@ function get_test_fields() {
 			'allowedTypes'    => '',
 			'isFeatured'      => true,
 		),
+		'1646070396'    => array(
+			'show_in_rest'       => true,
+			'show_in_graphql'    => true,
+			'type'               => 'number',
+			'id'                 => '1646070396',
+			'position'           => '200000',
+			'name'               => 'Number-Integer-Repeat',
+			'slug'               => 'numberIntegerRepeat',
+			'required'           => false,
+			'minChars'           => '',
+			'maxChars'           => '',
+			'numberType'         => 'integer',
+			'isRepeatableNumber' => 'true',
+			'minValue'           => '',
+			'maxValue'           => '',
+			'step'               => '',
+		),
 	);
 }

@@ -84,32 +84,6 @@
       "slug": "breed"
     }
   },
-  "terms": [
-    {
-      "term_id": 4,
-      "name": "Cartoon",
-      "slug": "cartoon",
-      "term_group": 0,
-      "term_taxonomy_id": 4,
-      "taxonomy": "breed",
-      "description": "",
-      "parent": 0,
-      "count": 0,
-      "filter": "raw"
-    },
-    {
-      "term_id": 3,
-      "name": "Human",
-      "slug": "human",
-      "term_group": 0,
-      "term_taxonomy_id": 3,
-      "taxonomy": "breed",
-      "description": "",
-      "parent": 0,
-      "count": 0,
-      "filter": "raw"
-    }
-  ],
   "posts": {
     "81": {
       "ID": 81,
@@ -160,6 +134,35 @@
       "post_type": "rabbit",
       "post_mime_type": "",
       "comment_count": "0"
+    },
+    "1457": {
+      "ID": 1457,
+      "post_author": "1",
+      "post_date": "2022-02-25 17:21:16",
+      "post_date_gmt": "2022-02-25 17:21:16",
+      "post_content": "",
+      "post_title": "5 Crazy Fan Theories About Fight Club",
+      "post_excerpt": "",
+      "post_status": "publish",
+      "comment_status": "open",
+      "ping_status": "open",
+      "post_password": "",
+      "post_name": "5-crazy-fan-theories-about-fight-club",
+      "to_ping": "",
+      "pinged": "",
+      "post_modified": "2022-03-02 10:59:30",
+      "post_modified_gmt": "2022-03-02 10:59:30",
+      "post_content_filtered": "",
+      "post_parent": 0,
+      "menu_order": 0,
+      "post_type": "post",
+      "post_mime_type": "",
+      "comment_count": "0",
+      "filter": "raw",
+      "ancestors": [],
+      "page_template": "",
+      "post_category": [167],
+      "tags_input": ["dark", "weird"]
     }
   },
   "post_terms": {
@@ -173,6 +176,44 @@
     ],
     "82": [
       { "term_id": 3, "name": "Human", "slug": "human", "taxonomy": "breed" }
+    ],
+    "1457": [
+      {
+        "term_id": 167,
+        "name": "films",
+        "slug": "films",
+        "term_group": 0,
+        "term_taxonomy_id": 167,
+        "taxonomy": "category",
+        "description": "",
+        "parent": 0,
+        "count": 1,
+        "filter": "raw"
+      },
+      {
+        "term_id": 169,
+        "name": "dark",
+        "slug": "dark",
+        "term_group": 0,
+        "term_taxonomy_id": 169,
+        "taxonomy": "post_tag",
+        "description": "",
+        "parent": 0,
+        "count": 1,
+        "filter": "raw"
+      },
+      {
+        "term_id": 168,
+        "name": "weird",
+        "slug": "weird",
+        "term_group": 0,
+        "term_taxonomy_id": 168,
+        "taxonomy": "post_tag",
+        "description": "",
+        "parent": 0,
+        "count": 1,
+        "filter": "raw"
+      }
     ]
   },
   "post_meta": {

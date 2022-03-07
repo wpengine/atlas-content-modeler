@@ -39,7 +39,6 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_post_tags,
 	collect_posts,
 	collect_relationships,
-	collect_terms,
 	delete_folder,
 	generate_meta,
 	get_acm_temp_dir,
@@ -139,9 +138,9 @@ class Blueprint {
 		}
 
 		$term_ids_old_new = [];
-		if ( ! empty( $manifest['terms'] ?? [] ) ) {
+		if ( ! empty( $manifest['post_terms'] ?? [] ) ) {
 			\WP_CLI::log( 'Importing terms.' );
-			$term_ids_old_new = import_terms( $manifest['terms'] );
+			$term_ids_old_new = import_terms( $manifest['post_terms'] );
 
 			if ( is_wp_error( $term_ids_old_new['errors'] ) ) {
 				foreach ( $term_ids_old_new['errors']->get_error_messages() as $message ) {
@@ -259,8 +258,11 @@ class Blueprint {
 		$manifest['taxonomies'] = get_acm_taxonomies();
 
 		\WP_CLI::log( 'Collecting posts.' );
-		$post_types = [];
-		if ( $assoc_args['post-types'] ?? false ) {
+		$post_types = array_merge(
+			array_keys( get_registered_content_types() ),
+			[ 'post', 'page' ]
+		);
+		if ( ! empty( $assoc_args['post-types'] ) ) {
 			$post_types = array_map(
 				'trim',
 				explode( ',', $assoc_args['post-types'] )
@@ -268,18 +270,10 @@ class Blueprint {
 		}
 		$manifest['posts'] = collect_posts( $post_types );
 
-		if ( ! empty( $manifest['taxonomies'] ?? [] ) ) {
-			\WP_CLI::log( 'Collecting terms.' );
-			$manifest['terms'] = collect_terms(
-				array_keys( $manifest['taxonomies'] )
-			);
-		}
-
-		if ( ! empty( $manifest['terms'] ?? [] ) ) {
+		if ( ! empty( $manifest['posts'] ?? [] ) ) {
 			\WP_CLI::log( 'Collecting post tags.' );
 			$manifest['post_terms'] = collect_post_tags(
-				$manifest['posts'] ?? [],
-				wp_list_pluck( $manifest['terms'], 'taxonomy' )
+				$manifest['posts'] ?? []
 			);
 		}
 

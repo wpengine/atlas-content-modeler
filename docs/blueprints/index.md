@@ -37,7 +37,6 @@ ACM blueprints do not yet export or import:
 - **Post authors:** All posts are assigned to the current user on import.
 - **WordPress options:** No entries from `wp_options` are stored or restored at this time.
 - **Installed plugins:** ACM does not yet install or activate plugins.
-- **Tags and categories for core post and page types:** ACM imports taxonomies and tags relating to ACM entries only at this time.
 
 If you'd like to see support for these please [open or add to a discussion](https://github.com/wpengine/atlas-content-modeler/discussions).
 
