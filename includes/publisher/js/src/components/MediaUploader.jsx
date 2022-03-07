@@ -363,6 +363,16 @@ export default function MediaUploader({
 																</button>
 															</div>
 														</div>
+
+														<input
+															type="hidden"
+															name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+															id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+															defaultValue={
+																item.id
+															}
+															onChange={() => {}}
+														/>
 													</tr>
 												);
 											})}
@@ -409,18 +419,6 @@ export default function MediaUploader({
 							)}
 						</span>
 					</span>
-
-					{/* <div>
-						<input
-							type="text"
-							name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-							id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-							className="hidden"
-							required={required}
-							onChange={() => {}} // Prevents “You provided a `value` prop to a form field without an `onChange` handler.”
-							value={value} // Using defaultValue here prevents images from updating on save.
-						/>
-					</div> */}
 				</div>
 			</>
 		);
