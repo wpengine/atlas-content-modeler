@@ -17,7 +17,7 @@ const MediaFields = ({ register, data, editing, fieldId }) => {
 						{__("Repeatable Field", "atlas-content-modeler")}
 					</legend>
 					<input
-						name="isRepeatable"
+						name="isRepeatableMedia"
 						type="checkbox"
 						id={`is-repeatable-${fieldId}`}
 						ref={register}
