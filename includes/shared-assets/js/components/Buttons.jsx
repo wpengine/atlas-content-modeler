@@ -1,185 +1,159 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
+import styled from "@emotion/styled";
 
-export function Button(props) {
-	const cssAttributes = css`
-		background: #7e5cef;
-		border-radius: 2px;
-		border: 1px solid #7e5cef;
-		color: #fff;
-		cursor: pointer;
-		font-size: 14px;
-		font-weight: 600;
-		height: 52px;
-		line-height: 20px;
-		padding: 14px 24px;
-		&:hover,
-		&:focus {
-			background: #5c43ae;
-			border: 1px solid #5c43ae;
-		}
-		,
-		&:disabled {
-			background: #f4f7fa !important;
-			border-color: #cfdde9 !important;
-			color: #59767f !important;
-			&:hover {
-				background: #f4f7fa !important;
-				border-color: #cfdde9 !important;
-				color: #59767f !important;
-			}
-		}
-	`;
+// TODO-abotz: Add radius variable(s) to theme?
+const borderRadius = "2px";
 
-	return (
-		<button css={cssAttributes} {...props}>
-			{props.children}
-		</button>
-	);
-}
+const addImportantToStyle = (style) => {
+	return `${style} !important`;
+};
 
-export function TertiaryButton(props) {
-	const cssAttributes = css`
-		background: #fff;
-		border: 1px solid #002838;
-		color: #002838;
-		&:hover,
-		&:focus {
-			background: #fff;
-			border: 1px solid #7e5cef;
-			color: #7e5cef;
-		}
-	`;
+export const Button = styled.button((props) => {
+	const {
+		primary,
+		primaryHover,
+		secondary,
+		secondaryLight,
+		grayDisabledText,
+		white,
+	} = props.theme.colors;
 
-	return (
-		<Button css={cssAttributes} {...props}>
-			{props.children}
-		</Button>
-	);
-}
+	return {
+		fontSize: "14px",
+		fontWeight: "600",
+		lineHeight: "20px",
+		background: primary,
+		borderRadius,
+		border: `1px solid ${primary}`,
+		color: white,
+		cursor: "pointer",
+		height: "52px",
+		padding: "14px 20px",
+		"&:hover, &:focus": {
+			background: primaryHover,
+			border: `1px solid ${primaryHover}`,
+		},
+		"&:disabled": {
+			background: addImportantToStyle(secondaryLight),
+			borderColor: addImportantToStyle(secondary),
+			color: addImportantToStyle(grayDisabledText),
+			"&:hover": {
+				background: addImportantToStyle(secondaryLight),
+				borderColor: addImportantToStyle(secondary),
+				color: addImportantToStyle(grayDisabledText),
+			},
+		},
+	};
+});
 
-export function FieldButton({ className = "", active = false, ...props }) {
-	let cssAttributes = css`
-		align-items: center;
-		display: flex;
-		margin-right: 8px;
-		padding: 10px 16px;
+export const TertiaryButton = styled(Button)((props) => {
+	const { white, blueDark, primary } = props.theme.colors;
 
-		&:hover svg path,
-		&:focus svg path {
-			fill: #7e5cef;
-		}
+	return {
+		background: white,
+		border: `1px solid ${blueDark}`,
+		color: blueDark,
+		"&:hover, &:focus": {
+			background: white,
+			border: `1px solid ${primary}`,
+			color: primary,
+		},
+	};
+});
 
-		svg {
-			margin-right: 9px;
-		}
-	`;
+// TODO-abotz: Need to figure out how to add className of active when "active" prop is true
+export const FieldButton = styled(Button)((props) => {
+	const { active = false } = props;
+	const { primary, text, white } = props.theme.colors;
 
 	if (active) {
-		cssAttributes = css`
-			${cssAttributes}
-			background: #002838;
-			color: #fff;
-
-			&:hover,
-			&:focus {
-				background: #002838;
-				border: 1px solid #002838;
-				color: #fff;
-			}
-
-			svg path,
-			&:focus svg path,
-			&:hover svg path {
-				fill: #fff;
-			}
-		`;
-		className += " active";
+		return {
+			background: text,
+			color: white,
+			"&:hover, &:focus": {
+				background: text,
+				border: `1px solid ${text}`,
+				color: white,
+			},
+			"svg path, &:focus svg path, &:hover svg path": {
+				fill: white,
+			},
+		};
 	}
 
-	return (
-		<TertiaryButton css={cssAttributes} className={className} {...props}>
-			{props.children}
-		</TertiaryButton>
-	);
-}
+	return {
+		alignItems: "center",
+		display: "flex",
+		marginRight: "8px",
+		padding: "10px 16px",
+		"&:hover svg path, &:focus svg path": {
+			fill: primary,
+		},
+		svg: {
+			marginRight: "9px",
+		},
+	};
+});
 
-export function LinkButton(props) {
-	const cssAttributes = css`
-		background: transparent;
-		border-color: transparent;
-		color: #7e5cef;
-		margin-left: 20px;
-		padding: 14px 0;
+export const LinkButton = styled(Button)((props) => {
+	const { primary, primaryHover, grayLight } = props.theme.colors;
+	const transparent = "transparent";
 
-		&:active,
-		&:hover,
-		&:focus {
-			background: transparent;
-			border-color: transparent;
-			color: #5c43ae;
+	return {
+		background: transparent,
+		borderColor: transparent,
+		color: primary,
+		marginLeft: "20px",
+		padding: "14px 0",
+		"&:active, &:hover, &:focus": {
+			background: transparent,
+			borderColor: transparent,
+			color: primaryHover,
+			"svg path": {
+				fill: primaryHover,
+			},
+		},
+		"&:disabled": {
+			background: addImportantToStyle(transparent),
+			borderColor: addImportantToStyle(transparent),
+			color: addImportantToStyle(grayLight),
+			"&:hover": {
+				background: addImportantToStyle(transparent),
+				borderColor: addImportantToStyle(transparent),
+				color: addImportantToStyle(grayLight),
+			},
+		},
 
-			svg path {
-				fill: #5c43ae;
-			}
-		}
-		&:disabled {
-			background: transparent !important;
-			border-color: transparent !important;
-			color: #9db7d1 !important;
-			&:hover {
-				background: transparent !important;
-				border-color: transparent !important;
-				color: #9db7d1 !important;
-			}
-		}
+		svg: {
+			marginRight: "10px",
+		},
+	};
+});
 
-		svg {
-			margin-right: 10px;
-		}
-	`;
+export const WarningButton = styled(Button)((props) => {
+	const { warning, warningHover, white } = props.theme.colors;
 
-	return (
-		<Button css={cssAttributes} {...props}>
-			{props.children}
-		</Button>
-	);
-}
+	return {
+		background: warning,
+		border: `1px solid ${warning}`,
+		color: white,
+		"&:hover, &:focus": {
+			background: warningHover,
+			border: `1px solid ${warningHover}`,
+		},
+	};
+});
 
-export function WarningButton(props) {
-	const cssAttributes = css`
-		background: #d21b46;
-		border: 1px solid #d21b46;
-		color: #fff;
-		&:hover,
-		&:focus {
-			background: #991433;
-			border: 1px solid #991433;
-		}
-	`;
-
-	return (
-		<Button css={cssAttributes} {...props}>
-			{props.children}
-		</Button>
-	);
-}
-
-export function DarkButton(props) {
-	const cssAttributes = css`
-		background: #002838;
-		border: 1px solid #002838;
-		color: #fff;
-		&:hover,
-		&:focus {
-			background: #004c6b;
-			border: 1px solid #004c6b;
-		}
-	`;
-
-	return (
-		<Button css={cssAttributes} {...props}>
-			{props.children}
-		</Button>
-	);
-}
+export const DarkButton = styled(Button)((props) => {
+	const { blueDark, blueDarkHover, white } = props.theme.colors;
+	return {
+		background: blueDark,
+		border: `1px solid ${blueDark}`,
+		color: white,
+		"&:hover, &:focus": {
+			background: blueDarkHover,
+			border: `1px solid ${blueDarkHover}`,
+		},
+	};
+});
