@@ -304,6 +304,38 @@ export default function MediaUploader({
 																			item.url
 																		}
 																	/>
+
+																	<input
+																		type="hidden"
+																		name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																		value={
+																			fieldValues[
+																				index
+																			]
+																		}
+																		onChange={(
+																			event
+																		) => {
+																			// Update the value of the item.
+																			const newValue =
+																				event
+																					.currentTarget
+																					.value;
+																			setValues(
+																				(
+																					oldValues
+																				) => {
+																					let newValues = [
+																						...oldValues,
+																					];
+																					newValues[
+																						index
+																					] = newValue;
+																					return newValues;
+																				}
+																			);
+																		}}
+																	/>
 																</div>
 															</div>
 															<div
@@ -363,16 +395,6 @@ export default function MediaUploader({
 																</button>
 															</div>
 														</div>
-
-														<input
-															type="hidden"
-															name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-															id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-															defaultValue={
-																item.id
-															}
-															onChange={() => {}}
-														/>
 													</tr>
 												);
 											})}
