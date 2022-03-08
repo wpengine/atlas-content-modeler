@@ -41,7 +41,6 @@ export default function MediaUploader({
 
 	// load media file from wp.media service
 	useEffect(() => {
-		// TODO: account for multi and single here - [] 0 key for single
 		// get ids and values and set on defaultValues
 		if (!field.isRepeatable) {
 			wp.media
@@ -50,16 +49,40 @@ export default function MediaUploader({
 				.then(() => {
 					setMediaUrl(wp.media.attachment(value).get("url"));
 				});
+		} else {
+			setMultiMediaUrls();
 		}
 	}, []);
 
 	/**
-	 * Reset values
+	 * Reset values - single
 	 */
 	function deleteImage(e) {
 		e.preventDefault();
 		setValue("");
 		setMediaUrl("");
+	}
+
+	/**
+	 * Sets urls for repeater media field
+	 */
+	function setMultiMediaUrls() {
+		if (Array.isArray(value)) {
+			const imgArr = [];
+
+			value.forEach(function (item, i) {
+				wp.media
+					.attachment(item)
+					.fetch()
+					.then(() => {
+						imgArr[i] = {
+							id: item,
+							url: wp.media.attachment(item).get("url"),
+						};
+					});
+			});
+			setValues(imgArr);
+		}
 	}
 
 	/**
@@ -311,7 +334,7 @@ export default function MediaUploader({
 																		value={
 																			fieldValues[
 																				index
-																			]
+																			].id
 																		}
 																		onChange={(
 																			event
