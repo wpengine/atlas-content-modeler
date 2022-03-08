@@ -19,18 +19,6 @@ export default function MediaUploader({
 }) {
 	const [fieldValues, setValues] = useState([]);
 
-	const validFieldValues = fieldValues.filter((item) => !!item);
-	const showDeleteButton = field.minRepeatable
-		? fieldValues.length > field.minRepeatable
-		: fieldValues.length > 1;
-	const isMaxInputs =
-		field.maxRepeatable && fieldValues.length === field.maxRepeatable;
-	const isMinRequired =
-		field.minRepeatable &&
-		validFieldValues.length > 0 &&
-		validFieldValues.length < field.minRepeatable;
-	const isRequired = field?.required || isMinRequired;
-
 	// state
 	const [mediaUrl, setMediaUrl] = useState("");
 	const [value, setValue] = useState(field.value);
@@ -70,18 +58,24 @@ export default function MediaUploader({
 		if (Array.isArray(value)) {
 			const imgArr = [];
 
+			function addUrl(index, item, url) {
+				setValues((fieldValues) => [
+					...fieldValues,
+					{
+						url: url,
+						id: +item,
+					},
+				]);
+			}
+
 			value.forEach(function (item, i) {
 				wp.media
 					.attachment(item)
 					.fetch()
 					.then(() => {
-						imgArr[i] = {
-							id: item,
-							url: wp.media.attachment(item).get("url"),
-						};
+						addUrl(i, item, wp.media.attachment(item).get("url"));
 					});
 			});
-			setValues(imgArr);
 		}
 	}
 
