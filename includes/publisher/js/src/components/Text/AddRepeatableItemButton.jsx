@@ -17,15 +17,18 @@ export default function AddRepeatableItemButton({
 	if (isMaxInputs) {
 		return (
 			<div
-				css={css`
-					color: #9db7d1;
-					svg {
-						color: #9db7d1;
-						path {
-							fill: #9db7d1;
-						}
-					}
-				`}
+				css={(theme) => {
+					const { grayLight } = theme.colors;
+					return {
+						color: grayLight,
+						svg: {
+							color: grayLight,
+							path: {
+								fill: grayLight,
+							},
+						},
+					};
+				}}
 				className="d-flex flex-row justify-content-start align-items-center py-4 ps-3"
 			>
 				<AddIcon noCircle />{" "}
@@ -35,9 +38,9 @@ export default function AddRepeatableItemButton({
 						: __(`Add Item`, "atlas-content-modeler")}
 				</strong>
 				<span
-					css={css`
-						color: #d21b46;
-					`}
+					css={(theme) => ({
+						color: theme.colors.grayLight,
+					})}
 				>
 					{values.length}/{field.maxRepeatable} Max Inputs Reached
 				</span>
