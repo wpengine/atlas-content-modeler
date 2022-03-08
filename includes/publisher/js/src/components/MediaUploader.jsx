@@ -9,6 +9,7 @@ import {
 } from "../../../../shared-assets/js/components/Buttons";
 import { __ } from "@wordpress/i18n";
 import TrashIcon from "../../../../components/icons/TrashIcon";
+import MediaIcon from "../../../../components/icons/MediaIcon";
 
 export default function MediaUploader({
 	modelSlug,
@@ -417,22 +418,24 @@ export default function MediaUploader({
 											})}
 											<tr className="flex add-container">
 												<td>
-													<TertiaryButton
-														type="submit"
-														className="mx-3"
-														data-testid="media-uploader-manage-media-button"
-														onClick={(e) => {
-															multiClickHandler(
-																e
-															);
-														}}
-													>
-														{__(
-															"Manage Media",
-															"atlas-content-modeler"
-														)}
-													</TertiaryButton>
-
+													<div>
+														<MediaIcon noCircle />
+														<LinkButton
+															type="submit"
+															className="mx-3"
+															data-testid="media-uploader-manage-media-button"
+															onClick={(e) => {
+																multiClickHandler(
+																	e
+																);
+															}}
+														>
+															{__(
+																"Manage Media",
+																"atlas-content-modeler"
+															)}
+														</LinkButton>
+													</div>
 													{/*TODO: still needed?*/}
 													{allowedTypes && (
 														<p className="help text-muted">
