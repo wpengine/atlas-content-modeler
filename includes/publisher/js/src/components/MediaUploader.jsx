@@ -294,9 +294,9 @@ export default function MediaUploader({
 												return (
 													<tr
 														key={index}
-														className={`field text-repeater-container-single d-flex mt-1 flex-fill flex-row`}
+														className={`field media-repeater-container-single d-flex mt-1 flex-fill flex-row`}
 													>
-														<div
+														<td
 															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 														>
 															<div
@@ -411,36 +411,40 @@ export default function MediaUploader({
 																	</a>
 																</button>
 															</div>
-														</div>
+														</td>
 													</tr>
 												);
 											})}
 											<tr className="flex add-container">
-												<TertiaryButton
-													type="submit"
-													className="mx-3"
-													data-testid="media-uploader-manage-media-button"
-													onClick={(e) => {
-														multiClickHandler(e);
-													}}
-												>
-													{__(
-														"Manage Media",
-														"atlas-content-modeler"
-													)}
-												</TertiaryButton>
-
-												{/*TODO: still needed?*/}
-												{allowedTypes && (
-													<p className="help text-muted">
+												<td>
+													<TertiaryButton
+														type="submit"
+														className="mx-3"
+														data-testid="media-uploader-manage-media-button"
+														onClick={(e) => {
+															multiClickHandler(
+																e
+															);
+														}}
+													>
 														{__(
-															"Accepts file types",
+															"Manage Media",
 															"atlas-content-modeler"
 														)}
-														:{" "}
-														{getAllowedTypesForUi().toUpperCase()}
-													</p>
-												)}
+													</TertiaryButton>
+
+													{/*TODO: still needed?*/}
+													{allowedTypes && (
+														<p className="help text-muted">
+															{__(
+																"Accepts file types",
+																"atlas-content-modeler"
+															)}
+															:{" "}
+															{getAllowedTypesForUi().toUpperCase()}
+														</p>
+													)}
+												</td>
 											</tr>
 										</tbody>
 									</table>
