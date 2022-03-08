@@ -200,13 +200,12 @@ export default function MediaUploader({ modelSlug, field, required }) {
 
 					{mediaUrl && (
 						<LinkButton
-							css={css`
-								color: #d21b46;
-								&:focus,
-								&:hover {
-									color: #a51537;
-								}
-							`}
+							css={(theme) => ({
+								color: theme.colors.warning,
+								"&:focus, &:hover": {
+									color: theme.colors.warningHover,
+								},
+							})}
 							href="#"
 							onClick={(e) => deleteImage(e)}
 						>
