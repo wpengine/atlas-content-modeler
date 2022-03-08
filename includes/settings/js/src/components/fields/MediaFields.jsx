@@ -21,7 +21,7 @@ const MediaFields = ({ register, data, editing, fieldId }) => {
 						type="checkbox"
 						id={`is-repeatable-${fieldId}`}
 						ref={register}
-						defaultChecked={showRepeatable}
+						value={showRepeatable}
 						onChange={() => setShowRepeatable(!showRepeatable)}
 						disabled={editing}
 					/>
