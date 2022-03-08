@@ -39,6 +39,7 @@
   "dependencies": {
     "@babel/plugin-syntax-jsx": "^7.12.13",
     "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.8.1",
     "@wordpress/api-fetch": "^3.21.5",
     "@wordpress/data": "6.1.5",
     "bootstrap": "^5.1.3",
