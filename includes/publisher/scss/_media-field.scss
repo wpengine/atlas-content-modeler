@@ -25,17 +25,10 @@
 		padding: 10px;
 	}
 
-	.repeater-input {
-		textarea,
-		.repeater-input input {
-			width: 100% !important;
+	.repeater-input-container {
+		img {
 			margin: 0px !important;
 		}
-	}
-
-	.repeater-input-container input[type="number"] {
-		margin: 0px !important;
-		width: 100% !important;
 	}
 
 	svg.add.add-small.add-small-button {
@@ -66,10 +59,15 @@
 		border-spacing: 0;
 	}
 
-	table tr td {
-		padding: 10px;
-		border: none;
-		width: 100%;
+	table tr {
+		border-bottom: 1px solid lighten($color-gray-disabled-border, 8);
+		box-shadow: none;
+
+		td {
+			padding: 10px;
+			border: none;
+			width: 100%;
+		}
 	}
 
 	table th {
