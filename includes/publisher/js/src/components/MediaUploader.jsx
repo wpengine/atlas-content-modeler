@@ -5,11 +5,13 @@ import Icon from "../../../../components/icons";
 import {
 	LinkButton,
 	DarkButton,
-	TertiaryButton,
 } from "../../../../shared-assets/js/components/Buttons";
 import { __ } from "@wordpress/i18n";
 import TrashIcon from "../../../../components/icons/TrashIcon";
 import MediaIcon from "../../../../components/icons/MediaIcon";
+import FileIcon from "../../../../components/icons/FileIcon";
+import AudioIcon from "../../../../components/icons/AudioIcon";
+import ImgIcon from "../../../../components/icons/ImgIcon";
 
 export default function MediaUploader({
 	modelSlug,
@@ -26,7 +28,10 @@ export default function MediaUploader({
 	const { allowedTypes } = field;
 
 	// local
-	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
+	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp|ico|)$/i;
+	const audioRegex = /\.(mp3|ogg|wav|m4a)$/i;
+	const fileRegex = /\.(pdf|doc?x|ppt?x|pps?x|odt|sls?x|psd)$/i;
+	const multimediaRegex = /\.(mp4|m4v|mov|wmv|avi|mpeg|ogv|3gp|3g2)$/i;
 
 	// load media file from wp.media service
 	useEffect(() => {
@@ -194,6 +199,26 @@ export default function MediaUploader({
 	}
 
 	/**
+	 * Get file type for image
+	 * @param {} item
+	 * @returns String
+	 */
+	function getFileTypeImageType(item) {
+		return "image";
+		// const extension = getFileExtension(item.url);
+
+		// if (extension.test(audioRegex)) {
+		// 	return "audio";
+		// } else if (extension.test(multimediaRegex)) {
+		// 	return "multimedia";
+		// } else if (extension.test(fileRegex)) {
+		// 	return "file";
+		// }
+
+		// return "image";
+	}
+
+	/**
 	 * Click handler to use wp media uploader for repeater
 	 * @param e - event
 	 */
@@ -286,8 +311,8 @@ export default function MediaUploader({
 					)}
 
 					<fieldset>
-						<div id="repeaterText" className="text-table flex-row">
-							<div className="repeater-text-field flex-row">
+						<div id="repeaterMedia" className="text-table flex-row">
+							<div className="repeater-media-field flex-row">
 								<ul>
 									<table key="1" className="table mt-2">
 										<tbody>
@@ -295,70 +320,97 @@ export default function MediaUploader({
 												return (
 													<tr
 														key={index}
-														className={`field media-repeater-container-single d-flex mt-1 flex-fill flex-row`}
+														className={`field media-repeater-container-single d-flex mt-0 flex-fill flex-row`}
 													>
-														<td
-															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
-														>
+														<td>
 															<div
 																className="me-lg-1 repeater-input-container"
 																name="repeaters"
 															>
-																<div>
-																	<img
-																		height="60"
-																		width="48"
-																		onClick={(
-																			e
-																		) =>
-																			multiClickHandler(
-																				e
-																			)
-																		}
-																		src={
-																			item.url
-																		}
-																		alt={
-																			item.url
-																		}
-																	/>
-
-																	<input
-																		type="hidden"
-																		name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-																		value={
-																			fieldValues[
-																				index
-																			].id
-																		}
-																		onChange={(
-																			event
-																		) => {
-																			// Update the value of the item.
-																			const newValue =
-																				event
-																					.currentTarget
-																					.value;
-																			setValues(
-																				(
-																					oldValues
-																				) => {
-																					let newValues = [
-																						...oldValues,
-																					];
-																					newValues[
-																						index
-																					] = newValue;
-																					return newValues;
+																<div
+																	className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
+																>
+																	<div className="me-lg-1 repeater-input-container flex-fill">
+																		{getFileTypeImageType(
+																			item
+																		) ===
+																			"image" && (
+																			<img
+																				height="60"
+																				width="48"
+																				onClick={(
+																					e
+																				) =>
+																					multiClickHandler(
+																						e
+																					)
 																				}
-																			);
-																		}}
-																	/>
+																				src={
+																					item.url
+																				}
+																				alt={
+																					item.url
+																				}
+																			/>
+																		)}
+
+																		{getFileTypeImageType(
+																			item
+																		) ===
+																			"audio" && (
+																			<AudioIcon />
+																		)}
+
+																		{getFileTypeImageType(
+																			item
+																		) ===
+																			"multimedia" && (
+																			<ImgIcon />
+																		)}
+
+																		{getFileTypeImageType(
+																			item
+																		) ===
+																			"file" && (
+																			<FileIcon />
+																		)}
+
+																		<input
+																			type="hidden"
+																			name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+																			value={
+																				fieldValues[
+																					index
+																				]
+																					.id
+																			}
+																			onChange={(
+																				event
+																			) => {
+																				// Update the value of the item.
+																				const newValue =
+																					event
+																						.currentTarget
+																						.value;
+																				setValues(
+																					(
+																						oldValues
+																					) => {
+																						let newValues = [
+																							...oldValues,
+																						];
+																						newValues[
+																							index
+																						] = newValue;
+																						return newValues;
+																					}
+																				);
+																			}}
+																		/>
+																	</div>
 																</div>
 															</div>
-															<div
-																className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
-															>
+															<div className="d-flex flex-row">
 																<a
 																	href={
 																		item.url
@@ -376,9 +428,7 @@ export default function MediaUploader({
 																	)}
 																</a>
 															</div>
-															<div
-																className={`value[${index}].remove-container p-2 me-sm-1`}
-															>
+															<div className="d-flex flex-row">
 																<button
 																	className="remove-item tertiary no-border"
 																	onClick={(
@@ -422,7 +472,7 @@ export default function MediaUploader({
 														<MediaIcon noCircle />
 														<LinkButton
 															type="submit"
-															className="mx-3"
+															className="add-option mt-0"
 															data-testid="media-uploader-manage-media-button"
 															onClick={(e) => {
 																multiClickHandler(
