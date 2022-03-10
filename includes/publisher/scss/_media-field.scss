@@ -15,7 +15,7 @@
 	.repeater-input {
 		align-items: center !important;
 
-		&.title-ellipsis {
+		&.title-ellipsis a {
 			overflow: hidden;
 			max-width: 32ch;
 			text-overflow: ellipsis;

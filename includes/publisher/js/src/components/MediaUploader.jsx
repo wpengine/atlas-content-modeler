@@ -473,7 +473,6 @@ export default function MediaUploader({
 											<tr className="flex add-container">
 												<td>
 													<div>
-														<MediaIcon noCircle />
 														<LinkButton
 															type="submit"
 															className="mx-3"
@@ -485,7 +484,7 @@ export default function MediaUploader({
 															}}
 														>
 															{__(
-																"Manage Media",
+																"+ Manage Media",
 																"atlas-content-modeler"
 															)}
 														</LinkButton>
