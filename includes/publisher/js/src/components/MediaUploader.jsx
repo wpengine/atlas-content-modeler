@@ -8,13 +8,7 @@ import {
 } from "../../../../shared-assets/js/components/Buttons";
 import { __ } from "@wordpress/i18n";
 
-export default function MediaUploader({
-	modelSlug,
-	field,
-	required,
-	errors,
-	defaultError,
-}) {
+export default function MediaUploader({ modelSlug, field, required }) {
 	const [fieldValues, setValues] = useState([]);
 
 	// state
@@ -78,8 +72,6 @@ export default function MediaUploader({
 	 */
 	function setMultiMediaUrls() {
 		if (Array.isArray(value)) {
-			const imgArr = [];
-
 			function addUrl(index, item, url) {
 				setValues((fieldValues) => [
 					...fieldValues,
