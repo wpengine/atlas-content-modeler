@@ -357,9 +357,23 @@ export default function MediaUploader({
 
 																	{getFileTypeImageType(
 																		item,
+																		"audio"
+																	) && (
+																		<AudioIcon />
+																	)}
+
+																	{getFileTypeImageType(
+																		item,
 																		"file"
 																	) && (
 																		<FileIcon />
+																	)}
+
+																	{getFileTypeImageType(
+																		item,
+																		"multimedia"
+																	) && (
+																		<ImgIcon />
 																	)}
 
 																	<input
