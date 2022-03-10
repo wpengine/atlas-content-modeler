@@ -19,6 +19,10 @@ import SettingsIcon from "./SettingsIcon";
 import TextIcon from "./TextIcon";
 import TickIcon from "./TickIcon";
 import UpArrow from "./UpArrow";
+import FileIcon from "./FileIcon";
+import ImgIcon from "./ImgIcon";
+import AudioIcon from "./AudioIcon";
+import TrashIcon from "./TrashIcon";
 
 export default function Icon({ type, size }) {
 	switch (type) {
@@ -62,6 +66,14 @@ export default function Icon({ type, size }) {
 			return <TickIcon />;
 		case "uparrow":
 			return <UpArrow />;
+		case "audio":
+			return <AudioIcon />;
+		case "file":
+			return <FileIcon />;
+		case "multimedia":
+			return <ImgIcon />;
+		case "trash":
+			return <TrashIcon />;
 		default:
 			return "";
 	}

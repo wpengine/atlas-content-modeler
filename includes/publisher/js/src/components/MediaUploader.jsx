@@ -5,14 +5,8 @@ import Icon from "../../../../components/icons";
 import {
 	LinkButton,
 	DarkButton,
-	TertiaryButton,
 } from "../../../../shared-assets/js/components/Buttons";
 import { __ } from "@wordpress/i18n";
-import TrashIcon from "../../../../components/icons/TrashIcon";
-import MediaIcon from "../../../../components/icons/MediaIcon";
-import FileIcon from "../../../../components/icons/FileIcon";
-import AudioIcon from "../../../../components/icons/AudioIcon";
-import ImgIcon from "../../../../components/icons/ImgIcon";
 
 export default function MediaUploader({
 	modelSlug,
@@ -360,21 +354,21 @@ export default function MediaUploader({
 																		item,
 																		"audio"
 																	) && (
-																		<AudioIcon />
+																		<Icon type="audio" />
 																	)}
 
 																	{getFileTypeImageType(
 																		item,
 																		"file"
 																	) && (
-																		<FileIcon />
+																		<Icon type="file" />
 																	)}
 
 																	{getFileTypeImageType(
 																		item,
 																		"multimedia"
 																	) && (
-																		<ImgIcon />
+																		<Icon type="multimedia" />
 																	)}
 
 																	<input
@@ -462,7 +456,10 @@ export default function MediaUploader({
 																			"atlas-content-modeler"
 																		)}
 																	>
-																		<TrashIcon size="small" />{" "}
+																		<Icon
+																			type="trash"
+																			size="small"
+																		/>{" "}
 																	</a>
 																</button>
 															</div>
