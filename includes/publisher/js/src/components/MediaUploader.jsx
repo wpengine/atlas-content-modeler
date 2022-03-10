@@ -339,6 +339,7 @@ export default function MediaUploader({
 																		<img
 																			height="60"
 																			width="48"
+																			className="p-3"
 																			onClick={(
 																				e
 																			) =>
@@ -410,7 +411,7 @@ export default function MediaUploader({
 																</div>
 															</div>
 															<div
-																className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
+																className={`field d-flex flex-row repeater-input title-ellipsis mt-0 flex-fill d-lg-flex`}
 															>
 																<a
 																	href={

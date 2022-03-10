@@ -14,6 +14,13 @@
 
 	.repeater-input {
 		align-items: center !important;
+
+		&.title-ellipsis {
+			overflow: hidden;
+			max-width: 32ch;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	}
 
 	button.remove-item {
