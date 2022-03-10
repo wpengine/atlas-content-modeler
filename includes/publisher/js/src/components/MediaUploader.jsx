@@ -10,6 +10,9 @@ import {
 import { __ } from "@wordpress/i18n";
 import TrashIcon from "../../../../components/icons/TrashIcon";
 import MediaIcon from "../../../../components/icons/MediaIcon";
+import FileIcon from "../../../../components/icons/FileIcon";
+import AudioIcon from "../../../../components/icons/AudioIcon";
+import ImgIcon from "../../../../components/icons/ImgIcon";
 
 export default function MediaUploader({
 	modelSlug,
@@ -27,6 +30,9 @@ export default function MediaUploader({
 
 	// local
 	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
+	const audioRegex = /\.(mp3|ogg|wav|m4a)$/i;
+	const fileRegex = /\.(pdf|doc?x|ppt?x|pps?x|odt|sls?x|psd)$/i;
+	const multimediaRegex = /\.(mp4|m4v|mov|wmv|avi|mpeg|ogv|3gp|3g2)$/i;
 
 	// load media file from wp.media service
 	useEffect(() => {
@@ -42,6 +48,27 @@ export default function MediaUploader({
 			setMultiMediaUrls();
 		}
 	}, []);
+
+	/**
+	 * Get file type for image
+	 * @param {} item
+	 * @returns String
+	 */
+	function getFileTypeImageType(item, type) {
+		switch (type) {
+			case "audio":
+				return audioRegex.test(item.url);
+
+			case "file":
+				return fileRegex.test(item.url);
+
+			case "multimedia":
+				return multimediaRegex.test(item.url);
+
+			default:
+				return imageRegex.test(item.url);
+		}
+	}
 
 	/**
 	 * Reset values - single
@@ -269,7 +296,7 @@ export default function MediaUploader({
 		media.open();
 	}
 
-	if (field.isRepeatable && typeof field.isRepeatable === "boolean") {
+	if (true) {
 		return (
 			<>
 				<div className={"field"}>
@@ -286,8 +313,8 @@ export default function MediaUploader({
 					)}
 
 					<fieldset>
-						<div id="repeaterText" className="text-table flex-row">
-							<div className="repeater-text-field flex-row">
+						<div id="repeaterMedia" className="text-table flex-row">
+							<div className="repeater-media-field flex-row">
 								<ul>
 									<table key="1" className="table mt-2">
 										<tbody>
@@ -295,7 +322,7 @@ export default function MediaUploader({
 												return (
 													<tr
 														key={index}
-														className={`field media-repeater-container-single d-flex mt-1 flex-fill flex-row`}
+														className={`field media-repeater-container-single d-flex mt-0 flex-fill flex-row`}
 													>
 														<td
 															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
@@ -305,23 +332,35 @@ export default function MediaUploader({
 																name="repeaters"
 															>
 																<div>
-																	<img
-																		height="60"
-																		width="48"
-																		onClick={(
-																			e
-																		) =>
-																			multiClickHandler(
+																	{getFileTypeImageType(
+																		item,
+																		"image"
+																	) && (
+																		<img
+																			height="60"
+																			width="48"
+																			onClick={(
 																				e
-																			)
-																		}
-																		src={
-																			item.url
-																		}
-																		alt={
-																			item.url
-																		}
-																	/>
+																			) =>
+																				multiClickHandler(
+																					e
+																				)
+																			}
+																			src={
+																				item.url
+																			}
+																			alt={
+																				item.url
+																			}
+																		/>
+																	)}
+
+																	{getFileTypeImageType(
+																		item,
+																		"file"
+																	) && (
+																		<FileIcon />
+																	)}
 
 																	<input
 																		type="hidden"
