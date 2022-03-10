@@ -37,7 +37,7 @@ export default function MediaUploader({
 	// load media file from wp.media service
 	useEffect(() => {
 		// get ids and values and set on defaultValues
-		if (!field.isRepeatable) {
+		if (!field.isRepeatableMedia) {
 			wp.media
 				.attachment(value)
 				.fetch()
@@ -296,7 +296,7 @@ export default function MediaUploader({
 		media.open();
 	}
 
-	if (true) {
+	if (field.isRepeatableMedia) {
 		return (
 			<>
 				<div className={"field"}>
