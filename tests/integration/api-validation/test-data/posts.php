@@ -88,6 +88,7 @@ function populate_post( $post_id, $model, $test_class ) {
 	update_post_meta( $post_id, 'date', '2012/02/13' );
 	update_post_meta( $post_id, 'dateRequired', '2021/02/13' );
 	update_post_meta( $post_id, 'media', $ids[ $model . '_image_id' ] );
+	update_post_meta( $post_id, 'mediaRepeat', [ 1, 2, 3 ] );
 	update_post_meta( $post_id, 'mediaRequired', $ids[ $model . '_image_id' ] );
 	update_post_meta( $post_id, 'mediaPDF', $ids[ $model . '_pdf_id' ] );
 	update_post_meta( $post_id, 'boolean', 'false' );

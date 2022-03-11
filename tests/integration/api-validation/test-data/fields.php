@@ -373,5 +373,19 @@ function get_test_fields() {
 			'maxValue'           => '',
 			'step'               => '',
 		),
+		'1646070397'    => array(
+			'show_in_rest'      => true,
+			'show_in_graphql'   => true,
+			'type'              => 'media',
+			'id'                => '1646070397',
+			'position'          => '300000',
+			'name'              => 'Media-Repeat',
+			'slug'              => 'mediaRepeat',
+			'required'          => false,
+			'isRepeatableMedia' => 'true',
+			'minChars'          => '',
+			'maxChars'          => '',
+			'allowedTypes'      => '',
+		),
 	);
 }

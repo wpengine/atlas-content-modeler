@@ -62,6 +62,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							richText
 							numberIntergerRequired
 							numberIntegerRepeat
+							mediaRepeat
 							dateRequired
 							multiSingle
 							multipleMulti
@@ -103,6 +104,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'numberIntegerRepeat', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['numberIntegerRepeat'] );
+
+			self::assertArrayHasKey( 'mediaRepeat', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['mediaRepeat'] );
 
 			self::assertArrayHasKey( 'dateRequired', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['dateRequired'], '2021/02/13' );
