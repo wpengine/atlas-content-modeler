@@ -19,7 +19,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	// local
 	const imageRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
 	const audioRegex = /\.(mp3|ogg|wav|m4a)$/i;
-	const fileRegex = /\.(pdf|doc?x|ppt?x|pps?x|odt|sls?x|psd)$/i;
+	const fileRegex = /\.(pdf|doc?x|ppt?x|pps?x|odt|sls?x|psd|txt)$/i;
 	const multimediaRegex = /\.(mp4|m4v|mov|wmv|avi|mpeg|ogv|3gp|3g2)$/i;
 
 	// load media file from wp.media service
@@ -46,15 +46,19 @@ export default function MediaUploader({ modelSlug, field, required }) {
 		switch (type) {
 			case "audio":
 				return audioRegex.test(item.url);
-
 			case "file":
 				return fileRegex.test(item.url);
-
 			case "multimedia":
 				return multimediaRegex.test(item.url);
-
-			default:
+			case "image":
 				return imageRegex.test(item.url);
+			default:
+				return (
+					!audioRegex.test(item.url) &&
+					!fileRegex.test(item.url) &&
+					!multimediaRegex.test(item.url) &&
+					!imageRegex.test(item.url)
+				);
 		}
 	}
 
@@ -352,6 +356,13 @@ export default function MediaUploader({ modelSlug, field, required }) {
 																	{getFileTypeImageType(
 																		item,
 																		"file"
+																	) && (
+																		<Icon type="file" />
+																	)}
+
+																	{getFileTypeImageType(
+																		item,
+																		"default"
 																	) && (
 																		<Icon type="file" />
 																	)}
