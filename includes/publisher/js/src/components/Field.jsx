@@ -8,6 +8,8 @@ import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const defaultError = "This field is required";
+const integerRegex = /^[-+]?\d+/g;
+const decimalRegex = /^\-?(\d+\.?\d*|\d*\.?\d+)$/g;
 
 export default function Field(props) {
 	const { field, modelSlug } = props;
@@ -28,6 +30,22 @@ export default function Field(props) {
 		let error = defaultError;
 
 		if (field.type === "number") {
+			if (!integerRegex.test(event.target.value)) {
+				error = sprintf(
+					__("Value must be an integer.", "atlas-content-modeler"),
+					event.target.max.toString()
+				);
+			}
+
+			if (field.numberType === "decimal") {
+				if (!decimalRegex.test(event.target.value)) {
+					error = sprintf(
+						__("Value must be a decimal.", "atlas-content-modeler"),
+						event.target.max.toString()
+					);
+				}
+			}
+
 			if (event.target.validity.rangeOverflow) {
 				error = sprintf(
 					__("Maximum value is %s.", "atlas-content-modeler"),
