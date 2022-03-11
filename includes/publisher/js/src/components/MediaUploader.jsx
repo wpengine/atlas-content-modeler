@@ -38,9 +38,10 @@ export default function MediaUploader({ modelSlug, field, required }) {
 	}, []);
 
 	/**
-	 * Get file type for image
-	 * @param {} item
-	 * @returns String
+	 * Check file type for icon display
+	 * @param {*} item
+	 * @param {*} type
+	 * @returns
 	 */
 	function getFileTypeImageType(item, type) {
 		switch (type) {
@@ -489,7 +490,6 @@ export default function MediaUploader({ modelSlug, field, required }) {
 															)}
 														</LinkButton>
 													</div>
-													{/*TODO: still needed?*/}
 													{allowedTypes && (
 														<p className="help text-muted">
 															{__(
