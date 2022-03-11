@@ -9,6 +9,61 @@ class CreateContentModelMediaFieldCest {
 	}
 
 	/**
+	 * Ensure a user can add a Media field to the model with a repeatable property.
+	 */
+	public function i_can_create_a_content_model_media_repeatable_field( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+
+		$i->click( 'Media', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'positionxyz' );
+
+		// Set the Input Type to “multiple lines” instead of “Single line”.
+		$i->click( '.is-repeatable' );
+
+		// Save the field.
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
+		$i->wait( 1 );
+
+		// Create a new Candies entry.
+		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
+		$i->click( 'Add New', '.wrap' );
+		$i->wait( 1 );
+
+		// Check that the first input in the index of available list items is rendering indicating a multiple being set.
+		$i->seeElement(
+			'input',
+			[ 'name' => 'atlas-content-modeler[candy][positionxyz][0]' ]
+		);
+	}
+
+	/**
+	 * Ensure a user cannot save a Media field with a required repeatable property.
+	 */
+	public function i_cannot_save_empty_required_media_repeatable_field( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+
+		$i->click( 'Media', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'positionxyz' );
+
+		$i->click( '.is-repeatable' );
+		$i->click( '.is-required' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
+		$i->wait( 1 );
+
+		// Create a new Candies entry.
+		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
+		$i->click( 'Add New', '.wrap' );
+		$i->wait( 1 );
+		$i->seeElement( 'input[name="atlas-content-modeler[candy][positionxyz][0]"]:invalid' );
+	}
+
+	/**
 	 * Ensure a user can add a media field to the model and see it within the list.
 	 */
 	public function i_can_add_a_media_field_to_a_content_model( AcceptanceTester $i ) {
