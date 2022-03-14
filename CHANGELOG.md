@@ -8,6 +8,7 @@
 - The delete model prompt no longer shows “undefined” in its title during model deletion.
 - Improved checkbox styling in field settings.
 - Options buttons now use the mouse pointer cursor.
+- The `wp acm blueprint import` command no longer reports “Could not read an acm.json file” if the blueprint zip file was renamed after creation.
 
 ## 0.14.0 - 2022-02-10
 ### Added

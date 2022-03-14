@@ -44,8 +44,23 @@ function unzip_blueprint( string $blueprint_path ) {
 	$target_folder = $upload_folder['path'];
 	$unzipped_file = unzip_file( $blueprint_path, $target_folder );
 
-	if ( $unzipped_file ) {
-		return $target_folder . '/' . basename( $blueprint_path, '.zip' );
+	if ( ! is_wp_error( $unzipped_file ) ) {
+		// Assume the zip folder name is the same as the zip file name by default.
+		$unzipped_folder = $target_folder . '/' . basename( $blueprint_path, '.zip' );
+
+		// Try to determine the actual root folder name if possible, in case the zip file was renamed.
+		if ( class_exists( 'ZipArchive' ) ) {
+			$zip  = new \ZipArchive();
+			$open = $zip->open( $blueprint_path );
+			if ( $open === true ) {
+				$file_name       = $zip->getNameIndex( 0 );
+				$zip_root_folder = dirname( $file_name ) === '.' ? $file_name : dirname( $file_name );
+				$unzipped_folder = $target_folder . '/' . $zip_root_folder;
+				$zip->close();
+			}
+		}
+
+		return $unzipped_folder;
 	}
 
 	return $unzipped_file; // The WP_Error from the failed unzip attempt.
