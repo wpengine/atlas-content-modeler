@@ -8,6 +8,7 @@
 - The delete model prompt no longer shows “undefined” in its title during model deletion.
 - Improved checkbox styling in field settings.
 - Options buttons now use the mouse pointer cursor.
+- Fixed issue where it was possible to improperly lead a model ID with a number.
 
 ## 0.14.0 - 2022-02-10
 ### Added
