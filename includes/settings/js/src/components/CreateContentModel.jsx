@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
 import { insertSidebarMenuItem } from "../utils";
 import { useInputGenerator } from "../hooks";
-import { toSanitizedKey } from "../formats";
+import { toSanitizedKey, toValidApiId } from "../formats";
 import { showSuccess } from "../toasts";
 import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
@@ -43,7 +43,7 @@ export default function CreateContentModel() {
 		onChangeGeneratedValue,
 	} = useInputGenerator({
 		setGeneratedValue: (value) => setValue("slug", value),
-		format: toSanitizedKey,
+		format: toValidApiId,
 	});
 
 	function apiCreateModel(data) {
@@ -140,6 +140,7 @@ export default function CreateContentModel() {
 							onChange={(e) => {
 								setInputGeneratorSourceValue(e.target.value);
 								setSingularCount(e.target.value.length);
+								toValidApiId(e.target.value);
 							}}
 						/>
 						<p className="field-messages">
@@ -200,6 +201,7 @@ export default function CreateContentModel() {
 							ref={register({ required: true, maxLength: 50 })}
 							onChange={(event) => {
 								setPluralCount(event.target.value.length);
+								toValidApiId(event.target.value);
 							}}
 						/>
 						<p className="field-messages">
@@ -247,7 +249,7 @@ export default function CreateContentModel() {
 						<br />
 						<p className="help">
 							{__(
-								"Auto-generated and used internally for WordPress to identify the model.",
+								"Auto-generated and used internally for WordPress to identify the model. Leading a model ID with numbers is not supported.",
 								"atlas-content-modeler"
 							)}
 						</p>
@@ -256,9 +258,10 @@ export default function CreateContentModel() {
 							name="slug"
 							className="w-100"
 							ref={register({ required: true, maxLength: 20 })}
-							onChange={(e) =>
-								onChangeGeneratedValue(e.target.value)
-							}
+							onChange={(event) => {
+								onChangeGeneratedValue(event.target.value);
+								toValidApiId(event.target.value);
+							}}
 						/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (
