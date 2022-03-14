@@ -260,7 +260,6 @@ export default function CreateContentModel() {
 							ref={register({ required: true, maxLength: 20 })}
 							onChange={(event) => {
 								onChangeGeneratedValue(event.target.value);
-								toValidApiId(event.target.value);
 							}}
 						/>
 						<p className="field-messages">
