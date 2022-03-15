@@ -101,6 +101,24 @@ export default function CreateContentModel() {
 						message: err.message,
 					});
 				}
+				if (err.code === "acm_singular_leading_number") {
+					setError("singular", {
+						type: "leadingNumber",
+						message: err.message,
+					});
+				}
+				if (err.code === "acm_plural_leading_number") {
+					setError("plural", {
+						type: "leadingNumber",
+						message: err.message,
+					});
+				}
+				if (err.code === "acm_slug_leading_number") {
+					setError("slug", {
+						type: "leadingNumber",
+						message: err.message,
+					});
+				}
 			});
 	}
 
@@ -176,6 +194,15 @@ export default function CreateContentModel() {
 										</span>
 									</span>
 								)}
+							{errors.singular &&
+								errors.singular.type === "leadingNumber" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{errors.singular.message}
+										</span>
+									</span>
+								)}
 							<span>&nbsp;</span>
 							<span className="count">{singularCount}/50</span>
 						</p>
@@ -235,6 +262,15 @@ export default function CreateContentModel() {
 									</span>
 								</span>
 							)}
+							{errors.plural &&
+								errors.plural.type === "leadingNumber" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{errors.plural.message}
+										</span>
+									</span>
+								)}
 							<span>&nbsp;</span>
 							<span className="count">{pluralCount}/50</span>
 						</p>
@@ -291,6 +327,15 @@ export default function CreateContentModel() {
 									</span>
 								</span>
 							)}
+							{errors.slug &&
+								errors.slug.type === "leadingNumber" && (
+									<span className="error">
+										<Icon type="error" />
+										<span role="alert">
+											{errors.slug.message}
+										</span>
+									</span>
+								)}
 							<span>&nbsp;</span>
 						</p>
 					</div>
