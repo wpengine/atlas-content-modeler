@@ -23,10 +23,6 @@ export default function Field(props) {
 	 * @param {object} field
 	 */
 	function validate(event, field) {
-		if (event.target.validity.valid) {
-			return;
-		}
-
 		let error = defaultError;
 
 		if (field.type === "number") {
