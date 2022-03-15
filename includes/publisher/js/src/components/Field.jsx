@@ -31,20 +31,18 @@ export default function Field(props) {
 
 		if (field.type === "number") {
 			if (!integerRegex.test(event.target.value)) {
-				(error = __(
+				error = __(
 					"Value must be an integer.",
 					"atlas-content-modeler"
-				)),
-					event.target.max.toString();
+				);
 			}
 
 			if (field.numberType === "decimal") {
 				if (!decimalRegex.test(event.target.value)) {
-					(error = __(
+					error = __(
 						"Value must be a decimal.",
 						"atlas-content-modeler"
-					)),
-						event.target.max.toString();
+					);
 				}
 			}
 
