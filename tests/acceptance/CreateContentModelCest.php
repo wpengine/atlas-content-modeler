@@ -63,6 +63,8 @@ class CreateContentModelCest {
 		$i->fillField( [ 'name' => 'singular' ], 'threeobject' );
 		$i->fillField( [ 'name' => 'plural' ], '3dobjects' ); // Leading plural with a number is not supported and can fatal error a site.
 		$i->fillField( [ 'name' => 'slug' ], 'threeobject' );
+		$i->click( 'button[data-testid="create-model-button"]' );
+		$i->wait( 1 );
 
 		$i->see( 'The plural name cannot lead with a number', '.card-content' );
 	}
