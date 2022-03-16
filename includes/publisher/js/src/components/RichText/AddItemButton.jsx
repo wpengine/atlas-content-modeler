@@ -7,12 +7,16 @@ import { v4 as uuidv4 } from "uuid";
 
 const AddItemButton = ({ setValues }) => {
 	const addItem = () =>
-		setValues((oldValues) => [...oldValues, { id: uuidv4(), value: "" }]);
+		setValues((oldValues) => [
+			...oldValues,
+			{ id: "field-" + uuidv4(), value: "" },
+		]);
 
 	return (
 		<button
 			onClick={addItem}
 			type="button"
+			data-testid="add-rich-text-row"
 			css={css`
 				align-items: center;
 				background: transparent;

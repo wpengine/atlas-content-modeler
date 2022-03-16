@@ -9,7 +9,7 @@ export default function RichTextEditor({ field, modelSlug }) {
 	// Generates a unique ID for each rich text field for initialization and keying.
 	const initialValues = field?.isRepeatableRichText
 		? (field?.value || [""]).map((val) => {
-				return { id: uuidv4(), value: val };
+				return { id: "field-" + uuidv4(), value: val };
 		  })
 		: [{ id: uuidv4(), value: field?.value }];
 
