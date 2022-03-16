@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import SoloRichTextEditorField from "./SoloRichTextEditorField";
 import RepeatingRichTextEditorField from "./RepeatingRichTextEditorField";
-import useWpEditorInitialize from "./useWPEditorInitialize";
+import useWpEditor from "./useWPEditor";
 import { __ } from "@wordpress/i18n";
 
 export default function RichTextEditor({ field, modelSlug }) {
@@ -15,7 +15,7 @@ export default function RichTextEditor({ field, modelSlug }) {
 
 	const [values, setValues] = useState(initialValues);
 
-	useWpEditorInitialize(values);
+	useWpEditor(values);
 
 	return field?.isRepeatableRichText ? (
 		<RepeatingRichTextEditorField

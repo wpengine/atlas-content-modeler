@@ -3,13 +3,13 @@ import { useEffect, useRef } from "react";
 const { wp } = window;
 
 /**
- * useWpEditorInitialize turns textarea fields into rich text fields by
+ * useWpEditor turns textarea fields into rich text fields by
  * initializing WordPress's built-in TinyMCE implementation on them.
  *
  * @param {array} values Objects with 'id' properties containing the CSS ID of
- *                       textareas to initialize as TinyMCE fields.
+ *                       textareas to initialize as TinyMCE instances.
  */
-export default function useWpEditorInitialize(values) {
+export default function useWpEditor(values) {
 	const editorReadyTimer = useRef(null);
 
 	useEffect(() => {
