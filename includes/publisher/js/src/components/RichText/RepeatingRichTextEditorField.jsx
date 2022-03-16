@@ -6,7 +6,6 @@ import DeleteItemButton from "./DeleteItemButton";
 const RepeatingRichTextEditorField = ({
 	modelSlug,
 	field,
-	fieldId,
 	values,
 	setValues,
 }) => {

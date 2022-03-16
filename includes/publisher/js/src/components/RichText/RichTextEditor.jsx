@@ -64,7 +64,6 @@ export default function RichTextEditor({ field, modelSlug }) {
 		<RepeatingRichTextEditorField
 			modelSlug={modelSlug}
 			field={field}
-			fieldId={fieldId}
 			values={values}
 			setValues={setValues}
 		/>
