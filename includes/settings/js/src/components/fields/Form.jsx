@@ -11,6 +11,7 @@ import {
 	NumberSettings,
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
+import DateFields from "./DateFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
 import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
@@ -32,6 +33,7 @@ const { cloneDeep, isEqual } = lodash;
 const extraFields = {
 	text: TextFields,
 	number: NumberFields,
+	date: DateFields,
 	multipleChoice: MultipleChoiceFields,
 	relationship: RelationshipFields,
 };
@@ -55,6 +57,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		mode: "onChange",
 		defaultValues: storedData,
 	});
+
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
 	const [descriptionCount, setDescriptionCount] = useState(
 		storedData?.description?.length || 0
