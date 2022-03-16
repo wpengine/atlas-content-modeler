@@ -7,15 +7,12 @@ import { __ } from "@wordpress/i18n";
 const { wp } = window;
 
 export default function RichTextEditor({ field, modelSlug }) {
-	const fieldId = `atlas-content-modeler-${modelSlug}-${field.slug}`;
 	const editorReadyTimer = useRef(null);
-	let initialValues = field?.value;
-
-	if (field?.isRepeatableRichText) {
-		initialValues = (field?.value || [""]).map((val) => {
-			return { id: uuidv4(), value: val };
-		});
-	}
+	const initialValues = field?.isRepeatableRichText
+		? (field?.value || [""]).map((val) => {
+				return { id: uuidv4(), value: val };
+		  })
+		: [{ id: uuidv4(), value: field?.value }];
 
 	const [values, setValues] = useState(initialValues);
 
@@ -27,9 +24,7 @@ export default function RichTextEditor({ field, modelSlug }) {
 			 * admin scripts are enqueued, so we must wait for it to be available.
 			 */
 			if (typeof wp?.oldEditor?.getDefaultSettings === "function") {
-				let editorsToInitialize = field?.isRepeatableRichText
-					? values.map(({ id }) => id)
-					: [fieldId];
+				let editorsToInitialize = values.map(({ id }) => id);
 
 				editorsToInitialize.forEach((editorId) => {
 					wp.oldEditor.initialize(editorId, {
@@ -62,7 +57,7 @@ export default function RichTextEditor({ field, modelSlug }) {
 		return () => {
 			clearTimeout(editorReadyTimer.current);
 		};
-	}, [fieldId, editorReadyTimer, values]);
+	}, [editorReadyTimer, values]);
 
 	return field?.isRepeatableRichText ? (
 		<RepeatingRichTextEditorField
@@ -75,7 +70,7 @@ export default function RichTextEditor({ field, modelSlug }) {
 		<SoloRichTextEditorField
 			modelSlug={modelSlug}
 			field={field}
-			fieldId={fieldId}
+			fieldId={values[0]["id"]}
 		/>
 	);
 }
