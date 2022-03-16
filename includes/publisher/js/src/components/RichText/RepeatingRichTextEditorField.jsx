@@ -18,6 +18,7 @@ const RepeatingRichTextEditorField = ({
 				return (
 					<div
 						key={id}
+						data-testid="rich-text-repeater-row"
 						css={css`
 							display: flex;
 							align-items: center;
