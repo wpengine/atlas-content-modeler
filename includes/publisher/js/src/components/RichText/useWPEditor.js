@@ -1,6 +1,5 @@
-/* global atlasContentModelerFormEditingExperience */
 import { useEffect, useRef } from "react";
-const { wp } = window;
+const { wp, atlasContentModelerFormEditingExperience } = window;
 
 /**
  * useWpEditor turns textarea fields into rich text fields by
