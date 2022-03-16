@@ -11,10 +11,7 @@ const AddItemButton = ({ setValues }) => {
 
 	return (
 		<button
-			onClick={(event) => {
-				event.preventDefault();
-				addItem();
-			}}
+			onClick={addItem}
 			type="button"
 			css={css`
 				align-items: center;

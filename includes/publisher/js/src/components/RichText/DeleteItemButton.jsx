@@ -16,10 +16,7 @@ const DeleteItemButton = ({ index, setValues }) => {
 		<button
 			aria-label={__("Remove item.", "atlas-content-modeler")}
 			type="button"
-			onClick={(event) => {
-				event.preventDefault();
-				deleteItem();
-			}}
+			onClick={deleteItem}
 			css={css`
 				background: transparent;
 				border: none;
