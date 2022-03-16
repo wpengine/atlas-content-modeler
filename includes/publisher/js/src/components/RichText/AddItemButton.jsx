@@ -40,7 +40,7 @@ const AddItemButton = ({ setValues }) => {
 				}
 			`}
 		>
-			<AddIcon noCircle />{" "}
+			<AddIcon noCircle />
 			<span>{__(`Add Item`, "atlas-content-modeler")}</span>
 		</button>
 	);
