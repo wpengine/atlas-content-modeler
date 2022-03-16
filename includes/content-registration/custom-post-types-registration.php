@@ -509,6 +509,10 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$field['type'] = array( 'list_of' => 'Float' );
 			}
 
+			if ( isset( $field['isRepeatableDate'] ) && $field['isRepeatableDate'] && 'date' === $field['type'] ) {
+				$field['type'] = array( 'list_of' => 'String' );
+			}
+
 			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
 				if ( 'relationship' !== $field['original_type'] ) {
 					$value = get_post_meta( $post->databaseId, $field['slug'], true );
