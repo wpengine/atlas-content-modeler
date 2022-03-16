@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
+import { colors } from "../../../../../shared-assets/js/emotion";
 import { __ } from "@wordpress/i18n";
 
 const DeleteItemButton = ({ index, setValues }) => {
@@ -30,7 +31,7 @@ const DeleteItemButton = ({ index, setValues }) => {
 				&:hover {
 					svg {
 						path {
-							fill: #991433;
+							fill: ${colors.warningHover};
 						}
 					}
 				}
