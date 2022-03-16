@@ -9,11 +9,15 @@ const { wp } = window;
 export default function RichTextEditor({ field, modelSlug }) {
 	const fieldId = `atlas-content-modeler-${modelSlug}-${field.slug}`;
 	const editorReadyTimer = useRef(null);
-	const [values, setValues] = useState(
-		(field?.value || [""]).map((val) => {
+	let initialValues = field?.value;
+
+	if (field?.isRepeatableRichText) {
+		initialValues = (field?.value || [""]).map((val) => {
 			return { id: uuidv4(), value: val };
-		})
-	);
+		});
+	}
+
+	const [values, setValues] = useState(initialValues);
 
 	useEffect(() => {
 		const editorReadyTime = 500;
