@@ -9,7 +9,6 @@ const SoloRichTextEditorField = ({ modelSlug, field, fieldId }) => {
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 				id={fieldId}
 				defaultValue={field.value}
-				required={field.required}
 			/>
 		</>
 	);
