@@ -3,15 +3,8 @@ import { jsx, css } from "@emotion/react";
 import AddIcon from "../../../../../components/icons/AddIcon";
 import { colors } from "../../../../../shared-assets/js/emotion";
 import { __ } from "@wordpress/i18n";
-import { v4 as uuidv4 } from "uuid";
 
-const AddItemButton = ({ setValues }) => {
-	const addItem = () =>
-		setValues((oldValues) => [
-			...oldValues,
-			{ id: "field-" + uuidv4(), value: "" },
-		]);
-
+const AddItemButton = ({ addItem }) => {
 	return (
 		<button
 			onClick={addItem}

@@ -4,8 +4,22 @@ import RichTextHeader from "./RichTextHeader";
 import AddItemButton from "./AddItemButton";
 import DeleteItemButton from "./DeleteItemButton";
 import { colors } from "../../../../../shared-assets/js/emotion";
+import { v4 as uuidv4 } from "uuid";
 
 const RepeatingRichText = ({ modelSlug, field, values, setValues }) => {
+	const addItem = () =>
+		setValues((oldValues) => [
+			...oldValues,
+			{ id: "field-" + uuidv4(), value: "" },
+		]);
+
+	const deleteItem = (index) =>
+		setValues((currentValues) => {
+			const newValues = [...currentValues];
+			newValues.splice(index, 1);
+			return newValues;
+		});
+
 	return (
 		<>
 			<RichTextHeader modelSlug={modelSlug} field={field} />
@@ -35,8 +49,7 @@ const RepeatingRichText = ({ modelSlug, field, values, setValues }) => {
 						/>
 						{values.length > 1 && (
 							<DeleteItemButton
-								index={index}
-								setValues={setValues}
+								deleteItem={() => deleteItem(index)}
 							/>
 						)}
 					</div>
@@ -48,7 +61,7 @@ const RepeatingRichText = ({ modelSlug, field, values, setValues }) => {
 					border-top: none;
 				`}
 			>
-				<AddItemButton setValues={setValues} />
+				<AddItemButton addItem={addItem} />
 			</div>
 		</>
 	);
