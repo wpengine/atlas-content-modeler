@@ -1,6 +1,6 @@
 /* global atlasContentModelerFormEditingExperience */
 import React, { useEffect, useRef, useState } from "react";
-import Icon from "../../../../components/icons";
+import AddIcon from "../../../../components/icons/AddIcon";
 import { __ } from "@wordpress/i18n";
 const { wp } = window;
 
@@ -38,6 +38,7 @@ const RepeatingRichTextEditorField = ({
 	field,
 	fieldId,
 	values,
+	setValues,
 }) => {
 	return (
 		<>
@@ -52,14 +53,41 @@ const RepeatingRichTextEditorField = ({
 					/>
 				);
 			})}
+			<AddItemButton field={field} setValues={setValues} />
 		</>
+	);
+};
+
+const AddItemButton = ({ field, setValues }) => {
+	return (
+		<tr className="flex add-container">
+			<td>
+				<button
+					className="add-option mt-0 tertiary no-border"
+					onClick={(event) => {
+						event.preventDefault();
+						// Adds a new empty value to display another field.
+						setValues((oldValues) => [...oldValues, ""]);
+					}}
+				>
+					<a>
+						<AddIcon noCircle />{" "}
+						<span>
+							{field.value.length > 0
+								? __(`Add Another`, "atlas-content-modeler")
+								: __(`Add Item`, "atlas-content-modeler")}
+						</span>
+					</a>
+				</button>
+			</td>
+		</tr>
 	);
 };
 
 export default function RichTextEditor({ field, modelSlug }) {
 	const fieldId = `atlas-content-modeler-${modelSlug}-${field.slug}`;
 	const editorReadyTimer = useRef(null);
-	const [values, setValues] = useState(field?.value || ["", "", "", ""]); // TODO: set this to a single field once saving works.
+	const [values, setValues] = useState(field?.value || [""]);
 
 	useEffect(() => {
 		const editorReadyTime = 500;
@@ -104,7 +132,7 @@ export default function RichTextEditor({ field, modelSlug }) {
 		return () => {
 			clearTimeout(editorReadyTimer.current);
 		};
-	}, [fieldId, editorReadyTimer]);
+	}, [fieldId, editorReadyTimer, values]);
 
 	return field?.isRepeatableRichText ? (
 		<RepeatingRichTextEditorField
@@ -112,6 +140,7 @@ export default function RichTextEditor({ field, modelSlug }) {
 			field={field}
 			fieldId={fieldId}
 			values={values}
+			setValues={setValues}
 		/>
 	) : (
 		<SoloRichTextEditorField
