@@ -188,6 +188,9 @@ function sanitize_field( string $type, $value ) {
 			}
 			return wp_strip_all_tags( $value );
 		case 'richtext':
+			if ( is_array( $value ) ) {
+				return array_filter( array_map( 'wp_kses_post', $value ) );
+			}
 			return wp_kses_post( $value );
 		case 'relationship':
 			// Sanitizes each value as an integer and saves as a comma-separated string.
