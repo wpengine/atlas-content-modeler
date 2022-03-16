@@ -1,6 +1,7 @@
 import React from "react";
 import RichTextEditorHeader from "./RichTextEditorHeader";
 import AddItemButton from "./AddItemButton";
+import DeleteItemButton from "./DeleteItemButton";
 
 const RepeatingRichTextEditorField = ({
 	modelSlug,
@@ -12,15 +13,20 @@ const RepeatingRichTextEditorField = ({
 	return (
 		<div>
 			<RichTextEditorHeader modelSlug={modelSlug} field={field} />
-			{values.map((item, index) => {
+			{values.map(({ id, value }, index) => {
 				return (
-					<div key={index}>
+					<div key={id}>
 						<textarea
 							name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-							id={`${fieldId}-${index}`}
-							defaultValue={values[index]}
+							id={id}
+							defaultValue={value}
 						/>
-						<p>delete button</p>
+						{values.length > 1 && (
+							<DeleteItemButton
+								index={index}
+								setValues={setValues}
+							/>
+						)}
 					</div>
 				);
 			})}

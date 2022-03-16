@@ -1,5 +1,6 @@
 /* global atlasContentModelerFormEditingExperience */
 import React, { useEffect, useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import SoloRichTextEditorField from "./SoloRichTextEditorField";
 import RepeatingRichTextEditorField from "./RepeatingRichTextEditorField";
 import { __ } from "@wordpress/i18n";
@@ -8,7 +9,11 @@ const { wp } = window;
 export default function RichTextEditor({ field, modelSlug }) {
 	const fieldId = `atlas-content-modeler-${modelSlug}-${field.slug}`;
 	const editorReadyTimer = useRef(null);
-	const [values, setValues] = useState(field?.value || [""]);
+	const [values, setValues] = useState(
+		(field?.value || [""]).map((val) => {
+			return { id: uuidv4(), value: val };
+		})
+	);
 
 	useEffect(() => {
 		const editorReadyTime = 500;
@@ -19,7 +24,7 @@ export default function RichTextEditor({ field, modelSlug }) {
 			 */
 			if (typeof wp?.oldEditor?.getDefaultSettings === "function") {
 				let editorsToInitialize = field?.isRepeatableRichText
-					? values.map((_, index) => `${fieldId}-${index}`)
+					? values.map(({ id }) => id)
 					: [fieldId];
 
 				editorsToInitialize.forEach((editorId) => {

@@ -1,6 +1,7 @@
 import React from "react";
 import AddIcon from "../../../../../components/icons/AddIcon";
 import { __ } from "@wordpress/i18n";
+import { v4 as uuidv4 } from "uuid";
 
 const AddItemButton = ({ setValues }) => {
 	return (
@@ -11,7 +12,10 @@ const AddItemButton = ({ setValues }) => {
 					onClick={(event) => {
 						event.preventDefault();
 						// Adds a new empty value to display another field.
-						setValues((oldValues) => [...oldValues, ""]);
+						setValues((oldValues) => [
+							...oldValues,
+							{ id: uuidv4(), value: "" },
+						]);
 					}}
 				>
 					<a>
