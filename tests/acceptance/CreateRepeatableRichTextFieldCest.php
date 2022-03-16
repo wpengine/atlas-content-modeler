@@ -33,7 +33,7 @@ class CreateContentModelRepeatableRichTextFieldCest {
 	}
 
 	public function i_can_save_multiple_rich_text_repeatable_field_rows_on_the_publisher_page( AcceptanceTester $i ) {
-		$i->click( 'button[data-testid="add-rich-text-row"]' );
+		$i->click( 'button[data-testid="add-repeatable-row"]' );
 
 		$i->wait( 1 );
 
@@ -69,11 +69,11 @@ class CreateContentModelRepeatableRichTextFieldCest {
 
 
 	public function i_can_remove_rich_text_repeatable_field_rows_on_the_publisher_page( AcceptanceTester $i ) {
-		$i->click( 'button[data-testid="add-rich-text-row"]' );
+		$i->click( 'button[data-testid="add-repeatable-row"]' );
 		$i->wait( 1 );
 		$i->seeNumberOfElements( '[data-testid="rich-text-repeater-row"]', 2 );
 
-		$i->click( 'button[data-testid="delete-rich-text-row"]' );
+		$i->click( 'button[data-testid="delete-repeatable-row"]' );
 		$i->seeNumberOfElements( '[data-testid="rich-text-repeater-row"]', 1 );
 	}
 

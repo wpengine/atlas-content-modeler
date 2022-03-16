@@ -16,7 +16,7 @@ const AddItemButton = ({ setValues }) => {
 		<button
 			onClick={addItem}
 			type="button"
-			data-testid="add-rich-text-row"
+			data-testid="add-repeatable-row"
 			css={css`
 				align-items: center;
 				background: transparent;

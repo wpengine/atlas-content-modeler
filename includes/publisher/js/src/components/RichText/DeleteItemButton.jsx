@@ -17,7 +17,7 @@ const DeleteItemButton = ({ index, setValues }) => {
 			aria-label={__("Remove item.", "atlas-content-modeler")}
 			type="button"
 			onClick={deleteItem}
-			data-testid="delete-rich-text-row"
+			data-testid="delete-repeatable-row"
 			css={css`
 				background: transparent;
 				border: none;
