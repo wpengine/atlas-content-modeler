@@ -5,28 +5,27 @@ import { colors } from "../../../../../shared-assets/js/emotion";
 import { __ } from "@wordpress/i18n";
 
 const DeleteItemButton = ({ index, setValues }) => {
+	const deleteItem = () =>
+		setValues((currentValues) => {
+			const newValues = [...currentValues];
+			newValues.splice(index, 1);
+			return newValues;
+		});
+
 	return (
 		<button
+			aria-label={__("Remove item.", "atlas-content-modeler")}
 			type="button"
 			onClick={(event) => {
 				event.preventDefault();
-				// Removes the value at the given index.
-				setValues((currentValues) => {
-					const newValues = [...currentValues];
-					newValues.splice(index, 1);
-					return newValues;
-				});
+				deleteItem();
 			}}
 			css={css`
-				display: inline-flex;
-				justify-content: center;
-				align-items: center;
 				background: transparent;
 				border: none;
 				cursor: pointer;
-				padding: 40px;
-				height: 30px;
-				width: 30px;
+				height: 80px;
+				width: 80px;
 				&:focus,
 				&:hover {
 					svg {
@@ -37,9 +36,7 @@ const DeleteItemButton = ({ index, setValues }) => {
 				}
 			`}
 		>
-			<a aria-label={__("Remove item.", "atlas-content-modeler")}>
-				<TrashIcon size="small" />{" "}
-			</a>
+			<TrashIcon size="small" />
 		</button>
 	);
 };
