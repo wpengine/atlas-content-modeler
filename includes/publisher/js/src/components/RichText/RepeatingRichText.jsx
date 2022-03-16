@@ -1,19 +1,14 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import RichTextEditorHeader from "./RichTextEditorHeader";
+import RichTextHeader from "./RichTextHeader";
 import AddItemButton from "./AddItemButton";
 import DeleteItemButton from "./DeleteItemButton";
 import { colors } from "../../../../../shared-assets/js/emotion";
 
-const RepeatingRichTextEditorField = ({
-	modelSlug,
-	field,
-	values,
-	setValues,
-}) => {
+const RepeatingRichText = ({ modelSlug, field, values, setValues }) => {
 	return (
 		<>
-			<RichTextEditorHeader modelSlug={modelSlug} field={field} />
+			<RichTextHeader modelSlug={modelSlug} field={field} />
 			{values.map(({ id, value }, index) => {
 				return (
 					<div
@@ -59,4 +54,4 @@ const RepeatingRichTextEditorField = ({
 	);
 };
 
-export default RepeatingRichTextEditorField;
+export default RepeatingRichText;

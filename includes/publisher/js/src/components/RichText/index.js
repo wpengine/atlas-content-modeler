@@ -1,1 +1,1 @@
-export { default } from "./RichTextEditor";
+export { default } from "./RichText";

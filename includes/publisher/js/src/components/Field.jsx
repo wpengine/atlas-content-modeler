@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
-import RichTextEditor from "./RichText";
+import RichText from "./RichText";
 import Relationship from "./relationship";
 import Text from "./Text";
 import Number from "./Number";
@@ -148,7 +148,7 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 
 		case "richtext":
 			return (
-				<RichTextEditor
+				<RichText
 					field={field}
 					modelSlug={modelSlug}
 					errors={errors}

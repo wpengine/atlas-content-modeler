@@ -1,6 +1,6 @@
 import React from "react";
 
-const RichTextEditorHeader = ({ modelSlug, field }) => {
+const RichTextHeader = ({ modelSlug, field }) => {
 	return (
 		<>
 			<label
@@ -15,4 +15,4 @@ const RichTextEditorHeader = ({ modelSlug, field }) => {
 	);
 };
 
-export default RichTextEditorHeader;
+export default RichTextHeader;

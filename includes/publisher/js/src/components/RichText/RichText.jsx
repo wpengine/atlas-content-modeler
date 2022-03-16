@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import SoloRichTextEditorField from "./SoloRichTextEditorField";
-import RepeatingRichTextEditorField from "./RepeatingRichTextEditorField";
+import SoloRichText from "./SoloRichText";
+import RepeatingRichText from "./RepeatingRichText";
 import useWpEditor from "./useWPEditor";
 import { __ } from "@wordpress/i18n";
 
-export default function RichTextEditor({ field, modelSlug }) {
+export default function RichText({ field, modelSlug }) {
 	// Generates a unique ID for each rich text field for initialization and keying.
 	const initialValues = field?.isRepeatableRichText
 		? (field?.value || [""]).map((val) => {
@@ -20,14 +20,14 @@ export default function RichTextEditor({ field, modelSlug }) {
 	useWpEditor(textareaIds);
 
 	return field?.isRepeatableRichText ? (
-		<RepeatingRichTextEditorField
+		<RepeatingRichText
 			modelSlug={modelSlug}
 			field={field}
 			values={values}
 			setValues={setValues}
 		/>
 	) : (
-		<SoloRichTextEditorField
+		<SoloRichText
 			modelSlug={modelSlug}
 			field={field}
 			fieldId={values[0]["id"]}
