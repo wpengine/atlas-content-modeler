@@ -53,12 +53,12 @@ const RepeatingRichTextEditorField = ({
 					/>
 				);
 			})}
-			<AddItemButton field={field} setValues={setValues} />
+			<AddItemButton setValues={setValues} />
 		</>
 	);
 };
 
-const AddItemButton = ({ field, setValues }) => {
+const AddItemButton = ({ setValues }) => {
 	return (
 		<tr className="flex add-container">
 			<td>
@@ -72,11 +72,7 @@ const AddItemButton = ({ field, setValues }) => {
 				>
 					<a>
 						<AddIcon noCircle />{" "}
-						<span>
-							{field.value.length > 0
-								? __(`Add Another`, "atlas-content-modeler")
-								: __(`Add Item`, "atlas-content-modeler")}
-						</span>
+						<span>{__(`Add Item`, "atlas-content-modeler")}</span>
 					</a>
 				</button>
 			</td>
