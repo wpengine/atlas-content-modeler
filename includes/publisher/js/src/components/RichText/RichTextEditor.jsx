@@ -1,84 +1,9 @@
 /* global atlasContentModelerFormEditingExperience */
 import React, { useEffect, useRef, useState } from "react";
-import AddIcon from "../../../../components/icons/AddIcon";
+import SoloRichTextEditorField from "./SoloRichTextEditorField";
+import RepeatingRichTextEditorField from "./RepeatingRichTextEditorField";
 import { __ } from "@wordpress/i18n";
 const { wp } = window;
-
-const RichTextEditorHeader = ({ modelSlug, field }) => {
-	return (
-		<>
-			<label
-				htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-			>
-				{field.name}
-			</label>
-			{field?.description && (
-				<p className="help mb-4">{field.description}</p>
-			)}
-		</>
-	);
-};
-
-const SoloRichTextEditorField = ({ modelSlug, field, fieldId }) => {
-	return (
-		<>
-			<RichTextEditorHeader modelSlug={modelSlug} field={field} />
-			<textarea
-				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-				id={fieldId}
-				defaultValue={field.value}
-				required={field.required}
-			/>
-		</>
-	);
-};
-
-const RepeatingRichTextEditorField = ({
-	modelSlug,
-	field,
-	fieldId,
-	values,
-	setValues,
-}) => {
-	return (
-		<>
-			<RichTextEditorHeader modelSlug={modelSlug} field={field} />
-			{values.map((item, index) => {
-				return (
-					<textarea
-						key={index}
-						name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-						id={`${fieldId}-${index}`}
-						defaultValue={values[index]}
-					/>
-				);
-			})}
-			<AddItemButton setValues={setValues} />
-		</>
-	);
-};
-
-const AddItemButton = ({ setValues }) => {
-	return (
-		<tr className="flex add-container">
-			<td>
-				<button
-					className="add-option mt-0 tertiary no-border"
-					onClick={(event) => {
-						event.preventDefault();
-						// Adds a new empty value to display another field.
-						setValues((oldValues) => [...oldValues, ""]);
-					}}
-				>
-					<a>
-						<AddIcon noCircle />{" "}
-						<span>{__(`Add Item`, "atlas-content-modeler")}</span>
-					</a>
-				</button>
-			</td>
-		</tr>
-	);
-};
 
 export default function RichTextEditor({ field, modelSlug }) {
 	const fieldId = `atlas-content-modeler-${modelSlug}-${field.slug}`;

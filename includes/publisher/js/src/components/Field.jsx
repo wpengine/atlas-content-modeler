@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import MediaUploader from "./MediaUploader";
-import RichTextEditor from "./RichTextEditor";
+import RichTextEditor from "./RichText";
 import Relationship from "./relationship";
 import Text from "./Text";
 import Number from "./Number";
