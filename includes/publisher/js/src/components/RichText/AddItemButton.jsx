@@ -6,36 +6,32 @@ import { __ } from "@wordpress/i18n";
 import { v4 as uuidv4 } from "uuid";
 
 const AddItemButton = ({ setValues }) => {
+	const addItem = () =>
+		setValues((oldValues) => [...oldValues, { id: uuidv4(), value: "" }]);
+
 	return (
 		<button
 			onClick={(event) => {
 				event.preventDefault();
-				// Adds a new empty value to display another field.
-				setValues((oldValues) => [
-					...oldValues,
-					{ id: uuidv4(), value: "" },
-				]);
+				addItem();
 			}}
+			type="button"
 			css={css`
-				cursor: pointer;
-				border: none;
+				align-items: center;
 				background: transparent;
-				margin: 8px;
+				border: none;
+				color: ${colors.primary};
+				cursor: pointer;
+				display: flex;
+				font-weight: bold;
 				height: 68px;
+				margin: 8px;
 				svg {
 					margin-right: 4px;
 				}
-				a {
-					display: flex;
-					align-items: center;
-					font-weight: bold;
-					color: ${colors.primary};
-				}
 				&:focus,
 				&:hover {
-					a {
-						color: ${colors.primaryHover};
-					}
+					color: ${colors.primaryHover};
 					svg {
 						path {
 							fill: ${colors.primaryHover};
@@ -44,10 +40,8 @@ const AddItemButton = ({ setValues }) => {
 				}
 			`}
 		>
-			<a>
-				<AddIcon noCircle />{" "}
-				<span>{__(`Add Item`, "atlas-content-modeler")}</span>
-			</a>
+			<AddIcon noCircle />{" "}
+			<span>{__(`Add Item`, "atlas-content-modeler")}</span>
 		</button>
 	);
 };
