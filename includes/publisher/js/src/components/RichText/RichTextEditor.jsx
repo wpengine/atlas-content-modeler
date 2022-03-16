@@ -15,9 +15,9 @@ export default function RichTextEditor({ field, modelSlug }) {
 
 	const [values, setValues] = useState(initialValues);
 
-	let editorIds = values.map(({ id }) => id);
+	let textareaIds = values.map(({ id }) => id);
 
-	useWpEditor(editorIds);
+	useWpEditor(textareaIds);
 
 	return field?.isRepeatableRichText ? (
 		<RepeatingRichTextEditorField

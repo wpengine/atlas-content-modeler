@@ -6,9 +6,9 @@ const { wp } = window;
  * useWpEditor turns textarea fields into rich text fields by
  * initializing WordPress's built-in TinyMCE implementation on them.
  *
- * @param {array} editorIds HTML IDs of textareas to initialize as TinyMCE instances.
+ * @param {array} textareaIds HTML IDs of textareas to initialize as TinyMCE instances.
  */
-export default function useWpEditor(editorIds) {
+export default function useWpEditor(textareaIds) {
 	const editorReadyTimer = useRef(null);
 
 	useEffect(() => {
@@ -30,8 +30,8 @@ export default function useWpEditor(editorIds) {
 			 * See https://github.com/wpengine/atlas-content-modeler/pull/400.
 			 */
 			if (typeof wp?.oldEditor?.getDefaultSettings === "function") {
-				editorIds.forEach((editorId) => {
-					wp.oldEditor.initialize(editorId, {
+				textareaIds.forEach((textareaId) => {
+					wp.oldEditor.initialize(textareaId, {
 						...wp.oldEditor.getDefaultSettings(),
 						...editorSettingsOverrides,
 					});
@@ -55,5 +55,5 @@ export default function useWpEditor(editorIds) {
 		return () => {
 			clearTimeout(editorReadyTimer.current);
 		};
-	}, [editorReadyTimer, editorIds]);
+	}, [editorReadyTimer, textareaIds]);
 }
