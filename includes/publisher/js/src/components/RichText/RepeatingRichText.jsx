@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import RichTextHeader from "./RichTextHeader";
-import AddItemButton from "./AddItemButton";
-import DeleteItemButton from "./DeleteItemButton";
+import AddItemButton from "../shared/repeaters/AddItemButton";
+import DeleteItemButton from "../shared/repeaters/DeleteItemButton";
 import { colors } from "../../../../../shared-assets/js/emotion";
 import { v4 as uuidv4 } from "uuid";
 

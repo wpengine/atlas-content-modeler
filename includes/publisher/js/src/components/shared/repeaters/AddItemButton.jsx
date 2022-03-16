@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import AddIcon from "../../../../../components/icons/AddIcon";
-import { colors } from "../../../../../shared-assets/js/emotion";
+import AddIcon from "../../../../../../components/icons/AddIcon";
+import { colors } from "../../../../../../shared-assets/js/emotion";
 import { __ } from "@wordpress/i18n";
 
 const AddItemButton = ({ addItem }) => {
