@@ -4,14 +4,10 @@ import RichTextHeader from "./RichTextHeader";
 import AddItemButton from "../shared/repeaters/AddItemButton";
 import DeleteItemButton from "../shared/repeaters/DeleteItemButton";
 import { colors } from "../../../../../shared-assets/js/emotion";
-import { v4 as uuidv4 } from "uuid";
 
-const RepeatingRichText = ({ modelSlug, field, values, setValues }) => {
+const RepeatingRichText = ({ modelSlug, field, values, setValues, uuid }) => {
 	const addItem = () =>
-		setValues((oldValues) => [
-			...oldValues,
-			{ id: "field-" + uuidv4(), value: "" },
-		]);
+		setValues((oldValues) => [...oldValues, { id: uuid(), value: "" }]);
 
 	const deleteItem = (index) =>
 		setValues((currentValues) => {

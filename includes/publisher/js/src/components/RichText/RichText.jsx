@@ -6,12 +6,14 @@ import useWpEditor from "./useWPEditor";
 import { __ } from "@wordpress/i18n";
 
 export default function RichText({ field, modelSlug }) {
-	// Generates a unique ID for each rich text field for initialization and keying.
+	// Generates a unique ID for each field for initialization and keying.
+	const uuid = () => "field-" + uuidv4();
+
 	const initialValues = field?.isRepeatableRichText
 		? (field?.value || [""]).map((val) => {
-				return { id: "field-" + uuidv4(), value: val };
+				return { id: uuid(), value: val };
 		  })
-		: [{ id: uuidv4(), value: field?.value }];
+		: [{ id: uuid(), value: field?.value }];
 
 	const [values, setValues] = useState(initialValues);
 
@@ -25,6 +27,7 @@ export default function RichText({ field, modelSlug }) {
 			field={field}
 			values={values}
 			setValues={setValues}
+			uuid={uuid}
 		/>
 	) : (
 		<SoloRichText
