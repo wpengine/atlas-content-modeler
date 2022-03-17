@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
+import React from "react";
 import RichTextHeader from "./RichTextHeader";
 import AddItemButton from "../shared/repeaters/AddItemButton";
 import DeleteItemButton from "../shared/repeaters/DeleteItemButton";
