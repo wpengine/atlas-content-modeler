@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import RichText from "../RichText";
-import * as uuid from "../uuid"; // Allows Jest to mock this function.
+import * as uuid from "../uuid"; // Exposed so Jest can mock this function.
 
 beforeEach(() => {
 	jest.resetAllMocks();
