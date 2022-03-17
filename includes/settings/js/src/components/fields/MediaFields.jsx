@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
 
 const MediaFields = ({ register, data, editing, fieldId }) => {
-	const [showRepeatable, setShowRepeatable] = useState(
+	const [showRepeatableMedia, setShowRepeatableMedia] = useState(
 		data?.isRepeatable === true
 	);
 
@@ -21,8 +21,10 @@ const MediaFields = ({ register, data, editing, fieldId }) => {
 						type="checkbox"
 						id={`is-repeatable-${fieldId}`}
 						ref={register}
-						value={showRepeatable}
-						onChange={() => setShowRepeatable(!showRepeatable)}
+						value={showRepeatableMedia}
+						onChange={() =>
+							setShowRepeatableMedia(!showRepeatableMedia)
+						}
 						disabled={editing}
 					/>
 					<label
