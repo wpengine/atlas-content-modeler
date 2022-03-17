@@ -14,7 +14,7 @@ export default function useWpEditor(textareaIds) {
 		const editorReadyTime = 500;
 		const editorSettingsOverrides = {
 			tinymce: {
-				height: "300",
+				height: "120",
 				toolbar1:
 					"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_media",
 			},
