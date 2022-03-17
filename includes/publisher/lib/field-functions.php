@@ -266,7 +266,7 @@ function get_field_value( array $field, $post ) {
 				break;
 			}
 
-			if ( ! empty( $post->post_title ) || $post->post_title === $meta_value ) {
+			if ( $post->post_title === $meta_value || strpos( $post->post_name, 'entry' . $post->ID ) === false ) {
 				delete_post_meta( $post->ID, $field['slug'] );
 				$value = $post->post_title;
 				break;
