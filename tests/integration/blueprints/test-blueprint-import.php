@@ -286,6 +286,17 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		self::assertTrue( is_readable( $upload_dir . '/acm-rabbits/acm.json' ) );
 	}
 
+	public function test_unzip_blueprint_renamed() {
+		$this->copy_media_to_wp_uploads();
+
+		$upload_dir = wp_upload_dir()['path'];
+
+		$unzipped_folder = unzip_blueprint( $upload_dir . '/acm-rabbits-renamed.zip' );
+
+		self::assertStringEndsWith( 'acm-rabbits/', $unzipped_folder );
+		self::assertTrue( is_readable( $upload_dir . '/acm-rabbits/acm.json' ) );
+	}
+
 	public function test_cleanup() {
 		$this->copy_media_to_wp_uploads();
 

@@ -60,6 +60,30 @@ function create_model( string $post_type_slug, array $args ) {
 		);
 	}
 
+	if ( is_numeric( substr( $args['singular'], 0, 1 ) ) ) {
+		return new WP_Error(
+			'acm_singular_leading_number',
+			esc_html__( 'The singular name cannot lead with a number.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	if ( is_numeric( substr( $args['plural'], 0, 1 ) ) ) {
+		return new WP_Error(
+			'acm_plural_leading_number',
+			esc_html__( 'The plural name cannot lead with a number.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	if ( is_numeric( substr( $args['slug'], 0, 1 ) ) ) {
+		return new WP_Error(
+			'acm_slug_leading_number',
+			esc_html__( 'The identifier cannot lead with a number.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
 	$content_types[ $args['slug'] ] = $args;
 	$created                        = update_registered_content_types( $content_types );
 
