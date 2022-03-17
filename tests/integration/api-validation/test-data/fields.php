@@ -373,5 +373,16 @@ function get_test_fields() {
 			'maxValue'           => '',
 			'step'               => '',
 		),
+		'1646070397'    => array(
+			'show_in_rest'         => true,
+			'show_in_graphql'      => true,
+			'type'                 => 'richtext',
+			'id'                   => '1646070397',
+			'position'             => '400000',
+			'name'                 => 'RichTextRepeatable',
+			'slug'                 => 'richTextRepeatable',
+			'required'             => false,
+			'isRepeatableRichText' => 'true',
+		),
 	);
 }
