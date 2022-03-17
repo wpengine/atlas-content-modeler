@@ -47,6 +47,29 @@ class CreateContentModelCest {
 		$i->see( 'singular name is in use', '.card-content' );
 	}
 
+	public function i_see_a_warning_if_the_model_names_lead_with_numbers( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->amOnWPEngineCreateContentModelPage();
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'singular' ], '3dobject' ); // Leading singular with a number is not supported and can fatal error a site.
+		$i->fillField( [ 'name' => 'plural' ], '3dobjects' );
+		$i->fillField( [ 'name' => 'slug' ], 'threeobject' );
+		$i->click( 'button[data-testid="create-model-button"]' );
+		$i->wait( 1 );
+
+		$i->see( 'The singular name cannot lead with a number', '.card-content' );
+
+		$i->fillField( [ 'name' => 'singular' ], 'threeobject' );
+		$i->fillField( [ 'name' => 'plural' ], '3dobjects' ); // Leading plural with a number is not supported and can fatal error a site.
+		$i->fillField( [ 'name' => 'slug' ], 'threeobject' );
+		$i->click( 'button[data-testid="create-model-button"]' );
+		$i->wait( 1 );
+
+		$i->see( 'The plural name cannot lead with a number', '.card-content' );
+	}
+
+
 	public function i_see_a_warning_if_the_model_plural_name_is_reserved( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
 		$i->amOnWPEngineCreateContentModelPage();
