@@ -16,6 +16,7 @@ use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_n
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 use function WPE\AtlasContentModeler\get_field_value;
 use function WPE\AtlasContentModeler\save_field_value;
+use function WPE\AtlasContentModeler\delete_field_value;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -392,7 +393,7 @@ final class FormEditingExperience {
 		foreach ( $all_field_slugs as $slug ) {
 			if ( ! array_key_exists( $slug, $posted_values ) ) {
 				$field   = get_field_from_slug( $slug, $this->models, $post->post_type );
-				$deleted = $this->delete_field_value( $field, $post );
+				$deleted = delete_field_value( $field, $post );
 				if ( ! $deleted ) {
 					/* translators: %s: atlas content modeler field slug */
 					$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
