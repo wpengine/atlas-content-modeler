@@ -284,7 +284,7 @@ final class FormEditingExperience {
 	 * @return void
 	 */
 	public function set_post_attributes( int $post_id, WP_Post $post, bool $update ): void {
-		if ( empty( $_POST['atlas-content-modeler'] ) || empty( $_POST['atlas-content-modeler'][ $post->post_type ] ) ) {
+		if ( $update ) {
 			return;
 		}
 
