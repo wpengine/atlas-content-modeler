@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
 
 const NumberFields = ({ register, data, editing, fieldId }) => {
-	const [showRepeatable, setShowRepeatable] = useState(
+	const [showRepeatableNumber, setShowRepeatableNumber] = useState(
 		data?.isRepeatableNumber === true
 	);
 	return (
@@ -21,8 +21,10 @@ const NumberFields = ({ register, data, editing, fieldId }) => {
 						type="checkbox"
 						id={`is-repeatable-number-${fieldId}`}
 						ref={register}
-						value={showRepeatable}
-						onChange={() => setShowRepeatable(!showRepeatable)}
+						value={showRepeatableNumber}
+						onChange={() =>
+							setShowRepeatableNumber(!showRepeatableNumber)
+						}
 						disabled={editing}
 					/>
 					<label
