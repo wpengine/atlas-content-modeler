@@ -297,25 +297,13 @@ final class FormEditingExperience {
 			return;
 		}
 
-		if (
-			! isset( $_POST['atlas-content-modeler-pubex-nonce'] ) ||
-			! wp_verify_nonce(
-				sanitize_text_field(
-					wp_unslash( $_POST['atlas-content-modeler-pubex-nonce'] )
-				),
-				'atlas-content-modeler-pubex-nonce'
-			) ) {
-			$this->error_save_post = __( 'Nonce verification failed when saving your content. Please try again.', 'atlas-content-modeler' );
-			return;
-		}
-
 		// Remove action to prevent it from running again when updating the post below.
 		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10 );
 
 		$needs_update = false;
 
 		if ( $post->post_status === 'auto-draft' ) {
-			$post->post_title = '';
+			$post->post_title = 'entry' . $post->ID;
 			$post->post_name  = $post->ID;
 			$needs_update     = true;
 		}
