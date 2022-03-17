@@ -17,13 +17,14 @@ import ReorderIcon from "./ReorderIcon";
 import RichTextIcon from "./RichTextIcon";
 import SettingsIcon from "./SettingsIcon";
 import TextIcon from "./TextIcon";
+import TrashIcon from "./TrashIcon";
 import TickIcon from "./TickIcon";
 import UpArrow from "./UpArrow";
 
-export default function Icon({ type, size }) {
+export default function Icon({ type, size, noCircle }) {
 	switch (type) {
 		case "add":
-			return <AddIcon size={size} />;
+			return <AddIcon noCircle={noCircle} size={size} />;
 		case "boolean":
 			return <BooleanIcon />;
 		case "close":
@@ -60,6 +61,8 @@ export default function Icon({ type, size }) {
 			return <TextIcon />;
 		case "tick":
 			return <TickIcon />;
+		case "trash":
+			return <TrashIcon />;
 		case "uparrow":
 			return <UpArrow />;
 		default:

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import AddIcon from "../../../../../../components/icons/AddIcon";
+import Icon from "acm-icons";
 import { colors } from "../../../../../../shared-assets/js/emotion";
 import { __ } from "@wordpress/i18n";
 
@@ -34,7 +34,7 @@ const AddItemButton = ({ addItem }) => {
 				}
 			`}
 		>
-			<AddIcon noCircle />
+			<Icon type="add" noCircle />
 			<span>{__("Add Item", "atlas-content-modeler")}</span>
 		</button>
 	);
