@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { uuid } from "./uuid";
 import SoloRichText from "./SoloRichText";
 import RepeatingRichText from "./RepeatingRichText";
 import useWpEditor from "./useWPEditor";
 import { __ } from "@wordpress/i18n";
 
 export default function RichText({ field, modelSlug }) {
-	// Generates a unique ID for initialization and keying.
-	const uuid = () => "field-" + uuidv4();
-
 	const initialValues = field?.isRepeatableRichText
 		? (field?.value || [""]).map((val) => {
 				return { id: uuid(), value: val };
