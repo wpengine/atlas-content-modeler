@@ -25,6 +25,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 	import_posts,
 	import_taxonomies,
 	import_terms,
+	import_options,
 	tag_posts,
 	unzip_blueprint
 };
@@ -191,6 +192,11 @@ class Blueprint {
 				$manifest['relationships'],
 				$post_ids_old_new
 			);
+		}
+
+		if ( ! empty( $manifest['wp-options'] ?? [] ) ) {
+			\WP_CLI::log( 'Restoring WordPress options.' );
+			import_options( $manifest['wp-options'] );
 		}
 
 		if ( ! ( $assoc_args['skip-cleanup'] ?? false ) ) {

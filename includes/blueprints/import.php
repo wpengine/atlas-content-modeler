@@ -534,6 +534,17 @@ function import_acm_relationships( array $relationships, array $post_ids_old_new
 }
 
 /**
+ * Import WordPress options to the wp_options table.
+ *
+ * @param array $options WordPress options to import.
+ */
+function import_options( array $options ): void {
+	foreach ( $options as $name => $value ) {
+		update_option( $name, $value );
+	}
+}
+
+/**
  * Deletes the blueprint zip file and manifest file.
  *
  * Leaves media files in place because they are linked to imported media.
