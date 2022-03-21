@@ -39,6 +39,7 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_post_tags,
 	collect_posts,
 	collect_relationships,
+	collect_options,
 	delete_folder,
 	generate_meta,
 	get_acm_temp_dir,
@@ -224,6 +225,9 @@ class Blueprint {
 	 * : Post types to collect posts for, separated by commas. Defaults to post,
 	 * page and all registered ACM post types.
 	 *
+	 * [--wp-options]
+	 * : Named wp_options keys to export, separated by commas. Empty by default.
+	 *
 	 * [--open]
 	 * : Open the folder containing the generated zip on success (macOS only,
 	 * requires that `shell_exec()` has not been disabled).
@@ -294,6 +298,14 @@ class Blueprint {
 		$manifest['relationships'] = collect_relationships(
 			$manifest['posts'] ?? []
 		);
+
+		if ( ! empty( $assoc_args['wp-options'] ) ) {
+			$wp_options             = array_map(
+				'trim',
+				explode( ',', $assoc_args['wp-options'] )
+			);
+			$manifest['wp-options'] = collect_options( $wp_options );
+		}
 
 		\WP_CLI::log( 'Writing acm.json manifest.' );
 		$write_manifest = write_manifest( $manifest, $temp_dir );

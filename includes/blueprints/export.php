@@ -324,6 +324,22 @@ function collect_relationships( array $posts ): array {
 }
 
 /**
+ * Collects passed `$options` from the wp_options table.
+ *
+ * @param array $options List of options to collect.
+ * @return array WordPress option values keyed by option name.
+ */
+function collect_options( array $options ) {
+	$option_values = [];
+
+	foreach ( $options as $option ) {
+		$option_values[ $option ] = get_option( $option );
+	}
+
+	return $option_values;
+}
+
+/**
  * Writes the acm.json manifest file to the given `$path`.
  *
  * @param array  $manifest ACM manifest data.
