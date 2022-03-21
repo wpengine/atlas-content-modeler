@@ -1,6 +1,10 @@
 # Atlas Content Modeler Changelog
 
 ## Unreleased
+### Added
+- `wp acm blueprint export` now accepts a `--wp-options` flag to export a comma-separated list of WordPress options from the `wp_options` table. No options are exported by default. Example: `wp acm blueprint export --wp-options='blogname, permalink_structure`
+- `wp acm blueprint import` now updates WordPress options if blueprints contain a `wp-options` key with a list of options values, keyed by option name.
+
 ### Changed
 - The `wp acm blueprint export` and `wp acm blueprint import` commands now include category and post_tag taxonomy terms for the WordPress core 'post' type.
 
