@@ -83,6 +83,12 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'numberIntergerRequired', $response_data['acm_fields'] );
 		self::assertEquals( '13', $response_data['acm_fields']['numberIntergerRequired'] );
 
+		self::assertArrayHasKey( 'richText', $response_data['acm_fields'] );
+		self::assertSame( 'This is a rich text field', $response_data['acm_fields']['richText'] );
+
+		self::assertArrayHasKey( 'richTextRepeatable', $response_data['acm_fields'] );
+		self::assertSame( [ '<p>First</p>', '<p>Second</p>' ], $response_data['acm_fields']['richTextRepeatable'] );
+
 		self::assertArrayHasKey( 'dateRequired', $response_data['acm_fields'] );
 		self::assertEquals( '2021/02/13', $response_data['acm_fields']['dateRequired'] );
 
