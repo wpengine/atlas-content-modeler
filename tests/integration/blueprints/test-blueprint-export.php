@@ -13,6 +13,7 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_post_tags,
 	collect_posts,
 	collect_relationships,
+	collect_options,
 	generate_meta,
 	get_acm_temp_dir,
 	write_manifest,
@@ -432,6 +433,16 @@ class BlueprintExportTest extends WP_UnitTestCase {
 			'this-refers-to-an-unrelated-id-and-should-not-be-collected',
 			$names
 		);
+	}
+
+	public function test_collect_options() {
+		$options = collect_options( [ 'permalink_structure', 'blogname', 'blogdescription' ] );
+
+		self::assertCount( 3, $options );
+		self::assertArrayHasKey( 'permalink_structure', $options );
+		self::assertArrayHasKey( 'blogname', $options );
+		self::assertIsString( $options['blogname'] );
+		self::assertArrayHasKey( 'blogdescription', $options );
 	}
 
 	public function test_get_acm_temp_dir_missing_manifest_name() {
