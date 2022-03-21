@@ -15,6 +15,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 	import_posts,
 	import_taxonomies,
 	import_terms,
+	import_options,
 	tag_posts,
 	unzip_blueprint
 };
@@ -274,6 +275,13 @@ class BlueprintImportTest extends WP_UnitTestCase {
 			self::assertEquals( $expected_id1, $actual_id1 );
 			self::assertEquals( $expected_id2, $actual_id2 );
 		}
+	}
+
+	public function test_import_options() {
+		import_options( $this->manifest['wp-options'] );
+
+		self::assertEquals( $this->manifest['wp-options']['blogname'], get_option( 'blogname' ) );
+		self::assertEquals( $this->manifest['wp-options']['blogdescription'], get_option( 'blogdescription' ) );
 	}
 
 	public function test_unzip_blueprint() {
