@@ -6,6 +6,7 @@ import { useLocationSearch } from "../../utils";
 import Icon from "acm-icons";
 import TextFields from "./TextFields";
 import RichTextFields from "./RichTextFields";
+import EmailFields from "./EmailFields";
 import {
 	MediaSettings,
 	TextSettings,
@@ -35,6 +36,7 @@ const extraFields = {
 	text: TextFields,
 	media: MediaFields,
 	richtext: RichTextFields,
+	email: EmailFields,
 	number: NumberFields,
 	multipleChoice: MultipleChoiceFields,
 	relationship: RelationshipFields,
