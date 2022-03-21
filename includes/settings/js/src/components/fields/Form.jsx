@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import { useLocationSearch } from "../../utils";
 import Icon from "acm-icons";
 import TextFields from "./TextFields";
+import RichTextFields from "./RichTextFields";
 import {
 	MediaSettings,
 	TextSettings,
@@ -32,6 +33,7 @@ const { cloneDeep, isEqual } = lodash;
 
 const extraFields = {
 	text: TextFields,
+	richtext: RichTextFields,
 	number: NumberFields,
 	date: DateFields,
 	multipleChoice: MultipleChoiceFields,

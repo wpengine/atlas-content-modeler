@@ -199,7 +199,7 @@ exports[`Field renders a rich text field 1`] = `
     className="field d-flex flex-column richtext"
     id="field-richtext"
   >
-    <RichTextEditor
+    <RichText
       defaultError="This field is required"
       errors={Object {}}
       field={
