@@ -7,6 +7,7 @@ const supportedFields = {
 	boolean: "Boolean",
 	relationship: "Relationship",
 	multipleChoice: "Multiple Choice",
+	email: "Email",
 };
 
 export default supportedFields;
