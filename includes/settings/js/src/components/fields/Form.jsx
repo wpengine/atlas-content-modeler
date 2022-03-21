@@ -6,6 +6,7 @@ import { useLocationSearch } from "../../utils";
 import Icon from "acm-icons";
 import TextFields from "./TextFields";
 import RichTextFields from "./RichTextFields";
+import EmailFields from "./EmailFields";
 import {
 	MediaSettings,
 	TextSettings,
@@ -33,6 +34,7 @@ const { cloneDeep, isEqual } = lodash;
 const extraFields = {
 	text: TextFields,
 	richtext: RichTextFields,
+	email: EmailFields,
 	number: NumberFields,
 	multipleChoice: MultipleChoiceFields,
 	relationship: RelationshipFields,
