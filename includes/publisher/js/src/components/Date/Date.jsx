@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
-import Icon from "acm-icons";
+import DateField from "./DateField";
 
 function Date({ field, modelSlug, defaultError }) {
 	return (
@@ -18,17 +18,12 @@ function Date({ field, modelSlug, defaultError }) {
 			{field?.description && (
 				<p className="help mb-0">{field.description}</p>
 			)}
-			<input
-				type={`${field.type}`}
-				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-				id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-				defaultValue={field.value}
-				required={field.required}
+
+			<DateField
+				field={field}
+				modelSlug={modelSlug}
+				defaultError={defaultError}
 			/>
-			<span className="error">
-				<Icon type="error" />
-				<span role="alert">{defaultError}</span>
-			</span>
 		</>
 	);
 }
