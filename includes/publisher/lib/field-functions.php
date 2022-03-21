@@ -263,6 +263,7 @@ function get_field_value( array $field, $post ) {
 			if ( ! $meta_value ) {
 				$value = get_post_field( 'post_title', $post->ID );
 				$value = 'Auto Draft' === $value ? '' : $value;
+				$value = $post->post_status === 'auto-draft' ? '' : $value;
 				break;
 			}
 
