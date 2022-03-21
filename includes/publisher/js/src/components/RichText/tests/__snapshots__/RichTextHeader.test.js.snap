@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RichTextHeader renders a matching snapshot 1`] = `
+Array [
+  <label
+    htmlFor="atlas-content-modeler[cats][name]"
+  >
+    Name
+  </label>,
+  <p
+    className="help mb-4"
+  >
+    The cat's real name.
+  </p>,
+]
+`;
