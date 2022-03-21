@@ -329,7 +329,7 @@ function collect_relationships( array $posts ): array {
  * @param array $options List of options to collect.
  * @return array WordPress option values keyed by option name.
  */
-function collect_options( array $options ) {
+function collect_options( array $options ): array {
 	$option_values = [];
 
 	foreach ( $options as $option ) {
