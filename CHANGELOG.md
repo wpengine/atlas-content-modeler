@@ -1,6 +1,9 @@
 # Atlas Content Modeler Changelog
 
 ## Unreleased
+### Added
+- Rich Text fields have a new “make repeatable” option. Enable it on new fields to let publishers enter multiple rows of rich text content.
+
 ### Changed
 - The `wp acm blueprint export` and `wp acm blueprint import` commands now include category and post_tag taxonomy terms for the WordPress core 'post' type.
 

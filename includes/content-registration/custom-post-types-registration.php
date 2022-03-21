@@ -501,15 +501,19 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$field['type'] = array( 'list_of' => 'String' );
 			}
 
-			if ( isset( $field['isRepeatable'] ) && $field['isRepeatable'] && 'text' === $field['type'] ) {
+			$is_repeatable_text      = ( $field['isRepeatable'] ?? false ) && 'text' === $field['original_type'];
+			$is_repeatable_rich_text = ( $field['isRepeatableRichText'] ?? false ) && $rich_text;
+			$is_repeatable_number    = ( $field['isRepeatableNumber'] ?? false ) && 'Float' === $field['type'];
+
+			if ( $is_repeatable_text || $is_repeatable_rich_text ) {
 				$field['type'] = array( 'list_of' => 'String' );
 			}
 
-			if ( isset( $field['isRepeatableNumber'] ) && $field['isRepeatableNumber'] && 'Float' === $field['type'] ) {
+			if ( $is_repeatable_number ) {
 				$field['type'] = array( 'list_of' => 'Float' );
 			}
 
-			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text ) {
+			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text, $is_repeatable_rich_text ) {
 				if ( 'relationship' !== $field['original_type'] ) {
 					$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
@@ -534,8 +538,12 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 							return [];
 					}
 
-					// fixes caption shortcode for graphql output.
+					// Fixes caption shortcode for GraphQL output.
 					if ( $rich_text ) {
+						if ( $is_repeatable_rich_text ) {
+							return array_map( 'do_shortcode', $value );
+						}
+
 						return do_shortcode( $value );
 					}
 

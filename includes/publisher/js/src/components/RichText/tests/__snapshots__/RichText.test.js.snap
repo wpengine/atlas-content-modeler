@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RichText renders a repeating field if repeatable 1`] = `
+Array [
+  <label
+    htmlFor="atlas-content-modeler[cats][name]"
+  >
+    Name
+  </label>,
+  <p
+    className="help mb-4"
+  >
+    The cat's real name.
+  </p>,
+  <div
+    className="css-15q5af2-RepeatingRichText"
+    data-testid="rich-text-repeater-row"
+  >
+    <textarea
+      defaultValue="<p>Kahn The Destroyer<p>"
+      id="repeatable-field-id"
+      name="atlas-content-modeler[cats][name][0]"
+    />
+  </div>,
+  <div
+    className="css-1tzuh7p-RepeatingRichText"
+  >
+    <button
+      className="css-1c4y1ep-AddItemButton"
+      data-testid="add-repeatable-row"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="add add-small add-small-button"
+        clipRule="evenodd"
+        fillRule="evenodd"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g
+          transform="translate(-20 -15)"
+        >
+          <path
+            d="M33.333 33.333a.334.334 0 01-.333.334h-2a.334.334 0 01-.333-.334v-5h-5a.334.334 0 01-.334-.333v-2c0-.184.15-.333.334-.333h5v-5c0-.184.149-.334.333-.334h2c.184 0 .333.15.333.334v5h5c.184 0 .334.149.334.333v2c0 .184-.15.333-.334.333h-5v5z"
+            fill="#7e5cef"
+            fillRule="nonzero"
+          />
+        </g>
+      </svg>
+      <span>
+        Add Item
+      </span>
+    </button>
+  </div>,
+]
+`;
+
+exports[`RichText renders a solo field if not repeatable 1`] = `
+Array [
+  <label
+    htmlFor="atlas-content-modeler[cats][name]"
+  >
+    Name
+  </label>,
+  <p
+    className="help mb-4"
+  >
+    The cat's real name.
+  </p>,
+  <textarea
+    defaultValue="<p>Kahn The Destroyer</p>"
+    id="solo-field-id"
+    name="atlas-content-modeler[cats][name]"
+  />,
+]
+`;
