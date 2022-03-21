@@ -50,10 +50,6 @@ function ViewTemplate() {
 		return <Tools />;
 	}
 
-	if (view === "tools") {
-		return <Tools />;
-	}
-
 	if (view === "settings") {
 		return <Settings />;
 	}
