@@ -246,5 +246,9 @@
       "name": "1643644343024",
       "order": 0
     }
-  ]
+  ],
+  "wp-options": {
+    "blogname": "Custom Site Name",
+    "blogdescription": "Custom site description"
+  }
 }
