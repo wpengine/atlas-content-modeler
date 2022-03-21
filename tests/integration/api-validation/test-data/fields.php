@@ -384,7 +384,7 @@ function get_test_fields() {
 			'required'             => false,
 			'isRepeatableRichText' => 'true',
 		),
-		'1646070398' => array(
+		'1646070398'    => array(
 			'show_in_rest'      => true,
 			'show_in_graphql'   => true,
 			'type'              => 'media',

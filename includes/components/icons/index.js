@@ -23,7 +23,6 @@ import UpArrow from "./UpArrow";
 import FileIcon from "./FileIcon";
 import ImgIcon from "./ImgIcon";
 import AudioIcon from "./AudioIcon";
-import TrashIcon from "./TrashIcon";
 
 export default function Icon({ type, size, noCircle }) {
 	switch (type) {
