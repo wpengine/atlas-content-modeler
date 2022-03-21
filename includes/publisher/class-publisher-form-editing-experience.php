@@ -297,35 +297,13 @@ final class FormEditingExperience {
 			return;
 		}
 
-		// Remove action to prevent it from running again when updating the post below.
-		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10 );
-
-		$needs_update = false;
-
-		if ( $post->post_status === 'auto-draft' ) {
-			$post->post_title = 'entry' . $post->ID;
-			$post->post_name  = $post->ID;
-			$needs_update     = true;
-		}
-
-		if ( ! $needs_update && strpos( $post->post_name, 'auto-draft' ) !== false ) {
-			if ( $post->post_title === 'Auto Draft' ) {
-				$post->post_title = 'entry' . $post->ID;
-				$post->post_name  = $post->ID;
-			} else {
-				$post->post_name = sanitize_title_with_dashes( $post->post_title );
-			}
-			$needs_update = true;
-		}
-
-		if ( ! $needs_update && $post->post_name === $post->ID && $post->post_title !== 'Auto Draft' ) {
-			$post->post_name = sanitize_title_with_dashes( $post->post_title );
-			$needs_update    = true;
-		}
-
-		if ( $needs_update ) {
-			wp_update_post( $post );
-		}
+		wp_update_post(
+			[
+				'ID'         => $post_id,
+				'post_name'  => $post_id,
+				'post_title' => 'entry' . $post_id,
+			]
+		);
 	}
 
 	/**
