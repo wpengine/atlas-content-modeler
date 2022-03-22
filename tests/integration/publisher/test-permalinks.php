@@ -15,8 +15,6 @@ class TestPermalinks extends WP_UnitTestCase {
 	private $post_ids;
 
 	public function set_up() {
-		global $wp_rewrite;
-
 		parent::set_up();
 
 		/**
@@ -31,8 +29,7 @@ class TestPermalinks extends WP_UnitTestCase {
 
 		update_registered_content_types( $this->get_models() );
 
-		$wp_rewrite->init();
-		$wp_rewrite->set_permalink_structure( '/posts/%postname%/' );
+		$this->set_permalink_structure( '/posts/%postname%/' );
 
 		do_action( 'init' );
 
