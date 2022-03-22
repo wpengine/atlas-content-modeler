@@ -8,8 +8,8 @@ function DateField({ field, modelSlug, defaultError, ...props }) {
 				type="date"
 				name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
 				id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-				defaultValue={field.value}
 				required={field.required}
+				defaultValue={field.value}
 				{...props}
 			/>
 			<span className="error">

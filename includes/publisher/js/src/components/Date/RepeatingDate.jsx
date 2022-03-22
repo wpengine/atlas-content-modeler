@@ -50,6 +50,7 @@ const RepeatingDate = ({
 							modelSlug={modelSlug}
 							field={field}
 							defaultError={defaultError}
+							defaultValue={value}
 						/>
 						{values.length > 1 && (
 							<DeleteItemButton
