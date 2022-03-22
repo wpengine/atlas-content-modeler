@@ -74,8 +74,6 @@ export default function Icon({ type, size, noCircle }) {
 			return <FileIcon />;
 		case "multimedia":
 			return <ImgIcon />;
-		case "trash":
-			return <TrashIcon />;
 		default:
 			return "";
 	}
