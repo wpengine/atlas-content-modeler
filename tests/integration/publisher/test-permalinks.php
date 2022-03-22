@@ -14,10 +14,10 @@ class TestPermalinks extends WP_UnitTestCase {
 
 	private $post_ids;
 
-	public function setUp() {
-		parent::setUp();
-
+	public function set_up() {
 		$this->set_permalink_structure( '/posts/%postname%/' );
+
+		parent::set_up();
 
 		/**
 		 * Reset the WPGraphQL schema before each test.
