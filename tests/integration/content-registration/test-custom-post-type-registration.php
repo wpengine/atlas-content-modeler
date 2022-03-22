@@ -127,6 +127,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$expected_args  = $this->all_registered_post_types['public'];
 		self::assertSame( $generated_args['name'], $expected_args->label );
 		self::assertSame( $generated_args['menu_icon'], $expected_args->menu_icon );
+		self::assertSame( $generated_args['rewrite']['with_front'], $expected_args->rewrite['with_front'] );
 
 		$generated_args = generate_custom_post_type_args(
 			array(
