@@ -17,8 +17,10 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 	private $models;
 	private $all_registered_post_types;
+	private $original_wp_rewrite;
 
 	public function set_up() {
+		global $wp_rewrite;
 		parent::set_up();
 
 		/**
@@ -40,14 +42,17 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 		$this->all_registered_post_types = get_post_types( [], 'objects' );
 
-		$this->post_ids = $this->get_post_ids();
+		$this->post_ids            = $this->get_post_ids();
+		$this->original_wp_rewrite = $wp_rewrite;
 	}
 
 	public function tear_down() {
+		global $wp_rewrite;
 		parent::tear_down();
 		wp_set_current_user( null );
 		delete_option( 'atlas_content_modeler_post_types' );
 		$this->all_registered_post_types = null;
+		$wp_rewrite                      = $this->original_wp_rewrite;
 	}
 
 	private function get_models() {
@@ -182,4 +187,5 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 		update_registered_content_types( [] );
 	}
+
 }
