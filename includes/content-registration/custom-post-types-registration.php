@@ -504,7 +504,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$is_repeatable_text      = ( $field['isRepeatable'] ?? false ) && 'text' === $field['original_type'];
 			$is_repeatable_rich_text = ( $field['isRepeatableRichText'] ?? false ) && $rich_text;
 			$is_repeatable_number    = ( $field['isRepeatableNumber'] ?? false ) && 'Float' === $field['type'];
-			$is_repeatable_date      = ( $field['isRepeatableDate'] ?? false ) && 'date' === $field['type'];
+			$is_repeatable_date      = ( $field['isRepeatableDate'] ?? false ) && 'date' === $field['original_type'];
 
 			if ( $is_repeatable_text || $is_repeatable_rich_text || $is_repeatable_date ) {
 				$field['type'] = array( 'list_of' => 'String' );
