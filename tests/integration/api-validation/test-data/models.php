@@ -38,6 +38,7 @@ return array(
 		'api_visibility'  => 'public',
 		'model_icon'      => 'dashicons-admin-post',
 		'description'     => 'A public content model with fields',
+		'with_front'      => false,
 		'fields'          => get_test_fields(),
 	),
 	'private-fields' => array(
