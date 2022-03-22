@@ -345,6 +345,9 @@ function generate_custom_post_type_args( array $args ): array {
 		'graphql_plural_name'   => $args['graphql_plural_name'] ?? camelcase( $plural ),
 		'menu_icon'             => ! empty( $args['model_icon'] ) ? $args['model_icon'] : 'dashicons-admin-post',
 		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
+		'rewrite'               => [
+			'with_front' => $args['with_front'] ?? true,
+		],
 	];
 
 	if ( ! empty( $args['api_visibility'] ) && 'private' === $args['api_visibility'] ) {
