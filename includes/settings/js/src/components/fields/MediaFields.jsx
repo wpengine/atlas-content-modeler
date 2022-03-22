@@ -4,14 +4,14 @@
 import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
 
-const MediaFields = ({ register, data, editing, fieldId }) => {
+const MediaFields = ({ register, data, editing, fieldId, watch }) => {
 	const [showRepeatableMedia, setShowRepeatableMedia] = useState(
 		data?.isRepeatable === true
 	);
 
-	const [isFeaturedImage, setIsFeaturedImage] = useState(
-		data?.isFeaturedImage === true
-	);
+	const [isFeatured, setIsFeatured] = useState(data?.isFeatured === true);
+
+	const isFeaturedWatcher = watch("isFeatured");
 
 	return (
 		<>
@@ -29,7 +29,7 @@ const MediaFields = ({ register, data, editing, fieldId }) => {
 						onChange={() =>
 							setShowRepeatableMedia(!showRepeatableMedia)
 						}
-						disabled={isFeaturedImage}
+						disabled={isFeaturedWatcher}
 					/>
 					<label
 						htmlFor={`is-repeatable-${fieldId}`}

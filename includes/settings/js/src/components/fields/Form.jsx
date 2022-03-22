@@ -69,6 +69,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const model = query.get("id");
 	const ExtraFields = extraFields[type] ?? null;
 	const currentNumberType = watch("numberType");
+	const isRepeatableMedia = watch("isRepeatableMedia");
 	const {
 		setInputGeneratorSourceValue,
 		onChangeGeneratedValue,
@@ -565,7 +566,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 									defaultChecked={
 										storedData?.required === true
 									}
-									disabled={storedData?.isRepeatableMedia}
+									disabled={!!isRepeatableMedia}
 									onChange={(event) => {
 										/**
 										 * Unchecks other fields when checking a field.
