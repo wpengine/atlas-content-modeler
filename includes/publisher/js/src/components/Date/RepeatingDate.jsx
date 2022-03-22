@@ -46,7 +46,7 @@ const RepeatingDate = ({
 					>
 						<DateField
 							name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-							id={id}
+							id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 							modelSlug={modelSlug}
 							field={field}
 							defaultError={defaultError}
