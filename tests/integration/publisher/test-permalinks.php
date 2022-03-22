@@ -19,9 +19,6 @@ class TestPermalinks extends WP_UnitTestCase {
 
 		parent::set_up();
 
-		$wp_rewrite->init();
-		$wp_rewrite->set_permalink_structure( '/posts/%postname%/' );
-
 		/**
 		 * Reset the WPGraphQL schema before each test.
 		 * Lazy loading types only loads part of the schema,
@@ -33,6 +30,9 @@ class TestPermalinks extends WP_UnitTestCase {
 		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
 		update_registered_content_types( $this->get_models() );
+
+		$wp_rewrite->init();
+		$wp_rewrite->set_permalink_structure( '/posts/%postname%/' );
 
 		do_action( 'init' );
 
