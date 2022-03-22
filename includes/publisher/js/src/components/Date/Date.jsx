@@ -12,30 +12,7 @@ function Date({ field, modelSlug, defaultError }) {
 
 	const [values, setValues] = useState(initialValues);
 
-	return field?.isRepeatableDate ? (
-		<>
-			<label
-				htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-			>
-				{field.name}
-			</label>
-			{field?.required && (
-				<p className="required">
-					*{__("Required", "atlas-content-modeler")}
-				</p>
-			)}
-			{field?.description && (
-				<p className="help mb-0">{field.description}</p>
-			)}
-			<RepeatingDate
-				modelSlug={modelSlug}
-				field={field}
-				values={values}
-				setValues={setValues}
-				defaultError={defaultError}
-			/>
-		</>
-	) : (
+	return (
 		<>
 			<label
 				htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
@@ -51,11 +28,21 @@ function Date({ field, modelSlug, defaultError }) {
 				<p className="help mb-0">{field.description}</p>
 			)}
 
-			<DateField
-				field={field}
-				modelSlug={modelSlug}
-				defaultError={defaultError}
-			/>
+			{field?.isRepeatableDate ? (
+				<RepeatingDate
+					modelSlug={modelSlug}
+					field={field}
+					values={values}
+					setValues={setValues}
+					defaultError={defaultError}
+				/>
+			) : (
+				<DateField
+					field={field}
+					modelSlug={modelSlug}
+					defaultError={defaultError}
+				/>
+			)}
 		</>
 	);
 }
