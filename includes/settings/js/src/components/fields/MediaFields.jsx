@@ -9,6 +9,10 @@ const MediaFields = ({ register, data, editing, fieldId }) => {
 		data?.isRepeatable === true
 	);
 
+	const [isFeaturedImage, setIsFeaturedImage] = useState(
+		data?.isFeaturedImage === true
+	);
+
 	return (
 		<>
 			{data && (
@@ -25,7 +29,7 @@ const MediaFields = ({ register, data, editing, fieldId }) => {
 						onChange={() =>
 							setShowRepeatableMedia(!showRepeatableMedia)
 						}
-						disabled={editing}
+						disabled={isFeaturedImage}
 					/>
 					<label
 						htmlFor={`is-repeatable-${fieldId}`}

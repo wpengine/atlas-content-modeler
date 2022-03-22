@@ -565,6 +565,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 									defaultChecked={
 										storedData?.required === true
 									}
+									disabled={storedData?.isRepeatableMedia}
 									onChange={(event) => {
 										/**
 										 * Unchecks other fields when checking a field.
