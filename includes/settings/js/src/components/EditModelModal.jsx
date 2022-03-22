@@ -376,7 +376,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 						<label htmlFor="with_front">Use Permalink Base</label>
 						<p className="help">
 							{__(
-								"Post URLs will include prefixes in Settings → Permalinks if this is ticked. (Sets “with_front”.)",
+								"Post URLs will include prefixes from Settings → Permalinks if this is ticked. (Sets “with_front”.)",
 								"atlas-content-modeler"
 							)}
 						</p>
