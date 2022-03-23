@@ -169,7 +169,7 @@ class PublishModelCest {
 		$i->seeInField( 'atlas-content-modeler[goose][decimal]', '20' );
 	}
 
-	public function i_see_submission_errors_in_eamil_field_when_input_is_not_a_email( \AcceptanceTester $i ) {
+	public function i_see_submission_errors_in_email_field_when_input_is_not_an_email( \AcceptanceTester $i ) {
 		$i->click( 'Email', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Email' );
 		$i->checkOption( 'required' );

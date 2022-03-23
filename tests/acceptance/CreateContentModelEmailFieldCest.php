@@ -1,7 +1,7 @@
 <?php
 
 class CreateContentModelEmailFieldCest {
-	public function i_can_create_a_content_mdodel_email_field( AcceptanceTester $i ) {
+	public function i_can_create_a_content_model_email_field( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
 		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
 		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
