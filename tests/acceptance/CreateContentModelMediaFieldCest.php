@@ -33,10 +33,7 @@ class CreateContentModelMediaFieldCest {
 		$i->wait( 1 );
 
 		// Check that the first input in the index of available list items is rendering indicating a multiple being set.
-		$i->seeElement(
-			'input',
-			[ 'name' => 'atlas-content-modeler[candy][positionxyz][0]' ]
-		);
+		$i->see( 'Manage Media', 'button[data-testid="media-uploader-manage-media-button"]' );
 	}
 
 	/**
