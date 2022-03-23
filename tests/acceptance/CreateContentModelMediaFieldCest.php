@@ -57,7 +57,7 @@ class CreateContentModelMediaFieldCest {
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
 
-		$i->see( 'Manage Media', 'button[data-testid="media-uploader-manage-media-button"]' );
+		$i->seeElement( 'input[name="atlas-content-modeler[candy][positionxyz]"]:invalid' );
 	}
 
 	/**
