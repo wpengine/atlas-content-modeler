@@ -409,6 +409,12 @@ function update_registered_content_types( array $args ): bool {
 	$updated = update_option( 'atlas_content_modeler_post_types', $args );
 
 	if ( $updated ) {
+		/**
+		 * Re-register post types so that rewrite rules adapt to any changes to
+		 * models' with_front properties.
+		 */
+		register_content_types();
+
 		flush_rewrite_rules( false );
 	}
 
