@@ -557,7 +557,11 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							)}
 						</label>
 						{["media"].includes(type) && (
-							<div>
+							<div
+								className={
+									!!isRepeatableMedia && "read-only editing"
+								}
+							>
 								<input
 									name="isFeatured"
 									type="checkbox"
