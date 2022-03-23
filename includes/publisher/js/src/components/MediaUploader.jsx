@@ -296,7 +296,7 @@ export default function MediaUploader({ modelSlug, field, required }) {
 					>
 						{field.name}
 					</label>
-					{field?.required && <p className="required">*Required</p>}
+					{field?.required && <p className="required">*{__("Required", "atlas-content-modeler")}</p>}
 					{field?.description && (
 						<p className="help mb-2">
 							{__(field.description, "atlas-content-modeler")}
