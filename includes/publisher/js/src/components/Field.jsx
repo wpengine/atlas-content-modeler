@@ -109,8 +109,14 @@ export default function Field(props) {
 			}
 		}
 
-		if (field.type === "email" && !event.target.validity.valid) {
-			error = __("Value must be an email.", "atlas-content-modeler");
+		if (field.type === "email") {
+			if (!event.target.validity.valid) {
+				error = __("Value must be an email.", "atlas-content-modeler");
+			}
+
+			if (field?.required && event.target.value.trim() === "") {
+				error = defaultError;
+			}
 		}
 
 		setErrors({ ...errors, [field.slug]: error });
