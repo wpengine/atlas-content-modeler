@@ -518,7 +518,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				$field['type'] = array( 'list_of' => 'Float' );
 			}
 
-			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text, $is_repeatable_rich_text ) {
+			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text, $is_repeatable_rich_text, $is_repeatable_media ) {
 				if ( 'relationship' !== $field['original_type'] ) {
 					$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
@@ -534,7 +534,16 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return (float) $value;
 					}
 
-					if ( $field['type'] === 'MediaItem' ) {
+					if ( $field['original_type'] === 'media' ) {
+						if ( $is_repeatable_media ) {
+							return array_map(
+								function( $media_id ) use ( $context ) {
+									return DataSource::resolve_post_object( (int) $media_id, $context );
+								},
+								$value
+							);
+						}
+
 						return DataSource::resolve_post_object( (int) $value, $context );
 					}
 
