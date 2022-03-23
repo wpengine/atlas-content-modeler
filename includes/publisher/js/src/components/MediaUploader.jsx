@@ -309,6 +309,24 @@ export default function MediaUploader({ modelSlug, field, required }) {
 								<ul>
 									<table key="1" className="table mt-2">
 										<tbody>
+											{/* Blocks submission if required and is empty */}
+											{fieldValues.length === 0 &&
+												field?.required && (
+													<tr>
+														<td>
+															<input
+																aria-label={__(
+																	"Repeatable media",
+																	"atlas-content-modeler"
+																)}
+																name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
+																required={true}
+																className="visually-hidden"
+															/>
+														</td>
+													</tr>
+												)}
+
 											{fieldValues.map((item, index) => {
 												return (
 													<tr
