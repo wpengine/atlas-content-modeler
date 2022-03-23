@@ -32,7 +32,6 @@ class CreateContentModelMediaFieldCest {
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
 
-		// Check that the first input in the index of available list items is rendering indicating a multiple being set.
 		$i->see( 'Manage Media', 'button[data-testid="media-uploader-manage-media-button"]' );
 	}
 
@@ -57,7 +56,8 @@ class CreateContentModelMediaFieldCest {
 		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
-		$i->seeElement( 'input[name="atlas-content-modeler[candy][positionxyz]"]:invalid' );
+
+		$i->see( 'Manage Media', 'button[data-testid="media-uploader-manage-media-button"]' );
 	}
 
 	/**
