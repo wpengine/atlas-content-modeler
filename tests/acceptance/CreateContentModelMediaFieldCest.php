@@ -60,7 +60,7 @@ class CreateContentModelMediaFieldCest {
 		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
-		$i->seeElement( 'input[name="atlas-content-modeler[candy][positionxyz][0]"]:invalid' );
+		$i->seeElement( 'input[name="atlas-content-modeler[candy][positionxyz]"]:invalid' );
 	}
 
 	/**
