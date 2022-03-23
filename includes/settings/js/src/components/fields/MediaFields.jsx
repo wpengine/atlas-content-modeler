@@ -33,7 +33,7 @@ const MediaFields = ({ register, data, editing, fieldId, watch }) => {
 						onChange={() =>
 							setShowRepeatableMedia(!showRepeatableMedia)
 						}
-						disabled={isFeaturedWatcher}
+						disabled={editing || isFeaturedWatcher}
 					/>
 					<label
 						htmlFor={`is-repeatable-${fieldId}`}
