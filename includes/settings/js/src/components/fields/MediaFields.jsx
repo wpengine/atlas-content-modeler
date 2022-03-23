@@ -16,7 +16,11 @@ const MediaFields = ({ register, data, editing, fieldId, watch }) => {
 	return (
 		<>
 			{data && (
-				<div className={"field"}>
+				<div
+					className={
+						isFeaturedWatcher ? "field read-only editing" : "field"
+					}
+				>
 					<legend>
 						{__("Repeatable Field", "atlas-content-modeler")}
 					</legend>
@@ -29,7 +33,7 @@ const MediaFields = ({ register, data, editing, fieldId, watch }) => {
 						onChange={() =>
 							setShowRepeatableMedia(!showRepeatableMedia)
 						}
-						disabled={isFeaturedWatcher}
+						disabled={editing || isFeaturedWatcher}
 					/>
 					<label
 						htmlFor={`is-repeatable-${fieldId}`}
