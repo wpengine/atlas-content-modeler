@@ -16,6 +16,7 @@
 - Options buttons now use the mouse pointer cursor.
 - The `wp acm blueprint import` command no longer reports “Could not read an acm.json file” if the blueprint zip file was renamed after creation.
 - Fixed issue where it was possible to improperly lead a model ID with a number.
+- WordPress admin notices no longer overlay the Screen Options button on ACM entry pages.
 
 ## 0.14.0 - 2022-02-10
 ### Added
