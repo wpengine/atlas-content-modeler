@@ -65,6 +65,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							numberIntegerRepeat
 							mediaRepeat
 							dateRequired
+							dateRepeatable
 							multiSingle
 							multipleMulti
 							booleanRequired
