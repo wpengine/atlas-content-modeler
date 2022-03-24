@@ -3,6 +3,7 @@ import MediaUploader from "./MediaUploader";
 import RichText from "./RichText";
 import Relationship from "./relationship";
 import Text from "./Text";
+import Email from "./Email";
 import Number from "./Number";
 import Date from "./Date";
 import Icon from "acm-icons";
@@ -254,7 +255,16 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</fieldset>
 				);
 			}
-
+		case "email":
+			return (
+				<Email
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
+			);
 		default:
 			return `TODO: ${field.type} fields`;
 	}
