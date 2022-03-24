@@ -87,7 +87,7 @@ function populate_post( $post_id, $model, $test_class ) {
 	update_post_meta( $post_id, 'numberIntergerRequired', '13' );
 	update_post_meta( $post_id, 'numberIntegerLimited', '3' );
 	update_post_meta( $post_id, 'date', '2012/02/13' );
-	update_post_meta( $post_id, 'dateRepeatable', [ '2012/02/13', '2012/02/14' ] );
+	update_post_meta( $post_id, 'dateRepeatable', [ '2021/02/13', '2021/02/14' ] );
 	update_post_meta( $post_id, 'dateRequired', '2021/02/13' );
 	update_post_meta( $post_id, 'media', $ids[ $model . '_image_id' ] );
 	update_post_meta( $post_id, 'mediaRepeat', [ 1, 2, 3 ] );
