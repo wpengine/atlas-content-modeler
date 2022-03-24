@@ -345,6 +345,9 @@ function generate_custom_post_type_args( array $args ): array {
 		'graphql_plural_name'   => $args['graphql_plural_name'] ?? camelcase( $plural ),
 		'menu_icon'             => ! empty( $args['model_icon'] ) ? $args['model_icon'] : 'dashicons-admin-post',
 		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
+		'rewrite'               => [
+			'with_front' => $args['with_front'] ?? true,
+		],
 	];
 
 	if ( ! empty( $args['api_visibility'] ) && 'private' === $args['api_visibility'] ) {
@@ -406,6 +409,12 @@ function update_registered_content_types( array $args ): bool {
 	$updated = update_option( 'atlas_content_modeler_post_types', $args );
 
 	if ( $updated ) {
+		/**
+		 * Re-register post types so that rewrite rules adapt to any changes to
+		 * models' with_front properties.
+		 */
+		register_content_types();
+
 		flush_rewrite_rules( false );
 	}
 

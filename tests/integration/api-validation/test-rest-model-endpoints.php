@@ -45,11 +45,13 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	}
 
 	public function tear_down() {
+		global $wp_post_types;
+		global $wp_rest_server;
 		parent::tear_down();
 		wp_set_current_user( null );
-		global $wp_rest_server;
 		$wp_rest_server = null;
 		$this->server   = null;
+		$wp_post_types  = null;
 		delete_option( 'atlas_content_modeler_post_types' );
 	}
 
