@@ -106,8 +106,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['richTextRepeatable'][1], '<p>Second</p>' );
 
 			self::assertArrayHasKey( 'dateRepeatable', $results['data']['publicsFields']['nodes'][0] );
-			self::assertSame( $results['data']['publicsFields']['nodes'][0]['dateRepeatable'][0], '2012/02/13' );
-			self::assertSame( $results['data']['publicsFields']['nodes'][0]['dateRepeatable'][1], '2012/02/14' );
+			self::assertSame( $results['data']['publicsFields']['nodes'][0]['dateRepeatable'][0], '2021/02/13' );
+			self::assertSame( $results['data']['publicsFields']['nodes'][0]['dateRepeatable'][1], '2021/02/14' );
 
 			self::assertArrayHasKey( 'numberIntergerRequired', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['numberIntergerRequired'], 13.0 );
