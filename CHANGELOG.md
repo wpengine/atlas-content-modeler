@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.15.0 - 2022-03-24
 ### Added
 - Rich Text and Media fields have a new “make repeatable” option. Enable it on new fields to let publishers add multiple rows of rich text content or multiple images in one field.
 - Added a “Use Permalink Base” option on the edit model screen to set the WordPress `with_front` setting (true by default). Untick this to tell WordPress not to prefix your model entry URLs with custom prefixes from your WordPress permalink settings. For example, a site with a permalink structure of `/posts/%postname%/` will have post URLs of `/posts/your-acm-model-name/your-post/` by default. Edit your model and untick “Use Permalink Base” if you prefer a URL structure of `/your-acm-model-name/your-post/`.
