@@ -345,6 +345,9 @@ function generate_custom_post_type_args( array $args ): array {
 		'graphql_plural_name'   => $args['graphql_plural_name'] ?? camelcase( $plural ),
 		'menu_icon'             => ! empty( $args['model_icon'] ) ? $args['model_icon'] : 'dashicons-admin-post',
 		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
+		'rewrite'               => [
+			'with_front' => $args['with_front'] ?? true,
+		],
 	];
 
 	if ( ! empty( $args['api_visibility'] ) && 'private' === $args['api_visibility'] ) {
@@ -406,6 +409,12 @@ function update_registered_content_types( array $args ): bool {
 	$updated = update_option( 'atlas_content_modeler_post_types', $args );
 
 	if ( $updated ) {
+		/**
+		 * Re-register post types so that rewrite rules adapt to any changes to
+		 * models' with_front properties.
+		 */
+		register_content_types();
+
 		flush_rewrite_rules( false );
 	}
 
@@ -505,16 +514,21 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$is_repeatable_rich_text = ( $field['isRepeatableRichText'] ?? false ) && $rich_text;
 			$is_repeatable_number    = ( $field['isRepeatableNumber'] ?? false ) && 'Float' === $field['type'];
 			$is_repeatable_date      = ( $field['isRepeatableDate'] ?? false ) && 'date' === $field['type'];
+			$is_repeatable_media     = ( $field['isRepeatableMedia'] ?? false ) && 'MediaItem' === $field['type'];
 
 			if ( $is_repeatable_text || $is_repeatable_rich_text || $is_repeatable_date ) {
 				$field['type'] = array( 'list_of' => 'String' );
+			}
+
+			if ( $is_repeatable_media ) {
+				$field['type'] = array( 'list_of' => 'MediaItem' );
 			}
 
 			if ( $is_repeatable_number ) {
 				$field['type'] = array( 'list_of' => 'Float' );
 			}
 
-			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text, $is_repeatable_rich_text ) {
+			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text, $is_repeatable_rich_text, $is_repeatable_media ) {
 				if ( 'relationship' !== $field['original_type'] ) {
 					$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
@@ -530,7 +544,16 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return (float) $value;
 					}
 
-					if ( $field['type'] === 'MediaItem' ) {
+					if ( $field['original_type'] === 'media' ) {
+						if ( $is_repeatable_media ) {
+							return array_map(
+								function( $media_id ) use ( $context ) {
+									return DataSource::resolve_post_object( (int) $media_id, $context );
+								},
+								$value
+							);
+						}
+
 						return DataSource::resolve_post_object( (int) $value, $context );
 					}
 

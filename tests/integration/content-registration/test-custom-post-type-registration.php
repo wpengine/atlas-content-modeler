@@ -17,8 +17,10 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 	private $models;
 	private $all_registered_post_types;
+	private $original_wp_rewrite;
 
 	public function set_up() {
+		global $wp_rewrite;
 		parent::set_up();
 
 		/**
@@ -40,14 +42,17 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 		$this->all_registered_post_types = get_post_types( [], 'objects' );
 
-		$this->post_ids = $this->get_post_ids();
+		$this->post_ids            = $this->get_post_ids();
+		$this->original_wp_rewrite = $wp_rewrite;
 	}
 
 	public function tear_down() {
+		global $wp_rewrite;
 		parent::tear_down();
 		wp_set_current_user( null );
 		delete_option( 'atlas_content_modeler_post_types' );
 		$this->all_registered_post_types = null;
+		$wp_rewrite                      = $this->original_wp_rewrite;
 	}
 
 	private function get_models() {
@@ -127,6 +132,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$expected_args  = $this->all_registered_post_types['public'];
 		self::assertSame( $generated_args['name'], $expected_args->label );
 		self::assertSame( $generated_args['menu_icon'], $expected_args->menu_icon );
+		self::assertSame( $generated_args['rewrite']['with_front'], $expected_args->rewrite['with_front'] );
 
 		$generated_args = generate_custom_post_type_args(
 			array(
@@ -181,4 +187,5 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 		update_registered_content_types( [] );
 	}
+
 }

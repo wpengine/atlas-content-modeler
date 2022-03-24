@@ -25,6 +25,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 	import_posts,
 	import_taxonomies,
 	import_terms,
+	import_options,
 	tag_posts,
 	unzip_blueprint
 };
@@ -39,6 +40,7 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
 	collect_post_tags,
 	collect_posts,
 	collect_relationships,
+	collect_options,
 	delete_folder,
 	generate_meta,
 	get_acm_temp_dir,
@@ -192,6 +194,11 @@ class Blueprint {
 			);
 		}
 
+		if ( ! empty( $manifest['wp-options'] ?? [] ) ) {
+			\WP_CLI::log( 'Restoring WordPress options.' );
+			import_options( $manifest['wp-options'] );
+		}
+
 		if ( ! ( $assoc_args['skip-cleanup'] ?? false ) ) {
 			\WP_CLI::log( 'Deleting zip and manifest.' );
 			cleanup( $zip_file, $blueprint_folder );
@@ -223,6 +230,9 @@ class Blueprint {
 	 * [--post-types]
 	 * : Post types to collect posts for, separated by commas. Defaults to post,
 	 * page and all registered ACM post types.
+	 *
+	 * [--wp-options]
+	 * : Named wp_options keys to export, separated by commas. Empty by default.
 	 *
 	 * [--open]
 	 * : Open the folder containing the generated zip on success (macOS only,
@@ -294,6 +304,14 @@ class Blueprint {
 		$manifest['relationships'] = collect_relationships(
 			$manifest['posts'] ?? []
 		);
+
+		if ( ! empty( $assoc_args['wp-options'] ) ) {
+			$wp_options             = array_map(
+				'trim',
+				explode( ',', $assoc_args['wp-options'] )
+			);
+			$manifest['wp-options'] = collect_options( $wp_options );
+		}
 
 		\WP_CLI::log( 'Writing acm.json manifest.' );
 		$write_manifest = write_manifest( $manifest, $temp_dir );
