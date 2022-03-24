@@ -4,7 +4,7 @@ import Icon from "acm-icons";
 import { colors } from "../../../../../../shared-assets/js/emotion";
 import { __ } from "@wordpress/i18n";
 
-const DeleteItemButton = ({ deleteItem }) => {
+const DeleteItemButton = ({ deleteItem, ...props }) => {
 	return (
 		<button
 			aria-label={__("Remove item.", "atlas-content-modeler")}
@@ -26,6 +26,7 @@ const DeleteItemButton = ({ deleteItem }) => {
 					}
 				}
 			`}
+			{...props}
 		>
 			<Icon type="trash" />
 		</button>

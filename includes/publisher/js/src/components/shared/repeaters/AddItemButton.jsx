@@ -4,7 +4,7 @@ import Icon from "acm-icons";
 import { colors } from "../../../../../../shared-assets/js/emotion";
 import { __ } from "@wordpress/i18n";
 
-const AddItemButton = ({ addItem }) => {
+const AddItemButton = ({ addItem, ...props }) => {
 	return (
 		<button
 			onClick={addItem}
@@ -33,6 +33,7 @@ const AddItemButton = ({ addItem }) => {
 					}
 				}
 			`}
+			{...props}
 		>
 			<Icon type="add" noCircle />
 			<span>{__("Add Item", "atlas-content-modeler")}</span>
