@@ -21,15 +21,24 @@ const maybeInitializeAnalytics = () => {
 	}
 };
 
+/**
+ * Checks to see if we should send GA event or not for specific conditions
+ * @returns bool
+ */
+const isExcluded = () => {
+	const excludeRegex = /.+\.wpengine\.com/gi;
+	return excludeRegex.test(window.location.href);
+};
+
 export const sendEvent = (data) => {
-	if (telemetryEnabled) {
+	if (telemetryEnabled && !isExcluded()) {
 		maybeInitializeAnalytics();
 		return ReactGA.event(data);
 	}
 };
 
 export const sendPageView = (page = "") => {
-	if (telemetryEnabled) {
+	if (telemetryEnabled && !isExcluded()) {
 		maybeInitializeAnalytics();
 		return ReactGA.send({
 			hitType: "pageview",
