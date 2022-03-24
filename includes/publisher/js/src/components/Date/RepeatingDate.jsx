@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React from "react";
 import AddItemButton from "../shared/repeaters/AddItemButton";
 import DeleteItemButton from "../shared/repeaters/DeleteItemButton";
 import DateField from "./DateField";
@@ -24,51 +23,73 @@ const RepeatingDate = ({
 		});
 
 	return (
-		<>
-			{values.map(({ id, value }, index) => {
-				return (
-					<div
-						key={id}
-						data-testid="date-repeater-row"
-						css={css`
-							display: flex;
-							align-items: center;
-							border: solid 1px ${colors.border};
-							padding: 12px;
-							.classic-form .field & .mce-tinymce {
-								width: 100% !important;
-							}
-							${index === 0 &&
-							values.length > 1 &&
-							`border-bottom: none;`}
-							${values.length > 1 && `padding-right: 0`}
-						`}
-					>
-						<DateField
-							name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-							id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-							modelSlug={modelSlug}
-							field={field}
-							defaultError={defaultError}
-							defaultValue={value}
-						/>
-						{values.length > 1 && (
-							<DeleteItemButton
-								deleteItem={() => deleteItem(index)}
-							/>
-						)}
-					</div>
-				);
-			})}
-			<div
+		<fieldset>
+			<table
+				className="table"
 				css={css`
+					width: 100%;
+					max-width: 60%;
+					margin-top: 15px;
+					border-spacing: 0;
 					border: solid 1px ${colors.border};
-					border-top: none;
 				`}
 			>
-				<AddItemButton addItem={addItem} />
-			</div>
-		</>
+				{values.map(({ id, value }, index) => {
+					return (
+						<tr key={id} data-testid="date-repeater-row">
+							<td
+								css={css`
+									padding: 0;
+								`}
+							>
+								<div
+									className="d-flex flex-row flex-fill d-lg-flex"
+									css={css`
+										border-bottom: solid 1px
+											${colors.border} !important;
+									`}
+								>
+									<DateField
+										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+										modelSlug={modelSlug}
+										field={field}
+										defaultError={defaultError}
+										defaultValue={value}
+										css={css`
+											margin-top: 0 !important;
+											width: 100% !important;
+										`}
+									/>
+									{values.length > 1 && (
+										<DeleteItemButton
+											data-testid={`remove-date-field-${index}-button`}
+											deleteItem={() => deleteItem(index)}
+											css={css`
+												height: 52px;
+												width: 52px;
+												margin-right: -0.5rem;
+											`}
+										/>
+									)}
+								</div>
+							</td>
+						</tr>
+					);
+				})}
+				<tr>
+					<td>
+						<AddItemButton
+							data-testid={`add-date-field-button`}
+							addItem={addItem}
+							css={css`
+								margin: 0 !important;
+							`}
+						/>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
 	);
 };
 
