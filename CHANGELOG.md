@@ -9,7 +9,7 @@
 - `wp acm blueprint import` now updates WordPress options if blueprints contain a `wp-options` key with a list of options values, keyed by option name.
 
 ### Changed
-- The `wp acm blueprint export` and `wp acm blueprint import` commands now include category and post_tag taxonomy terms for the WordPress core 'post' type.
+- The `wp acm blueprint export` and `wp acm blueprint import` commands now include all taxonomies for collected post types, including category and post_tag taxonomy terms for the WordPress core 'post' type.
 
 ### Fixed
 - The delete model prompt no longer shows “undefined” in its title during model deletion.
