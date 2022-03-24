@@ -161,18 +161,6 @@ function get_test_fields() {
 			'minChars'        => '',
 			'maxChars'        => '',
 		),
-		'1648153658'    => array(
-			'show_in_rest'    => true,
-			'show_in_graphql' => true,
-			'type'            => 'date',
-			'id'              => '1648153658',
-			'position'        => '90000',
-			'name'            => 'Date',
-			'slug'            => 'dateRepeatable',
-			'required'        => false,
-			'minChars'        => '',
-			'maxChars'        => '',
-		),
 		'1630411395253' => array(
 			'show_in_rest'    => true,
 			'show_in_graphql' => true,
@@ -409,6 +397,18 @@ function get_test_fields() {
 			'minChars'          => '',
 			'maxChars'          => '',
 			'allowedTypes'      => '',
+		),
+		'1648153658'    => array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'date',
+			'id'              => '1648153658',
+			'position'        => '90000',
+			'name'            => 'Date-Repeatable',
+			'slug'            => 'dateRepeatable',
+			'required'        => false,
+			'minChars'        => '',
+			'maxChars'        => '',
 		),
 	);
 }
