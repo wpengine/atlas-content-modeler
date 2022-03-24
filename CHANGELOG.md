@@ -3,6 +3,7 @@
 ## 0.15.0 - 2022-03-24
 ### Added
 - Rich Text, Number and Media fields have a new “make repeatable” option. Enable it on new fields to let publishers add multiple rich text, number or image entries in one field.
+- Repeatable text fields now include a “minimum” and “maximum” repeatable limit in advanced settings.
 - Added a “Use Permalink Base” option on the edit model screen to set the WordPress `with_front` setting (true by default). Untick this to tell WordPress not to prefix your model entry URLs with custom prefixes from your WordPress permalink settings. For example, a site with a permalink structure of `/posts/%postname%/` will have post URLs of `/posts/your-acm-model-name/your-post/` by default. Edit your model and untick “Use Permalink Base” if you prefer a URL structure of `/your-acm-model-name/your-post/`.
 - `wp acm blueprint export` now accepts a `--wp-options` flag to export a comma-separated list of WordPress options from the `wp_options` table. No options are exported by default. Example: `wp acm blueprint export --wp-options='blogname, permalink_structure`
 - `wp acm blueprint import` now updates WordPress options if blueprints contain a `wp-options` key with a list of options values, keyed by option name.
