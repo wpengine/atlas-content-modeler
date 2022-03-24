@@ -71,6 +71,9 @@ Optional blueprint version. Defaults to 1.0.
 Post types to collect posts for, separated by commas. Defaults to post,
 page and all registered ACM post types.
 
+`[--wp-options]`
+Named wp_options keys to export, separated by commas. Empty by default.
+
 `[--open]`
 Open the folder containing the generated zip on success (macOS only,
 requires that `shell_exec()` has not been disabled).

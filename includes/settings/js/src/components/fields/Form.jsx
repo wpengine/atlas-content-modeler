@@ -13,6 +13,7 @@ import {
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import DateFields from "./DateFields";
+import MediaFields from "./MediaFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
 import RelationshipFields from "./RelationshipFields";
 import supportedFields from "./supportedFields";
@@ -33,6 +34,7 @@ const { cloneDeep, isEqual } = lodash;
 
 const extraFields = {
 	text: TextFields,
+	media: MediaFields,
 	richtext: RichTextFields,
 	number: NumberFields,
 	date: DateFields,
@@ -70,6 +72,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const model = query.get("id");
 	const ExtraFields = extraFields[type] ?? null;
 	const currentNumberType = watch("numberType");
+	const isRepeatableMedia = watch("isRepeatableMedia");
 	const {
 		setInputGeneratorSourceValue,
 		onChangeGeneratedValue,
@@ -557,7 +560,11 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							)}
 						</label>
 						{["media"].includes(type) && (
-							<div>
+							<div
+								className={
+									!!isRepeatableMedia && "read-only editing"
+								}
+							>
 								<input
 									name="isFeatured"
 									type="checkbox"
@@ -566,6 +573,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 									defaultChecked={
 										storedData?.required === true
 									}
+									disabled={!!isRepeatableMedia}
 									onChange={(event) => {
 										/**
 										 * Unchecks other fields when checking a field.

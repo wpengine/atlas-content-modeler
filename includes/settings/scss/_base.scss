@@ -7,6 +7,13 @@ body.toplevel_page_atlas-content-modeler {
 	font-weight: 400;
 }
 
+@media screen and (min-width: 782px) {
+	.post-php .notice:first-of-type,
+	.post-new-php .notice:first-of-type {
+		margin-top: 30px;
+	}
+}
+
 .toplevel_page_atlas-content-modeler #wpcontent {
 	padding-left: 0;
 }

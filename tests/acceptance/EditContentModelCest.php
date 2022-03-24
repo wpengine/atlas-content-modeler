@@ -24,6 +24,7 @@ class EditContentModelCest {
 		$i->fillField( [ 'name' => 'plural' ], 'Cats' );
 		$i->fillField( [ 'name' => 'description' ], 'Cats are better than candy.' );
 		$i->see( '27/250', 'span.count' );
+		$i->uncheckOption( [ 'name' => 'with_front' ] );
 
 		// Change the model's icon.
 		$i->click( '.dashicons-picker' );
@@ -44,6 +45,13 @@ class EditContentModelCest {
 		// Check the label in the WP admin sidebar was updated without refreshing the page.
 		$menu_label = $i->grabTextFrom( '#menu-posts-candy .wp-menu-name' );
 		$i->assertEquals( 'Cats', $menu_label );
+
+		// Check updated data persists in the edit modal when reopened.
+		$i->click( '.model-list button.options' );
+		$i->click( '.dropdown-content a.edit' );
+		$i->dontSeeCheckboxIsChecked( [ 'name' => 'with_front' ] );
+		$i->seeInField( [ 'name' => 'singular' ], 'Cat' );
+		$i->seeInField( [ 'name' => 'plural' ], 'Cats' );
 	}
 
 	public function i_see_a_warning_if_the_model_singular_name_is_reserved( AcceptanceTester $i ) {
