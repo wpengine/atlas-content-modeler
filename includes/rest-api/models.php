@@ -258,6 +258,11 @@ function update_model( string $post_type_slug, array $args ) {
 		);
 	}
 
+	// Sets “Use Permalink Base” checkbox if unticked, otherwise the unticked value is undefined.
+	if ( empty( $args['with_front'] ) ) {
+		$args['with_front'] = 0;
+	}
+
 	$new_args = wp_parse_args( $args, $content_types[ $post_type_slug ] );
 
 	// Updating the slug is unsupported.

@@ -112,7 +112,8 @@
 			max-width: 500px;
 		}
 
-		input[type="radio"] {
+		input[type="radio"],
+		input[type="checkbox"] {
 			width: 1rem;
 		}
 	}

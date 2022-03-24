@@ -347,23 +347,59 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					</div>
 				</div>
 
-				<div className="field">
-					<label htmlFor="model_icon">
-						{__("Model Icon", "atlas-content-modeler")}
-					</label>
-					<p className="help">
-						{__(
-							"Choose an icon to represent your model.",
-							"atlas-content-modeler"
-						)}
-					</p>
+				<div className="row">
+					<div className="field col-sm">
+						<label htmlFor="model_icon">
+							{__("Model Icon", "atlas-content-modeler")}
+						</label>
+						<p className="help">
+							{__(
+								"Choose an icon to represent your model.",
+								"atlas-content-modeler"
+							)}
+						</p>
 
-					<IconPicker
-						setValue={setValue}
-						buttonClasses="primary first"
-						register={register}
-						modelIcon={model.model_icon}
-					/>
+						<IconPicker
+							setValue={setValue}
+							buttonClasses="primary first"
+							register={register}
+							modelIcon={model.model_icon}
+						/>
+					</div>
+					<div
+						className={
+							errors.with_front
+								? "field has-error form-check form-check-inline col-sm"
+								: "field form-check form-check-inline col-sm"
+						}
+					>
+						<label htmlFor="with_front">Use Permalink Base</label>
+						<p className="help">
+							{__(
+								"Post URLs will include prefixes from Settings → Permalinks if this is ticked. (Sets “with_front”.)",
+								"atlas-content-modeler"
+							)}
+						</p>
+
+						<input
+							name="with_front"
+							id="with_front"
+							type="checkbox"
+							value="1"
+							ref={register}
+							defaultChecked={model?.with_front ?? true}
+						/>
+
+						<label
+							htmlFor="with_front"
+							className="form-check-label"
+						>
+							{__(
+								"Use front permalink base",
+								"atlas-content-modeler"
+							)}
+						</label>
+					</div>
 				</div>
 
 				<div

@@ -384,5 +384,19 @@ function get_test_fields() {
 			'required'             => false,
 			'isRepeatableRichText' => 'true',
 		),
+		'1646070398'    => array(
+			'show_in_rest'      => true,
+			'show_in_graphql'   => true,
+			'type'              => 'media',
+			'id'                => '1646070397',
+			'position'          => '300000',
+			'name'              => 'Media-Repeat',
+			'slug'              => 'mediaRepeat',
+			'required'          => false,
+			'isRepeatableMedia' => 'true',
+			'minChars'          => '',
+			'maxChars'          => '',
+			'allowedTypes'      => '',
+		),
 	);
 }
