@@ -176,11 +176,18 @@ class PublishModelCest {
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
+		$i->click( Locator::lastElement( '.add-item' ) );
+		$i->click( 'Email', '.field-buttons' );
+		$i->fillField( [ 'name' => 'name' ], 'EmailTwo' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
+		$i->wait( 1 );
+
 		$i->amOnPage( '/wp-admin/edit.php?post_type=goose' );
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
 
 		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][email]' ], '' );
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][emailTwo]' ], 'a' );
 		$i->scrollTo( '#submitdiv' );
 
 		$i->click( 'Publish', '#publishing-action' );
@@ -189,7 +196,18 @@ class PublishModelCest {
 		$i->see( 'This field is required' );
 		$i->wait( 1 );
 
-		$i->seeInField( 'atlas-content-modeler[goose][email]', '' );
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][email]' ], 'a@test.' );
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][emailTwo]' ], 'a' );
+		$i->scrollTo( '#submitdiv' );
+
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+
+		$i->see( 'Value must be an email.' );
+		$i->wait( 1 );
+
+		$i->seeInField( 'atlas-content-modeler[goose][email]', 'a@test.' );
+		$i->seeInField( 'atlas-content-modeler[goose][emailTwo]', 'a' );
 	}
 
 	public function i_can_publish_a_model_entry( AcceptanceTester $i ) {
