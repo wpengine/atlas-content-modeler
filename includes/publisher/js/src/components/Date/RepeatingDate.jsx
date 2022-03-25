@@ -34,60 +34,65 @@ const RepeatingDate = ({
 					border: solid 1px ${colors.border};
 				`}
 			>
-				{values.map(({ id, value }, index) => {
-					return (
-						<tr key={id} data-testid="date-repeater-row">
-							<td
-								css={css`
-									padding: 0;
-								`}
-							>
-								<div
-									className="d-flex flex-row flex-fill d-lg-flex"
+				<tbody>
+					{values.map(({ value }, index) => {
+						return (
+							<tr key={index} data-testid="date-repeater-row">
+								<td
 									css={css`
-										border-bottom: solid 1px
-											${colors.border} !important;
+										padding: 0 !important;
 									`}
 								>
-									<DateField
-										name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-										id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
-										modelSlug={modelSlug}
-										field={field}
-										defaultError={defaultError}
-										defaultValue={value}
+									<div
+										className="d-flex flex-row flex-fill d-lg-flex"
 										css={css`
-											margin-top: 0 !important;
-											width: 100% !important;
+											border-bottom: solid 1px
+												${colors.border} !important;
+											padding: 10px;
 										`}
-									/>
-									{values.length > 1 && (
-										<DeleteItemButton
-											data-testid={`remove-date-field-${index}-button`}
-											deleteItem={() => deleteItem(index)}
+									>
+										<DateField
+											name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+											id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
+											modelSlug={modelSlug}
+											field={field}
+											defaultError={defaultError}
+											defaultValue={value}
 											css={css`
-												height: 52px;
-												width: 52px;
-												margin-right: -0.5rem;
+												margin-top: 0 !important;
+												width: 100% !important;
 											`}
 										/>
-									)}
-								</div>
-							</td>
-						</tr>
-					);
-				})}
-				<tr>
-					<td>
-						<AddItemButton
-							data-testid={`add-date-field-button`}
-							addItem={addItem}
-							css={css`
-								margin: 0 !important;
-							`}
-						/>
-					</td>
-				</tr>
+										{values.length > 1 && (
+											<DeleteItemButton
+												data-testid={`remove-date-field-${index}-button`}
+												deleteItem={() =>
+													deleteItem(index)
+												}
+												css={css`
+													height: 52px;
+													width: 52px;
+													margin-right: -0.5rem;
+												`}
+											/>
+										)}
+									</div>
+								</td>
+							</tr>
+						);
+					})}
+					<tr>
+						<td>
+							<AddItemButton
+								data-testid={`add-date-field-button`}
+								addItem={addItem}
+								css={css`
+									margin: 0;
+								`}
+							/>
+						</td>
+					</tr>
+				</tbody>
 			</table>
 		</fieldset>
 	);
