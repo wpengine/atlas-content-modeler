@@ -12,6 +12,7 @@ import {
 	NumberSettings,
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
+import DateFields from "./DateFields";
 import MediaFields from "./MediaFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
 import RelationshipFields from "./RelationshipFields";
@@ -36,6 +37,7 @@ const extraFields = {
 	media: MediaFields,
 	richtext: RichTextFields,
 	number: NumberFields,
+	date: DateFields,
 	multipleChoice: MultipleChoiceFields,
 	relationship: RelationshipFields,
 };
@@ -59,6 +61,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		mode: "onChange",
 		defaultValues: storedData,
 	});
+
 	const [nameCount, setNameCount] = useState(storedData?.name?.length || 0);
 	const [descriptionCount, setDescriptionCount] = useState(
 		storedData?.description?.length || 0

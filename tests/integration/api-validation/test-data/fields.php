@@ -398,5 +398,18 @@ function get_test_fields() {
 			'maxChars'          => '',
 			'allowedTypes'      => '',
 		),
+		'1648153658'    => array(
+			'show_in_rest'     => true,
+			'show_in_graphql'  => true,
+			'type'             => 'date',
+			'id'               => '1648153658',
+			'position'         => '400000',
+			'name'             => 'Date-Repeatable',
+			'slug'             => 'dateRepeatable',
+			'isRepeatableDate' => 'true',
+			'required'         => false,
+			'minChars'         => '',
+			'maxChars'         => '',
+		),
 	);
 }

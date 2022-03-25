@@ -1,4 +1,7 @@
 # Atlas Content Modeler Changelog
+### Unreleased
+### Added
+- Repeatable date field that will allow for publishers to define multiple dates for each date field they create.
 
 ## 0.15.0 - 2022-03-24
 ### Added

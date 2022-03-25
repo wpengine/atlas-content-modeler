@@ -4,6 +4,7 @@ import RichText from "./RichText";
 import Relationship from "./relationship";
 import Text from "./Text";
 import Number from "./Number";
+import Date from "./Date";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
@@ -132,32 +133,11 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 			);
 		case "date": // @todo split this out for proper browser and datepicker support
 			return (
-				<>
-					<label
-						htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-					>
-						{field.name}
-					</label>
-					{field?.required && (
-						<p className="required">
-							*{__("Required", "atlas-content-modeler")}
-						</p>
-					)}
-					{field?.description && (
-						<p className="help mb-0">{field.description}</p>
-					)}
-					<input
-						type={`${field.type}`}
-						name={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						id={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-						defaultValue={field.value}
-						required={field.required}
-					/>
-					<span className="error">
-						<Icon type="error" />
-						<span role="alert">{defaultError}</span>
-					</span>
-				</>
+				<Date
+					field={field}
+					modelSlug={modelSlug}
+					defaultError={defaultError}
+				/>
 			);
 
 		case "richtext":
