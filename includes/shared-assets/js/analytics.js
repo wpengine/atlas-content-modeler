@@ -38,6 +38,11 @@ const shouldTrack = () => {
 	return isExcluded() && telemetryEnabled;
 };
 
+/**
+ * Send google analytics event
+ * @param {*} data
+ * @returns
+ */
 export const sendEvent = (data) => {
 	if (shouldTrack()) {
 		maybeInitializeAnalytics();
@@ -45,6 +50,11 @@ export const sendEvent = (data) => {
 	}
 };
 
+/**
+ * Send google analytics page view
+ * @param {*} page
+ * @returns
+ */
 export const sendPageView = (page = "") => {
 	if (shouldTrack()) {
 		maybeInitializeAnalytics();
