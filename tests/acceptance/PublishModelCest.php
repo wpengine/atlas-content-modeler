@@ -189,7 +189,16 @@ class PublishModelCest {
 		$i->see( 'This field is required' );
 		$i->wait( 1 );
 
-		$i->seeInField( 'atlas-content-modeler[goose][email]', '' );
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][email]' ], 'email' );
+		$i->scrollTo( '#submitdiv' );
+
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+
+		$i->see( 'Value must be an email.' );
+		$i->wait( 1 );
+
+		$i->seeInField( 'atlas-content-modeler[goose][email]', 'email' );
 	}
 
 	public function i_can_publish_a_model_entry( AcceptanceTester $i ) {

@@ -246,6 +246,8 @@ function sanitize_field( string $type, $value ) {
 			}
 			$options_object[] = $value;
 			return $options_object;
+		case 'email':
+			return filter_var( $value, FILTER_SANITIZE_EMAIL );
 		default:
 			return $value;
 	}
