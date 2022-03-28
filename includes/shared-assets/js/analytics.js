@@ -30,15 +30,23 @@ const isExcluded = () => {
 	return excludeRegex.test(window.location.href);
 };
 
+/**
+ * Checks for tracking setting and exclusions
+ * @returns bool
+ */
+const shouldTrack = () => {
+	return isExcluded() && telemetryEnabled;
+};
+
 export const sendEvent = (data) => {
-	if (telemetryEnabled && !isExcluded()) {
+	if (shouldTrack()) {
 		maybeInitializeAnalytics();
 		return ReactGA.event(data);
 	}
 };
 
 export const sendPageView = (page = "") => {
-	if (telemetryEnabled && !isExcluded()) {
+	if (shouldTrack()) {
 		maybeInitializeAnalytics();
 		return ReactGA.send({
 			hitType: "pageview",
