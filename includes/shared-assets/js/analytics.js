@@ -26,6 +26,7 @@ const maybeInitializeAnalytics = () => {
  * @returns bool
  */
 const isExcluded = () => {
+	// exclude ga event or page view if domain is wpengine.com
 	const excludeRegex = /.+\.wpengine\.com/gi;
 	return excludeRegex.test(window.location.href);
 };
