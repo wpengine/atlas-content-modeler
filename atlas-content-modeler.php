@@ -53,6 +53,7 @@ function atlas_content_modeler_loader(): void {
 		'blueprints/import.php',
 		'blueprints/fetch.php',
 		'blueprints/export.php',
+		'api/crud-functions.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
