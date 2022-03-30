@@ -65,6 +65,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							numberIntegerRepeat
 							mediaRepeat
 							dateRequired
+							dateRepeatable
 							multiSingle
 							multipleMulti
 							booleanRequired
@@ -103,6 +104,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertArrayHasKey( 'richTextRepeatable', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['richTextRepeatable'][0], '<p>First</p>' );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['richTextRepeatable'][1], '<p>Second</p>' );
+
+			self::assertArrayHasKey( 'dateRepeatable', $results['data']['publicsFields']['nodes'][0] );
+			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['dateRepeatable'] );
 
 			self::assertArrayHasKey( 'numberIntergerRequired', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['numberIntergerRequired'], 13.0 );
