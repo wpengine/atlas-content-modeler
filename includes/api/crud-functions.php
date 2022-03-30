@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Create a relationship between posts.
+ * Replace relationships between posts.
  *
  * Relationship must already be defined between models.
  *
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return bool|WP_Error False or WP_Error if relation could not be made, else true.
  */
-function insert_relationship( int $post_id, string $relation_field_slug, array $relation_ids ) {
+function replace_relationship( int $post_id, string $relation_field_slug, array $relation_ids ) {
 	$post = get_post( $post_id );
 	if ( empty( $post ) ) {
 		return new \WP_Error();
