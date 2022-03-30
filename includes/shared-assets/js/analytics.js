@@ -36,7 +36,7 @@ const isExcluded = () => {
  * @returns bool
  */
 const shouldTrack = () => {
-	return isExcluded() && telemetryEnabled;
+	return !isExcluded() && telemetryEnabled;
 };
 
 /**
