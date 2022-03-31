@@ -760,6 +760,7 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'string':
 		case 'date':
 		case 'richtext':
+		case 'email':
 			return 'String';
 		case 'multipleChoice':
 			return 'list';
