@@ -1,7 +1,9 @@
 <?php
 
 use WPE\AtlasContentModeler\ContentConnect\Plugin;
+use WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost;
 use function WPE\AtlasContentModeler\API\add_relationship;
+use function WPE\AtlasContentModeler\API\get_relationship;
 use function WPE\AtlasContentModeler\API\replace_relationship;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
@@ -140,6 +142,40 @@ class TestApiFunctions extends Integration_TestCase {
 		do_action( 'init' );
 
 		$this->assertFalse( add_relationship( $post_id, 'cars', $relationship_2_id ) );
+	}
+
+	public function test_get_relationship_will_return_the_relationship_object() {
+		$post_id      = $this->factory->post->create( [ 'post_type' => 'person' ] );
+		$relationship = get_relationship( $post_id, 'cars' );
+
+		$this->assertInstanceOf( PostToPost::class, $relationship );
+	}
+
+	public function test_get_relationship_will_return_WP_Error_if_invalid_post() {
+		$result = get_relationship( 999, 'cars' );
+
+		$this->assertEquals( 'invalid_post_object', $result->get_error_code() );
+		$this->assertEquals( 'The post object was invalid', $result->get_error_message() );
+	}
+
+	public function test_get_relationship_will_return_WP_Error_if_invalid_field() {
+		$post_id = $this->factory->post->create( [ 'post_type' => 'person' ] );
+		$result  = get_relationship( $post_id, 'does_not_exist' );
+
+		$this->assertEquals( 'field_not_found', $result->get_error_code() );
+		$this->assertEquals( 'Content model field not found', $result->get_error_message() );
+	}
+
+	public function test_get_relationship_will_return_WP_Error_if_invalid_content_model_relationship() {
+		$this->content_models['person']['fields']['1648576059444']['reference'] = 'does_not_exist';
+		update_option( 'atlas_content_modeler_post_types', $this->content_models );
+
+		$post_id          = $this->factory->post->create( [ 'post_type' => 'person' ] );
+		$relationship_ids = $this->factory->post->create_many( 3, [ 'post_type' => 'car' ] );
+		$result           = get_relationship( $post_id, 'cars' );
+
+		$this->assertEquals( 'content_relationship_not_found', $result->get_error_code() );
+		$this->assertEquals( 'Content model relationship not found', $result->get_error_message() );
 	}
 
 	/**

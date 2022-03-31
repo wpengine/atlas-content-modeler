@@ -77,3 +77,31 @@ function replace_relationship( int $post_id, string $relationship_field_slug, ar
 
 	return $relationship->replace_relationships( $post->ID, $relationship_ids );
 }
+
+/**
+ * Get a relation object for a content model.
+ *
+ * @param int    $post_id The post or content entry id.
+ * @param string $relationship_field_slug The content model field slug.
+ *
+ * @return WPE\AtlasContentModeler\ContentConnect\Relationships\PostToPost|WP_Error A relation object or WP_Error.
+ */
+function get_relationship( int $post_id, string $relationship_field_slug ) {
+	$post = get_post( $post_id );
+	if ( empty( $post ) ) {
+		return new \WP_Error( 'invalid_post_object', 'The post object was invalid' );
+	}
+
+	$field = get_field_from_slug( $relationship_field_slug, get_option( 'atlas_content_modeler_post_types' ), $post->post_type );
+	if ( empty( $field ) ) {
+		return new \WP_Error( 'field_not_found', 'Content model field not found' );
+	}
+
+	$registry     = ContentConnect::instance()->get_registry();
+	$relationship = $registry->get_post_to_post_relationship( $post->post_type, $field['reference'], $field['id'] );
+	if ( ! $relationship ) {
+		return new \WP_Error( 'content_relationship_not_found', 'Content model relationship not found' );
+	}
+
+	return $relationship;
+}
