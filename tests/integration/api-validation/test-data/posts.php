@@ -81,6 +81,7 @@ function populate_post( $post_id, $model, $test_class ) {
 	update_post_meta( $post_id, 'multiLine', 'This is multi-line text' );
 	update_post_meta( $post_id, 'richText', 'This is a rich text field' );
 	update_post_meta( $post_id, 'richTextRepeatable', [ '<p>First</p>', '<p>Second</p>' ] );
+	update_post_meta( $post_id, 'email', 'email@test.com' );
 	update_post_meta( $post_id, 'numberInteger', '42' );
 	update_post_meta( $post_id, 'numberIntegerRepeat', [ 0, 1, 2 ] );
 	update_post_meta( $post_id, 'numberDecimal', '3.14' );

@@ -411,5 +411,18 @@ function get_test_fields() {
 			'minChars'         => '',
 			'maxChars'         => '',
 		),
+		'1648828035'    => array(
+			'show_in_rest'     => true,
+			'show_in_graphql'  => true,
+			'type'             => 'email',
+			'id'               => '1648828035',
+			'position'         => '400000',
+			'name'             => 'Email',
+			'slug'             => 'email',
+			'isRepeatableDate' => 'true',
+			'required'         => false,
+			'minChars'         => '',
+			'maxChars'         => '',
+		),
 	);
 }
