@@ -32,7 +32,6 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertEquals( $this->content_models['person'], fetch_model( 'person' ) );
 	}
 
-
 	public function test_replace_relationship_will_associate_relationship_ids() {
 		$post_id          = $this->factory->post->create( [ 'post_type' => 'person' ] );
 		$relationship_ids = $this->factory->post->create_many( 3, [ 'post_type' => 'car' ] );
