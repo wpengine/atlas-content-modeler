@@ -63,6 +63,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							richTextRepeatable
 							numberIntergerRequired
 							numberIntegerRepeat
+							email
 							mediaRepeat
 							dateRequired
 							dateRepeatable
@@ -104,6 +105,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertArrayHasKey( 'richTextRepeatable', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['richTextRepeatable'][0], '<p>First</p>' );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['richTextRepeatable'][1], '<p>Second</p>' );
+
+			self::assertArrayHasKey( 'email', $results['data']['publicsFields']['nodes'][0] );
+			self::assertSame( $results['data']['publicsFields']['nodes'][0]['email'], 'email@test.com' );
 
 			self::assertArrayHasKey( 'dateRepeatable', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['dateRepeatable'] );
