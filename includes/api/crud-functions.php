@@ -11,6 +11,7 @@ namespace WPE\AtlasContentModeler\API;
 
 use function WPE\AtlasContentModeler\get_field_from_slug;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 if ( ! defined( 'ABSPATH' ) ) {
