@@ -7,14 +7,17 @@ import ReactGA from "react-ga4";
 
 const ANALYTICS_ID = "G-S056CLLZ34";
 
-const telemetryEnabled =
-	(typeof atlasContentModelerFormEditingExperience !== "undefined" &&
-		atlasContentModelerFormEditingExperience?.usageTrackingEnabled) ||
-	(typeof atlasContentModeler !== "undefined" &&
-		atlasContentModeler?.usageTrackingEnabled);
+const telemetryEnabled = () => {
+	return (
+		(typeof atlasContentModelerFormEditingExperience !== "undefined" &&
+			atlasContentModelerFormEditingExperience?.usageTrackingEnabled) ||
+		(typeof atlasContentModeler !== "undefined" &&
+			atlasContentModeler?.usageTrackingEnabled)
+	);
+};
 
 const maybeInitializeAnalytics = () => {
-	if (telemetryEnabled && !ReactGA?.isInitialized) {
+	if (telemetryEnabled() && !ReactGA?.isInitialized) {
 		ReactGA.initialize(ANALYTICS_ID, {
 			gtagOptions: { anonymize_ip: true },
 		});
@@ -36,7 +39,7 @@ const isExcluded = () => {
  * @returns bool
  */
 const shouldTrack = () => {
-	return !isExcluded() && telemetryEnabled;
+	return !isExcluded() && telemetryEnabled();
 };
 
 /**
@@ -64,4 +67,12 @@ export const sendPageView = (page = "") => {
 			page,
 		});
 	}
+};
+
+module.exports = {
+	sendEvent,
+	sendPageView,
+	telemetryEnabled,
+	shouldTrack,
+	isExcluded,
 };
