@@ -83,4 +83,8 @@ describe("analytics", () => {
 
 		expect(shouldTrack()).toBeFalsy();
 	});
+
+	test.skip("sendEvent should call shouldTrack()", () => {});
+
+	test.skip("sendPageView should call shouldTrack()", () => {});
 });
