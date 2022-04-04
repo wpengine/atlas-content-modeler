@@ -29,8 +29,22 @@ function fetch_model( string $model ): array {
 	if ( empty( $models[ $model ] ) ) {
 		return null;
 	}
+
 	return $models[ $model ];
 }
+
+/**
+ * Insert a content model entry.
+ *
+ * @uses wp_insert_post
+ *
+ * @param string $model_slug Content model slug .
+ * @param array  $data Content model data .
+ * @param bool   $skip_validation true to skip model field validation . default false .
+ *
+ * @return void
+ */
+function insert_model_entry( string $model_slug, array $data, bool $skip_validation = false ) {}
 
 /**
  * Add a relationship to a given post.
