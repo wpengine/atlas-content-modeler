@@ -4,6 +4,7 @@ exports[`Fields when given a model, it renders a list of its fields 1`] = `
 Array [
   <div
     className="field d-flex flex-column text"
+    data-first-field={true}
     id="field-firstName"
   >
     <label
