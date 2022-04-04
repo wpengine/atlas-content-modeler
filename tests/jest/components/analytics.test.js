@@ -84,7 +84,15 @@ describe("analytics", () => {
 		expect(shouldTrack()).toBeFalsy();
 	});
 
-	test.skip("sendEvent should call shouldTrack()", () => {});
+	test.skip("sendEvent should call shouldTrack()", () => {
+		const shouldTrackSpy = jest.spyOn(window, "shouldTrack");
+		sendEvent({});
+		expect(shouldTrackSpy).toHaveBeenCalled();
+	});
 
-	test.skip("sendPageView should call shouldTrack()", () => {});
+	test.skip("sendPageView should call shouldTrack()", () => {
+		const shouldTrackSpy = jest.spyOn(window, "shouldTrack");
+		sendPageView({});
+		expect(shouldTrackSpy).toHaveBeenCalled();
+	});
 });
