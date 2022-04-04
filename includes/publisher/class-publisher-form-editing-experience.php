@@ -82,6 +82,8 @@ final class FormEditingExperience {
 		add_action( 'do_meta_boxes', [ $this, 'move_meta_boxes' ] );
 		add_action( 'do_meta_boxes', [ $this, 'remove_thumbnail_meta_box' ] );
 		add_action( 'transition_post_status', [ $this, 'maybe_add_location_callback' ], 10, 3 );
+		add_action( 'updated_postmeta', [ $this, 'sync_title_field_to_posts_table' ], 10, 4 );
+		add_action( 'added_post_meta', [ $this, 'sync_title_field_to_posts_table' ], 10, 4 );
 	}
 
 	/**
@@ -742,4 +744,41 @@ final class FormEditingExperience {
 		$location = add_query_arg( 'acm-post-published', 'true', $location );
 		return $location;
 	}
+
+	/**
+	 * Syncs title field data to the wp_posts table.
+	 *
+	 * @param int    $meta_id ID of updated metadata entry.
+	 * @param int    $object_id Post ID.
+	 * @param string $meta_key Metadata key.
+	 * @param mixed  $meta_value Metadata value.
+	 * @return void
+	 */
+	public function sync_title_field_to_posts_table( $meta_id, $object_id, $meta_key, $meta_value ): void {
+		$post = get_post( $object_id );
+		if ( ! $post instanceof \WP_Post ) {
+			return;
+		}
+		$models = get_registered_content_types();
+		if ( ! array_key_exists( $post->post_type, $models ) ) {
+			return;
+		}
+
+		$title_field = get_entry_title_field( $models[ $post->post_type ]['fields'] ?? [] );
+		if ( empty( $title_field['slug'] ) ) {
+			return;
+		}
+
+		if ( $title_field['slug'] !== $meta_key ) {
+			return;
+		}
+
+		if ( $post->post_title === $meta_value ) {
+			return;
+		}
+
+		$post->post_title = $meta_value;
+		wp_update_post( $post, true, false );
+	}
+
 }

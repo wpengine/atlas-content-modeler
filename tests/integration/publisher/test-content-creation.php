@@ -88,4 +88,20 @@ class TestContentCreation extends WP_UnitTestCase {
 
 		$this->assertStringStartsWith( 'entry', $post->post_title );
 	}
+
+	public function test_post_title_synced_from_postmeta_table_to_posts_table(): void {
+		$meta_title = 'This is a title from meta that should be synced to the posts table';
+
+		$post_id = wp_insert_post(
+			[
+				'post_title'  => 'moo',
+				'post_name'   => 'moo',
+				'post_status' => 'publish',
+				'post_type'   => 'public-fields',
+			]
+		);
+
+		update_post_meta( $post_id, 'singleLineRequired', $meta_title ); // singleLineRequired is configured as a title field.
+		self::assertSame( get_post_field( 'post_title', $post_id ), $meta_title );
+	}
 }
