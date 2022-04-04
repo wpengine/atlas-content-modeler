@@ -19,21 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Gets the model data for a defined content model.
- *
- * @param string $model The content model slug.
- * @return array
- */
-function fetch_model( string $model ): array {
-	$models = get_registered_content_types();
-	if ( empty( $models[ $model ] ) ) {
-		return null;
-	}
-
-	return $models[ $model ];
-}
-
-/**
  * Insert a content model entry.
  *
  * @uses wp_insert_post
@@ -112,4 +97,20 @@ function get_relationship( int $post_id, string $relationship_field_slug ) {
 	}
 
 	return $relationship;
+}
+
+/**
+ * Gets the model data for a defined content model.
+ *
+ * @param string $model The content model slug.
+ *
+ * @return array The content model schema or null if not found.
+ */
+function fetch_model( string $model ): array {
+	$models = get_registered_content_types();
+	if ( empty( $models[ $model ] ) ) {
+		return null;
+	}
+
+	return $models[ $model ];
 }
