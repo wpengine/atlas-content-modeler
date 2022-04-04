@@ -3,6 +3,7 @@
 use WPE\AtlasContentModeler\ContentConnect\Plugin;
 use function WPE\AtlasContentModeler\API\add_relationship;
 use function WPE\AtlasContentModeler\API\replace_relationship;
+use function WPE\AtlasContentModeler\API\fetch_model;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
 class TestApiFunctions extends Integration_TestCase {
@@ -25,6 +26,10 @@ class TestApiFunctions extends Integration_TestCase {
 		update_registered_content_types( $this->content_models );
 		Plugin::instance()->setup();
 		do_action( 'init' );
+	}
+
+	public function test_fetch_model() {
+		$this->assertEquals( $this->content_models['person'], fetch_model( 'person' ) );
 	}
 
 	public function test_replace_relationship_will_associate_relationship_ids() {
