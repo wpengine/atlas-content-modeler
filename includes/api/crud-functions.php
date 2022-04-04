@@ -10,10 +10,26 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\API;
 
 use function WPE\AtlasContentModeler\get_field_from_slug;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+/**
+ * Gets the model data for a defined content model.
+ *
+ * @param string $model The content model slug.
+ * @return array
+ */
+function fetch_model( string $model ): array {
+	$models = get_registered_content_types();
+	if ( empty( $models[ $model ] ) ) {
+		return null;
+	}
+	return $models[ $model ];
 }
 
 /**
