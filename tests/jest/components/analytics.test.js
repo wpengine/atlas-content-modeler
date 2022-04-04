@@ -6,6 +6,10 @@ import {
 	telemetryEnabled,
 } from "../../../includes/shared-assets/js/analytics";
 
+beforeEach(() => {
+	jest.resetAllMocks();
+});
+
 describe("telemetry", () => {
 	test("telemetry should return true", () => {
 		window.atlasContentModelerFormEditingExperience = {
@@ -35,8 +39,6 @@ describe("analytics", () => {
 				href: "",
 			},
 		});
-
-		jest.resetAllMocks();
 	});
 
 	test("isExcluded should return true", () => {
