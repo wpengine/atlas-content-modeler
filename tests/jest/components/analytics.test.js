@@ -27,6 +27,10 @@ describe("telemetry", () => {
 });
 
 describe("analytics", () => {
+	beforeAll(() => {
+		jest.resetAllMocks();
+	});
+
 	test("isExcluded should return true", () => {
 		global.window = Object.create(window);
 		Object.defineProperty(window, "location", {
@@ -78,12 +82,5 @@ describe("analytics", () => {
 		window.atlasContentModeler = { usageTrackingEnabled: true };
 
 		expect(shouldTrack()).toBeFalsy();
-	});
-
-	test("sendEvent should call shouldTrack()", () => {
-		global.shouldTrack = jest.fn();
-		const shouldTrackSpy = jest.spyOn(global, "shouldTrack");
-		sendEvent();
-		expect(shouldTrackSpy).toHaveBeenCalled();
 	});
 });
