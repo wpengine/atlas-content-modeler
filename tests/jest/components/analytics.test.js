@@ -28,37 +28,28 @@ describe("telemetry", () => {
 
 describe("analytics", () => {
 	beforeAll(() => {
+		global.window = Object.create(window);
+
+		Object.defineProperty(window, "location", {
+			value: {
+				href: "",
+			},
+		});
+
 		jest.resetAllMocks();
 	});
 
 	test("isExcluded should return true", () => {
-		global.window = Object.create(window);
-		Object.defineProperty(window, "location", {
-			value: {
-				href: "http://www.wpengine.com",
-			},
-		});
-
+		window.location.href = "http://www.wpengine.com";
 		expect(isExcluded()).toBeTruthy();
 	});
 	test("isExcluded should return false", () => {
-		global.window = Object.create(window);
-		Object.defineProperty(window, "location", {
-			value: {
-				href: "http://www.google.com",
-			},
-		});
-
+		window.location.href = "http://www.google.com";
 		expect(isExcluded()).toBeFalsy();
 	});
 
 	test("shouldTrack should return true if the url does not contain wpengine.com", () => {
-		global.window = Object.create(window);
-		Object.defineProperty(window, "location", {
-			value: {
-				href: "http://www.google.com",
-			},
-		});
+		window.location.href = "http://www.google.com";
 
 		window.atlasContentModelerFormEditingExperience = {
 			usageTrackingEnabled: true,
@@ -69,12 +60,7 @@ describe("analytics", () => {
 	});
 
 	test("shouldTrack should return false if the url contains wpengine.com", () => {
-		global.window = Object.create(window);
-		Object.defineProperty(window, "location", {
-			value: {
-				href: "http://www.wpengine.com",
-			},
-		});
+		window.location.href = "http://www.wpengine.com";
 
 		window.atlasContentModelerFormEditingExperience = {
 			usageTrackingEnabled: true,
