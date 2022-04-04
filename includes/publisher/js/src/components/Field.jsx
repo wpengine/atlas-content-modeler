@@ -13,7 +13,7 @@ const integerRegex = /^[-+]?\d+/g;
 const decimalRegex = /^\-?(\d+\.?\d*|\d*\.?\d+)$/g;
 
 export default function Field(props) {
-	const { field, modelSlug } = props;
+	const { field, modelSlug, first } = props;
 	const [errors, setErrors] = useState({});
 
 	/**
@@ -86,6 +86,7 @@ export default function Field(props) {
 			<div
 				id={`field-${field.slug}`}
 				className={`field d-flex flex-column ${field.type}`}
+				{...(first && { "data-first-field": true })}
 			>
 				{fieldMarkup(field, modelSlug, errors, validate)}
 			</div>
