@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function fetch_model( string $model ): array {
 	$models = get_registered_content_types();
 	if ( empty( $models[ $model ] ) ) {
-		return [];
+		return null;
 	}
 	return $models[ $model ];
 }
