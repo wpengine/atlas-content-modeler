@@ -21,7 +21,7 @@ export const addClassOnFormSubmit = () => {
  * Puts focus on the first field.
  *
  * Allows the user to start interacting with the form immediately,
- * the same as WordPress behavior for core post type.
+ * the same behavior as WordPress core post types.
  *
  * Acts when creating new posts, not when editing existing ones.
  */
