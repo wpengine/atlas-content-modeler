@@ -26,32 +26,36 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @uses wp_insert_post
  *
  * @param string $model_slug Content model slug.
- * @param array  $data Content model data.
+ * @param array  $field_data Content model field data.
+ * @param array  $post_data Post data.
  * @param bool   $skip_validation True to skip model field validation. Default false.
  *
  * @return int|WP_Error The newly created content model entry id or WP_Error.
  */
-function insert_model_entry( string $model_slug, array $data, bool $skip_validation = false ) {
+function insert_model_entry( string $model_slug, array $field_data, array $post_data = [], bool $skip_validation = false ) {
 	$model_schema = fetch_model( $model_slug );
 	if ( empty( $model_schema ) ) {
 		return new \WP_Error( 'model_schema_not_found', "The content model {$model_slug} was not found" );
 	}
 
-	$postarr = [
-		'post_type'  => $model_slug,
-		'meta_input' => $data,
-	];
+	$post_data = array_merge(
+		$post_data,
+		[
+			'post_type'  => $model_slug,
+			'meta_input' => $field_data,
+		]
+	);
 
 	if ( ! $skip_validation ) {
-		$wp_error              = new WP_Error();
-		$postarr['meta_input'] = get_data_for_fields( $model_schema['fields'], $data );
+		$wp_error                = new WP_Error();
+		$post_data['meta_input'] = get_data_for_fields( $model_schema['fields'], $data );
 
 		foreach ( $model_schema['fields'] as $key => $field ) {
-			if ( ! array_key_exists( $field['slug'], $postarr['meta_input'] ) ) {
+			if ( ! array_key_exists( $field['slug'], $post_data['meta_input'] ) ) {
 				continue;
 			}
 
-			$value = $postarr['meta_input'][ $field['slug'] ];
+			$value = $post_data['meta_input'][ $field['slug'] ];
 			switch ( $field['type'] ) {
 				case 'text':
 					break;
@@ -64,11 +68,11 @@ function insert_model_entry( string $model_slug, array $data, bool $skip_validat
 	}
 
 	$entry_title_field = get_entry_title_field( $model_schema['fields'] );
-	if ( ! empty( $entry_title_field ) && ! empty( $postarr['meta_input'][ $entry_title_field['slug'] ] ) ) {
-		$postarr['post_title'] = $postarr['meta_input'][ $entry_title_field['slug'] ];
+	if ( ! empty( $entry_title_field ) && ! empty( $post_data['meta_input'][ $entry_title_field['slug'] ] ) ) {
+		$post_data['post_title'] = $post_data['meta_input'][ $entry_title_field['slug'] ];
 	}
 
-	return wp_insert_post( $postarr, true );
+	return wp_insert_post( $post_data, true );
 }
 
 /**
