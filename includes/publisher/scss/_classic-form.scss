@@ -193,7 +193,7 @@ $button-primary: #002838;
 			border-color: $form-purple !important;
 		}
 
-		input:focus + .checkmark {
+		.check-container input:focus ~ .checkmark {
 			border-color: $form-purple !important;
 		}
 
@@ -272,7 +272,7 @@ $button-primary: #002838;
 			border-color: $form-purple !important;
 		}
 
-		input:focus + .radio-select {
+		.radio-container input:focus ~ .radio-select {
 			border-color: $form-purple !important;
 		}
 
