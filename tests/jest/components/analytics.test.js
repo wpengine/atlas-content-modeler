@@ -1,10 +1,4 @@
-import {
-	isExcluded,
-	sendEvent,
-	sendPageView,
-	shouldTrack,
-	telemetryEnabled,
-} from "../../../includes/shared-assets/js/analytics";
+import analytics from "../../../includes/shared-assets/js/analytics";
 
 beforeEach(() => {
 	jest.resetAllMocks();
@@ -17,7 +11,7 @@ describe("telemetry", () => {
 		};
 		window.atlasContentModeler = { usageTrackingEnabled: true };
 
-		expect(telemetryEnabled()).toBeTruthy();
+		expect(analytics.telemetryEnabled()).toBeTruthy();
 	});
 
 	test("telemetry should return false", () => {
@@ -26,7 +20,7 @@ describe("telemetry", () => {
 		};
 		window.atlasContentModeler = { usageTrackingEnabled: false };
 
-		expect(telemetryEnabled()).toBeFalsy();
+		expect(analytics.telemetryEnabled()).toBeFalsy();
 	});
 });
 
@@ -43,11 +37,11 @@ describe("analytics", () => {
 
 	test("isExcluded should return true", () => {
 		window.location.href = "http://www.wpengine.com";
-		expect(isExcluded()).toBeTruthy();
+		expect(analytics.isExcluded()).toBeTruthy();
 	});
 	test("isExcluded should return false", () => {
 		window.location.href = "http://www.google.com";
-		expect(isExcluded()).toBeFalsy();
+		expect(analytics.isExcluded()).toBeFalsy();
 	});
 
 	test("shouldTrack should return true if the url does not contain wpengine.com", () => {
@@ -58,7 +52,7 @@ describe("analytics", () => {
 		};
 		window.atlasContentModeler = { usageTrackingEnabled: true };
 
-		expect(shouldTrack()).toBeTruthy();
+		expect(analytics.shouldTrack()).toBeTruthy();
 	});
 
 	test("shouldTrack should return false if the url contains wpengine.com", () => {
@@ -69,18 +63,6 @@ describe("analytics", () => {
 		};
 		window.atlasContentModeler = { usageTrackingEnabled: true };
 
-		expect(shouldTrack()).toBeFalsy();
-	});
-
-	test.skip("sendEvent should call shouldTrack()", () => {
-		const shouldTrackSpy = jest.spyOn(window, "shouldTrack");
-		sendEvent({});
-		expect(shouldTrackSpy).toHaveBeenCalled();
-	});
-
-	test.skip("sendPageView should call shouldTrack()", () => {
-		const shouldTrackSpy = jest.spyOn(window, "shouldTrack");
-		sendPageView({});
-		expect(shouldTrackSpy).toHaveBeenCalled();
+		expect(analytics.shouldTrack()).toBeFalsy();
 	});
 });
