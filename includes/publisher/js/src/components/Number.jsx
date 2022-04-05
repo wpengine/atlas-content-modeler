@@ -44,11 +44,27 @@ export default function Number({
 		}
 
 		// call global validate
-		validate(event, field);
+		const isValid = validate(event, field);
+		if (isValid && field?.isRepeatableNumber) {
+			handleKeyPress(event);
+		}
 	}
 
 	if (field?.isRepeatableNumber) {
 		const [values, setValues] = useState(field?.value || [""]);
+		const addButtonRef = useRef();
+
+		/**
+		 * Handle keypress to add new entry and continue entering data
+		 * @param {*} event
+		 */
+		function handleKeyPress(event) {
+			if (event.key === "Enter") {
+				event.preventDefault();
+				addButtonRef.current.click();
+			}
+		}
+
 		return (
 			<>
 				<label
@@ -201,6 +217,7 @@ export default function Number({
 														"",
 													]);
 												}}
+												ref={addButtonRef}
 											>
 												<a>
 													<AddIcon noCircle />{" "}

@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import React, { useRef } from "react";
 import { jsx, css } from "@emotion/react";
 import AddItemButton from "../shared/repeaters/AddItemButton";
 import DeleteItemButton from "../shared/repeaters/DeleteItemButton";
@@ -12,6 +13,8 @@ const RepeatingDate = ({
 	setValues,
 	defaultError,
 }) => {
+	const addButtonRef = useRef();
+
 	const addItem = () =>
 		setValues((oldValues) => [...oldValues, { value: "" }]);
 
@@ -21,6 +24,17 @@ const RepeatingDate = ({
 			newValues.splice(index, 1);
 			return newValues;
 		});
+
+	/**
+	 * Handle keypress to add new entry and continue entering data
+	 * @param {*} event
+	 */
+	function handleKeyPress(event) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			addButtonRef.current.click();
+		}
+	}
 
 	return (
 		<fieldset>
@@ -62,6 +76,9 @@ const RepeatingDate = ({
 												margin-top: 0 !important;
 												width: 100% !important;
 											`}
+											onKeyPress={(event) => {
+												handleKeyPress(event);
+											}}
 										/>
 										{values.length > 1 && (
 											<DeleteItemButton
@@ -89,6 +106,7 @@ const RepeatingDate = ({
 								css={css`
 									margin: 0;
 								`}
+								buttonRef={addButtonRef}
 							/>
 						</td>
 					</tr>
