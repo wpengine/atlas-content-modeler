@@ -1,5 +1,5 @@
 /* global atlasContentModelerFormEditingExperience */
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { __ } from "@wordpress/i18n";
 import Icon from "../../../../../components/icons";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
@@ -13,6 +13,8 @@ export default function Text({
 	defaultError,
 }) {
 	if (field.isRepeatable) {
+		const addButtonRef = useRef();
+
 		function getFieldValues() {
 			const minLength = parseInt(field.minRepeatable) || 1;
 
@@ -42,6 +44,17 @@ export default function Text({
 			validFieldValues.length > 0 &&
 			validFieldValues.length < field.minRepeatable;
 		const isRequired = field?.required || isMinRequired;
+
+		/**
+		 * Handle keypress to add new entry and continue entering data
+		 * @param {*} event
+		 */
+		function handleKeyPress(event) {
+			if (event.key === "Enter") {
+				event.preventDefault();
+				addButtonRef.current.click();
+			}
+		}
 
 		return (
 			<div className={"field"}>
@@ -102,12 +115,9 @@ export default function Text({
 																	onKeyPress={(
 																		event
 																	) => {
-																		if (
-																			event.key ===
-																			"Enter"
-																		) {
-																			event.preventDefault();
-																		}
+																		handleKeyPress(
+																			event
+																		);
 																	}}
 																	value={
 																		fieldValues[
@@ -232,6 +242,7 @@ export default function Text({
 												values={fieldValues}
 												setValues={setValues}
 												isMaxInputs={isMaxInputs}
+												buttonRef={addButtonRef}
 											/>
 										</tr>
 									</tbody>
