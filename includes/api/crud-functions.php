@@ -11,6 +11,8 @@ namespace WPE\AtlasContentModeler\API;
 
 use function WPE\AtlasContentModeler\get_field_from_slug;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\API\Utility\get_data_for_fields;
+use function WPE\AtlasContentModeler\get_entry_title_field;
 
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
@@ -23,13 +25,51 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @uses wp_insert_post
  *
- * @param string $model_slug Content model slug .
- * @param array  $data Content model data .
- * @param bool   $skip_validation true to skip model field validation . default false .
+ * @param string $model_slug Content model slug.
+ * @param array  $data Content model data.
+ * @param bool   $skip_validation True to skip model field validation. Default false.
  *
- * @return void
+ * @return int|WP_Error The newly created content model entry id or WP_Error.
  */
-function insert_model_entry( string $model_slug, array $data, bool $skip_validation = false ) {}
+function insert_model_entry( string $model_slug, array $data, bool $skip_validation = false ) {
+	$model_schema = fetch_model( $model_slug );
+	if ( empty( $model_schema ) ) {
+		return new \WP_Error( 'model_schema_not_found', "The content model {$model_slug} was not found" );
+	}
+
+	$postarr = [
+		'post_type'  => $model_slug,
+		'meta_input' => $data,
+	];
+
+	if ( ! $skip_validation ) {
+		$wp_error              = new WP_Error();
+		$postarr['meta_input'] = get_data_for_fields( $model_schema['fields'], $data );
+
+		foreach ( $model_schema['fields'] as $key => $field ) {
+			if ( ! array_key_exists( $field['slug'], $postarr['meta_input'] ) ) {
+				continue;
+			}
+
+			$value = $postarr['meta_input'][ $field['slug'] ];
+			switch ( $field['type'] ) {
+				case 'text':
+					break;
+			}
+		}
+
+		if ( $wp_error->has_errors() ) {
+			return $wp_error;
+		}
+	}
+
+	$entry_title_field = get_entry_title_field( $model_schema['fields'] );
+	if ( ! empty( $entry_title_field ) && ! empty( $postarr['meta_input'][ $entry_title_field['slug'] ] ) ) {
+		$postarr['post_title'] = $postarr['meta_input'][ $entry_title_field['slug'] ];
+	}
+
+	return wp_insert_post( $postarr, true );
+}
 
 /**
  * Add a relationship to a given post.
@@ -100,13 +140,41 @@ function get_relationship( int $post_id, string $relationship_field_slug ) {
 }
 
 /**
+ * Fetch a content model field.
+ *
+ * @param string $model The model field slug.
+ * @param string $field_slug The field slug.
+ *
+ * @return array|null The model field as associative array or null.
+ */
+function fetch_model_field( string $model, string $field_slug ): ?array {
+	$model_schema = fetch_model( $model );
+	$field_schema = null;
+
+	if ( empty( $model_schema['fields'] ) ) {
+		return $field_schema;
+	}
+
+	foreach ( $model_schema['fields'] as $field ) {
+		if ( $field_slug !== $field['slug'] ) {
+			continue;
+		}
+
+		$field_schema = $field;
+		break;
+	}
+
+	return $field_schema;
+}
+
+/**
  * Gets the model data for a defined content model.
  *
  * @param string $model The content model slug.
  *
- * @return array The content model schema or null if not found.
+ * @return array|null The content model schema or null if not found.
  */
-function fetch_model( string $model ): array {
+function fetch_model( string $model ): ?array {
 	$models = get_registered_content_types();
 	if ( empty( $models[ $model ] ) ) {
 		return null;
