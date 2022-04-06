@@ -11,6 +11,7 @@ import {
 	MediaSettings,
 	TextSettings,
 	NumberSettings,
+	EmailSettings,
 } from "./AdvancedSettings";
 import NumberFields from "./NumberFields";
 import DateFields from "./DateFields";
@@ -134,6 +135,25 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 								return true;
 							}
 							return max >= min;
+						},
+					},
+				},
+			},
+		},
+		email: {
+			component: EmailSettings,
+			fields: {
+				// TODO-botz: update to validate email domain/subdomain integrity
+				allowedDomains: {
+					setValueAs: (value) =>
+						value ? value.replace(/\s/g, "") : "",
+					validate: {
+						formattedCorrectly: (value) => {
+							if (!value) {
+								return true;
+							}
+							const typesRegex = /[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
+							return typesRegex.test(value);
 						},
 					},
 				},
