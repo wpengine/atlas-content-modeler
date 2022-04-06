@@ -1,6 +1,6 @@
 <?php
 
-class CreateContentModelRepeatableRichTextFieldCest {
+class CreateRepeatableRichTextFieldCest {
 
 	public function _before( \AcceptanceTester $i ) {
 		$i->resizeWindow( 1280, 1024 );
@@ -16,6 +16,14 @@ class CreateContentModelRepeatableRichTextFieldCest {
 		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
 		$i->click( 'Add New', '.wrap' );
 		$i->wait( 1 );
+	}
+
+	public function i_see_the_first_field_in_focus_when_adding_a_new_entry( AcceptanceTester $i ) {
+		$i->waitForElementVisible( '.mce-tinymce' );
+
+		$editor_has_focus = $i->executeJS( 'return tinymce.editors[0].hasFocus();' );
+
+		$i->assertTrue( $editor_has_focus );
 	}
 
 	public function i_can_see_a_rich_text_repeatable_field_on_the_publisher_page( AcceptanceTester $i ) {
