@@ -48,7 +48,6 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 	);
 
 	if ( ! $skip_validation ) {
-		// $post_data['meta_input'] = get_data_for_fields( $model_schema['fields'], $field_data );
 		$valid = validate_model_field_data( $model_schema, $post_data['meta_input'] );
 
 		if ( is_wp_error( $valid ) && $valid->has_errors() ) {
