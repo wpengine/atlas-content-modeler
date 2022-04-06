@@ -149,13 +149,9 @@ export default function Text({
 																	maxLength={
 																		field?.maxChars
 																	}
-																	onKeyPress={(
-																		event
-																	) => {
-																		handleKeyPress(
-																			event
-																		);
-																	}}
+																	onKeyPress={
+																		handleKeyPress
+																	}
 																	value={
 																		fieldValues[
 																			index
