@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 5.9
 Requires PHP: 7.2
-Stable tag: 0.15.0
+Stable tag: 0.16.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,20 +53,26 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+= 0.16.0 - 2022-04-06 =
+
+* **Added:** The date field now has the “make this field repeatable” option to let publishers add multiple dates within each date field.
+* **Changed:** The first field now gains focus when creating a new ACM post.
+* **Changed:** Telemetry is no longer sent for staging sites (those with \*.wpengine.com domains). Telemetry for other domains still requires opt-in, and is off by default.
+
 = 0.15.0 - 2022-03-04 =
-**Added:** Rich Text, Number and Media fields have a new “make repeatable” option. Enable it on new fields to let publishers add multiple rich text, number or image entries in one field.
-**Added:** Repeatable text fields now include a “minimum” and “maximum” repeatable limit in advanced settings.
-**Added:** Added a “Use Permalink Base” option on the edit model screen to set the WordPress `with_front` setting (true by default). Untick this to tell WordPress not to prefix your model entry URLs with custom prefixes from your WordPress permalink settings. For example, a site with a permalink structure of `/posts/%postname%/` will have post URLs of `/posts/your-acm-model-name/your-post/` by default. Edit your model and untick “Use Permalink Base” if you prefer a URL structure of `/your-acm-model-name/your-post/`.
-**Added:** `wp acm blueprint export` now accepts a `--wp-options` flag to export a comma-separated list of WordPress options from the `wp_options` table. No options are exported by default. Example: `wp acm blueprint export --wp-options='blogname, permalink_structure`
-**Added:** `wp acm blueprint import` now updates WordPress options if blueprints contain a `wp-options` key with a list of options values, keyed by option name.
-**Added:** The `wp acm blueprint export` and `wp acm blueprint import` commands now include all taxonomies for collected post types, including category and post_tag taxonomy terms for the WordPress core 'post' type
-**Fixed:** The delete model prompt no longer shows “undefined” in its title during model deletion
-**Fixed:** Improved checkbox styling in field settings
-**Fixed:** Options buttons now use the mouse pointer cursor
-**Fixed:** The `wp acm blueprint import` command no longer reports “Could not read an acm.json file” if the blueprint zip file was renamed after creation
-**Fixed:** Fixed issue where it was possible to improperly lead a model ID with a number
-**Fixed:** Improved validation messages for integer and decimal values in the number field.
-**Fixed:** WordPress admin notices no longer overlay the Screen Options button on ACM entry pages.
+* **Added:** Rich Text, Number and Media fields have a new “make repeatable” option. Enable it on new fields to let publishers add multiple rich text, number or image entries in one field.
+* **Added:** Repeatable text fields now include a “minimum” and “maximum” repeatable limit in advanced settings.
+* **Added:** Added a “Use Permalink Base” option on the edit model screen to set the WordPress `with_front` setting (true by default). Untick this to tell WordPress not to prefix your model entry URLs with custom prefixes from your WordPress permalink settings. For example, a site with a permalink structure of `/posts/%postname%/` will have post URLs of `/posts/your-acm-model-name/your-post/` by default. Edit your model and untick “Use Permalink Base” if you prefer a URL structure of `/your-acm-model-name/your-post/`.
+* **Added:** `wp acm blueprint export` now accepts a `--wp-options` flag to export a comma-separated list of WordPress options from the `wp_options` table. No options are exported by default. Example: `wp acm blueprint export --wp-options='blogname, permalink_structure`
+* **Added:** `wp acm blueprint import` now updates WordPress options if blueprints contain a `wp-options` key with a list of options values, keyed by option name.
+* **Added:** The `wp acm blueprint export` and `wp acm blueprint import` commands now include all taxonomies for collected post types, including category and post_tag taxonomy terms for the WordPress core 'post' type
+* **Fixed:** The delete model prompt no longer shows “undefined” in its title during model deletion
+* **Fixed:** Improved checkbox styling in field settings
+* **Fixed:** Options buttons now use the mouse pointer cursor
+* **Fixed:** The `wp acm blueprint import` command no longer reports “Could not read an acm.json file” if the blueprint zip file was renamed after creation
+* **Fixed:** Fixed issue where it was possible to improperly lead a model ID with a number
+* **Fixed:** Improved validation messages for integer and decimal values in the number field.
+* **Fixed:** WordPress admin notices no longer overlay the Screen Options button on ACM entry pages.
 
 = 0.14.0 - 2022-02-10 =
 * **Added:** `wp acm blueprint import` and `wp acm blueprint export` WP-CLI commands.
