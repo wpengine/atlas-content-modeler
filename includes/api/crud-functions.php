@@ -13,9 +13,8 @@ use function WPE\AtlasContentModeler\get_field_from_slug;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\API\Utility\get_data_for_fields;
 use function WPE\AtlasContentModeler\get_entry_title_field;
-use WPE\AtlasContentModeler\API\validation;
+use function WPE\AtlasContentModeler\API\validation\validate_model_field_data;
 
-use WP_Error;
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -49,51 +48,11 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 	);
 
 	if ( ! $skip_validation ) {
-		$wp_error                = new \WP_Error();
-		$post_data['meta_input'] = get_data_for_fields( $model_schema['fields'], $field_data );
+		// $post_data['meta_input'] = get_data_for_fields( $model_schema['fields'], $field_data );
+		$valid = validate_model_field_data( $model_schema, $post_data['meta_input'] );
 
-		foreach ( $model_schema['fields'] as $key => $field ) {
-			if ( ! array_key_exists( $field['slug'], $post_data['meta_input'] ) ) {
-				continue;
-			}
-
-			$value = $post_data['meta_input'][ $field['slug'] ];
-			switch ( $field['type'] ) {
-				case 'text':
-					if ( ! validation\validate_text_field( $value ) ) {
-						$wp_error->add( 'invalid_field', "{$field['name']} is invalid for value: {$field['value']}. Type:  {$field['type']}." );
-					}
-					break;
-				case 'number':
-					if ( ! validation\validate_number_field( $value ) ) {
-						$wp_error->add( 'invalid_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
-					}
-					break;
-				case 'richtext':
-					if ( ! validation\validate_rich_text_field( $value ) ) {
-						$wp_error->add( 'invalid_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
-					}
-					break;
-				case 'date':
-					if ( ! validation\validate_date_field( $value ) ) {
-						$wp_error->add( 'invalid_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
-					}
-					break;
-				case 'boolean':
-					if ( ! validation\validate_boolean_field( $value ) ) {
-						$wp_error->add( 'invalid_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
-					}
-					break;
-				case 'multipleChoice':
-					if ( ! validation\validate_multiple_choice_field( $value ) ) {
-						$wp_error->add( 'invalid_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
-					}
-					break;
-			}
-		}
-
-		if ( $wp_error->has_errors() ) {
-			return $wp_error;
+		if ( is_wp_error( $valid ) && $valid->has_errors() ) {
+			return $valid;
 		}
 	}
 

@@ -14,6 +14,64 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Validate data for model fields adheres to the field type.
+ *
+ * @param array $model_schema The content model schema.
+ * @param array $data         The data to check against field types.
+ *
+ * @return bool|WP_Error True if valid, else WP_Error with errors.
+ */
+function validate_model_field_data( array $model_schema, array $data ) {
+	$wp_error = new \WP_Error();
+
+	foreach ( $model_schema['fields'] as $key => $field ) {
+		if ( ! \array_key_exists( $field['slug'], $data ) ) {
+			continue;
+		}
+
+		$value = $data[ $field['slug'] ];
+		switch ( $field['type'] ) {
+			case 'text':
+				if ( ! validation\validate_text_field( $value ) ) {
+					$wp_error->add( 'invalid_model_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
+				}
+				break;
+			case 'number':
+				if ( ! validation\validate_number_field( $value ) ) {
+					$wp_error->add( 'invalid_model_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
+				}
+				break;
+			case 'richtext':
+				if ( ! validation\validate_rich_text_field( $value ) ) {
+					$wp_error->add( 'invalid_model_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
+				}
+				break;
+			case 'date':
+				if ( ! validation\validate_date_field( $value ) ) {
+					$wp_error->add( 'invalid_model_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
+				}
+				break;
+			case 'boolean':
+				if ( ! validation\validate_boolean_field( $value ) ) {
+					$wp_error->add( 'invalid_model_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
+				}
+				break;
+			case 'multipleChoice':
+				if ( ! validation\validate_multiple_choice_field( $value ) ) {
+					$wp_error->add( 'invalid_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
+				}
+				break;
+		}
+	}
+
+	if ( $wp_error->has_errors() ) {
+		return $wp_error;
+	}
+
+	return true;
+}
+
+/**
  * Check that a value is a string.
  *
  * @param string $value The field value.
