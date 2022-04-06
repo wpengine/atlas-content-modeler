@@ -3,6 +3,9 @@
 ### Added
 - Repeatable date field that will allow for publishers to define multiple dates for each date field they create.
 
+### Changed
+- The first field now gains focus when creating a new ACM post.
+
 ## 0.15.0 - 2022-03-24
 ### Added
 - Rich Text, Number and Media fields have a new “make repeatable” option. Enable it on new fields to let publishers add multiple rich text, number or image entries in one field.
