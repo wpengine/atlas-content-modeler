@@ -54,7 +54,6 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 == Changelog ==
 = 0.16.0 - 2022-04-06 =
-
 * **Added:** The date field now has the “make this field repeatable” option to let publishers add multiple dates within each date field.
 * **Changed:** The first field now gains focus when creating a new ACM post.
 * **Changed:** Telemetry is no longer sent for staging sites (those with \*.wpengine.com domains). Telemetry for other domains still requires opt-in, and is off by default.
