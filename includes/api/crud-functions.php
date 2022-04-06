@@ -47,7 +47,7 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 	);
 
 	if ( ! $skip_validation ) {
-		$wp_error                = new WP_Error();
+		$wp_error                = new \WP_Error();
 		$post_data['meta_input'] = get_data_for_fields( $model_schema['fields'], $data );
 
 		foreach ( $model_schema['fields'] as $key => $field ) {
@@ -58,6 +58,16 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 			$value = $post_data['meta_input'][ $field['slug'] ];
 			switch ( $field['type'] ) {
 				case 'text':
+					break;
+				case 'number':
+					break;
+				case 'richtext':
+					break;
+				case 'date':
+					break;
+				case 'boolean':
+					break;
+				case 'multipleChoice':
 					break;
 			}
 		}
