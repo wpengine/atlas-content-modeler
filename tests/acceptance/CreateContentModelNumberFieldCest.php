@@ -84,6 +84,10 @@ class CreateContentModelNumberFieldCest {
 			'input',
 			[ 'name' => 'atlas-content-modeler[candy][positionxyz][0]' ]
 		);
+
+		// The first number field should be in focus as the first field on the page.
+		$active_element = $i->executeJS( "return document.activeElement.getAttribute('id');" );
+		$i->assertEquals( 'atlas-content-modeler[candy][positionxyz][0]', $active_element );
 	}
 
 	/**
