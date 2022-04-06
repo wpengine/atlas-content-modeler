@@ -143,7 +143,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 		email: {
 			component: EmailSettings,
 			fields: {
-				// TODO-botz: update to validate email domain/subdomain integrity
 				allowedDomains: {
 					setValueAs: (value) =>
 						value ? value.replace(/\s/g, "") : "",
@@ -152,8 +151,16 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 							if (!value) {
 								return true;
 							}
-							const typesRegex = /[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
-							return typesRegex.test(value);
+
+							const domains = value
+								.split(",")
+								.map((domain) => domain.trim());
+							const wildcardDomainRegex = /[A-Za-z0-9-*.]*\.[A-Za-z]+$/;
+							const isValidDomain = (domain) => {
+								return wildcardDomainRegex.test(domain);
+							};
+
+							return domains.every(isValidDomain);
 						},
 					},
 				},
