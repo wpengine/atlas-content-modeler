@@ -4,6 +4,7 @@ import { __ } from "@wordpress/i18n";
 import Icon from "../../../../../components/icons";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import AddRepeatableItemButton from "./AddRepeatableItemButton";
+import useFocusNewFields from "../shared/repeaters/useFocusNewFields";
 
 export default function Text({
 	field,
@@ -44,6 +45,8 @@ export default function Text({
 			validFieldValues.length > 0 &&
 			validFieldValues.length < field.minRepeatable;
 		const isRequired = field?.required || isMinRequired;
+
+		useFocusNewFields(modelSlug, field?.slug, fieldValues);
 
 		/**
 		 * Handle keypress to add new entry and continue entering data
