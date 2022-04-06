@@ -52,6 +52,11 @@ class CreateContentModelTextFieldCest {
 			'input',
 			[ 'name' => 'atlas-content-modeler[candy][color][0]' ]
 		);
+
+		// Confirm new repeating text inputs gain focus when they are added.
+		$i->click( 'Add Item', '.add-option' );
+		$active_element = $i->executeJS( "return document.activeElement.getAttribute('name');" );
+		$i->assertEquals( 'atlas-content-modeler[candy][color][1]', $active_element );
 	}
 
 	public function i_can_create_a_content_model_text_field_as_a_textarea( AcceptanceTester $i ) {
