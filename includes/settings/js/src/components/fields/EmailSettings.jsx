@@ -4,20 +4,14 @@ import React from "react";
 import Icon from "../../../../../components/icons";
 import { __ } from "@wordpress/i18n";
 
-// TODO-abotz: figure out why we need important here and remove
-const emailDomainTextArea = css({
-	maxWidth: "none !important",
-	minHeight: "55px !important",
-});
+const emailDomainTextArea = css`
+	.atlas-content-modeler-admin-page & {
+		max-width: none;
+		min-height: 55px;
+	}
+`;
 
-const EmailSettings = ({
-	errors,
-	field,
-	storedData,
-	setValue,
-	getValues,
-	trigger,
-}) => {
+const EmailSettings = ({ errors, storedData, setValue, getValues }) => {
 	return (
 		<>
 			<div className="d-flex flex-column d-sm-flex flex-sm-row">
@@ -35,7 +29,7 @@ const EmailSettings = ({
 						</label>
 						<p>
 							{__(
-								`Comma seperated list of allowed domains, wild cards allowed. Eg "*.edu"`,
+								`Comma-separated list of allowed domains, wildcards allowed. e.g. "*.edu"`,
 								"atlas-content-modeler"
 							)}
 						</p>

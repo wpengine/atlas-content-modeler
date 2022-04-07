@@ -154,7 +154,8 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 
 							const domains = value
 								.split(",")
-								.map((domain) => domain.trim());
+								.map((domain) => domain.trim())
+								.filter((domain) => domain.length > 0);
 							const wildcardDomainRegex = /[A-Za-z0-9-*.]*\.[A-Za-z]+$/;
 							const isValidDomain = (domain) => {
 								return wildcardDomainRegex.test(domain);
