@@ -92,6 +92,28 @@ function is_field_featured_image( string $slug, array $fields ): bool {
 }
 
 /**
+ * Determine if the given field is required.
+ *
+ * @param array $field The field schema.
+ *
+ * @return boolean True if required, false if else.
+ */
+function is_field_required( array $field ): bool {
+	return \array_key_exists( 'required', $field ) && true === $field['required'];
+}
+
+/**
+ * Determine if the given field is repeatable.
+ *
+ * @param array $field The field schema.
+ *
+ * @return boolean True if required, false if else.
+ */
+function is_field_repeatable( array $field ): bool {
+	return \array_key_exists( 'isRepeatable', $field ) && true === $field['isRepeatable'];
+}
+
+/**
  * Gets the field from the field slug.
  *
  * @param string $slug Field slug to look for the 'type' property.
@@ -237,6 +259,8 @@ function sanitize_field( string $type, $value ) {
 		case 'boolean':
 			return $value === 'on' ? 'on' : 'off';
 		case 'multipleChoice':
+			$options_object = [];
+
 			if ( is_array( $value ) ) {
 				$options_object = [];
 				foreach ( $value as $option ) {
@@ -244,6 +268,7 @@ function sanitize_field( string $type, $value ) {
 				}
 				return $options_object;
 			}
+
 			$options_object[] = $value;
 			return $options_object;
 		default:
