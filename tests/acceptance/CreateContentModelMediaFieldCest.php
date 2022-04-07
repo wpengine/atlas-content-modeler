@@ -12,10 +12,6 @@ class CreateContentModelMediaFieldCest {
 	 * Ensure a user can add a Media field to the model with a repeatable property.
 	 */
 	public function i_can_create_a_content_model_media_repeatable_field( AcceptanceTester $i ) {
-		$i->loginAsAdmin();
-		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
-		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
-
 		$i->click( 'Media', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'positionxyz' );
@@ -33,16 +29,16 @@ class CreateContentModelMediaFieldCest {
 		$i->wait( 1 );
 
 		$i->see( 'Manage Media', 'button[data-testid="media-uploader-manage-media-button"]' );
+
+		// The media button should be in focus as the first field on the page.
+		$active_element = $i->executeJS( "return document.activeElement.getAttribute('data-testid');" );
+		$i->assertEquals( 'media-uploader-manage-media-button', $active_element );
 	}
 
 	/**
 	 * Ensure a user cannot save a Media field with a required repeatable property.
 	 */
 	public function i_cannot_save_empty_required_media_repeatable_field( AcceptanceTester $i ) {
-		$i->loginAsAdmin();
-		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
-		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
-
 		$i->click( 'Media', '.field-buttons' );
 		$i->wait( 1 );
 		$i->fillField( [ 'name' => 'name' ], 'positionxyz' );

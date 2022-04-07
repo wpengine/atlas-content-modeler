@@ -19,8 +19,15 @@ export default function Fields(props) {
 		);
 	}
 
-	return fieldOrder.map((v, i, a) => {
-		const field = fields[v];
-		return <Field field={field} modelSlug={model.slug} key={v} />;
+	return fieldOrder.map((fieldKey, i) => {
+		const field = fields[fieldKey];
+		return (
+			<Field
+				field={field}
+				modelSlug={model.slug}
+				key={fieldKey}
+				first={i === 0} // To help focus the first field.
+			/>
+		);
 	});
 }

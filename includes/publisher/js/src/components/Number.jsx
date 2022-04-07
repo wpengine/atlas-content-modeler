@@ -44,8 +44,8 @@ export default function Number({
 		}
 
 		// call global validate
-		const isValid = validate(event, field);
-		if (isValid && field?.isRepeatableNumber) {
+		validate(event, field);
+		if (field?.isRepeatableNumber) {
 			handleKeyPress(event);
 		}
 	}
@@ -167,6 +167,7 @@ export default function Number({
 															{values.length >
 																1 && (
 																<button
+																	type="button"
 																	className="remove-item tertiary no-border"
 																	onClick={(
 																		event

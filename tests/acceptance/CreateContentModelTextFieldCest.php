@@ -53,7 +53,11 @@ class CreateContentModelTextFieldCest {
 			[ 'name' => 'atlas-content-modeler[candy][color][0]' ]
 		);
 
-		// Confirm new repeating text inputs gain focus when they are added.
+		// The first text field should be in focus as the first field on the page.
+		$active_element = $i->executeJS( "return document.activeElement.getAttribute('name');" );
+		$i->assertEquals( 'atlas-content-modeler[candy][color][0]', $active_element );
+    
+    // Confirm new repeating text inputs gain focus when they are added.
 		$i->click( 'Add Item', '.add-option' );
 		$active_element = $i->executeJS( "return document.activeElement.getAttribute('name');" );
 		$i->assertEquals( 'atlas-content-modeler[candy][color][1]', $active_element );
