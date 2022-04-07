@@ -27,3 +27,18 @@ function get_data_for_fields( array $model_fields, array $data ): array {
 
 	return array_intersect_key( $data, $model_field_names );
 }
+
+/**
+ * Get the key value of an array.
+ *
+ * @param int|string $key The index or key.
+ * @param array      $data The array to search.
+ * @param mixed      $default The value to return if key not found. Default null.
+ *
+ * @return mixed The value or default value if not found.
+ */
+function array_get_key_value( string $key, array $data, $default = null ): mixed {
+	return \array_key_exists( $key, $data )
+		? $data[ $key ]
+		: $default;
+}
