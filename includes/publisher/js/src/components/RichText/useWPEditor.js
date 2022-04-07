@@ -10,11 +10,33 @@ const { wp, atlasContentModelerFormEditingExperience } = window;
 export default function useWpEditor(textareaIds) {
 	const editorReadyTimer = useRef(null);
 
+	/**
+	 * The init_instance_callback to focus the field if it is the first
+	 * one in the model. Allows users to start typing without having to focus
+	 * the field manually on “new post” forms.
+	 *
+	 * @param {object} editor
+	 */
+	const maybeFocusEditor = (editor) => {
+		let isFirstField =
+			document
+				.getElementById(editor.id)
+				.closest("[data-first-field=true]") !== null &&
+			(textareaIds[0] ?? "") === editor.id;
+
+		let isNewPost = document.body.classList.contains("post-new-php");
+
+		if (isFirstField && isNewPost) {
+			editor.focus();
+		}
+	};
+
 	useEffect(() => {
 		const editorReadyTime = 500;
 		const editorSettingsOverrides = {
 			tinymce: {
 				height: "125",
+				init_instance_callback: maybeFocusEditor,
 				toolbar1:
 					"undo,redo,formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,unlink,wp_add_media",
 			},
