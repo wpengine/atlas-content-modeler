@@ -65,7 +65,7 @@ export default function Number({
 				const lastFieldIsInFocus =
 					document.activeElement.getAttribute("name") ===
 					`atlas-content-modeler[${modelSlug}][${field.slug}][${
-						fieldValues?.length - 1
+						values?.length - 1
 					}]`;
 
 				if (lastFieldIsInFocus) {
