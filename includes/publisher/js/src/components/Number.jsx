@@ -61,7 +61,39 @@ export default function Number({
 		function handleKeyPress(event) {
 			if (event.key === "Enter") {
 				event.preventDefault();
-				addButtonRef.current.click();
+
+				const lastFieldIsInFocus =
+					document.activeElement.getAttribute("name") ===
+					`atlas-content-modeler[${modelSlug}][${field.slug}][${
+						fieldValues?.length - 1
+					}]`;
+
+				if (lastFieldIsInFocus) {
+					addButtonRef.current.click();
+					return;
+				}
+
+				const activeFieldName = document.activeElement.getAttribute(
+					"name"
+				);
+
+				const activeFieldIndex = [
+					...document.querySelectorAll(
+						`[name*="atlas-content-modeler[${modelSlug}][${field.slug}]`
+					),
+				]
+					.map((field) => field.getAttribute("name"))
+					.indexOf(activeFieldName);
+
+				const nextField = document.querySelector(
+					`[name="atlas-content-modeler[${modelSlug}][${
+						field.slug
+					}][${activeFieldIndex + 1}]`
+				);
+
+				if (nextField) {
+					nextField.focus();
+				}
 			}
 		}
 
