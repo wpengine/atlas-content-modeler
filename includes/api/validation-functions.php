@@ -10,6 +10,9 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\API\validation;
 
 use function WPE\AtlasContentModeler\sanitize_field;
+use function WPE\AtlasContentModeler\is_field_required;
+use function WPE\AtlasContentModeler\is_field_repeatable;
+use function WPE\AtlasContentModeler\API\Utility\array_get_key_value;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
