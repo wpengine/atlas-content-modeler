@@ -217,7 +217,12 @@ final class FormEditingExperience {
 					if ( 'relationship' === $field['type'] ) {
 						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post, $field );
 					} else {
-						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+						$value = get_post_meta( $post->ID, $field['slug'], true );
+						if ( ! empty( $field['isTitle'] ) && $value !== $post->post_title ) {
+							$post->post_title = $value;
+							wp_update_post( $post, false, false );
+						}
+						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $value;
 					}
 				}
 			}
