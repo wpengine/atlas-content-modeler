@@ -1,9 +1,11 @@
 /** @jsx jsx */
+import React, { useRef } from "react";
 import { jsx, css } from "@emotion/react";
 import AddItemButton from "../shared/repeaters/AddItemButton";
 import DeleteItemButton from "../shared/repeaters/DeleteItemButton";
 import DateField from "./DateField";
 import { colors } from "../../../../../shared-assets/js/emotion";
+import useFocusNewFields from "../shared/repeaters/useFocusNewFields";
 
 const RepeatingDate = ({
 	modelSlug,
@@ -12,6 +14,10 @@ const RepeatingDate = ({
 	setValues,
 	defaultError,
 }) => {
+	const addButtonRef = useRef();
+
+	useFocusNewFields(modelSlug, field?.slug, values);
+
 	const addItem = () =>
 		setValues((oldValues) => [...oldValues, { value: "" }]);
 
@@ -21,6 +27,47 @@ const RepeatingDate = ({
 			newValues.splice(index, 1);
 			return newValues;
 		});
+
+	/**
+	 * Handle keypress to add new entry and continue entering data
+	 * @param {*} event
+	 */
+	function handleKeyPress(event) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+
+			const lastFieldIsInFocus =
+				document.activeElement.getAttribute("name") ===
+				`atlas-content-modeler[${modelSlug}][${field.slug}][${
+					values?.length - 1
+				}]`;
+
+			if (lastFieldIsInFocus) {
+				addButtonRef.current.click();
+				return;
+			}
+
+			const activeFieldName = document.activeElement.getAttribute("name");
+
+			const activeFieldIndex = [
+				...document.querySelectorAll(
+					`[name*="atlas-content-modeler[${modelSlug}][${field.slug}]`
+				),
+			]
+				.map((field) => field.getAttribute("name"))
+				.indexOf(activeFieldName);
+
+			const nextField = document.querySelector(
+				`[name="atlas-content-modeler[${modelSlug}][${field.slug}][${
+					activeFieldIndex + 1
+				}]`
+			);
+
+			if (nextField) {
+				nextField.focus();
+			}
+		}
+	}
 
 	return (
 		<fieldset>
@@ -62,6 +109,9 @@ const RepeatingDate = ({
 												margin-top: 0 !important;
 												width: 100% !important;
 											`}
+											onKeyPress={(event) => {
+												handleKeyPress(event);
+											}}
 										/>
 										{values.length > 1 && (
 											<DeleteItemButton
@@ -89,6 +139,7 @@ const RepeatingDate = ({
 								css={css`
 									margin: 0;
 								`}
+								buttonRef={addButtonRef}
 							/>
 						</td>
 					</tr>
