@@ -5,6 +5,7 @@ import AddItemButton from "../shared/repeaters/AddItemButton";
 import DeleteItemButton from "../shared/repeaters/DeleteItemButton";
 import DateField from "./DateField";
 import { colors } from "../../../../../shared-assets/js/emotion";
+import useFocusNewFields from "../shared/repeaters/useFocusNewFields";
 
 const RepeatingDate = ({
 	modelSlug,
@@ -14,6 +15,8 @@ const RepeatingDate = ({
 	defaultError,
 }) => {
 	const addButtonRef = useRef();
+
+	useFocusNewFields(modelSlug, field?.slug, values);
 
 	const addItem = () =>
 		setValues((oldValues) => [...oldValues, { value: "" }]);

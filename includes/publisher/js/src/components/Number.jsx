@@ -4,6 +4,7 @@ import Icon from "../../../../components/icons";
 import { __ } from "@wordpress/i18n";
 import AddIcon from "../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../components/icons/TrashIcon";
+import useFocusNewFields from "./shared/repeaters/useFocusNewFields";
 
 export default function Number({
 	field,
@@ -53,6 +54,8 @@ export default function Number({
 	if (field?.isRepeatableNumber) {
 		const [values, setValues] = useState(field?.value || [""]);
 		const addButtonRef = useRef();
+
+		useFocusNewFields(modelSlug, field?.slug, values);
 
 		/**
 		 * Handle keypress to add new entry and continue entering data
