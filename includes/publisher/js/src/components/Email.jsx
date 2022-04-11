@@ -33,6 +33,13 @@ export default function Email({
 			{field?.description && (
 				<p className="help mb-0">{field.description}</p>
 			)}
+			{field?.allowedDomains && (
+				<p className="help mb-0">
+					Allowed domains :{" "}
+					{field.allowedDomains.replaceAll(",", ", ")}
+				</p>
+			)}
+
 			<input {...emailProps} />
 			<span className="error">
 				<Icon type="error" />
