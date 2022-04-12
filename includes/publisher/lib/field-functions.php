@@ -110,7 +110,32 @@ function is_field_required( array $field ): bool {
  * @return boolean True if required, false if else.
  */
 function is_field_repeatable( array $field ): bool {
-	return \array_key_exists( 'isRepeatable', $field ) && true === $field['isRepeatable'];
+	$repeatable = false;
+	$key        = '';
+
+	switch ( $field['type'] ) {
+		case 'text':
+			$key = 'isRepeatable';
+			break;
+		case 'richtext':
+			$key = 'isRepeatableRichText';
+			break;
+		case 'number':
+			$key = 'isRepeatableNumber';
+			break;
+		case 'date':
+			$key = 'isRepeatableDate';
+			break;
+		case 'media':
+			$key = 'isRepeatableMedia';
+			break;
+	}
+
+	if ( $key && \array_key_exists( $key, $field ) ) {
+		$repeatable = ( true === $field[ $key ] || 'true' === $field[ $key ] );
+	}
+
+	return $repeatable;
 }
 
 /**
