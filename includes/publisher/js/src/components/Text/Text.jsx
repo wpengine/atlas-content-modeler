@@ -1,9 +1,10 @@
 /* global atlasContentModelerFormEditingExperience */
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { __ } from "@wordpress/i18n";
 import Icon from "../../../../../components/icons";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import AddRepeatableItemButton from "./AddRepeatableItemButton";
+import useFocusNewFields from "../shared/repeaters/useFocusNewFields";
 
 export default function Text({
 	field,
@@ -13,6 +14,8 @@ export default function Text({
 	defaultError,
 }) {
 	if (field.isRepeatable) {
+		const addButtonRef = useRef();
+
 		function getFieldValues() {
 			const minLength = parseInt(field.minRepeatable) || 1;
 
@@ -42,6 +45,53 @@ export default function Text({
 			validFieldValues.length > 0 &&
 			validFieldValues.length < field.minRepeatable;
 		const isRequired = field?.required || isMinRequired;
+
+		useFocusNewFields(modelSlug, field?.slug, fieldValues);
+
+		/**
+		 * When enter is pressed move focus to the next field, or add a new
+		 * field if the field in focus is the final one in the repeating list.
+		 *
+		 * @param {object} event
+		 */
+		function handleKeyPress(event) {
+			if (event.key === "Enter") {
+				event.preventDefault();
+
+				const lastFieldIsInFocus =
+					document.activeElement.getAttribute("name") ===
+					`atlas-content-modeler[${modelSlug}][${field.slug}][${
+						fieldValues?.length - 1
+					}]`;
+
+				if (lastFieldIsInFocus) {
+					addButtonRef.current.click();
+					return;
+				}
+
+				const activeFieldName = document.activeElement.getAttribute(
+					"name"
+				);
+
+				const activeFieldIndex = [
+					...document.querySelectorAll(
+						`[name*="atlas-content-modeler[${modelSlug}][${field.slug}]`
+					),
+				]
+					.map((field) => field.getAttribute("name"))
+					.indexOf(activeFieldName);
+
+				const nextField = document.querySelector(
+					`[name="atlas-content-modeler[${modelSlug}][${
+						field.slug
+					}][${activeFieldIndex + 1}]`
+				);
+
+				if (nextField) {
+					nextField.focus();
+				}
+			}
+		}
 
 		return (
 			<div className={"field"}>
@@ -99,16 +149,9 @@ export default function Text({
 																	maxLength={
 																		field?.maxChars
 																	}
-																	onKeyPress={(
-																		event
-																	) => {
-																		if (
-																			event.key ===
-																			"Enter"
-																		) {
-																			event.preventDefault();
-																		}
-																	}}
+																	onKeyPress={
+																		handleKeyPress
+																	}
 																	value={
 																		fieldValues[
 																			index
@@ -232,6 +275,7 @@ export default function Text({
 												values={fieldValues}
 												setValues={setValues}
 												isMaxInputs={isMaxInputs}
+												buttonRef={addButtonRef}
 											/>
 										</tr>
 									</tbody>

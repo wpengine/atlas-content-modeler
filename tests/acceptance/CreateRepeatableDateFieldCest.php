@@ -24,6 +24,10 @@ class CreateRepeatableDateFieldCest {
 			'input',
 			[ 'name' => 'atlas-content-modeler[candy][dates][0]' ]
 		);
+
+		// The date field should be in focus as the first field on the page.
+		$active_element = $i->executeJS( "return document.activeElement.getAttribute('name');" );
+		$i->assertEquals( 'atlas-content-modeler[candy][dates][0]', $active_element );
 	}
 
 	/**
