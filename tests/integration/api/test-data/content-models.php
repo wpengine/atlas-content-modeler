@@ -3,7 +3,7 @@
  * Content model test data.
  */
 
-[
+return [
 	'person' => [
 		'show_in_rest'    => true,
 		'show_in_graphql' => true,
