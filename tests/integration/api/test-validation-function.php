@@ -15,190 +15,220 @@ use function WPE\AtlasContentModeler\API\validation\validate_number;
 use function WPE\AtlasContentModeler\API\validation\validate_date;
 
 class TestValidationFunctions extends Integration_TestCase {
+	/**
+	 * Content models.
+	 *
+	 * @var array
+	 */
+	protected $content_models;
+
+	/**
+	 * Override of parent::set_up.
+	 *
+	 * @return void
+	 */
+	public function set_up(): void {
+		parent::set_up();
+
+		$this->content_models = $this->get_models( __DIR__ . '/test-data/content-models.php' );
+	}
+
+	public function test_validate_model_field_data_will_return_true_for_valid_data() {
+		$model_schema = $this->content_models['validation'];
+		$data         = [
+			'textField'                 => 'John Doe',
+			'repeatableTextField'       => [ 'John', 'Doe' ],
+			'richTextField'             => '<p>This is a description</p>',
+			'repeatableRichTextField'   => [ '<p>This is excerpt one</p>', '<p>This is excerpt two</p>' ],
+			'numberField'               => '21',
+			'repeatableNumberField'     => [ 1, 2, 3, 4, 5 ],
+			'dateField'                 => '2001-04-01',
+			'repeatableDateField'       => [ '2022-07-04', '2022-10-31' ],
+			'singleMultipleChoiceField' => [ 'choice1' ],
+			'multiMultipleChoiceField'  => [ 'choice1', 'choice2' ],
+		];
+
+		$this->assertTrue( validate_model_field_data( $model_schema, $data ) );
+	}
+
+	public function test_validate_model_field_data_will_return_true_if_only_required_model_data_given() {
+		$model_schema = $this->content_models['validation'];
+
+		$model_schema['fields'][1649787479673]['required'] = true;
+
+		$this->assertTrue( validate_model_field_data( $model_schema, [ 'textField' => 'John Doe' ] ) );
+	}
+
+	public function test_validate_model_field_data_will_return_true_if_no_data_given_without_required_fields() {
+		$model_schema = $this->content_models['validation'];
+
+		$this->assertTrue( validate_model_field_data( $model_schema, [] ) );
+	}
+
+	public function test_validate_model_field_data_will_return_true_with_non_field_data_given() {
+		$model_schema = $this->content_models['validation'];
+		$data         = [
+			'sku' => '2083947523',
+			'id'  => 'q3p90874hfq3p984fhjqn3',
+		];
+
+		$this->assertTrue( validate_model_field_data( $model_schema, $data ) );
+	}
+
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_text_field() {
-		$text_field = $this->generate_field( 'Name', 'text', [ 'required' => true ] );
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Name field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787479673]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'name' => '' ] );
-		$this->assertEquals( [ 'Name cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Text Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'name' => 1 ] );
-		$this->assertEquals( [ 'Name must be valid text' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'textField' => '' ] );
+		$this->assertEquals( [ 'Text Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'textField' => 1 ] );
+		$this->assertEquals( [ 'Text Field must be valid text' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_text_field() {
-		$text_field = $this->generate_field(
-			'Name',
-			'text',
-			[
-				'required'     => true,
-				'isRepeatable' => true,
-			]
-		);
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Name field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787498608]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'name' => '' ] );
-		$this->assertEquals( [ 'Name must be an array of text' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Repeatable Text Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'name' => [] ] );
-		$this->assertEquals( [ 'Name cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableTextField' => '' ] );
+		$this->assertEquals( [ 'Repeatable Text Field must be an array of text' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableTextField' => [] ] );
+		$this->assertEquals( [ 'Repeatable Text Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_richtext_field() {
-		$text_field = $this->generate_field( 'Content', 'richtext', [ 'required' => true ] );
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Content field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787509847]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'content' => '' ] );
-		$this->assertEquals( [ 'Content cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Rich Text Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'content' => 1 ] );
-		$this->assertEquals( [ 'Content must be valid richtext' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'richTextField' => '' ] );
+		$this->assertEquals( [ 'Rich Text Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'richTextField' => 1 ] );
+		$this->assertEquals( [ 'Rich Text Field must be valid richtext' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_richtext_field() {
-		$text_field = $this->generate_field(
-			'Content',
-			'richtext',
-			[
-				'required'     => true,
-				'isRepeatable' => true,
-			]
-		);
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Content field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787528544]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'content' => '' ] );
-		$this->assertEquals( [ 'Content must be an array of richtext' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Repeatable Rich Text Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'content' => [] ] );
-		$this->assertEquals( [ 'Content cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableRichTextField' => '' ] );
+		$this->assertEquals( [ 'Repeatable Rich Text Field must be an array of richtext' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableRichTextField' => [] ] );
+		$this->assertEquals( [ 'Repeatable Rich Text Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_number_field() {
-		$text_field = $this->generate_field( 'Total', 'number', [ 'required' => true ] );
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Total field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787543496]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'total' => '' ] );
-		$this->assertEquals( [ 'Total cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Number Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'total' => 'not_a_number' ] );
-		$this->assertEquals( [ 'Total must be a valid number' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'numberField' => '' ] );
+		$this->assertEquals( [ 'Number Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'numberField' => 'not_a_number' ] );
+		$this->assertEquals( [ 'Number Field must be a valid number' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_number_field() {
-		$text_field = $this->generate_field(
-			'Quantity',
-			'number',
-			[
-				'required'     => true,
-				'isRepeatable' => true,
-			]
-		);
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Quantity field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787560968]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'quantity' => 1 ] );
-		$this->assertEquals( [ 'Quantity must be an array of number' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Repeatable Number Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'quantity' => [] ] );
-		$this->assertEquals( [ 'Quantity cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableNumberField' => 1 ] );
+		$this->assertEquals( [ 'Repeatable Number Field must be an array of number' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableNumberField' => [] ] );
+		$this->assertEquals( [ 'Repeatable Number Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_date_field() {
-		$text_field = $this->generate_field( 'Birthday', 'date', [ 'required' => true ] );
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Birthday field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787611492]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'birthday' => '' ] );
-		$this->assertEquals( [ 'Birthday must be a valid date' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Date Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'birthday' => '1/1/2021' ] );
-		$this->assertEquals( [ 'Birthday must be a valid date' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'dateField' => '' ] );
+		$this->assertEquals( [ 'Date Field must be a valid date' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'dateField' => '1/1/2021' ] );
+		$this->assertEquals( [ 'Date Field must be a valid date' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_date_field() {
-		$text_field = $this->generate_field(
-			'Birthday',
-			'date',
-			[
-				'required'     => true,
-				'isRepeatable' => true,
-			]
-		);
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Birthday field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787623430]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'birthday' => '2022-04-08' ] );
-		$this->assertEquals( [ 'Birthday must be an array of date' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Repeatable Date Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'birthday' => [] ] );
-		$this->assertEquals( [ 'Birthday cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableDateField' => '2022-04-08' ] );
+		$this->assertEquals( [ 'Repeatable Date Field must be an array of date' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableDateField' => [] ] );
+		$this->assertEquals( [ 'Repeatable Date Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+	}
+
+	public function test_validate_multiple_choice_field_will_return_WP_Error_for_invalid_single_choice_field() {
+		$model_schema = $this->content_models['validation'];
+
+		$model_schema['fields'][1649787666652]['required'] = true;
+
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Single Multiple Choice Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'singleMultipleChoiceField' => [] ] );
+		$this->assertEquals( [ 'Single Multiple Choice Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'singleMultipleChoiceField' => 'choice1' ] );
+		$this->assertEquals( [ 'Single Multiple Choice Field must be an array of choices' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'singleMultipleChoiceField' => [ 'choice1', 'choice2' ] ] );
+		$this->assertEquals( [ 'Single Multiple Choice Field cannot have more than one choice' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'singleMultipleChoiceField' => [ 'not_a_choice' ] ] );
+		$this->assertEquals( [ 'Single Multiple Choice Field must only contain choice values' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	public function test_validate_multiple_choice_field_will_return_WP_Error_for_invalid_multiple_choice_field() {
-		$text_field = $this->generate_field(
-			'Color',
-			'multipleChoice',
-			[
-				'required' => true,
-				'listType' => 'single',
-				'choices'  => [
-					0 => [
-						'name' => 'Red',
-						'slug' => 'red',
-					],
-					1 => [
-						'name' => 'Blue',
-						'slug' => 'blue',
-					],
-					2 => [
-						'name' => 'Green',
-						'slug' => 'green',
-					],
-				],
-			]
-		);
-		$schema     = $this->generate_model_schema( [ $text_field ] );
+		$model_schema = $this->content_models['validation'];
 
-		$valid = validate_model_field_data( $schema, [] );
-		$this->assertEquals( [ 'Color field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$model_schema['fields'][1649787701753]['required'] = true;
 
-		$valid = validate_model_field_data( $schema, [ 'color' => [] ] );
-		$this->assertEquals( [ 'Color cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Multi Multiple Choice Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'color' => 'red' ] );
-		$this->assertEquals( [ 'Color must be an array of choices' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'multiMultipleChoiceField' => [] ] );
+		$this->assertEquals( [ 'Multi Multiple Choice Field cannot be empty' ], $valid->get_error_messages( 'invalid_model_field' ) );
 
-		$valid = validate_model_field_data( $schema, [ 'color' => [ 'red', 'blue' ] ] );
-		$this->assertEquals( [ 'Color cannot have more than one choice' ], $valid->get_error_messages( 'invalid_model_field' ) );
-
-		$valid = validate_model_field_data( $schema, [ 'color' => [ 'purple' ] ] );
-		$this->assertEquals( [ 'Color must only contain choice values' ], $valid->get_error_messages( 'invalid_model_field' ) );
-
-		$schema['fields'][0]['listType'] = 'multiple';
-
-		$valid = validate_model_field_data( $schema, [ 'color' => [ 'red', 'blue', 'purple' ] ] );
-		$this->assertEquals( [ 'Color must only contain choice values' ], $valid->get_error_messages( 'invalid_model_field' ) );
+		$valid = validate_model_field_data( $model_schema, [ 'multiMultipleChoiceField' => [ 'purple' ] ] );
+		$this->assertEquals( [ 'Multi Multiple Choice Field must only contain choice values' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	/**
@@ -342,32 +372,5 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->expectExceptionMessage( $message );
 
 		validate_in_array( 'test', [], $message );
-	}
-
-	protected function generate_model_schema( array $fields ): array {
-		return [
-			'fields' => $fields,
-		];
-	}
-
-	/**
-	 * Generate a model field.
-	 *
-	 * @param string $name The field name.
-	 * @param array  $attributes Optional field attributes. Override default attributes.
-	 *
-	 * @return array The model field schema.
-	 */
-	protected function generate_field( string $name, string $type, array $attributes ): array {
-		return array_merge(
-			[
-				'name'         => $name,
-				'slug'         => sanitize_title( $name ),
-				'type'         => $type,
-				'required'     => false,
-				'isRepeatable' => false,
-			],
-			$attributes
-		);
 	}
 }
