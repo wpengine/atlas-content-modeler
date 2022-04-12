@@ -56,10 +56,11 @@ function atlas_content_modeler_loader(): void {
 		'api/crud-functions.php',
 		'api/validation-functions.php',
 		'api/utility-functions.php',
+		'class-validation-exception.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
-			include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
+		require_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . $file;
 	}
 
 	if ( defined( 'WP_CLI' ) && WP_CLI ) {
