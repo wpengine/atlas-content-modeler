@@ -1,7 +1,17 @@
 # Atlas Content Modeler Changelog
-### Unreleased
+
+## Unreleased
+### Changed
+- Focus now moves to the new input field when adding a new repeating number, date or single line text field row.
+- Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
+
+## 0.16.0 - 2022-04-06
 ### Added
-- Repeatable date field that will allow for publishers to define multiple dates for each date field they create.
+- The date field now has the “make this field repeatable” option to let publishers add multiple dates within each date field.
+
+### Changed
+- The first field now gains focus when creating a new ACM post.
+- Telemetry is no longer sent for staging sites (those with  *.wpengine.com domains). Telemetry for other domains still requires opt-in, and is off by default.
 
 ## 0.15.0 - 2022-03-24
 ### Added

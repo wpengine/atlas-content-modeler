@@ -8,7 +8,27 @@ export default function AddRepeatableItemButton({
 	values,
 	setValues,
 	isMaxInputs,
+	buttonRef,
 }) {
+	const AddButton = React.forwardRef(
+		({ handleAddOptionClick, field }, ref) => (
+			<button
+				className="add-option mt-1 tertiary no-border"
+				onClick={handleAddOptionClick}
+				ref={ref}
+			>
+				<a>
+					<AddIcon noCircle />{" "}
+					<span>
+						{field.value.length > 0
+							? __(`Add Another`, "atlas-content-modeler")
+							: __(`Add Item`, "atlas-content-modeler")}
+					</span>
+				</a>
+			</button>
+		)
+	);
+
 	function handleAddOptionClick(event) {
 		event.preventDefault();
 		setValues((oldValues) => [...oldValues, ""]);
@@ -46,18 +66,10 @@ export default function AddRepeatableItemButton({
 	}
 
 	return (
-		<button
-			className="add-option mt-1 tertiary no-border"
-			onClick={handleAddOptionClick}
-		>
-			<a>
-				<AddIcon noCircle />{" "}
-				<span>
-					{field.value.length > 0
-						? __(`Add Another`, "atlas-content-modeler")
-						: __(`Add Item`, "atlas-content-modeler")}
-				</span>
-			</a>
-		</button>
+		<AddButton
+			ref={buttonRef}
+			field={field}
+			handleAddOptionClick={handleAddOptionClick}
+		/>
 	);
 }
