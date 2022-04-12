@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler\API\validation;
 
+use WPE\AtlasContentModeler\Validation_Exception;
+
 use function WPE\AtlasContentModeler\sanitize_field;
 use function WPE\AtlasContentModeler\is_field_required;
 use function WPE\AtlasContentModeler\is_field_repeatable;
@@ -30,39 +32,37 @@ function validate_model_field_data( array $model_schema, array $data ) {
 	$wp_error = new \WP_Error();
 
 	foreach ( $model_schema['fields'] as $id => $field ) {
-		$value = array_get_key_value( $field['slug'], $data );
+		try {
+			if ( is_field_required( $field ) ) {
+				validate_array_key_exists( $field['slug'], $data, "{$field['name']} field is required" );
+			}
 
-		if ( is_field_required( $field ) && ( null === $value || '' === $value ) ) {
-			$wp_error->add( 'invalid_model_field', "Field '{$field['name']}' is required" );
-			continue;
-		}
+			if ( ! \array_key_exists( $field['slug'], $data ) ) {
+				continue;
+			}
 
-		if ( is_field_required( $field ) && is_field_repeatable( $field ) && [] === $value ) {
-			$wp_error->add( 'invalid_model_field', "Field '{$field['name']}' is required" );
-			continue;
-		}
-
-		$value = sanitize_field( $field['type'], $value );
-
-		switch ( $field['type'] ) {
-			case 'text':
-			case 'richtext':
-			case 'number':
-			case 'date':
-				if ( '' === $value ) {
-					$wp_error->add( 'invalid_model_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
-				}
-				break;
-			case 'boolean':
-				if ( ! validate_boolean_field( $value ) ) {
-					$wp_error->add( 'invalid_model_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
-				}
-				break;
-			case 'multipleChoice':
-				if ( ! validate_multiple_choice_field( $value ) ) {
-					$wp_error->add( 'invalid_field', "{$field['name']} is invalid for value: {$field['value']}. Type: {$field['type']}." );
-				}
-				break;
+			$value = $data[ $field['slug'] ];
+			switch ( $field['type'] ) {
+				case 'text':
+					validate_text_field( $value, $field );
+					break;
+				case 'richtext':
+					validate_richtext_field( $value, $field );
+					break;
+				case 'number':
+					validate_number_field( $value, $field );
+					break;
+				case 'date':
+					validate_date_field( $value, $field );
+					break;
+				case 'multipleChoice':
+					validate_multiple_choice_field( $value, $field );
+					break;
+			}
+		} catch ( Validation_Exception $exception ) {
+			$wp_error->merge_from(
+				$exception->as_wp_error( 'invalid_model_field' )
+			);
 		}
 	}
 
@@ -74,175 +74,230 @@ function validate_model_field_data( array $model_schema, array $data ) {
 }
 
 /**
- * Check that a value is a string.
- *
- * @param string $value The field value.
- *
- * @return bool True if valid, false if else.
- */
-function validate_string( $value ): bool {
-	$valid = false;
-
-	if ( ! empty( $value ) ) {
-		$valid = true;
-	}
-
-	return $valid;
-}
-
-/**
- * Check that a value is a number.
- *
- * @param string $value The field value.
- *
- * @return bool True if valid, false if else.
- */
-function validate_number( $value ): bool {
-	$valid = false;
-
-	if ( is_numeric( $value ) ) {
-		$valid = true;
-	}
-
-	return $valid;
-}
-
-/**
- * Check that a value is an array.
- *
- * @param string $value The field value.
- *
- * @return bool True if valid, false if else.
- */
-function validate_array( $value ): bool {
-	$valid = false;
-
-	if ( is_array( $value ) ) {
-		$valid = true;
-	}
-
-	return $valid;
-}
-
-/**
- * Check that a value is a bool.
- *
- * @param string $value The string field value.
- *
- * @return bool True if valid, false if else.
- */
-function validate_bool( $value ): bool {
-	$valid = false;
-	$value = strtolower( $value );
-
-	if ( 'true' === $value || '1' === $value ) {
-		$valid = true;
-	}
-
-	return $valid;
-}
-
-
-/**
  * Validate a text field value.
  *
- * @param string $value The string field value.
+ * @param mixed $value The field value.
+ * @param array $field The model field.
  *
- * @return bool True if valid, false if else.
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
  */
-function validate_text_field( $value ): bool {
-	$valid = validate_string( $value );
+function validate_text_field( $value, array $field ): void {
+	if ( is_field_repeatable( $field ) ) {
+		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
+	} else {
+		validate_string( $value, "{$field['name']} must be valid {$field['type']}" );
+	}
 
-	return apply_filters( 'acm_validate_text_field', $valid, $value );
+	if ( is_field_required( $field ) ) {
+		validate_not_empty( $value, "{$field['name']} cannot be empty" );
+	}
 }
 
 /**
  * Validate a rich text field value.
  *
- * @param string $value The string field value.
+ * Alias for validate_text_field().
  *
- * @return bool True if valid, false if else.
+ * @param mixed $value The field value.
+ * @param array $field The model field.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
  */
-function validate_rich_text_field( $value ): bool {
-	$valid = validate_string( $value );
-
-	return apply_filters( 'acm_validate_rich_text_field', $valid, $value );
+function validate_richtext_field( $value, array $field ): void {
+	validate_text_field( $value, $field );
 }
 
 /**
  * Validate a number field value.
  *
- * @param string $value The string field value.
+ * @param mixed $value The field value.
+ * @param array $field The model field.
  *
- * @return bool True if valid, false if else.
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
  */
-function validate_number_field( $value ): bool {
-	$valid = validate_number( $value );
+function validate_number_field( $value, array $field ): void {
+	if ( is_field_required( $field ) ) {
+		validate_not_empty( $value, "{$field['name']} cannot be empty" );
+	}
 
-	return apply_filters( 'acm_validate_number_field', $valid, $value );
+	if ( is_field_repeatable( $field ) ) {
+		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
+	} else {
+		validate_number( $value, "{$field['name']} must be a valid {$field['type']}" );
+	}
 }
 
 /**
  * Validate a date field value.
  *
- * @param string $value The string field value.
+ * @param mixed $value The field value.
+ * @param array $field The model field.
  *
- * @return bool True if valid, false if else.
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
  */
-function validate_date_field( $value ): bool {
-	$valid = validate_string( $value );
+function validate_date_field( $value, array $field ): void {
+	if ( is_field_repeatable( $field ) ) {
+		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
+	} else {
+		validate_date( $value, "{$field['name']} must be a valid {$field['type']}" );
+	}
 
-	return apply_filters( 'acm_validate_date_field', $valid, $value );
+	if ( is_field_required( $field ) ) {
+		validate_not_empty( $value, "{$field['name']} cannot be empty" );
+	}
 }
 
 /**
- * Validate a media field value.
+ * Validate multiple choice field value(s).
  *
- * @param string $value The string field value.
+ * @param mixed $value The field value.
+ * @param array $field The model field.
  *
- * @return bool True if valid, false if else.
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
  */
-function validate_media_field( $value ): bool {
-	$valid = false;
+function validate_multiple_choice_field( $value, array $field ): void {
+	if ( is_field_required( $field ) ) {
+		validate_not_empty( $value, "{$field['name']} cannot be empty" );
+	}
 
-	return apply_filters( 'acm_validate_media_field', $valid, $value );
+	validate_array( $value, "{$field['name']} must be an array of choices" );
+
+	if ( 'single' === $field['listType'] && \count( $value ) > 1 ) {
+		throw new Validation_Exception( "{$field['name']} cannot have more than one choice" );
+	}
+
+	$choices = wp_list_pluck( $field['choices'], 'slug' );
+	validate_in_array( $value, $choices, "{$field['name']} must only contain choice values" );
 }
 
 /**
- * Validate a boolean field value.
+ * Validate for valid number.
  *
- * @param string $value The string field value.
+ * @param mixed  $value The value.
+ * @param string $message Optional. The error message.
  *
- * @return bool True if valid, false if else.
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
  */
-function validate_boolean_field( $value ): bool {
-	$valid = validate_bool( $value );
-
-	return apply_filters( 'acm_validate_boolean_field', $valid, $value );
+function validate_number( $value, $message = 'Value must be a valid number' ): void {
+	if ( ! \is_numeric( $value ) ) {
+		throw new Validation_Exception( $message );
+	}
 }
 
 /**
- * Validate a relationship field value.
+ * Validate a date.
  *
- * @param string $value The string field value.
+ * @param string $value The value.
+ * @param string $message Optional. The error message.
  *
- * @return bool True if valid, false if else.
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
  */
-function validate_relationship_field( string $value ): bool {
-	$valid = false;
+function validate_date( $value, $message = 'Value must be of format YYYY-MM-DD' ): void {
+	$date_format = '/\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/';
 
-	return apply_filters( 'acm_validate_relationship_field', $valid, $value );
+	if ( ! \preg_match( $date_format, (string) $value ) ) {
+		throw new Validation_Exception( $message );
+	}
 }
 
 /**
- * Validate a multiple choice field value.
+ * Validate for valid string type.
  *
- * @param string $value The string field value.
+ * @param mixed  $value The value.
+ * @param string $message Optional. The error message.
  *
- * @return bool True if valid, false if else.
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
  */
-function validate_multiple_choice_field( string $value ): bool {
-	$valid = validate_array( $value );
+function validate_string( $value, string $message = 'Value is not of type string' ): void {
+	if ( ! \is_string( $value ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
 
-	return apply_filters( 'acm_validate_multiple_choice_field', $valid, $value );
+/**
+ * Validate for valid array type.
+ *
+ * @param mixed  $value The value.
+ * @param string $message Optional. The error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_array( $value, string $message = 'Value is not of type array' ): void {
+	if ( ! \is_array( $value ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate if an item or array of items is within a given array.
+ *
+ * @param mixed  $value The value.
+ * @param array  $array The array of items to check.
+ * @param string $message Optional. The error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_in_array( $value, array $array, $message = 'Values not found within array' ): void {
+	if ( ! \is_array( $value ) ) {
+		$value = (array) $value;
+	}
+
+	if ( \count( $value ) !== \count( \array_intersect( $array, $value ) ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate a key exists within a given array.
+ *
+ * @param mixed  $key The key to check.
+ * @param array  $array The array to check.
+ * @param string $message Optional. The error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_array_key_exists( $key, array $array, $message = 'The key is required' ): void {
+	if ( ! \array_key_exists( $key, $array ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate an item is not empty.
+ *
+ * Will only check for empty string or empty array.
+ *
+ * @param mixed  $value The value.
+ * @param string $message Optional. The error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_not_empty( $value, string $message = 'The field cannot be empty' ): void {
+	if ( ( \is_string( $value ) || \is_array( $value ) ) && empty( $value ) ) {
+		throw new Validation_Exception( $message );
+	}
 }
