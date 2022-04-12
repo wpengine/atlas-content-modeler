@@ -1,5 +1,10 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Changed
+- Focus now moves to the new input field when adding a new repeating number, date or single line text field row.
+- Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
+
 ## 0.16.0 - 2022-04-06
 ### Added
 - The date field now has the “make this field repeatable” option to let publishers add multiple dates within each date field.
