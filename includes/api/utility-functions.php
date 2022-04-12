@@ -37,7 +37,7 @@ function get_data_for_fields( array $model_fields, array $data ): array {
  *
  * @return mixed The value or default value if not found.
  */
-function array_get_key_value( string $key, array $data, $default = null ): mixed {
+function array_get_key_value( string $key, array $data, $default = null ) {
 	return \array_key_exists( $key, $data )
 		? $data[ $key ]
 		: $default;
