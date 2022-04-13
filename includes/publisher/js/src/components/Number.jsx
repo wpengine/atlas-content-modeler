@@ -4,6 +4,7 @@ import Icon from "../../../../components/icons";
 import { __ } from "@wordpress/i18n";
 import AddIcon from "../../../../components/icons/AddIcon";
 import TrashIcon from "../../../../components/icons/TrashIcon";
+import useFocusNewFields from "./shared/repeaters/useFocusNewFields";
 
 export default function Number({
 	field,
@@ -45,10 +46,60 @@ export default function Number({
 
 		// call global validate
 		validate(event, field);
+		if (field?.isRepeatableNumber) {
+			handleKeyPress(event);
+		}
 	}
 
 	if (field?.isRepeatableNumber) {
 		const [values, setValues] = useState(field?.value || [""]);
+		const addButtonRef = useRef();
+
+		useFocusNewFields(modelSlug, field?.slug, values);
+
+		/**
+		 * Handle keypress to add new entry and continue entering data
+		 * @param {*} event
+		 */
+		function handleKeyPress(event) {
+			if (event.key === "Enter") {
+				event.preventDefault();
+
+				const lastFieldIsInFocus =
+					document.activeElement.getAttribute("name") ===
+					`atlas-content-modeler[${modelSlug}][${field.slug}][${
+						values?.length - 1
+					}]`;
+
+				if (lastFieldIsInFocus) {
+					addButtonRef.current.click();
+					return;
+				}
+
+				const activeFieldName = document.activeElement.getAttribute(
+					"name"
+				);
+
+				const activeFieldIndex = [
+					...document.querySelectorAll(
+						`[name*="atlas-content-modeler[${modelSlug}][${field.slug}]`
+					),
+				]
+					.map((field) => field.getAttribute("name"))
+					.indexOf(activeFieldName);
+
+				const nextField = document.querySelector(
+					`[name="atlas-content-modeler[${modelSlug}][${
+						field.slug
+					}][${activeFieldIndex + 1}]`
+				);
+
+				if (nextField) {
+					nextField.focus();
+				}
+			}
+		}
+
 		return (
 			<>
 				<label
@@ -151,6 +202,7 @@ export default function Number({
 															{values.length >
 																1 && (
 																<button
+																	type="button"
 																	className="remove-item tertiary no-border"
 																	onClick={(
 																		event
@@ -201,6 +253,7 @@ export default function Number({
 														"",
 													]);
 												}}
+												ref={addButtonRef}
 											>
 												<a>
 													<AddIcon noCircle />{" "}

@@ -4,10 +4,11 @@ import Icon from "acm-icons";
 import { colors } from "../../../../../../shared-assets/js/emotion";
 import { __ } from "@wordpress/i18n";
 
-const AddItemButton = ({ addItem, ...props }) => {
+const AddItemButton = ({ addItem, buttonRef, ...props }) => {
 	return (
 		<button
 			onClick={addItem}
+			ref={buttonRef}
 			type="button"
 			data-testid="add-repeatable-row"
 			css={css`
