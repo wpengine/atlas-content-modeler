@@ -220,6 +220,32 @@ function append_reverse_relationship_fields( array $models, string $post_type ):
 }
 
 /**
+ * Sanitize field values.
+ *
+ * @param array $model The model schema.
+ * @param array $data The unvalidated data.
+ *
+ * @return array The sanitized data based on if field key exists.
+ */
+function sanitize_fields( array $model, array $data ) {
+	$model_slug_types = array_combine(
+		wp_list_pluck( 'slug', $model['fields'] ),
+		wp_list_pluck( 'type', $model['fields'] )
+	);
+
+	return array_map(
+		function ( $key, $value ) use ( $model_slug_types ) {
+			if ( in_array( $key, $model_slug_types, true ) ) {
+				return sanitize_field( $model_slug_types[ $key ], $value );
+			}
+			return $value;
+		},
+		array_keys( $data ),
+		array_values( $data )
+	);
+}
+
+/**
  * Sanitizes field data based on the field type.
  *
  * @param string $type The type of field.
