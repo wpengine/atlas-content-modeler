@@ -217,7 +217,12 @@ final class FormEditingExperience {
 					if ( 'relationship' === $field['type'] ) {
 						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post, $field );
 					} else {
-						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+						$value = get_post_meta( $post->ID, $field['slug'], true );
+						if ( ! empty( $field['isTitle'] ) && $value !== $post->post_title ) {
+							$post->post_title = $value;
+							wp_update_post( $post, false, false );
+						}
+						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $value;
 					}
 				}
 			}
@@ -618,18 +623,17 @@ final class FormEditingExperience {
 	 * @return string The adjusted post title.
 	 */
 	public function filter_post_titles( string $title, int $id ) {
-		$post_type = get_post_type( $id );
-
-		if ( ! $post_type ) {
+		$post = get_post( $id );
+		if ( ! $post instanceof \WP_Post ) {
 			return $title;
 		}
 
 		// Only filter titles for post types created with this plugin.
-		if ( ! array_key_exists( $post_type, $this->models ) ) {
+		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
 			return $title;
 		}
 
-		$fields = $this->models[ $post_type ]['fields'] ?? [];
+		$fields = $this->models[ $post->post_type ]['fields'] ?? [];
 
 		$title_field = get_entry_title_field( $fields );
 
@@ -637,12 +641,16 @@ final class FormEditingExperience {
 			$title_value = get_post_meta( $id, $title_field['slug'], true );
 
 			if ( ! empty( $title_value ) ) {
+				if ( $post->post_title !== $title_value ) {
+					$post->post_title = $title_value;
+					wp_update_post( $post, false, false );
+				}
 				return $title_value;
 			}
 		}
 
 		// Use a generated title when entry title fields or field data are absent.
-		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'atlas-content-modeler' );
+		$post_type_singular = $this->models[ $post->post_type ]['singular_name'] ?? esc_html__( 'No Title', 'atlas-content-modeler' );
 		return $post_type_singular . ' ' . $id;
 	}
 
