@@ -8,7 +8,7 @@ import Number from "./Number";
 import Date from "./Date";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
-import { isValidDomain } from "../../../../shared-assets/js/validation/emailValidation";
+import { isEmailDomainValid } from "../../../../shared-assets/js/validation/emailValidation";
 
 const defaultError = "This field is required";
 const integerRegex = /^[-+]?\d+/g;
@@ -90,13 +90,13 @@ export default function Field(props) {
 			}
 
 			if (field?.allowedDomains) {
-				const isEmailValidByDomain = isValidDomain(
+				const isEmailValidByDomain = isEmailDomainValid(
 					event.target.value,
 					field.allowedDomains
 				);
 
 				if (!isEmailValidByDomain) {
-					error = "There's somethings wrong with the domain";
+					error = "Email must have domain or subdomain criteria.";
 				}
 			}
 		}
