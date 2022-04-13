@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\API;
 
 use function WPE\AtlasContentModeler\get_field_from_slug;
+use function WPE\AtlasContentModeler\sanitize_fields;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\API\Utility\get_data_for_fields;
 use function WPE\AtlasContentModeler\get_entry_title_field;
@@ -43,7 +44,7 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 		$post_data,
 		[
 			'post_type'  => $model_slug,
-			'meta_input' => $field_data,
+			'meta_input' => sanitize_fields( $model_schema, $field_data ),
 		]
 	);
 
