@@ -505,11 +505,6 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$field['original_type'] = $field['type'];
 			$field['type']          = $gql_field_type;
 
-			// When you have multiple items in an array returned we need to define them as a list of strings.
-			if ( 'list' === $field['type'] ) {
-				$field['type'] = array( 'list_of' => 'String' );
-			}
-
 			$is_repeatable_text      = ( $field['isRepeatable'] ?? false ) && 'text' === $field['original_type'];
 			$is_repeatable_rich_text = ( $field['isRepeatableRichText'] ?? false ) && $rich_text;
 			$is_repeatable_number    = ( $field['isRepeatableNumber'] ?? false ) && 'Float' === $field['type'];
@@ -741,15 +736,14 @@ function get_connection_name( string $from_type, string $to_type, string $from_f
 	return $connection_name;
 }
 
-
 /**
  * Maps an HTML field type to a WPGraphQL field type.
  *
- * @param string $field_type The HTML field type.
+ * @param string|array|null $field_type The HTML field type.
  *
  * @access private
  */
-function map_html_field_type_to_graphql_field_type( string $field_type ): ?string {
+function map_html_field_type_to_graphql_field_type( string $field_type ) {
 	if ( empty( $field_type ) ) {
 		return null;
 	}
@@ -762,7 +756,7 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'richtext':
 			return 'String';
 		case 'multipleChoice':
-			return 'list';
+			return [ 'list_of' => 'String' ];
 		case 'number':
 			return 'Float';
 		case 'boolean':
@@ -772,6 +766,22 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		default:
 			return null;
 	}
+}
+
+/**
+ * Determines if a field has 'make repeatable' enabled.
+ *
+ * @param array $field Field data.
+ * @return bool
+ */
+function is_repeatable_field( array $field ): bool {
+	$field_html_type = $field['type'] ?? '';
+
+	return ( ( $field['isRepeatable'] ?? false ) && 'text' === $field_html_type )
+		|| ( ( $field['isRepeatableRichText'] ?? false ) && 'richtext' === $field_html_type )
+		|| ( ( $field['isRepeatableNumber'] ?? false ) && 'number' === $field_html_type )
+		|| ( ( $field['isRepeatableDate'] ?? false ) && 'date' === $field_html_type )
+		|| ( ( $field['isRepeatableMedia'] ?? false ) && 'media' === $field_html_type );
 }
 
 add_filter( 'is_protected_meta', __NAMESPACE__ . '\is_protected_meta', 10, 3 );
