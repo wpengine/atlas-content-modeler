@@ -2,9 +2,10 @@ export const getEscapedRegexValue = (value) => {
 	return value.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*");
 };
 
-export const buildWildcardRegex = (values) => {
-	const splitValues = values.split(",").filter((x) => x);
-	if (values.length > 0) {
+export const buildWildcardRegex = (values, delimiter = ",") => {
+	const splitValues = values.split(delimiter).filter((x) => x);
+
+	if (splitValues.length > 0) {
 		const escapedValues = splitValues.map((value) => {
 			return getEscapedRegexValue(value);
 		});
