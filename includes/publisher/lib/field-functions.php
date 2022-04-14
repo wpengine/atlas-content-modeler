@@ -229,8 +229,8 @@ function append_reverse_relationship_fields( array $models, string $post_type ):
  */
 function sanitize_fields( array $model, array $data ) {
 	$model_slug_types = array_combine(
-		wp_list_pluck( 'slug', $model['fields'] ),
-		wp_list_pluck( 'type', $model['fields'] )
+		wp_list_pluck( $model['fields'], 'slug' ),
+		wp_list_pluck( $model['fields'], 'type' )
 	);
 
 	return array_map(
