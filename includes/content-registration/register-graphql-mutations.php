@@ -1,6 +1,6 @@
 <?php
 /**
- * Adds fields to existing GraphQL post type mutations.
+ * Adds fields to existing WPGraphQL post type mutations and saves field data.
  *
  * @package AtlasContentModeler
  */
@@ -15,7 +15,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\is_repeatable_field;
 
 add_action( 'graphql_register_types', __namespace__ . '\register_acm_fields_as_mutation_inputs' );
 /**
- * Registers ACM fields as inputs for Create and Update mutations.
+ * Registers ACM fields as inputs for WPGraphQL Create and Update mutations.
  *
  * WPGraphQL registers create[ModelSingularName] and update[ModelSingularName]
  * mutations for all post types, but does not register ACM fields as mutation
@@ -49,7 +49,7 @@ function register_acm_fields_as_mutation_inputs(): void {
 		$post_type_object = get_post_type_object( $model['slug'] );
 
 		if ( ! property_exists( $post_type_object, 'graphql_single_name' ) ) {
-			return;
+			continue;
 		}
 
 		$model_graphql_name = ucfirst( $post_type_object->graphql_single_name );
