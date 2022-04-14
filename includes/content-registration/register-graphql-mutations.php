@@ -48,7 +48,10 @@ function register_acm_fields_as_mutation_inputs(): void {
 	foreach ( $models as $model ) {
 		$post_type_object = get_post_type_object( $model['slug'] );
 
-		if ( ! property_exists( $post_type_object, 'graphql_single_name' ) ) {
+		if (
+			! is_object( $post_type_object )
+			|| ! property_exists( $post_type_object, 'graphql_single_name' )
+		) {
 			continue;
 		}
 
