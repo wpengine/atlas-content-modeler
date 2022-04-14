@@ -173,6 +173,11 @@ class PublishModelCest {
 		$i->click( 'Email', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Email' );
 		$i->checkOption( 'required' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
+		$i->fillField( [ 'name' => 'allowedDomains' ], 'gmail.com, hotmail.com, example.com, *.edu' );
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' );
+		$i->wait( 1 );
+
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 		$i->wait( 1 );
 
@@ -195,7 +200,7 @@ class PublishModelCest {
 		$i->click( 'Publish', '#publishing-action' );
 		$i->wait( 2 );
 
-		$i->see( 'Value must be an email.' );
+		$i->see( 'Email must include domain or subdomain criteria.' );
 		$i->wait( 1 );
 
 		$i->seeInField( 'atlas-content-modeler[goose][email]', 'email' );
