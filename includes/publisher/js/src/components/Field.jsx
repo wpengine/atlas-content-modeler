@@ -89,15 +89,14 @@ export default function Field(props) {
 				error = defaultError;
 			}
 
-			if (field?.allowedDomains) {
-				const isEmailValidByDomain = isEmailDomainValid(
-					event.target.value,
-					field.allowedDomains
+			if (
+				field?.allowedDomains &&
+				event.target.validity.patternMismatch
+			) {
+				error = __(
+					"Email must include domain or subdomain criteria.",
+					"atlas-content-modeler"
 				);
-
-				if (!isEmailValidByDomain) {
-					error = "Email must have domain or subdomain criteria.";
-				}
 			}
 		}
 
