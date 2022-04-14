@@ -46,7 +46,13 @@ function register_acm_fields_as_mutation_inputs(): void {
 	$models = get_registered_content_types();
 
 	foreach ( $models as $model ) {
-		$model_graphql_name = ucfirst( get_post_type_object( $model['slug'] )->graphql_single_name );
+		$post_type_object = get_post_type_object( $model['slug'] );
+
+		if ( ! property_exists( $post_type_object, 'graphql_single_name' ) ) {
+			return;
+		}
+
+		$model_graphql_name = ucfirst( $post_type_object->graphql_single_name );
 		$fields             = $model['fields'] ?? [];
 
 		foreach ( $fields as $field ) {
