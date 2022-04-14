@@ -254,10 +254,36 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 		$test_data = [
 			'name'    => 'text',
 			'bio'     => 'value',
-		  'unknown' => 'value',
+			'unknown' => 'value',
 		];
 
 			$this->assertNotSame(
+				$test_data,
+				sanitize_fields( $model['person'], $test_data )
+			);
+	}
+
+	public function test_sanitize_fields_empty(): void {
+		$model = [
+			'person' => [
+				'fields' => [
+					'123' => [
+						'id'   => 123,
+						'slug' => 'name',
+						'type' => 'text',
+					],
+					'456' => [
+						'id'   => 456,
+						'slug' => 'bio',
+						'type' => 'text',
+					],
+				],
+			],
+		];
+
+		$test_data = [];
+
+			$this->assertSame(
 				$test_data,
 				sanitize_fields( $model['person'], $test_data )
 			);
