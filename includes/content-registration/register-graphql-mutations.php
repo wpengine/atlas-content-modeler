@@ -129,6 +129,7 @@ function update_acm_fields_during_mutations( int $post_id, array $input, $post_t
 		$field_value = $input[ $field['slug'] ] ?? false;
 		if ( $field_value ) {
 			// TODO: sanitize and transform values before saving here.
+			// TODO: add logic to remove values that aren't provided during update requests?
 			update_post_meta( $post_id, $field['slug'], $field_value );
 		}
 	}
