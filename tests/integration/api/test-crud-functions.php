@@ -34,12 +34,37 @@ class TestApiFunctions extends Integration_TestCase {
 		do_action( 'init' );
 	}
 
+	public function test_insert_model_entry_will_save_post_meta_and_return_post_id_on_success() {
+		$model_schema = $this->content_models['validation'];
+		$data         = $this->get_insert_model_entry_data();
+
+		$model_id = insert_model_entry( 'validation', $data );
+
+		$this->assertTrue( is_int( $model_id ) );
+		$this->assertEquals( $data['textField'], get_post_meta( $model_id, 'textField', true ) );
+		$this->assertEquals( $data['repeatableTextField'], get_post_meta( $model_id, 'repeatableTextField', true ) );
+		$this->assertEquals( $data['richTextField'], get_post_meta( $model_id, 'richTextField', true ) );
+		$this->assertEquals( $data['repeatableRichTextField'], get_post_meta( $model_id, 'repeatableRichTextField', true ) );
+		$this->assertEquals( $data['numberField'], get_post_meta( $model_id, 'numberField', true ) );
+		$this->assertEquals( $data['repeatableNumberField'], get_post_meta( $model_id, 'repeatableNumberField', true ) );
+		$this->assertEquals( $data['dateField'], get_post_meta( $model_id, 'dateField', true ) );
+		$this->assertEquals( $data['repeatableDateField'], get_post_meta( $model_id, 'repeatableDateField', true ) );
+		$this->assertEquals( [ $data['singleMultipleChoiceField'] ], get_post_meta( $model_id, 'singleMultipleChoiceField', true ) );
+		$this->assertEquals( $data['multiMultipleChoiceField'], get_post_meta( $model_id, 'multiMultipleChoiceField', true ) );
+	}
+
 	public function test_insert_model_entry_will_return_WP_Error_if_model_schema_does_not_exist() {
 		$model_slug = 'model_does_not_exist';
 		$result     = insert_model_entry( $model_slug, [] );
 
 		$this->assertEquals( 'model_schema_not_found', $result->get_error_code() );
 		$this->assertEquals( "The content model {$model_slug} was not found", $result->get_error_message() );
+	}
+
+	public function test_insert_model_entry_will_not_validate_field_data_if_skip_validation_true() {
+		$model_id = insert_model_entry( 'person', [ 'name' => '' ] );
+
+		$this->assertEquals( '', get_post_meta( $model_id, 'name', true ) );
 	}
 
 	public function test_fetch_model_returns_the_model_schema_if_exists() {
@@ -238,5 +263,43 @@ class TestApiFunctions extends Integration_TestCase {
 		$result = $wpdb->get_results( $wpdb->prepare( $sql, $post_id ) );
 
 		return array_map( 'intval', wp_list_pluck( $result, 'id2' ) );
+	}
+
+	/**
+	 * Get an array of valid data for testing insert_entry_model().
+	 *
+	 * @param array $overrides Optional. Override data if needed.
+	 *
+	 * @return array The entry model data.
+	 */
+	protected function get_insert_model_entry_data( $overrides = [] ) {
+		return array_merge(
+			[
+				'textField'                 => 'Text field value',
+				'repeatableTextField'       => [
+					'Repeatable Text Field Value 1',
+					'Repeatable Text Field Value 2',
+				],
+				'richTextField'             => '<p>Rich Text Field Value</p>',
+				'repeatableRichTextField'   => [
+					'<p>Repeatable Rich Text Field Value 1</p>',
+					'<p>Repeatable Rich Text Field Value 2</p>',
+				],
+				'numberField'               => 200,
+				'repeatableNumberField'     => [
+					9,
+					10,
+					11,
+				],
+				'dateField'                 => '2022-02-22',
+				'repeatableDateField'       => [
+					'2022-02-22',
+					'2022-02-23',
+				],
+				'singleMultipleChoiceField' => 'choice2',
+				'multiMultipleChoiceField'  => [ 'choice1', 'choice3' ],
+			],
+			$overrides
+		);
 	}
 }
