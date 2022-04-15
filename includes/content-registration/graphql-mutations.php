@@ -135,8 +135,12 @@ function update_acm_fields_during_mutations( int $post_id, array $input, $post_t
 	foreach ( $fields as $field ) {
 		$field_value = $input[ $field['slug'] ] ?? false;
 		if ( $field_value ) {
+			if ( $field['type'] === 'boolean' ) {
+				(bool) $field_value ? 'on' : 'off';
+			}
+
 			$field_value = sanitize_field( $field['type'], $field_value );
-			// TODO: add logic to remove values that aren't provided during update requests?
+
 			update_post_meta( $post_id, $field['slug'], $field_value );
 		}
 	}
