@@ -83,26 +83,7 @@ function register_acm_fields_as_mutation_inputs(): void {
 				'description' => $field['description'] ?? '',
 
 				'resolve'     => function( \WP_Post $post ) use ( $field ) {
-					// TODO: combine and extract this logic with that from register_content_fields_with_graphql().
-					$value = get_post_meta( $post->ID, $field['slug'], true );
-
-					if ( $field['type'] === 'number' ) {
-						return (float) $value;
-					}
-
-					if ( $field['type'] === 'multipleChoice' && empty( $value ) ) {
-						return [];
-					}
-
-					if ( $field['type'] === 'richtext' ) {
-						if ( is_repeatable_field( $field ) ) {
-							return array_map( 'do_shortcode', $value );
-						}
-
-						return do_shortcode( $value );
-					}
-
-					return $value;
+					return get_field_value( $post, $field );
 				},
 			];
 
@@ -144,4 +125,35 @@ function update_acm_fields_during_mutations( int $post_id, array $input, $post_t
 			update_post_meta( $post_id, $field['slug'], $field_value );
 		}
 	}
+}
+
+/**
+ * Gets the value stored in the `$field` of the given `$post`.
+ *
+ * TODO: combine and extract this logic with that from register_content_fields_with_graphql().
+ *
+ * @param \WP_Post $post Post to get field data from.
+ * @param array    $field Field data.
+ * @return mixed The value of the field.
+ */
+function get_field_value( $post, $field ) {
+	$value = get_post_meta( $post->ID, $field['slug'], true );
+
+	if ( $field['type'] === 'number' ) {
+		return (float) $value;
+	}
+
+	if ( $field['type'] === 'multipleChoice' && empty( $value ) ) {
+		return [];
+	}
+
+	if ( $field['type'] === 'richtext' ) {
+		if ( is_repeatable_field( $field ) ) {
+			return array_map( 'do_shortcode', $value );
+		}
+
+		return do_shortcode( $value );
+	}
+
+	return $value;
 }
