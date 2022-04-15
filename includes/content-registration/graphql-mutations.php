@@ -12,6 +12,7 @@ namespace WPE\AtlasContentModeler\ContentRegistration\GraphQLMutations;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\map_html_field_type_to_graphql_field_type;
 use function WPE\AtlasContentModeler\ContentRegistration\is_repeatable_field;
+use function WPE\AtlasContentModeler\sanitize_field;
 
 add_action( 'graphql_register_types', __namespace__ . '\register_acm_fields_as_mutation_inputs' );
 /**
@@ -131,7 +132,7 @@ function update_acm_fields_during_mutations( int $post_id, array $input, $post_t
 	foreach ( $fields as $field ) {
 		$field_value = $input[ $field['slug'] ] ?? false;
 		if ( $field_value ) {
-			// TODO: sanitize and transform values before saving here.
+			$field_value = sanitize_field( $field['type'], $field_value );
 			// TODO: add logic to remove values that aren't provided during update requests?
 			update_post_meta( $post_id, $field['slug'], $field_value );
 		}
