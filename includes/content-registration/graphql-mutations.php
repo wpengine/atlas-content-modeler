@@ -74,7 +74,10 @@ function register_acm_fields_as_mutation_inputs(): void {
 				$graphql_type = [ 'list_of' => $graphql_type ];
 			}
 
-			// TODO: how to enforce required fields? (look at use of 'non_null' in WPGraphQL, test it with 'list_of' types).
+			if ( $field['required'] ?? false ) {
+				$graphql_type = [ 'non_null' => $graphql_type ];
+			}
+
 			$args = [
 				'type'        => $graphql_type,
 				'description' => $field['description'] ?? '',
