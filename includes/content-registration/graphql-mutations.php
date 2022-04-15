@@ -130,7 +130,7 @@ function update_acm_fields_during_mutations( int $post_id, array $input, $post_t
 /**
  * Gets the value stored in the `$field` of the given `$post`.
  *
- * TODO: combine and extract this logic with that from register_content_fields_with_graphql().
+ * TODO: combine this logic with that from `register_content_fields_with_graphql()`.
  *
  * @param \WP_Post $post Post to get field data from.
  * @param array    $field Field data.
