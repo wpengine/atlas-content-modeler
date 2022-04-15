@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace WPE\AtlasContentModeler\RegisterGraphQLMutations;
+namespace WPE\AtlasContentModeler\ContentRegistration\GraphQLMutations;
 
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\map_html_field_type_to_graphql_field_type;
