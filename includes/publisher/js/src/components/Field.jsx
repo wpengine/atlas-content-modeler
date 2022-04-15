@@ -94,7 +94,7 @@ export default function Field(props) {
 				event.target.validity.patternMismatch
 			) {
 				error = __(
-					"Email must include domain or subdomain criteria.",
+					"Email must end with an allowed domain.",
 					"atlas-content-modeler"
 				);
 			}
