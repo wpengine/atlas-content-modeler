@@ -35,8 +35,7 @@ class TestApiFunctions extends Integration_TestCase {
 	}
 
 	public function test_insert_model_entry_will_save_post_meta_and_return_post_id_on_success() {
-		$model_schema = $this->content_models['validation'];
-		$data         = $this->get_insert_model_entry_data();
+		$data = $this->get_insert_model_entry_data();
 
 		$model_id = insert_model_entry( 'validation', $data );
 
@@ -61,10 +60,46 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertEquals( "The content model {$model_slug} was not found", $result->get_error_message() );
 	}
 
-	public function test_insert_model_entry_will_not_validate_field_data_if_skip_validation_true() {
-		$model_id = insert_model_entry( 'person', [ 'name' => '' ] );
+	public function test_insert_model_entry_will_trigger_validation_by_default_if_invalid_data() {
+		$model_id = insert_model_entry( 'validation', [ 'numberField' => 'not a number value' ] );
 
-		$this->assertEquals( '', get_post_meta( $model_id, 'name', true ) );
+		$this->assertEquals( [ 'Number Field must be a valid number' ], $model_id->get_error_messages( 'invalid_model_field' ) );
+	}
+
+	public function test_insert_model_entry_will_not_validate_field_data_if_skip_validation_true() {
+		$model_id = insert_model_entry( 'validation', [ 'numberField' => 'not a number value' ], [], true );
+
+		$this->assertEquals( 'not a number value', get_post_meta( $model_id, 'numberField', true ) );
+	}
+
+	public function test_insert_model_entry_will_insert_post_data_if_exists() {
+		$data = $this->get_insert_model_entry_data();
+
+		$model_id = insert_model_entry( 'validation', $data, [ 'post_content' => '<p>This is my post content.</p>' ] );
+
+		$wp_post = get_post( $model_id );
+		$this->assertEquals( '<p>This is my post content.</p>', $wp_post->post_content );
+	}
+
+	public function test_insert_model_entry_will_set_the_post_title_if_field_is_a_title_field() {
+		$data = $this->get_insert_model_entry_data();
+
+		$model_id = insert_model_entry( 'validation', $data );
+
+		$wp_post = get_post( $model_id );
+		$this->assertEquals( $data['textField'], $wp_post->post_title );
+	}
+
+	public function test_insert_model_entry_will_not_set_the_post_title_if_title_field_is_not_set() {
+		$data = $this->get_insert_model_entry_data();
+
+		$this->content_models['validation']['fields'][1649787479673]['isTitle'] = false;
+		update_registered_content_types( $this->content_models );
+
+		$model_id = insert_model_entry( 'validation', $data );
+
+		$wp_post = get_post( $model_id );
+		$this->assertEquals( '', $wp_post->post_title );
 	}
 
 	public function test_fetch_model_returns_the_model_schema_if_exists() {
@@ -267,6 +302,8 @@ class TestApiFunctions extends Integration_TestCase {
 
 	/**
 	 * Get an array of valid data for testing insert_entry_model().
+	 *
+	 * Fields work with 'validation' model.
 	 *
 	 * @param array $overrides Optional. Override data if needed.
 	 *
