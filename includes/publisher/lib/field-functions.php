@@ -228,21 +228,21 @@ function append_reverse_relationship_fields( array $models, string $post_type ):
  * @return array The sanitized data based on if field key exists.
  */
 function sanitize_fields( array $model, array $data ) {
-	$model_slug_types = array_combine(
-		wp_list_pluck( $model['fields'], 'slug' ),
-		wp_list_pluck( $model['fields'], 'type' )
+	$model_slug_types = \array_combine(
+		\wp_list_pluck( $model['fields'], 'slug' ),
+		\wp_list_pluck( $model['fields'], 'type' )
 	);
 
-	return array_map(
-		function ( $key, $value ) use ( $model_slug_types ) {
-			if ( in_array( $key, $model_slug_types, true ) ) {
-				return sanitize_field( $model_slug_types[ $key ], $value );
+	\array_walk(
+		$data,
+		function ( &$value, $key ) use ( $model_slug_types ) {
+			if ( \array_key_exists( $key, $model_slug_types ) ) {
+				$value = sanitize_field( $model_slug_types[ $key ], $value );
 			}
-			return $value;
-		},
-		array_keys( $data ),
-		array_values( $data )
+		}
 	);
+
+	return $data;
 }
 
 /**
@@ -310,18 +310,10 @@ function sanitize_field( string $type, $value ) {
 		case 'boolean':
 			return $value === 'on' ? 'on' : 'off';
 		case 'multipleChoice':
-			$options_object = [];
-
-			if ( is_array( $value ) ) {
-				$options_object = [];
-				foreach ( $value as $option ) {
-					$options_object[] = key( $option );
-				}
-				return $options_object;
+			if ( ! is_array( $value ) ) {
+				$value = (array) $value;
 			}
-
-			$options_object[] = $value;
-			return $options_object;
+			return $value;
 		default:
 			return $value;
 	}
