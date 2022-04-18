@@ -85,8 +85,7 @@ class TestContentCreation extends WP_UnitTestCase {
 		// Set the post attributes and update the post.
 		$form->set_post_attributes( $this->post_ids['public_post_id'], $post, false );
 		$post = get_post( $this->post_ids['public_post_id'] );
-
-		$this->assertStringStartsWith( 'entry', $post->post_title );
+		self::assertSame( 'Test dog', $post->post_title );
 	}
 
 	public function test_post_title_synced_from_postmeta_table_to_posts_table(): void {
