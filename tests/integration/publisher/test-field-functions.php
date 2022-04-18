@@ -257,10 +257,10 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 			'unknown' => 'value',
 		];
 
-			$this->assertNotSame(
-				$test_data,
-				sanitize_fields( $model['person'], $test_data )
-			);
+		$this->assertSame(
+			$test_data,
+			sanitize_fields( $model['person'], $test_data )
+		);
 	}
 
 	public function test_sanitize_fields_empty(): void {
@@ -283,10 +283,10 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 
 		$test_data = [];
 
-			$this->assertSame(
-				$test_data,
-				sanitize_fields( $model['person'], $test_data )
-			);
+		$this->assertSame(
+			$test_data,
+			sanitize_fields( $model['person'], $test_data )
+		);
 	}
 
 	public function test_append_reverse_relationship_fields(): void {
