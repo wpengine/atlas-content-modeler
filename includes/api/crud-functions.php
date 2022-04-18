@@ -44,14 +44,15 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 		$post_data,
 		[
 			'post_type'  => $model_slug,
-			'meta_input' => sanitize_fields( $model_schema, $field_data ),
+			'meta_input' => $field_data,
 		]
 	);
 
 	if ( ! $skip_validation ) {
-		$valid = validate_model_field_data( $model_schema, $post_data['meta_input'] );
+		$post_data['meta_input'] = sanitize_fields( $model_schema, $field_data );
+		$valid                   = validate_model_field_data( $model_schema, $post_data['meta_input'] );
 
-		if ( is_wp_error( $valid ) && $valid->has_errors() ) {
+		if ( is_wp_error( $valid ) ) {
 			return $valid;
 		}
 	}
