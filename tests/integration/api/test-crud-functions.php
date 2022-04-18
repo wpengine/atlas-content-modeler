@@ -9,6 +9,7 @@ use function WPE\AtlasContentModeler\API\replace_relationship;
 use function WPE\AtlasContentModeler\API\fetch_model;
 use function WPE\AtlasContentModeler\API\fetch_model_field;
 use function WPE\AtlasContentModeler\API\insert_model_entry;
+use function WPE\AtlasContentModeler\API\update_model_entry;
 
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 
@@ -65,6 +66,28 @@ class TestApiFunctions extends Integration_TestCase {
 		$model_id = insert_model_entry( 'person', [ 'name' => '' ] );
 
 		$this->assertEquals( '', get_post_meta( $model_id, 'name', true ) );
+	}
+
+	public function test_update_model_entry_will_update_post_meta_and_return_post_id_on_success() {
+		$model_schema = $this->content_models['validation'];
+		$data         = $this->get_insert_model_entry_data();
+		$update_data  = $this->get_insert_model_entry_update_data();
+
+		$update_id = insert_model_entry( 'validation', $data );
+
+		$updated_id = update_model_entry( $update_id, $update_data );
+
+		$this->assertTrue( is_int( $update_id ) );
+		$this->assertEquals( $update_data['textField'], get_post_meta( $updated_id, 'textField', true ) );
+		$this->assertEquals( $update_data['repeatableTextField'], get_post_meta( $updated_id, 'repeatableTextField', true ) );
+		$this->assertEquals( $update_data['richTextField'], get_post_meta( $updated_id, 'richTextField', true ) );
+		$this->assertEquals( $update_data['repeatableRichTextField'], get_post_meta( $updated_id, 'repeatableRichTextField', true ) );
+		$this->assertEquals( $update_data['numberField'], get_post_meta( $updated_id, 'numberField', true ) );
+		$this->assertEquals( $update_data['repeatableNumberField'], get_post_meta( $updated_id, 'repeatableNumberField', true ) );
+		$this->assertEquals( $update_data['dateField'], get_post_meta( $updated_id, 'dateField', true ) );
+		$this->assertEquals( $update_data['repeatableDateField'], get_post_meta( $updated_id, 'repeatableDateField', true ) );
+		$this->assertEquals( [ $update_data['singleMultipleChoiceField'] ], get_post_meta( $updated_id, 'singleMultipleChoiceField', true ) );
+		$this->assertEquals( $update_data['multiMultipleChoiceField'], get_post_meta( $updated_id, 'multiMultipleChoiceField', true ) );
 	}
 
 	public function test_fetch_model_returns_the_model_schema_if_exists() {
@@ -265,6 +288,7 @@ class TestApiFunctions extends Integration_TestCase {
 		return array_map( 'intval', wp_list_pluck( $result, 'id2' ) );
 	}
 
+
 	/**
 	 * Get an array of valid data for testing insert_entry_model().
 	 *
@@ -298,6 +322,43 @@ class TestApiFunctions extends Integration_TestCase {
 				],
 				'singleMultipleChoiceField' => 'choice2',
 				'multiMultipleChoiceField'  => [ 'choice1', 'choice3' ],
+			],
+			$overrides
+		);
+	}
+	/**
+	 * Get an array of valid data for testing insert_entry_model().
+	 *
+	 * @param array $overrides Optional. Override data if needed.
+	 *
+	 * @return array The entry model data.
+	 */
+	protected function get_insert_model_entry_update_data( $overrides = [] ) {
+		return array_merge(
+			[
+				'textField'                 => 'New text field value',
+				'repeatableTextField'       => [
+					'Repeatable Text Field Value 1',
+					'Repeatable Text Field Value 2',
+				],
+				'richTextField'             => '<p>New Rich Text Field Value</p>',
+				'repeatableRichTextField'   => [
+					'<p>New Repeatable Rich Text Field Value 1</p>',
+					'<p>New Repeatable Rich Text Field Value 2</p>',
+				],
+				'numberField'               => 300,
+				'repeatableNumberField'     => [
+					10,
+					11,
+					12,
+				],
+				'dateField'                 => '2022-02-23',
+				'repeatableDateField'       => [
+					'2022-02-23',
+					'2022-02-24',
+				],
+				'singleMultipleChoiceField' => 'choice3',
+				'multiMultipleChoiceField'  => [ 'choice2' ],
 			],
 			$overrides
 		);
