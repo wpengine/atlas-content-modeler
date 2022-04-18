@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
 import Icon from "../../../../components/icons";
+import { buildWildcardRegex } from "../../../../shared-assets/js/validation/emailValidation";
 
 export default function Email({
 	field,
@@ -16,6 +17,7 @@ export default function Email({
 		defaultValue: field.value,
 		required: field.required,
 		onChange: (event) => validate(event, field),
+		pattern: buildWildcardRegex(field.allowedDomains),
 	};
 
 	return (
@@ -33,6 +35,13 @@ export default function Email({
 			{field?.description && (
 				<p className="help mb-0">{field.description}</p>
 			)}
+			{field?.allowedDomains && (
+				<p className="help mb-0">
+					Allowed domains :{" "}
+					{field.allowedDomains.replaceAll(",", ", ")}
+				</p>
+			)}
+
 			<input {...emailProps} />
 			<span className="error">
 				<Icon type="error" />

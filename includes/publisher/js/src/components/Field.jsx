@@ -8,6 +8,7 @@ import Number from "./Number";
 import Date from "./Date";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
+import { isEmailDomainValid } from "../../../../shared-assets/js/validation/emailValidation";
 
 const defaultError = "This field is required";
 const integerRegex = /^[-+]?\d+/g;
@@ -86,6 +87,16 @@ export default function Field(props) {
 
 			if (field?.required && event.target.value.trim() === "") {
 				error = defaultError;
+			}
+
+			if (
+				field?.allowedDomains &&
+				event.target.validity.patternMismatch
+			) {
+				error = __(
+					"Email must end with an allowed domain.",
+					"atlas-content-modeler"
+				);
 			}
 		}
 
