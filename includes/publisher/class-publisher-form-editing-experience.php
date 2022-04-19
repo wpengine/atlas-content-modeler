@@ -295,27 +295,40 @@ final class FormEditingExperience {
 	 * @return void
 	 */
 	public function set_post_attributes( int $post_ID, WP_Post $post, bool $update ): void {
-		if ( true === $update ) {
-			// @todo Perhaps check that the slug has not been changed outside of the editor.
-			return;
-		}
-
-		// Only enforce this slug on created models.
 		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
 			return;
 		}
 
-		// An object to add more useful info to the slug, perhaps post_type ID.
-		// @todo Add a filter to change the slug format for default model post slug.
-		$model_post_slug = $post_ID;
+		if ( $post->post_status === 'auto-draft' ) {
+			return;
+		}
 
-		wp_update_post(
-			array(
-				'ID'         => $post_ID,
-				'post_name'  => $model_post_slug,
-				'post_title' => 'entry' . $post_ID,
-			)
-		);
+		if (
+			! isset( $_POST['atlas-content-modeler-pubex-nonce'] ) ||
+			! wp_verify_nonce(
+				sanitize_text_field(
+					wp_unslash( $_POST['atlas-content-modeler-pubex-nonce'] )
+				),
+				'atlas-content-modeler-pubex-nonce'
+			) ) {
+			$this->error_save_post = __( 'Nonce verification failed when saving your content. Please try again.', 'atlas-content-modeler' );
+			return;
+		}
+
+		if ( ! $update ) {
+			return;
+		}
+
+		$slug = wp_unique_post_slug( sanitize_title_with_dashes( $post->post_title, 'save' ), $post->ID, $post->post_status, $post->post_type, $post->post_parent );
+
+		if ( $slug === $post->post_name ) {
+			return;
+		}
+
+		$post->post_name = $slug;
+		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
+		wp_update_post( $post, false, false );
+		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 	}
 
 	/**
