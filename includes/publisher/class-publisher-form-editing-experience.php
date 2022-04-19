@@ -315,6 +315,15 @@ final class FormEditingExperience {
 			return;
 		}
 
+		if ( $post->post_status === 'auto-draft' ) {
+			$post->post_name  = $post->ID;
+			$post->post_title = 'entry' . $post->ID;
+			remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
+			wp_update_post( $post, false, false );
+			add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
+			return;
+		}
+
 		if ( ! $update ) {
 			return;
 		}
