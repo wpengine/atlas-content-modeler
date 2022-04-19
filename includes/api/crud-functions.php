@@ -66,6 +66,27 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 }
 
 /**
+ * Update a content model entry.
+ *
+ * @param int          $post_id         The id of the post being updated.
+ * @param array        $field_data      The field data being saved.
+ * @param array        $post_data       The post data object.
+ * @param bool|boolean $skip_validation Option to skip validation.
+ *
+ * @return int|WP_Error The updated content model entry id or WP_Error.
+ */
+function update_model_entry( int $post_id, array $field_data, array $post_data = [], bool $skip_validation = false ) {
+	$post_data = get_post( $post_id );
+
+	if ( ! $post_data ) {
+		return new \WP_Error( 'model_entry_not_found', "The post ID {$post_id} was not found" );
+	}
+	$post_data = array_merge( (array) $post_data, [ 'ID' => $post_id ] );
+
+	return insert_model_entry( $post_data['post_type'], $field_data, $post_data, $skip_validation );
+}
+
+/**
  * Add a relationship to a given post.
  *
  * Relationship must already be defined between models.
