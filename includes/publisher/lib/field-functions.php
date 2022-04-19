@@ -238,14 +238,13 @@ function sanitize_field( string $type, $value ) {
 			return $value === 'on' ? 'on' : 'off';
 		case 'multipleChoice':
 			if ( is_array( $value ) ) {
-				$options_object = [];
-				foreach ( $value as $option ) {
-					$options_object[] = key( $option );
+				$choice_keys = [];
+				foreach ( $value as $choice ) {
+					$choice_keys[] = is_array( $choice ) ? key( $choice ) : $choice;
 				}
-				return $options_object;
+				return $choice_keys;
 			}
-			$options_object[] = $value;
-			return $options_object;
+			return [ $value ];
 		default:
 			return $value;
 	}
