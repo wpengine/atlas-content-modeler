@@ -67,17 +67,19 @@ function register_acm_fields_as_mutation_inputs(): void {
 				$graphql_type = [ 'list_of' => $graphql_type ];
 			}
 
-			if ( $field['required'] ?? false ) {
-				$graphql_type = [ 'non_null' => $graphql_type ];
-			}
-
 			$args = [
 				'type'        => $graphql_type,
 				'description' => $field['description'] ?? '',
 			];
 
-			register_graphql_field( "Create{$model_graphql_name}Input", $field['slug'], $args );
 			register_graphql_field( "Update{$model_graphql_name}Input", $field['slug'], $args );
+
+			// Enforces required fields for Create mutations.
+			if ( $field['required'] ?? false ) {
+				$args['type'] = [ 'non_null' => $graphql_type ];
+			}
+
+			register_graphql_field( "Create{$model_graphql_name}Input", $field['slug'], $args );
 		}
 	}
 }

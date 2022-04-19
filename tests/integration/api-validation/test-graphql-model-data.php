@@ -312,13 +312,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 						input: {
 							clientMutationId: "UpdatePublicFields"
 							id: $id
-							richText: "Updated Rich Text Content"
 							singleLineRequired: "Updated"
-							numberIntergerRequired: 1.0
-							dateRequired: "2022-01-01"
 							booleanRequired: false
-							multiSingle: ["kiwi"]
-							multipleMulti: ["apple", "banana"]
 						}
 					) {
 						publicFields {
