@@ -310,7 +310,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 				mutation UPDATE_PUBLIC_FIELDS_ENTRY( $id:ID! ) {
 					updatePublicFields(
 						input: {
-							clientMutationId: "CreatePublicFields"
+							clientMutationId: "UpdatePublicFields"
 							id: $id
 							richText: "Updated Rich Text Content"
 							singleLineRequired: "Updated"
@@ -349,4 +349,50 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		}
 	}
 
+	/**
+	 * Confirms deletion mutations can remove an ACM entry.
+	 *
+	 * WPGraphQL automatically registers create, update and delete mutations for
+	 * all WordPress post types exposed to WPGraphQL.
+	 *
+	 * This test is therefore verifying WPGraphQL functionality and not logic
+	 * provided by ACM, but it helps us:
+	 * - Be confident that ACM models are registered for delete mutations.
+	 * - Be made aware of any upstream changes in WPGraphQL that affect
+	 *   delete operations on ACM models.
+	 * - Document how a delete mutation should work.
+	 */
+	public function test_graphql_delete_mutations_remove_acm_entries(): void {
+		wp_set_current_user( 1 );
+
+		$post_id    = $this->post_ids['public_fields_post_id'];
+		$graphql_id = \GraphQLRelay\Relay::toGlobalId( 'post', $post_id );
+
+		$delete_mutation = [
+			'variables' => [
+				'id' => $graphql_id,
+
+			],
+			'query'     => '
+				mutation DELETE_PUBLIC_FIELDS_ENTRY( $id:ID! ) {
+					deletePublicFields(
+						input: {
+							id: $id
+						}
+					) {
+						deletedId
+					}
+				}
+			',
+		];
+
+		try {
+			$response = graphql( $delete_mutation );
+
+			self::assertArrayHasKey( 'deletedId', $response['data']['deletePublicFields'] );
+			self::assertSame( $graphql_id, $response['data']['deletePublicFields']['deletedId'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
 }
