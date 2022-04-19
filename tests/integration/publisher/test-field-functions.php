@@ -212,13 +212,13 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 			[ 'number', '1,000.00', '1000.00' ],
 			[ 'number', '1.000,00', '1.00000' ],
 			// Multiple choice fields with a singular choice should be wrapped as arrays for consistency.
-			[ 'multipleChoice', 'choice1' ['choice1'] ],
+			[ 'multipleChoice', 'choice1', [ 'choice1' ] ],
 			// "Multi" multiple choice fields submitted with keys and values should retain only the keys.
 			[
 				'multipleChoice',
 				[
-					'choice1' => 'Choice 1',
-					'choice2' => 'Choice 2',
+					[ 'choice1' => 'Choice 1' ],
+					[ 'choice2' => 'Choice 2' ],
 				],
 				[ 'choice1', 'choice2' ],
 			],
