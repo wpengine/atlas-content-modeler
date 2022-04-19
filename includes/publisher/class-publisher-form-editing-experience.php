@@ -220,7 +220,9 @@ final class FormEditingExperience {
 						$value = get_post_meta( $post->ID, $field['slug'], true );
 						if ( ! empty( $field['isTitle'] ) && $value !== $post->post_title ) {
 							$post->post_title = $value;
+							remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
 							wp_update_post( $post, false, false );
+							add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 						}
 						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $value;
 					}
@@ -296,10 +298,6 @@ final class FormEditingExperience {
 	 */
 	public function set_post_attributes( int $post_ID, WP_Post $post, bool $update ): void {
 		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
-			return;
-		}
-
-		if ( $post->post_status === 'auto-draft' ) {
 			return;
 		}
 
@@ -665,7 +663,9 @@ final class FormEditingExperience {
 			if ( ! empty( $title_value ) ) {
 				if ( $post->post_title !== $title_value ) {
 					$post->post_title = $title_value;
+					remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
 					wp_update_post( $post, false, false );
+					add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 				}
 				return $title_value;
 			}
@@ -808,7 +808,8 @@ final class FormEditingExperience {
 		}
 
 		$post->post_title = $meta_value;
+		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
 		wp_update_post( $post, true, false );
+		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 	}
-
 }
