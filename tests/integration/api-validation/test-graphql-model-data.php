@@ -7,6 +7,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 	private $test_models;
 
+	private $create_mutation_query;
+
 	public function set_up(): void {
 		parent::set_up();
 
@@ -32,7 +34,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 		$this->post_ids = $this->get_post_ids();
 
-		$this->valid_mutation_query = [
+		$this->create_mutation_query = [
 			'query' => '
 				mutation CREATE_PUBLIC_FIELDS_ENTRY {
 					createPublicFields(
@@ -185,7 +187,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 	public function test_graphql_create_mutations_accept_acm_fields_as_inputs(): void {
 		wp_set_current_user( 1 );
 		try {
-			$response = graphql( $this->valid_mutation_query );
+			$response = graphql( $this->create_mutation_query );
 
 			$mutation = $response['data']['createPublicFields']['publicFields'];
 
@@ -280,7 +282,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		wp_set_current_user( null );
 
 		try {
-			$response = graphql( $this->valid_mutation_query );
+			$response = graphql( $this->create_mutation_query );
 
 			self::assertArrayHasKey( 'errors', $response );
 
@@ -288,6 +290,60 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			$expected_message = 'Sorry, you are not allowed to create publicsFields';
 
 			self::assertContains( $expected_message, $error_messages );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	public function test_graphql_update_mutations_accept_acm_fields_as_inputs(): void {
+		wp_set_current_user( 1 );
+
+		$post_id    = $this->post_ids['public_fields_post_id'];
+		$graphql_id = \GraphQLRelay\Relay::toGlobalId( 'post', $post_id );
+
+		$update_mutation = [
+			'variables' => [
+				'id' => $graphql_id,
+
+			],
+			'query'     => '
+				mutation UPDATE_PUBLIC_FIELDS_ENTRY( $id:ID! ) {
+					updatePublicFields(
+						input: {
+							clientMutationId: "CreatePublicFields"
+							id: $id
+							richText: "Updated Rich Text Content"
+							singleLineRequired: "Updated"
+							numberIntergerRequired: 1.0
+							dateRequired: "2022-01-01"
+							booleanRequired: false
+							multiSingle: ["kiwi"]
+							multipleMulti: ["apple", "banana"]
+						}
+					) {
+						publicFields {
+							title
+							singleLineRequired
+							booleanRequired
+						}
+					}
+				}
+			',
+		];
+
+		try {
+			$response = graphql( $update_mutation );
+
+			$mutation = $response['data']['updatePublicFields']['publicFields'];
+
+			self::assertArrayHasKey( 'title', $mutation );
+			self::assertSame( $mutation['title'], 'Updated' );
+
+			self::assertArrayHasKey( 'singleLineRequired', $mutation );
+			self::assertSame( $mutation['singleLineRequired'], 'Updated' );
+
+			self::assertArrayHasKey( 'booleanRequired', $mutation );
+			self::assertFalse( $mutation['booleanRequired'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
