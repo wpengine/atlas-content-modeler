@@ -1,7 +1,11 @@
 # Atlas Content Modeler Changelog
 
 ## Unreleased
+### Added
+- Mutations support to create, update and delete entries via GraphQL. All fields are supported except media and relationships for now.
+
 ### Changed
+- Boolean fields in REST responses will now return `true` or `false` instead of `"on"` or `[empty string]`.
 - Focus now moves to the new input field when adding a new repeating number, date or single line text field row.
 - Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
 
