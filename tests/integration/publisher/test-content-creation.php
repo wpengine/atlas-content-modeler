@@ -112,4 +112,30 @@ class TestContentCreation extends WP_UnitTestCase {
 		update_post_meta( $post_id, 'singleLineRequired', $meta_title ); // singleLineRequired is configured as a title field.
 		self::assertSame( get_post_field( 'post_title', $post_id ), $meta_title );
 	}
+
+	public function test_correct_post_name(): void {
+		$form = new FormEditingExperience();
+
+		// Get the initial post.
+		$post = get_post( $this->post_ids['public_post_id'] );
+
+		// Set the post attributes and update the post.
+		$form->set_post_attributes( $this->post_ids['public_post_id'], $post, false );
+		$post = get_post( $this->post_ids['public_post_id'] );
+		// Post slug should match the sanitized version of the post title. e.g. "Test dog" becomes "test-dog".
+		self::assertSame( 'test-dog', $post->post_name );
+
+		// Get initial auto-draft post.
+		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
+
+		// Set the post attributes, update the post, and get the updated post.
+		$form->set_post_attributes( $this->post_ids['auto_draft_post_id'], $auto_draft_post, false );
+		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
+		/**
+		 * Confirm auto-draft post slug/name is '{xx}', where xx is the post ID.
+		 * This casts the post_name value to an int, because WP stores it as a string.
+		 * Casting to an int should result in it matching the post ID, which is an integer.
+		 */
+		self::assertSame( $this->post_ids['auto_draft_post_id'], (int) $auto_draft_post->post_name );
+	}
 }
