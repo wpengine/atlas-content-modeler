@@ -226,4 +226,53 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_graphql_create_mutations_must_provide_required_fields(): void {
+		wp_set_current_user( 1 );
+		try {
+			$response = graphql(
+				[
+					// This query omits all required fields and should fail.
+					'query' => '
+						mutation CREATE_PUBLIC_FIELDS_ENTRY {
+							createPublicFields(
+								input: {
+									clientMutationId: "CreatePublicFields"
+									status: PUBLISH
+									richText: "<p>Rich Text Content</p>"
+									richTextRepeatable: ["<p>Rich Text 1</p>", "<p>Rich Text 2</p>"]
+									numberIntegerRepeat: [ 1.0, 2.0, 3.0]
+									dateRepeatable: ["2022-01-01", "2022-01-02"]
+									multiSingle: ["kiwi"]
+									multipleMulti: ["apple", "banana"]
+								}
+							) {
+								publicFields {
+									title
+								}
+							}
+						}
+					',
+				]
+			);
+
+			self::assertArrayHasKey( 'errors', $response );
+
+			$error_messages = wp_list_pluck( $response['errors'], 'message' );
+
+			$expected_messages = [
+				'Field CreatePublicFieldsInput.booleanRequired of required type Boolean! was not provided.',
+				'Field CreatePublicFieldsInput.dateRequired of required type String! was not provided.',
+				'Field CreatePublicFieldsInput.numberIntergerRequired of required type Float! was not provided.',
+				'Field CreatePublicFieldsInput.singleLineRequired of required type String! was not provided.',
+
+			];
+
+			foreach ( $expected_messages as $expected_message ) {
+				self::assertContains( $expected_message, $error_messages );
+			}
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
 }
