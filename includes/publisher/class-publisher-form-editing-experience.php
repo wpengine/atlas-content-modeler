@@ -301,18 +301,6 @@ final class FormEditingExperience {
 			return;
 		}
 
-		if (
-			! isset( $_POST['atlas-content-modeler-pubex-nonce'] ) ||
-			! wp_verify_nonce(
-				sanitize_text_field(
-					wp_unslash( $_POST['atlas-content-modeler-pubex-nonce'] )
-				),
-				'atlas-content-modeler-pubex-nonce'
-			) ) {
-			$this->error_save_post = __( 'Nonce verification failed when saving your content. Please try again.', 'atlas-content-modeler' );
-			return;
-		}
-
 		if ( $post->post_status === 'auto-draft' ) {
 			$post->post_name  = $post->ID;
 			$post->post_title = 'entry' . $post->ID;
