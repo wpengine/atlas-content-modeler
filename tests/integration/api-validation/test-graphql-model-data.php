@@ -31,6 +31,43 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		do_action( 'init' );
 
 		$this->post_ids = $this->get_post_ids();
+
+		$this->valid_mutation_query = [
+			'query' => '
+				mutation CREATE_PUBLIC_FIELDS_ENTRY {
+					createPublicFields(
+						input: {
+							clientMutationId: "CreatePublicFields"
+							status: PUBLISH
+							singleLineRequired: "Created with a GraphQL mutation"
+							richText: "<p>Rich Text Content</p>"
+							richTextRepeatable: ["<p>Rich Text 1</p>", "<p>Rich Text 2</p>"]
+							numberIntergerRequired: 1.0
+							numberIntegerRepeat: [ 1.0, 2.0, 3.0]
+							dateRequired: "2022-01-01"
+							dateRepeatable: ["2022-01-01", "2022-01-02"]
+							multiSingle: ["kiwi"]
+							multipleMulti: ["apple", "banana"]
+							booleanRequired: true
+						}
+					) {
+						publicFields {
+							title
+							singleLineRequired
+							richText
+							richTextRepeatable
+							numberIntergerRequired
+							numberIntegerRepeat
+							dateRequired
+							dateRepeatable
+							multiSingle
+							multipleMulti
+							booleanRequired
+						}
+					}
+				}
+			',
+		];
 	}
 
 	public function tear_down() {
@@ -148,44 +185,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 	public function test_graphql_create_mutations_accept_acm_fields_as_inputs(): void {
 		wp_set_current_user( 1 );
 		try {
-			$response = graphql(
-				[
-					'query' => '
-						mutation CREATE_PUBLIC_FIELDS_ENTRY {
-							createPublicFields(
-								input: {
-									clientMutationId: "CreatePublicFields"
-									status: PUBLISH
-									singleLineRequired: "Created with a GraphQL mutation"
-									richText: "<p>Rich Text Content</p>"
-									richTextRepeatable: ["<p>Rich Text 1</p>", "<p>Rich Text 2</p>"]
-									numberIntergerRequired: 1.0
-									numberIntegerRepeat: [ 1.0, 2.0, 3.0]
-									dateRequired: "2022-01-01"
-									dateRepeatable: ["2022-01-01", "2022-01-02"]
-									multiSingle: ["kiwi"]
-									multipleMulti: ["apple", "banana"]
-									booleanRequired: true
-								}
-							) {
-								publicFields {
-									title
-									singleLineRequired
-									richText
-									richTextRepeatable
-									numberIntergerRequired
-									numberIntegerRepeat
-									dateRequired
-									dateRepeatable
-									multiSingle
-									multipleMulti
-									booleanRequired
-								}
-							}
-						}
-					',
-				]
-			);
+			$response = graphql( $this->valid_mutation_query );
 
 			$mutation = $response['data']['createPublicFields']['publicFields'];
 
@@ -270,6 +270,24 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			foreach ( $expected_messages as $expected_message ) {
 				self::assertContains( $expected_message, $error_messages );
 			}
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	public function test_graphql_create_mutations_require_authentication(): void {
+		// Log out to check that mutation attempts then fail.
+		wp_set_current_user( null );
+
+		try {
+			$response = graphql( $this->valid_mutation_query );
+
+			self::assertArrayHasKey( 'errors', $response );
+
+			$error_messages   = wp_list_pluck( $response['errors'], 'message' );
+			$expected_message = 'Sorry, you are not allowed to create publicsFields';
+
+			self::assertContains( $expected_message, $error_messages );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
