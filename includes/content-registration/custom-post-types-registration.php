@@ -131,6 +131,8 @@ function handle_content_fields_for_rest_api( int $post_id, array $field, \WP_RES
 	$meta_value = get_post_meta( $post_id, $field['slug'], true );
 
 	switch ( $field['type'] ) {
+		case 'boolean':
+			return $meta_value === 'on' ? true : false;
 		case 'media':
 			$media_item = get_post( $meta_value );
 
