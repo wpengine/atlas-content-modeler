@@ -86,6 +86,15 @@ class TestContentCreation extends WP_UnitTestCase {
 		$form->set_post_attributes( $this->post_ids['public_post_id'], $post, false );
 		$post = get_post( $this->post_ids['public_post_id'] );
 		self::assertSame( 'Test dog', $post->post_title );
+
+		// Get initial auto-draft post.
+		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
+
+		// Set the post attributes, update the post, and get the updated post.
+		$form->set_post_attributes( $this->post_ids['auto_draft_post_id'], $auto_draft_post, false );
+		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
+		// Confirm auto-draft post title is 'entry{xx}', where xx is the post ID.
+		self::assertSame( 'entry' . $this->post_ids['auto_draft_post_id'], $auto_draft_post->post_title );
 	}
 
 	public function test_post_title_synced_from_postmeta_table_to_posts_table(): void {
