@@ -566,6 +566,10 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return do_shortcode( $value );
 					}
 
+					if ( $field['original_type'] === 'boolean' ) {
+						return $value === 'on' ? true : false;
+					}
+
 					return $value;
 				}
 			};
