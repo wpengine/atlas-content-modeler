@@ -125,6 +125,20 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertEquals( $update_data['multiMultipleChoiceField'], get_post_meta( $updated_id, 'multiMultipleChoiceField', true ) );
 	}
 
+	public function test_update_model_entry_will_update_post_meta_without_validation() {
+		$data      = $this->get_insert_model_entry_data();
+		$update_id = insert_model_entry( 'validation', $data );
+
+		$updated_id = update_model_entry( $update_id, [ 'numberField' => 'not a number value' ], [], true );
+
+		$this->assertEquals( 'not a number value', get_post_meta( $updated_id, 'numberField', true ) );
+	}
+
+	public function test_update_model_entry_will_error_with_invalid_id() {
+		$updated_id = update_model_entry( '4444444', [], [], true );
+		$this->assertEquals( [ 'The post ID 4444444 was not found' ], $updated_id->get_error_messages( 'model_entry_not_found' ) );
+	}
+
 	public function test_fetch_model_returns_the_model_schema_if_exists() {
 		$this->assertEquals( $this->content_models['person'], fetch_model( 'person' ) );
 	}
