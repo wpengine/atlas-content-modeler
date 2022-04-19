@@ -12,7 +12,9 @@ namespace WPE\AtlasContentModeler\ContentRegistration\GraphQLMutations;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\map_html_field_type_to_graphql_field_type;
 use function WPE\AtlasContentModeler\ContentRegistration\is_repeatable_field;
+use function WPE\AtlasContentModeler\ContentRegistration\camelcase;
 use function WPE\AtlasContentModeler\sanitize_field;
+
 
 add_action( 'graphql_register_types', __namespace__ . '\register_acm_fields_as_mutation_inputs' );
 /**
@@ -47,16 +49,7 @@ function register_acm_fields_as_mutation_inputs(): void {
 	$models = get_registered_content_types();
 
 	foreach ( $models as $model ) {
-		$post_type_object = get_post_type_object( $model['slug'] );
-
-		if (
-			! is_object( $post_type_object )
-			|| ! property_exists( $post_type_object, 'graphql_single_name' )
-		) {
-			continue;
-		}
-
-		$model_graphql_name = ucfirst( $post_type_object->graphql_single_name );
+		$model_graphql_name = ucfirst( camelcase( $model['singular'] ) );
 		$fields             = $model['fields'] ?? [];
 
 		foreach ( $fields as $field ) {
