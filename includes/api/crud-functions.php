@@ -12,7 +12,6 @@ namespace WPE\AtlasContentModeler\API;
 use function WPE\AtlasContentModeler\get_field_from_slug;
 use function WPE\AtlasContentModeler\sanitize_fields;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
-use function WPE\AtlasContentModeler\API\Utility\get_data_for_fields;
 use function WPE\AtlasContentModeler\get_entry_title_field;
 use function WPE\AtlasContentModeler\API\validation\validate_model_field_data;
 
@@ -76,14 +75,14 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
  * @return int|WP_Error The updated content model entry id or WP_Error.
  */
 function update_model_entry( int $post_id, array $field_data, array $post_data = [], bool $skip_validation = false ) {
-	$post_data = get_post( $post_id );
-
-	if ( ! $post_data ) {
+	$wp_post = get_post( $post_id );
+	if ( ! $wp_post ) {
 		return new \WP_Error( 'model_entry_not_found', "The post ID {$post_id} was not found" );
 	}
+
 	$post_data = array_merge( (array) $post_data, [ 'ID' => $post_id ] );
 
-	return insert_model_entry( $post_data['post_type'], $field_data, $post_data, $skip_validation );
+	return insert_model_entry( $wp_post->post_type, $field_data, $post_data, $skip_validation );
 }
 
 /**
