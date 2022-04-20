@@ -13,7 +13,6 @@ use WPE\AtlasContentModeler\Validation_Exception;
 
 use function WPE\AtlasContentModeler\is_field_required;
 use function WPE\AtlasContentModeler\is_field_repeatable;
-use function WPE\AtlasContentModeler\API\Utility\array_get_key_value;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
