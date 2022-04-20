@@ -7,7 +7,7 @@ import { ModelsContext } from "../../ModelsContext";
 import { useLocationSearch } from "../../utils";
 import { __ } from "@wordpress/i18n";
 
-const EmailFields = ({ register, data, fieldId }) => {
+const EmailFields = ({ register, data, editing, fieldId }) => {
 	const { models } = useContext(ModelsContext);
 	const query = useLocationSearch();
 	const currentModel = query.get("id");
@@ -15,9 +15,39 @@ const EmailFields = ({ register, data, fieldId }) => {
 	const titleFieldId = getTitleFieldId(fields);
 	const showTitleField = !titleFieldId || titleFieldId === fieldId;
 	const [showTitle, setShowTitle] = useState(data?.isTitle);
+	const [showRepeatableEmail, setShowRepeatableEmail] = useState(
+		data?.isRepeatableEmail
+	);
 
 	return (
 		<>
+			{data && (
+				<div className={"field"}>
+					<legend>
+						{__("Repeatable Field", "atlas-content-modeler")}
+					</legend>
+					<input
+						name="isRepeatableEmail"
+						type="checkbox"
+						id={`is-repeatable-email-${fieldId}`}
+						ref={register}
+						defaultChecked={showRepeatableEmail}
+						onChange={() =>
+							setShowRepeatableEmail(!showRepeatableEmail)
+						}
+						disabled={editing || showTitle}
+					/>
+					<label
+						htmlFor={`is-repeatable-email-${fieldId}`}
+						className="checkbox is-repeatable"
+					>
+						{__(
+							"Make this field repeatable",
+							"atlas-content-modeler"
+						)}
+					</label>
+				</div>
+			)}
 			{showTitleField && (
 				<div className="field">
 					<legend>Title Field</legend>
@@ -28,7 +58,7 @@ const EmailFields = ({ register, data, fieldId }) => {
 						ref={register}
 						onChange={() => setShowTitle(!showTitle)}
 						defaultChecked={data?.isTitle}
-						disabled={!!titleFieldId}
+						disabled={!!titleFieldId || showRepeatableEmail}
 					/>
 					<label
 						htmlFor={`is-title-${fieldId}`}
