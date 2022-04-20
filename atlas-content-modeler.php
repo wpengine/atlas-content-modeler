@@ -55,7 +55,6 @@ function atlas_content_modeler_loader(): void {
 		'blueprints/export.php',
 		'api/crud-functions.php',
 		'api/validation-functions.php',
-		'api/utility-functions.php',
 		'class-validation-exception.php',
 	);
 
