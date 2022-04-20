@@ -220,9 +220,7 @@ final class FormEditingExperience {
 						$value = get_post_meta( $post->ID, $field['slug'], true );
 						if ( ! empty( $field['isTitle'] ) && $value !== $post->post_title ) {
 							$post->post_title = $value;
-							remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
-							wp_update_post( $post, false, false );
-							add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
+							$this->update_post( $post );
 						}
 						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $value;
 					}
@@ -307,9 +305,7 @@ final class FormEditingExperience {
 
 		$post->post_title = 'entry' . $post_ID;
 		$post->post_name  = $post_ID;
-		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
-		wp_update_post( $post, false, false );
-		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
+		$this->update_post( $post );
 	}
 
 	/**
@@ -637,9 +633,7 @@ final class FormEditingExperience {
 			if ( ! empty( $title_value ) ) {
 				if ( $post->post_title !== $title_value ) {
 					$post->post_title = $title_value;
-					remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
-					wp_update_post( $post, false, false );
-					add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
+					$this->update_post( $post );
 				}
 				return $title_value;
 			}
@@ -782,8 +776,22 @@ final class FormEditingExperience {
 		}
 
 		$post->post_title = $meta_value;
+		$this->update_post( $post );
+	}
+
+	/**
+	 * Updates the post with the provided data.
+	 *
+	 * Removes ACM callbacks attached to `wp_insert_post`
+	 * to prevent them from running again when we update the post.
+	 *
+	 * @param \WP_Post $post The post data to be saved.
+	 *
+	 * @return void
+	 */
+	private function update_post( $post ): void {
 		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
-		wp_update_post( $post, true, false );
+		wp_update_post( $post, false, false );
 		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 	}
 }
