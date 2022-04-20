@@ -137,5 +137,8 @@ class TestContentCreation extends WP_UnitTestCase {
 		 * Casting to an int should result in it matching the post ID, which is an integer.
 		 */
 		self::assertSame( $this->post_ids['auto_draft_post_id'], (int) $auto_draft_post->post_name );
+
+		// Confirm auto-draft post title is 'entry{xx}', where xx is the post ID.
+		self::assertSame( 'entry' . $this->post_ids['auto_draft_post_id'], $auto_draft_post->post_title );
 	}
 }
