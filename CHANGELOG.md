@@ -2,7 +2,7 @@
 
 ## Unreleased
 ### Added
-- Mutations support to create, update and delete entries via GraphQL. All fields are supported except media and relationships for now.
+- Mutations support to create, update and delete entries via GraphQL. All fields are supported except media and relationships for now. Find examples at https://github.com/wpengine/atlas-content-modeler/blob/main/docs/mutations/index.md.
 
 ### Changed
 - Boolean fields in REST responses will now return `true` or `false` instead of `"on"` or `[empty string]`.
