@@ -104,9 +104,8 @@ class TestApiFunctions extends Integration_TestCase {
 	}
 
 	public function test_update_model_entry_will_update_post_meta_and_return_post_id_on_success() {
-		$model_schema = $this->content_models['validation'];
-		$data         = $this->get_insert_model_entry_data();
-		$update_data  = $this->get_insert_model_entry_update_data();
+		$data        = $this->get_insert_model_entry_data();
+		$update_data = $this->get_insert_model_entry_update_data();
 
 		$update_id = insert_model_entry( 'validation', $data );
 
