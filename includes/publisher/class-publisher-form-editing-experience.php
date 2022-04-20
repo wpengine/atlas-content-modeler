@@ -301,26 +301,12 @@ final class FormEditingExperience {
 			return;
 		}
 
-		if ( $post->post_status === 'auto-draft' ) {
-			$post->post_name  = $post->ID;
-			$post->post_title = 'entry' . $post->ID;
-			remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
-			wp_update_post( $post, false, false );
-			add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
+		if ( $post->post_status !== 'auto-draft' ) {
 			return;
 		}
 
-		if ( ! $update ) {
-			return;
-		}
-
-		$slug = wp_unique_post_slug( sanitize_title_with_dashes( $post->post_title, 'save' ), $post->ID, $post->post_status, $post->post_type, $post->post_parent );
-
-		if ( $slug === $post->post_name ) {
-			return;
-		}
-
-		$post->post_name = $slug;
+		$post->post_title = 'entry' . $post_ID;
+		$post->post_name  = $post_ID;
 		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
 		wp_update_post( $post, false, false );
 		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
