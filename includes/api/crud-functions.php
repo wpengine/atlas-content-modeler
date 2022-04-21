@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return int|WP_Error The newly created content model entry id or WP_Error.
  */
 function insert_model_entry( string $model_slug, array $field_data, array $post_data = [], bool $skip_validation = false ) {
-	$model_schema = fetch_model( $model_slug );
+	$model_schema = get_model( $model_slug );
 	if ( empty( $model_schema ) ) {
 		return new \WP_Error( 'model_schema_not_found', "The content model {$model_slug} was not found" );
 	}
@@ -161,8 +161,8 @@ function get_relationship( int $post_id, string $relationship_field_slug ) {
  *
  * @return array|null The model field as associative array or null.
  */
-function fetch_model_field( string $model, string $field_slug ): ?array {
-	$model_schema = fetch_model( $model );
+function get_model_field( string $model, string $field_slug ): ?array {
+	$model_schema = get_model( $model );
 	$field_schema = null;
 
 	if ( empty( $model_schema['fields'] ) ) {
@@ -188,7 +188,7 @@ function fetch_model_field( string $model, string $field_slug ): ?array {
  *
  * @return array|null The content model schema or null if not found.
  */
-function fetch_model( string $model ): ?array {
+function get_model( string $model ): ?array {
 	$models = get_registered_content_types();
 	if ( empty( $models[ $model ] ) ) {
 		return null;
