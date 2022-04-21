@@ -7,7 +7,7 @@ use function WPE\AtlasContentModeler\API\add_relationship;
 use function WPE\AtlasContentModeler\API\get_relationship;
 use function WPE\AtlasContentModeler\API\replace_relationship;
 use function WPE\AtlasContentModeler\API\get_model;
-use function WPE\AtlasContentModeler\API\get_model_field;
+use function WPE\AtlasContentModeler\API\get_field;
 use function WPE\AtlasContentModeler\API\insert_model_entry;
 use function WPE\AtlasContentModeler\API\update_model_entry;
 
@@ -146,8 +146,8 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertNull( get_model( 'does_not_exist' ) );
 	}
 
-	public function test_get_model_field_returns_the_field_if_exists() {
-		$model_field = get_model_field( 'person', 'name' );
+	public function test_get_field_returns_the_field_if_exists() {
+		$model_field = get_field( 'person', 'name' );
 
 		$this->assertEquals(
 			$this->content_models['person']['fields']['1648575961490'],
@@ -155,14 +155,14 @@ class TestApiFunctions extends Integration_TestCase {
 		);
 	}
 
-	public function test_get_model_field_returns_null_if_the_field_does_not_exist() {
-		$model_field = get_model_field( 'person', 'does_not_exist' );
+	public function test_get_field_returns_null_if_the_field_does_not_exist() {
+		$model_field = get_field( 'person', 'does_not_exist' );
 
 		$this->assertNull( $model_field );
 	}
 
-	public function test_get_model_field_returns_null_if_the_model_does_not_exist() {
-		$model_field = get_model_field( 'does_not_exist', 'name' );
+	public function test_get_field_returns_null_if_the_model_does_not_exist() {
+		$model_field = get_field( 'does_not_exist', 'name' );
 
 		$this->assertNull( $model_field );
 	}

@@ -12,7 +12,7 @@
 - Function add_relationship() to append model entry relationships.
 - Function get_relationship() to retrieve the relationship object.
 - Function get_model() to retrieve the model schema.
-- Function get_model_field() to retrieve the model field schema.
+- Function get_field() to retrieve the model field schema.
 
 ## 0.16.0 - 2022-04-06
 ### Added

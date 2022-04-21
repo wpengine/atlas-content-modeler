@@ -161,7 +161,7 @@ function get_relationship( int $post_id, string $relationship_field_slug ) {
  *
  * @return array|null The model field as associative array or null.
  */
-function get_model_field( string $model, string $field_slug ): ?array {
+function get_field( string $model, string $field_slug ): ?array {
 	$model_schema = get_model( $model );
 	$field_schema = null;
 
