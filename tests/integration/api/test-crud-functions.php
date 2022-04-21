@@ -61,25 +61,20 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertEquals( "The content model {$model_slug} was not found", $result->get_error_message() );
 	}
 
-	public function test_insert_model_entry_will_trigger_validation_by_default_if_invalid_data() {
+	public function test_insert_model_entry_will_trigger_validation_if_invalid_data() {
 		$model_id = insert_model_entry( 'validation', [ 'numberField' => 'not a number value' ] );
 
 		$this->assertEquals( [ 'Number Field must be a valid number' ], $model_id->get_error_messages( 'invalid_model_field' ) );
 	}
 
-	public function test_insert_model_entry_will_not_validate_field_data_if_skip_validation_true() {
-		$model_id = insert_model_entry( 'validation', [ 'numberField' => 'not a number value' ], [], true );
+	public function test_insert_model_entry_will_insert_post_data_if_given() {
+		$data      = $this->get_insert_model_entry_data();
+		$post_data = [ 'post_content' => '<p>This is my post content.</p>' ];
 
-		$this->assertEquals( 'not a number value', get_post_meta( $model_id, 'numberField', true ) );
-	}
-
-	public function test_insert_model_entry_will_insert_post_data_if_exists() {
-		$data = $this->get_insert_model_entry_data();
-
-		$model_id = insert_model_entry( 'validation', $data, [ 'post_content' => '<p>This is my post content.</p>' ] );
+		$model_id = insert_model_entry( 'validation', $data, $post_data );
 
 		$wp_post = get_post( $model_id );
-		$this->assertEquals( '<p>This is my post content.</p>', $wp_post->post_content );
+		$this->assertEquals( $post_data['post_content'], $wp_post->post_content );
 	}
 
 	public function test_insert_model_entry_will_set_the_post_title_if_field_is_a_title_field() {
@@ -105,9 +100,8 @@ class TestApiFunctions extends Integration_TestCase {
 
 	public function test_update_model_entry_will_update_post_meta_and_return_post_id_on_success() {
 		$data        = $this->get_insert_model_entry_data();
-		$update_data = $this->get_insert_model_entry_update_data();
-
-		$update_id = insert_model_entry( 'validation', $data );
+		$update_data = $this->get_update_model_entry_data();
+		$update_id   = insert_model_entry( 'validation', $data );
 
 		$updated_id = update_model_entry( $update_id, $update_data );
 
@@ -124,17 +118,8 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertEquals( $update_data['multiMultipleChoiceField'], get_post_meta( $updated_id, 'multiMultipleChoiceField', true ) );
 	}
 
-	public function test_update_model_entry_will_update_post_meta_without_validation() {
-		$data      = $this->get_insert_model_entry_data();
-		$update_id = insert_model_entry( 'validation', $data );
-
-		$updated_id = update_model_entry( $update_id, [ 'numberField' => 'not a number value' ], [], true );
-
-		$this->assertEquals( 'not a number value', get_post_meta( $updated_id, 'numberField', true ) );
-	}
-
 	public function test_update_model_entry_will_error_with_invalid_id() {
-		$updated_id = update_model_entry( '4444444', [], [], true );
+		$updated_id = update_model_entry( '4444444', [] );
 		$this->assertEquals( [ 'The post ID 4444444 was not found' ], $updated_id->get_error_messages( 'model_entry_not_found' ) );
 	}
 
@@ -383,7 +368,7 @@ class TestApiFunctions extends Integration_TestCase {
 	 *
 	 * @return array The entry model data.
 	 */
-	protected function get_insert_model_entry_update_data( $overrides = [] ) {
+	protected function get_update_model_entry_data( $overrides = [] ) {
 		return array_merge(
 			[
 				'textField'                 => 'New text field value',

@@ -29,11 +29,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $model_slug Content model slug.
  * @param array  $field_data Content model field data.
  * @param array  $post_data Post data.
- * @param bool   $skip_validation True to skip model field validation. Default false.
  *
  * @return int|WP_Error The newly created content model entry id or WP_Error.
  */
-function insert_model_entry( string $model_slug, array $field_data, array $post_data = [], bool $skip_validation = false ) {
+function insert_model_entry( string $model_slug, array $field_data, array $post_data = [] ) {
 	$model_schema = get_model( $model_slug );
 	if ( empty( $model_schema ) ) {
 		return new \WP_Error( 'model_schema_not_found', "The content model {$model_slug} was not found" );
@@ -43,17 +42,13 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 		$post_data,
 		[
 			'post_type'  => $model_slug,
-			'meta_input' => $field_data,
+			'meta_input' => sanitize_fields( $model_schema, $field_data ),
 		]
 	);
 
-	if ( ! $skip_validation ) {
-		$post_data['meta_input'] = sanitize_fields( $model_schema, $field_data );
-		$valid                   = validate_model_field_data( $model_schema, $post_data['meta_input'] );
-
-		if ( is_wp_error( $valid ) ) {
-			return $valid;
-		}
+	$valid = validate_model_field_data( $model_schema, $post_data['meta_input'] );
+	if ( is_wp_error( $valid ) ) {
+		return $valid;
 	}
 
 	$entry_title_field = get_entry_title_field( $model_schema['fields'] );
@@ -67,22 +62,21 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 /**
  * Update a content model entry.
  *
- * @param int          $post_id         The id of the post being updated.
- * @param array        $field_data      The field data being saved.
- * @param array        $post_data       The post data object.
- * @param bool|boolean $skip_validation Option to skip validation.
+ * @param int   $post_id The id of the post being updated.
+ * @param array $field_data The field data being saved.
+ * @param array $post_data The post data object.
  *
  * @return int|WP_Error The updated content model entry id or WP_Error.
  */
-function update_model_entry( int $post_id, array $field_data, array $post_data = [], bool $skip_validation = false ) {
+function update_model_entry( int $post_id, array $field_data, array $post_data = [] ) {
 	$wp_post = get_post( $post_id );
 	if ( ! $wp_post ) {
 		return new \WP_Error( 'model_entry_not_found', "The post ID {$post_id} was not found" );
 	}
 
-	$post_data = array_merge( (array) $post_data, [ 'ID' => $post_id ] );
+	$post_data = array_merge( $post_data, [ 'ID' => $post_id ] );
 
-	return insert_model_entry( $wp_post->post_type, $field_data, $post_data, $skip_validation );
+	return insert_model_entry( $wp_post->post_type, $field_data, $post_data );
 }
 
 /**
