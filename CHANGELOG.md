@@ -7,7 +7,7 @@
 
 ### Added
 - Function insert_entry_model() for inserting a model entry and fields.
-- Function update_model_entry() for updating an existing entry model and fields.
+- Function update_model_entry() for updating an existing model entry and fields.
 - Function replace_relationship() to replace/add model entry relationships.
 - Function add_relationship() to append model entry relationships.
 - Function get_relationship() to retrieve the relationship object.
