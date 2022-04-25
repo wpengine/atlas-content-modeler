@@ -175,5 +175,17 @@ class TestContentCreation extends WP_UnitTestCase {
 			'cows-go-moo',
 			get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
 		);
+
+		/**
+		 * Update the title value and confirm the post_name is untouched.
+		 * We do not want to generate a post_name value every time the title
+		 * is updated. We only generate a post_name value when it is empty
+		 * or when it is the same as the post ID number.
+		 */
+		update_post_meta( $this->post_ids['auto_draft_post_id'], 'singleLineRequired', 'Cows go moo and ducks go quack' );
+		self::assertSame(
+			'cows-go-moo',
+			get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
+		);
 	}
 }
