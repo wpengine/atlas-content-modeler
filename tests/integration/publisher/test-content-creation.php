@@ -90,11 +90,30 @@ class TestContentCreation extends WP_UnitTestCase {
 		// Get initial auto-draft post.
 		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
 
-		// Set the post attributes, update the post, and get the updated post.
+		// Set the post attributes and update the post.
 		$form->set_post_attributes( $this->post_ids['auto_draft_post_id'], $auto_draft_post, false );
-		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
+
 		// Confirm auto-draft post title is 'entry{xx}', where xx is the post ID.
-		self::assertSame( 'entry' . $this->post_ids['auto_draft_post_id'], $auto_draft_post->post_title );
+		self::assertSame(
+			'entry' . $this->post_ids['auto_draft_post_id'],
+			$auto_draft_post->post_title
+		);
+
+		// Publish the post and confirm the post_title is unchanged.
+		$auto_draft_post              = get_post( $this->post_ids['auto_draft_post_id'] );
+		$auto_draft_post->post_status = 'publish';
+		wp_update_post( $auto_draft_post, false, false );
+		self::assertSame(
+			'entry' . $this->post_ids['auto_draft_post_id'],
+			get_post_field( 'post_title', $this->post_ids['auto_draft_post_id'] )
+		);
+
+		// Save the title field value and confirm the post_title is updated.
+		update_post_meta( $this->post_ids['auto_draft_post_id'], 'singleLineRequired', 'This meta value should become the post title' );
+		self::assertSame(
+			'This meta value should become the post title',
+			get_post_field( 'post_title', $this->post_ids['auto_draft_post_id'] )
+		);
 	}
 
 	public function test_post_title_synced_from_postmeta_table_to_posts_table(): void {
@@ -128,28 +147,33 @@ class TestContentCreation extends WP_UnitTestCase {
 		// Get initial auto-draft post.
 		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
 
-		// Set the post attributes, update the post, and get the updated post.
+		// Set the post attributes and update the post.
 		$form->set_post_attributes( $this->post_ids['auto_draft_post_id'], $auto_draft_post, false );
-		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
+
 		/**
 		 * Confirm auto-draft post slug/name is '{xx}', where xx is the post ID.
 		 * This casts the post_name value to an int, because WP stores it as a string.
 		 * Casting to an int should result in it matching the post ID, which is an integer.
 		 */
-		self::assertSame( $this->post_ids['auto_draft_post_id'], (int) $auto_draft_post->post_name );
+		self::assertSame(
+			$this->post_ids['auto_draft_post_id'],
+			(int) get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
+		);
 
-		// Confirm auto-draft post title is 'entry{xx}', where xx is the post ID.
-		self::assertSame( 'entry' . $this->post_ids['auto_draft_post_id'], $auto_draft_post->post_title );
-
-		// Publish the post and confirm the post_title and post_name values are untouched.
+		// Publish the post and confirm the post_name is unchanged.
+		$auto_draft_post              = get_post( $this->post_ids['auto_draft_post_id'] );
 		$auto_draft_post->post_status = 'publish';
 		wp_update_post( $auto_draft_post, false, false );
-		self::assertSame( $this->post_ids['auto_draft_post_id'], (int) $auto_draft_post->post_name );
-		self::assertSame( 'entry' . $this->post_ids['auto_draft_post_id'], $auto_draft_post->post_title );
+		self::assertSame(
+			$this->post_ids['auto_draft_post_id'],
+			(int) get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
+		);
 
-		// Save the title value and confirm the post_title and post_name are updated.
-		update_post_meta( $this->post_ids['auto_draft_post_id'], 'singleLineRequired', 'This meta value should become the post title' );
-		self::assertSame( 'This meta value should become the post title', get_post_field( 'post_title', $this->post_ids['auto_draft_post_id'] ) );
-		self::assertSame( 'this-meta-value-should-become-the-post-title', get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] ) );
+		// Save the title value and confirm the post_name is generated and saved. `singleLineRequired` is a title field.
+		update_post_meta( $this->post_ids['auto_draft_post_id'], 'singleLineRequired', 'Cows go moo' );
+		self::assertSame(
+			'cows-go-moo',
+			get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
+		);
 	}
 }
