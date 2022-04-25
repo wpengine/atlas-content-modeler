@@ -96,7 +96,7 @@ class TestContentCreation extends WP_UnitTestCase {
 		// Confirm auto-draft post title is 'entry{xx}', where xx is the post ID.
 		self::assertSame(
 			'entry' . $this->post_ids['auto_draft_post_id'],
-			$auto_draft_post->post_title
+			get_post_field( 'post_title', $this->post_ids['auto_draft_post_id'] )
 		);
 
 		// Publish the post and confirm the post_title is unchanged.
