@@ -11,7 +11,7 @@ namespace WPE\AtlasContentModeler\ContentRegistration\GraphQLMutations;
 
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\map_html_field_type_to_graphql_field_type;
-use function WPE\AtlasContentModeler\ContentRegistration\is_repeatable_field;
+use function WPE\AtlasContentModeler\is_field_repeatable;
 use function WPE\AtlasContentModeler\ContentRegistration\camelcase;
 use function WPE\AtlasContentModeler\sanitize_field;
 
@@ -63,7 +63,7 @@ function register_acm_fields_as_mutation_inputs(): void {
 				continue;
 			}
 
-			if ( is_repeatable_field( $field ) ) {
+			if ( is_field_repeatable( $field ) ) {
 				$graphql_type = [ 'list_of' => $graphql_type ];
 			}
 

@@ -774,22 +774,6 @@ function map_html_field_type_to_graphql_field_type( string $field_type ) {
 	}
 }
 
-/**
- * Determines if a field has 'make repeatable' enabled.
- *
- * @param array $field Field data.
- * @return bool
- */
-function is_repeatable_field( array $field ): bool {
-	$field_html_type = $field['type'] ?? '';
-
-	return ( ( $field['isRepeatable'] ?? false ) && 'text' === $field_html_type )
-		|| ( ( $field['isRepeatableRichText'] ?? false ) && 'richtext' === $field_html_type )
-		|| ( ( $field['isRepeatableNumber'] ?? false ) && 'number' === $field_html_type )
-		|| ( ( $field['isRepeatableDate'] ?? false ) && 'date' === $field_html_type )
-		|| ( ( $field['isRepeatableMedia'] ?? false ) && 'media' === $field_html_type );
-}
-
 add_filter( 'is_protected_meta', __NAMESPACE__ . '\is_protected_meta', 10, 3 );
 /**
  * Designates fields from this plugin as protected to prevent them
