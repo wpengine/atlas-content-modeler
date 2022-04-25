@@ -92,6 +92,53 @@ function is_field_featured_image( string $slug, array $fields ): bool {
 }
 
 /**
+ * Determine if the given field is required.
+ *
+ * @param array $field The field schema.
+ *
+ * @return boolean True if required, false if else.
+ */
+function is_field_required( array $field ): bool {
+	return \array_key_exists( 'required', $field ) && true === $field['required'];
+}
+
+/**
+ * Determine if the given field is repeatable.
+ *
+ * @param array $field The field schema.
+ *
+ * @return boolean True if required, false if else.
+ */
+function is_field_repeatable( array $field ): bool {
+	$repeatable = false;
+	$key        = '';
+
+	switch ( $field['type'] ) {
+		case 'text':
+			$key = 'isRepeatable';
+			break;
+		case 'richtext':
+			$key = 'isRepeatableRichText';
+			break;
+		case 'number':
+			$key = 'isRepeatableNumber';
+			break;
+		case 'date':
+			$key = 'isRepeatableDate';
+			break;
+		case 'media':
+			$key = 'isRepeatableMedia';
+			break;
+	}
+
+	if ( $key && \array_key_exists( $key, $field ) ) {
+		$repeatable = ( true === $field[ $key ] || 'true' === $field[ $key ] );
+	}
+
+	return $repeatable;
+}
+
+/**
  * Gets the field from the field slug.
  *
  * @param string $slug Field slug to look for the 'type' property.
@@ -170,6 +217,32 @@ function append_reverse_relationship_fields( array $models, string $post_type ):
 	}
 
 	return $models;
+}
+
+/**
+ * Sanitize field values.
+ *
+ * @param array $model The model schema.
+ * @param array $data The unvalidated data.
+ *
+ * @return array The sanitized data based on if field key exists.
+ */
+function sanitize_fields( array $model, array $data ) {
+	$model_slug_types = \array_combine(
+		\wp_list_pluck( $model['fields'], 'slug' ),
+		\wp_list_pluck( $model['fields'], 'type' )
+	);
+
+	\array_walk(
+		$data,
+		function ( &$value, $key ) use ( $model_slug_types ) {
+			if ( \array_key_exists( $key, $model_slug_types ) ) {
+				$value = sanitize_field( $model_slug_types[ $key ], $value );
+			}
+		}
+	);
+
+	return $data;
 }
 
 /**
