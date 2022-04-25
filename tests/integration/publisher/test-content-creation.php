@@ -140,5 +140,16 @@ class TestContentCreation extends WP_UnitTestCase {
 
 		// Confirm auto-draft post title is 'entry{xx}', where xx is the post ID.
 		self::assertSame( 'entry' . $this->post_ids['auto_draft_post_id'], $auto_draft_post->post_title );
+
+		// Publish the post and confirm the post_title and post_name values are untouched.
+		$auto_draft_post->post_status = 'publish';
+		wp_update_post( $auto_draft_post, false, false );
+		self::assertSame( $this->post_ids['auto_draft_post_id'], (int) $auto_draft_post->post_name );
+		self::assertSame( 'entry' . $this->post_ids['auto_draft_post_id'], $auto_draft_post->post_title );
+
+		// Save the title value and confirm the post_title and post_name are updated.
+		update_post_meta( $this->post_ids['auto_draft_post_id'], 'singleLineRequired', 'This meta value should become the post title' );
+		self::assertSame( 'This meta value should become the post title', get_post_field( 'post_title', $this->post_ids['auto_draft_post_id'] ) );
+		self::assertSame( 'this-meta-value-should-become-the-post-title', get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] ) );
 	}
 }
