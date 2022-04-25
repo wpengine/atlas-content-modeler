@@ -776,6 +776,9 @@ final class FormEditingExperience {
 		}
 
 		$post->post_title = $meta_value;
+		if ( empty( $post->post_name ) || (int) $post->post_name === $post->ID ) {
+			$post->post_name = wp_unique_post_slug( sanitize_title( $meta_value, 'save' ), $post->ID, $post->post_status, $post->post_type, $post->post_parent );
+		}
 		$this->update_post( $post );
 	}
 
