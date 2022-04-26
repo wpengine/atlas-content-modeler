@@ -220,7 +220,7 @@ final class FormEditingExperience {
 						$value = get_post_meta( $post->ID, $field['slug'], true );
 						if ( ! empty( $field['isTitle'] ) && $value !== $post->post_title ) {
 							$post->post_title = $value;
-							wp_update_post( $post, false, false );
+							$this->update_post( $post );
 						}
 						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $value;
 					}
@@ -295,27 +295,17 @@ final class FormEditingExperience {
 	 * @return void
 	 */
 	public function set_post_attributes( int $post_ID, WP_Post $post, bool $update ): void {
-		if ( true === $update ) {
-			// @todo Perhaps check that the slug has not been changed outside of the editor.
-			return;
-		}
-
-		// Only enforce this slug on created models.
 		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
 			return;
 		}
 
-		// An object to add more useful info to the slug, perhaps post_type ID.
-		// @todo Add a filter to change the slug format for default model post slug.
-		$model_post_slug = $post_ID;
+		if ( $post->post_status !== 'auto-draft' ) {
+			return;
+		}
 
-		wp_update_post(
-			array(
-				'ID'         => $post_ID,
-				'post_name'  => $model_post_slug,
-				'post_title' => 'entry' . $post_ID,
-			)
-		);
+		$post->post_title = 'entry' . $post_ID;
+		$post->post_name  = $post_ID;
+		$this->update_post( $post );
 	}
 
 	/**
@@ -643,7 +633,7 @@ final class FormEditingExperience {
 			if ( ! empty( $title_value ) ) {
 				if ( $post->post_title !== $title_value ) {
 					$post->post_title = $title_value;
-					wp_update_post( $post, false, false );
+					$this->update_post( $post );
 				}
 				return $title_value;
 			}
@@ -786,7 +776,25 @@ final class FormEditingExperience {
 		}
 
 		$post->post_title = $meta_value;
-		wp_update_post( $post, true, false );
+		if ( empty( $post->post_name ) || (int) $post->post_name === $post->ID ) {
+			$post->post_name = wp_unique_post_slug( sanitize_title( $meta_value, 'save' ), $post->ID, $post->post_status, $post->post_type, $post->post_parent );
+		}
+		$this->update_post( $post );
 	}
 
+	/**
+	 * Updates the post with the provided data.
+	 *
+	 * Removes ACM callbacks attached to `wp_insert_post`
+	 * to prevent them from running again when we update the post.
+	 *
+	 * @param \WP_Post $post The post data to be saved.
+	 *
+	 * @return void
+	 */
+	private function update_post( $post ): void {
+		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
+		wp_update_post( $post, false, false );
+		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
+	}
 }

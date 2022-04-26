@@ -85,8 +85,35 @@ class TestContentCreation extends WP_UnitTestCase {
 		// Set the post attributes and update the post.
 		$form->set_post_attributes( $this->post_ids['public_post_id'], $post, false );
 		$post = get_post( $this->post_ids['public_post_id'] );
+		self::assertSame( 'Test dog', $post->post_title );
 
-		$this->assertStringStartsWith( 'entry', $post->post_title );
+		// Get initial auto-draft post.
+		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
+
+		// Set the post attributes and update the post.
+		$form->set_post_attributes( $this->post_ids['auto_draft_post_id'], $auto_draft_post, false );
+
+		// Confirm auto-draft post title is 'entry{xx}', where xx is the post ID.
+		self::assertSame(
+			'entry' . $this->post_ids['auto_draft_post_id'],
+			get_post_field( 'post_title', $this->post_ids['auto_draft_post_id'] )
+		);
+
+		// Publish the post and confirm the post_title is unchanged.
+		$auto_draft_post              = get_post( $this->post_ids['auto_draft_post_id'] );
+		$auto_draft_post->post_status = 'publish';
+		wp_update_post( $auto_draft_post, false, false );
+		self::assertSame(
+			'entry' . $this->post_ids['auto_draft_post_id'],
+			get_post_field( 'post_title', $this->post_ids['auto_draft_post_id'] )
+		);
+
+		// Save the title field value and confirm the post_title is updated.
+		update_post_meta( $this->post_ids['auto_draft_post_id'], 'singleLineRequired', 'This meta value should become the post title' );
+		self::assertSame(
+			'This meta value should become the post title',
+			get_post_field( 'post_title', $this->post_ids['auto_draft_post_id'] )
+		);
 	}
 
 	public function test_post_title_synced_from_postmeta_table_to_posts_table(): void {
@@ -103,5 +130,62 @@ class TestContentCreation extends WP_UnitTestCase {
 
 		update_post_meta( $post_id, 'singleLineRequired', $meta_title ); // singleLineRequired is configured as a title field.
 		self::assertSame( get_post_field( 'post_title', $post_id ), $meta_title );
+	}
+
+	public function test_correct_post_name(): void {
+		$form = new FormEditingExperience();
+
+		// Get the initial post.
+		$post = get_post( $this->post_ids['public_post_id'] );
+
+		// Set the post attributes and update the post.
+		$form->set_post_attributes( $this->post_ids['public_post_id'], $post, false );
+		$post = get_post( $this->post_ids['public_post_id'] );
+		// Post slug should match the sanitized version of the post title. e.g. "Test dog" becomes "test-dog".
+		self::assertSame( 'test-dog', $post->post_name );
+
+		// Get initial auto-draft post.
+		$auto_draft_post = get_post( $this->post_ids['auto_draft_post_id'] );
+
+		// Set the post attributes and update the post.
+		$form->set_post_attributes( $this->post_ids['auto_draft_post_id'], $auto_draft_post, false );
+
+		/**
+		 * Confirm auto-draft post slug/name is '{xx}', where xx is the post ID.
+		 * This casts the post_name value to an int, because WP stores it as a string.
+		 * Casting to an int should result in it matching the post ID, which is an integer.
+		 */
+		self::assertSame(
+			$this->post_ids['auto_draft_post_id'],
+			(int) get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
+		);
+
+		// Publish the post and confirm the post_name is unchanged.
+		$auto_draft_post              = get_post( $this->post_ids['auto_draft_post_id'] );
+		$auto_draft_post->post_status = 'publish';
+		wp_update_post( $auto_draft_post, false, false );
+		self::assertSame(
+			$this->post_ids['auto_draft_post_id'],
+			(int) get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
+		);
+
+		// Save the title value and confirm the post_name is generated and saved. `singleLineRequired` is a title field.
+		update_post_meta( $this->post_ids['auto_draft_post_id'], 'singleLineRequired', 'Cows go moo' );
+		self::assertSame(
+			'cows-go-moo',
+			get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
+		);
+
+		/**
+		 * Update the title value and confirm the post_name is untouched.
+		 * We do not want to generate a post_name value every time the title
+		 * is updated. We only generate a post_name value when it is empty
+		 * or when it is the same as the post ID number.
+		 */
+		update_post_meta( $this->post_ids['auto_draft_post_id'], 'singleLineRequired', 'Cows go moo and ducks go quack' );
+		self::assertSame(
+			'cows-go-moo',
+			get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
+		);
 	}
 }
