@@ -96,7 +96,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertEquals( [ '2021/02/13', '2021/02/14' ], $response_data['acm_fields']['dateRepeatable'] );
 
 		self::assertArrayHasKey( 'booleanRequired', $response_data['acm_fields'] );
-		self::assertEquals( true, $response_data['acm_fields']['booleanRequired'] );
+		self::assertTrue( $response_data['acm_fields']['booleanRequired'] );
 
 		self::assertArrayHasKey( 'mediaRequired', $response_data['acm_fields'] );
 		self::assertArrayHasKey( 'mediaPDF', $response_data['acm_fields'] );
