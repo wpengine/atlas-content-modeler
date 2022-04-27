@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
-import Icon from "../../../../components/icons";
-import { buildWildcardRegex } from "../../../../shared-assets/js/validation/emailValidation";
+import Icon from "../../../../../components/icons";
+import { buildWildcardRegex } from "../../../../../shared-assets/js/validation/emailValidation";
+import EmailHeader from "./EmailHeader";
 
 export default function Email({
 	field,
@@ -22,26 +23,7 @@ export default function Email({
 
 	return (
 		<>
-			<label
-				htmlFor={`atlas-content-modeler[${modelSlug}][${field.slug}]`}
-			>
-				{field.name}
-			</label>
-			{field?.required && (
-				<p className="required">
-					*{__("Required", "atlas-content-modeler")}
-				</p>
-			)}
-			{field?.description && (
-				<p className="help mb-0">{field.description}</p>
-			)}
-			{field?.allowedDomains && (
-				<p className="help mb-0">
-					Allowed domains :{" "}
-					{field.allowedDomains.replaceAll(",", ", ")}
-				</p>
-			)}
-
+			<EmailHeader modelSlug={modelSlug} field={field} />
 			<input {...emailProps} />
 			<span className="error">
 				<Icon type="error" />
