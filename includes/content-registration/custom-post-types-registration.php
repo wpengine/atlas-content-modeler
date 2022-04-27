@@ -745,9 +745,9 @@ function get_connection_name( string $from_type, string $to_type, string $from_f
 /**
  * Maps an HTML field type to a WPGraphQL field type.
  *
- * @param string|array|null $field_type The HTML field type.
+ * @param string $field_type The HTML field type.
  *
- * @access private
+ * @return array|string|null
  */
 function map_html_field_type_to_graphql_field_type( string $field_type ) {
 	if ( empty( $field_type ) ) {
