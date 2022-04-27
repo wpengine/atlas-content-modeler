@@ -54,6 +54,13 @@ function create_test_posts( $test_class ) {
 
 	populate_post( $ids['private_fields_post_id'], 'private-fields', $test_class );
 
+	$ids['auto_draft_post_id'] = $test_class->factory->post->create(
+		array(
+			'post_status' => 'auto-draft',
+			'post_type'   => 'public-fields',
+		)
+	);
+
 	return $ids;
 }
 
