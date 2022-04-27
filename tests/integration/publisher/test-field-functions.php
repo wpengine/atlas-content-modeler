@@ -8,6 +8,7 @@
 use function WPE\AtlasContentModeler\order_fields;
 use function WPE\AtlasContentModeler\get_entry_title_field;
 use function WPE\AtlasContentModeler\sanitize_field;
+use function WPE\AtlasContentModeler\sanitize_fields;
 use function WPE\AtlasContentModeler\get_field_type_from_slug;
 use function WPE\AtlasContentModeler\append_reverse_relationship_fields;
 
@@ -230,6 +231,62 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 				sanitize_field( $type, $input )
 			);
 		}
+	}
+
+	public function test_sanitize_fields(): void {
+		$model = [
+			'person' => [
+				'fields' => [
+					'123' => [
+						'id'   => 123,
+						'slug' => 'name',
+						'type' => 'text',
+					],
+					'456' => [
+						'id'   => 456,
+						'slug' => 'bio',
+						'type' => 'text',
+					],
+				],
+			],
+		];
+
+		$test_data = [
+			'name'    => 'text',
+			'bio'     => 'value',
+			'unknown' => 'value',
+		];
+
+		$this->assertSame(
+			$test_data,
+			sanitize_fields( $model['person'], $test_data )
+		);
+	}
+
+	public function test_sanitize_fields_empty(): void {
+		$model = [
+			'person' => [
+				'fields' => [
+					'123' => [
+						'id'   => 123,
+						'slug' => 'name',
+						'type' => 'text',
+					],
+					'456' => [
+						'id'   => 456,
+						'slug' => 'bio',
+						'type' => 'text',
+					],
+				],
+			],
+		];
+
+		$test_data = [];
+
+		$this->assertSame(
+			$test_data,
+			sanitize_fields( $model['person'], $test_data )
+		);
 	}
 
 	public function test_append_reverse_relationship_fields(): void {
