@@ -31,6 +31,8 @@ class PublisherCallbacksTestCases extends WP_UnitTestCase {
 		self::assertSame( 10, has_action( 'do_meta_boxes', [ $this->class, 'move_meta_boxes' ] ) );
 		self::assertSame( 10, has_action( 'do_meta_boxes', [ $this->class, 'remove_thumbnail_meta_box' ] ) );
 		self::assertSame( 10, has_action( 'transition_post_status', [ $this->class, 'maybe_add_location_callback' ] ) );
+		self::assertSame( 10, has_action( 'added_post_meta', [ $this->class, 'sync_title_field_to_posts_table' ] ) );
+		self::assertSame( 10, has_action( 'updated_postmeta', [ $this->class, 'sync_title_field_to_posts_table' ] ) );
 	}
 
 	/**

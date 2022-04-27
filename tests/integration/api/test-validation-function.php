@@ -6,13 +6,13 @@ use WPE\AtlasContentModeler\Validation_Exception;
 use function WPE\AtlasContentModeler\API\validation\validate_model_field_data;
 use function WPE\AtlasContentModeler\API\validation\validate_multiple_choice_field;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
-use function WPE\AtlasContentModeler\API\validation\validate_max;
-use function WPE\AtlasContentModeler\API\validation\validate_min;
 use function WPE\AtlasContentModeler\API\validation\validate_in_array;
 use function WPE\AtlasContentModeler\API\validation\validate_array;
 use function WPE\AtlasContentModeler\API\validation\validate_string;
 use function WPE\AtlasContentModeler\API\validation\validate_number;
 use function WPE\AtlasContentModeler\API\validation\validate_date;
+use function WPE\AtlasContentModeler\API\validation\validate_min;
+use function WPE\AtlasContentModeler\API\validation\validate_max;
 
 class TestValidationFunctions extends Integration_TestCase {
 	/**
@@ -372,5 +372,84 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->expectExceptionMessage( $message );
 
 		validate_in_array( 'test', [], $message );
+	}
+
+	/**
+	 * @testWith
+	 * [ "", 1 ]
+	 * [ "a", 2 ]
+	 * [ [], 1 ]
+	 * [ [ "item" ], 2 ]
+	 * [ 0, 1 ]
+	 * [ 1, 2 ]
+	 */
+	public function test_validate_min_will_throw_an_exception_if_invalid( $value, $min ) {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'The field must be at least the minimum' );
+
+		validate_min( $value, $min );
+	}
+
+	/**
+	 * @testWith
+	 * [ "", 0 ]
+	 * [ "a", 1 ]
+	 * [ [], 0 ]
+	 * [ [ "item" ], 1 ]
+	 * [ 0, 0 ]
+	 * [ 1, 1 ]
+	 */
+	public function test_validate_min_will_not_throw_an_exception_if_valid( $value, $min ) {
+		$this->assertNull( validate_min( $value, $min ) );
+	}
+
+	/**
+	 * @testWith
+	 * [ "", 1, "The field must be at least 1 character" ]
+	 * [ [], 1, "The field must contain at least 1 item" ]
+	 * [ 0, 1, "The value must equal 1 or greater" ]
+	 */
+	public function test_validate_min_will_use_a_custom_exception_message( $value, $min, $message ) {
+		$this->expectExceptionMessage( $message );
+
+		validate_min( $value, $min, $message );
+	}
+
+	/**
+	 * @testWith
+	 * [ "22", 1 ]
+	 * [ [ "item", "item2" ], 1 ]
+	 * [ 2, 1 ]
+	 */
+	public function test_validate_max_will_throw_an_exception_if_invalid( $value, $max ) {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'The field cannot exceed the maximum' );
+
+		validate_max( $value, $max );
+	}
+
+	/**
+	 * @testWith
+	 * [ "", 1 ]
+	 * [ "a", 1 ]
+	 * [ [], 1 ]
+	 * [ [ "item" ], 1 ]
+	 * [ 0, 1 ]
+	 * [ 1, 1 ]
+	 */
+	public function test_validate_max_will_not_throw_an_exception_if_valid( $value, $max ) {
+		$this->assertNull( validate_max( $value, $max ) );
+	}
+
+	/**
+	 * @testWith
+	 * [ "aa", 1, "The field cannot be greater than 1 character" ]
+	 * [ [ "item", "item2" ], 1, "The field cannot contain more than 1 items" ]
+	 * [ 2, 1, "The value cannot exceed 1" ]
+	 */
+	public function test_validate_max_will_use_a_custom_exception_message( $value, $max, $message ) {
+		$this->expectExceptionMessage( $message );
+
+		validate_max( $value, $max, $message );
 	}
 }

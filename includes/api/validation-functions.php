@@ -299,3 +299,53 @@ function validate_not_empty( $value, string $message = 'The field cannot be empt
 		throw new Validation_Exception( $message );
 	}
 }
+
+/**
+ * Validate a string, array, or number is at least the given minimum.
+ *
+ * @param mixed  $value The value.
+ * @param int    $min The minimum criteria.
+ * @param string $message The optional error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_min( $value, int $min, string $message = 'The field must be at least the minimum' ): void {
+	if ( \is_string( $value ) && \strlen( $value ) < $min ) {
+		throw new Validation_Exception( $message );
+	}
+
+	if ( \is_array( $value ) && \count( $value ) < $min ) {
+		throw new Validation_Exception( $message );
+	}
+
+	if ( \is_numeric( $value ) && (float) $value < $min ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate a string, array, or number is at most the given maximum.
+ *
+ * @param mixed  $value The value.
+ * @param int    $max The maximum criteria.
+ * @param string $message The optional error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_max( $value, int $max, string $message = 'The field cannot exceed the maximum' ): void {
+	if ( \is_string( $value ) && \strlen( $value ) > $max ) {
+		throw new Validation_Exception( $message );
+	}
+
+	if ( \is_array( $value ) && \count( $value ) > $max ) {
+		throw new Validation_Exception( $message );
+	}
+
+	if ( \is_numeric( $value ) && (float) $value > $max ) {
+		throw new Validation_Exception( $message );
+	}
+}

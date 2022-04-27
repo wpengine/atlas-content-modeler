@@ -390,4 +390,27 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
 	}
+
+	public function test_title_fields_can_be_searched_in_graphql(): void {
+		try {
+			$results = graphql(
+				[
+					'query' => '
+				{
+					publicsFields(where: {search: "required"}) {
+						nodes {
+							title
+						}
+					}
+				}
+				',
+				]
+			);
+
+			// Matches value of singleLineRequired field, which is configured as the title field.
+			self::assertSame( 'This is required single line text', $results['data']['publicsFields']['nodes'][0]['title'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
 }

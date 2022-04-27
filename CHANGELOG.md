@@ -12,9 +12,15 @@
 - Function get_field() to retrieve the model field schema.
 
 ### Changed
+- Focus now moves to the new input field when adding a new repeating number, date or single line text field row.
+- Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
 - Boolean fields in REST responses will now return `true` or `false` instead of `"on"` or `[empty string]`.
 - Focus now moves to the new input field when adding a new repeating number, date or single line text field row.
 - Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
+
+### Fixed
+- Title values are now saved to the wp_posts table as expected, instead of being exposed with WP filters. This fixes a few things, such as queries that search the post title field.
+- Post slugs are now generated from the post title value, like they are for post types built into WordPress.
 
 ## 0.16.0 - 2022-04-06
 ### Added
