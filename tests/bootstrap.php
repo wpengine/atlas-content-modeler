@@ -34,3 +34,4 @@ function _manually_load_plugin() {
 }
 
 require $_tests_dir . '/includes/bootstrap.php';
+require __DIR__ . '/integration/class-integration-test-case.php';
