@@ -424,5 +424,18 @@ function get_test_fields() {
 			'minChars'         => '',
 			'maxChars'         => '',
 		),
+		'1651005478'    => array(
+			'show_in_rest'      => true,
+			'show_in_graphql'   => true,
+			'type'              => 'email',
+			'id'                => '1651005478',
+			'position'          => '400000',
+			'name'              => 'Email-Repeater',
+			'slug'              => 'emailRepeater',
+			'isRepeatableEmail' => 'true',
+			'required'          => true,
+			'minChars'          => '',
+			'maxChars'          => '',
+		),
 	);
 }
