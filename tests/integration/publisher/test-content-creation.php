@@ -188,4 +188,29 @@ class TestContentCreation extends WP_UnitTestCase {
 			get_post_field( 'post_name', $this->post_ids['auto_draft_post_id'] )
 		);
 	}
+
+	public function test_empty_title_field_value_is_saved_to_post_title(): void {
+		$post_id = $this->factory->post->create(
+			[
+				'post_type'  => 'public-fields',
+				'post_title' => 'This title should be overwritten with an empty string',
+			]
+		);
+
+		update_post_meta( $post_id, 'singleLineRequired', '' ); // singleLineRequired is a title field.
+		/**
+		 * We use get_post() here, instead of get_post_field() like we
+		 * do in other tests, because the latter returns an empty string
+		 * on failure, and in this test case an empty string indicates
+		 * a success. Using get_post_field() here could result in a false
+		 * positive if this test is refactored and errors are introduced.
+		 */
+		$post = get_post( $post_id );
+		/**
+		 * We use assertSame() here, instead of assertEmpty(), because
+		 * get_post() returns null on failure, and assertEmpty() would
+		 * pass because null is considered empty in PHP.
+		 */
+		self::assertSame( '', $post->post_title );
+	}
 }
