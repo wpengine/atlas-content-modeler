@@ -1,12 +1,13 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Icon from "../../../../../components/icons";
 import { buildWildcardRegex } from "../../../../../shared-assets/js/validation/emailValidation";
 import TrashIcon from "../../../../../components/icons/TrashIcon";
 import AddIcon from "../../../../../components/icons/AddIcon";
 import { __ } from "@wordpress/i18n";
 import EmailHeader from "./EmailHeader";
+import useFocusNewFields from "../shared/repeaters/useFocusNewFields";
 
 const RepeatingEmail = ({
 	modelSlug,
@@ -17,6 +18,53 @@ const RepeatingEmail = ({
 }) => {
 	const [values, setValues] = useState(field?.value || [""]);
 	const emailPattern = buildWildcardRegex(field.allowedDomains);
+
+	const addButtonRef = useRef();
+
+	useFocusNewFields(modelSlug, field?.slug, values);
+
+	/**
+	 * When enter is pressed move focus to the next field, or add a new
+	 * field if the field in focus is the final one in the repeating list.
+	 *
+	 * @param {object} event
+	 */
+	function handleKeyPress(event) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+
+			const lastFieldIsInFocus =
+				document.activeElement.getAttribute("name") ===
+				`atlas-content-modeler[${modelSlug}][${field.slug}][${
+					values?.length - 1
+				}]`;
+
+			if (lastFieldIsInFocus) {
+				addButtonRef.current.click();
+				return;
+			}
+
+			const activeFieldName = document.activeElement.getAttribute("name");
+
+			const activeFieldIndex = [
+				...document.querySelectorAll(
+					`[name*="atlas-content-modeler[${modelSlug}][${field.slug}]`
+				),
+			]
+				.map((field) => field.getAttribute("name"))
+				.indexOf(activeFieldName);
+
+			const nextField = document.querySelector(
+				`[name="atlas-content-modeler[${modelSlug}][${field.slug}][${
+					activeFieldIndex + 1
+				}]`
+			);
+
+			if (nextField) {
+				nextField.focus();
+			}
+		}
+	}
 
 	return (
 		<>
@@ -88,6 +136,9 @@ const RepeatingEmail = ({
 																	field
 																)
 															}
+															onKeyPress={
+																handleKeyPress
+															}
 														/>
 														<span className="error">
 															<Icon type="error" />
@@ -155,6 +206,7 @@ const RepeatingEmail = ({
 													"",
 												]);
 											}}
+											ref={addButtonRef}
 										>
 											<a>
 												<AddIcon noCircle />{" "}
