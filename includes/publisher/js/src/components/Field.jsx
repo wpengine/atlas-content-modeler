@@ -8,7 +8,6 @@ import Number from "./Number";
 import Date from "./Date";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
-import { isEmailDomainValid } from "../../../../shared-assets/js/validation/emailValidation";
 
 const defaultError = "This field is required";
 const integerRegex = /^[-+]?\d+/g;

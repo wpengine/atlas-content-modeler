@@ -315,6 +315,17 @@ function sanitize_field( string $type, $value ) {
 			}
 			return $value;
 		case 'email':
+			if ( is_array( $value ) ) {
+				return array_filter(
+					array_map(
+						function( $value ) {
+							return filter_var( $value, FILTER_SANITIZE_EMAIL );
+						},
+						$value
+					)
+				);
+			}
+
 			return filter_var( $value, FILTER_SANITIZE_EMAIL );
 		default:
 			return $value;
