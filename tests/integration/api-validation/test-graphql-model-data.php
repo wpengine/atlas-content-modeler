@@ -7,6 +7,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 	private $test_models;
 
+	private $create_mutation_query;
+
 	public function set_up(): void {
 		parent::set_up();
 
@@ -31,6 +33,43 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		do_action( 'init' );
 
 		$this->post_ids = $this->get_post_ids();
+
+		$this->create_mutation_query = [
+			'query' => '
+				mutation CREATE_PUBLIC_FIELDS_ENTRY {
+					createPublicFields(
+						input: {
+							clientMutationId: "CreatePublicFields"
+							status: PUBLISH
+							singleLineRequired: "Created with a GraphQL mutation"
+							richText: "<p>Rich Text Content</p>"
+							richTextRepeatable: ["<p>Rich Text 1</p>", "<p>Rich Text 2</p>"]
+							numberIntergerRequired: 1.0
+							numberIntegerRepeat: [ 1.0, 2.0, 3.0]
+							dateRequired: "2022-01-01"
+							dateRepeatable: ["2022-01-01", "2022-01-02"]
+							multiSingle: ["kiwi"]
+							multipleMulti: ["apple", "banana"]
+							booleanRequired: true
+						}
+					) {
+						publicFields {
+							title
+							singleLineRequired
+							richText
+							richTextRepeatable
+							numberIntergerRequired
+							numberIntegerRepeat
+							dateRequired
+							dateRepeatable
+							multiSingle
+							multipleMulti
+							booleanRequired
+						}
+					}
+				}
+			',
+		];
 	}
 
 	public function tear_down() {
@@ -149,6 +188,236 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 			self::assertArrayHasKey( 'multipleMulti', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['multipleMulti'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	public function test_graphql_create_mutations_accept_acm_fields_as_inputs(): void {
+		wp_set_current_user( 1 );
+		try {
+			$response = graphql( $this->create_mutation_query );
+
+			$mutation = $response['data']['createPublicFields']['publicFields'];
+
+			self::assertArrayHasKey( 'title', $mutation );
+			self::assertSame( $mutation['title'], 'Created with a GraphQL mutation' );
+
+			self::assertArrayHasKey( 'singleLineRequired', $mutation );
+			self::assertSame( $mutation['singleLineRequired'], 'Created with a GraphQL mutation' );
+
+			self::assertArrayHasKey( 'richText', $mutation );
+			self::assertSame( $mutation['richText'], '<p>Rich Text Content</p>' );
+
+			self::assertArrayHasKey( 'richTextRepeatable', $mutation );
+			self::assertSame( $mutation['richTextRepeatable'], [ '<p>Rich Text 1</p>', '<p>Rich Text 2</p>' ] );
+
+			self::assertArrayHasKey( 'numberIntergerRequired', $mutation );
+			self::assertSame( $mutation['numberIntergerRequired'], 1.0 );
+
+			self::assertArrayHasKey( 'numberIntegerRepeat', $mutation );
+			self::assertSame( $mutation['numberIntegerRepeat'], [ 1.0, 2.0, 3.0 ] );
+
+			self::assertArrayHasKey( 'dateRequired', $mutation );
+			self::assertSame( $mutation['dateRequired'], '2022-01-01' );
+
+			self::assertArrayHasKey( 'dateRepeatable', $mutation );
+			self::assertSame( $mutation['dateRepeatable'], [ '2022-01-01', '2022-01-02' ] );
+
+			self::assertArrayHasKey( 'multiSingle', $mutation );
+			self::assertSame( $mutation['multiSingle'], [ 'kiwi' ] );
+
+			self::assertArrayHasKey( 'multipleMulti', $mutation );
+			self::assertSame( $mutation['multipleMulti'], [ 'apple', 'banana' ] );
+
+			self::assertArrayHasKey( 'booleanRequired', $mutation );
+			self::assertTrue( $mutation['booleanRequired'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	public function test_graphql_create_mutations_must_provide_required_fields(): void {
+		wp_set_current_user( 1 );
+		try {
+			$response = graphql(
+				[
+					// This query omits all required fields and should fail.
+					'query' => '
+						mutation CREATE_PUBLIC_FIELDS_ENTRY {
+							createPublicFields(
+								input: {
+									clientMutationId: "CreatePublicFields"
+									status: PUBLISH
+									richText: "<p>Rich Text Content</p>"
+									richTextRepeatable: ["<p>Rich Text 1</p>", "<p>Rich Text 2</p>"]
+									numberIntegerRepeat: [ 1.0, 2.0, 3.0]
+									dateRepeatable: ["2022-01-01", "2022-01-02"]
+									multiSingle: ["kiwi"]
+									multipleMulti: ["apple", "banana"]
+								}
+							) {
+								publicFields {
+									title
+								}
+							}
+						}
+					',
+				]
+			);
+
+			self::assertArrayHasKey( 'errors', $response );
+
+			$error_messages = wp_list_pluck( $response['errors'], 'message' );
+
+			$expected_messages = [
+				'Field CreatePublicFieldsInput.booleanRequired of required type Boolean! was not provided.',
+				'Field CreatePublicFieldsInput.dateRequired of required type String! was not provided.',
+				'Field CreatePublicFieldsInput.numberIntergerRequired of required type Float! was not provided.',
+				'Field CreatePublicFieldsInput.singleLineRequired of required type String! was not provided.',
+
+			];
+
+			foreach ( $expected_messages as $expected_message ) {
+				self::assertContains( $expected_message, $error_messages );
+			}
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	public function test_graphql_create_mutations_require_authentication(): void {
+		// Log out to check that mutation attempts then fail.
+		wp_set_current_user( null );
+
+		try {
+			$response = graphql( $this->create_mutation_query );
+
+			self::assertArrayHasKey( 'errors', $response );
+
+			$error_messages   = wp_list_pluck( $response['errors'], 'message' );
+			$expected_message = 'Sorry, you are not allowed to create publicsFields';
+
+			self::assertContains( $expected_message, $error_messages );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	public function test_graphql_update_mutations_accept_acm_fields_as_inputs(): void {
+		wp_set_current_user( 1 );
+
+		$post_id    = $this->post_ids['public_fields_post_id'];
+		$graphql_id = \GraphQLRelay\Relay::toGlobalId( 'post', $post_id );
+
+		$update_mutation = [
+			'variables' => [
+				'id' => $graphql_id,
+
+			],
+			'query'     => '
+				mutation UPDATE_PUBLIC_FIELDS_ENTRY( $id:ID! ) {
+					updatePublicFields(
+						input: {
+							clientMutationId: "UpdatePublicFields"
+							id: $id
+							singleLineRequired: "Updated"
+							booleanRequired: false
+						}
+					) {
+						publicFields {
+							title
+							singleLineRequired
+							booleanRequired
+						}
+					}
+				}
+			',
+		];
+
+		try {
+			$response = graphql( $update_mutation );
+
+			$mutation = $response['data']['updatePublicFields']['publicFields'];
+
+			self::assertArrayHasKey( 'title', $mutation );
+			self::assertSame( $mutation['title'], 'Updated' );
+
+			self::assertArrayHasKey( 'singleLineRequired', $mutation );
+			self::assertSame( $mutation['singleLineRequired'], 'Updated' );
+
+			self::assertArrayHasKey( 'booleanRequired', $mutation );
+			self::assertFalse( $mutation['booleanRequired'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	/**
+	 * Confirms deletion mutations can remove an ACM entry.
+	 *
+	 * WPGraphQL automatically registers create, update and delete mutations for
+	 * all WordPress post types exposed to WPGraphQL.
+	 *
+	 * This test is therefore verifying WPGraphQL functionality and not logic
+	 * provided by ACM, but it helps us:
+	 * - Be confident that ACM models are registered for delete mutations.
+	 * - Be made aware of any upstream changes in WPGraphQL that affect
+	 *   delete operations on ACM models.
+	 * - Document how a delete mutation should work.
+	 */
+	public function test_graphql_delete_mutations_remove_acm_entries(): void {
+		wp_set_current_user( 1 );
+
+		$post_id    = $this->post_ids['public_fields_post_id'];
+		$graphql_id = \GraphQLRelay\Relay::toGlobalId( 'post', $post_id );
+
+		$delete_mutation = [
+			'variables' => [
+				'id' => $graphql_id,
+
+			],
+			'query'     => '
+				mutation DELETE_PUBLIC_FIELDS_ENTRY( $id:ID! ) {
+					deletePublicFields(
+						input: {
+							id: $id
+						}
+					) {
+						deletedId
+					}
+				}
+			',
+		];
+
+		try {
+			$response = graphql( $delete_mutation );
+
+			self::assertArrayHasKey( 'deletedId', $response['data']['deletePublicFields'] );
+			self::assertSame( $graphql_id, $response['data']['deletePublicFields']['deletedId'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
+	public function test_title_fields_can_be_searched_in_graphql(): void {
+		try {
+			$results = graphql(
+				[
+					'query' => '
+				{
+					publicsFields(where: {search: "required"}) {
+						nodes {
+							title
+						}
+					}
+				}
+				',
+				]
+			);
+
+			// Matches value of singleLineRequired field, which is configured as the title field.
+			self::assertSame( 'This is required single line text', $results['data']['publicsFields']['nodes'][0]['title'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}

@@ -96,7 +96,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		self::assertEquals( [ '2021/02/13', '2021/02/14' ], $response_data['acm_fields']['dateRepeatable'] );
 
 		self::assertArrayHasKey( 'booleanRequired', $response_data['acm_fields'] );
-		self::assertEquals( 'true', $response_data['acm_fields']['booleanRequired'] );
+		self::assertTrue( $response_data['acm_fields']['booleanRequired'] );
 
 		self::assertArrayHasKey( 'mediaRequired', $response_data['acm_fields'] );
 		self::assertArrayHasKey( 'mediaPDF', $response_data['acm_fields'] );
@@ -165,7 +165,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$request       = new \WP_REST_Request( 'GET', $this->namespace . $this->public_route . '/' . $this->post_ids['public_post_id'] );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		self::assertEquals( $this->post_ids['public_post_id'], $response_data['slug'] );
+		self::assertEquals( $this->post_ids['public_post_id'], $response_data['id'] );
 	}
 
 	/**
@@ -187,7 +187,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
 		self::assertSame( 200, $response->get_status() );
-		self::assertEquals( $this->post_ids['draft_public_post_id'], $response_data['slug'] );
+		self::assertEquals( $this->post_ids['draft_public_post_id'], $response_data['id'] );
 	}
 
 	/**
@@ -208,7 +208,7 @@ class RestModelDataTests extends WP_UnitTestCase {
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
 		self::assertSame( 200, $response->get_status() );
-		self::assertEquals( $this->post_ids['private_post_id'], $response_data['slug'] );
+		self::assertEquals( $this->post_ids['private_post_id'], $response_data['id'] );
 	}
 
 	/**

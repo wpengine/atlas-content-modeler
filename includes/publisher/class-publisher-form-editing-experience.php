@@ -82,6 +82,8 @@ final class FormEditingExperience {
 		add_action( 'do_meta_boxes', [ $this, 'move_meta_boxes' ] );
 		add_action( 'do_meta_boxes', [ $this, 'remove_thumbnail_meta_box' ] );
 		add_action( 'transition_post_status', [ $this, 'maybe_add_location_callback' ], 10, 3 );
+		add_action( 'updated_postmeta', [ $this, 'sync_title_field_to_posts_table' ], 10, 4 );
+		add_action( 'added_post_meta', [ $this, 'sync_title_field_to_posts_table' ], 10, 4 );
 	}
 
 	/**
@@ -215,7 +217,12 @@ final class FormEditingExperience {
 					if ( 'relationship' === $field['type'] ) {
 						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $this->get_relationship_field( $post, $field );
 					} else {
-						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = get_post_meta( $post->ID, $field['slug'], true );
+						$value = get_post_meta( $post->ID, $field['slug'], true );
+						if ( ! empty( $field['isTitle'] ) && $value !== $post->post_title ) {
+							$post->post_title = $value;
+							$this->update_post( $post );
+						}
+						$models[ $this->screen->post_type ]['fields'][ $key ]['value'] = $value;
 					}
 				}
 			}
@@ -288,27 +295,17 @@ final class FormEditingExperience {
 	 * @return void
 	 */
 	public function set_post_attributes( int $post_ID, WP_Post $post, bool $update ): void {
-		if ( true === $update ) {
-			// @todo Perhaps check that the slug has not been changed outside of the editor.
-			return;
-		}
-
-		// Only enforce this slug on created models.
 		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
 			return;
 		}
 
-		// An object to add more useful info to the slug, perhaps post_type ID.
-		// @todo Add a filter to change the slug format for default model post slug.
-		$model_post_slug = $post_ID;
+		if ( $post->post_status !== 'auto-draft' ) {
+			return;
+		}
 
-		wp_update_post(
-			array(
-				'ID'         => $post_ID,
-				'post_name'  => $model_post_slug,
-				'post_title' => 'entry' . $post_ID,
-			)
-		);
+		$post->post_title = 'entry' . $post_ID;
+		$post->post_name  = $post_ID;
+		$this->update_post( $post );
 	}
 
 	/**
@@ -616,18 +613,17 @@ final class FormEditingExperience {
 	 * @return string The adjusted post title.
 	 */
 	public function filter_post_titles( string $title, int $id ) {
-		$post_type = get_post_type( $id );
-
-		if ( ! $post_type ) {
+		$post = get_post( $id );
+		if ( ! $post instanceof \WP_Post ) {
 			return $title;
 		}
 
 		// Only filter titles for post types created with this plugin.
-		if ( ! array_key_exists( $post_type, $this->models ) ) {
+		if ( ! array_key_exists( $post->post_type, $this->models ) ) {
 			return $title;
 		}
 
-		$fields = $this->models[ $post_type ]['fields'] ?? [];
+		$fields = $this->models[ $post->post_type ]['fields'] ?? [];
 
 		$title_field = get_entry_title_field( $fields );
 
@@ -635,12 +631,16 @@ final class FormEditingExperience {
 			$title_value = get_post_meta( $id, $title_field['slug'], true );
 
 			if ( ! empty( $title_value ) ) {
+				if ( $post->post_title !== $title_value ) {
+					$post->post_title = $title_value;
+					$this->update_post( $post );
+				}
 				return $title_value;
 			}
 		}
 
 		// Use a generated title when entry title fields or field data are absent.
-		$post_type_singular = $this->models[ $post_type ]['singular_name'] ?? esc_html__( 'No Title', 'atlas-content-modeler' );
+		$post_type_singular = $this->models[ $post->post_type ]['singular_name'] ?? esc_html__( 'No Title', 'atlas-content-modeler' );
 		return $post_type_singular . ' ' . $id;
 	}
 
@@ -741,5 +741,60 @@ final class FormEditingExperience {
 		$location = remove_query_arg( 'acm-post-published', $location );
 		$location = add_query_arg( 'acm-post-published', 'true', $location );
 		return $location;
+	}
+
+	/**
+	 * Syncs title field data to the wp_posts table.
+	 *
+	 * @param int    $meta_id ID of updated metadata entry.
+	 * @param int    $object_id Post ID.
+	 * @param string $meta_key Metadata key.
+	 * @param mixed  $meta_value Metadata value.
+	 * @return void
+	 */
+	public function sync_title_field_to_posts_table( $meta_id, $object_id, $meta_key, $meta_value ): void {
+		$post = get_post( $object_id );
+		if ( ! $post instanceof \WP_Post ) {
+			return;
+		}
+		$models = get_registered_content_types();
+		if ( ! array_key_exists( $post->post_type, $models ) ) {
+			return;
+		}
+
+		$title_field = get_entry_title_field( $models[ $post->post_type ]['fields'] ?? [] );
+		if ( empty( $title_field['slug'] ) ) {
+			return;
+		}
+
+		if ( $title_field['slug'] !== $meta_key ) {
+			return;
+		}
+
+		if ( $post->post_title === $meta_value ) {
+			return;
+		}
+
+		$post->post_title = $meta_value;
+		if ( empty( $post->post_name ) || (int) $post->post_name === $post->ID ) {
+			$post->post_name = wp_unique_post_slug( sanitize_title( $meta_value, 'save' ), $post->ID, $post->post_status, $post->post_type, $post->post_parent );
+		}
+		$this->update_post( $post );
+	}
+
+	/**
+	 * Updates the post with the provided data.
+	 *
+	 * Removes ACM callbacks attached to `wp_insert_post`
+	 * to prevent them from running again when we update the post.
+	 *
+	 * @param \WP_Post $post The post data to be saved.
+	 *
+	 * @return void
+	 */
+	private function update_post( $post ): void {
+		remove_action( 'wp_insert_post', [ $this, 'set_post_attributes' ] );
+		wp_update_post( $post, false, false );
+		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 	}
 }

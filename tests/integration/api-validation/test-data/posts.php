@@ -54,6 +54,13 @@ function create_test_posts( $test_class ) {
 
 	populate_post( $ids['private_fields_post_id'], 'private-fields', $test_class );
 
+	$ids['auto_draft_post_id'] = $test_class->factory->post->create(
+		array(
+			'post_status' => 'auto-draft',
+			'post_type'   => 'public-fields',
+		)
+	);
+
 	return $ids;
 }
 
@@ -95,8 +102,8 @@ function populate_post( $post_id, $model, $test_class ) {
 	update_post_meta( $post_id, 'mediaRepeat', [ 1, 2, 3 ] );
 	update_post_meta( $post_id, 'mediaRequired', $ids[ $model . '_image_id' ] );
 	update_post_meta( $post_id, 'mediaPDF', $ids[ $model . '_pdf_id' ] );
-	update_post_meta( $post_id, 'boolean', 'false' );
-	update_post_meta( $post_id, 'booleanRequired', 'true' );
+	update_post_meta( $post_id, 'boolean', 'off' );
+	update_post_meta( $post_id, 'booleanRequired', 'on' );
 	update_post_meta( $post_id, 'multiSingle', [ 'kiwi' ] );
 	update_post_meta( $post_id, 'multipleMulti', [ 'apple', 'banana' ] );
 	update_post_meta( $post_id, 'featured', $ids[ $model . '_image_id' ] );

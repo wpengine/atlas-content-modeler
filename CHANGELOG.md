@@ -1,11 +1,8 @@
 # Atlas Content Modeler Changelog
 
 ## Unreleased
-### Changed
-- Focus now moves to the new input field when adding a new repeating number, date or single line text field row.
-- Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
-
 ### Added
+- Mutations support to create, update and delete entries via GraphQL. All fields are supported except media and relationships for now. Find examples at https://github.com/wpengine/atlas-content-modeler/blob/main/docs/mutations/index.md.
 - Function insert_entry_model() for inserting a model entry and fields.
 - Function update_model_entry() for updating an existing model entry and fields.
 - Function replace_relationship() to replace/add model entry relationships.
@@ -13,6 +10,15 @@
 - Function get_relationship() to retrieve the relationship object.
 - Function get_model() to retrieve the model schema.
 - Function get_field() to retrieve the model field schema.
+
+### Changed
+- Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
+- Boolean fields in REST responses will now return `true` or `false` instead of `"on"` or `[empty string]`.
+- Focus now moves to the new input field when adding a new repeating number, date or single line text field row.
+
+### Fixed
+- Title values are now saved to the wp_posts table as expected, instead of being exposed with WP filters. This fixes a few things, such as queries that search the post title field.
+- Post slugs are now generated from the post title value, like they are for post types built into WordPress.
 
 ## 0.16.0 - 2022-04-06
 ### Added
