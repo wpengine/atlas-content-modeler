@@ -93,7 +93,6 @@ const RepeatingEmail = ({
 												>
 													<div className="me-lg-1 repeater-input-container flex-fill">
 														<input
-															// ref={numberInputRef}
 															type={`${field.type}`}
 															name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 															id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
@@ -207,6 +206,7 @@ const RepeatingEmail = ({
 												]);
 											}}
 											ref={addButtonRef}
+											type="button"
 										>
 											<a>
 												<AddIcon noCircle />{" "}
