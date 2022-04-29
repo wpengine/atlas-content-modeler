@@ -45,6 +45,7 @@ function atlas_content_modeler_loader(): void {
 		'settings/settings-callbacks.php',
 		'content-registration/custom-post-types-registration.php',
 		'content-registration/register-taxonomies.php',
+		'content-registration/graphql-mutations.php',
 		'content-registration/class-wpe-rest-posts-controller.php',
 		'rest-api/init-rest-api.php',
 		'publisher/class-publisher-form-editing-experience.php',

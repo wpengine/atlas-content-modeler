@@ -131,6 +131,8 @@ function handle_content_fields_for_rest_api( int $post_id, array $field, \WP_RES
 	$meta_value = get_post_meta( $post_id, $field['slug'], true );
 
 	switch ( $field['type'] ) {
+		case 'boolean':
+			return $meta_value === 'on' ? true : false;
 		case 'media':
 			$media_item = get_post( $meta_value );
 
@@ -505,11 +507,6 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$field['original_type'] = $field['type'];
 			$field['type']          = $gql_field_type;
 
-			// When you have multiple items in an array returned we need to define them as a list of strings.
-			if ( 'list' === $field['type'] ) {
-				$field['type'] = array( 'list_of' => 'String' );
-			}
-
 			$is_repeatable_text      = ( $field['isRepeatable'] ?? false ) && 'text' === $field['original_type'];
 			$is_repeatable_rich_text = ( $field['isRepeatableRichText'] ?? false ) && $rich_text;
 			$is_repeatable_number    = ( $field['isRepeatableNumber'] ?? false ) && 'Float' === $field['type'];
@@ -569,6 +566,10 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						}
 
 						return do_shortcode( $value );
+					}
+
+					if ( $field['original_type'] === 'boolean' ) {
+						return $value === 'on' ? true : false;
 					}
 
 					return $value;
@@ -741,15 +742,14 @@ function get_connection_name( string $from_type, string $to_type, string $from_f
 	return $connection_name;
 }
 
-
 /**
  * Maps an HTML field type to a WPGraphQL field type.
  *
  * @param string $field_type The HTML field type.
  *
- * @access private
+ * @return array|string|null
  */
-function map_html_field_type_to_graphql_field_type( string $field_type ): ?string {
+function map_html_field_type_to_graphql_field_type( string $field_type ) {
 	if ( empty( $field_type ) ) {
 		return null;
 	}
@@ -762,7 +762,7 @@ function map_html_field_type_to_graphql_field_type( string $field_type ): ?strin
 		case 'richtext':
 			return 'String';
 		case 'multipleChoice':
-			return 'list';
+			return [ 'list_of' => 'String' ];
 		case 'number':
 			return 'Float';
 		case 'boolean':

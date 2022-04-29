@@ -310,10 +310,14 @@ function sanitize_field( string $type, $value ) {
 		case 'boolean':
 			return $value === 'on' ? 'on' : 'off';
 		case 'multipleChoice':
-			if ( ! is_array( $value ) ) {
-				$value = (array) $value;
+			if ( is_array( $value ) ) {
+				$choice_keys = [];
+				foreach ( $value as $choice ) {
+					$choice_keys[] = is_array( $choice ) ? key( $choice ) : $choice;
+				}
+				return $choice_keys;
 			}
-			return $value;
+			return [ $value ];
 		default:
 			return $value;
 	}
