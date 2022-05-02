@@ -59,6 +59,13 @@ export const ContentModelDropdown = ({ model }) => {
 			</button>
 			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
 				<a
+					className="new"
+					href={`/wp-admin/post-new.php?post_type=${slug}`}
+					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
+				>
+					{__("New Entry", "atlas-content-modeler")}
+				</a>
+				<a
 					className="edit"
 					href="#"
 					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
