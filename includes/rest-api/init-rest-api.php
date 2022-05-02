@@ -22,6 +22,7 @@ function atlas_content_modeler_rest_init(): void {
 		'models.php',
 		'fields.php',
 		'taxonomies.php',
+		'rest-functions.php',
 		// REST routes resolving to `/wp-json/wp/v2/wpe/atlas/[filename]`.
 		'routes/content-model.php',
 		'routes/content-models.php',
