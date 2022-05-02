@@ -61,6 +61,8 @@ export const ContentModelDropdown = ({ model }) => {
 				<a
 					className="new"
 					href={`/wp-admin/post-new.php?post_type=${slug}`}
+					target="_blank"
+					rel="noopener noreferrer"
 					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 				>
 					{__("Add New Entry", "atlas-content-modeler")}
