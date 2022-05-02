@@ -59,7 +59,7 @@ export const ContentModelDropdown = ({ model }) => {
 			</button>
 			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
 				<a
-					className="new"
+					className="add-new-entry"
 					href={`/wp-admin/post-new.php?post_type=${slug}`}
 					target="_blank"
 					rel="noopener noreferrer"
