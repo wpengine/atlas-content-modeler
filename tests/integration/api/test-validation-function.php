@@ -14,6 +14,7 @@ use function WPE\AtlasContentModeler\API\validation\validate_date;
 use function WPE\AtlasContentModeler\API\validation\validate_min;
 use function WPE\AtlasContentModeler\API\validation\validate_max;
 use function WPE\AtlasContentModeler\API\validation\validate_post_exists;
+use function WPE\AtlasContentModeler\API\validation\validate_post_type;
 
 class TestValidationFunctions extends Integration_TestCase {
 	/**
@@ -476,6 +477,33 @@ class TestValidationFunctions extends Integration_TestCase {
 
 		$this->assertNull(
 			validate_post_exists( $post_id )
+		);
+	}
+
+	public function test_validate_post_type_will_throw_an_exception_if_invalid_post_type() {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'Invalid post type' );
+
+		$post_id = $this->factory->post->create();
+
+		validate_post_type( $post_id, 'page' );
+	}
+
+	/**
+	 * @testWith
+	 * [ "Post type must be a page" ]
+	 */
+	public function test_validate_post_type_will_use_a_custom_exception_message( $message ) {
+		$this->expectExceptionMessage( $message );
+
+		validate_post_type( 0, 'page', $message );
+	}
+
+	public function test_validate_post_type_will_return_null_if_valid_post_type() {
+		$wp_post = $this->factory->post->create_and_get();
+
+		$this->assertNull(
+			validate_post_type( $wp_post->ID, $wp_post->post_type )
 		);
 	}
 }

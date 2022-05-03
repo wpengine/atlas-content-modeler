@@ -368,3 +368,22 @@ function validate_post_exists( int $id, ?string $message = null ): void {
 		throw new Validation_Exception( $message );
 	}
 }
+
+/**
+ * Validate a post against the given post type.
+ *
+ * @param int         $id        The post id.
+ * @param string      $post_type The post type.
+ * @param string|null $message   Optional exception message.
+ *
+ * @throws Validation_Exception Exception when post object does not exist.
+ *
+ * @return void
+ */
+function validate_post_type( int $id, string $post_type, ?string $message = null ): void {
+	$message = $message ?? \__( 'Invalid post type', 'atlas-content-modeler' );
+
+	if ( $post_type !== \get_post_type( $id ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
