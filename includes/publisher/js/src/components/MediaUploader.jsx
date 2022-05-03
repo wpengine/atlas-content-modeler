@@ -373,28 +373,28 @@ export default function MediaUploader({ modelSlug, field, required }) {
 																		item,
 																		"audio"
 																	) && (
-																		<Icon type="audio" />
+																		<span className="dashicons dashicons-audio"></span>
 																	)}
 
 																	{getFileTypeImageType(
 																		item,
 																		"file"
 																	) && (
-																		<Icon type="file" />
+																		<span className="dashicons dashicons-default"></span>
 																	)}
 
 																	{getFileTypeImageType(
 																		item,
 																		"default"
 																	) && (
-																		<Icon type="file" />
+																		<span className="dashicons dashicons-default"></span>
 																	)}
 
 																	{getFileTypeImageType(
 																		item,
 																		"multimedia"
 																	) && (
-																		<Icon type="multimedia" />
+																		<span className="dashicons dashicons-video"></span>
 																	)}
 
 																	<input

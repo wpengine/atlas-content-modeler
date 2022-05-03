@@ -64,6 +64,7 @@ final class FormEditingExperience {
 	public function bootstrap(): void {
 		$this->models = get_registered_content_types();
 
+		add_action( 'wp_enqueue_scripts', 'ww_load_dashicons', 999 );
 		add_action( 'init', [ $this, 'remove_post_type_supports' ] );
 		add_action( 'rest_api_init', [ $this, 'support_title_in_api_responses' ] );
 		add_action( 'init_graphql_request', [ $this, 'support_title_in_api_responses' ] );
@@ -84,6 +85,15 @@ final class FormEditingExperience {
 		add_action( 'transition_post_status', [ $this, 'maybe_add_location_callback' ], 10, 3 );
 		add_action( 'updated_postmeta', [ $this, 'sync_title_field_to_posts_table' ], 10, 4 );
 		add_action( 'added_post_meta', [ $this, 'sync_title_field_to_posts_table' ], 10, 4 );
+	}
+
+	/**
+	 * Load dashicons.
+	 *
+	 * @return void
+	 */
+	public function ww_load_dashicons(): void {
+		wp_enqueue_style( 'dashicons' );
 	}
 
 	/**
