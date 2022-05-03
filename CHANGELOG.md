@@ -11,6 +11,7 @@
 - Function get_model() to retrieve the model schema.
 - Function get_field() to retrieve the model field schema.
 - Email field that includes the following: repeatable, entry title, required, and advanced settings to constrain emails to domain.
+- New "Add New Entry" option in content model dropdowns.
 
 ### Changed
 - Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
