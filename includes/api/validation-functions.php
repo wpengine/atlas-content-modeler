@@ -376,7 +376,7 @@ function validate_post_exists( int $id, ?string $message = null ): void {
  * @param string      $post_type The post type.
  * @param string|null $message   Optional exception message.
  *
- * @throws Validation_Exception Exception when post object does not exist.
+ * @throws Validation_Exception Exception when post object is not a post type.
  *
  * @return void
  */
@@ -386,4 +386,20 @@ function validate_post_type( int $id, string $post_type, ?string $message = null
 	if ( $post_type !== \get_post_type( $id ) ) {
 		throw new Validation_Exception( $message );
 	}
+}
+
+/**
+ * Validate a post id is an attachment.
+ *
+ * @param int         $id      The post id.
+ * @param string|null $message Optional exception message.
+ *
+ * @throws Validation_Exception Exception when post object is not an attachment.
+ *
+ * @return void
+ */
+function validate_post_is_attachment( int $id, ?string $message = null ): void {
+	$message = $message ?? \__( 'Post is not an attachment post type', 'atlas-content-modeler' );
+
+	validate_post_type( $id, 'attachment', $message );
 }

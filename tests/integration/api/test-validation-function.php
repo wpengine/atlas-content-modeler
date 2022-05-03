@@ -15,6 +15,7 @@ use function WPE\AtlasContentModeler\API\validation\validate_min;
 use function WPE\AtlasContentModeler\API\validation\validate_max;
 use function WPE\AtlasContentModeler\API\validation\validate_post_exists;
 use function WPE\AtlasContentModeler\API\validation\validate_post_type;
+use function WPE\AtlasContentModeler\API\validation\validate_post_is_attachment;
 
 class TestValidationFunctions extends Integration_TestCase {
 	/**
@@ -504,6 +505,35 @@ class TestValidationFunctions extends Integration_TestCase {
 
 		$this->assertNull(
 			validate_post_type( $wp_post->ID, $wp_post->post_type )
+		);
+	}
+
+	public function test_validate_post_is_attachment_will_throw_an_exception_if_post_not_an_attachment() {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'Post is not an attachment post type' );
+
+		$post_id = $this->factory->post->create();
+
+		validate_post_is_attachment( $post_id );
+	}
+
+	/**
+	 * @testWith
+	 * [ "This is not an attachment" ]
+	 */
+	public function test_validate_post_is_attachment_will_use_a_custom_exception_message( $message ) {
+		$this->expectExceptionMessage( $message );
+
+		$post_id = $this->factory->post->create();
+
+		validate_post_is_attachment( $post_id, $message );
+	}
+
+	public function test_validate_post_is_attachment_will_return_null_if_valid_attachment() {
+		$post_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+
+		$this->assertNull(
+			validate_post_is_attachment( $post_id )
 		);
 	}
 }
