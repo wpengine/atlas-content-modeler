@@ -51,6 +51,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							multiSingle: ["kiwi"]
 							multipleMulti: ["apple", "banana"]
 							booleanRequired: true
+							emailRepeater: ["john.random@test.com", "jane.random@test.com"]
 						}
 					) {
 						publicFields {
@@ -65,6 +66,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							multiSingle
 							multipleMulti
 							booleanRequired
+							emailRepeater
 						}
 					}
 				}

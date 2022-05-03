@@ -117,6 +117,9 @@ function is_field_repeatable( array $field ): bool {
 		case 'text':
 			$key = 'isRepeatable';
 			break;
+		case 'email':
+			$key = 'isRepeatableEmail';
+			break;
 		case 'richtext':
 			$key = 'isRepeatableRichText';
 			break;
