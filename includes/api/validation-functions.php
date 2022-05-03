@@ -349,3 +349,22 @@ function validate_max( $value, int $max, string $message = 'The field cannot exc
 		throw new Validation_Exception( $message );
 	}
 }
+
+/**
+ * Validate a post object exists.
+ *
+ * @param  int         $id      The post id.
+ * @param  string|null $message Optional exception message.
+ *
+ * @throws Validation_Exception Exception when post object does not exist.
+ *
+ * @return void
+ */
+function validate_post_exists( int $id, ?string $message = null ): void {
+	$message = $message ?? \__( 'The post object was not found', 'atlas-content-modeler' );
+	$post    = \get_post( $id );
+
+	if ( ! $post ) {
+		throw new Validation_Exception( $message );
+	}
+}

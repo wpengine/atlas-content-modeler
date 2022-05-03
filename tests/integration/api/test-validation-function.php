@@ -13,6 +13,7 @@ use function WPE\AtlasContentModeler\API\validation\validate_number;
 use function WPE\AtlasContentModeler\API\validation\validate_date;
 use function WPE\AtlasContentModeler\API\validation\validate_min;
 use function WPE\AtlasContentModeler\API\validation\validate_max;
+use function WPE\AtlasContentModeler\API\validation\validate_post_exists;
 
 class TestValidationFunctions extends Integration_TestCase {
 	/**
@@ -451,5 +452,30 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->expectExceptionMessage( $message );
 
 		validate_max( $value, $max, $message );
+	}
+
+	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'The post object was not found' );
+
+		validate_post_exists( 0 );
+	}
+
+	/**
+	 * @testWith
+	 * [ "A post object could not be found" ]
+	 */
+	public function test_validate_post_exists_will_use_a_custom_exception_message( $message ) {
+		$this->expectExceptionMessage( $message );
+
+		validate_post_exists( 0, $message );
+	}
+
+	public function test_validate_post_exists_will_return_null_if_valid_post_object() {
+		$post_id = $this->factory->post->create();
+
+		$this->assertNull(
+			validate_post_exists( $post_id )
+		);
 	}
 }
