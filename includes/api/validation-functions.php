@@ -353,8 +353,8 @@ function validate_max( $value, int $max, string $message = 'The field cannot exc
 /**
  * Validate a post object exists.
  *
- * @param  int         $id      The post id.
- * @param  string|null $message Optional exception message.
+ * @param int         $id      The post id.
+ * @param string|null $message Optional exception message.
  *
  * @throws Validation_Exception Exception when post object does not exist.
  *
