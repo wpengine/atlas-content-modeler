@@ -11,6 +11,12 @@ const emailDomainTextArea = css`
 	}
 `;
 
+const emailConstraintInput = css`
+	.atlas-content-modeler-admin-page & {
+		max-width: 150px;
+	}
+`;
+
 const EmailSettings = ({ errors, storedData, setValue, getValues }) => {
 	return (
 		<>
@@ -75,6 +81,42 @@ const EmailSettings = ({ errors, storedData, setValue, getValues }) => {
 								)}
 						</p>
 					</div>
+				</div>
+			</div>
+			<div className="d-flex flex-column justify-content-between d-sm-flex flex-sm-row">
+				<div>
+					<label htmlFor="minEntry">
+						{__("Minimum", "atlas-content-modeler")}
+					</label>
+					<input
+						css={emailConstraintInput}
+						style={{ width: "100px !important" }}
+						id="minEntry"
+						name="minEntry"
+						type="number"
+					/>
+				</div>
+				<div>
+					<label htmlFor="minEntry">
+						{__("Maximum", "atlas-content-modeler")}
+					</label>
+					<input
+						css={emailConstraintInput}
+						id="maxEntry"
+						name="maxEntry"
+						type="number"
+					/>
+				</div>
+				<div>
+					<label htmlFor="exactEntry">
+						{__("Exact", "atlas-content-modeler")}
+					</label>
+					<input
+						css={emailConstraintInput}
+						id="exactEntry"
+						name="exactEntry"
+						type="number"
+					/>
 				</div>
 			</div>
 		</>
