@@ -1,6 +1,12 @@
 @import "../../../includes/shared-assets/scss/_variables";
 
 .media {
+	&.dashicons {
+		font-size: 80px;
+		width: 80px;
+		height: 80px;
+	}
+
 	.text-table {
 		flex-flow: row wrap;
 		flex: 1 100%;
