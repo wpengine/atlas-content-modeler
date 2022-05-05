@@ -5,7 +5,6 @@ use WPE\AtlasContentModeler\Validation_Exception;
 
 use function WPE\AtlasContentModeler\API\validation\validate_model_field_data;
 use function WPE\AtlasContentModeler\API\validation\validate_multiple_choice_field;
-use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 use function WPE\AtlasContentModeler\API\validation\validate_in_array;
 use function WPE\AtlasContentModeler\API\validation\validate_array;
 use function WPE\AtlasContentModeler\API\validation\validate_string;
@@ -37,8 +36,9 @@ class TestValidationFunctions extends Integration_TestCase {
 	}
 
 	public function test_validate_model_field_data_will_return_true_for_valid_data() {
-		$model_schema = $this->content_models['validation'];
-		$data         = [
+		$attachment_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+		$model_schema  = $this->content_models['validation'];
+		$data          = [
 			'textField'                 => 'John Doe',
 			'repeatableTextField'       => [ 'John', 'Doe' ],
 			'richTextField'             => '<p>This is a description</p>',
@@ -49,6 +49,7 @@ class TestValidationFunctions extends Integration_TestCase {
 			'repeatableDateField'       => [ '2022-07-04', '2022-10-31' ],
 			'singleMultipleChoiceField' => [ 'choice1' ],
 			'multiMultipleChoiceField'  => [ 'choice1', 'choice2' ],
+			'mediaField'                => $attachment_id,
 		];
 
 		$this->assertTrue( validate_model_field_data( $model_schema, $data ) );
@@ -232,6 +233,39 @@ class TestValidationFunctions extends Integration_TestCase {
 
 		$valid = validate_model_field_data( $model_schema, [ 'multiMultipleChoiceField' => [ 'purple' ] ] );
 		$this->assertEquals( [ 'Multi Multiple Choice Field must only contain choice values' ], $valid->get_error_messages( 'invalid_model_field' ) );
+	}
+
+	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_media_field() {
+		$model_schema = $this->content_models['validation'];
+
+		$model_schema['fields'][1649789115852]['required'] = true;
+
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Media Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'mediaField' => 'not_a_number' ] );
+		$this->assertEquals( [ 'Media Field must be a valid attachment id' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'mediaField' => 9999 ] );
+		$this->assertEquals( [ 'Media Field must be a valid attachment id' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$attachment_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$valid         = validate_model_field_data( $model_schema, [ 'mediaField' => $attachment_id ] );
+		$this->assertEquals( [ 'Media Field must be a valid attachment id' ], $valid->get_error_messages( 'invalid_model_field' ) );
+	}
+
+	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_media_field() {
+		$model_schema  = $this->content_models['validation'];
+		$attachment_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableMediaField' => $attachment_id ] );
+		$this->assertEquals( [ 'Repeatable Media Field must be an array of media' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableMediaField' => 9999 ] );
+		$this->assertEquals( [ 'Repeatable Media Field must be an array of media' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableMediaField' => 'not_an_array' ] );
+		$this->assertEquals( [ 'Repeatable Media Field must be an array of media' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	/**

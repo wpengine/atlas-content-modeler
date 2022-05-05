@@ -56,6 +56,9 @@ function validate_model_field_data( array $model_schema, array $data ) {
 				case 'multipleChoice':
 					validate_multiple_choice_field( $value, $field );
 					break;
+				case 'media':
+					validate_media_field( $value, $field );
+					break;
 			}
 		} catch ( Validation_Exception $exception ) {
 			$wp_error->merge_from(
@@ -176,6 +179,40 @@ function validate_multiple_choice_field( $value, array $field ): void {
 
 	$choices = wp_list_pluck( $field['choices'], 'slug' );
 	validate_in_array( $value, $choices, "{$field['name']} must only contain choice values" );
+}
+
+/**
+ * Validate a media field value.
+ *
+ * @param mixed $value The field value.
+ * @param array $field The model field.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_media_field( $value, array $field ): void {
+	if ( is_field_required( $field ) ) {
+		validate_not_empty(
+			$value,
+			// translators: The name of the field.
+			sprintf( __( '%s cannot be empty', 'atlas-content-modeler' ), $field['name'] )
+		);
+	}
+
+	if ( is_field_repeatable( $field ) ) {
+		validate_array(
+			$value,
+			// translators: The name of the field and the field type.
+			sprintf( __( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+		);
+	} else {
+		// translators: The name of the field.
+		$error_message = sprintf( __( '%s must be a valid attachment id', 'atlas-content-modeler' ), $field['name'] );
+
+		validate_number( $value, $error_message );
+		validate_post_is_attachment( (int) $value, $error_message );
+	}
 }
 
 /**
