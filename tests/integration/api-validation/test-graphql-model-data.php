@@ -51,6 +51,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							multiSingle: ["kiwi"]
 							multipleMulti: ["apple", "banana"]
 							booleanRequired: true
+							emailRepeater: ["john.random@test.com", "jane.random@test.com"]
 						}
 					) {
 						publicFields {
@@ -65,6 +66,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							multiSingle
 							multipleMulti
 							booleanRequired
+							emailRepeater
 						}
 					}
 				}
@@ -102,6 +104,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							richTextRepeatable
 							numberIntergerRequired
 							numberIntegerRepeat
+							email
+							emailRepeater
 							mediaRepeat
 							dateRequired
 							dateRepeatable
@@ -143,6 +147,13 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertArrayHasKey( 'richTextRepeatable', $results['data']['publicsFields']['nodes'][0] );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['richTextRepeatable'][0], '<p>First</p>' );
 			self::assertSame( $results['data']['publicsFields']['nodes'][0]['richTextRepeatable'][1], '<p>Second</p>' );
+
+			self::assertArrayHasKey( 'email', $results['data']['publicsFields']['nodes'][0] );
+			self::assertSame( $results['data']['publicsFields']['nodes'][0]['email'], 'email@test.com' );
+
+			self::assertArrayHasKey( 'emailRepeater', $results['data']['publicsFields']['nodes'][0] );
+			self::assertSame( $results['data']['publicsFields']['nodes'][0]['emailRepeater'][0], 'john.random@wpengine.com' );
+			self::assertSame( $results['data']['publicsFields']['nodes'][0]['emailRepeater'][1], 'test.random@wpengine.com' );
 
 			self::assertArrayHasKey( 'dateRepeatable', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['dateRepeatable'] );

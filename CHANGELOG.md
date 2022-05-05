@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.17.0 - 2022-05-05
 ### Added
 - Mutations support to create, update and delete entries via GraphQL. All fields are supported except media and relationships for now. Find examples at https://github.com/wpengine/atlas-content-modeler/blob/main/docs/mutations/index.md.
 - Function insert_entry_model() for inserting a model entry and fields.
@@ -10,6 +10,7 @@
 - Function get_relationship() to retrieve the relationship object.
 - Function get_model() to retrieve the model schema.
 - Function get_field() to retrieve the model field schema.
+- Email field that includes the following: repeatable, entry title, required, and advanced settings to constrain emails to domain.
 - New "Add New Entry" option in content model dropdowns.
 
 ### Changed

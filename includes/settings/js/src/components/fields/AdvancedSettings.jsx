@@ -4,6 +4,7 @@
 import React from "react";
 import Icon from "../../../../../components/icons";
 import { __ } from "@wordpress/i18n";
+import EmailSettings from "./EmailSettings";
 
 const MediaSettings = ({
 	errors,
@@ -527,4 +528,4 @@ const TextSettings = ({
 	);
 };
 
-export { MediaSettings, TextSettings, NumberSettings };
+export { MediaSettings, TextSettings, NumberSettings, EmailSettings };

@@ -159,4 +159,32 @@ class AdvancedSettingsCest {
 		$i->wait( 1 );
 		$i->see( 'Accepts file types: JPG, JPEG, PDF' );
 	}
+
+	public function i_can_set_allowed_domains_and_subdomains_for_email_fields( \AcceptanceTester $i ) {
+		$i->click( 'Email', '.field-buttons' );
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'name' ], 'Email' );
+
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
+		$i->fillField( [ 'name' => 'allowedDomains' ], 'test' );
+		$i->see( 'Must be a comma-separated list of domains and subdomains.' );
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'allowedDomains' ], '*.test.com, gmail.com' );
+
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' ); // Save Advanced Settings.
+		$i->wait( 1 );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' ); // Save the field.
+		$i->wait( 1 );
+
+		// Offsets are used here to prevent “other element would receive the click”
+		// due to the “add field” button overlapping the edit button in the center.
+		$i->clickWithLeftButton( '.field-list button.edit', -5, -5 );
+
+		// Open Advanced Settings again.
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
+
+		$i->seeInField( '#allowedDomains', '*.test.com,gmail.com' );
+	}
 }

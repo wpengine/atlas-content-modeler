@@ -117,6 +117,9 @@ function is_field_repeatable( array $field ): bool {
 		case 'text':
 			$key = 'isRepeatable';
 			break;
+		case 'email':
+			$key = 'isRepeatableEmail';
+			break;
 		case 'richtext':
 			$key = 'isRepeatableRichText';
 			break;
@@ -318,6 +321,19 @@ function sanitize_field( string $type, $value ) {
 				return $choice_keys;
 			}
 			return [ $value ];
+		case 'email':
+			if ( is_array( $value ) ) {
+				return array_filter(
+					array_map(
+						function( $value ) {
+							return filter_var( $value, FILTER_SANITIZE_EMAIL );
+						},
+						$value
+					)
+				);
+			}
+
+			return filter_var( $value, FILTER_SANITIZE_EMAIL );
 		default:
 			return $value;
 	}
