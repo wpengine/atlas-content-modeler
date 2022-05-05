@@ -1,8 +1,8 @@
 === Atlas Content Modeler ===
 Requires at least: 5.7
-Tested up to: 5.9
+Tested up to: 5.9.3
 Requires PHP: 7.2
-Stable tag: 0.16.0
+Stable tag: 0.17.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,6 +53,24 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+
+= 0.17.0 - 2022-05-05 =
+* **Added:** Mutations support to create, update and delete entries via GraphQL. All fields are supported except media and relationships for now. Find examples at https://github.com/wpengine/atlas-content-modeler/blob/main/docs/mutations/index.md.
+* **Added:** insert_entry_model() for inserting a model entry and fields.
+* **Added:** update_model_entry() for updating an existing model entry and fields.
+* **Added:** replace_relationship() to replace/add model entry relationships.
+* **Added:** add_relationship() to append model entry relationships.
+* **Added:** get_relationship() to retrieve the relationship object.
+* **Added:** get_model() to retrieve the model schema.
+* **Added:** get_field() to retrieve the model field schema.
+* **Added:** Email field that includes the following: repeatable, entry title, required, and advanced settings to constrain emails to domain.
+* **Added:** New "Add New Entry" option in content model dropdowns.
+* **Changed:** Pressing enter in a repeating number, date or single line text field now moves focus to the next field, or adds a new field if focus is in the last field.
+* **Changed:** Boolean fields in REST responses will now return `true` or `false` instead of `"on"` or `[empty string]`.
+* **Changed:** Focus now moves to the new input field when adding a new repeating number, date or single line text field row.
+* **Fixed:** Title values are now saved to the wp_posts table as expected, instead of being exposed with WP filters. This fixes a few things, such as queries that search the post title field.
+* **Fixed:** Post slugs are now generated from the post title value, like they are for post types built into WordPress.
+
 = 0.16.0 - 2022-04-06 =
 * **Added:** The date field now has the “make this field repeatable” option to let publishers add multiple dates within each date field.
 * **Changed:** The first field now gains focus when creating a new ACM post.
