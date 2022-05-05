@@ -10,6 +10,7 @@
 - Function get_relationship() to retrieve the relationship object.
 - Function get_model() to retrieve the model schema.
 - Function get_field() to retrieve the model field schema.
+- Email field that includes the following: repeatable, entry title, required, and advanced settings to constrain emails to domain.
 - New "Add New Entry" option in content model dropdowns.
 
 ### Changed

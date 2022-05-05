@@ -4,6 +4,7 @@ import BooleanIcon from "./BooleanIcon";
 import CloseIcon from "./CloseIcon";
 import DateIcon from "./DateIcon";
 import DownArrow from "./DownArrow";
+import EmailIcon from "./EmailIcon";
 import ErrorIcon from "./ErrorIcon";
 import ExternalLinkIcon from "./ExternalLink";
 import InfoIcon from "./InfoIcon";
@@ -36,6 +37,8 @@ export default function Icon({ type, size, noCircle }) {
 			return <DateIcon />;
 		case "downarrow":
 			return <DownArrow />;
+		case "email":
+			return <EmailIcon />;
 		case "error":
 			return <ErrorIcon size={size} />;
 		case "external-link":

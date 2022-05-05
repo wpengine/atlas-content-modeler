@@ -3,6 +3,7 @@ import MediaUploader from "./MediaUploader";
 import RichText from "./RichText";
 import Relationship from "./relationship";
 import Text from "./Text";
+import Email from "./Email";
 import Number from "./Number";
 import Date from "./Date";
 import Icon from "acm-icons";
@@ -74,6 +75,26 @@ export default function Field(props) {
 				error = sprintf(
 					__("Maximum length is %d.", "atlas-content-modeler"),
 					event.target.maxLength
+				);
+			}
+		}
+
+		if (field.type === "email") {
+			if (!event.target.validity.valid) {
+				error = __("Value must be an email.", "atlas-content-modeler");
+			}
+
+			if (field?.required && event.target.value.trim() === "") {
+				error = defaultError;
+			}
+
+			if (
+				field?.allowedDomains &&
+				event.target.validity.patternMismatch
+			) {
+				error = __(
+					"Email must end with an allowed domain.",
+					"atlas-content-modeler"
 				);
 			}
 		}
@@ -255,7 +276,16 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 					</fieldset>
 				);
 			}
-
+		case "email":
+			return (
+				<Email
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
+			);
 		default:
 			return `TODO: ${field.type} fields`;
 	}
