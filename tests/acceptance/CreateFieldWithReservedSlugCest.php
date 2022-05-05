@@ -5,8 +5,8 @@ use Codeception\Util\Locator;
 class CreateFieldWithReservedSlugCest {
 
 	/**
-	 * Checks that a field does not use one of the reserved default slugs
-	 * hard-coded in `includes/settings/reserved-field-slugs.php`.
+	 * Checks that a field does not use a reserved slug that was registered by
+	 * WPGraphQL itself.
 	 */
 	public function i_can_not_create_a_field_with_a_reserved_default_slug( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
@@ -44,10 +44,10 @@ class CreateFieldWithReservedSlugCest {
 		$i->waitForElement( '.add-item' );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
-		$i->wait( 1 ); // Allow some extra time for the WPGraphQL introspection request that fires when opening a new field.
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
-		$i->click( '#slug' ); // Triggers onBlur event on the name field to fire the slug collision check.
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
+		$i->waitForElement( '.add-item' );
 
 		$i->waitForElementVisible( '.field-messages .error' );
 		$i->see( 'Identifier in use or reserved', '.field-messages .error' );
