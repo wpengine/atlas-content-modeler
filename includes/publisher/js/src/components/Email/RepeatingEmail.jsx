@@ -1,5 +1,3 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/react";
 import React, { useState, useRef } from "react";
 import Icon from "../../../../../components/icons";
 import { buildWildcardRegex } from "../../../../../shared-assets/js/validation/emailValidation";
