@@ -512,8 +512,9 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 			$is_repeatable_number    = ( $field['isRepeatableNumber'] ?? false ) && 'Float' === $field['type'];
 			$is_repeatable_date      = ( $field['isRepeatableDate'] ?? false ) && 'date' === $field['original_type'];
 			$is_repeatable_media     = ( $field['isRepeatableMedia'] ?? false ) && 'MediaItem' === $field['type'];
+			$is_repeatable_email     = ( $field['isRepeatableEmail'] ?? false ) && 'email' === $field['original_type'];
 
-			if ( $is_repeatable_text || $is_repeatable_rich_text || $is_repeatable_date ) {
+			if ( $is_repeatable_text || $is_repeatable_rich_text || $is_repeatable_date || $is_repeatable_email ) {
 				$field['type'] = array( 'list_of' => 'String' );
 			}
 
@@ -760,6 +761,7 @@ function map_html_field_type_to_graphql_field_type( string $field_type ) {
 		case 'string':
 		case 'date':
 		case 'richtext':
+		case 'email':
 			return 'String';
 		case 'multipleChoice':
 			return [ 'list_of' => 'String' ];

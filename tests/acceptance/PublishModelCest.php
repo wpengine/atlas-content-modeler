@@ -169,6 +169,53 @@ class PublishModelCest {
 		$i->seeInField( 'atlas-content-modeler[goose][decimal]', '20' );
 	}
 
+	public function i_see_submission_errors_in_email_field_when_input_is_not_an_email( \AcceptanceTester $i ) {
+		$i->click( 'Email', '.field-buttons' );
+		$i->fillField( [ 'name' => 'name' ], 'Email' );
+		$i->checkOption( 'required' );
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
+		$i->fillField( [ 'name' => 'allowedDomains' ], 'gmail.com, hotmail.com, example.com, *.edu, wpengine.com, *.wpengine.com' );
+		$i->click( 'button[data-testid="model-advanced-settings-done-button"]' );
+		$i->wait( 1 );
+
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
+		$i->wait( 1 );
+
+		$i->amOnPage( '/wp-admin/edit.php?post_type=goose' );
+		$i->click( 'Add New', '.wrap' );
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][email]' ], '' );
+		$i->scrollTo( '#submitdiv' );
+
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 1 );
+
+		$i->see( 'This field is required' );
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][email]' ], 'email@wpengine.com.test' );
+		$i->scrollTo( '#submitdiv' );
+
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 1 );
+
+		$i->see( 'Email must end with an allowed domain.' );
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][email]' ], 'email.test@wpengine.com' );
+		$i->dontSee( 'Email must end with an allowed domain.' );
+		$i->dontSee( 'This field is required' );
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][email]' ], 'email.test@test.wpengine.com' );
+		$i->dontSee( 'Email must end with an allowed domain.' );
+		$i->dontSee( 'This field is required' );
+		$i->wait( 1 );
+
+		$i->seeInField( 'atlas-content-modeler[goose][email]', 'email.test@test.wpengine.com' );
+	}
+
 	public function i_can_publish_a_model_entry( AcceptanceTester $i ) {
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
