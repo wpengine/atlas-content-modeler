@@ -165,6 +165,28 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 						},
 					},
 				},
+				minRepeatable: {
+					min: 0,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
+				},
+				maxRepeatable: {
+					min: 1,
+					setValueAs: (v) => (v ? parseInt(v) : ""),
+					validate: {
+						maxBelowMin: (v) => {
+							const min = parseInt(getValues("minRepeatable"));
+							const max = parseInt(v);
+							if (isNaN(min) || isNaN(max)) {
+								return true;
+							}
+							return max >= min;
+						},
+					},
+				},
+				exactRepeatable: {
+					min: 1,
+					setValueas: (v) => (v ? parseInt(v) : ""),
+				},
 			},
 		},
 		number: {
@@ -794,6 +816,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 								setValue={setValue}
 								getValues={getValues}
 								trigger={trigger}
+								watch={watch}
 							/>
 
 							<div className="d-flex flex-row mt-5">
