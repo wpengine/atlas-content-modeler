@@ -185,7 +185,7 @@ function is_allowed_field_id( array $field, string $model = '' ): bool {
  * For example, 'title' is normally not permitted as a field ID because it
  * conflicts with the default 'title' registered by WPGraphQL. But when isTitle
  * is set for that field, we allow it and take steps in WPGraphQL field
- * registration and field saving logic to handle it as a special case.
+ * registration to handle it as a special case.
  *
  * @param array $field Field properties.
  * @return bool True if the `$field` has a slug that is allowed to be used.
