@@ -56,6 +56,9 @@ function validate_model_field_data( array $model_schema, array $data ) {
 				case 'multipleChoice':
 					validate_multiple_choice_field( $value, $field );
 					break;
+				case 'media':
+					validate_media_field( $value, $field );
+					break;
 			}
 		} catch ( Validation_Exception $exception ) {
 			$wp_error->merge_from(
@@ -176,6 +179,51 @@ function validate_multiple_choice_field( $value, array $field ): void {
 
 	$choices = wp_list_pluck( $field['choices'], 'slug' );
 	validate_in_array( $value, $choices, "{$field['name']} must only contain choice values" );
+}
+
+/**
+ * Validate a media field value.
+ *
+ * @param mixed $value The field value.
+ * @param array $field The model field.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_media_field( $value, array $field ): void {
+	if ( is_field_required( $field ) ) {
+		validate_not_empty(
+			$value,
+			// translators: The name of the field.
+			\sprintf( \__( '%s cannot be empty', 'atlas-content-modeler' ), $field['name'] )
+		);
+	}
+
+	if ( is_field_repeatable( $field ) ) {
+		validate_array(
+			$value,
+			// translators: The name of the field and the field type.
+			\sprintf( \__( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+		);
+	} else {
+		// translators: The name of the field.
+		$error_message = \sprintf( \__( '%s must be a valid attachment id', 'atlas-content-modeler' ), $field['name'] );
+
+		validate_number( $value, $error_message );
+		validate_post_is_attachment( (int) $value, $error_message );
+
+		if ( ! empty( $field['allowedTypes'] ) ) {
+			$allowed_types = \explode( ',', $field['allowedTypes'] );
+
+			validate_attachment_file_type(
+				(int) $value,
+				$allowed_types,
+				// translators: The name of the field and file type extensions.
+				\sprintf( \__( '%1$s must be of type %2$s', 'atlas-content-modeler' ), $field['name'], $field['allowedTypes'] )
+			);
+		}
+	}
 }
 
 /**
@@ -346,6 +394,89 @@ function validate_max( $value, int $max, string $message = 'The field cannot exc
 	}
 
 	if ( \is_numeric( $value ) && (float) $value > $max ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate a post object exists.
+ *
+ * @param int         $id      The post id.
+ * @param string|null $message Optional exception message.
+ *
+ * @throws Validation_Exception Exception when post object does not exist.
+ *
+ * @return void
+ */
+function validate_post_exists( int $id, ?string $message = null ): void {
+	$message = $message ?? \__( 'The post object was not found', 'atlas-content-modeler' );
+	$post    = \get_post( $id );
+
+	if ( ! $post ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate a post against the given post type.
+ *
+ * @param int         $id        The post id.
+ * @param string      $post_type The post type.
+ * @param string|null $message   Optional exception message.
+ *
+ * @throws Validation_Exception Exception when post object is not a post type.
+ *
+ * @return void
+ */
+function validate_post_type( int $id, string $post_type, ?string $message = null ): void {
+	$message = $message ?? \__( 'Invalid post type', 'atlas-content-modeler' );
+
+	if ( $post_type !== \get_post_type( $id ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate a post id is an attachment.
+ *
+ * @param int         $id      The post id.
+ * @param string|null $message Optional exception message.
+ *
+ * @throws Validation_Exception Exception when post object is not an attachment.
+ *
+ * @return void
+ */
+function validate_post_is_attachment( int $id, ?string $message = null ): void {
+	$message = $message ?? \__( 'Post is not an attachment post type', 'atlas-content-modeler' );
+
+	validate_post_type( $id, 'attachment', $message );
+}
+
+/**
+ * Validate an attachment file type against given types.
+ *
+ * @param int         $id      The post id.
+ * @param array       $types   Array of file type extensions.
+ * @param string|null $message Optional exception message.
+ *
+ * @throws Validation_Exception Exception when attachment type is not valid.
+ *
+ * @return void
+ */
+function validate_attachment_file_type( int $id, array $types, ?string $message = null ): void {
+	$metadata = \wp_get_attachment_metadata( $id );
+	$message  = $message ?? \sprintf(
+		// translators: The file type extensions.
+		\__( 'File must be of %s types', 'atlas-content-modeler' ),
+		\implode( ', ', $types )
+	);
+
+	if ( ! $metadata || empty( $metadata['file'] ) ) {
+		throw new Validation_Exception( $message );
+	}
+
+	$file_extension = \wp_check_filetype( $metadata['file'] );
+	if ( ! $file_extension['ext'] || ! \in_array( $file_extension['ext'], $types, true ) ) {
 		throw new Validation_Exception( $message );
 	}
 }

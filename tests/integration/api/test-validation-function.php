@@ -5,7 +5,6 @@ use WPE\AtlasContentModeler\Validation_Exception;
 
 use function WPE\AtlasContentModeler\API\validation\validate_model_field_data;
 use function WPE\AtlasContentModeler\API\validation\validate_multiple_choice_field;
-use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 use function WPE\AtlasContentModeler\API\validation\validate_in_array;
 use function WPE\AtlasContentModeler\API\validation\validate_array;
 use function WPE\AtlasContentModeler\API\validation\validate_string;
@@ -13,6 +12,10 @@ use function WPE\AtlasContentModeler\API\validation\validate_number;
 use function WPE\AtlasContentModeler\API\validation\validate_date;
 use function WPE\AtlasContentModeler\API\validation\validate_min;
 use function WPE\AtlasContentModeler\API\validation\validate_max;
+use function WPE\AtlasContentModeler\API\validation\validate_post_exists;
+use function WPE\AtlasContentModeler\API\validation\validate_post_type;
+use function WPE\AtlasContentModeler\API\validation\validate_post_is_attachment;
+use function WPE\AtlasContentModeler\API\validation\validate_attachment_file_type;
 
 class TestValidationFunctions extends Integration_TestCase {
 	/**
@@ -34,8 +37,9 @@ class TestValidationFunctions extends Integration_TestCase {
 	}
 
 	public function test_validate_model_field_data_will_return_true_for_valid_data() {
-		$model_schema = $this->content_models['validation'];
-		$data         = [
+		$attachment_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+		$model_schema  = $this->content_models['validation'];
+		$data          = [
 			'textField'                 => 'John Doe',
 			'repeatableTextField'       => [ 'John', 'Doe' ],
 			'richTextField'             => '<p>This is a description</p>',
@@ -46,6 +50,7 @@ class TestValidationFunctions extends Integration_TestCase {
 			'repeatableDateField'       => [ '2022-07-04', '2022-10-31' ],
 			'singleMultipleChoiceField' => [ 'choice1' ],
 			'multiMultipleChoiceField'  => [ 'choice1', 'choice2' ],
+			'mediaField'                => $attachment_id,
 		];
 
 		$this->assertTrue( validate_model_field_data( $model_schema, $data ) );
@@ -229,6 +234,50 @@ class TestValidationFunctions extends Integration_TestCase {
 
 		$valid = validate_model_field_data( $model_schema, [ 'multiMultipleChoiceField' => [ 'purple' ] ] );
 		$this->assertEquals( [ 'Multi Multiple Choice Field must only contain choice values' ], $valid->get_error_messages( 'invalid_model_field' ) );
+	}
+
+	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_media_field() {
+		$model_schema = $this->content_models['validation'];
+
+		$model_schema['fields'][1649789115852]['required'] = true;
+
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Media Field field is required' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'mediaField' => 'not_a_number' ] );
+		$this->assertEquals( [ 'Media Field must be a valid attachment id' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'mediaField' => 9999 ] );
+		$this->assertEquals( [ 'Media Field must be a valid attachment id' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$attachment_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$valid         = validate_model_field_data( $model_schema, [ 'mediaField' => $attachment_id ] );
+		$this->assertEquals( [ 'Media Field must be a valid attachment id' ], $valid->get_error_messages( 'invalid_model_field' ) );
+	}
+
+	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_media_field() {
+		$model_schema  = $this->content_models['validation'];
+		$attachment_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableMediaField' => $attachment_id ] );
+		$this->assertEquals( [ 'Repeatable Media Field must be an array of media' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableMediaField' => 9999 ] );
+		$this->assertEquals( [ 'Repeatable Media Field must be an array of media' ], $valid->get_error_messages( 'invalid_model_field' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableMediaField' => 'not_an_array' ] );
+		$this->assertEquals( [ 'Repeatable Media Field must be an array of media' ], $valid->get_error_messages( 'invalid_model_field' ) );
+	}
+
+	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_media_field_type() {
+		$model_schema  = $this->content_models['validation'];
+		$attachment_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+		update_post_meta( $attachment_id, '_wp_attachment_metadata', [ 'file' => '/path/to/file.jpg' ] );
+
+		$model_schema['fields'][1649789115852]['allowedTypes'] = 'png';
+
+		$valid = validate_model_field_data( $model_schema, [ 'mediaField' => $attachment_id ] );
+		$this->assertEquals( [ 'Media Field must be of type png' ], $valid->get_error_messages( 'invalid_model_field' ) );
 	}
 
 	/**
@@ -451,5 +500,133 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->expectExceptionMessage( $message );
 
 		validate_max( $value, $max, $message );
+	}
+
+	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'The post object was not found' );
+
+		validate_post_exists( 0 );
+	}
+
+	/**
+	 * @testWith
+	 * [ "A post object could not be found" ]
+	 */
+	public function test_validate_post_exists_will_use_a_custom_exception_message( $message ) {
+		$this->expectExceptionMessage( $message );
+
+		validate_post_exists( 0, $message );
+	}
+
+	public function test_validate_post_exists_will_return_null_if_valid_post_object() {
+		$post_id = $this->factory->post->create();
+
+		$this->assertNull(
+			validate_post_exists( $post_id )
+		);
+	}
+
+	public function test_validate_post_type_will_throw_an_exception_if_invalid_post_type() {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'Invalid post type' );
+
+		$post_id = $this->factory->post->create();
+
+		validate_post_type( $post_id, 'page' );
+	}
+
+	/**
+	 * @testWith
+	 * [ "Post type must be a page" ]
+	 */
+	public function test_validate_post_type_will_use_a_custom_exception_message( $message ) {
+		$this->expectExceptionMessage( $message );
+
+		validate_post_type( 0, 'page', $message );
+	}
+
+	public function test_validate_post_type_will_return_null_if_valid_post_type() {
+		$wp_post = $this->factory->post->create_and_get();
+
+		$this->assertNull(
+			validate_post_type( $wp_post->ID, $wp_post->post_type )
+		);
+	}
+
+	public function test_validate_post_is_attachment_will_throw_an_exception_if_post_not_an_attachment() {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'Post is not an attachment post type' );
+
+		$post_id = $this->factory->post->create();
+
+		validate_post_is_attachment( $post_id );
+	}
+
+	/**
+	 * @testWith
+	 * [ "This is not an attachment" ]
+	 */
+	public function test_validate_post_is_attachment_will_use_a_custom_exception_message( $message ) {
+		$this->expectExceptionMessage( $message );
+
+		$post_id = $this->factory->post->create();
+
+		validate_post_is_attachment( $post_id, $message );
+	}
+
+	public function test_validate_post_is_attachment_will_return_null_if_valid_attachment() {
+		$post_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+
+		$this->assertNull(
+			validate_post_is_attachment( $post_id )
+		);
+	}
+
+	public function test_validate_attachment_file_type_throw_an_exception_if_attachment_metadata_does_not_exist() {
+		$types   = [ 'jpg', 'png' ];
+		$post_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( sprintf( 'File must be of %s', implode( ', ', $types ) ) );
+		validate_attachment_file_type( $post_id, $types );
+	}
+
+	public function test_validate_attachment_file_type_throw_an_exception_if_attachment_metadata_file_is_empty() {
+		$types   = [ 'jpg', 'png' ];
+		$post_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+		update_post_meta( $post_id, '_wp_attachment_metadata', [ 'file' => '' ] );
+
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( sprintf( 'File must be of %s', implode( ', ', $types ) ) );
+		validate_attachment_file_type( $post_id, $types );
+	}
+
+	public function test_validate_attachment_file_type_throw_an_exception_if_attachment_metadata_file_ext_is_not_valid() {
+		$types   = [ 'jpg', 'png' ];
+		$post_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+		update_post_meta( $post_id, '_wp_attachment_metadata', [ 'file' => '/path/to/file.bmp' ] );
+
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( sprintf( 'File must be of %s', implode( ', ', $types ) ) );
+		validate_attachment_file_type( $post_id, $types );
+	}
+
+	public function test_validate_attachment_file_type_will_use_the_custom_exception_message() {
+		$post_id        = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+		$custom_message = 'This is not a valid type';
+
+		$this->expectExceptionMessage( $custom_message );
+		validate_attachment_file_type( $post_id, [], $custom_message );
+	}
+
+	public function test_validate_attachment_file_type_return_null_if_valid_valid() {
+		$types   = [ 'jpg', 'png' ];
+		$post_id = $this->factory->post->create( [ 'post_type' => 'attachment' ] );
+		update_post_meta( $post_id, '_wp_attachment_metadata', [ 'file' => '/path/to/file.jpg' ] );
+
+		$this->assertNull(
+			validate_attachment_file_type( $post_id, $types )
+		);
 	}
 }
