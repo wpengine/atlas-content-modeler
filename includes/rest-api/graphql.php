@@ -77,8 +77,8 @@ const ACM_DEFAULT_GRAPHQL_ROOT_FIELDS = [
 /**
  * Reserved field names in use by WPGraphQL for the WordPress Core “Post” type.
  *
- * We can't use these values as field names because an ACM field named “title”
- * would conflict with the WP/WPGraphQL “title”, for example.
+ * We can't use these values as field names because an ACM field named “id”
+ * would conflict with the WP/WPGraphQL “id”, for example.
  *
  * We report conflicts instead of namespacing ACM fields under an `acmFields`
  * group to GraphQL responses to improve developer ergonomics: every field is a
@@ -163,15 +163,43 @@ function root_type_exists( string $name = '' ): bool {
 }
 
 /**
- * Determines if the passed field `$id` is in use in the given `$model`.
+ * Determines if the passed field has a slug that is allowed for the `$model`.
  *
- * @param string $id Field name to check for collisions with existing fields.
+ * @param array  $field Field to check for collisions with existing fields.
  * @param string $model The case-sensitive WPGraphQL type.
  *                      (Singular form, camel case, initial capital).
- * @return bool True if the passed `$name` collides with a reserved field ID.
+ * @return bool True if the passed `$name` is allowed.
  */
-function is_registered_field_id( string $id = '', string $model = '' ): bool {
-	return in_array( $id, get_registered_field_ids( $model ), true );
+function is_allowed_field_id( array $field, string $model = '' ): bool {
+	if ( is_field_id_exception( $field ) ) {
+		return true;
+	}
+
+	return ! in_array( $field['slug'], get_registered_field_ids( $model ), true );
+}
+
+/**
+ * Determines if the passed `$field` has a slug that we can allow due to an
+ * exception that we handle elsewhere.
+ *
+ * For example, 'title' is normally not permitted as a field ID because it
+ * conflicts with the default 'title' registered by WPGraphQL. But when isTitle
+ * is set for that field, we allow it and take steps in WPGraphQL field
+ * registration and field saving logic to handle it as a special case.
+ *
+ * @param array $field Field properties.
+ * @return bool True if the `$field` has a slug that is allowed to be used.
+ */
+function is_field_id_exception( $field ) {
+	$slug     = $field['slug'] ?? '';
+	$is_title = $field['isTitle'] ?? false;
+
+	// Fields set as a title field can use 'title' for their ID.
+	if ( $slug === 'title' && $is_title ) {
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -256,7 +284,6 @@ function get_registered_field_ids( string $model = '' ): array {
 		]
 	);
 
-	// The names of all fields.
 	return array_column(
 		$registered_fields['data']['__type']['fields'] ?? [],
 		'name'
