@@ -19,7 +19,7 @@ use function WPE\AtlasContentModeler\REST_API\Fields\content_model_field_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_multi_option_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_multi_option_slug_exists;
 use function WPE\AtlasContentModeler\REST_API\Fields\content_model_reverse_slug_exists;
-use function WPE\AtlasContentModeler\REST_API\GraphQL\is_registered_field_id;
+use function WPE\AtlasContentModeler\REST_API\GraphQL\is_allowed_field_id;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
 /**
@@ -78,7 +78,7 @@ function dispatch_update_content_model_field( WP_REST_Request $request ) {
 	if (
 		$request->get_method() === 'POST' &&
 		isset( $params['slug'] ) &&
-		is_registered_field_id( $params['slug'], $graphql_type, true )
+		! is_allowed_field_id( $params, $graphql_type, true )
 	) {
 		return new WP_Error(
 			'acm_reserved_field_slug',
