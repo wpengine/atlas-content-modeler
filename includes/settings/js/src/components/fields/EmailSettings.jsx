@@ -96,7 +96,6 @@ const EmailSettings = ({
 					</div>
 				</div>
 			</div>
-<<<<<<< HEAD
 
 			{isRepeatable && (
 				<div className="d-flex flex-column d-sm-flex flex-sm-row justify-content-between">
@@ -247,8 +246,6 @@ const EmailSettings = ({
 					</div>
 				</div>
 			)}
-=======
->>>>>>> 459781b1e582bf3a8f7293e0ed337603492dac83
 		</>
 	);
 };
