@@ -491,6 +491,14 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				continue;
 			}
 
+			/**
+			 * We allow a 'title' slug for title fields, but WPGraphQL already
+			 * registers a 'title' field so no need to re-register.
+			 */
+			if ( $field['slug'] === 'title' ) {
+				continue;
+			}
+
 			$rich_text = $field['type'] === 'richtext';
 
 			if ( 'relationship' === $field['type'] && isset( $models[ $field['reference'] ] ) ) {

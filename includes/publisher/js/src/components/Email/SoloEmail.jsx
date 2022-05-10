@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { __ } from "@wordpress/i18n";
 import Icon from "../../../../../components/icons";
 import { buildWildcardRegex } from "../../../../../shared-assets/js/validation/emailValidation";

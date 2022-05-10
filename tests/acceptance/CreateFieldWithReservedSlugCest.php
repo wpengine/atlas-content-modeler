@@ -5,8 +5,12 @@ use Codeception\Util\Locator;
 class CreateFieldWithReservedSlugCest {
 
 	/**
-	 * Checks that a field does not use one of the reserved default slugs
-	 * hard-coded in `includes/settings/reserved-field-slugs.php`.
+	 * Checks that a field does not use a reserved slug that was registered by
+	 * WPGraphQL itself.
+	 *
+	 * The 'title' slug is not allowed by default unless 'isTitle' is also true.
+	 *
+	 * @covers WPE\AtlasContentModeler\REST_API\GraphQL\is_allowed_field_id
 	 */
 	public function i_can_not_create_a_field_with_a_reserved_default_slug( AcceptanceTester $i ) {
 		$i->loginAsAdmin();
@@ -15,12 +19,36 @@ class CreateFieldWithReservedSlugCest {
 
 		$i->click( 'Text', '.field-buttons' );
 		$i->wait( 1 );
-		$i->fillField( [ 'name' => 'name' ], 'id' );
-		$i->seeInField( '#slug', 'id' );
+		$i->fillField( [ 'name' => 'name' ], 'title' );
+		$i->seeInField( '#slug', 'title' );
 		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
 
 		$i->waitForElementVisible( '.field-messages .error' );
 		$i->see( 'Identifier in use or reserved', '.field-messages .error' );
+	}
+
+	/**
+	 * Checks that a text field with a 'title' slug is allowed when 'use this
+	 * field as the entry title' is ticked.
+	 *
+	 * @covers WPE\AtlasContentModeler\REST_API\GraphQL\is_field_id_exception
+	 */
+	public function i_can_create_a_title_field_with_a_slug_of_title( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+
+		$i->click( 'Text', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'title' );
+		$i->seeInField( '#slug', 'title' );
+		$i->checkOption( 'input[name="isTitle"]' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
+		$i->wait( 1 );
+
+		$i->see( 'Text', '.field-list div.type' );
+		$i->see( 'Title', '.field-list div.widest' );
+		$i->see( 'entry title', '.field-list div.tags' );
 	}
 
 	/**
@@ -44,10 +72,10 @@ class CreateFieldWithReservedSlugCest {
 		$i->waitForElement( '.add-item' );
 
 		$i->click( Locator::lastElement( '.add-item' ) );
-		$i->wait( 1 ); // Allow some extra time for the WPGraphQL introspection request that fires when opening a new field.
 		$i->click( 'Text', '.field-buttons' );
 		$i->fillField( [ 'name' => 'name' ], 'Color' );
-		$i->click( '#slug' ); // Triggers onBlur event on the name field to fire the slug collision check.
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
+		$i->waitForElement( '.add-item' );
 
 		$i->waitForElementVisible( '.field-messages .error' );
 		$i->see( 'Identifier in use or reserved', '.field-messages .error' );

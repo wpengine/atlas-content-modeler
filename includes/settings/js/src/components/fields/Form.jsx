@@ -22,8 +22,8 @@ import supportedFields from "./supportedFields";
 import { ModelsContext } from "../../ModelsContext";
 import { __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
-import { useInputGenerator, useReservedSlugs } from "../../hooks";
-import { toValidApiId, toGraphQLType } from "../../formats";
+import { useInputGenerator } from "../../hooks";
+import { toValidApiId } from "../../formats";
 import { getFeaturedFieldId } from "../../queries";
 import {
 	Button,
@@ -87,10 +87,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 	const originalState = useRef(cloneDeep(models[model]["fields"] || {}));
 	const [previousState, setPreviousState] = useState(storedData);
 	const originalValues = useRef({});
-	const reservedSlugs = editing
-		? false
-		: useReservedSlugs(toGraphQLType(models[model]?.singular, true));
-
 	const isAppropriateType = (value) => {
 		if (getValues("numberType") === "integer") {
 			const disallowedCharacters = /[.]/g;
@@ -396,24 +392,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 			});
 	}
 
-	/**
-	 * Checks the current slug (API Identifier) does not conflict with
-	 * known reserved field slugs, such as “id” and “author”.
-	 */
-	function checkReservedSlugs() {
-		// Slugs can not be changed on fields being edited, only new fields.
-		if (editing) {
-			return;
-		}
-
-		if (
-			reservedSlugs &&
-			reservedSlugs.current?.includes(getValues("slug"))
-		) {
-			setError("slug", { type: "nameReserved" });
-		}
-	}
-
 	const currentModel = query.get("id");
 	const fields = models[currentModel]?.fields;
 	const originalMediaFieldId = useRef(getFeaturedFieldId(fields));
@@ -475,7 +453,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 								setNameCount(e.target.value.length);
 								clearErrors("slug");
 							}}
-							onBlur={checkReservedSlugs}
 						/>
 						<p className="field-messages">
 							{errors.name && errors.name.type === "required" && (
@@ -524,7 +501,6 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 								onChangeGeneratedValue(e.target.value)
 							}
 							readOnly={editing}
-							onBlur={checkReservedSlugs}
 						/>
 						<p className="field-messages">
 							{errors.slug && errors.slug.type === "required" && (

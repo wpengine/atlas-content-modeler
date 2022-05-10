@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import SoloEmail from "./SoloEmail";
 import RepeatingEmail from "./RepeatingEmail";
 import { __ } from "@wordpress/i18n";
