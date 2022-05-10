@@ -10,7 +10,46 @@ namespace WPE\AtlasContentModeler\Blueprint\Fetch;
 use WP_Error;
 
 /**
- * Downloads a blueprint zip file from the specified URL.
+ * Gets blueprint from either local or remote path.
+ *
+ * @param string $path The path to the file.
+ * @return string
+ */
+function get_blueprint( string $path ) {
+	if ( filter_var( $path, FILTER_VALIDATE_URL ) ) {
+		return get_remote_blueprint( $path );
+	} else {
+		return get_local_blueprint( $path );
+	}
+}
+
+/**
+ * Downloads a blueprint zip file from the specified local path.
+ *
+ * @param string $path The path to the zip file.
+ * @return string|WP_Error
+ */
+function get_local_blueprint( string $path ) {
+	if ( ! file_exists( $path ) ) {
+		return new WP_Error(
+			'acm_blueprint_invalid_file_path',
+			esc_html__( 'File path was invalid.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
+
+	if ( ! is_readable( $path ) ) {
+		return new WP_Error(
+			'acm_blueprint_file_not_readable',
+			esc_html__( 'Received empty response body.', 'atlas-content-modeler' )
+		);
+	}
+
+	return file_get_contents( $path ); // phpcs:ignore
+}
+
+/**
+ * Downloads a blueprint zip file from the specified remote URL.
  *
  * @param string $url URL to the blueprint zip file.
  *
