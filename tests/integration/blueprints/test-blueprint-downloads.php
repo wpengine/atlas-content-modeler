@@ -1,8 +1,30 @@
 <?php
 use function WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint;
+use function WPE\AtlasContentModeler\Blueprint\Fetch\get_local_blueprint;
 use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir;
 
 class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
+
+	/**
+	 * @covers ::WPE\AtlasContentModeler\Blueprint\Fetch\get_local_blueprint
+	 */
+	public function test_get_local_blueprint_returns_WP_Error_when_an_empty_path_is_provided(): void {
+		$file = get_local_blueprint( '' );
+		$this->assertWPError( $file );
+	}
+
+	/**
+	 * @covers ::WPE\AtlasContentModeler\Blueprint\Fetch\get_local_blueprint
+	 */
+	public function test_get_local_blueprint_returns_valid_zip_file(): void {
+		if ( ! defined( 'FS_METHOD' ) ) {
+			define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords. This only takes effect during testing.
+		}
+
+		$blueprint = get_local_blueprint( __DIR__ . '/test-data/acm-rabbits.zip' );
+		$this->assertNotWPError( $blueprint );
+		self::assertSame( 'application/zip', mime_content_type( $blueprint ) );
+	}
 
 	/**
 	 * @covers ::WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint
