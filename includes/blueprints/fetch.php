@@ -30,13 +30,6 @@ function get_blueprint( string $path ) {
  * @return string|WP_Error
  */
 function get_local_blueprint( string $path ) {
-	if ( ! file_exists( $path ) ) {
-		return new WP_Error(
-			'acm_blueprint_invalid_file_path',
-			esc_html__( 'File path was invalid.', 'atlas-content-modeler' ),
-			[ 'status' => 400 ]
-		);
-	}
 
 	if ( ! is_readable( $path ) ) {
 		return new WP_Error(
