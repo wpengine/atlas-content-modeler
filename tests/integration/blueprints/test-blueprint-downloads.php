@@ -23,7 +23,9 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 
 		$blueprint = get_local_blueprint( __DIR__ . '/test-data/acm-rabbits.zip' );
 		$this->assertNotWPError( $blueprint );
-		self::assertSame( 'application/zip', mime_content_type( $blueprint ) );
+
+		$file_info = new finfo( FILEINFO_MIME_TYPE );
+		self::assertSame( 'application/zip', $file_info->buffer( $blueprint ) );
 	}
 
 	/**

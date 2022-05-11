@@ -30,7 +30,6 @@ function get_blueprint( string $path ) {
  * @return string|WP_Error
  */
 function get_local_blueprint( string $path ) {
-
 	if ( ! is_readable( $path ) ) {
 		return new WP_Error(
 			'acm_blueprint_file_not_readable',
