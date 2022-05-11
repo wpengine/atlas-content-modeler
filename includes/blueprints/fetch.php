@@ -18,9 +18,9 @@ use WP_Error;
 function get_blueprint( string $path ) {
 	if ( filter_var( $path, FILTER_VALIDATE_URL ) ) {
 		return get_remote_blueprint( $path );
-	} else {
-		return get_local_blueprint( $path );
 	}
+
+	return get_local_blueprint( $path );
 }
 
 /**
@@ -30,18 +30,11 @@ function get_blueprint( string $path ) {
  * @return string|WP_Error
  */
 function get_local_blueprint( string $path ) {
-	if ( ! file_exists( $path ) ) {
-		return new WP_Error(
-			'acm_blueprint_invalid_file_path',
-			esc_html__( 'File path was invalid.', 'atlas-content-modeler' ),
-			[ 'status' => 400 ]
-		);
-	}
 
 	if ( ! is_readable( $path ) ) {
 		return new WP_Error(
 			'acm_blueprint_file_not_readable',
-			esc_html__( 'Received empty response body.', 'atlas-content-modeler' )
+			esc_html__( 'File not found or not readable.', 'atlas-content-modeler' )
 		);
 	}
 
