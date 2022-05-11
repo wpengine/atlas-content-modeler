@@ -18,9 +18,9 @@ use WP_Error;
 function get_blueprint( string $path ) {
 	if ( filter_var( $path, FILTER_VALIDATE_URL ) ) {
 		return get_remote_blueprint( $path );
-	} else {
-		return get_local_blueprint( $path );
 	}
+
+	return get_local_blueprint( $path );
 }
 
 /**
