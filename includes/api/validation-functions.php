@@ -32,7 +32,7 @@ function validate_model_field_data( array $model_schema, array $data ) {
 	foreach ( $model_schema['fields'] as $id => $field ) {
 		try {
 			if ( is_field_required( $field ) ) {
-				validate_array_key_exists( $field['slug'], $data, "{$field['name']} field is required" );
+				validate_array_key_exists( $field['slug'], $data );
 			}
 
 			if ( ! \array_key_exists( $field['slug'], $data ) ) {
@@ -59,10 +59,13 @@ function validate_model_field_data( array $model_schema, array $data ) {
 				case 'media':
 					validate_media_field( $value, $field );
 					break;
+				case 'relationship':
+					validate_relationship_field( $value, $field );
+					break;
 			}
 		} catch ( Validation_Exception $exception ) {
 			$wp_error->merge_from(
-				$exception->as_wp_error( 'invalid_model_field' )
+				$exception->as_wp_error( $field['slug'] )
 			);
 		}
 	}
@@ -227,6 +230,39 @@ function validate_media_field( $value, array $field ): void {
 }
 
 /**
+ * Validate a relationship field value.
+ *
+ * @param mixed $value The field value.
+ * @param array $field The model field.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_relationship_field( $value, array $field ): void {
+	if ( is_field_required( $field ) ) {
+		validate_not_empty(
+			$value,
+			\__( 'Field is required', 'atlas-content-modeler' )
+		);
+	}
+
+	$value = (array) $value;
+	foreach ( $value as $item ) {
+		validate_number(
+			$item,
+			\__( 'Invalid relationship id', 'atlas-content-modeler' )
+		);
+
+		validate_post_type(
+			$item,
+			$field['reference'],
+			\__( 'Invalid post type for relationship', 'atlas-content-modeler' )
+		);
+	}
+}
+
+/**
  * Validate for valid number.
  *
  * @param mixed  $value The value.
@@ -324,7 +360,9 @@ function validate_in_array( $value, array $array, $message = 'Values not found w
  *
  * @return void
  */
-function validate_array_key_exists( $key, array $array, $message = 'The key is required' ): void {
+function validate_array_key_exists( $key, array $array, ?string $message = null ): void {
+	$message = $message ?? \__( 'Field is required', 'atlas-content-modeler' );
+
 	if ( ! \array_key_exists( $key, $array ) ) {
 		throw new Validation_Exception( $message );
 	}
