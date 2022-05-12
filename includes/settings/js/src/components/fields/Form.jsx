@@ -181,7 +181,7 @@ function Form({ id, position, type, editing, storedData, hasDirtyField }) {
 				},
 				exactRepeatable: {
 					min: 1,
-					setValueas: (v) => (v ? parseInt(v) : ""),
+					setValueAs: (v) => (v ? parseInt(v) : ""),
 				},
 			},
 		},
