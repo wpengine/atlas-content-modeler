@@ -30,7 +30,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 	unzip_blueprint
 };
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
-use function WPE\AtlasContentModeler\Blueprint\Fetch\get_remote_blueprint;
+use function WPE\AtlasContentModeler\Blueprint\Fetch\get_blueprint;
 use function WPE\AtlasContentModeler\Blueprint\Fetch\save_blueprint_to_upload_dir;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
@@ -53,12 +53,12 @@ use function WPE\AtlasContentModeler\Blueprint\Export\{
  */
 class Blueprint {
 	/**
-	 * Imports an ACM blueprint from a URL.
+	 * Imports an ACM blueprint from a PATH or URL.
 	 *
 	 * ## OPTIONS
 	 *
-	 * <url>
-	 * : The URL of the blueprint zip file to fetch.
+	 * <path>
+	 * : The URL or local path of the blueprint zip file.
 	 *
 	 * [--skip-cleanup]
 	 * : Skips removal of the blueprint zip and manifest files after a
@@ -73,15 +73,15 @@ class Blueprint {
 	 * @param array $assoc_args Optional flags passed to the command.
 	 */
 	public function import( $args, $assoc_args ) {
-		list( $url ) = $args;
+		list( $path ) = $args;
 
 		\WP_CLI::log( 'Fetching zip.' );
-		$zip_file = get_remote_blueprint( $url );
+		$zip_file = get_blueprint( $path );
 		if ( is_wp_error( $zip_file ) ) {
 			\WP_CLI::error( $zip_file->get_error_message() );
 		}
 
-		$valid_file = save_blueprint_to_upload_dir( $zip_file, basename( $url ) );
+		$valid_file = save_blueprint_to_upload_dir( $zip_file, basename( $path ) );
 		if ( is_wp_error( $valid_file ) ) {
 			\WP_CLI::error( $valid_file->get_error_message() );
 		}
