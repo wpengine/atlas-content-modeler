@@ -14,18 +14,18 @@ Requires: ACM 0.14.0+.
 
 ### Description
 
-Imports an ACM blueprint from a URL.
+Imports an ACM blueprint from a URL or File Path.
 
 ### Synopsis
 
 ```
-wp acm blueprint import <url> [--skip-cleanup]
+wp acm blueprint import <path> [--skip-cleanup]
 ```
 
 ### Options
 
-`<url>`
-The URL of the blueprint zip file to fetch.
+`<path>`
+The URL or File Path of the blueprint zip file.
 
 `[--skip-cleanup]`
 Skips removal of the blueprint zip and manifest files after a
@@ -35,6 +35,7 @@ record of content and files that were installed.
 ### Examples
 
 `wp acm blueprint import https://example.com/path/to/blueprint.zip`
+`wp acm blueprint import /filesystem/path/to/blueprint.zip`
 
 ## wp acm blueprint export
 

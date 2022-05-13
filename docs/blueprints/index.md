@@ -6,6 +6,7 @@ Blueprints can be exported and imported using [ACM’s WP-CLI commands](../wp-cl
 
 - `wp acm blueprint export` will dump the current state of your site to a blueprint zip file.
 - `wp acm blueprint import https://example.com/path/to/blueprint.zip` will import a blueprint from a publicly-accessible URL.
+- `wp acm blueprint import /filesystem/path/to/blueprint.zip` will import a blueprint from a local File Path.
 
 ## Blueprint files
 
