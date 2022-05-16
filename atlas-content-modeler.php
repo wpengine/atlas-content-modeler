@@ -57,6 +57,7 @@ function atlas_content_modeler_loader(): void {
 		'api/crud-functions.php',
 		'api/validation-functions.php',
 		'class-validation-exception.php',
+		'class-wp-error.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
