@@ -354,7 +354,7 @@ function validate_array_key_exists( $key, array $array, string $message ): void 
  *
  * @return void
  */
-function validate_not_empty( $value, string $message = null ): void {
+function validate_not_empty( $value, string $message ): void {
 	$message = $message ?? \__( 'The field cannot be empty', 'atlas-content-modeler' );
 
 	if ( ( \is_string( $value ) || \is_array( $value ) ) && empty( $value ) ) {
