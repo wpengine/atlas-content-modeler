@@ -373,7 +373,7 @@ function validate_not_empty( $value, string $message ): void {
  *
  * @return void
  */
-function validate_min( $value, int $min, string $message = null ): void {
+function validate_min( $value, int $min, string $message ): void {
 	$message = $message ?? \__( 'The field must be at least the minimum', 'atlas-content-modeler' );
 
 	if ( \is_string( $value ) && \strlen( $value ) < $min ) {
