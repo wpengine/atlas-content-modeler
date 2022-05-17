@@ -334,7 +334,7 @@ function validate_in_array( $value, array $array, string $message ): void {
  *
  * @return void
  */
-function validate_array_key_exists( $key, array $array, $message = null ): void {
+function validate_array_key_exists( $key, array $array, string $message ): void {
 	$message = $message ?? \__( 'The key is required', 'atlas-content-modeler' );
 
 	if ( ! \array_key_exists( $key, $array ) ) {
