@@ -3,6 +3,7 @@
 ## Unreleased
 ### Changed
 - Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
+- Field validation now returns translatable errors.
 
 ## 0.17.0 - 2022-05-05
 ### Added
