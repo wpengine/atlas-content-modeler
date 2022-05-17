@@ -274,7 +274,7 @@ function validate_date( $value, string $message ): void {
  *
  * @return void
  */
-function validate_string( $value, string $message = null ): void {
+function validate_string( $value, string $message ): void {
 	$message = $message ?? \__( 'Value is not of type string', 'atlas-content-modeler' );
 
 	if ( ! \is_string( $value ) ) {
