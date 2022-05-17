@@ -236,7 +236,7 @@ function validate_media_field( $value, array $field ): void {
  *
  * @return void
  */
-function validate_number( $value, $message = null ): void {
+function validate_number( $value, string $message ): void {
 	$message = $message ?? \__( 'Value must be a valid number', 'atlas-content-modeler' );
 
 	if ( ! \is_numeric( $value ) ) {
