@@ -649,4 +649,44 @@ class TestValidationFunctions extends Integration_TestCase {
 			validate_attachment_file_type( $post_id, $types )
 		);
 	}
+
+	public function test_validate_array_of_will_throw_Validation_Exception_if_invalid_data() {
+		$data = range( 0, 3 );
+
+		try {
+			validate_array_of(
+				$data,
+				function ( $value, $index ) {
+					if ( $value % 2 === 1 ) {
+						throw new Validation_Exception( "Value at index {$index} is odd" );
+					}
+				}
+			);
+		} catch ( Validation_Exception $exception ) {
+			$wp_error = $exception->as_wp_error( 'invalid_value' );
+
+			$this->assertEquals(
+				[
+					1 => 'Value at index 1 is odd',
+					3 => 'Value at index 3 is odd',
+				],
+				$wp_error->get_error_messages( 'invalid_value' )
+			);
+		}
+	}
+
+	public function test_validate_array_of_will_not_throw_Validation_Exception_if_valid_data() {
+		$data = range( 0, 2 );
+
+		$response = validate_array_of(
+			$data,
+			function ( $value, $index ) {
+				if ( ! is_numeric( $value ) ) {
+					throw new Validation_Exception( "Value at index {$index} was false" );
+				}
+			}
+		);
+
+		$this->assertNull( $response );
+	}
 }

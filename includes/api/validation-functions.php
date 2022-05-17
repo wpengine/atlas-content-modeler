@@ -518,3 +518,34 @@ function validate_attachment_file_type( int $id, array $types, ?string $message 
 		throw new Validation_Exception( $message );
 	}
 }
+
+/**
+ * Validate an array of data given a callable.
+ *
+ * Bundles exception messages and throws as a single exception.
+ *
+ * @param array $array    Array of data.
+ * @param mixed $callback Callback used for each item of data.
+ *
+ * @throws Validation_Exception Exception when errors occur.
+ *
+ * @return void
+ */
+function validate_array_of( array $array, $callback ): void {
+	$errors = [];
+
+	foreach ( $array as $index => $value ) {
+		try {
+			\call_user_func( $callback, $value, $index );
+		} catch ( Validation_Exception $exception ) {
+			$errors[ $index ] = $exception->getMessage();
+		}
+	}
+
+	if ( ! empty( $errors ) ) {
+		$exception = new Validation_Exception();
+		$exception->add_messages( $errors );
+
+		throw $exception;
+	}
+}
