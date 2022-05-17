@@ -78,8 +78,8 @@ add_filter( 'parent_file', __NAMESPACE__ . '\maybe_override_submenu_file' );
 function maybe_override_submenu_file( $parent_file ) {
 	global $submenu_file;
 
-	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
-	$view = filter_input( INPUT_GET, 'view', FILTER_SANITIZE_STRING );
+	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	$view = filter_input( INPUT_GET, 'view', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 	if ( $page === 'atlas-content-modeler' && $view === 'taxonomies' ) {
 		$submenu_file = 'atlas-content-modeler&amp;view=taxonomies'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
