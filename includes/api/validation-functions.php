@@ -292,7 +292,7 @@ function validate_string( $value, string $message ): void {
  *
  * @return void
  */
-function validate_array( $value, string $message = null ): void {
+function validate_array( $value, string $message ): void {
 	$message = $message ?? \__( 'Value is not of type array', 'atlas-content-modeler' );
 
 	if ( ! \is_array( $value ) ) {
