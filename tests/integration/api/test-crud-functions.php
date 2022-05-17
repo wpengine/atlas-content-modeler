@@ -64,7 +64,7 @@ class TestApiFunctions extends Integration_TestCase {
 	public function test_insert_model_entry_will_trigger_validation_if_invalid_data() {
 		$model_id = insert_model_entry( 'validation', [ 'numberField' => 'not a number value' ] );
 
-		$this->assertEquals( [ 'Number Field must be a valid number' ], $model_id->get_error_messages( 'invalid_model_field' ) );
+		$this->assertEquals( [ 'Number Field must be a valid number' ], $model_id->get_error_messages( 'numberField' ) );
 	}
 
 	public function test_insert_model_entry_will_insert_post_data_if_given() {
