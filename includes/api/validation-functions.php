@@ -254,7 +254,7 @@ function validate_number( $value, string $message ): void {
  *
  * @return void
  */
-function validate_date( $value, $message = null ): void {
+function validate_date( $value, string $message ): void {
 	$message = $message ?? \__( 'Value must be of format YYYY-MM-DD', 'atlas-content-modeler' );
 
 	$date_format = '/\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/';
