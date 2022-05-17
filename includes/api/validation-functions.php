@@ -247,19 +247,21 @@ function validate_relationship_field( $value, array $field ): void {
 		);
 	}
 
-	$value = (array) $value;
-	foreach ( $value as $item ) {
-		validate_number(
-			$item,
-			\__( 'Invalid relationship id', 'atlas-content-modeler' )
-		);
+	validate_array_of(
+		(array) $value,
+		static function ( $item, $index ) use ( $field ) {
+			validate_number(
+				$item,
+				\__( 'Invalid relationship id', 'atlas-content-modeler' )
+			);
 
-		validate_post_type(
-			$item,
-			$field['reference'],
-			\__( 'Invalid post type for relationship', 'atlas-content-modeler' )
-		);
-	}
+			validate_post_type(
+				$item,
+				$field['reference'],
+				\__( 'Invalid post type for relationship', 'atlas-content-modeler' )
+			);
+		}
+	);
 }
 
 /**
