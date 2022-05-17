@@ -297,7 +297,7 @@ function import_terms( array $post_terms ) {
 			];
 
 			// Continue if the term already exists.
-			$term_already_exists = term_exists( $term['name'], $term['taxonomy'] );
+			$term_already_exists = term_exists( $term['name'], $term['taxonomy'], $term['parent'] );
 
 			if ( $term_already_exists ) {
 				continue;
