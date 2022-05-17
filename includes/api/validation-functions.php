@@ -311,7 +311,7 @@ function validate_array( $value, string $message ): void {
  *
  * @return void
  */
-function validate_in_array( $value, array $array, $message = null ): void {
+function validate_in_array( $value, array $array, string $message ): void {
 	$message = $message ?? \__( 'Values not found within array', 'atlas-content-modeler' );
 
 	if ( ! \is_array( $value ) ) {
