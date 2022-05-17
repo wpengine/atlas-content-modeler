@@ -237,7 +237,7 @@ function validate_media_field( $value, array $field ): void {
  * @return void
  */
 function validate_number( $value, string $message = '' ): void {
-	$message = $message ?? \__( 'Value must be a valid number', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
 
 	if ( ! \is_numeric( $value ) ) {
 		throw new Validation_Exception( $message );
@@ -255,7 +255,7 @@ function validate_number( $value, string $message = '' ): void {
  * @return void
  */
 function validate_date( $value, string $message = '' ): void {
-	$message = $message ?? \__( 'Value must be of format YYYY-MM-DD', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Value must be of format YYYY-MM-DD', 'atlas-content-modeler' );
 
 	$date_format = '/\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/';
 
@@ -275,7 +275,7 @@ function validate_date( $value, string $message = '' ): void {
  * @return void
  */
 function validate_string( $value, string $message = '' ): void {
-	$message = $message ?? \__( 'Value is not of type string', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Value is not of type string', 'atlas-content-modeler' );
 
 	if ( ! \is_string( $value ) ) {
 		throw new Validation_Exception( $message );
@@ -293,7 +293,7 @@ function validate_string( $value, string $message = '' ): void {
  * @return void
  */
 function validate_array( $value, string $message = '' ): void {
-	$message = $message ?? \__( 'Value is not of type array', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Value is not of type array', 'atlas-content-modeler' );
 
 	if ( ! \is_array( $value ) ) {
 		throw new Validation_Exception( $message );
@@ -312,7 +312,7 @@ function validate_array( $value, string $message = '' ): void {
  * @return void
  */
 function validate_in_array( $value, array $array, string $message = '' ): void {
-	$message = $message ?? \__( 'Values not found within array', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Values not found within array', 'atlas-content-modeler' );
 
 	if ( ! \is_array( $value ) ) {
 		$value = (array) $value;
@@ -335,7 +335,7 @@ function validate_in_array( $value, array $array, string $message = '' ): void {
  * @return void
  */
 function validate_array_key_exists( $key, array $array, string $message = '' ): void {
-	$message = $message ?? \__( 'The key is required', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'The key is required', 'atlas-content-modeler' );
 
 	if ( ! \array_key_exists( $key, $array ) ) {
 		throw new Validation_Exception( $message );
@@ -355,7 +355,7 @@ function validate_array_key_exists( $key, array $array, string $message = '' ): 
  * @return void
  */
 function validate_not_empty( $value, string $message = '' ): void {
-	$message = $message ?? \__( 'The field cannot be empty', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'The field cannot be empty', 'atlas-content-modeler' );
 
 	if ( ( \is_string( $value ) || \is_array( $value ) ) && empty( $value ) ) {
 		throw new Validation_Exception( $message );
@@ -374,7 +374,7 @@ function validate_not_empty( $value, string $message = '' ): void {
  * @return void
  */
 function validate_min( $value, int $min, string $message = '' ): void {
-	$message = $message ?? \__( 'The field must be at least the minimum', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'The field must be at least the minimum', 'atlas-content-modeler' );
 
 	if ( \is_string( $value ) && \strlen( $value ) < $min ) {
 		throw new Validation_Exception( $message );
@@ -401,7 +401,7 @@ function validate_min( $value, int $min, string $message = '' ): void {
  * @return void
  */
 function validate_max( $value, int $max, string $message = '' ): void {
-	$message = $message ?? \__( 'The field cannot exceed the maximum', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'The field cannot exceed the maximum', 'atlas-content-modeler' );
 
 	if ( \is_string( $value ) && \strlen( $value ) > $max ) {
 		throw new Validation_Exception( $message );
@@ -427,7 +427,7 @@ function validate_max( $value, int $max, string $message = '' ): void {
  * @return void
  */
 function validate_post_exists( int $id, ?string $message = '' ): void {
-	$message = $message ?? \__( 'The post object was not found', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'The post object was not found', 'atlas-content-modeler' );
 	$post    = \get_post( $id );
 
 	if ( ! $post ) {
@@ -447,7 +447,7 @@ function validate_post_exists( int $id, ?string $message = '' ): void {
  * @return void
  */
 function validate_post_type( int $id, string $post_type, ?string $message = '' ): void {
-	$message = $message ?? \__( 'Invalid post type', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Invalid post type', 'atlas-content-modeler' );
 
 	if ( $post_type !== \get_post_type( $id ) ) {
 		throw new Validation_Exception( $message );
@@ -465,7 +465,7 @@ function validate_post_type( int $id, string $post_type, ?string $message = '' )
  * @return void
  */
 function validate_post_is_attachment( int $id, ?string $message = '' ): void {
-	$message = $message ?? \__( 'Post is not an attachment post type', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Post is not an attachment post type', 'atlas-content-modeler' );
 
 	validate_post_type( $id, 'attachment', $message );
 }
@@ -483,7 +483,7 @@ function validate_post_is_attachment( int $id, ?string $message = '' ): void {
  */
 function validate_attachment_file_type( int $id, array $types, ?string $message = '' ): void {
 	$metadata = \wp_get_attachment_metadata( $id );
-	$message  = $message ?? \sprintf(
+	$message  = $message ?: \sprintf(
 		// translators: The file type extensions.
 		\__( 'File must be of %s types', 'atlas-content-modeler' ),
 		\implode( ', ', $types )
