@@ -400,7 +400,7 @@ function validate_min( $value, int $min, string $message ): void {
  *
  * @return void
  */
-function validate_max( $value, int $max, string $message = null ): void {
+function validate_max( $value, int $max, string $message ): void {
 	$message = $message ?? \__( 'The field cannot exceed the maximum', 'atlas-content-modeler' );
 
 	if ( \is_string( $value ) && \strlen( $value ) > $max ) {
