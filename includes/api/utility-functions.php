@@ -18,9 +18,9 @@ namespace WPE\AtlasContentModeler\API;
  * @return array Array of extracted keys and values.
  */
 function array_extract_by_keys( array $array, array $keys ): array {
-	return array_intersect_key(
+	return \array_intersect_key(
 		$array,
-		array_flip( $keys )
+		\array_flip( $keys )
 	);
 }
 
