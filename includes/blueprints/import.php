@@ -296,6 +296,13 @@ function import_terms( array $post_terms ) {
 				'description' => $term['description'] ?? '',
 			];
 
+			// Continue if the term already exists.
+			$term_already_exists = term_exists( $term['name'], $term['taxonomy'], $term['parent'] ?? null );
+
+			if ( $term_already_exists ) {
+				continue;
+			}
+
 			$inserted_term = wp_insert_term( $term['name'], $term['taxonomy'], $term_info );
 
 			if ( is_wp_error( $inserted_term ) ) {
