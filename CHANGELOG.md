@@ -27,6 +27,7 @@
 ### Fixed
 - Title values are now saved to the wp_posts table as expected, instead of being exposed with WP filters. This fixes a few things, such as queries that search the post title field.
 - Post slugs are now generated from the post title value, like they are for post types built into WordPress.
+- Taxonomy terms that already exist are skipped when importing a blueprint.
 
 ## 0.16.0 - 2022-04-06
 ### Added
