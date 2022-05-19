@@ -32,7 +32,12 @@ function validate_model_field_data( array $model_schema, array $data ) {
 	foreach ( $model_schema['fields'] as $id => $field ) {
 		try {
 			if ( is_field_required( $field ) ) {
-				validate_array_key_exists( $field['slug'], $data );
+				validate_array_key_exists(
+					$field['slug'],
+					$data,
+					// translators: The name of the field.
+					\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
+				);
 			}
 
 			if ( ! \array_key_exists( $field['slug'], $data ) ) {
@@ -243,7 +248,8 @@ function validate_relationship_field( $value, array $field ): void {
 	if ( is_field_required( $field ) ) {
 		validate_not_empty(
 			$value,
-			\__( 'Field is required', 'atlas-content-modeler' )
+			// translators: The name of the field.
+			\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
 		);
 	}
 

@@ -87,7 +87,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787479673]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'textField' ) );
+		$this->assertEquals( [ 'Text Field is required' ], $valid->get_error_messages( 'textField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'textField' => '' ] );
 		$this->assertEquals( [ 'Text Field cannot be empty' ], $valid->get_error_messages( 'textField' ) );
@@ -102,7 +102,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787498608]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'repeatableTextField' ) );
+		$this->assertEquals( [ 'Repeatable Text Field is required' ], $valid->get_error_messages( 'repeatableTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableTextField' => '' ] );
 		$this->assertEquals( [ 'Repeatable Text Field must be an array of text' ], $valid->get_error_messages( 'repeatableTextField' ) );
@@ -117,7 +117,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787509847]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'richTextField' ) );
+		$this->assertEquals( [ 'Rich Text Field is required' ], $valid->get_error_messages( 'richTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'richTextField' => '' ] );
 		$this->assertEquals( [ 'Rich Text Field cannot be empty' ], $valid->get_error_messages( 'richTextField' ) );
@@ -132,7 +132,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787528544]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'repeatableRichTextField' ) );
+		$this->assertEquals( [ 'Repeatable Rich Text Field is required' ], $valid->get_error_messages( 'repeatableRichTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableRichTextField' => '' ] );
 		$this->assertEquals( [ 'Repeatable Rich Text Field must be an array of richtext' ], $valid->get_error_messages( 'repeatableRichTextField' ) );
@@ -147,7 +147,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787543496]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'numberField' ) );
+		$this->assertEquals( [ 'Number Field is required' ], $valid->get_error_messages( 'numberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'numberField' => '' ] );
 		$this->assertEquals( [ 'Number Field cannot be empty' ], $valid->get_error_messages( 'numberField' ) );
@@ -162,7 +162,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787560968]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'repeatableNumberField' ) );
+		$this->assertEquals( [ 'Repeatable Number Field is required' ], $valid->get_error_messages( 'repeatableNumberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableNumberField' => 1 ] );
 		$this->assertEquals( [ 'Repeatable Number Field must be an array of number' ], $valid->get_error_messages( 'repeatableNumberField' ) );
@@ -177,7 +177,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787611492]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'dateField' ) );
+		$this->assertEquals( [ 'Date Field is required' ], $valid->get_error_messages( 'dateField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'dateField' => '' ] );
 		$this->assertEquals( [ 'Date Field must be a valid date' ], $valid->get_error_messages( 'dateField' ) );
@@ -192,7 +192,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787623430]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'repeatableDateField' ) );
+		$this->assertEquals( [ 'Repeatable Date Field is required' ], $valid->get_error_messages( 'repeatableDateField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableDateField' => '2022-04-08' ] );
 		$this->assertEquals( [ 'Repeatable Date Field must be an array of date' ], $valid->get_error_messages( 'repeatableDateField' ) );
@@ -207,7 +207,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787666652]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'singleMultipleChoiceField' ) );
+		$this->assertEquals( [ 'Single Multiple Choice Field is required' ], $valid->get_error_messages( 'singleMultipleChoiceField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'singleMultipleChoiceField' => [] ] );
 		$this->assertEquals( [ 'Single Multiple Choice Field cannot be empty' ], $valid->get_error_messages( 'singleMultipleChoiceField' ) );
@@ -228,7 +228,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649787701753]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'multiMultipleChoiceField' ) );
+		$this->assertEquals( [ 'Multi Multiple Choice Field is required' ], $valid->get_error_messages( 'multiMultipleChoiceField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'multiMultipleChoiceField' => [] ] );
 		$this->assertEquals( [ 'Multi Multiple Choice Field cannot be empty' ], $valid->get_error_messages( 'multiMultipleChoiceField' ) );
@@ -243,7 +243,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1649789115852]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'mediaField' ) );
+		$this->assertEquals( [ 'Media Field is required' ], $valid->get_error_messages( 'mediaField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'mediaField' => 'not_a_number' ] );
 		$this->assertEquals( [ 'Media Field must be a valid attachment id' ], $valid->get_error_messages( 'mediaField' ) );
@@ -287,10 +287,10 @@ class TestValidationFunctions extends Integration_TestCase {
 		$model_schema['fields'][1648576059444]['required'] = true;
 
 		$valid = validate_model_field_data( $model_schema, [] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'cars' ) );
+		$this->assertEquals( [ 'Cars is required' ], $valid->get_error_messages( 'cars' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'cars' => '' ] );
-		$this->assertEquals( [ 'Field is required' ], $valid->get_error_messages( 'cars' ) );
+		$this->assertEquals( [ 'Cars is required' ], $valid->get_error_messages( 'cars' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'cars' => 'not_a_number' ] );
 		$this->assertEquals( [ 'Invalid relationship id' ], $valid->get_error_messages( 'cars' ) );
