@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler;
 
+use function WPE\AtlasContentModeler\API\get_model;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -337,4 +339,24 @@ function sanitize_field( string $type, $value ) {
 		default:
 			return $value;
 	}
+}
+
+/**
+ * Get model fields for the given type.
+ *
+ * @param string $type  The model type.
+ * @param string $model The model name.
+ *
+ * @return array Array of model fields of type.
+ */
+function get_fields_by_type( string $type, string $model ): array {
+	$model_schema = get_model( $model );
+	$fields       = $model_schema['fields'] ?? [];
+
+	return \array_filter(
+		$model_schema['fields'],
+		static function ( $field ) use ( $type ) {
+			return $type === $field['type'];
+		}
+	);
 }
