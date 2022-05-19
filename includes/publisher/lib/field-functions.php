@@ -342,6 +342,21 @@ function sanitize_field( string $type, $value ) {
 }
 
 /**
+ * Get an array of field attributes given field type and model.
+ *
+ * @param string $attribute The field attribute.
+ * @param string $type      The model type.
+ * @param string $model     The model name.
+ *
+ * @return array Array of attribute values for the given field and model.
+ */
+function get_attributes_for_field_type( string $attribute, string $type, string $model ): array {
+	$fields = get_fields_by_type( $type, $model );
+
+	return \wp_list_pluck( $fields, $attribute );
+}
+
+/**
  * Get model fields for the given type.
  *
  * @param string $type  The model type.
@@ -354,7 +369,7 @@ function get_fields_by_type( string $type, string $model ): array {
 	$fields       = $model_schema['fields'] ?? [];
 
 	return \array_filter(
-		$model_schema['fields'],
+		$fields,
 		static function ( $field ) use ( $type ) {
 			return $type === $field['type'];
 		}
