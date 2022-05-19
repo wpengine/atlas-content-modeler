@@ -425,6 +425,12 @@ final class FormEditingExperience {
 
 		foreach ( $posted_values as $key => $value ) {
 			$key = sanitize_text_field( $key );
+
+			// Do not save empty values.
+			if ( empty( $value ) ) {
+				continue;
+			}
+
 			/**
 			 * Check if an existing value matches the submitted value
 			 * and short-circuit the loop. Otherwise `update_post_meta`
