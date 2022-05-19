@@ -380,6 +380,16 @@ final class FormEditingExperience {
 					}
 				} else {
 					$existing = get_post_meta( $post_id, sanitize_text_field( $slug ), true );
+					// Clean up empty values already saved in db.
+					if ( $existing === '' || $existing === [] ) {
+						$deleted = delete_post_meta( $post_id, sanitize_text_field( $slug ) );
+						if ( ! $deleted ) {
+							/* translators: %s: atlas content modeler field slug */
+							$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+						}
+						continue;
+					}
+
 					if ( empty( $existing ) ) {
 						continue;
 					}
