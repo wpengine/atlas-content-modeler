@@ -3,6 +3,9 @@
 ## Unreleased
 ### Changed
 - Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
+### Fixed
+- Issue where adding a new repeating field to an existing model schema could break GraphQL queries under certain conditions.
+- Empty field values are no longer saved to the database.
 
 ## 0.17.0 - 2022-05-05
 ### Added
