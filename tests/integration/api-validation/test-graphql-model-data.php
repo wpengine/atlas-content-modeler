@@ -424,4 +424,42 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
 	}
+
+	public function test_adding_new_repeating_field_to_existing_model_does_not_break_graphql_queries(): void {
+		$new_field = array(
+			'show_in_rest'      => true,
+			'show_in_graphql'   => true,
+			'type'              => 'email',
+			'id'                => '1651005489',
+			'position'          => '500000',
+			'name'              => 'New-Email-Repeater',
+			'slug'              => 'newEmailRepeater',
+			'isRepeatableEmail' => 'true',
+			'required'          => true,
+		);
+
+		$this->test_models['public-fields']['fields']['1651005489'] = $new_field;
+		update_registered_content_types( $this->test_models );
+
+		try {
+			$results = graphql(
+				[
+					'query' => '
+				{
+					publicsFields {
+						nodes {
+							databaseId
+							newEmailRepeater
+						}
+					}
+				}
+				',
+				]
+			);
+
+			self::assertSame( [], $results['data']['publicsFields']['nodes'][0]['newEmailRepeater'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
 }
