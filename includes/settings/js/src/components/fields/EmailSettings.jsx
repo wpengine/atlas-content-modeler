@@ -27,9 +27,9 @@ const EmailSettings = ({
 }) => {
 	watch(["minRepeatable", "maxRepeatable", "exactRepeatable"]);
 	const isRepeatable = getValues("isRepeatableEmail");
-	const isMinMaxDisabled = getValues("exactRepeatable") || false;
+	const isMinMaxDisabled = !!getValues("exactRepeatable");
 	const isExactDisabled =
-		getValues("maxRepeatable") || getValues("minRepeatable") || false;
+		getValues("maxRepeatable") || !!getValues("minRepeatable");
 
 	return (
 		<>
