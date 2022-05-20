@@ -272,11 +272,22 @@ function sanitize_field( string $type, $value ) {
 			return wp_kses_post( $value );
 		case 'relationship':
 			// Sanitizes each value as an integer and saves as a comma-separated string.
-			$relationships = explode( ',', $value['relationshipEntryId'] );
-			foreach ( $relationships as $index => $id ) {
-				$relationships[ $index ] = filter_var( $id, FILTER_SANITIZE_NUMBER_INT );
+			$relationship_ids = $value['relationshipEntryId'] ?? $value;
+
+			if ( is_string( $relationship_ids ) ) {
+				$relationship_ids = explode( ',', $relationship_ids );
+			} elseif ( is_int( $relationship_ids ) ) {
+				$relationship_ids = (array) $relationship_ids;
 			}
-			return implode( ',', $relationships );
+
+			$relationship_ids = array_filter(
+				$relationship_ids,
+				function ( $id ) {
+					return filter_var( $id, FILTER_SANITIZE_NUMBER_INT );
+				}
+			);
+
+			return implode( ',', $relationship_ids );
 		case 'number':
 			if ( is_array( $value ) ) {
 				return array_filter(
