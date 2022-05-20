@@ -253,6 +253,11 @@ function validate_relationship_field( $value, array $field ): void {
 		);
 	}
 
+	// Due to sanitize_field() converting to comma delimted string.
+	if ( is_string( $value ) ) {
+		$value = explode( ',', $value );
+	}
+
 	validate_array_of(
 		(array) $value,
 		static function ( $item, $index ) use ( $field ) {
@@ -470,7 +475,7 @@ function validate_max( $value, int $max, string $message = '' ): void {
  *
  * @return void
  */
-function validate_post_exists( int $id, ?string $message = '' ): void {
+function validate_post_exists( $id, ?string $message = '' ): void {
 	$message = $message ?: \__( 'The post object was not found', 'atlas-content-modeler' );
 	$post    = \get_post( $id );
 
@@ -490,7 +495,7 @@ function validate_post_exists( int $id, ?string $message = '' ): void {
  *
  * @return void
  */
-function validate_post_type( int $id, string $post_type, ?string $message = '' ): void {
+function validate_post_type( $id, string $post_type, ?string $message = '' ): void {
 	$message = $message ?: \__( 'Invalid post type', 'atlas-content-modeler' );
 
 	if ( $post_type !== \get_post_type( $id ) ) {
@@ -508,7 +513,7 @@ function validate_post_type( int $id, string $post_type, ?string $message = '' )
  *
  * @return void
  */
-function validate_post_is_attachment( int $id, ?string $message = '' ): void {
+function validate_post_is_attachment( $id, ?string $message = '' ): void {
 	$message = $message ?: \__( 'Post is not an attachment post type', 'atlas-content-modeler' );
 
 	validate_post_type( $id, 'attachment', $message );
@@ -525,7 +530,7 @@ function validate_post_is_attachment( int $id, ?string $message = '' ): void {
  *
  * @return void
  */
-function validate_attachment_file_type( int $id, array $types, ?string $message = '' ): void {
+function validate_attachment_file_type( $id, array $types, ?string $message = '' ): void {
 	$metadata = \wp_get_attachment_metadata( $id );
 	$message  = $message ?: \sprintf(
 		// translators: The file type extensions.
