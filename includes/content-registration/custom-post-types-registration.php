@@ -14,6 +14,7 @@ use WPGraphQL\Data\Connection\PostObjectConnectionResolver;
 use WPGraphQL\Model\Post;
 use WPGraphQL\Registry\TypeRegistry;
 use WPGraphQL\Data\DataSource;
+use function WPE\AtlasContentModeler\is_field_repeatable;
 
 add_action( 'init', __NAMESPACE__ . '\register_content_types' );
 /**
@@ -512,30 +513,24 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				continue;
 			}
 
-			$field['original_type'] = $field['type'];
-			$field['type']          = $gql_field_type;
+			$is_repeatable_field = is_field_repeatable( $field );
+			$acm_field_type      = $field['type'];
+			$field['type']       = $gql_field_type;
 
-			$is_repeatable_text      = ( $field['isRepeatable'] ?? false ) && 'text' === $field['original_type'];
-			$is_repeatable_rich_text = ( $field['isRepeatableRichText'] ?? false ) && $rich_text;
-			$is_repeatable_number    = ( $field['isRepeatableNumber'] ?? false ) && 'Float' === $field['type'];
-			$is_repeatable_date      = ( $field['isRepeatableDate'] ?? false ) && 'date' === $field['original_type'];
-			$is_repeatable_media     = ( $field['isRepeatableMedia'] ?? false ) && 'MediaItem' === $field['type'];
-			$is_repeatable_email     = ( $field['isRepeatableEmail'] ?? false ) && 'email' === $field['original_type'];
-
-			if ( $is_repeatable_text || $is_repeatable_rich_text || $is_repeatable_date || $is_repeatable_email ) {
+			if ( $is_repeatable_field && 'String' === $field['type'] ) {
 				$field['type'] = array( 'list_of' => 'String' );
 			}
 
-			if ( $is_repeatable_media ) {
+			if ( $is_repeatable_field && 'MediaItem' === $field['type'] ) {
 				$field['type'] = array( 'list_of' => 'MediaItem' );
 			}
 
-			if ( $is_repeatable_number ) {
+			if ( $is_repeatable_field && 'Float' === $field['type'] ) {
 				$field['type'] = array( 'list_of' => 'Float' );
 			}
 
-			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $rich_text, $is_repeatable_rich_text, $is_repeatable_media ) {
-				if ( 'relationship' !== $field['original_type'] ) {
+			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $field, $acm_field_type, $is_repeatable_field ) {
+				if ( 'relationship' !== $acm_field_type ) {
 					$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
 					/**
@@ -550,8 +545,8 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						return (float) $value;
 					}
 
-					if ( $field['original_type'] === 'media' ) {
-						if ( $is_repeatable_media ) {
+					if ( $acm_field_type === 'media' ) {
+						if ( $is_repeatable_field ) {
 							return array_map(
 								function( $media_id ) use ( $context ) {
 									return DataSource::resolve_post_object( (int) $media_id, $context );
@@ -564,21 +559,29 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 					}
 
 					// If the multiple choice field has no saved data, return an empty array.
-					if ( $field['original_type'] === 'multipleChoice' && empty( $value ) ) {
+					if ( $acm_field_type === 'multipleChoice' && empty( $value ) ) {
 							return [];
 					}
 
 					// Fixes caption shortcode for GraphQL output.
-					if ( $rich_text ) {
-						if ( $is_repeatable_rich_text ) {
+					if ( 'richtext' === $acm_field_type ) {
+						if ( $is_repeatable_field ) {
 							return array_map( 'do_shortcode', $value );
 						}
 
 						return do_shortcode( $value );
 					}
 
-					if ( $field['original_type'] === 'boolean' ) {
+					if ( $acm_field_type === 'boolean' ) {
 						return $value === 'on' ? true : false;
+					}
+
+					if ( $is_repeatable_field && empty( $value ) ) {
+						$value = [];
+					}
+
+					if ( $is_repeatable_field && ! is_array( $value ) ) {
+						$value = (array) $value;
 					}
 
 					return $value;
