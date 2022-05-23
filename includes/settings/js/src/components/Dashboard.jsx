@@ -275,7 +275,46 @@ export default function Dashboard() {
 			<div className="container">
 				<div className="stats">
 					<div className="d-flex justify-content-between">
-						<Card>
+						<Card
+							style={{ cursor: "pointer" }}
+							className="text-center flex-grow-1"
+							onClick={(e) =>
+								history.push(atlasContentModeler.appPath)
+							}
+						>
+							<h1
+								style={{
+									color: "#7e5cef",
+									fontWeight: "bold",
+									fontSize: "60px",
+								}}
+							>
+								45
+							</h1>
+							Models
+						</Card>
+						<Card
+							style={{ cursor: "pointer" }}
+							className="text-center flex-grow-1"
+							onClick={(e) =>
+								history.push(
+									atlasContentModeler.appPath +
+										"&view=taxonomies"
+								)
+							}
+						>
+							<h1
+								style={{
+									color: "#7e5cef",
+									fontWeight: "bold",
+									fontSize: "60px",
+								}}
+							>
+								45
+							</h1>{" "}
+							Taxonomies
+						</Card>
+						<Card className="flex-grow-1">
 							<h3>Top Models</h3>
 							<div className="list-group list-group-flush">
 								<button
@@ -348,7 +387,7 @@ export default function Dashboard() {
 								</button>
 							</div>
 						</Card>
-						<Card>
+						<Card className="flex-grow-1">
 							<h3>Top Taxonomies</h3>
 							<div className="list-group list-group-flush">
 								<button
@@ -429,7 +468,7 @@ export default function Dashboard() {
 								</button>
 							</div>
 						</Card>
-						<Card>
+						<Card className=" flex-grow-1">
 							<h3>Most Entries</h3>
 							<div className="list-group list-group-flush">
 								<button
@@ -532,52 +571,13 @@ export default function Dashboard() {
 								</button>
 							</div>
 						</Card>
-						<Card
-							style={{ cursor: "pointer" }}
-							className="text-center"
-							onClick={(e) =>
-								history.push(atlasContentModeler.appPath)
-							}
-						>
-							<h1
-								style={{
-									color: "#7e5cef",
-									fontWeight: "bold",
-									fontSize: "60px",
-								}}
-							>
-								45
-							</h1>
-							Models
-						</Card>
-						<Card
-							style={{ cursor: "pointer" }}
-							className="text-center"
-							onClick={(e) =>
-								history.push(
-									atlasContentModeler.appPath +
-										"&view=taxonomies"
-								)
-							}
-						>
-							<h1
-								style={{
-									color: "#7e5cef",
-									fontWeight: "bold",
-									fontSize: "60px",
-								}}
-							>
-								45
-							</h1>{" "}
-							Taxonomies
-						</Card>
 					</div>
 				</div>
 			</div>
 
 			<div className="tools-view container">
 				<div className="d-flex justify-content-between">
-					<Card>
+					<Card className="flex-grow-1">
 						<section className="card-content">
 							<div className="row">
 								<h2 className="mb-2">Tools</h2>
@@ -606,7 +606,7 @@ export default function Dashboard() {
 							</div>
 						</section>
 					</Card>
-					<Card>
+					<Card className="flex-grow-1">
 						<form>
 							<div className="row">
 								<h2>Quick Settings</h2>
