@@ -528,7 +528,6 @@ export default function Dashboard() {
 									type="button"
 									style={{
 										cursor: "pointer",
-										backgroundColor: "#7e5cef",
 									}}
 									className="list-group-item list-group-item-action"
 									onClick={(e) =>
