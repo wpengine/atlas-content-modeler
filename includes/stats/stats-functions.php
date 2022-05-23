@@ -47,3 +47,23 @@ function stats_model_counts(): array {
 
 	return $results;
 }
+
+/**
+ * Gets latest model entries.
+ *
+ * @return array
+ */
+function stats_recent_model_entries(): array {
+	$post_types = array_keys( get_registered_content_types() );
+	if ( empty( $post_types ) ) {
+		return [];
+	}
+
+	return get_posts(
+		[
+			'post_status'    => 'publish',
+			'post_type'      => $post_types,
+			'posts_per_page' => 5,
+		]
+	);
+}
