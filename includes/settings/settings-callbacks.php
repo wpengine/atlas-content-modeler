@@ -17,6 +17,7 @@ add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
  */
 function register_admin_menu_page(): void {
 	$icon = include __DIR__ . '/views/admin-menu-icon.php';
+
 	add_menu_page(
 		esc_html__( 'Content Modeler', 'atlas-content-modeler' ),
 		esc_html__( 'Content Modeler', 'atlas-content-modeler' ),
@@ -24,6 +25,15 @@ function register_admin_menu_page(): void {
 		'atlas-content-modeler',
 		__NAMESPACE__ . '\render_admin_menu_page',
 		$icon
+	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
+		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler&amp;view=dashboard',
+		'__return_null'
 	);
 
 	add_submenu_page(
@@ -80,6 +90,10 @@ function maybe_override_submenu_file( $parent_file ) {
 
 	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 	$view = filter_input( INPUT_GET, 'view', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+	if ( $page === 'atlas-content-modeler' && $view === 'dashboard' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=dashboard'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	}
 
 	if ( $page === 'atlas-content-modeler' && $view === 'taxonomies' ) {
 		$submenu_file = 'atlas-content-modeler&amp;view=taxonomies'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
