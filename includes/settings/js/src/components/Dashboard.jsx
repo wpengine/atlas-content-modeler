@@ -371,16 +371,16 @@ export default function Dashboard() {
 									<a
 										target="_blank"
 										rel="noreferrer"
-										href="#"
+										href="https://wordpress.org/plugins/atlas-content-modeler/"
 									>
-										ACM Guide
+										ACM Plugin Home
 									</a>
 								</li>
 								<li>
 									<a
 										target="_blank"
 										rel="noreferrer"
-										href="#"
+										href="https://github.com/wpengine/atlas-content-modeler"
 									>
 										ACM Github
 									</a>
