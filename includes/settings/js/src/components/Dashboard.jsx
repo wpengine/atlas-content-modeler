@@ -281,32 +281,31 @@ export default function Dashboard() {
 									type="button"
 									className="list-group-item list-group-item-action active"
 								>
-									Cras justo odio
+									Rabbits
 								</button>
 								<button
 									type="button"
 									className="list-group-item list-group-item-action"
 								>
-									Dapibus ac facilisis in
+									Rabbits
 								</button>
 								<button
 									type="button"
 									className="list-group-item list-group-item-action"
 								>
-									Morbi leo risus
+									Rabbits
 								</button>
 								<button
 									type="button"
 									className="list-group-item list-group-item-action"
 								>
-									Porta ac consectetur ac
+									Rabbits
 								</button>
 								<button
 									type="button"
 									className="list-group-item list-group-item-action"
-									disabled
 								>
-									Vestibulum at eros
+									Rabbits
 								</button>
 							</div>
 						</Card>
@@ -317,32 +316,31 @@ export default function Dashboard() {
 									type="button"
 									className="list-group-item list-group-item-action active"
 								>
-									Cras justo odio
+									Rabbits
 								</button>
 								<button
 									type="button"
 									className="list-group-item list-group-item-action"
 								>
-									Dapibus ac facilisis in
+									Rabbits
 								</button>
 								<button
 									type="button"
 									className="list-group-item list-group-item-action"
 								>
-									Morbi leo risus
+									Rabbits
 								</button>
 								<button
 									type="button"
 									className="list-group-item list-group-item-action"
 								>
-									Porta ac consectetur ac
+									Rabbits
 								</button>
 								<button
 									type="button"
 									className="list-group-item list-group-item-action"
-									disabled
 								>
-									Vestibulum at eros
+									Rabbits
 								</button>
 							</div>
 						</Card>
