@@ -269,7 +269,12 @@ export default function Dashboard() {
 		<div>
 			<div className="alert alert-primary fade show" role="alert">
 				<strong>ACM Plugin Version:</strong>{" "}
-				{atlasContentModeler.acm_plugin_data.Version}
+				{atlasContentModeler.acm_plugin_data.Version} by{" "}
+				<span
+					dangerouslySetInnerHTML={{
+						__html: atlasContentModeler.acm_plugin_data.Author,
+					}}
+				></span>
 			</div>
 
 			<div className="container">
