@@ -288,7 +288,11 @@ export default function Dashboard() {
 									fontSize: "60px",
 								}}
 							>
-								45
+								{
+									Object.keys(
+										atlasContentModeler.initialState
+									).length
+								}
 							</h1>
 							<a
 								style={{ cursor: "pointer" }}
@@ -423,7 +427,10 @@ export default function Dashboard() {
 									fontSize: "60px",
 								}}
 							>
-								45
+								{
+									Object.keys(atlasContentModeler.taxonomies)
+										.length
+								}
 							</h1>{" "}
 							<a
 								style={{ cursor: "pointer" }}
