@@ -280,13 +280,7 @@ export default function Dashboard() {
 			<div className="container">
 				<div className="stats">
 					<div className="d-flex justify-content-between">
-						<Card
-							style={{ cursor: "pointer" }}
-							className="text-center flex-grow-1"
-							onClick={(e) =>
-								history.push(atlasContentModeler.appPath)
-							}
-						>
+						<Card className="text-center flex-grow-1">
 							<h1
 								style={{
 									color: "#7e5cef",
@@ -296,7 +290,16 @@ export default function Dashboard() {
 							>
 								45
 							</h1>
-							<p className="mb-2">Models</p>
+							<a
+								style={{ cursor: "pointer" }}
+								onClick={(e) =>
+									history.push(atlasContentModeler.appPath)
+								}
+								className="mb-2"
+							>
+								Models{" "}
+								<span className="dashicons dashicons-external"></span>
+							</a>
 							<hr />
 							<Card className=" flex-grow-1">
 								<h3>Top Models</h3>
@@ -412,16 +415,7 @@ export default function Dashboard() {
 								</div>
 							</Card>
 						</Card>
-						<Card
-							style={{ cursor: "pointer" }}
-							className="text-center flex-grow-1"
-							onClick={(e) =>
-								history.push(
-									atlasContentModeler.appPath +
-										"&view=taxonomies"
-								)
-							}
-						>
+						<Card className="text-center flex-grow-1">
 							<h1
 								style={{
 									color: "#7e5cef",
@@ -431,7 +425,19 @@ export default function Dashboard() {
 							>
 								45
 							</h1>{" "}
-							<p className="mb-2">Taxonomies</p>
+							<a
+								style={{ cursor: "pointer" }}
+								onClick={(e) =>
+									history.push(
+										atlasContentModeler.appPath +
+											"&view=taxonomies"
+									)
+								}
+								className="mb-2"
+							>
+								Taxonomies{" "}
+								<span className="dashicons dashicons-external"></span>
+							</a>
 							<hr />
 							<Card className="flex-grow-1">
 								<h3>Top Taxonomies</h3>
@@ -524,7 +530,7 @@ export default function Dashboard() {
 										cursor: "pointer",
 										backgroundColor: "#7e5cef",
 									}}
-									className="list-group-item list-group-item-action active"
+									className="list-group-item list-group-item-action"
 									onClick={(e) =>
 										history.push(
 											atlasContentModeler.appPath +
