@@ -24,6 +24,7 @@ export default function Dashboard() {
 			atlas_content_modeler_usage_tracking: event.target.value,
 		});
 		setUsageTracking(event.target.value);
+		showSuccess("Your setting was updated!");
 	}
 
 	/**
@@ -371,7 +372,7 @@ export default function Dashboard() {
 								style={{
 									color: "#7e5cef",
 									fontWeight: "bold",
-									fontSize: "40px",
+									fontSize: "60px",
 								}}
 							>
 								45
@@ -392,7 +393,7 @@ export default function Dashboard() {
 								style={{
 									color: "#7e5cef",
 									fontWeight: "bold",
-									fontSize: "40px",
+									fontSize: "60px",
 								}}
 							>
 								45
