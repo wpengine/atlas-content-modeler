@@ -576,111 +576,113 @@ export default function Dashboard() {
 			</div>
 
 			<div className="tools-view container">
-				<Card className="col-xs-12">
-					<section className="card-content">
-						<div className="row">
-							<h2 className="mb-2">Tools</h2>
-							<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
-								<div className="d-flex">
-									<div className="me-3">
-										<ImportFileButton
-											buttonTitle="Import Models"
-											allowedMimeTypes=".json"
-											callbackFn={createModels}
-											fileUploaderRef={fileUploaderRef}
-										/>
-									</div>
-									<div>
-										<ExportFileButton
-											buttonTitle="Export Models"
-											fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
-											fileType="json"
-											callbackFn={getModels}
-										/>
+				<div className="d-flex">
+					<Card>
+						<section className="card-content">
+							<div className="row">
+								<h2 className="mb-2">Tools</h2>
+								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
+									<div className="d-flex flex-column">
+										<div className="mb-3">
+											<ImportFileButton
+												buttonTitle="Import Models"
+												allowedMimeTypes=".json"
+												callbackFn={createModels}
+												fileUploaderRef={
+													fileUploaderRef
+												}
+											/>
+										</div>
+										<div>
+											<ExportFileButton
+												buttonTitle="Export Models"
+												fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
+												fileType="json"
+												callbackFn={getModels}
+											/>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</section>
-				</Card>
-			</div>
-
-			<div className="tools-view container">
-				<Card className="col-xs-12">
-					<form>
-						<div className="row">
-							<h2>Quick Settings</h2>
-							<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
-								<div className="row">
-									<div className="col-xs-12">
-										<h4>
-											{__(
-												"Analytics",
-												"atlas-content-modeler"
-											)}
-										</h4>
-										<p className="help">
-											{__(
-												"Opt into anonymous usage tracking to help us make Atlas Content Modeler better.",
-												"atlas-content-modeler"
-											)}
-										</p>
-										<div className="row">
-											<div className="col-xs-12">
-												<label
-													className="radio"
-													htmlFor="atlas-content-modeler-settings[usageTrackingDisabled]"
-												>
+						</section>
+					</Card>
+					<Card>
+						<form>
+							<div className="row">
+								<h2>Quick Settings</h2>
+								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
+									<div className="row">
+										<div className="col-xs-12">
+											<h4>
+												{__(
+													"Analytics",
+													"atlas-content-modeler"
+												)}
+											</h4>
+											<p className="help">
+												{__(
+													"Opt into anonymous usage tracking to help us make Atlas Content Modeler better.",
+													"atlas-content-modeler"
+												)}
+											</p>
+											<div className="row">
+												<div className="col-xs-12">
+													<label
+														className="radio"
+														htmlFor="atlas-content-modeler-settings[usageTrackingDisabled]"
+													>
+														<input
+															type="radio"
+															id="atlas-content-modeler-settings[usageTrackingDisabled]"
+															name="atlas-content-modeler-settings[usageTracking]"
+															value="0"
+															checked={
+																usageTracking ===
+																	"0" ||
+																!usageTracking
+															}
+															onChange={
+																saveUsageTrackingSetting
+															}
+														></input>
+														{__(
+															"Disabled",
+															"atlas-content-modeler"
+														)}
+													</label>
+												</div>
+												<div className="col-xs-12">
 													<input
 														type="radio"
-														id="atlas-content-modeler-settings[usageTrackingDisabled]"
+														id="atlas-content-modeler-settings[usageTrackingEnabled]"
 														name="atlas-content-modeler-settings[usageTracking]"
-														value="0"
+														value="1"
 														checked={
 															usageTracking ===
-																"0" ||
-															!usageTracking
+															"1"
 														}
 														onChange={
 															saveUsageTrackingSetting
 														}
 													></input>
-													{__(
-														"Disabled",
-														"atlas-content-modeler"
-													)}
-												</label>
-											</div>
-											<div className="col-xs-12">
-												<input
-													type="radio"
-													id="atlas-content-modeler-settings[usageTrackingEnabled]"
-													name="atlas-content-modeler-settings[usageTracking]"
-													value="1"
-													checked={
-														usageTracking === "1"
-													}
-													onChange={
-														saveUsageTrackingSetting
-													}
-												></input>
-												<label
-													className="radio"
-													htmlFor="atlas-content-modeler-settings[usageTrackingEnabled]"
-												>
-													{__(
-														"Enabled",
-														"atlas-content-modeler"
-													)}
-												</label>
+													<label
+														className="radio"
+														htmlFor="atlas-content-modeler-settings[usageTrackingEnabled]"
+													>
+														{__(
+															"Enabled",
+															"atlas-content-modeler"
+														)}
+													</label>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</form>
-				</Card>
+						</form>
+					</Card>
+				</div>
 			</div>
 
 			<div className="tools-view container">
