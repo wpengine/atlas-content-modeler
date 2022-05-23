@@ -273,7 +273,7 @@ export default function Dashboard() {
 
 			<div className="container">
 				<div className="stats">
-					<div className="d-flex ">
+					<div className="d-flex align-items-start">
 						<Card className="text-center">
 							<h3>Top Models</h3>
 							<ul className="list-group">
