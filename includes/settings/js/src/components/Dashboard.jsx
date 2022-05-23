@@ -300,21 +300,21 @@ export default function Dashboard() {
 									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
-									Rabbits
+									Cages
 								</button>
 								<button
 									type="button"
 									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
-									Rabbits
+									Monkeys
 								</button>
 								<button
 									type="button"
 									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
-									Rabbits
+									User
 								</button>
 							</div>
 						</Card>
@@ -329,6 +329,12 @@ export default function Dashboard() {
 									}}
 									className="list-group-item list-group-item-action active"
 								>
+									<span
+										className="badge badge-secondary"
+										style={{ backgroundColor: "#002838" }}
+									>
+										45
+									</span>{" "}
 									Rabbits
 								</button>
 								<button
@@ -336,6 +342,12 @@ export default function Dashboard() {
 									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
+									<span
+										className="badge badge-secondary"
+										style={{ backgroundColor: "#002838" }}
+									>
+										45
+									</span>{" "}
 									Rabbits
 								</button>
 								<button
@@ -343,6 +355,12 @@ export default function Dashboard() {
 									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
+									<span
+										className="badge badge-secondary"
+										style={{ backgroundColor: "#002838" }}
+									>
+										45
+									</span>{" "}
 									Rabbits
 								</button>
 								<button
@@ -350,6 +368,12 @@ export default function Dashboard() {
 									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
+									<span
+										className="badge badge-secondary"
+										style={{ backgroundColor: "#002838" }}
+									>
+										45
+									</span>{" "}
 									Rabbits
 								</button>
 								<button
@@ -357,6 +381,12 @@ export default function Dashboard() {
 									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
+									<span
+										className="badge badge-secondary"
+										style={{ backgroundColor: "#002838" }}
+									>
+										25
+									</span>{" "}
 									Rabbits
 								</button>
 							</div>
