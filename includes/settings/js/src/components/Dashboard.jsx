@@ -5,7 +5,7 @@ import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
 import { insertSidebarMenuItem } from "../utils";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Card } from "../../../../shared-assets/js/components/card";
 const { wp } = window;
 const { apiFetch } = wp;
