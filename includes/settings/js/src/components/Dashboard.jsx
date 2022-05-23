@@ -298,7 +298,7 @@ export default function Dashboard() {
 								className="mb-2"
 							>
 								Models{" "}
-								<span className="dashicons dashicons-external"></span>
+								<span className="dashicons dashicons-admin-links"></span>
 							</a>
 							<hr />
 							<Card className=" flex-grow-1">
@@ -436,7 +436,7 @@ export default function Dashboard() {
 								className="mb-2"
 							>
 								Taxonomies{" "}
-								<span className="dashicons dashicons-external"></span>
+								<span className="dashicons dashicons-admin-links"></span>
 							</a>
 							<hr />
 							<Card className="flex-grow-1">
