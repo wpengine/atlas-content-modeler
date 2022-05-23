@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\Settings;
 
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\Stats\stats_model_counts;
 
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 /**
@@ -163,6 +164,9 @@ function enqueue_settings_assets( $hook ) {
 										? get_site_url() . '/' . get_graphql_setting( 'graphql_endpoint', 'graphql' )
 										: get_site_url() . '/graphql',
 			'usageTrackingEnabled' => acm_usage_tracking_enabled(),
+			'stats'                => [
+				'modelsCounts' => stats_model_counts(),
+			],
 		)
 	);
 
