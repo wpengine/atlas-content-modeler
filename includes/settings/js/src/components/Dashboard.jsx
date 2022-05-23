@@ -279,30 +279,35 @@ export default function Dashboard() {
 							<div className="list-group list-group-flush">
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action active"
 								>
 									Rabbits
 								</button>
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
 									Rabbits
 								</button>
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
 									Rabbits
 								</button>
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
 									Rabbits
 								</button>
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
 									Rabbits
@@ -314,30 +319,35 @@ export default function Dashboard() {
 							<div className="list-group list-group-flush">
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action active"
 								>
 									Rabbits
 								</button>
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
 									Rabbits
 								</button>
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
 									Rabbits
 								</button>
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
 									Rabbits
 								</button>
 								<button
 									type="button"
+									style={{ cursor: "pointer" }}
 									className="list-group-item list-group-item-action"
 								>
 									Rabbits
