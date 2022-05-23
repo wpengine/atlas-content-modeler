@@ -11,9 +11,12 @@ namespace WPE\AtlasContentModeler\API;
 
 use function WPE\AtlasContentModeler\get_field_from_slug;
 use function WPE\AtlasContentModeler\sanitize_fields;
-use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\get_entry_title_field;
+use function WPE\AtlasContentModeler\get_fields_by_type;
+use function WPE\AtlasContentModeler\get_attributes_for_field_type;
+use function WPE\AtlasContentModeler\API\array_extract_by_keys;
 use function WPE\AtlasContentModeler\API\validation\validate_model_field_data;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 
 use WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
@@ -46,17 +49,41 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 		]
 	);
 
+	// Validate model field data only. Ignores non-model field values.
 	$valid = validate_model_field_data( $model_schema, $post_data['meta_input'] );
 	if ( is_wp_error( $valid ) ) {
 		return $valid;
 	}
 
+	// Ensure post_title is set if field is title field.
 	$entry_title_field = get_entry_title_field( $model_schema['fields'] );
 	if ( ! empty( $entry_title_field ) && ! empty( $post_data['meta_input'][ $entry_title_field['slug'] ] ) ) {
 		$post_data['post_title'] = $post_data['meta_input'][ $entry_title_field['slug'] ];
 	}
 
-	return wp_insert_post( $post_data, true );
+	// Get relationship fields and data.
+	$relation_field_keys = get_attributes_for_field_type( 'slug', 'relationship', $model_slug );
+	$relation_data       = array_extract_by_keys( $post_data['meta_input'], $relation_field_keys );
+
+	// Remove relationship field data from meta.
+	$post_data['meta_input'] = array_remove_by_keys( $post_data['meta_input'], $relation_field_keys );
+
+	// Insert content model entry excluding relationships.
+	$post_id = wp_insert_post( $post_data, true );
+
+	// Append the relationships.
+	foreach ( $relation_data as $field_name => $relationship_ids ) {
+		// Due to sanitize_field() converting to comma delimted string.
+		if ( is_string( $relationship_ids ) ) {
+			$relationship_ids = explode( ',', $relationship_ids );
+		}
+
+		foreach ( $relationship_ids as $relationship_id ) {
+			add_relationship( $post_id, $field_name, (int) $relationship_id );
+		}
+	}
+
+	return $post_id;
 }
 
 /**

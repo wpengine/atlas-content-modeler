@@ -53,6 +53,21 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertEquals( $data['multiMultipleChoiceField'], get_post_meta( $model_id, 'multiMultipleChoiceField', true ) );
 	}
 
+	public function test_insert_model_entry_will_save_relations_and_return_post_id_on_success() {
+		$car_ids = $this->factory->post->create_many( 3, [ 'post_type' => 'car' ] );
+		$data    = [
+			'name' => 'John Doe',
+			'cars' => $car_ids,
+		];
+
+		$model_id = insert_model_entry( 'person', $data );
+
+		$this->assertEquals(
+			$car_ids,
+			$this->get_relationship_ids( $model_id )
+		);
+	}
+
 	public function test_insert_model_entry_will_return_WP_Error_if_model_schema_does_not_exist() {
 		$model_slug = 'model_does_not_exist';
 		$result     = insert_model_entry( $model_slug, [] );
@@ -64,7 +79,7 @@ class TestApiFunctions extends Integration_TestCase {
 	public function test_insert_model_entry_will_trigger_validation_if_invalid_data() {
 		$model_id = insert_model_entry( 'validation', [ 'numberField' => 'not a number value' ] );
 
-		$this->assertEquals( [ 'Number Field must be a valid number' ], $model_id->get_error_messages( 'invalid_model_field' ) );
+		$this->assertEquals( [ 'Number Field must be a valid number' ], $model_id->get_error_messages( 'numberField' ) );
 	}
 
 	public function test_insert_model_entry_will_insert_post_data_if_given() {
@@ -321,9 +336,8 @@ class TestApiFunctions extends Integration_TestCase {
 		return array_map( 'intval', wp_list_pluck( $result, 'id2' ) );
 	}
 
-
 	/**
-	 * Get an array of valid data for testing insert_entry_model().
+	 * Get an array of valid data for testing insert_model_entry().
 	 *
 	 * Fields work with 'validation' model.
 	 *

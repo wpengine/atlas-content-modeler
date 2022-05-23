@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace WPE\AtlasContentModeler;
 
+use function WPE\AtlasContentModeler\API\get_model;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -270,11 +272,22 @@ function sanitize_field( string $type, $value ) {
 			return wp_kses_post( $value );
 		case 'relationship':
 			// Sanitizes each value as an integer and saves as a comma-separated string.
-			$relationships = explode( ',', $value['relationshipEntryId'] );
-			foreach ( $relationships as $index => $id ) {
-				$relationships[ $index ] = filter_var( $id, FILTER_SANITIZE_NUMBER_INT );
+			$relationship_ids = $value['relationshipEntryId'] ?? $value;
+
+			if ( is_string( $relationship_ids ) ) {
+				$relationship_ids = explode( ',', $relationship_ids );
+			} elseif ( is_int( $relationship_ids ) ) {
+				$relationship_ids = (array) $relationship_ids;
 			}
-			return implode( ',', $relationships );
+
+			$relationship_ids = array_filter(
+				$relationship_ids,
+				function ( $id ) {
+					return filter_var( $id, FILTER_SANITIZE_NUMBER_INT );
+				}
+			);
+
+			return implode( ',', $relationship_ids );
 		case 'number':
 			if ( is_array( $value ) ) {
 				return array_filter(
@@ -337,4 +350,39 @@ function sanitize_field( string $type, $value ) {
 		default:
 			return $value;
 	}
+}
+
+/**
+ * Get an array of field attributes given field type and model.
+ *
+ * @param string $attribute The field attribute.
+ * @param string $type      The model type.
+ * @param string $model     The model name.
+ *
+ * @return array Array of attribute values for the given field and model.
+ */
+function get_attributes_for_field_type( string $attribute, string $type, string $model ): array {
+	$fields = get_fields_by_type( $type, $model );
+
+	return \wp_list_pluck( $fields, $attribute );
+}
+
+/**
+ * Get model fields for the given type.
+ *
+ * @param string $type  The model type.
+ * @param string $model The model name.
+ *
+ * @return array Array of model fields of type.
+ */
+function get_fields_by_type( string $type, string $model ): array {
+	$model_schema = get_model( $model );
+	$fields       = $model_schema['fields'] ?? [];
+
+	return \array_filter(
+		$fields,
+		static function ( $field ) use ( $type ) {
+			return $type === $field['type'];
+		}
+	);
 }

@@ -32,7 +32,12 @@ function validate_model_field_data( array $model_schema, array $data ) {
 	foreach ( $model_schema['fields'] as $id => $field ) {
 		try {
 			if ( is_field_required( $field ) ) {
-				validate_array_key_exists( $field['slug'], $data, "{$field['name']} field is required" );
+				validate_array_key_exists(
+					$field['slug'],
+					$data,
+					// translators: The name of the field.
+					\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
+				);
 			}
 
 			if ( ! \array_key_exists( $field['slug'], $data ) ) {
@@ -59,10 +64,13 @@ function validate_model_field_data( array $model_schema, array $data ) {
 				case 'media':
 					validate_media_field( $value, $field );
 					break;
+				case 'relationship':
+					validate_relationship_field( $value, $field );
+					break;
 			}
 		} catch ( Validation_Exception $exception ) {
 			$wp_error->merge_from(
-				$exception->as_wp_error( 'invalid_model_field' )
+				$exception->as_wp_error( $field['slug'] )
 			);
 		}
 	}
@@ -224,6 +232,47 @@ function validate_media_field( $value, array $field ): void {
 			);
 		}
 	}
+}
+
+/**
+ * Validate a relationship field value.
+ *
+ * @param mixed $value The field value.
+ * @param array $field The model field.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_relationship_field( $value, array $field ): void {
+	if ( is_field_required( $field ) ) {
+		validate_not_empty(
+			$value,
+			// translators: The name of the field.
+			\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
+		);
+	}
+
+	// Due to sanitize_field() converting to comma delimted string.
+	if ( is_string( $value ) ) {
+		$value = explode( ',', $value );
+	}
+
+	validate_array_of(
+		(array) $value,
+		static function ( $item, $index ) use ( $field ) {
+			validate_number(
+				$item,
+				\__( 'Invalid relationship id', 'atlas-content-modeler' )
+			);
+
+			validate_post_type(
+				$item,
+				$field['reference'],
+				\__( 'Invalid post type for relationship', 'atlas-content-modeler' )
+			);
+		}
+	);
 }
 
 /**
@@ -426,7 +475,7 @@ function validate_max( $value, int $max, string $message = '' ): void {
  *
  * @return void
  */
-function validate_post_exists( int $id, ?string $message = '' ): void {
+function validate_post_exists( $id, ?string $message = '' ): void {
 	$message = $message ?: \__( 'The post object was not found', 'atlas-content-modeler' );
 	$post    = \get_post( $id );
 
@@ -446,7 +495,7 @@ function validate_post_exists( int $id, ?string $message = '' ): void {
  *
  * @return void
  */
-function validate_post_type( int $id, string $post_type, ?string $message = '' ): void {
+function validate_post_type( $id, string $post_type, ?string $message = '' ): void {
 	$message = $message ?: \__( 'Invalid post type', 'atlas-content-modeler' );
 
 	if ( $post_type !== \get_post_type( $id ) ) {
@@ -464,7 +513,7 @@ function validate_post_type( int $id, string $post_type, ?string $message = '' )
  *
  * @return void
  */
-function validate_post_is_attachment( int $id, ?string $message = '' ): void {
+function validate_post_is_attachment( $id, ?string $message = '' ): void {
 	$message = $message ?: \__( 'Post is not an attachment post type', 'atlas-content-modeler' );
 
 	validate_post_type( $id, 'attachment', $message );
@@ -481,7 +530,7 @@ function validate_post_is_attachment( int $id, ?string $message = '' ): void {
  *
  * @return void
  */
-function validate_attachment_file_type( int $id, array $types, ?string $message = '' ): void {
+function validate_attachment_file_type( $id, array $types, ?string $message = '' ): void {
 	$metadata = \wp_get_attachment_metadata( $id );
 	$message  = $message ?: \sprintf(
 		// translators: The file type extensions.
@@ -496,5 +545,36 @@ function validate_attachment_file_type( int $id, array $types, ?string $message 
 	$file_extension = \wp_check_filetype( $metadata['file'] );
 	if ( ! $file_extension['ext'] || ! \in_array( $file_extension['ext'], $types, true ) ) {
 		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate an array of data given a callable.
+ *
+ * Bundles exception messages and throws as a single exception.
+ *
+ * @param array $array    Array of data.
+ * @param mixed $callback Callback used for each item of data.
+ *
+ * @throws Validation_Exception Exception when errors occur.
+ *
+ * @return void
+ */
+function validate_array_of( array $array, $callback ): void {
+	$errors = [];
+
+	foreach ( $array as $index => $value ) {
+		try {
+			\call_user_func( $callback, $value, $index );
+		} catch ( Validation_Exception $exception ) {
+			$errors[ $index ] = $exception->getMessage();
+		}
+	}
+
+	if ( ! empty( $errors ) ) {
+		$exception = new Validation_Exception();
+		$exception->add_messages( $errors );
+
+		throw $exception;
 	}
 }
