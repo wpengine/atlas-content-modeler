@@ -279,7 +279,10 @@ export default function Dashboard() {
 							<div className="list-group list-group-flush">
 								<button
 									type="button"
-									style={{ cursor: "pointer" }}
+									style={{
+										cursor: "pointer",
+										backgroundColor: "#7e5cef",
+									}}
 									className="list-group-item list-group-item-action active"
 								>
 									Rabbits
@@ -319,7 +322,10 @@ export default function Dashboard() {
 							<div className="list-group list-group-flush">
 								<button
 									type="button"
-									style={{ cursor: "pointer" }}
+									style={{
+										cursor: "pointer",
+										backgroundColor: "#7e5cef",
+									}}
 									className="list-group-item list-group-item-action active"
 								>
 									Rabbits
@@ -363,7 +369,7 @@ export default function Dashboard() {
 						>
 							<h1
 								style={{
-									color: "purple",
+									color: "#7e5cef",
 									fontWeight: "bold",
 									fontSize: "40px",
 								}}
@@ -384,7 +390,7 @@ export default function Dashboard() {
 						>
 							<h1
 								style={{
-									color: "purple",
+									color: "#7e5cef",
 									fontWeight: "bold",
 									fontSize: "40px",
 								}}
@@ -515,6 +521,7 @@ export default function Dashboard() {
 									<a
 										target="_blank"
 										rel="noreferrer"
+										style={{ color: "#7e5cef" }}
 										href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform"
 									>
 										ACM Feedback
@@ -524,6 +531,7 @@ export default function Dashboard() {
 									<a
 										target="_blank"
 										rel="noreferrer"
+										style={{ color: "#7e5cef" }}
 										href="https://wordpress.org/plugins/atlas-content-modeler/"
 									>
 										ACM Plugin Home
@@ -533,6 +541,7 @@ export default function Dashboard() {
 									<a
 										target="_blank"
 										rel="noreferrer"
+										style={{ color: "#7e5cef" }}
 										href="https://github.com/wpengine/atlas-content-modeler"
 									>
 										ACM Github
