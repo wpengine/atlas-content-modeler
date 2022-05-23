@@ -337,7 +337,7 @@ class TestApiFunctions extends Integration_TestCase {
 	}
 
 	/**
-	 * Get an array of valid data for testing insert_entry_model().
+	 * Get an array of valid data for testing insert_model_entry().
 	 *
 	 * Fields work with 'validation' model.
 	 *
