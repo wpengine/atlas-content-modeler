@@ -274,45 +274,77 @@ export default function Dashboard() {
 			<div className="container">
 				<div className="stats">
 					<div className="d-flex align-items-start">
-						<Card className="text-center">
+						<Card>
 							<h3>Top Models</h3>
-							<ul className="list-group">
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-							</ul>
+							<div className="list-group list-group-flush">
+								<button
+									type="button"
+									className="list-group-item list-group-item-action active"
+								>
+									Cras justo odio
+								</button>
+								<button
+									type="button"
+									className="list-group-item list-group-item-action"
+								>
+									Dapibus ac facilisis in
+								</button>
+								<button
+									type="button"
+									className="list-group-item list-group-item-action"
+								>
+									Morbi leo risus
+								</button>
+								<button
+									type="button"
+									className="list-group-item list-group-item-action"
+								>
+									Porta ac consectetur ac
+								</button>
+								<button
+									type="button"
+									className="list-group-item list-group-item-action"
+									disabled
+								>
+									Vestibulum at eros
+								</button>
+							</div>
 						</Card>
-						<Card className="text-center">
+						<Card>
 							<h3>Most Entries</h3>
-							<ul className="list-group">
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-								<li className="list-group-item">
-									<a href="#">Rabbits</a>
-								</li>
-							</ul>
+							<div className="list-group list-group-flush">
+								<button
+									type="button"
+									className="list-group-item list-group-item-action active"
+								>
+									Cras justo odio
+								</button>
+								<button
+									type="button"
+									className="list-group-item list-group-item-action"
+								>
+									Dapibus ac facilisis in
+								</button>
+								<button
+									type="button"
+									className="list-group-item list-group-item-action"
+								>
+									Morbi leo risus
+								</button>
+								<button
+									type="button"
+									className="list-group-item list-group-item-action"
+								>
+									Porta ac consectetur ac
+								</button>
+								<button
+									type="button"
+									className="list-group-item list-group-item-action"
+									disabled
+								>
+									Vestibulum at eros
+								</button>
+							</div>
 						</Card>
 						<Card
 							style={{ cursor: "pointer" }}
