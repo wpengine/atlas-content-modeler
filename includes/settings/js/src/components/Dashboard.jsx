@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
+import { dispatch } from "@wordpress/data";
 import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
@@ -10,6 +11,18 @@ const { apiFetch } = wp;
 
 export default function Dashboard() {
 	const fileUploaderRef = useRef(null);
+
+	const [usageTracking, setUsageTracking] = useState(
+		atlasContentModeler.usageTrackingEnabled
+	);
+
+	function saveUsageTrackingSetting(event) {
+		// @todo catch save errors
+		dispatch("core").saveSite({
+			atlas_content_modeler_usage_tracking: event.target.value,
+		});
+		setUsageTracking(event.target.value);
+	}
 
 	/**
 	 * Gets model export data via the REST API.
@@ -327,6 +340,7 @@ export default function Dashboard() {
 				<Card className="col-xs-12">
 					<section className="card-content">
 						<div className="row">
+							<h2 className="mb-2">Tools</h2>
 							<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
 								<div className="d-flex">
 									<div className="me-3">
@@ -349,6 +363,84 @@ export default function Dashboard() {
 							</div>
 						</div>
 					</section>
+				</Card>
+			</div>
+
+			<div className="tools-view container">
+				<Card className="col-xs-12">
+					<form>
+						<div className="row">
+							<h2>Quick Settings</h2>
+							<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
+								<div className="row">
+									<div className="col-xs-12">
+										<h4>
+											{__(
+												"Analytics",
+												"atlas-content-modeler"
+											)}
+										</h4>
+										<p className="help">
+											{__(
+												"Opt into anonymous usage tracking to help us make Atlas Content Modeler better.",
+												"atlas-content-modeler"
+											)}
+										</p>
+										<div className="row">
+											<div className="col-xs-12">
+												<label
+													className="radio"
+													htmlFor="atlas-content-modeler-settings[usageTrackingDisabled]"
+												>
+													<input
+														type="radio"
+														id="atlas-content-modeler-settings[usageTrackingDisabled]"
+														name="atlas-content-modeler-settings[usageTracking]"
+														value="0"
+														checked={
+															usageTracking ===
+																"0" ||
+															!usageTracking
+														}
+														onChange={
+															saveUsageTrackingSetting
+														}
+													></input>
+													{__(
+														"Disabled",
+														"atlas-content-modeler"
+													)}
+												</label>
+											</div>
+											<div className="col-xs-12">
+												<input
+													type="radio"
+													id="atlas-content-modeler-settings[usageTrackingEnabled]"
+													name="atlas-content-modeler-settings[usageTracking]"
+													value="1"
+													checked={
+														usageTracking === "1"
+													}
+													onChange={
+														saveUsageTrackingSetting
+													}
+												></input>
+												<label
+													className="radio"
+													htmlFor="atlas-content-modeler-settings[usageTrackingEnabled]"
+												>
+													{__(
+														"Enabled",
+														"atlas-content-modeler"
+													)}
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
 				</Card>
 			</div>
 
