@@ -5,12 +5,14 @@ import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
 import { insertSidebarMenuItem } from "../utils";
+import { Link, useHistory } from "react-router-dom";
 import { Card } from "../../../../shared-assets/js/components/card";
 const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Dashboard() {
 	const fileUploaderRef = useRef(null);
+	let history = useHistory();
 
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled
@@ -262,10 +264,6 @@ export default function Dashboard() {
 		return new Date().toISOString().split(".")[0].replace(/[T:]/g, "-");
 	}
 
-	function navigate(e) {
-		e.preventDefault();
-	}
-
 	return (
 		<>
 			<div className="alert alert-primary fade show" role="alert">
@@ -276,10 +274,52 @@ export default function Dashboard() {
 			<div className="container">
 				<div className="stats">
 					<div className="d-flex ">
+						<Card className="text-center">
+							<h3>Top Models</h3>
+							<ul className="list-group">
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+							</ul>
+						</Card>
+						<Card className="text-center">
+							<h3>Most Entries</h3>
+							<ul className="list-group">
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+								<li className="list-group-item">
+									<a href="#">Rabbits</a>
+								</li>
+							</ul>
+						</Card>
 						<Card
 							style={{ cursor: "pointer" }}
 							className="text-center"
-							onClick={(e) => navigate(e, "models")}
+							onClick={(e) =>
+								history.push(atlasContentModeler.appPath)
+							}
 						>
 							<h1
 								style={{
@@ -295,23 +335,12 @@ export default function Dashboard() {
 						<Card
 							style={{ cursor: "pointer" }}
 							className="text-center"
-							onClick={(e) => navigate(e, "relationships")}
-						>
-							<h1
-								style={{
-									color: "purple",
-									fontWeight: "bold",
-									fontSize: "40px",
-								}}
-							>
-								25
-							</h1>{" "}
-							Relationships
-						</Card>
-						<Card
-							style={{ cursor: "pointer" }}
-							className="text-center"
-							onClick={(e) => navigate(e, "taxonomies")}
+							onClick={(e) =>
+								history.push(
+									atlasContentModeler.appPath +
+										"&view=taxonomies"
+								)
+							}
 						>
 							<h1
 								style={{
@@ -324,14 +353,6 @@ export default function Dashboard() {
 							</h1>{" "}
 							Taxonomies
 						</Card>
-					</div>
-				</div>
-			</div>
-
-			<div className="container">
-				<div className="stats">
-					<div className="d-flex ">
-						<Card className="col-xs-12"></Card>
 					</div>
 				</div>
 			</div>
