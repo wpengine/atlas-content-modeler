@@ -268,8 +268,8 @@ export default function Dashboard() {
 	return (
 		<div>
 			<div className="alert alert-primary fade show" role="alert">
-				<strong>New ACM Dashboard!</strong> Keep up to date with the
-				latest stats on your models, relationships, and taxonomies.
+				<strong>ACM Plugin Version:</strong>{" "}
+				{atlasContentModeler.acm_plugin_data.Version}
 			</div>
 
 			<div className="container">
@@ -315,7 +315,7 @@ export default function Dashboard() {
 							Taxonomies
 						</Card>
 						<Card className="flex-grow-1">
-							<h3>Top Models</h3>
+							<h3>Recent Models</h3>
 							<div className="list-group list-group-flush">
 								<button
 									type="button"
@@ -387,89 +387,8 @@ export default function Dashboard() {
 								</button>
 							</div>
 						</Card>
-						<Card className="flex-grow-1">
-							<h3>Top Taxonomies</h3>
-							<div className="list-group list-group-flush">
-								<button
-									type="button"
-									style={{
-										cursor: "pointer",
-										backgroundColor: "#7e5cef",
-									}}
-									className="list-group-item list-group-item-action active"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=taxonomies&editing=test"
-										)
-									}
-								>
-									Taxonomy 1
-								</button>
-								<button
-									type="button"
-									style={{
-										cursor: "pointer",
-									}}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=taxonomies&editing=test"
-										)
-									}
-								>
-									Taxonomy 1
-								</button>
-								<button
-									type="button"
-									style={{
-										cursor: "pointer",
-									}}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=taxonomies&editing=test"
-										)
-									}
-								>
-									Taxonomy 1
-								</button>
-								<button
-									type="button"
-									style={{
-										cursor: "pointer",
-									}}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=taxonomies&editing=test"
-										)
-									}
-								>
-									Taxonomy 1
-								</button>
-								<button
-									type="button"
-									style={{
-										cursor: "pointer",
-									}}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=taxonomies&editing=test"
-										)
-									}
-								>
-									Taxonomy 1
-								</button>
-							</div>
-						</Card>
 						<Card className=" flex-grow-1">
-							<h3>Most Entries</h3>
+							<h3>Top Models</h3>
 							<div className="list-group list-group-flush">
 								<button
 									type="button"
@@ -568,6 +487,87 @@ export default function Dashboard() {
 										25
 									</span>{" "}
 									Rabbits
+								</button>
+							</div>
+						</Card>
+						<Card className="flex-grow-1">
+							<h3>Top Taxonomies</h3>
+							<div className="list-group list-group-flush">
+								<button
+									type="button"
+									style={{
+										cursor: "pointer",
+										backgroundColor: "#7e5cef",
+									}}
+									className="list-group-item list-group-item-action active"
+									onClick={(e) =>
+										history.push(
+											atlasContentModeler.appPath +
+												"&view=taxonomies&editing=test"
+										)
+									}
+								>
+									Taxonomy 1
+								</button>
+								<button
+									type="button"
+									style={{
+										cursor: "pointer",
+									}}
+									className="list-group-item list-group-item-action"
+									onClick={(e) =>
+										history.push(
+											atlasContentModeler.appPath +
+												"&view=taxonomies&editing=test"
+										)
+									}
+								>
+									Taxonomy 1
+								</button>
+								<button
+									type="button"
+									style={{
+										cursor: "pointer",
+									}}
+									className="list-group-item list-group-item-action"
+									onClick={(e) =>
+										history.push(
+											atlasContentModeler.appPath +
+												"&view=taxonomies&editing=test"
+										)
+									}
+								>
+									Taxonomy 1
+								</button>
+								<button
+									type="button"
+									style={{
+										cursor: "pointer",
+									}}
+									className="list-group-item list-group-item-action"
+									onClick={(e) =>
+										history.push(
+											atlasContentModeler.appPath +
+												"&view=taxonomies&editing=test"
+										)
+									}
+								>
+									Taxonomy 1
+								</button>
+								<button
+									type="button"
+									style={{
+										cursor: "pointer",
+									}}
+									className="list-group-item list-group-item-action"
+									onClick={(e) =>
+										history.push(
+											atlasContentModeler.appPath +
+												"&view=taxonomies&editing=test"
+										)
+									}
+								>
+									Taxonomy 1
 								</button>
 							</div>
 						</Card>

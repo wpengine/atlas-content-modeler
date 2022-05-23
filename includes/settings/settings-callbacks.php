@@ -167,6 +167,7 @@ function enqueue_settings_assets( $hook ) {
 			'stats'                => [
 				'modelsCounts' => stats_model_counts(),
 			],
+			'acm_plugin_data'      => get_plugin_data( ATLAS_CONTENT_MODELER_FILE ),
 		)
 	);
 
