@@ -249,6 +249,10 @@ export default function Dashboard() {
 		return new Date().toISOString().split(".")[0].replace(/[T:]/g, "-");
 	}
 
+	function navigate(e) {
+		e.preventDefault();
+	}
+
 	return (
 		<>
 			<div className="alert alert-primary fade show" role="alert">
@@ -259,7 +263,11 @@ export default function Dashboard() {
 			<div className="container">
 				<div className="stats">
 					<div className="d-flex ">
-						<Card className="text-center">
+						<Card
+							style={{ cursor: "pointer" }}
+							className="text-center"
+							onClick={(e) => navigate(e, "models")}
+						>
 							<h1
 								style={{
 									color: "purple",
@@ -271,7 +279,11 @@ export default function Dashboard() {
 							</h1>
 							Models
 						</Card>
-						<Card className="text-center">
+						<Card
+							style={{ cursor: "pointer" }}
+							className="text-center"
+							onClick={(e) => navigate(e, "relationships")}
+						>
 							<h1
 								style={{
 									color: "purple",
@@ -283,7 +295,11 @@ export default function Dashboard() {
 							</h1>{" "}
 							Relationships
 						</Card>
-						<Card className="text-center">
+						<Card
+							style={{ cursor: "pointer" }}
+							className="text-center"
+							onClick={(e) => navigate(e, "taxonomies")}
+						>
 							<h1
 								style={{
 									color: "purple",
@@ -314,26 +330,16 @@ export default function Dashboard() {
 							<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
 								<div className="d-flex">
 									<div className="me-3">
-										<h4>
-											{__(
-												"Import Models",
-												"atlas-content-modeler"
-											)}
-										</h4>
 										<ImportFileButton
+											buttonTitle="Import Models"
 											allowedMimeTypes=".json"
 											callbackFn={createModels}
 											fileUploaderRef={fileUploaderRef}
 										/>
 									</div>
 									<div>
-										<h4>
-											{__(
-												"Export Models",
-												"atlas-content-modeler"
-											)}
-										</h4>
 										<ExportFileButton
+											buttonTitle="Export Models"
 											fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
 											fileType="json"
 											callbackFn={getModels}
@@ -341,6 +347,45 @@ export default function Dashboard() {
 									</div>
 								</div>
 							</div>
+						</div>
+					</section>
+				</Card>
+			</div>
+
+			<div className="tools-view container">
+				<Card className="col-xs-12">
+					<section className="card-content">
+						<div className="row">
+							<h2>Resources</h2>
+							<ul>
+								<li>
+									<a
+										target="_blank"
+										rel="noreferrer"
+										href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform"
+									>
+										ACM Feedback
+									</a>
+								</li>
+								<li>
+									<a
+										target="_blank"
+										rel="noreferrer"
+										href="#"
+									>
+										ACM Guide
+									</a>
+								</li>
+								<li>
+									<a
+										target="_blank"
+										rel="noreferrer"
+										href="#"
+									>
+										ACM Github
+									</a>
+								</li>
+							</ul>
 						</div>
 					</section>
 				</Card>
