@@ -274,7 +274,7 @@ export default function Dashboard() {
 
 			<div className="container">
 				<div className="stats">
-					<div className="d-flex">
+					<div className="d-flex justify-content-between">
 						<Card>
 							<h3>Top Models</h3>
 							<div className="list-group list-group-flush">
@@ -576,7 +576,7 @@ export default function Dashboard() {
 			</div>
 
 			<div className="tools-view container">
-				<div className="d-flex">
+				<div className="d-flex justify-content-between">
 					<Card>
 						<section className="card-content">
 							<div className="row">
