@@ -330,7 +330,7 @@ export default function Dashboard() {
 									className="list-group-item list-group-item-action active"
 								>
 									<span
-										className="badge badge-secondary"
+										className="badge badge-secondary me-2"
 										style={{ backgroundColor: "#002838" }}
 									>
 										45
@@ -343,7 +343,7 @@ export default function Dashboard() {
 									className="list-group-item list-group-item-action"
 								>
 									<span
-										className="badge badge-secondary"
+										className="badge badge-secondary me-2"
 										style={{ backgroundColor: "#002838" }}
 									>
 										45
@@ -356,7 +356,7 @@ export default function Dashboard() {
 									className="list-group-item list-group-item-action"
 								>
 									<span
-										className="badge badge-secondary"
+										className="badge badge-secondary me-2"
 										style={{ backgroundColor: "#002838" }}
 									>
 										45
@@ -369,7 +369,7 @@ export default function Dashboard() {
 									className="list-group-item list-group-item-action"
 								>
 									<span
-										className="badge badge-secondary"
+										className="badge badge-secondary me-2"
 										style={{ backgroundColor: "#002838" }}
 									>
 										45
@@ -382,7 +382,7 @@ export default function Dashboard() {
 									className="list-group-item list-group-item-action"
 								>
 									<span
-										className="badge badge-secondary"
+										className="badge badge-secondary me-2"
 										style={{ backgroundColor: "#002838" }}
 									>
 										25
