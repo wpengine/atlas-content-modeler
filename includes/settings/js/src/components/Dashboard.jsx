@@ -421,7 +421,7 @@ export default function Dashboard() {
 									<p>
 										No data to display.{" "}
 										<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
-											Create Your First Model!
+											Create your first Model!
 										</a>
 									</p>
 								)}
@@ -454,84 +454,35 @@ export default function Dashboard() {
 							<hr />
 							<div className="flex-grow-1">
 								<h3>Top Taxonomies</h3>
-								<div className="list-group list-group-flush">
-									<button
-										type="button"
-										style={{
-											cursor: "pointer",
-											backgroundColor: "#7e5cef",
-										}}
-										className="list-group-item list-group-item-action active"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=taxonomies&editing=test"
-											)
-										}
-									>
-										Taxonomy 1
-									</button>
-									<button
-										type="button"
-										style={{
-											cursor: "pointer",
-										}}
-										className="list-group-item list-group-item-action"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=taxonomies&editing=test"
-											)
-										}
-									>
-										Taxonomy 1
-									</button>
-									<button
-										type="button"
-										style={{
-											cursor: "pointer",
-										}}
-										className="list-group-item list-group-item-action"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=taxonomies&editing=test"
-											)
-										}
-									>
-										Taxonomy 1
-									</button>
-									<button
-										type="button"
-										style={{
-											cursor: "pointer",
-										}}
-										className="list-group-item list-group-item-action"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=taxonomies&editing=test"
-											)
-										}
-									>
-										Taxonomy 1
-									</button>
-									<button
-										type="button"
-										style={{
-											cursor: "pointer",
-										}}
-										className="list-group-item list-group-item-action"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=taxonomies&editing=test"
-											)
-										}
-									>
-										Taxonomy 1
-									</button>
-								</div>
+								{atlasContentModeler.taxonomies && (
+									<div className="list-group list-group-flush">
+										<button
+											type="button"
+											style={{
+												cursor: "pointer",
+												backgroundColor: "#7e5cef",
+											}}
+											className="list-group-item list-group-item-action active"
+											onClick={(e) =>
+												history.push(
+													atlasContentModeler.appPath +
+														"&view=taxonomies&editing=test"
+												)
+											}
+										>
+											Taxonomy 1
+										</button>
+									</div>
+								)}
+
+								{atlasContentModeler.taxonomies && (
+									<p>
+										No data to display.{" "}
+										<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies">
+											Create your first Taxonomy!
+										</a>
+									</p>
+								)}
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
@@ -569,7 +520,7 @@ export default function Dashboard() {
 								<p>
 									No data to display.{" "}
 									<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
-										Create Your First Model!
+										Create your first Model!
 									</a>
 								</p>
 							)}
@@ -592,7 +543,7 @@ export default function Dashboard() {
 							<p>
 								No chart data to display.{" "}
 								<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
-									Create Your First Model
+									Create your first Model
 								</a>
 							</p>
 						)}
