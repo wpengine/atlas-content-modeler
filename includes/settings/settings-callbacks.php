@@ -33,19 +33,19 @@ function register_admin_menu_page(): void {
 
 	add_submenu_page(
 		'atlas-content-modeler',
-		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
-		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		esc_html__( 'Models', 'atlas-content-modeler' ),
+		esc_html__( 'Models', 'atlas-content-modeler' ),
 		'manage_options',
-		'atlas-content-modeler&amp;view=dashboard',
+		'atlas-content-modeler',
 		'__return_null'
 	);
 
 	add_submenu_page(
 		'atlas-content-modeler',
-		esc_html__( 'Models', 'atlas-content-modeler' ),
-		esc_html__( 'Models', 'atlas-content-modeler' ),
+		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
 		'manage_options',
-		'atlas-content-modeler',
+		'atlas-content-modeler&amp;view=dashboard',
 		'__return_null'
 	);
 

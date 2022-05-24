@@ -524,6 +524,67 @@ export default function Dashboard() {
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
+							<h1
+								style={{
+									color: "#7e5cef",
+									fontWeight: "bold",
+									fontSize: "60px",
+								}}
+							>
+								{atlasContentModeler.stats.relationships
+									.totalRelationshipConnections || 0}
+							</h1>
+							Relationships <hr />
+							<div className="flex-grow-1">
+								<h3>Top Relationships</h3>
+								{atlasContentModeler.stats.relationships
+									.mostConnectedEntries.length > 0 && (
+									<div className="list-group list-group-flush">
+										{atlasContentModeler.stats.relationships.mostConnectedEntries.map(
+											(entry, index) => {
+												if (index <= 4) {
+													return (
+														<button
+															key={entry.id1}
+															type="button"
+															style={{
+																cursor:
+																	"pointer",
+															}}
+															className="list-group-item list-group-item-action"
+															onClick={(e) =>
+																(window.location.href =
+																	entry.permalink)
+															}
+														>
+															<span
+																className="badge badge-secondary me-2"
+																style={{
+																	backgroundColor:
+																		"#002838",
+																}}
+															>
+																{
+																	entry.total_connections
+																}
+															</span>{" "}
+															{entry.post_title}
+														</button>
+													);
+												}
+												return false;
+											}
+										)}
+									</div>
+								)}
+
+								{!atlasContentModeler.stats.relationships
+									.mostConnectedEntries.length > 0 && (
+									<p>No data to display.</p>
+								)}
+							</div>
+						</Card>
+						<Card className="flex-grow-1">
 							<h3>Latest Model Entries</h3>
 							{atlasContentModeler.stats.recentModelEntries
 								?.length > 0 && (
