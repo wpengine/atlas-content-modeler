@@ -42,7 +42,7 @@ export default function Dashboard() {
 			});
 		});
 
-		entries.sort((a, b) => (a.count > b.count ? 1 : -1));
+		entries.sort((a, b) => (a.count < b.count ? 1 : -1));
 		return entries;
 	}
 
@@ -543,6 +543,7 @@ export default function Dashboard() {
 															window.location.href = `/wp-admin/post.php?post=${entry.ID}&action=edit`;
 														}}
 													>
+														<span className="dashicons dashicons-admin-post me-2"></span>{" "}
 														{entry.post_title}
 													</button>
 												);
