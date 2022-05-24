@@ -635,8 +635,8 @@ export default function Dashboard() {
 							<div className="row">
 								<h2 className="mb-4">Tools</h2>
 								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
-									<div className="d-flex flex-column">
-										<div className="mb-3">
+									<div className="d-flex">
+										<div className="me-4">
 											<ImportFileButton
 												buttonTitle="Import Models"
 												allowedMimeTypes=".json"
