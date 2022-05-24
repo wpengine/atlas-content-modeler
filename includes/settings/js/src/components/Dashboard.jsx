@@ -380,7 +380,10 @@ export default function Dashboard() {
 									.length || 0}
 							</h1>
 							<a
-								style={{ cursor: "pointer" }}
+								style={{
+									cursor: "pointer",
+									fontSize: "x-large",
+								}}
 								onClick={(e) =>
 									history.push(atlasContentModeler.appPath)
 								}
@@ -391,7 +394,7 @@ export default function Dashboard() {
 							</a>
 							<hr />
 							<div className="flex-grow-1">
-								<h3>Top Models</h3>
+								<h3>Top Five</h3>
 								{atlasContentModeler.stats.modelsCounts.length >
 									0 && (
 									<div className="list-group list-group-flush">
@@ -457,7 +460,10 @@ export default function Dashboard() {
 								).length || 0}
 							</h1>{" "}
 							<a
-								style={{ cursor: "pointer" }}
+								style={{
+									cursor: "pointer",
+									fontSize: "x-large",
+								}}
 								onClick={(e) =>
 									history.push(
 										atlasContentModeler.appPath +
@@ -471,7 +477,7 @@ export default function Dashboard() {
 							</a>
 							<hr />
 							<div className="flex-grow-1">
-								<h3>Top Taxonomies</h3>
+								<h3>Top Five</h3>
 								{Object.keys(
 									atlasContentModeler.stats.taxonomies
 								).length > 0 && (
@@ -534,9 +540,12 @@ export default function Dashboard() {
 								{atlasContentModeler.stats.relationships
 									.totalRelationshipConnections || 0}
 							</h1>
-							Relationships <hr />
+							<span style={{ fontSize: "x-large" }}>
+								Relationships
+							</span>{" "}
+							<hr />
 							<div className="flex-grow-1">
-								<h3>Top Relationships</h3>
+								<h3>Top Five</h3>
 								{atlasContentModeler.stats.relationships
 									.mostConnectedEntries.length > 0 && (
 									<div className="list-group list-group-flush">
