@@ -528,7 +528,7 @@ export default function Dashboard() {
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
-							<h3>Recent Model Entries</h3>
+							<h3>Latest Model Entries</h3>
 							{atlasContentModeler.stats.recentModelEntries
 								?.length > 0 && (
 								<div className="list-group list-group-flush">
@@ -688,10 +688,11 @@ export default function Dashboard() {
 						<section className="card-content">
 							<div className="row">
 								<h2>Resources</h2>
-								<ul>
+								<ul className="list">
 									<li
 										style={{
 											borderLeft: "none",
+											boxShadow: "none",
 										}}
 									>
 										<a
@@ -709,6 +710,7 @@ export default function Dashboard() {
 									<li
 										style={{
 											borderLeft: "none",
+											boxShadow: "none",
 										}}
 									>
 										<a
@@ -723,6 +725,7 @@ export default function Dashboard() {
 									<li
 										style={{
 											borderLeft: "none",
+											boxShadow: "none",
 										}}
 									>
 										<a
