@@ -543,12 +543,9 @@ export default function Dashboard() {
 															cursor: "pointer",
 														}}
 														className="list-group-item list-group-item-action"
-														onClick={(e) =>
-															// TODO: what's the correct path for this to show? /wp-admin/post.php?post=5&action=edit
-															history.push(
-																`/wp-admin/post.php?post=${entry.ID}&action=edit`
-															)
-														}
+														onClick={(e) => {
+															window.location.href = `/wp-admin/post.php?post=${entry.ID}&action=edit`;
+														}}
 													>
 														{entry.post_title}
 													</button>
