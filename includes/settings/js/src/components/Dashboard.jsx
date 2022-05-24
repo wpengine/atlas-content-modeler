@@ -435,8 +435,8 @@ export default function Dashboard() {
 									fontSize: "60px",
 								}}
 							>
-								{Object.keys(atlasContentModeler.taxonomies)
-									.length || 0}
+								{atlasContentModeler.stats.taxonomies?.length ||
+									0}
 							</h1>{" "}
 							<a
 								style={{ cursor: "pointer" }}
@@ -454,8 +454,8 @@ export default function Dashboard() {
 							<hr />
 							<div className="flex-grow-1">
 								<h3>Top Taxonomies</h3>
-								{Object.keys(atlasContentModeler.taxonomies)
-									.length > 0 && (
+								{atlasContentModeler.stats.taxonomies?.length >
+									0 && (
 									<div className="list-group list-group-flush">
 										<button
 											type="button"
@@ -476,8 +476,8 @@ export default function Dashboard() {
 									</div>
 								)}
 
-								{!Object.keys(atlasContentModeler.taxonomies)
-									.length > 0 && (
+								{!atlasContentModeler.stats.taxonomies?.length >
+									0 && (
 									<p>
 										No data to display.{" "}
 										<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies">
