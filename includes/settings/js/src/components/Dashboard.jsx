@@ -288,11 +288,8 @@ export default function Dashboard() {
 									fontSize: "60px",
 								}}
 							>
-								{
-									Object.keys(
-										atlasContentModeler.initialState
-									).length
-								}
+								{Object.keys(atlasContentModeler.initialState)
+									.length || 0}
 							</h1>
 							<a
 								style={{ cursor: "pointer" }}
@@ -307,116 +304,49 @@ export default function Dashboard() {
 							<hr />
 							<div className="flex-grow-1">
 								<h3>Top Models</h3>
-								<div className="list-group list-group-flush">
-									<button
-										type="button"
-										style={{
-											cursor: "pointer",
-											backgroundColor: "#7e5cef",
-										}}
-										className="list-group-item list-group-item-action active"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=edit-model&id=rabbit"
-											)
-										}
-									>
-										<span
-											className="badge badge-secondary me-2"
-											style={{
-												backgroundColor: "#002838",
-											}}
-										>
-											45
-										</span>{" "}
-										Rabbits
-									</button>
-									<button
-										type="button"
-										style={{ cursor: "pointer" }}
-										className="list-group-item list-group-item-action"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=edit-model&id=rabbit"
-											)
-										}
-									>
-										<span
-											className="badge badge-secondary me-2"
-											style={{
-												backgroundColor: "#002838",
-											}}
-										>
-											45
-										</span>{" "}
-										Rabbits
-									</button>
-									<button
-										type="button"
-										style={{ cursor: "pointer" }}
-										className="list-group-item list-group-item-action"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=edit-model&id=rabbit"
-											)
-										}
-									>
-										<span
-											className="badge badge-secondary me-2"
-											style={{
-												backgroundColor: "#002838",
-											}}
-										>
-											45
-										</span>{" "}
-										Rabbits
-									</button>
-									<button
-										type="button"
-										style={{ cursor: "pointer" }}
-										className="list-group-item list-group-item-action"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=edit-model&id=rabbit"
-											)
-										}
-									>
-										<span
-											className="badge badge-secondary me-2"
-											style={{
-												backgroundColor: "#002838",
-											}}
-										>
-											45
-										</span>{" "}
-										Rabbits
-									</button>
-									<button
-										type="button"
-										style={{ cursor: "pointer" }}
-										className="list-group-item list-group-item-action"
-										onClick={(e) =>
-											history.push(
-												atlasContentModeler.appPath +
-													"&view=edit-model&id=rabbit"
-											)
-										}
-									>
-										<span
-											className="badge badge-secondary me-2"
-											style={{
-												backgroundColor: "#002838",
-											}}
-										>
-											25
-										</span>{" "}
-										Rabbits
-									</button>
-								</div>
+								{atlasContentModeler.stats.modelsCounts.length >
+									0 && (
+									<div className="list-group list-group-flush">
+										{atlasContentModeler.stats.modelsCounts.map(
+											(entry, index) => {
+												if (index <= 4) {
+													return (
+														<button
+															key={entry.title}
+															type="button"
+															style={{
+																cursor:
+																	"pointer",
+															}}
+															className="list-group-item list-group-item-action"
+															onClick={(e) =>
+																history.push(
+																	atlasContentModeler.appPath +
+																		`&view=edit-model&id=${entry.model}`
+																)
+															}
+														>
+															<span
+																className="badge badge-secondary me-2"
+																style={{
+																	backgroundColor:
+																		"#002838",
+																}}
+															>
+																{entry.count}
+															</span>{" "}
+															{entry.plural}
+														</button>
+													);
+												}
+												return false;
+											}
+										)}
+									</div>
+								)}
+
+								{!atlasContentModeler.stats.modelsCounts
+									.length > 0 && <p>No data to display.</p>}
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
@@ -427,10 +357,8 @@ export default function Dashboard() {
 									fontSize: "60px",
 								}}
 							>
-								{
-									Object.keys(atlasContentModeler.taxonomies)
-										.length
-								}
+								{Object.keys(atlasContentModeler.taxonomies)
+									.length || 0}
 							</h1>{" "}
 							<a
 								style={{ cursor: "pointer" }}
@@ -530,31 +458,39 @@ export default function Dashboard() {
 						</Card>
 						<Card className="flex-grow-1">
 							<h3>Recent Models</h3>
-							<div className="list-group list-group-flush">
-								<button
-									type="button"
-									style={{ cursor: "pointer" }}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=edit-model&id=rabbit"
-										)
-									}
-								>
-									User
-								</button>
-								<li
-									className={
-										atlasContentModeler.stats
-											.recentModelEntries
-											? "list-group-item"
-											: "hidden"
-									}
-								>
-									No data to display.
-								</li>
-							</div>
+							{atlasContentModeler.stats.recentModelEntries
+								?.length > 0 && (
+								<div className="list-group list-group-flush">
+									{atlasContentModeler.stats.recentModelEntries.map(
+										(entry, index) => {
+											if (index <= 4) {
+												return (
+													<button
+														key={entry.ID}
+														type="button"
+														style={{
+															cursor: "pointer",
+														}}
+														className="list-group-item list-group-item-action"
+														onClick={(e) =>
+															history.push(
+																atlasContentModeler.appPath +
+																	`&view=edit-model&id=${entry.post_type}`
+															)
+														}
+													>
+														{entry.post_title}
+													</button>
+												);
+											}
+											return false;
+										}
+									)}
+								</div>
+							)}
+
+							{!atlasContentModeler.stats.recentModelEntries
+								.length > 0 && <p>No data to display.</p>}
 						</Card>
 					</div>
 				</div>
