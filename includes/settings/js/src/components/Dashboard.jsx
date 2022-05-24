@@ -776,7 +776,7 @@ export default function Dashboard() {
 						</section>
 					</Card>
 
-					<Card className="col-xs-12 flex-grow-1">
+					<Card className="flex-grow-1">
 						<section className="card-content">
 							<div className="row">
 								<h3>Resources</h3>
