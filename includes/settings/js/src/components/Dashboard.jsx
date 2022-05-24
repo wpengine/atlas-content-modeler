@@ -585,7 +585,7 @@ export default function Dashboard() {
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
-							<h3>Latest Model Entries</h3>
+							<h3>Latest Entries</h3>
 							{atlasContentModeler.stats.recentModelEntries
 								?.length > 0 && (
 								<div className="list-group list-group-flush">
