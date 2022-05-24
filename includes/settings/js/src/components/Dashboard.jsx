@@ -590,7 +590,7 @@ export default function Dashboard() {
 					<Card className="flex-grow-1">
 						<form>
 							<div className="row">
-								<h2>Quick Settings</h2>
+								<h3>Quick Settings</h3>
 								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
 									<div className="row">
 										<div className="col-xs-12">
@@ -671,7 +671,7 @@ export default function Dashboard() {
 					<Card className="flex-grow-1">
 						<section className="card-content">
 							<div className="row">
-								<h2 className="mb-4">Tools</h2>
+								<h3 className="mb-4">Tools</h3>
 								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
 									<div className="d-flex">
 										<div className="me-4">
@@ -701,7 +701,7 @@ export default function Dashboard() {
 					<Card className="col-xs-12">
 						<section className="card-content">
 							<div className="row">
-								<h2>Resources</h2>
+								<h3>Resources</h3>
 								<ul className="list">
 									<li
 										style={{
