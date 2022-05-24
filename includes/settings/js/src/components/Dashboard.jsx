@@ -417,7 +417,14 @@ export default function Dashboard() {
 								)}
 
 								{!atlasContentModeler.stats.modelsCounts
-									.length > 0 && <p>No data to display.</p>}
+									.length > 0 && (
+									<p>
+										No data to display.{" "}
+										<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
+											Create Your First Model!
+										</a>
+									</p>
+								)}
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
@@ -558,7 +565,14 @@ export default function Dashboard() {
 							)}
 
 							{!atlasContentModeler.stats.recentModelEntries
-								.length > 0 && <p>No data to display.</p>}
+								.length > 0 && (
+								<p>
+									No data to display.{" "}
+									<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
+										Create Your First Model!
+									</a>
+								</p>
+							)}
 						</Card>
 					</div>
 				</div>
@@ -567,10 +581,21 @@ export default function Dashboard() {
 			<div className="tools-view container">
 				<div className="d-flex justify-content-between">
 					<Card>
-						<HighchartsReact
-							highcharts={Highcharts}
-							options={options}
-						/>
+						{atlasContentModeler.stats.modelsCounts.length > 0 && (
+							<HighchartsReact
+								highcharts={Highcharts}
+								options={options}
+							/>
+						)}
+
+						{!atlasContentModeler.stats.modelsCounts.length > 0 && (
+							<p>
+								No chart data to display.{" "}
+								<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
+									Create Your First Model
+								</a>
+							</p>
+						)}
 					</Card>
 
 					<Card className="flex-grow-1">
