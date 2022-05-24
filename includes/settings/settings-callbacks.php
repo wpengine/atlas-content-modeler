@@ -12,6 +12,7 @@ namespace WPE\AtlasContentModeler\Settings;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\Stats\stats_model_counts;
 use function WPE\AtlasContentModeler\Stats\stats_recent_model_entries;
+use function WPE\AtlasContentModeler\Stats\stats_relationships;
 
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 /**
@@ -168,6 +169,7 @@ function enqueue_settings_assets( $hook ) {
 			'stats'                => [
 				'modelsCounts'       => stats_model_counts(),
 				'recentModelEntries' => stats_recent_model_entries(),
+				'relationships'      => stats_relationships(),
 			],
 			'acm_plugin_data'      => get_plugin_data( ATLAS_CONTENT_MODELER_FILE ),
 		)
