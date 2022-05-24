@@ -595,9 +595,16 @@ export default function Dashboard() {
 												return (
 													<button
 														key={entry.ID}
+														title={entry.post_title}
 														type="button"
 														style={{
 															cursor: "pointer",
+															whiteSpace:
+																"nowrap",
+															overflow: "hidden",
+															textOverflow:
+																"ellipsis",
+															maxWidth: "200px",
 														}}
 														className="list-group-item list-group-item-action"
 														onClick={(e) => {
