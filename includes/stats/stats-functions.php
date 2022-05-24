@@ -95,7 +95,7 @@ function stats_relationships(): array {
 	];
 
 	foreach ( $results['mostConnectedEntries'] as $key => &$entry ) {
-		$entry['permalink'] = get_permalink( $entry['id1'] );
+		$entry['admin_link'] = esc_url_raw( admin_url( 'post.php?post=' . $entry['id1'] . '&action=edit' ) );
 	}
 
 	return $results;
