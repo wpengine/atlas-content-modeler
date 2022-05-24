@@ -563,7 +563,7 @@ export default function Dashboard() {
 															className="list-group-item list-group-item-action"
 															onClick={(e) =>
 																(window.location.href =
-																	entry.permalink)
+																	entry.admin_link)
 															}
 														>
 															<span
