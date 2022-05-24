@@ -280,7 +280,7 @@ export default function Dashboard() {
 			<div className="container">
 				<div className="stats">
 					<div className="d-flex justify-content-between">
-						<Card className="text-center flex-grow-1">
+						<Card className="flex-grow-1">
 							<h1
 								style={{
 									color: "#7e5cef",
@@ -305,7 +305,7 @@ export default function Dashboard() {
 								<span className="dashicons dashicons-admin-links"></span>
 							</a>
 							<hr />
-							<Card className=" flex-grow-1">
+							<div className="flex-grow-1">
 								<h3>Top Models</h3>
 								<div className="list-group list-group-flush">
 									<button
@@ -417,9 +417,9 @@ export default function Dashboard() {
 										Rabbits
 									</button>
 								</div>
-							</Card>
+							</div>
 						</Card>
-						<Card className="text-center flex-grow-1">
+						<Card className="flex-grow-1">
 							<h1
 								style={{
 									color: "#7e5cef",
@@ -446,7 +446,7 @@ export default function Dashboard() {
 								<span className="dashicons dashicons-admin-links"></span>
 							</a>
 							<hr />
-							<Card className="flex-grow-1">
+							<div className="flex-grow-1">
 								<h3>Top Taxonomies</h3>
 								<div className="list-group list-group-flush">
 									<button
@@ -526,65 +526,11 @@ export default function Dashboard() {
 										Taxonomy 1
 									</button>
 								</div>
-							</Card>
+							</div>
 						</Card>
 						<Card className="flex-grow-1">
 							<h3>Recent Models</h3>
 							<div className="list-group list-group-flush">
-								<button
-									type="button"
-									style={{
-										cursor: "pointer",
-									}}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=edit-model&id=rabbit"
-										)
-									}
-								>
-									Rabbits
-								</button>
-								<button
-									type="button"
-									style={{ cursor: "pointer" }}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=edit-model&id=rabbit"
-										)
-									}
-								>
-									Rabbits
-								</button>
-								<button
-									type="button"
-									style={{ cursor: "pointer" }}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=edit-model&id=rabbit"
-										)
-									}
-								>
-									Cages
-								</button>
-								<button
-									type="button"
-									style={{ cursor: "pointer" }}
-									className="list-group-item list-group-item-action"
-									onClick={(e) =>
-										history.push(
-											atlasContentModeler.appPath +
-												"&view=edit-model&id=rabbit"
-										)
-									}
-								>
-									Monkeys
-								</button>
 								<button
 									type="button"
 									style={{ cursor: "pointer" }}
@@ -598,6 +544,16 @@ export default function Dashboard() {
 								>
 									User
 								</button>
+								<li
+									className={
+										atlasContentModeler.stats
+											.recentModelEntries
+											? "list-group-item"
+											: "hidden"
+									}
+								>
+									No data to display.
+								</li>
 							</div>
 						</Card>
 					</div>
@@ -609,7 +565,7 @@ export default function Dashboard() {
 					<Card className="flex-grow-1">
 						<section className="card-content">
 							<div className="row">
-								<h2 className="mb-2">Tools</h2>
+								<h2 className="mb-4">Tools</h2>
 								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
 									<div className="d-flex flex-column">
 										<div className="mb-3">
