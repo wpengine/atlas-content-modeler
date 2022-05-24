@@ -29,6 +29,23 @@ export default function Dashboard() {
 		return data;
 	}
 
+	function getTaxonomies() {
+		let entries = [];
+		let keys = Object.keys(atlasContentModeler.stats.taxonomies);
+
+		keys.map((entry) => {
+			entries.push({
+				name: entry,
+				count: parseInt(
+					atlasContentModeler.stats.taxonomies[entry].total_terms
+				),
+			});
+		});
+
+		entries.sort((a, b) => (a.count > b.count ? 1 : -1));
+		return entries;
+	}
+
 	function getPieColors() {
 		var colors = [],
 			base = "#7e5cef",
@@ -435,8 +452,9 @@ export default function Dashboard() {
 									fontSize: "60px",
 								}}
 							>
-								{atlasContentModeler.stats.taxonomies?.length ||
-									0}
+								{Object.keys(
+									atlasContentModeler.stats.taxonomies
+								).length || 0}
 							</h1>{" "}
 							<a
 								style={{ cursor: "pointer" }}
@@ -454,30 +472,43 @@ export default function Dashboard() {
 							<hr />
 							<div className="flex-grow-1">
 								<h3>Top Taxonomies</h3>
-								{atlasContentModeler.stats.taxonomies?.length >
-									0 && (
+								{Object.keys(
+									atlasContentModeler.stats.taxonomies
+								).length > 0 && (
 									<div className="list-group list-group-flush">
-										<button
-											type="button"
-											style={{
-												cursor: "pointer",
-												backgroundColor: "#7e5cef",
-											}}
-											className="list-group-item list-group-item-action active"
-											onClick={(e) =>
-												history.push(
-													atlasContentModeler.appPath +
-														"&view=taxonomies&editing=test"
-												)
-											}
-										>
-											Taxonomy 1
-										</button>
+										{getTaxonomies().map((entry) => (
+											<button
+												key={entry.name}
+												type="button"
+												style={{
+													cursor: "pointer",
+												}}
+												className="list-group-item list-group-item-action"
+												onClick={(e) =>
+													history.push(
+														atlasContentModeler.appPath +
+															`&view=taxonomies&editing=${entry.name}`
+													)
+												}
+											>
+												<span
+													className="badge badge-secondary me-2"
+													style={{
+														backgroundColor:
+															"#002838",
+													}}
+												>
+													{entry.count}
+												</span>{" "}
+												{entry.name}
+											</button>
+										))}
 									</div>
 								)}
 
-								{!atlasContentModeler.stats.taxonomies?.length >
-									0 && (
+								{!Object.keys(
+									atlasContentModeler.stats.taxonomies
+								).length > 0 && (
 									<p>
 										No data to display.{" "}
 										<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies">
