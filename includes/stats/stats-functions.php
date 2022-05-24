@@ -8,6 +8,7 @@
 namespace WPE\AtlasContentModeler\Stats;
 
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 
 /**
  * Gets count of all model entries.
@@ -98,4 +99,32 @@ function stats_relationships(): array {
 	}
 
 	return $results;
+}
+
+/**
+ * Gets taxonomy stats.
+ *
+ * @return array
+ */
+function stats_taxonomies(): array {
+	$stats = [];
+
+	foreach ( array_keys( get_acm_taxonomies() ) as $taxonomy ) {
+		$stats[ $taxonomy ]['total_terms'] = wp_count_terms( [ 'taxonomy' => $taxonomy ] );
+		$stats[ $taxonomy ]['terms']       = get_terms(
+			[
+				'taxonomy'   => $taxonomy,
+				'orderby'    => 'count',
+				'order'      => 'DESC',
+				'hide_empty' => false,
+			]
+		);
+
+		foreach ( $stats[ $taxonomy ]['terms'] as &$term ) {
+			$term->term_link  = get_term_link( $term->term_id );
+			$term->admin_link = get_edit_term_link( $term->term_id );
+		}
+	}
+
+	return $stats;
 }
