@@ -454,7 +454,8 @@ export default function Dashboard() {
 							<hr />
 							<div className="flex-grow-1">
 								<h3>Top Taxonomies</h3>
-								{atlasContentModeler.taxonomies && (
+								{Object.keys(atlasContentModeler.taxonomies)
+									.length > 0 && (
 									<div className="list-group list-group-flush">
 										<button
 											type="button"
@@ -475,7 +476,8 @@ export default function Dashboard() {
 									</div>
 								)}
 
-								{atlasContentModeler.taxonomies && (
+								{!Object.keys(atlasContentModeler.taxonomies)
+									.length > 0 && (
 									<p>
 										No data to display.{" "}
 										<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies">
@@ -543,7 +545,7 @@ export default function Dashboard() {
 							<p>
 								No chart data to display.{" "}
 								<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
-									Create your first Model
+									Create your first Model!
 								</a>
 							</p>
 						)}
