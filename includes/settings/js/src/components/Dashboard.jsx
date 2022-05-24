@@ -563,7 +563,7 @@ export default function Dashboard() {
 															className="list-group-item list-group-item-action"
 															onClick={(e) =>
 																(window.location.href =
-																	entry.admin_link)
+																	entry.permalink)
 															}
 														>
 															<span
@@ -746,7 +746,7 @@ export default function Dashboard() {
 
 			<div className="tools-view container">
 				<div className="d-flex justify-content-between">
-					<Card className="flex-grow-1">
+					<Card className="flex-grow-0">
 						<section className="card-content">
 							<div className="row">
 								<h3 className="mb-4">Tools</h3>
@@ -776,7 +776,7 @@ export default function Dashboard() {
 						</section>
 					</Card>
 
-					<Card className="col-xs-12">
+					<Card className="col-xs-12 flex-grow-1">
 						<section className="card-content">
 							<div className="row">
 								<h3>Resources</h3>
