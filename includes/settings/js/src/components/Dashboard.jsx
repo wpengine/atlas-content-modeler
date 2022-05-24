@@ -400,7 +400,7 @@ export default function Dashboard() {
 												if (index <= 4) {
 													return (
 														<button
-															key={entry.title}
+															key={entry.model}
 															type="button"
 															style={{
 																cursor:
