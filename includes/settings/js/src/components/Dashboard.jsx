@@ -457,7 +457,7 @@ export default function Dashboard() {
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
-							<h3>Recent Models</h3>
+							<h3>Recent Model Entries</h3>
 							{atlasContentModeler.stats.recentModelEntries
 								?.length > 0 && (
 								<div className="list-group list-group-flush">
@@ -603,64 +603,61 @@ export default function Dashboard() {
 							</div>
 						</form>
 					</Card>
-				</div>
-			</div>
-
-			<div className="tools-view container">
-				<Card className="col-xs-12">
-					<section className="card-content">
-						<div className="row">
-							<h2>Resources</h2>
-							<ul>
-								<li
-									style={{
-										borderLeft: "none",
-									}}
-								>
-									<a
-										target="_blank"
-										rel="noreferrer"
+					<Card className="col-xs-12">
+						<section className="card-content">
+							<div className="row">
+								<h2>Resources</h2>
+								<ul>
+									<li
 										style={{
-											color: "#7e5cef",
-											borderLeft: "0 !important",
+											borderLeft: "none",
 										}}
-										href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform"
 									>
-										ACM Feedback
-									</a>
-								</li>
-								<li
-									style={{
-										borderLeft: "none",
-									}}
-								>
-									<a
-										target="_blank"
-										rel="noreferrer"
-										style={{ color: "#7e5cef" }}
-										href="https://wordpress.org/plugins/atlas-content-modeler/"
+										<a
+											target="_blank"
+											rel="noreferrer"
+											style={{
+												color: "#7e5cef",
+												borderLeft: "0 !important",
+											}}
+											href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform"
+										>
+											ACM Feedback
+										</a>
+									</li>
+									<li
+										style={{
+											borderLeft: "none",
+										}}
 									>
-										ACM Plugin Home
-									</a>
-								</li>
-								<li
-									style={{
-										borderLeft: "none",
-									}}
-								>
-									<a
-										target="_blank"
-										rel="noreferrer"
-										style={{ color: "#7e5cef" }}
-										href="https://github.com/wpengine/atlas-content-modeler"
+										<a
+											target="_blank"
+											rel="noreferrer"
+											style={{ color: "#7e5cef" }}
+											href="https://wordpress.org/plugins/atlas-content-modeler/"
+										>
+											ACM Plugin Home
+										</a>
+									</li>
+									<li
+										style={{
+											borderLeft: "none",
+										}}
 									>
-										ACM Github
-									</a>
-								</li>
-							</ul>
-						</div>
-					</section>
-				</Card>
+										<a
+											target="_blank"
+											rel="noreferrer"
+											style={{ color: "#7e5cef" }}
+											href="https://github.com/wpengine/atlas-content-modeler"
+										>
+											ACM Github
+										</a>
+									</li>
+								</ul>
+							</div>
+						</section>
+					</Card>
+				</div>
 			</div>
 		</div>
 	);
