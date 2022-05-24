@@ -476,33 +476,38 @@ export default function Dashboard() {
 									atlasContentModeler.stats.taxonomies
 								).length > 0 && (
 									<div className="list-group list-group-flush">
-										{getTaxonomies().map((entry) => (
-											<button
-												key={entry.name}
-												type="button"
-												style={{
-													cursor: "pointer",
-												}}
-												className="list-group-item list-group-item-action"
-												onClick={(e) =>
-													history.push(
-														atlasContentModeler.appPath +
-															`&view=taxonomies&editing=${entry.name}`
-													)
-												}
-											>
-												<span
-													className="badge badge-secondary me-2"
-													style={{
-														backgroundColor:
-															"#002838",
-													}}
-												>
-													{entry.count}
-												</span>{" "}
-												{entry.name}
-											</button>
-										))}
+										{getTaxonomies().map((entry, index) => {
+											if (index <= 4) {
+												return (
+													<button
+														key={entry.name}
+														type="button"
+														style={{
+															cursor: "pointer",
+														}}
+														className="list-group-item list-group-item-action"
+														onClick={(e) =>
+															history.push(
+																atlasContentModeler.appPath +
+																	`&view=taxonomies&editing=${entry.name}`
+															)
+														}
+													>
+														<span
+															className="badge badge-secondary me-2"
+															style={{
+																backgroundColor:
+																	"#002838",
+															}}
+														>
+															{entry.count}
+														</span>{" "}
+														{entry.name}
+													</button>
+												);
+											}
+											return false;
+										})}
 									</div>
 								)}
 
