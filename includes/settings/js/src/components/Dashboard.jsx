@@ -473,9 +473,9 @@ export default function Dashboard() {
 														}}
 														className="list-group-item list-group-item-action"
 														onClick={(e) =>
+															// TODO: what's the correct path for this to show?
 															history.push(
-																atlasContentModeler.appPath +
-																	`&view=edit-model&id=${entry.post_type}`
+																`/wp-admin/post.php?post=${entry.ID}&action=edit`
 															)
 														}
 													>
