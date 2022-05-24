@@ -67,3 +67,35 @@ function stats_recent_model_entries(): array {
 		]
 	);
 }
+
+/**
+ * Gets relationship stats.
+ *
+ * @return array
+ */
+function stats_relationships(): array {
+	/**
+	 * Relationship table
+	 *
+	 * @var \WPE\AtlasContentModeler\ContentConnect\Tables\PostToPost $table
+	 */
+	$table = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_table( 'p2p' );
+
+	/* @var \wpdb wpdb instance */
+	$db             = $table->get_db();
+	$p2p_table_name = esc_sql( $table->get_table_name() );
+
+	global $wpdb;
+	$post_table_name = esc_sql( $wpdb->prefix . 'posts' );
+
+	$results = [
+		'totalRelationshipConnections' => (int) $db->get_results( "SELECT COUNT(*) as total_connections FROM {$p2p_table_name}", ARRAY_A )[0]['total_connections'] ?: 0,
+		'mostConnectedEntries'         => $db->get_results( "SELECT p2p.id1, p2p.id2, COUNT(*) as total_connections, wp_posts.post_type, wp_posts.post_title FROM {$p2p_table_name} as p2p LEFT JOIN {$post_table_name} as wp_posts ON wp_posts.ID = p2p.id1 GROUP BY `id1` ORDER BY total_connections DESC", ARRAY_A ) ?? [],
+	];
+
+	foreach ( $results['mostConnectedEntries'] as $key => &$entry ) {
+		$entry['permalink'] = get_permalink( $entry['id1'] );
+	}
+
+	return $results;
+}
