@@ -7,12 +7,65 @@ import { showError, showSuccess } from "../toasts";
 import { insertSidebarMenuItem } from "../utils";
 import { useHistory } from "react-router-dom";
 import { Card } from "../../../../shared-assets/js/components/card";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Dashboard() {
 	const fileUploaderRef = useRef(null);
 	let history = useHistory();
+	let chartData = buildChartData();
+
+	function buildChartData() {
+		let data = [];
+		atlasContentModeler.stats.modelsCounts.map((entry) => {
+			data.push({
+				name: entry.plural,
+				y: parseInt(entry.count),
+			});
+		});
+
+		return data;
+	}
+
+	// highcharts
+	const options = {
+		chart: {
+			plotBackgroundColor: null,
+			plotBorderWidth: null,
+			plotShadow: false,
+			type: "pie",
+		},
+		title: {
+			text: "Models by Percent",
+		},
+		tooltip: {
+			pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+		},
+		accessibility: {
+			point: {
+				valueSuffix: "%",
+			},
+		},
+		plotOptions: {
+			pie: {
+				allowPointSelect: true,
+				cursor: "pointer",
+				dataLabels: {
+					enabled: true,
+					format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+				},
+			},
+		},
+		series: [
+			{
+				name: "Models",
+				colorByPoint: true,
+				data: chartData,
+			},
+		],
+	};
 
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled
@@ -473,7 +526,7 @@ export default function Dashboard() {
 														}}
 														className="list-group-item list-group-item-action"
 														onClick={(e) =>
-															// TODO: what's the correct path for this to show?
+															// TODO: what's the correct path for this to show? /wp-admin/post.php?post=5&action=edit
 															history.push(
 																`/wp-admin/post.php?post=${entry.ID}&action=edit`
 															)
@@ -498,35 +551,13 @@ export default function Dashboard() {
 
 			<div className="tools-view container">
 				<div className="d-flex justify-content-between">
-					<Card className="flex-grow-1">
-						<section className="card-content">
-							<div className="row">
-								<h2 className="mb-4">Tools</h2>
-								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
-									<div className="d-flex flex-column">
-										<div className="mb-3">
-											<ImportFileButton
-												buttonTitle="Import Models"
-												allowedMimeTypes=".json"
-												callbackFn={createModels}
-												fileUploaderRef={
-													fileUploaderRef
-												}
-											/>
-										</div>
-										<div>
-											<ExportFileButton
-												buttonTitle="Export Models"
-												fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
-												fileType="json"
-												callbackFn={getModels}
-											/>
-										</div>
-									</div>
-								</div>
-							</div>
-						</section>
+					<Card>
+						<HighchartsReact
+							highcharts={Highcharts}
+							options={options}
+						/>
 					</Card>
+
 					<Card className="flex-grow-1">
 						<form>
 							<div className="row">
@@ -603,6 +634,41 @@ export default function Dashboard() {
 							</div>
 						</form>
 					</Card>
+				</div>
+			</div>
+
+			<div className="tools-view container">
+				<div className="d-flex justify-content-between">
+					<Card className="flex-grow-1">
+						<section className="card-content">
+							<div className="row">
+								<h2 className="mb-4">Tools</h2>
+								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
+									<div className="d-flex flex-column">
+										<div className="mb-3">
+											<ImportFileButton
+												buttonTitle="Import Models"
+												allowedMimeTypes=".json"
+												callbackFn={createModels}
+												fileUploaderRef={
+													fileUploaderRef
+												}
+											/>
+										</div>
+										<div>
+											<ExportFileButton
+												buttonTitle="Export Models"
+												fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
+												fileType="json"
+												callbackFn={getModels}
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+					</Card>
+
 					<Card className="col-xs-12">
 						<section className="card-content">
 							<div className="row">
