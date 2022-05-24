@@ -29,6 +29,23 @@ export default function Dashboard() {
 		return data;
 	}
 
+	function getPieColors() {
+		var colors = [],
+			base = "#7e5cef",
+			i;
+
+		for (i = 0; i < 10; i += 1) {
+			// Start out with a darkened base color (negative brighten), and end
+			// up with a much brighter color
+			colors.push(
+				Highcharts.color(base)
+					.brighten((i - 3) / 7)
+					.get()
+			);
+		}
+		return colors;
+	}
+
 	// highcharts
 	const options = {
 		chart: {
@@ -56,6 +73,7 @@ export default function Dashboard() {
 					enabled: true,
 					format: "<b>{point.name}</b>: {point.percentage:.1f} %",
 				},
+				colors: getPieColors(),
 			},
 		},
 		series: [
