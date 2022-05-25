@@ -835,9 +835,9 @@ export default function Dashboard() {
 											boxShadow: "none",
 										}}
 									>
-										<ul className="list list-unstyled d-flex justify-content-between">
+										<ul className="list list-unstyled d-flex justify-content-start">
 											<li
-												className="list-item"
+												className="list-item me-2"
 												style={{
 													borderLeft: "none",
 													boxShadow: "none",
@@ -853,7 +853,7 @@ export default function Dashboard() {
 												</a>
 											</li>
 											<li
-												className="list-item"
+												className="list-item me-2"
 												style={{
 													borderLeft: "none",
 													boxShadow: "none",
@@ -868,7 +868,7 @@ export default function Dashboard() {
 												</a>
 											</li>
 											<li
-												className="list-item"
+												className="list-item me-2"
 												style={{
 													borderLeft: "none",
 													boxShadow: "none",
@@ -883,7 +883,7 @@ export default function Dashboard() {
 												</a>
 											</li>
 											<li
-												className="list-item"
+												className="list-item me-2"
 												style={{
 													borderLeft: "none",
 													boxShadow: "none",
@@ -898,7 +898,7 @@ export default function Dashboard() {
 												</a>
 											</li>
 											<li
-												className="list-item"
+												className="list-item me-2"
 												style={{
 													borderLeft: "none",
 													boxShadow: "none",
