@@ -45,6 +45,47 @@ class CreateContentModelEmailFieldCest {
 		$active_element = $i->executeJS( "return document.activeElement.getAttribute('name');" );
 		$i->assertEquals( 'atlas-content-modeler[movie][email][0]', $active_element );
 	}
+
+	public function i_can_create_repeatable_with_min_and_max_advanced_settings( \AcceptanceTester $i ) {
+		$email = 'Email';
+		$i->click( $email, '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], $email );
+		$i->click( '.is-repeatable' );
+
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
+
+		$i->fillField( [ 'name' => 'minRepeatable' ], '-1' );
+		$i->see( 'The minimum value is 0.', '.error' );
+		$i->fillField( [ 'name' => 'maxRepeatable' ], '-1' );
+		$i->see( 'The minimum value is 1.', '.error' );
+
+		$i->fillField( [ 'name' => 'minRepeatable' ], '2' );
+		$i->fillField( [ 'name' => 'maxRepeatable' ], '1' );
+		$i->see( 'Max must be more than min.', '.error' );
+
+		$i->fillField( [ 'name' => 'minRepeatable' ], '1' );
+		$i->fillField( [ 'name' => 'maxRepeatable' ], '5' );
+		$i->dontSee( 'The minimum value is 0.', '.error' );
+		$i->dontSee( 'The minimum value is 1.', '.error' );
+		$i->dontSee( 'Max must be more than min.', '.error' );
+	}
+
+	public function i_can_create_repeatable_with_exact_repeatable_advanced_settings( \AcceptanceTester $i ) {
+		$email = 'Email';
+		$i->click( $email, '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], $email );
+		$i->click( '.is-repeatable' );
+
+		$i->click( 'button[data-testid="edit-model-update-create-settings-button"]' );
+
+		$i->fillField( [ 'name' => 'exactRepeatable' ], '-1' );
+		$i->see( 'The minimum value is 1.', '.error' );
+
+		$i->fillField( [ 'name' => 'exactRepeatable' ], '1' );
+		$i->dontSee( 'The minimum value is 1.', '.error' );
+	}
 }
 
 

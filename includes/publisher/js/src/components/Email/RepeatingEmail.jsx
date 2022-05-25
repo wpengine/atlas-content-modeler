@@ -14,7 +14,17 @@ const RepeatingEmail = ({
 	errors,
 	defaultError,
 }) => {
-	const [values, setValues] = useState(field?.value || [""]);
+	const getDefaultValues = () => {
+		if (field?.minRepeatable) {
+			return Array(field.minRepeatable).fill("");
+		} else if (field?.exactRepeatable) {
+			return Array(field.exactRepeatable).fill("");
+		} else {
+			return [""];
+		}
+	};
+
+	const [values, setValues] = useState(field?.value || getDefaultValues());
 	const emailPattern = buildWildcardRegex(field.allowedDomains);
 
 	const addButtonRef = useRef();
@@ -63,6 +73,26 @@ const RepeatingEmail = ({
 			}
 		}
 	}
+
+	const shouldShowAddItemButton = () => {
+		if (field?.exactRepeatable) {
+			return false;
+		} else if (field?.maxRepeatable) {
+			return values.length < field.maxRepeatable;
+		} else {
+			return true;
+		}
+	};
+
+	const shouldShowDeleteItemButton = () => {
+		if (field?.exactRepeatable) {
+			return false;
+		} else if (field?.minRepeatable) {
+			return values.length > field.minRepeatable;
+		} else {
+			return true;
+		}
+	};
 
 	return (
 		<>
@@ -147,82 +177,87 @@ const RepeatingEmail = ({
 															</span>
 														</span>
 													</div>
-													<div
-														className={`value[${index}].remove-container p-2 me-sm-1`}
-													>
-														{values.length > 1 && (
-															<button
-																type="button"
-																className="remove-item tertiary no-border"
-																onClick={(
-																	event
-																) => {
-																	event.preventDefault();
-																	// Removes the value at the given index.
-																	setValues(
-																		(
-																			currentValues
-																		) => {
-																			const newValues = [
-																				...currentValues,
-																			];
-																			newValues.splice(
-																				index,
-																				1
-																			);
-																			return newValues;
-																		}
-																	);
-																}}
-															>
-																<a
-																	aria-label={__(
-																		"Remove item.",
-																		"atlas-content-modeler"
-																	)}
+													{shouldShowDeleteItemButton() && (
+														<div
+															className={`value[${index}].remove-container p-2 me-sm-1`}
+														>
+															{values.length >
+																1 && (
+																<button
+																	type="button"
+																	className="remove-item tertiary no-border"
+																	onClick={(
+																		event
+																	) => {
+																		event.preventDefault();
+																		// Removes the value at the given index.
+																		setValues(
+																			(
+																				currentValues
+																			) => {
+																				const newValues = [
+																					...currentValues,
+																				];
+																				newValues.splice(
+																					index,
+																					1
+																				);
+																				return newValues;
+																			}
+																		);
+																	}}
 																>
-																	<TrashIcon size="small" />{" "}
-																</a>
-															</button>
-														)}
-													</div>
+																	<a
+																		aria-label={__(
+																			"Remove item.",
+																			"atlas-content-modeler"
+																		)}
+																	>
+																		<TrashIcon size="small" />{" "}
+																	</a>
+																</button>
+															)}
+														</div>
+													)}
 												</div>
 											</td>
 										</tr>
 									);
 								})}
-								<tr className="flex add-container">
-									<td>
-										<button
-											className="add-option mt-0 tertiary no-border"
-											onClick={(event) => {
-												event.preventDefault();
-												// Adds a new empty value to display another text field.
-												setValues((oldValues) => [
-													...oldValues,
-													"",
-												]);
-											}}
-											ref={addButtonRef}
-											type="button"
-										>
-											<a>
-												<AddIcon noCircle />{" "}
-												<span>
-													{field.value.length > 0
-														? __(
-																`Add Another`,
-																"atlas-content-modeler"
-														  )
-														: __(
-																`Add Item`,
-																"atlas-content-modeler"
-														  )}
-												</span>
-											</a>
-										</button>
-									</td>
-								</tr>
+								{shouldShowAddItemButton() && (
+									<tr className="flex add-container">
+										<td>
+											<button
+												className="add-option mt-0 tertiary no-border"
+												onClick={(event) => {
+													event.preventDefault();
+													// Adds a new empty value to display another text field.
+													setValues((oldValues) => [
+														...oldValues,
+														"",
+													]);
+												}}
+												ref={addButtonRef}
+												type="button"
+											>
+												<a>
+													<AddIcon noCircle />{" "}
+													<span>
+														{field.value.length > 0
+															? __(
+																	`Add Another`,
+																	"atlas-content-modeler"
+															  )
+															: __(
+																	`Add Item`,
+																	"atlas-content-modeler"
+															  )}
+													</span>
+												</a>
+											</button>
+										</td>
+									</tr>
+								)}
 							</tbody>
 						</table>
 					</div>
