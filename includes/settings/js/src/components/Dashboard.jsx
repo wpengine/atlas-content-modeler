@@ -594,13 +594,13 @@ export default function Dashboard() {
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
-							<h3>Latest Entries</h3>
+							<h3>Ten Latest Entries</h3>
 							{atlasContentModeler.stats.recentModelEntries
 								?.length > 0 && (
 								<div className="list-group list-group-flush">
 									{atlasContentModeler.stats.recentModelEntries.map(
 										(entry, index) => {
-											if (index <= 4) {
+											if (index <= 9) {
 												return (
 													<button
 														key={entry.ID}

@@ -64,7 +64,7 @@ function stats_recent_model_entries(): array {
 		[
 			'post_status'    => 'publish',
 			'post_type'      => $post_types,
-			'posts_per_page' => 5,
+			'posts_per_page' => 10,
 		]
 	);
 }
