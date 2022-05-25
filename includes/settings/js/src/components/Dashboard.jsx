@@ -395,6 +395,12 @@ export default function Dashboard() {
 							>
 								Models{" "}
 								<span className="dashicons dashicons-admin-links"></span>
+							</a>{" "}
+							<a
+								style={{ textDecoration: "none" }}
+								href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
+							>
+								<span className="dashicons dashicons-plus"></span>
 							</a>
 							<hr />
 							<div className="flex-grow-1">
@@ -478,6 +484,12 @@ export default function Dashboard() {
 							>
 								Taxonomies{" "}
 								<span className="dashicons dashicons-admin-links"></span>
+							</a>{" "}
+							<a
+								style={{ textDecoration: "none" }}
+								href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies"
+							>
+								<span className="dashicons dashicons-plus"></span>
 							</a>
 							<hr />
 							<div className="flex-grow-1">
