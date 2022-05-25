@@ -12,6 +12,7 @@ use function WPE\AtlasContentModeler\API\validation\validate_number;
 use function WPE\AtlasContentModeler\API\validation\validate_date;
 use function WPE\AtlasContentModeler\API\validation\validate_min;
 use function WPE\AtlasContentModeler\API\validation\validate_max;
+use function WPE\AtlasContentModeler\API\validation\validate_email;
 use function WPE\AtlasContentModeler\API\validation\validate_post_exists;
 use function WPE\AtlasContentModeler\API\validation\validate_post_type;
 use function WPE\AtlasContentModeler\API\validation\validate_post_is_attachment;
@@ -52,6 +53,7 @@ class TestValidationFunctions extends Integration_TestCase {
 			'singleMultipleChoiceField' => [ 'choice1' ],
 			'multiMultipleChoiceField'  => [ 'choice1', 'choice2' ],
 			'mediaField'                => $attachment_id,
+			'emailField'                => 'john.doe@example.com',
 		];
 
 		$this->assertTrue( validate_model_field_data( $model_schema, $data ) );
@@ -298,6 +300,21 @@ class TestValidationFunctions extends Integration_TestCase {
 		$relation_post_id = $this->factory->post->create();
 		$valid            = validate_model_field_data( $model_schema, [ 'cars' => $relation_post_id ] );
 		$this->assertEquals( [ 'Invalid post type for relationship' ], $valid->get_error_messages( 'cars' ) );
+	}
+
+	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_email() {
+		$model_schema = $this->content_models['validation'];
+
+		$model_schema['fields'][1653338178066]['required'] = true;
+
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Email Field is required' ], $valid->get_error_messages( 'emailField' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'emailField' => '' ] );
+		$this->assertEquals( [ 'A valid email is required' ], $valid->get_error_messages( 'emailField' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'emailField' => 'not_an_email' ] );
+		$this->assertEquals( [ 'A valid email is required' ], $valid->get_error_messages( 'emailField' ) );
 	}
 
 	/**
@@ -647,6 +664,36 @@ class TestValidationFunctions extends Integration_TestCase {
 
 		$this->assertNull(
 			validate_attachment_file_type( $post_id, $types )
+		);
+	}
+
+	/**
+	 * @testWith
+	 * [ "" ]
+	 * [ "not_an_email" ]
+	 * [ 0 ]
+	 * [ 1 ]
+	 * [ true ]
+	 * [ null ]
+	 */
+	public function test_validate_email_will_throw_exception_for_invalid_email( $invalid_email ) {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'A valid email is required' );
+
+		validate_email( $invalid_email ); // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+	}
+
+	public function test_validate_email_will_use_a_custom_exception_message() {
+		$this->expectExceptionMessage( 'This is not an email' );
+
+		$this->assertNull(
+			validate_email( 'not_an_email', 'This is not an email' ) // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+		);
+	}
+
+	public function test_validate_email_will_return_null_for_a_valid_email() {
+		$this->assertNull(
+			validate_email( 'john.doe@example.com' ) // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
 		);
 	}
 

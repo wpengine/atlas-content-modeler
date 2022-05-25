@@ -67,6 +67,9 @@ function validate_model_field_data( array $model_schema, array $data ) {
 				case 'relationship':
 					validate_relationship_field( $value, $field );
 					break;
+				case 'email':
+					validate_email_field( $value, $field );
+					break;
 			}
 		} catch ( Validation_Exception $exception ) {
 			$wp_error->merge_from(
@@ -273,6 +276,28 @@ function validate_relationship_field( $value, array $field ): void {
 			);
 		}
 	);
+}
+
+/**
+ * Validate an email field value.
+ *
+ * @param mixed $value The field value.
+ * @param array $field The model field.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_email_field( $value, array $field ): void {
+	if ( is_field_repeatable( $field ) ) {
+		validate_array(
+			$value,
+			// translators: %1$s: Field name. %2$s: Field type.
+			sprintf( __( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+		);
+	} else {
+		validate_email( $value ); // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+	}
 }
 
 /**
@@ -544,6 +569,24 @@ function validate_attachment_file_type( $id, array $types, ?string $message = ''
 
 	$file_extension = \wp_check_filetype( $metadata['file'] );
 	if ( ! $file_extension['ext'] || ! \in_array( $file_extension['ext'], $types, true ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate for valid email.
+ *
+ * @param mixed  $value The value.
+ * @param string $message Optional. The error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_email( $value, string $message = '' ): void {
+	$message = $message ?: \__( 'A valid email is required', 'atlas-content-modeler' );
+
+	if ( ! \is_email( (string) $value ) ) {
 		throw new Validation_Exception( $message );
 	}
 }
