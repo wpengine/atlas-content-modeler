@@ -829,6 +829,91 @@ export default function Dashboard() {
 											ACM Github
 										</a>
 									</li>
+									<li
+										style={{
+											borderLeft: "none",
+											boxShadow: "none",
+										}}
+									>
+										<ul className="list list-unstyled d-flex justify-content-between">
+											<li
+												className="list-item"
+												style={{
+													borderLeft: "none",
+													boxShadow: "none",
+													border: "none",
+												}}
+											>
+												<a
+													href="https://www.facebook.com/wpengine"
+													target="_blank"
+													rel="noreferrer"
+												>
+													<span className="dashicons dashicons-facebook"></span>
+												</a>
+											</li>
+											<li
+												className="list-item"
+												style={{
+													borderLeft: "none",
+													boxShadow: "none",
+												}}
+											>
+												<a
+													href="https://twitter.com/wpengine"
+													target="_blank"
+													rel="noreferrer"
+												>
+													<span className="dashicons dashicons-twitter"></span>
+												</a>
+											</li>
+											<li
+												className="list-item"
+												style={{
+													borderLeft: "none",
+													boxShadow: "none",
+												}}
+											>
+												<a
+													href="https://www.linkedin.com/company/wpengine"
+													target="_blank"
+													rel="noreferrer"
+												>
+													<span className="dashicons dashicons-linkedin"></span>
+												</a>
+											</li>
+											<li
+												className="list-item"
+												style={{
+													borderLeft: "none",
+													boxShadow: "none",
+												}}
+											>
+												<a
+													href="https://www.youtube.com/channel/UCJeAEAxX69v24CUBZ0WBYSg"
+													target="_blank"
+													rel="noreferrer"
+												>
+													<span className="dashicons dashicons-youtube"></span>
+												</a>
+											</li>
+											<li
+												className="list-item"
+												style={{
+													borderLeft: "none",
+													boxShadow: "none",
+												}}
+											>
+												<a
+													href="https://www.instagram.com/wpengine/"
+													target="_blank"
+													rel="noreferrer"
+												>
+													<span className="dashicons dashicons-instagram"></span>
+												</a>
+											</li>
+										</ul>
+									</li>
 								</ul>
 							</div>
 						</section>
