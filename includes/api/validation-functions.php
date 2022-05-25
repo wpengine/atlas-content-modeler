@@ -290,7 +290,11 @@ function validate_relationship_field( $value, array $field ): void {
  */
 function validate_email_field( $value, array $field ): void {
 	if ( is_field_repeatable( $field ) ) {
-		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
+		validate_array(
+			$value,
+			// translators: %1$s: Field name. %2$s: Field type.
+			sprintf( __( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+		);
 	} else {
 		validate_email( $value ); // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
 	}
