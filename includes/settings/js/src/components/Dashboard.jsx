@@ -73,6 +73,10 @@ export default function Dashboard() {
 		},
 		title: {
 			text: "Models by Percent",
+			style: {
+				fontWeight: "bold",
+				fontSize: "21px",
+			},
 		},
 		tooltip: {
 			pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
