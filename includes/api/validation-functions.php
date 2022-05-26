@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\API\validation;
 
 use WPE\AtlasContentModeler\Validation_Exception;
+use WPE\AtlasContentModeler\WP_Error;
 
 use function WPE\AtlasContentModeler\is_field_required;
 use function WPE\AtlasContentModeler\is_field_repeatable;
@@ -24,10 +25,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param array $model_schema The content model schema.
  * @param array $data         The data to check against field types.
  *
- * @return bool|WP_Error True if valid, else WP_Error with errors.
+ * @return bool|\WPE\AtlasContentModeler\WP_Error True if valid, else WP_Error with errors.
  */
 function validate_model_field_data( array $model_schema, array $data ) {
-	$wp_error = new \WP_Error();
+	$wp_error = new WP_Error();
 
 	foreach ( $model_schema['fields'] as $id => $field ) {
 		try {
