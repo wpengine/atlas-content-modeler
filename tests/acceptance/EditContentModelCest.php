@@ -47,6 +47,7 @@ class EditContentModelCest {
 		$i->assertEquals( 'Cats', $menu_label );
 
 		// Check the label in the WP admin topbar was updated without refreshing the page.
+		$i->moveMouseOver( '#wp-admin-bar-new-content' );
 		$menu_label = $i->grabTextFrom( '#wp-admin-bar-new-candy .ab-item' );
 		$i->assertEquals( 'Cats', $menu_label );
 
