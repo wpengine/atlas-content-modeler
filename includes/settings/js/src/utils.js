@@ -99,13 +99,13 @@ export function updateSidebarMenuItem(model, data) {
  * @param {Object} data - The updated content model data posted from the edit form.
  */
 export function updateAdminMenuItem(model, data) {
-	const { plural } = data;
+	const { singular } = data;
 
 	// Update the post type menu label.
-	if (model.plural !== plural) {
+	if (model.singular !== singular) {
 		document.querySelector(
-			`li#wp-admin-bar-new-${model.slug}`
-		).innerHTML = plural;
+			`li#wp-admin-bar-new-${model.slug} .ab-item`
+		).innerHTML = singular;
 	}
 }
 
