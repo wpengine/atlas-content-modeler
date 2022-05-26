@@ -92,10 +92,10 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Text Field is required' ], $valid->get_error_messages( 'textField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'textField' => '' ] );
-		$this->assertEquals( [ 'Text Field cannot be empty' ], $valid->get_error_messages( 'textField' ) );
+		$this->assertEquals( [ 'Field cannot be empty' ], $valid->get_error_messages( 'textField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'textField' => 1 ] );
-		$this->assertEquals( [ 'Text Field must be valid text' ], $valid->get_error_messages( 'textField' ) );
+		$this->assertEquals( [ 'Field must be valid text' ], $valid->get_error_messages( 'textField' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_text_field() {
@@ -121,8 +121,8 @@ class TestValidationFunctions extends Integration_TestCase {
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableTextField' => $data ] );
 		$this->assertEquals(
 			[
-				1 => 'Repeatable Text Field must be valid text',
-				3 => 'Repeatable Text Field cannot be empty',
+				1 => 'Field must be valid text',
+				3 => 'Field cannot be empty',
 			],
 			$valid->get_error_messages( 'repeatableTextField' )
 		);
@@ -137,10 +137,10 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Rich Text Field is required' ], $valid->get_error_messages( 'richTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'richTextField' => '' ] );
-		$this->assertEquals( [ 'Rich Text Field cannot be empty' ], $valid->get_error_messages( 'richTextField' ) );
+		$this->assertEquals( [ 'Field cannot be empty' ], $valid->get_error_messages( 'richTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'richTextField' => 1 ] );
-		$this->assertEquals( [ 'Rich Text Field must be valid richtext' ], $valid->get_error_messages( 'richTextField' ) );
+		$this->assertEquals( [ 'Field must be valid richtext' ], $valid->get_error_messages( 'richTextField' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_richtext_field() {
