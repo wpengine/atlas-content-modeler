@@ -99,13 +99,19 @@ function validate_model_field_data( array $model_schema, array $data ) {
 function validate_text_field( $value, array $field ): void {
 	if ( is_field_repeatable( $field ) ) {
 		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
-	} else {
-		validate_string( $value, "{$field['name']} must be valid {$field['type']}" );
+		validate_not_empty( $value, "{$field['name']} must be an array of {$field['type']}" );
 	}
 
-	if ( is_field_required( $field ) ) {
-		validate_not_empty( $value, "{$field['name']} cannot be empty" );
-	}
+	validate_array_of(
+		(array) $value,
+		static function ( $field_value ) use ( $field ) {
+			validate_string( $field_value, "{$field['name']} must be valid {$field['type']}" );
+
+			if ( is_field_required( $field ) ) {
+				validate_not_empty( $field_value, "{$field['name']} cannot be empty" );
+			}
+		}
+	);
 }
 
 /**

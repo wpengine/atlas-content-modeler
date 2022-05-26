@@ -110,7 +110,22 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Repeatable Text Field must be an array of text' ], $valid->get_error_messages( 'repeatableTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableTextField' => [] ] );
-		$this->assertEquals( [ 'Repeatable Text Field cannot be empty' ], $valid->get_error_messages( 'repeatableTextField' ) );
+		$this->assertEquals( [ 'Repeatable Text Field must be an array of text' ], $valid->get_error_messages( 'repeatableTextField' ) );
+
+		$data  = [
+			'A valid text field',
+			false,
+			'Another valid text field',
+			'',
+		];
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableTextField' => $data ] );
+		$this->assertEquals(
+			[
+				1 => 'Repeatable Text Field must be valid text',
+				3 => 'Repeatable Text Field cannot be empty',
+			],
+			$valid->get_error_messages( 'repeatableTextField' )
+		);
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_richtext_field() {
@@ -140,7 +155,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Repeatable Rich Text Field must be an array of richtext' ], $valid->get_error_messages( 'repeatableRichTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableRichTextField' => [] ] );
-		$this->assertEquals( [ 'Repeatable Rich Text Field cannot be empty' ], $valid->get_error_messages( 'repeatableRichTextField' ) );
+		$this->assertEquals( [ 'Repeatable Rich Text Field must be an array of richtext' ], $valid->get_error_messages( 'repeatableRichTextField' ) );
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_number_field() {
