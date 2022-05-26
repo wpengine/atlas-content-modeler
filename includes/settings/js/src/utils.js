@@ -38,7 +38,7 @@ export function insertAdminMenuItem(model) {
 		"[id='wp-admin-bar-new-content-default']"
 	);
 	const markup = generateAdminBarMenuItem(model);
-	postAdminMenuItem.appendChild(markup);
+	postAdminMenuItem.lastChild.insertAdjacentHTML("afterend", markup);
 }
 
 /**
