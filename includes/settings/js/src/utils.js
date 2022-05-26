@@ -114,9 +114,8 @@ export function updateAdminMenuItem(model, data) {
  * @param {*} model
  */
 export function generateAdminBarMenuItem(model) {
-	let { slug, plural } = model;
-
-	return `<li id="wp-admin-bar-new-${slug}"><a class="ab-item" href="post-new.php?post_type=${slug}">${slug}</a></li>`;
+	let { slug } = model;
+	return `<li id="wp-admin-bar-new-${slug}"><a class="ab-item" href="post-new.php?post_type=${slug}">${singular}</a></li>`;
 }
 
 /**
