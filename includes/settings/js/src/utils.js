@@ -29,6 +29,31 @@ export function insertSidebarMenuItem(model) {
 }
 
 /**
+ * Inserts the content model list item in the wp-admin top admin menu.
+ *
+ * @param {Object} model - The content model to be added to the admin menu.
+ */
+export function insertAdminMenuItem(model) {
+	const postAdminMenuItem = document.querySelector(
+		"[id='wp-admin-bar-new-content-default']"
+	);
+	const markup = generateAdminBarMenuItem(model);
+	postAdminMenuItem.appendChild(markup);
+}
+
+/**
+ * Removes the post type from the wp-admin admin menu.
+ *
+ * @param {String} slug - The post type slug of the item to be removed.
+ */
+export function removeAdminMenuItem(slug) {
+	const menuItem = document.querySelector(`[id="wp-admin-bar-new-${slug}"]`);
+	if (menuItem) {
+		menuItem.remove();
+	}
+}
+
+/**
  * Removes the post type from the wp-admin sidebar menu.
  *
  * @param {String} slug - The post type slug of the item to be removed.
@@ -65,6 +90,33 @@ export function updateSidebarMenuItem(model, data) {
 		menuIcon.classList.remove(model.model_icon);
 		menuIcon.classList.add(model_icon);
 	}
+}
+
+/**
+ * Updates the admin post type menu item if the label changed.
+ *
+ * @param {Object} model - The original content model information.
+ * @param {Object} data - The updated content model data posted from the edit form.
+ */
+export function updateAdminMenuItem(model, data) {
+	const { plural } = data;
+
+	// Update the post type menu label.
+	if (model.plural !== plural) {
+		document.querySelector(
+			`li#wp-admin-bar-new-${model.slug}`
+		).innerHTML = plural;
+	}
+}
+
+/**
+ * Generates the HTML for the admin bar content model menu item.
+ * @param {*} model
+ */
+export function generateAdminBarMenuItem(model) {
+	let { slug, plural } = model;
+
+	return `<li id="wp-admin-bar-new-${slug}"><a class="ab-item" href="post-new.php?post_type=${slug}">${slug}</a></li>`;
 }
 
 /**
