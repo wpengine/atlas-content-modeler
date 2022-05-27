@@ -102,7 +102,10 @@ function validate_text_field( $value, array $field ): void {
 		$message = \sprintf( \__( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] );
 
 		validate_array( $value, $message );
-		validate_not_empty( $value, $message );
+
+		if ( is_field_required( $field ) ) {
+			validate_not_empty( $value, $message );
+		}
 	}
 
 	validate_array_of(
