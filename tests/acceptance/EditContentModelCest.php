@@ -49,7 +49,7 @@ class EditContentModelCest {
 		// Check the label in the WP admin topbar was updated without refreshing the page.
 		$i->moveMouseOver( '#wp-admin-bar-new-content' );
 		$menu_label = $i->grabTextFrom( '#wp-admin-bar-new-candy .ab-item' );
-		$i->assertEquals( 'Cats', $menu_label );
+		$i->assertEquals( 'Cat', $menu_label );
 
 		// Check updated data persists in the edit modal when reopened.
 		$i->click( '.model-list button.options' );

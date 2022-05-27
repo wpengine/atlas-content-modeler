@@ -32,23 +32,12 @@ class AdminMenuUpdatesCest {
 	 */
 	public function the_adminbar_removes_post_types_upon_deletion( AcceptanceTester $i ) {
 		$i->haveContentModel( 'Moose', 'Moose' );
-		$i->haveContentModel( 'Goose', 'Geese' );
 		$i->amOnWPEngineContentModelPage();
 
 		$i->moveMouseOver( '#wp-admin-bar-new-content' );
-		$i->seeElementInDOM( '#wp-admin-bar-new-goose' );
 		$i->seeElementInDOM( '#wp-admin-bar-new-moose' );
 
 		// Delete Moose.
-		$i->click( '.model-list button.options' );
-		$i->click( '.dropdown-content a.delete' );
-		$i->click( 'Delete', '.atlas-content-modeler-delete-model-modal-container' );
-		$i->wait( 1 );
-
-		$i->moveMouseOver( '#wp-admin-bar-new-content' );
-		$i->dontSeeElementInDOM( '#wp-admin-bar-new-goose' );
-
-		// Delete Goose.
 		$i->click( '.model-list button.options' );
 		$i->click( '.dropdown-content a.delete' );
 		$i->click( 'Delete', '.atlas-content-modeler-delete-model-modal-container' );
