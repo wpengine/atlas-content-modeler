@@ -92,7 +92,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Text Field is required' ], $valid->get_error_messages( 'textField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'textField' => '' ] );
-		$this->assertEquals( [ 'Text Field cannot be empty' ], $valid->get_error_messages( 'textField' ) );
+		$this->assertEquals( [ 'Text Field is required' ], $valid->get_error_messages( 'textField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'textField' => 1 ] );
 		$this->assertEquals( [ 'Text Field must be valid text' ], $valid->get_error_messages( 'textField' ) );
@@ -122,7 +122,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals(
 			[
 				1 => 'Repeatable Text Field must be valid text',
-				3 => 'Repeatable Text Field cannot be empty',
+				3 => 'Repeatable Text Field is required',
 			],
 			$valid->get_error_messages( 'repeatableTextField' )
 		);
@@ -137,7 +137,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Rich Text Field is required' ], $valid->get_error_messages( 'richTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'richTextField' => '' ] );
-		$this->assertEquals( [ 'Rich Text Field cannot be empty' ], $valid->get_error_messages( 'richTextField' ) );
+		$this->assertEquals( [ 'Rich Text Field is required' ], $valid->get_error_messages( 'richTextField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'richTextField' => 1 ] );
 		$this->assertEquals( [ 'Rich Text Field must be valid richtext' ], $valid->get_error_messages( 'richTextField' ) );

@@ -121,7 +121,7 @@ function validate_text_field( $value, array $field ): void {
 				validate_not_empty(
 					$field_value,
 					// translators: The name of the field.
-					\sprintf( \__( '%s cannot be empty', 'atlas-content-modeler' ), $field['name'] )
+					\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
 				);
 			}
 		}
