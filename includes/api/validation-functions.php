@@ -110,14 +110,15 @@ function validate_text_field( $value, array $field ): void {
 		static function ( $field_value ) use ( $field ) {
 			validate_string(
 				$field_value,
-				// translators: The type of the field.
-				\sprintf( \__( 'Field must be valid %s', 'atlas-content-modeler' ), $field['type'] )
+				// translators: The name and type of the field.
+				\sprintf( \__( '%1$s must be valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
 			);
 
 			if ( is_field_required( $field ) ) {
 				validate_not_empty(
 					$field_value,
-					\__( 'Field cannot be empty', 'atlas-content-modeler' )
+					// translators: The name of the field.
+					\sprintf( \__( '%s cannot be empty', 'atlas-content-modeler' ), $field['name'] )
 				);
 			}
 		}
