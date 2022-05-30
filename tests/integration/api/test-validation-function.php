@@ -699,6 +699,7 @@ class TestValidationFunctions extends Integration_TestCase {
 	}
 
 	/**
+	 * @testWith
 	 * [ "" ]
 	 * [ "not_an_email" ]
 	 * [ 0 ]
