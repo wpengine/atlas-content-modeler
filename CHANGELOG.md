@@ -4,6 +4,7 @@
 ### Changed
 - Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
 - Field validation now returns translatable errors.
+- Text field entries created via the PHP API are now validated for minRepeatable and maxRepeatable.
 
 ## 0.17.0 - 2022-05-05
 ### Added
