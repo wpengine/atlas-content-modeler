@@ -4,7 +4,15 @@
 ### Changed
 - Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
 - Field validation now returns translatable errors.
+- Crud function insert_model_entry() will now append relationship ids.
 - Text field entries created via the PHP API are now validated for minRepeatable and maxRepeatable.
+
+### Fixed
+- Issue where adding a new repeating field to an existing model schema could break GraphQL queries under certain conditions.
+- Empty field values are no longer saved to the database.
+
+### Added
+- Added email validation when using insert_model_entry() crud function.
 
 ## 0.17.0 - 2022-05-05
 ### Added

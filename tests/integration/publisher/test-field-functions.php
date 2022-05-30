@@ -11,6 +11,8 @@ use function WPE\AtlasContentModeler\sanitize_field;
 use function WPE\AtlasContentModeler\sanitize_fields;
 use function WPE\AtlasContentModeler\get_field_type_from_slug;
 use function WPE\AtlasContentModeler\append_reverse_relationship_fields;
+use function WPE\AtlasContentModeler\get_fields_by_type;
+use function WPE\AtlasContentModeler\get_attributes_for_field_type;
 
 /**
  * Class FieldFunctionTestCases
@@ -402,5 +404,74 @@ class FieldFunctionTestCases extends WP_UnitTestCase {
 			$models, // Should be unchanged, ignoring the back reference.
 			append_reverse_relationship_fields( $models, 'left' )
 		);
+	}
+
+	public function test_get_fields_by_type_will_return_fields_for_a_given_type() {
+		$models = [
+			'person' => [
+				'fields' => [
+					454189 => [
+						'type' => 'text',
+					],
+					684759 => [
+						'type' => 'number',
+					],
+					965422 => [
+						'type' => 'text',
+					],
+				],
+			],
+		];
+
+		update_option( 'atlas_content_modeler_post_types', $models );
+		$fields = get_fields_by_type( 'text', 'person' );
+
+		$this->assertEquals(
+			[
+				454189 => [
+					'type' => 'text',
+				],
+				965422 => [
+					'type' => 'text',
+				],
+			],
+			$fields
+		);
+
+		$this->assertEmpty( get_fields_by_type( 'does_not_exist', 'person' ) );
+	}
+
+	public function test_get_attributes_for_field_type_will_return_array_of_attribute_values() {
+		$models = [
+			'person' => [
+				'fields' => [
+					454189 => [
+						'type' => 'text',
+						'slug' => 'first_name',
+					],
+					684759 => [
+						'type' => 'number',
+						'slug' => 'age',
+					],
+					965422 => [
+						'type' => 'text',
+						'slug' => 'last_name',
+					],
+				],
+			],
+		];
+
+		update_option( 'atlas_content_modeler_post_types', $models );
+
+		$this->assertEquals(
+			[
+				454189 => 'first_name',
+				965422 => 'last_name',
+			],
+			get_attributes_for_field_type( 'slug', 'text', 'person' )
+		);
+
+		$this->assertEquals( [], get_attributes_for_field_type( 'slug', 'does_not_exist', 'person' ) );
+		$this->assertEquals( [], get_attributes_for_field_type( 'slug', 'text', 'does_not_exist' ) );
 	}
 }
