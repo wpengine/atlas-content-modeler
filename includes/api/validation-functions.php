@@ -498,7 +498,7 @@ function validate_max( $value, int $max, string $message = '' ): void {
  * @param int   $count The number of rows in repeatable field content.
  * @param array $field Field data with minRepeatable and maxRepeatable values.
  *
- * * @throws Validation_Exception Exception when `$count` is outside min/max.
+ * @throws Validation_Exception Exception when `$count` is outside min/max.
  *
  * @return void
  */
