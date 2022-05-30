@@ -87,6 +87,7 @@ function validate_model_field_data( array $model_schema, array $data ) {
 function validate_text_field( $value, array $field ): void {
 	if ( is_field_repeatable( $field ) ) {
 		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
+		validate_row_count_within_repeatable_limits( count( $value ), $field );
 	} else {
 		validate_string( $value, "{$field['name']} must be valid {$field['type']}" );
 	}
@@ -413,6 +414,42 @@ function validate_max( $value, int $max, string $message = '' ): void {
 
 	if ( \is_numeric( $value ) && (float) $value > $max ) {
 		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validates the provided `$count` of rows is within the `minRepeatable` and
+ * `maxRepeatable` limits optionally offered by repeater fields.
+ *
+ * @param int   $count The number of rows in repeatable field content.
+ * @param array $field Field data with minRepeatable and maxRepeatable values.
+ *
+ * * @throws Validation_Exception Exception when `$count` is outside min/max.
+ *
+ * @return void
+ */
+function validate_row_count_within_repeatable_limits( int $count, array $field ): void {
+	if ( \is_numeric( $field['minRepeatable'] ?? '' ) ) {
+		validate_min(
+			$count,
+			$field['minRepeatable'],
+			sprintf(
+				// translators: number of rows.
+				__( 'The field requires at least %s rows.', 'atlas-content-modeler' ),
+				$field['minRepeatable']
+			)
+		);
+	}
+	if ( \is_numeric( $field['maxRepeatable'] ?? false ) ) {
+		validate_max(
+			$count,
+			$field['maxRepeatable'],
+			sprintf(
+				// translators: number of rows.
+				__( 'The field must have no more than %s rows.', 'atlas-content-modeler' ),
+				$field['maxRepeatable']
+			)
+		);
 	}
 }
 
