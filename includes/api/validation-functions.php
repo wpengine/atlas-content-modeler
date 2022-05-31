@@ -514,7 +514,7 @@ function validate_row_count_within_repeatable_limits( int $count, array $field )
 			)
 		);
 	}
-	if ( \is_numeric( $field['maxRepeatable'] ?? false ) ) {
+	if ( \is_numeric( $field['maxRepeatable'] ?? '' ) ) {
 		validate_max(
 			$count,
 			$field['maxRepeatable'],
