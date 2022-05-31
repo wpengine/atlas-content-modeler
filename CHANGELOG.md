@@ -12,6 +12,7 @@
 
 ### Added
 - Added email validation when using insert_model_entry() crud function.
+- Added ability to add newly created models from the top admin menu dropdown.
 
 ## 0.17.0 - 2022-05-05
 ### Added
