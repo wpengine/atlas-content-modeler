@@ -17,6 +17,7 @@ use function WPE\AtlasContentModeler\API\validation\validate_post_exists;
 use function WPE\AtlasContentModeler\API\validation\validate_post_type;
 use function WPE\AtlasContentModeler\API\validation\validate_post_is_attachment;
 use function WPE\AtlasContentModeler\API\validation\validate_attachment_file_type;
+use function WPE\AtlasContentModeler\API\validation\validate_row_count_within_repeatable_limits;
 use function WPE\AtlasContentModeler\API\validation\validate_array_of;
 use function WPE\AtlasContentModeler\API\validation\validate_text_min_max;
 
@@ -686,6 +687,36 @@ class TestValidationFunctions extends Integration_TestCase {
 
 		$this->assertNull(
 			validate_attachment_file_type( $post_id, $types )
+		);
+	}
+
+	/**
+	 * @testWith
+	 * [ 2, { "minRepeatable": 3 }, "The field requires at least 3 rows." ]
+	 * [ 2, { "minRepeatable": 3 , "maxRepeatable": 3 }, "The field requires at least 3 rows." ]
+	 * [ 4, { "maxRepeatable": 3 }, "The field must have no more than 3 rows." ]
+	 * [ 4, { "minRepeatable": 3, "maxRepeatable": 3 }, "The field must have no more than 3 rows." ]
+	 */
+	public function test_validate_row_count_within_repeatable_limits_throws_if_count_not_within_limits( $count, $field, $expected_message ) {
+		$this->expectExceptionMessage( $expected_message );
+
+		validate_row_count_within_repeatable_limits( $count, $field );
+	}
+
+	/**
+	 * @testWith
+	 * [ 2, { "minRepeatable": 2 } ]
+	 * [ 3, { "minRepeatable": 3, "maxRepeatable": 3 } ]
+	 * [ 0, { "minRepeatable": "" } ]
+	 * [ 0, { "minRepeatable": "", "maxRepeatable": 3 } ]
+	 * [ 3, { "minRepeatable": "", "maxRepeatable": 3 } ]
+	 * [ 2, { "maxRepeatable": 2 } ]
+	 * [ 2, { "minRepeatable": "", "maxRepeatable": "" } ]
+	 * [ 2, {} ]
+	 */
+	public function test_validate_row_count_within_repeatable_limits_gives_void_if_count_is_within_limits( $count, $field ) {
+		$this->assertNull(
+			validate_row_count_within_repeatable_limits( $count, $field )
 		);
 	}
 
