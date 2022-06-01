@@ -120,7 +120,7 @@ function validate_text_field( $value, array $field ): void {
 		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
 
 		if ( is_field_required( $field ) ) {
-			validate_not_empty( $value );
+			validate_not_empty( $value, "{$field['name']} cannot be empty" );
 		}
 	}
 
