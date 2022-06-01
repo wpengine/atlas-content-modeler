@@ -15,6 +15,7 @@
 - Added ability to add newly created models from the top admin menu dropdown right after creation without a refresh of the page.
 - Added validation for repeatable text fields for insert_model_entry() crud function.
 - Added validation for repeatable date fields for insert_model_entry() crud function.
+- Added validation for repeatable number fields for insert_model_entry() crud function.
 
 ## 0.17.0 - 2022-05-05
 ### Added
