@@ -206,7 +206,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Date Field is required' ], $valid->get_error_messages( 'dateField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'dateField' => '' ] );
-		$this->assertEquals( [ 'Date Field must be a valid date' ], $valid->get_error_messages( 'dateField' ) );
+		$this->assertEquals( [ 'Date Field is required' ], $valid->get_error_messages( 'dateField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'dateField' => '1/1/2021' ] );
 		$this->assertEquals( [ 'Date Field must be a valid date' ], $valid->get_error_messages( 'dateField' ) );
@@ -224,7 +224,26 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Repeatable Date Field must be an array of date' ], $valid->get_error_messages( 'repeatableDateField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableDateField' => [] ] );
-		$this->assertEquals( [ 'Repeatable Date Field cannot be empty' ], $valid->get_error_messages( 'repeatableDateField' ) );
+		$this->assertEquals( [ 'Repeatable Date Field must be an array of date' ], $valid->get_error_messages( 'repeatableDateField' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableDateField' => [ '2022-04-08', '', 'not_a_date' ] ] );
+		$this->assertEquals(
+			[
+				1 => 'Repeatable Date Field is required',
+				2 => 'Repeatable Date Field must be a valid date',
+			],
+			$valid->get_error_messages( 'repeatableDateField' )
+		);
+
+		$model_schema['fields'][1649787623430]['required'] = false;
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableDateField' => [ '2022-04-08', '', 'not_a_date' ] ] );
+		$this->assertEquals(
+			[
+				2 => 'Repeatable Date Field must be a valid date',
+			],
+			$valid->get_error_messages( 'repeatableDateField' )
+		);
 	}
 
 	public function test_validate_multiple_choice_field_will_return_WP_Error_for_invalid_single_choice_field() {
