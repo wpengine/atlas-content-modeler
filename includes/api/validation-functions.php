@@ -116,24 +116,25 @@ function validate_text_min_max( $value, $field ) {
  * @return void
  */
 function validate_text_field( $value, array $field ): void {
-	// Check repeatable.
 	if ( is_field_repeatable( $field ) ) {
 		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
 
-		// Loop through and check valid min max on strings.
-		foreach ( $value as $item ) {
-			validate_text_min_max( $item, $field );
+		if ( is_field_required( $field ) ) {
+			validate_not_empty( $value );
 		}
-	} else {
-		// Validate string.
-		validate_string( $value, "{$field['name']} must be valid {$field['type']}" );
-		validate_text_min_max( $value, $field );
 	}
 
-	// Check for required field value.
-	if ( is_field_required( $field ) ) {
-		validate_not_empty( $value, "{$field['name']} cannot be empty" );
-	}
+	validate_array_of(
+		(array) $value,
+		static function ( $field_value ) use ( $field ) {
+			if ( is_field_required( $field ) ) {
+				validate_not_empty( $field_value, "{$field['name']} cannot be empty" );
+			}
+
+			validate_string( $field_value, "{$field['name']} must be valid {$field['type']}" );
+			validate_text_min_max( $field_value, $field );
+		}
+	);
 }
 
 /**
