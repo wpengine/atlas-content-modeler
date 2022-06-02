@@ -276,11 +276,38 @@ function validate_media_field( $value, array $field ): void {
 	}
 
 	if ( is_field_repeatable( $field ) ) {
-		validate_array(
-			$value,
-			// translators: The name of the field and the field type.
-			\sprintf( \__( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+		// translators: The name of the field.
+		$message = \sprintf( \__( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] );
+
+		validate_array( $value, $message );
+
+		validate_array_of(
+			(array) $value,
+			static function ( $field_value ) use ( $field ) {
+				if ( is_field_required( $field ) ) {
+					validate_not_empty(
+						$field_value,
+						// translators: The name of the field.
+						\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
+					);
+				}
+
+				// If not required and empty, then return.
+				if ( '' === $field_value || is_null( $field_value ) ) {
+					return;
+				}
+
+				validate_media( // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+					$field_value,
+					// translators: The name and type of the field.
+					\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+				);
+			}
 		);
+
+		if ( is_field_required( $field ) ) {
+			validate_not_empty( $value, $message );
+		}
 	} else {
 		// translators: The name of the field.
 		$error_message = \sprintf( \__( '%s must be a valid attachment id', 'atlas-content-modeler' ), $field['name'] );
@@ -687,6 +714,24 @@ function validate_email( $value, string $message = '' ): void {
 	$message = $message ?: \__( 'A valid email is required', 'atlas-content-modeler' );
 
 	if ( ! \is_email( (string) $value ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate for valid media item.
+ *
+ * @param mixed  $id The id.
+ * @param string $message Optional. The error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_media( $id, string $message = '' ): void {
+	$message = $message ?: \__( 'A valid media id is required', 'atlas-content-modeler' );
+
+	if ( ! validate_post_is_attachment( (int) $id ) ) {
 		throw new Validation_Exception( $message );
 	}
 }
