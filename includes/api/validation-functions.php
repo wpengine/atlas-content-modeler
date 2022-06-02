@@ -307,7 +307,7 @@ function validate_media_field( $value, array $field ): void {
 					return;
 				}
 
-				validate_media( // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+				validate_post_is_attachment( // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
 					$field_value,
 					// translators: The name and type of the field.
 					\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
@@ -724,24 +724,6 @@ function validate_email( $value, string $message = '' ): void {
 	$message = $message ?: \__( 'A valid email is required', 'atlas-content-modeler' );
 
 	if ( ! \is_email( (string) $value ) ) {
-		throw new Validation_Exception( $message );
-	}
-}
-
-/**
- * Validate for valid media item.
- *
- * @param mixed  $id The id.
- * @param string $message Optional. The error message.
- *
- * @throws Validation_Exception Exception when value is invalid.
- *
- * @return void
- */
-function validate_media( $id, string $message = '' ): void {
-	$message = $message ?: \__( 'A valid media id is required', 'atlas-content-modeler' );
-
-	if ( ! validate_post_is_attachment( (int) $id ) ) {
 		throw new Validation_Exception( $message );
 	}
 }
