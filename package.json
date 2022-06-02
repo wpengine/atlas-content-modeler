@@ -106,6 +106,9 @@
     },
     "@wordpress/block-library": {
       "global": "wp.blockLibrary"
+    },
+    "@wordpress/components": {
+      "global": "wp.components"
     }
   }
 }
