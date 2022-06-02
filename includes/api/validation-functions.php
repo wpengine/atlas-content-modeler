@@ -118,23 +118,35 @@ function validate_text_min_max( $value, $field ) {
  */
 function validate_text_field( $value, array $field ): void {
 	if ( is_field_repeatable( $field ) ) {
-		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
+		// translators: The name and type of the field.
+		$message = \sprintf( \__( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] );
+
+		validate_array( $value, $message );
+		validate_row_count_within_repeatable_limits( count( $value ), $field );
 
 		if ( is_field_required( $field ) ) {
-			validate_not_empty( $value, "{$field['name']} cannot be empty" );
+			validate_not_empty( $value, $message );
 		}
-		validate_row_count_within_repeatable_limits( count( $value ), $field );
 	}
 
 	validate_array_of(
 		(array) $value,
 		static function ( $field_value ) use ( $field ) {
-			if ( is_field_required( $field ) ) {
-				validate_not_empty( $field_value, "{$field['name']} cannot be empty" );
-			}
+			validate_string(
+				$field_value,
+				// translators: The name and type of the field.
+				\sprintf( \__( '%1$s must be valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+			);
 
-			validate_string( $field_value, "{$field['name']} must be valid {$field['type']}" );
 			validate_text_min_max( $field_value, $field );
+
+			if ( is_field_required( $field ) ) {
+				validate_not_empty(
+					$field_value,
+					// translators: The name of the field.
+					\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
+				);
+			}
 		}
 	);
 }
@@ -391,14 +403,39 @@ function validate_relationship_field( $value, array $field ): void {
  */
 function validate_email_field( $value, array $field ): void {
 	if ( is_field_repeatable( $field ) ) {
-		validate_array(
-			$value,
-			// translators: %1$s: Field name. %2$s: Field type.
-			sprintf( __( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
-		);
-	} else {
-		validate_email( $value ); // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+		// translators: The name and type of the field.
+		$message = \sprintf( \__( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] );
+
+		validate_array( $value, $message );
+
+		if ( is_field_required( $field ) ) {
+			validate_not_empty( $value, $message );
+		}
 	}
+
+	validate_array_of(
+		(array) $value,
+		static function ( $field_value ) use ( $field ) {
+			if ( is_field_required( $field ) ) {
+				validate_not_empty(
+					$field_value,
+					// translators: The name of the field.
+					\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
+				);
+			}
+
+			// If not required and empty, then return.
+			if ( '' === $field_value || is_null( $field_value ) ) {
+				return;
+			}
+
+			validate_email( // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+				$field_value,
+				// translators: The name and type of the field.
+				\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+			);
+		}
+	);
 }
 
 /**
