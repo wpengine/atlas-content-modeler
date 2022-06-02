@@ -319,7 +319,7 @@ function validate_media_field( $value, array $field ): void {
 					return;
 				}
 
-				validate_post_is_attachment( // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+				validate_post_is_attachment(
 					$field_value,
 					// translators: The name and type of the field.
 					\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
