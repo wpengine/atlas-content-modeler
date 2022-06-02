@@ -19,6 +19,7 @@ use function WPE\AtlasContentModeler\API\validation\validate_post_is_attachment;
 use function WPE\AtlasContentModeler\API\validation\validate_attachment_file_type;
 use function WPE\AtlasContentModeler\API\validation\validate_row_count_within_repeatable_limits;
 use function WPE\AtlasContentModeler\API\validation\validate_array_of;
+use function WPE\AtlasContentModeler\API\validation\validate_text_min_max;
 
 class TestValidationFunctions extends Integration_TestCase {
 	/**
@@ -538,6 +539,27 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->expectExceptionMessage( $message );
 
 		validate_max( $value, $max, $message );
+	}
+
+	/**
+	 * @testWith
+	 * [ "Tea", { "minChars": 5 }, "Value must meet the minimum length" ]
+	 * [ "Internationalism", { "maxChars": 10 }, "Value exceeds the maximum length" ]
+	 */
+	public function test_validate_text_field_min_max_will_throw_an_exception_if_string_outside_range( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_text_min_max( $value, $field );
+	}
+
+	/**
+	 * @testWith
+	 * [ "Seven", { "minChars": 4, "maxChars": 10} ]
+	 * [ "Seven", { } ]
+	 */
+	public function test_validate_text_field_min_max_gives_null_if_chars_in_range( $value, $field ) {
+		$this->assertNull(
+			validate_text_min_max( $value, $field )
+		);
 	}
 
 	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {

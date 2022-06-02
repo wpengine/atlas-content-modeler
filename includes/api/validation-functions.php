@@ -86,6 +86,26 @@ function validate_model_field_data( array $model_schema, array $data ) {
 }
 
 /**
+ * Validates a string value for text field min and max.
+ *
+ * @param string $value String value of the text field.
+ * @param array  $field Array of values from the field.
+ * @return void
+ */
+function validate_text_min_max( $value, $field ) {
+	$min_message = \__( 'Value must meet the minimum length', 'atlas-content-modeler' );
+	$max_message = \__( 'Value exceeds the maximum length', 'atlas-content-modeler' );
+
+	if ( \is_numeric( $field['minChars'] ?? '' ) ) {
+		validate_min( $value, $field['minChars'], $min_message );
+	}
+
+	if ( \is_numeric( $field['maxChars'] ?? '' ) ) {
+		validate_max( $value, $field['maxChars'], $max_message );
+	}
+}
+
+/**
  * Validate a text field value.
  *
  * @param mixed $value The field value.
@@ -98,14 +118,24 @@ function validate_model_field_data( array $model_schema, array $data ) {
 function validate_text_field( $value, array $field ): void {
 	if ( is_field_repeatable( $field ) ) {
 		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
+
+		if ( is_field_required( $field ) ) {
+			validate_not_empty( $value, "{$field['name']} cannot be empty" );
+		}
 		validate_row_count_within_repeatable_limits( count( $value ), $field );
-	} else {
-		validate_string( $value, "{$field['name']} must be valid {$field['type']}" );
 	}
 
-	if ( is_field_required( $field ) ) {
-		validate_not_empty( $value, "{$field['name']} cannot be empty" );
-	}
+	validate_array_of(
+		(array) $value,
+		static function ( $field_value ) use ( $field ) {
+			if ( is_field_required( $field ) ) {
+				validate_not_empty( $field_value, "{$field['name']} cannot be empty" );
+			}
+
+			validate_string( $field_value, "{$field['name']} must be valid {$field['type']}" );
+			validate_text_min_max( $field_value, $field );
+		}
+	);
 }
 
 /**
