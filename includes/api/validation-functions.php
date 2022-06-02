@@ -87,6 +87,26 @@ function validate_model_field_data( array $model_schema, array $data ) {
 }
 
 /**
+ * Validates a string value for text field min and max.
+ *
+ * @param string $value String value of the text field.
+ * @param array  $field Array of values from the field.
+ * @return void
+ */
+function validate_text_min_max( $value, $field ) {
+	$min_message = \__( 'Value must meet the minimum length', 'atlas-content-modeler' );
+	$max_message = \__( 'Value exceeds the maximum length', 'atlas-content-modeler' );
+
+	if ( \is_numeric( $field['minChars'] ?? '' ) ) {
+		validate_min( $value, $field['minChars'], $min_message );
+	}
+
+	if ( \is_numeric( $field['maxChars'] ?? '' ) ) {
+		validate_max( $value, $field['maxChars'], $max_message );
+	}
+}
+
+/**
  * Validate a text field value.
  *
  * @param mixed $value The field value.
@@ -117,6 +137,8 @@ function validate_text_field( $value, array $field ): void {
 				// translators: The name and type of the field.
 				\sprintf( \__( '%1$s must be valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
 			);
+
+			validate_text_min_max( $field_value, $field );
 
 			if ( is_field_required( $field ) ) {
 				validate_not_empty(
