@@ -132,14 +132,6 @@ function validate_text_field( $value, array $field ): void {
 	validate_array_of(
 		(array) $value,
 		static function ( $field_value ) use ( $field ) {
-			validate_string(
-				$field_value,
-				// translators: The name and type of the field.
-				\sprintf( \__( '%1$s must be valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
-			);
-
-			validate_text_min_max( $field_value, $field );
-
 			if ( is_field_required( $field ) ) {
 				validate_not_empty(
 					$field_value,
@@ -147,6 +139,19 @@ function validate_text_field( $value, array $field ): void {
 					\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
 				);
 			}
+
+			// If not required and empty, then return.
+			if ( '' === $field_value || \is_null( $field_value ) ) {
+				return;
+			}
+
+			validate_string(
+				$field_value,
+				// translators: The name and type of the field.
+				\sprintf( \__( '%1$s must be valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+			);
+
+			validate_text_min_max( $field_value, $field );
 		}
 	);
 }
@@ -200,6 +205,11 @@ function validate_number_field( $value, array $field ): void {
 				);
 			}
 
+			// If not required and empty, then return.
+			if ( '' === $field_value || \is_null( $field_value ) ) {
+				return;
+			}
+
 			validate_number(
 				$field_value,
 				// translators: The name and type of the field.
@@ -242,13 +252,16 @@ function validate_date_field( $value, array $field ): void {
 				);
 			}
 
-			if ( $field_value ) {
-				validate_date(
-					$field_value,
-					// translators: The name and type of the field.
-					\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
-				);
+			// If not required and empty, then return.
+			if ( '' === $field_value || \is_null( $field_value ) ) {
+				return;
 			}
+
+			validate_date(
+				$field_value,
+				// translators: The name and type of the field.
+				\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+			);
 		}
 	);
 }
@@ -398,7 +411,7 @@ function validate_email_field( $value, array $field ): void {
 			}
 
 			// If not required and empty, then return.
-			if ( '' === $field_value || is_null( $field_value ) ) {
+			if ( '' === $field_value || \is_null( $field_value ) ) {
 				return;
 			}
 
