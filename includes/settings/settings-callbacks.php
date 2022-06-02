@@ -128,7 +128,7 @@ function enqueue_settings_assets( $hook ) {
 	wp_register_script(
 		'atlas-content-modeler-app',
 		ATLAS_CONTENT_MODELER_URL . 'includes/settings/dist/index.js',
-		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash', 'wp-i18n', 'wp-core-data' ],
+		[ 'wp-api', 'wp-api-fetch', 'react', 'react-dom', 'lodash', 'wp-i18n', 'wp-core-data', 'wp-block-editor', 'wp-block-library' ],
 		$plugin['Version'],
 		true
 	);
