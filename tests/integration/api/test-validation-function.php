@@ -355,10 +355,43 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Email Field is required' ], $valid->get_error_messages( 'emailField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'emailField' => '' ] );
-		$this->assertEquals( [ 'A valid email is required' ], $valid->get_error_messages( 'emailField' ) );
+		$this->assertEquals( [ 'Email Field is required' ], $valid->get_error_messages( 'emailField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'emailField' => 'not_an_email' ] );
-		$this->assertEquals( [ 'A valid email is required' ], $valid->get_error_messages( 'emailField' ) );
+		$this->assertEquals( [ 'Email Field must be a valid email' ], $valid->get_error_messages( 'emailField' ) );
+	}
+
+	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_repeatable_email() {
+		$model_schema = $this->content_models['validation'];
+
+		$model_schema['fields'][1654024380884]['required'] = true;
+
+		$valid = validate_model_field_data( $model_schema, [] );
+		$this->assertEquals( [ 'Repeatable Email Field is required' ], $valid->get_error_messages( 'repeatableEmailField' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableEmailField' => '' ] );
+		$this->assertEquals( [ 'Repeatable Email Field must be an array of email' ], $valid->get_error_messages( 'repeatableEmailField' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableEmailField' => [] ] );
+		$this->assertEquals( [ 'Repeatable Email Field must be an array of email' ], $valid->get_error_messages( 'repeatableEmailField' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableEmailField' => [ 'not_an_email', 'john.doe@example.org', '' ] ] );
+		$this->assertEquals(
+			[
+				0 => 'Repeatable Email Field must be a valid email',
+				2 => 'Repeatable Email Field is required',
+			],
+			$valid->get_error_messages( 'repeatableEmailField' )
+		);
+	}
+
+	public function test_validate_model_field_data_will_return_true_for_empty_repeatable_emails_if_not_required() {
+		$model_schema = $this->content_models['validation'];
+
+		$model_schema['fields'][1654024380884]['required'] = false;
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableEmailField' => [ 'john.doe@example.org', '', null ] ] );
+		$this->assertTrue( $valid );
 	}
 
 	/**
