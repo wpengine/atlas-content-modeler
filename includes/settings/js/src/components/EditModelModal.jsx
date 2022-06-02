@@ -6,7 +6,7 @@ import Icon from "../../../../components/icons";
 import IconPicker from "./IconPicker";
 import { __ } from "@wordpress/i18n";
 import { sendEvent } from "acm-analytics";
-import { updateSidebarMenuItem } from "../utils";
+import { updateSidebarMenuItem, updateAdminMenuItem } from "../utils";
 import {
 	Button,
 	TertiaryButton,
@@ -123,6 +123,7 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 					const result = await updateModel(data.slug, mergedData);
 					if (result?.success) {
 						updateSidebarMenuItem(model, data);
+						updateAdminMenuItem(model, data);
 						dispatch({ type: "updateModel", data: mergedData });
 						setIsOpen(false);
 					}

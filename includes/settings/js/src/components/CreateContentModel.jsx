@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { ModelsContext } from "../ModelsContext";
-import { insertSidebarMenuItem } from "../utils";
+import { insertSidebarMenuItem, insertAdminMenuItem } from "../utils";
 import { useInputGenerator } from "../hooks";
 import { toSanitizedKey } from "../formats";
 import { showSuccess } from "../toasts";
@@ -67,8 +67,9 @@ export default function CreateContentModel() {
 							res.model.slug
 					);
 
-					// Insert the sidebar menu item below the Comments item, to avoid doing a full page refresh.
+					// Insert the sidebar menu item below the Comments item, and in admin bar, to avoid doing a full page refresh.
 					insertSidebarMenuItem(res.model);
+					insertAdminMenuItem(res.model);
 
 					window.scrollTo(0, 0);
 					showSuccess(

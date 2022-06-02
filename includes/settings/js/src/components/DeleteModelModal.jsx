@@ -3,7 +3,7 @@ import React, { useEffect, useContext } from "react";
 import Modal from "react-modal";
 import { ModelsContext } from "../ModelsContext";
 import { sprintf, __ } from "@wordpress/i18n";
-import { removeSidebarMenuItem } from "../utils";
+import { removeSidebarMenuItem, removeAdminMenuItem } from "../utils";
 import { getRelationships } from "../queries";
 import { showError } from "../toasts";
 import { useHistory } from "react-router-dom";
@@ -127,6 +127,7 @@ export function DeleteModelModal({ modalIsOpen, setModalIsOpen, model }) {
 									action: "Model Deleted",
 								});
 								removeSidebarMenuItem(slug);
+								removeAdminMenuItem(slug);
 								taxonomiesDispatch({
 									type: "removeModel",
 									slug,
