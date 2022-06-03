@@ -200,6 +200,9 @@ final class FormEditingExperience {
 		);
 
 		wp_enqueue_editor();
+		wp_enqueue_style( 'wp-components' );
+		wp_enqueue_style( 'wp-edit-post' );
+		wp_enqueue_media();
 
 		$models = append_reverse_relationship_fields( $this->models, $this->screen->post_type );
 
