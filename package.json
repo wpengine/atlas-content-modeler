@@ -109,6 +109,12 @@
     },
     "@wordpress/components": {
       "global": "wp.components"
+    },
+    "@wordpress/element": {
+      "global": "wp.element"
+    },
+    "@wordpress/keyboard-shortcuts": {
+      "global": "wp.keyboardShortcuts"
     }
   }
 }
