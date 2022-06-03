@@ -303,51 +303,45 @@ function validate_media_field( $value, array $field ): void {
 
 		validate_array( $value, $message );
 
-		validate_array_of(
-			(array) $value,
-			static function ( $field_value ) use ( $field ) {
-				if ( is_field_required( $field ) ) {
-					validate_not_empty(
-						$field_value,
-						// translators: The name of the field.
-						\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
-					);
-				}
-
-				// If not required and empty, then return.
-				if ( '' === $field_value || is_null( $field_value ) ) {
-					return;
-				}
-
-				validate_post_is_attachment(
-					$field_value,
-					// translators: The name and type of the field.
-					\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
-				);
-			}
-		);
-
 		if ( is_field_required( $field ) ) {
 			validate_not_empty( $value, $message );
 		}
-	} else {
-		// translators: The name of the field.
-		$error_message = \sprintf( \__( '%s must be a valid attachment id', 'atlas-content-modeler' ), $field['name'] );
-
-		validate_number( $value, $error_message );
-		validate_post_is_attachment( (int) $value, $error_message );
-
-		if ( ! empty( $field['allowedTypes'] ) ) {
-			$allowed_types = \explode( ',', $field['allowedTypes'] );
-
-			validate_attachment_file_type(
-				(int) $value,
-				$allowed_types,
-				// translators: The name of the field and file type extensions.
-				\sprintf( \__( '%1$s must be of type %2$s', 'atlas-content-modeler' ), $field['name'], $field['allowedTypes'] )
-			);
-		}
 	}
+
+	validate_array_of(
+		(array) $value,
+		static function ( $field_value ) use ( $field ) {
+			if ( is_field_required( $field ) ) {
+				validate_not_empty(
+					$field_value,
+					// translators: The name of the field.
+					\sprintf( \__( '%s is required', 'atlas-content-modeler' ), $field['name'] )
+				);
+			}
+
+			// If not required and empty, then return.
+			if ( '' === $field_value || is_null( $field_value ) ) {
+				return;
+			}
+
+			validate_post_is_attachment(
+				$field_value,
+				// translators: The name and type of the field.
+				\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], 'attachment id' )
+			);
+
+			if ( ! empty( $field['allowedTypes'] ) ) {
+				$allowed_types = \explode( ',', $field['allowedTypes'] );
+
+				validate_attachment_file_type(
+					(int) $field_value,
+					$allowed_types,
+					// translators: The name of the field and file type extensions.
+					\sprintf( \__( '%1$s must be of type %2$s', 'atlas-content-modeler' ), $field['name'], $field['allowedTypes'] )
+				);
+			}
+		}
+	);
 }
 
 /**
