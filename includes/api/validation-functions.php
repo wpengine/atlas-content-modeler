@@ -298,7 +298,7 @@ function validate_media_field( $value, array $field ): void {
 	}
 
 	if ( is_field_repeatable( $field ) ) {
-		// translators: The name of the field.
+		// translators: %1$s: Field name, such as “Colors”. %2$s: Field type, such as “string”.
 		$message = \sprintf( \__( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] );
 
 		validate_array( $value, $message );
