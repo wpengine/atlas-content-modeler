@@ -315,6 +315,15 @@ class TestValidationFunctions extends Integration_TestCase {
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableMediaField' => 'not_an_array' ] );
 		$this->assertEquals( [ 'Repeatable Media Field must be an array of media' ], $valid->get_error_messages( 'repeatableMediaField' ) );
+
+		$valid = validate_model_field_data( $model_schema, [ 'repeatableMediaField' => [ '1', '2' ] ] );
+		$this->assertEquals(
+			[
+				0 => 'Repeatable Media Field must be a valid attachment id',
+				1 => 'Repeatable Media Field must be a valid attachment id',
+			],
+			$valid->get_error_messages( 'repeatableMediaField' )
+		);
 	}
 
 	public function test_validate_model_field_data_will_return_WP_Error_for_invalid_media_field_type() {
