@@ -6,6 +6,7 @@ import Text from "./Text";
 import Email from "./Email";
 import Number from "./Number";
 import Date from "./Date";
+import { BlockEditor } from "./BlockEditor";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
@@ -279,6 +280,16 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 		case "email":
 			return (
 				<Email
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
+			);
+		case "blockEditor":
+			return (
+				<BlockEditor
 					field={field}
 					modelSlug={modelSlug}
 					errors={errors}
