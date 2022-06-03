@@ -8,6 +8,7 @@ const supportedFields = {
 	relationship: "Relationship",
 	multipleChoice: "Multiple Choice",
 	email: "Email",
+	blockEditor: "Block Editor",
 };
 
 export default supportedFields;
