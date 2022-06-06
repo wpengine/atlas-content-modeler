@@ -155,6 +155,32 @@ function validate_richtext_field( $value, array $field ): void {
 }
 
 /**
+ * Validates a number value for number field min, max and step.
+ *
+ * @param string $value String value of the text field.
+ * @param array  $field Array of values from the field.
+ * @return void
+ */
+function validate_number_min_max_step( $value, $field ) {
+	$min_message  = \__( 'Value is less than the minimum', 'atlas-content-modeler' );
+	$max_message  = \__( 'Value exceeds the maximum', 'atlas-content-modeler' );
+	$step_message = \__( 'Step value is invalid', 'atlas-content-modeler' );
+
+	if ( \is_numeric( $field['minValue'] ?? '' ) ) {
+		validate_min( $value, $field['minValue'], $min_message );
+	}
+
+	if ( \is_numeric( $field['maxValue'] ?? '' ) ) {
+		validate_max( $value, $field['maxValue'], $max_message );
+	}
+
+	// TODO: setup validate step.
+	if ( \is_numeric( $field['step'] ?? '' ) ) {
+		validate_step( $value, $field['step'], $step_message );
+	}
+}
+
+/**
  * Validate a number field value.
  *
  * @param mixed $value The field value.
@@ -165,15 +191,26 @@ function validate_richtext_field( $value, array $field ): void {
  * @return void
  */
 function validate_number_field( $value, array $field ): void {
-	if ( is_field_required( $field ) ) {
-		validate_not_empty( $value, "{$field['name']} cannot be empty" );
-	}
-
 	if ( is_field_repeatable( $field ) ) {
 		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
-	} else {
-		validate_number( $value, "{$field['name']} must be a valid {$field['type']}" );
+
+		if ( is_field_required( $field ) ) {
+			validate_not_empty( $value, "{$field['name']} cannot be empty" );
+		}
+		validate_row_count_within_repeatable_limits( count( $value ), $field );
 	}
+
+	validate_array_of(
+		(array) $value,
+		static function ( $field_value ) use ( $field ) {
+			if ( is_field_required( $field ) ) {
+				validate_not_empty( $field_value, "{$field['name']} cannot be empty" );
+			}
+
+			validate_number( $field_value, "{$field['name']} must be valid {$field['type']}" );
+			validate_number_min_max_step( $field_value, $field );
+		}
+	);
 }
 
 /**
@@ -517,6 +554,25 @@ function validate_max( $value, int $max, string $message = '' ): void {
 	}
 
 	if ( \is_numeric( $value ) && (float) $value > $max ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate a step number.
+ *
+ * @param mixed  $value The value.
+ * @param int    $step The maximum criteria.
+ * @param string $message The optional error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_step( $value, int $step, string $message = '' ): void {
+	$message = $message ?: \__( 'The step value is invalid', 'atlas-content-modeler' );
+
+	if ( \is_numeric( $value ) && (float) $value % $step !== 0 ) {
 		throw new Validation_Exception( $message );
 	}
 }
