@@ -571,6 +571,7 @@ class TestValidationFunctions extends Integration_TestCase {
 	 * [ 4, { "minValue": 1 } ]
 	 * [ 4, { "minValue": -1 } ]
 	 * [ 4, { "minValue": 1, "maxValue": 5 } ]
+	 * [ -4, { "minValue": -30, "maxValue": -1 } ]
 	 * [ 4, { "maxValue": 100 } ]
 	 * [ 16, { "maxValue": 100, "step": 8 } ]
 	 * [ 16, { "step": 8 } ]
