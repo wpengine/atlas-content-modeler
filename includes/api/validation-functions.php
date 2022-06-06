@@ -155,7 +155,7 @@ function validate_richtext_field( $value, array $field ): void {
 }
 
 /**
- * Validates a number value for number field min, max and step.
+ * Validates a number value for number field min and max.
  *
  * @param string $value String value of the text field.
  * @param array  $field Array of values from the field.
@@ -171,10 +171,6 @@ function validate_number_min_max_step( $value, $field ) {
 
 	if ( \is_numeric( $field['maxValue'] ?? '' ) ) {
 		validate_max( $value, $field['maxValue'], $max_message );
-	}
-
-	if ( \is_numeric( $field['step'] ?? '' ) ) {
-		validate_step( $value, $field['minValue'], $field['maxValue'] );
 	}
 }
 
@@ -553,36 +549,6 @@ function validate_max( $value, int $max, string $message = '' ): void {
 
 	if ( \is_numeric( $value ) && (float) $value > $max ) {
 		throw new Validation_Exception( $message );
-	}
-}
-
-/**
- * Validate a step number.
- *
- * @param mixed  $value The value.
- * @param int    $min The minimum criteria.
- * @param int    $max The maximum criteria.
- * @param string $message The optional error message.
- *
- * @throws Validation_Exception Exception when value is invalid.
- *
- * @return void
- */
-function validate_step( $value, int $min, int $max, string $message = '' ): void {
-	$max_below_step_message                      = $message ?: \__( 'Maximum value cannot be less than step value', 'atlas-content-modeler' );
-	$min_and_step_equal_or_less_than_max_message = $message ?: \__( 'Minimum value plus step value cannot exceed maximum value', 'atlas-content-modeler' );
-
-	if ( \is_numeric( $value ) &&
-			\is_numeric( $max ) &&
-			! ( (float) $max >= $value ) ) {
-		throw new Validation_Exception( $max_below_step_message );
-	}
-
-	if ( \is_numeric( $min ) &&
-			\is_numeric( $value ) &&
-			\is_numeric( $max ) &&
-			! ( (float) $min + $value <= $max ) ) {
-		throw new Validation_Exception( $min_and_step_equal_or_less_than_max_message );
 	}
 }
 

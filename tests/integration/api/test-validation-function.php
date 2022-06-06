@@ -565,31 +565,13 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 5, { "minValue": 0, "maxValue": 10 } ]
+	 * [ 5, { "minValue": 0, "maxValue": 10, "step": 2 } ]
 	 * [ 5, { } ]
 	 */
 	public function test_validate_number_field_min_max_step_gives_null_if_valid( $value, $field ) {
 		$this->assertNull(
 			validate_number_min_max_step( $value, $field )
 		);
-	}
-
-	/**
-	 * @testWith
-	 * [ 15, { "minValue": 0, "maxValue": 10 }, "Step value is invalid" ]
-	 */
-	public function test_validate_number_field_step_throws_error_if_greater_than_max( $value, $field, $message ) {
-		$this->expectExceptionMessage( $message );
-		validate_number_min_max_step( $value, $field );
-	}
-
-	/**
-	 * @testWith
-	 * [ 7, { "minValue": 7, "maxValue": 10 }, "Maximum value cannot be less than step value" ]
-	 */
-	public function test_validate_number_field_step_throws_error_if_min_plus_step_is_greater_than_max( $value, $field, $message ) {
-		$this->expectExceptionMessage( $message );
-		validate_number_min_max_step( $value, $field );
 	}
 
 	/**
