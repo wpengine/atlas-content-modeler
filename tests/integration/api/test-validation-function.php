@@ -566,6 +566,23 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
+	 * [ 4, { } ]
+	 * [ -4, { } ]
+	 * [ 4, { "minValue": 1 } ]
+	 * [ 4, { "minValue": -1 } ]
+	 * [ 4, { "minValue": 1, "maxValue": 5 } ]
+	 * [ 4, { "maxValue": 100 } ]
+	 * [ 16, { "maxValue": 100, "step": 8 } ]
+	 * [ 16, { "step": 8 } ]
+	 */
+	public function test_validate_number_field_is_valid( $value, $field ) {
+		$this->assertNull(
+			validate_number_min_max_step( $value, $field )
+		);
+	}
+
+	/**
+	 * @testWith
 	 * [ 4, "decimal", "Number Field must be of type decimal" ]
 	 */
 	public function test_validate_number_field_type_is_decimal( $value, $field, $message ) {
