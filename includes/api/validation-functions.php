@@ -174,9 +174,8 @@ function validate_number_min_max_step( $value, $field ) {
 		validate_max( $value, $field['maxValue'], $max_message );
 	}
 
-	// TODO: setup validate step.
 	if ( \is_numeric( $field['step'] ?? '' ) ) {
-		validate_step( $value, $field['step'], $step_message );
+		validate_step( $value, $field['step'], $field['minValue'], $field['maxValue'], $step_message );
 	}
 }
 
@@ -562,18 +561,24 @@ function validate_max( $value, int $max, string $message = '' ): void {
  * Validate a step number.
  *
  * @param mixed  $value The value.
- * @param int    $step The maximum criteria.
+ * @param int    $step The step criteria.
+ * @param int    $min The minimum criteria.
+ * @param int    $max The maximum criteria.
  * @param string $message The optional error message.
  *
  * @throws Validation_Exception Exception when value is invalid.
  *
  * @return void
  */
-function validate_step( $value, int $step, string $message = '' ): void {
-	$message = $message ?: \__( 'The step value is invalid', 'atlas-content-modeler' );
+function validate_step( $value, int $step, int $min, int $max, string $message = '' ): void {
+	$max_below_step_message                      = $message ?: \__( 'Maximum value cannot be less than step value', 'atlas-content-modeler' );
+	$min_and_step_equal_or_less_than_max_message = $message ?: \__( 'Minimum value plus step value cannot exceed maximum value', 'atlas-content-modeler' );
 
-	if ( \is_numeric( $value ) && (float) $value % $step !== 0 ) {
-		throw new Validation_Exception( $message );
+	if ( \is_numeric( $min ) &&
+			\is_numeric( $step ) &&
+			\is_numeric( $max ) &&
+			! ( (float) $min + $step <= $max ) ) {
+		throw new Validation_Exception( $min_and_step_equal_or_less_than_max_message );
 	}
 }
 
