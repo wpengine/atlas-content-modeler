@@ -584,6 +584,15 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
+	 * [ -1, { "minValue": 5 }, "Value is less than the minimum" ]
+	 */
+	public function test_validate_neg_number_less_than_min( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field, $message );
+	}
+
+	/**
+	 * @testWith
 	 * [ 6, { "maxValue": 5 }, "Value exceeds the maximum" ]
 	 */
 	public function test_validate_number_more_than_max( $value, $field, $message ) {
