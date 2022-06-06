@@ -2,6 +2,7 @@
 
 use function WPE\AtlasContentModeler\API\array_extract_by_keys;
 use function WPE\AtlasContentModeler\API\array_remove_by_keys;
+use function WPE\AtlasContentModeler\API\trim_space;
 
 class TestUtilityFunctions extends WP_UnitTestCase {
 	public function test_array_extract_by_keys_will_extract_assoc_keys_as_array_given_keys() {
@@ -56,5 +57,53 @@ class TestUtilityFunctions extends WP_UnitTestCase {
 			[],
 			array_remove_by_keys( $data, [ 'first', 'last', 3 ] )
 		);
+	}
+
+	/** @test */
+	public function trim_space_will_trim_space_from_a_string() {
+		$this->assertEquals( 'test', trim_space( '   test   ' ) );
+	}
+
+	/** @test */
+	public function trim_space_will_recursively_trim_space_within_an_array() {
+		$data = [
+			[
+				' a test string  ',
+				true,
+				null,
+				[
+					'  nested within an array ',
+					[],
+					1,
+				],
+			],
+			'  example   ',
+		];
+
+		$this->assertEquals(
+			[
+				[
+					'a test string',
+					true,
+					null,
+					[
+						'nested within an array',
+						[],
+						1,
+					],
+				],
+				'example',
+			],
+			trim_space( $data )
+		);
+	}
+
+	/** @test */
+	public function trim_space_will_ignore_non_string_or_array_values() {
+		$this->assertEquals( null, trim_space( null ) );
+		$this->assertEquals( 1, trim_space( 1 ) );
+		$this->assertEquals( 2.13, trim_space( 2.13 ) );
+		$this->assertEquals( false, trim_space( false ) );
+		$this->assertEquals( new stdClass(), trim_space( new stdClass() ) );
 	}
 }
