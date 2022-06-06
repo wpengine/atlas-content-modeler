@@ -111,7 +111,7 @@ jobs:
   plugin-build-npm:
     executor:
       name: node/default
-      tag: lts
+      tag: '16.13.0'
     parameters:
       slug:
         type: string
@@ -134,7 +134,7 @@ jobs:
   plugin-build-readme:
     executor:
       name: node/default
-      tag: lts
+      tag: '16.13.0'
     parameters:
       slug:
         type: string
@@ -336,7 +336,7 @@ jobs:
   plugin-test-jest:
     executor:
       name: node/default
-      tag: lts
+      tag: '16.13.0'
     parameters:
       slug:
         type: string
@@ -355,7 +355,7 @@ jobs:
   plugin-test-lint-js:
     executor:
       name: node/default
-      tag: lts
+      tag: '16.13.0'
     parameters:
       slug:
         type: string
