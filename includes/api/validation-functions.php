@@ -574,6 +574,12 @@ function validate_step( $value, int $step, int $min, int $max, string $message =
 	$max_below_step_message                      = $message ?: \__( 'Maximum value cannot be less than step value', 'atlas-content-modeler' );
 	$min_and_step_equal_or_less_than_max_message = $message ?: \__( 'Minimum value plus step value cannot exceed maximum value', 'atlas-content-modeler' );
 
+	if ( \is_numeric( $step ) &&
+			\is_numeric( $max ) &&
+			! ( (float) $max >= $step ) ) {
+		throw new Validation_Exception( $max_below_step_message );
+	}
+
 	if ( \is_numeric( $min ) &&
 			\is_numeric( $step ) &&
 			\is_numeric( $max ) &&
