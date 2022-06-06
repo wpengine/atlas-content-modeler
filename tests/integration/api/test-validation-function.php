@@ -50,7 +50,7 @@ class TestValidationFunctions extends Integration_TestCase {
 			'repeatableTextField'       => [ 'John', 'Doe' ],
 			'richTextField'             => '<p>This is a description</p>',
 			'repeatableRichTextField'   => [ '<p>This is excerpt one</p>', '<p>This is excerpt two</p>' ],
-			'numberField'               => '21',
+			'numberField'               => 21,
 			'repeatableNumberField'     => [ 1, 2, 3, 4, 5 ],
 			'dateField'                 => '2001-04-01',
 			'repeatableDateField'       => [ '2022-07-04', '2022-10-31' ],
@@ -566,12 +566,20 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 4, { "numberType": "integer" } ]
+	 * [ 4, { "numberType": "decimal" }, "Number Field must be of type decimal" ]
 	 */
-	public function test_validate_number_field_type( $value, $field ) {
-		$this->assertNull(
-			validate_number_type( $value, $field )
-		);
+	public function test_validate_number_field_type_is_decimal( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_type( $value, $field );
+	}
+
+	/**
+	 * @testWith
+	 * [ 4.2, { "numberType": "integer" }, "Number Field must be of type integer" ]
+	 */
+	public function test_validate_number_field_type_is_integer( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+			validate_number_type( $value, $field );
 	}
 
 	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {

@@ -382,7 +382,11 @@ function validate_email_field( $value, array $field ): void {
 function validate_number_type( $value, $number_type, string $message = '' ): void {
 	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
 
-	if ( ( ! is_int( $value ) && $number_type === 'integer' ) || ( ! is_float( $value ) && $number_type === 'decimal' ) ) {
+	if ( $number_type === 'integer' && ! is_int( $value ) ) {
+		throw new Validation_Exception( $message );
+	}
+
+	if ( $number_type === 'decimal' && ! is_float( $value ) ) {
 		throw new Validation_Exception( $message );
 	}
 }
