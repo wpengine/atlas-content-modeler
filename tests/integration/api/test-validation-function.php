@@ -566,20 +566,20 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 4, { "numberType": "decimal" }, "Number Field must be of type decimal" ]
+	 * [ 4, "decimal", "Number Field must be of type decimal" ]
 	 */
 	public function test_validate_number_field_type_is_decimal( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
-		validate_number_type( $value, $field );
+		validate_number_type( $value, $field, $message );
 	}
 
 	/**
 	 * @testWith
-	 * [ 4.2, { "numberType": "integer" }, "Number Field must be of type integer" ]
+	 * [ 4.2, "integer", "Number Field must be of type integer" ]
 	 */
 	public function test_validate_number_field_type_is_integer( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
-			validate_number_type( $value, $field );
+			validate_number_type( $value, $field, $message );
 	}
 
 	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {
