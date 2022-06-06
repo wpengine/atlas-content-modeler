@@ -588,10 +588,10 @@ function validate_max( $value, int $max, string $message = '' ): void {
  *
  * @return void
  */
-function validate_step( $value, int $step, string $message = '' ): void {
+function validate_step( $value, $step, string $message = '' ): void {
 	if ( \is_numeric( $value ) &&
 			\is_numeric( $step ) &&
-			! ( (float) $value % $step === 0 ) ) {
+			! ( $value % $step === 0 ) ) {
 		throw new Validation_Exception( $message );
 	}
 }
