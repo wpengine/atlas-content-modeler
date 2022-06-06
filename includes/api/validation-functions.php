@@ -207,6 +207,7 @@ function validate_number_field( $value, array $field ): void {
 			}
 
 			validate_number( $field_value, "{$field['name']} must be a valid {$field['type']}" );
+			validate_number_type( $field_value, $field['numberType'], "{$field['name']} must be of type {$field['numberType']}" );
 			validate_number_min_max_step( $field_value, $field );
 		}
 	);
@@ -364,6 +365,25 @@ function validate_email_field( $value, array $field ): void {
 		);
 	} else {
 		validate_email( $value ); // phpcs:ignore WordPress.WP.DeprecatedFunctions.validate_emailFound
+	}
+}
+
+/**
+ * Validate for valid number type.
+ *
+ * @param mixed  $value The value.
+ * @param mixed  $type The number type.
+ * @param string $message Optional. The error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_number_type( $value, $type, string $message = '' ): void {
+	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
+
+	if ( ( is_int( $value ) && $type === 'decimal' ) || ( is_float( $value ) && $type === 'integer' ) ) {
+		throw new Validation_Exception( $message );
 	}
 }
 
