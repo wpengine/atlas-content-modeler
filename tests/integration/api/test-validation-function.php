@@ -19,6 +19,7 @@ use function WPE\AtlasContentModeler\API\validation\validate_post_is_attachment;
 use function WPE\AtlasContentModeler\API\validation\validate_attachment_file_type;
 use function WPE\AtlasContentModeler\API\validation\validate_row_count_within_repeatable_limits;
 use function WPE\AtlasContentModeler\API\validation\validate_array_of;
+use function WPE\AtlasContentModeler\API\validation\validate_number_min_max_step;
 use function WPE\AtlasContentModeler\API\validation\validate_text_min_max;
 
 class TestValidationFunctions extends Integration_TestCase {
@@ -560,6 +561,53 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertNull(
 			validate_text_min_max( $value, $field )
 		);
+	}
+
+	/**
+	 * @testWith
+	 * [ 2, { "minValue": 0, "maxValue": 10, "step": 5} ]
+	 * [ 2, { } ]
+	 */
+	public function test_validate_number_field_min_max_step_gives_null_if_valid( $value, $field ) {
+		$this->assertNull(
+			validate_number_min_max_step( $value, $field )
+		);
+	}
+
+	/**
+	 * @testWith
+	 * [ 2, { "minValue": 0, "maxValue": 10, "step": 15 }, "Step value is invalid" ]
+	 */
+	public function test_validate_number_field_step_throws_error_if_greater_than_max( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field );
+	}
+
+	/**
+	 * @testWith
+	 * [ 7, { "minValue": 7, "maxValue": 10, "step": 5 }, "Step value is invalid" ]
+	 */
+	public function test_validate_number_field_step_throws_error_if_min_plus_step_is_greater_than_max( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field );
+	}
+
+	/**
+	 * @testWith
+	 * [ 6, { "minValue": 7, "maxValue": 10, "step": 5 }, "Value is less than the minimum" ]
+	 */
+	public function test_validate_number_field_less_than_min( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field );
+	}
+
+	/**
+	 * @testWith
+	 * [ 50, { "minValue": 7, "maxValue": 10, "step": 5 }, "Value exceeds the maximum" ]
+	 */
+	public function test_validate_number_field_more_than_max( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field );
 	}
 
 	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {

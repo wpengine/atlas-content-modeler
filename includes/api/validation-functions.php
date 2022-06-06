@@ -206,7 +206,7 @@ function validate_number_field( $value, array $field ): void {
 				validate_not_empty( $field_value, "{$field['name']} cannot be empty" );
 			}
 
-			validate_number( $field_value, "{$field['name']} must be valid {$field['type']}" );
+			validate_number( $field_value, "{$field['name']} must be a valid {$field['type']}" );
 			validate_number_min_max_step( $field_value, $field );
 		}
 	);
