@@ -162,8 +162,9 @@ function validate_richtext_field( $value, array $field ): void {
  * @return void
  */
 function validate_number_min_max_step( $value, $field ) {
-	$min_message = \__( 'Value is less than the minimum', 'atlas-content-modeler' );
-	$max_message = \__( 'Value exceeds the maximum', 'atlas-content-modeler' );
+	$min_message  = \__( 'Value is less than the minimum', 'atlas-content-modeler' );
+	$max_message  = \__( 'Value exceeds the maximum', 'atlas-content-modeler' );
+	$step_message = \__( 'Value must be a multiple of step value', 'atlas-content-modeler' );
 
 	if ( \is_numeric( $field['minValue'] ?? '' ) ) {
 		validate_min( $value, $field['minValue'], $min_message );
@@ -171,6 +172,10 @@ function validate_number_min_max_step( $value, $field ) {
 
 	if ( \is_numeric( $field['maxValue'] ?? '' ) ) {
 		validate_max( $value, $field['maxValue'], $max_message );
+	}
+
+	if ( \is_numeric( $field['step'] ?? '' ) ) {
+		validate_step( $value, $field['step'], $step_message );
 	}
 }
 
@@ -548,6 +553,25 @@ function validate_max( $value, int $max, string $message = '' ): void {
 	}
 
 	if ( \is_numeric( $value ) && (float) $value > $max ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validate a number against step.
+ *
+ * @param mixed  $value The value.
+ * @param int    $step The step value.
+ * @param string $message The optional error message.
+ *
+ * @throws Validation_Exception Exception when value is invalid.
+ *
+ * @return void
+ */
+function validate_step( $value, int $step, string $message = '' ): void {
+	if ( \is_numeric( $value ) &&
+			\is_numeric( $step ) &&
+			! ( (float) $value % $step === 0 ) ) {
 		throw new Validation_Exception( $message );
 	}
 }
