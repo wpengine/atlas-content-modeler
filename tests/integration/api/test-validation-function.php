@@ -593,7 +593,7 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 4, { "minValue": 1, "step": 9, "maxValue": 100 }, "Value exceeds the maximum" ]
+	 * [ 4, { "minValue": 1, "step": 9, "maxValue": 100 }, "Value must be a multiple of step value" ]
 	 */
 	public function test_validate_number_multiple_of_step( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
