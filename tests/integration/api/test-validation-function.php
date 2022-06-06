@@ -565,8 +565,8 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 2, { "minValue": 0, "maxValue": 10, "step": 5} ]
-	 * [ 2, { } ]
+	 * [ 5, { "minValue": 0, "maxValue": 10 } ]
+	 * [ 5, { } ]
 	 */
 	public function test_validate_number_field_min_max_step_gives_null_if_valid( $value, $field ) {
 		$this->assertNull(
@@ -576,7 +576,7 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 2, { "minValue": 0, "maxValue": 10, "step": 15 }, "Step value is invalid" ]
+	 * [ 15, { "minValue": 0, "maxValue": 10 }, "Step value is invalid" ]
 	 */
 	public function test_validate_number_field_step_throws_error_if_greater_than_max( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
@@ -585,7 +585,7 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 7, { "minValue": 7, "maxValue": 10, "step": 5 }, "Step value is invalid" ]
+	 * [ 7, { "minValue": 7, "maxValue": 10 }, "Maximum value cannot be less than step value" ]
 	 */
 	public function test_validate_number_field_step_throws_error_if_min_plus_step_is_greater_than_max( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
@@ -594,7 +594,7 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 6, { "minValue": 7, "maxValue": 10, "step": 5 }, "Value is less than the minimum" ]
+	 * [ 6, { "minValue": 7, "maxValue": 10 }, "Value is less than the minimum" ]
 	 */
 	public function test_validate_number_field_less_than_min( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
@@ -603,7 +603,7 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 50, { "minValue": 7, "maxValue": 10, "step": 5 }, "Value exceeds the maximum" ]
+	 * [ 50, { "minValue": 7, "maxValue": 10 }, "Value exceeds the maximum" ]
 	 */
 	public function test_validate_number_field_more_than_max( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );

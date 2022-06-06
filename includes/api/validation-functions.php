@@ -162,9 +162,8 @@ function validate_richtext_field( $value, array $field ): void {
  * @return void
  */
 function validate_number_min_max_step( $value, $field ) {
-	$min_message  = \__( 'Value is less than the minimum', 'atlas-content-modeler' );
-	$max_message  = \__( 'Value exceeds the maximum', 'atlas-content-modeler' );
-	$step_message = \__( 'Step value is invalid', 'atlas-content-modeler' );
+	$min_message = \__( 'Value is less than the minimum', 'atlas-content-modeler' );
+	$max_message = \__( 'Value exceeds the maximum', 'atlas-content-modeler' );
 
 	if ( \is_numeric( $field['minValue'] ?? '' ) ) {
 		validate_min( $value, $field['minValue'], $min_message );
@@ -175,7 +174,7 @@ function validate_number_min_max_step( $value, $field ) {
 	}
 
 	if ( \is_numeric( $field['step'] ?? '' ) ) {
-		validate_step( $value, $field['step'], $field['minValue'], $field['maxValue'], $step_message );
+		validate_step( $value, $field['minValue'], $field['maxValue'] );
 	}
 }
 
@@ -561,7 +560,6 @@ function validate_max( $value, int $max, string $message = '' ): void {
  * Validate a step number.
  *
  * @param mixed  $value The value.
- * @param int    $step The step criteria.
  * @param int    $min The minimum criteria.
  * @param int    $max The maximum criteria.
  * @param string $message The optional error message.
@@ -570,20 +568,20 @@ function validate_max( $value, int $max, string $message = '' ): void {
  *
  * @return void
  */
-function validate_step( $value, int $step, int $min, int $max, string $message = '' ): void {
+function validate_step( $value, int $min, int $max, string $message = '' ): void {
 	$max_below_step_message                      = $message ?: \__( 'Maximum value cannot be less than step value', 'atlas-content-modeler' );
 	$min_and_step_equal_or_less_than_max_message = $message ?: \__( 'Minimum value plus step value cannot exceed maximum value', 'atlas-content-modeler' );
 
-	if ( \is_numeric( $step ) &&
+	if ( \is_numeric( $value ) &&
 			\is_numeric( $max ) &&
-			! ( (float) $max >= $step ) ) {
+			! ( (float) $max >= $value ) ) {
 		throw new Validation_Exception( $max_below_step_message );
 	}
 
 	if ( \is_numeric( $min ) &&
-			\is_numeric( $step ) &&
+			\is_numeric( $value ) &&
 			\is_numeric( $max ) &&
-			! ( (float) $min + $step <= $max ) ) {
+			! ( (float) $min + $value <= $max ) ) {
 		throw new Validation_Exception( $min_and_step_equal_or_less_than_max_message );
 	}
 }
