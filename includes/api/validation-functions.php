@@ -372,17 +372,17 @@ function validate_email_field( $value, array $field ): void {
  * Validate for valid number type.
  *
  * @param mixed  $value The value.
- * @param mixed  $type The number type.
+ * @param mixed  $number_type The number type.
  * @param string $message Optional. The error message.
  *
  * @throws Validation_Exception Exception when value is invalid.
  *
  * @return void
  */
-function validate_number_type( $value, $type, string $message = '' ): void {
+function validate_number_type( $value, $number_type, string $message = '' ): void {
 	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
 
-	if ( ( is_int( $value ) && $type === 'decimal' ) || ( is_float( $value ) && $type === 'integer' ) ) {
+	if ( ( ! is_int( $value ) && $number_type === 'integer' ) || ( ! is_float( $value ) && $number_type === 'decimal' ) ) {
 		throw new Validation_Exception( $message );
 	}
 }
