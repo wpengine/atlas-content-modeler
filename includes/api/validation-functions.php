@@ -386,7 +386,7 @@ function validate_number_type( $value, $number_type, string $message = '' ): voi
 		throw new Validation_Exception( $message );
 	}
 
-	if ( $number_type === 'decimal' && ! is_float( $value ) ) {
+	if ( $number_type === 'decimal' && floor( $value ) !== $value ) {
 		throw new Validation_Exception( $message );
 	}
 }
