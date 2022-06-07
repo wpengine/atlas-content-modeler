@@ -171,7 +171,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Number Field is required' ], $valid->get_error_messages( 'numberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'numberField' => '' ] );
-		$this->assertEquals( [ 'Number Field is required' ], $valid->get_error_messages( 'numberField' ) );
+		$this->assertEquals( [ 'Number Field cannot be empty' ], $valid->get_error_messages( 'numberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'numberField' => 'not_a_number' ] );
 		$this->assertEquals( [ 'Number Field must be a valid number' ], $valid->get_error_messages( 'numberField' ) );
@@ -189,13 +189,13 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Repeatable Number Field must be an array of number' ], $valid->get_error_messages( 'repeatableNumberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableNumberField' => [] ] );
-		$this->assertEquals( [ 'Repeatable Number Field must be an array of number' ], $valid->get_error_messages( 'repeatableNumberField' ) );
+		$this->assertEquals( [ 'Repeatable Number Field cannot be empty' ], $valid->get_error_messages( 'repeatableNumberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableNumberField' => [ 3, 'not_a_number', 4, '' ] ] );
 		$this->assertEquals(
 			[
 				1 => 'Repeatable Number Field must be a valid number',
-				3 => 'Repeatable Number Field is required',
+				3 => 'Repeatable Number Field cannot be empty',
 			],
 			$valid->get_error_messages( 'repeatableNumberField' )
 		);
