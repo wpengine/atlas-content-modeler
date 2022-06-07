@@ -13,7 +13,7 @@ use WP_Error;
  * Gets blueprint from either local or remote path.
  *
  * @param string $path The path to the file.
- * @return string
+ * @return string|WP_Error
  */
 function get_blueprint( string $path ) {
 	if ( filter_var( $path, FILTER_VALIDATE_URL ) ) {
@@ -56,7 +56,7 @@ function get_remote_blueprint( string $url ) {
 		);
 	}
 
-	$response = wp_remote_get( $url );
+	$response = wp_remote_get( $url, [ 'timeout' => 15 ] );
 
 	if ( is_wp_error( $response ) ) {
 		return new WP_Error(
