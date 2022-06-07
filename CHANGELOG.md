@@ -7,6 +7,7 @@
 - Crud function insert_model_entry() will now append relationship ids.
 - Text field entries via CRUD are now validated for min and max characters.
 - Text field entries created via the PHP API are now validated for minRepeatable and maxRepeatable.
+- Extended timeout for `wp acm blueprint import` command from 5 seconds to 15 seconds.
 
 ### Fixed
 - Issue where adding a new repeating field to an existing model schema could break GraphQL queries under certain conditions.
@@ -15,6 +16,10 @@
 ### Added
 - Added email validation when using insert_model_entry() crud function.
 - Added ability to add newly created models from the top admin menu dropdown right after creation without a refresh of the page.
+- Added validation for repeatable text fields for insert_model_entry() crud function.
+- Added validation for repeatable date fields for insert_model_entry() crud function.
+- Added validation for repeatable number fields for insert_model_entry() crud function.
+- Added validation for repeatable email fields for insert_model_entry() crud function.
 
 ## 0.17.0 - 2022-05-05
 ### Added
