@@ -45,7 +45,7 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 		$post_data,
 		[
 			'post_type'  => $model_slug,
-			'meta_input' => sanitize_fields( $model_schema, $field_data ),
+			'meta_input' => trim_space( $field_data ),
 		]
 	);
 
@@ -54,6 +54,9 @@ function insert_model_entry( string $model_slug, array $field_data, array $post_
 	if ( is_wp_error( $valid ) ) {
 		return $valid;
 	}
+
+	// Sanitize meta data before insert.
+	$post_data['meta_input'] = sanitize_fields( $model_schema, $post_data['meta_input'] );
 
 	// Ensure post_title is set if field is title field.
 	$entry_title_field = get_entry_title_field( $model_schema['fields'] );
