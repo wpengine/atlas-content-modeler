@@ -653,13 +653,13 @@ class TestValidationFunctions extends Integration_TestCase {
 	 * @testWith
 	 * [ 4, { } ]
 	 * [ -4, { } ]
-	 * [ 4, { "minValue": 1 } ]
-	 * [ 4, { "minValue": -1 } ]
-	 * [ 4, { "minValue": 1, "maxValue": 5 } ]
-	 * [ -4, { "minValue": -30, "maxValue": -1 } ]
-	 * [ 4, { "maxValue": 100 } ]
-	 * [ 16, { "maxValue": 100, "step": 8 } ]
-	 * [ 16, { "step": 8 } ]
+	 * [ 4, { "name": "Total", "minValue": 1 } ]
+	 * [ 4, { "name": "Total", "minValue": -1 } ]
+	 * [ 4, { "name": "Total", "minValue": 1, "maxValue": 5 } ]
+	 * [ -4, { "name": "Total", "minValue": -30, "maxValue": -1 } ]
+	 * [ 4, { "name": "Total", "maxValue": 100 } ]
+	 * [ 16, { "name": "Total", "maxValue": 100, "step": 8 } ]
+	 * [ 16, { "name": "Total", "step": 8 } ]
 	 */
 	public function test_validate_number_field_is_valid( $value, $field ) {
 		$this->assertNull(
@@ -671,14 +671,14 @@ class TestValidationFunctions extends Integration_TestCase {
 	 * @testWith
 	 * [ 4, "decimal", "Number Field must be of type decimal" ]
 	 */
-	public function test_validate_number_field_type_is_decimal( $value, $field, $message ) {
+	public function test_validate_number_field_type_is_decimal( $value, $type, $message ) {
 		$this->expectExceptionMessage( $message );
-		validate_number_type( $value, $field, $message );
+		validate_number_type( $value, $type, $message );
 	}
 
 	/**
 	 * @testWith
-	 * [ 1, { "minValue": 5 }, "Value is less than the minimum" ]
+	 * [ 1, { "name": "Total", "minValue": 5 }, "Total must be at least 5" ]
 	 */
 	public function test_validate_number_less_than_min( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
@@ -687,7 +687,7 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ -1, { "minValue": 5 }, "Value is less than the minimum" ]
+	 * [ -1, { "name": "Total", "minValue": 5 }, "Total must be at least 5" ]
 	 */
 	public function test_validate_neg_number_less_than_min( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
@@ -696,7 +696,7 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 6, { "maxValue": 5 }, "Value exceeds the maximum" ]
+	 * [ 6, { "name": "Total", "maxValue": 5 }, "Total cannot be greater than 5" ]
 	 */
 	public function test_validate_number_more_than_max( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
@@ -705,7 +705,7 @@ class TestValidationFunctions extends Integration_TestCase {
 
 	/**
 	 * @testWith
-	 * [ 4, { "minValue": 1, "step": 9, "maxValue": 100 }, "Value must be a multiple of step value" ]
+	 * [ 4, { "name": "Total", "minValue": 1, "step": 9, "maxValue": 100 }, "Total step must be a multiple of 9" ]
 	 */
 	public function test_validate_number_multiple_of_step( $value, $field, $message ) {
 		$this->expectExceptionMessage( $message );
@@ -716,9 +716,9 @@ class TestValidationFunctions extends Integration_TestCase {
 	 * @testWith
 	 * [ 4.2, "integer", "Number Field must be of type integer" ]
 	 */
-	public function test_validate_number_field_type_is_integer( $value, $field, $message ) {
+	public function test_validate_number_field_type_is_integer( $value, $number_type, $message ) {
 		$this->expectExceptionMessage( $message );
-			validate_number_type( $value, $field, $message );
+		validate_number_type( $value, $number_type, $message );
 	}
 
 	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {

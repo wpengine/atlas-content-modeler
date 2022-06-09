@@ -168,31 +168,6 @@ function validate_richtext_field( $value, array $field ): void {
 }
 
 /**
- * Validates a number value for number field min and max.
- *
- * @param string $value String value of the text field.
- * @param array  $field Array of values from the field.
- * @return void
- */
-function validate_number_min_max_step( $value, $field ) {
-	$min_message  = \__( 'Value is less than the minimum', 'atlas-content-modeler' );
-	$max_message  = \__( 'Value exceeds the maximum', 'atlas-content-modeler' );
-	$step_message = \__( 'Value must be a multiple of step value', 'atlas-content-modeler' );
-
-	if ( \is_numeric( $field['minValue'] ?? '' ) ) {
-		validate_min( $value, $field['minValue'], $min_message );
-	}
-
-	if ( \is_numeric( $field['maxValue'] ?? '' ) ) {
-		validate_max( $value, $field['maxValue'], $max_message );
-	}
-
-	if ( \is_numeric( $field['step'] ?? '' ) ) {
-		validate_step( $value, $field['step'], $step_message );
-	}
-}
-
-/**
  * Validate a number field value.
  *
  * @param mixed $value The field value.
@@ -204,11 +179,20 @@ function validate_number_min_max_step( $value, $field ) {
  */
 function validate_number_field( $value, array $field ): void {
 	if ( is_field_repeatable( $field ) ) {
-		validate_array( $value, "{$field['name']} must be an array of {$field['type']}" );
+		validate_array(
+			$value,
+			// translators: The field name and field type.
+			\sprintf( \__( '%1$s must be an array of %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+		);
 
 		if ( is_field_required( $field ) ) {
-			validate_not_empty( $value, "{$field['name']} cannot be empty" );
+			validate_not_empty(
+				$value,
+				// translators: The field name.
+				\sprintf( \__( '%s cannot be empty', 'atlas-content-modeler' ), $field['name'] )
+			);
 		}
+
 		validate_row_count_within_repeatable_limits( count( $value ), $field );
 	}
 
@@ -216,11 +200,26 @@ function validate_number_field( $value, array $field ): void {
 		(array) $value,
 		static function ( $field_value ) use ( $field ) {
 			if ( is_field_required( $field ) ) {
-				validate_not_empty( $field_value, "{$field['name']} cannot be empty" );
+				validate_not_empty(
+					$field_value,
+					// translators: The field name.
+					\sprintf( \__( '%s cannot be empty', 'atlas-content-modeler' ), $field['name'] )
+				);
 			}
 
-			validate_number( $field_value, "{$field['name']} must be a valid {$field['type']}" );
-			validate_number_type( $field_value, $field['numberType'], "{$field['name']} must be of type {$field['numberType']}" );
+			validate_number(
+				$field_value,
+				// translators: The field name and field type.
+				\sprintf( \__( '%1$s must be a valid %2$s', 'atlas-content-modeler' ), $field['name'], $field['type'] )
+			);
+
+			validate_number_type(
+				$field_value,
+				$field['numberType'],
+				// translators: The field name and field type.
+				\sprintf( \__( '%1$s must be of type %2$s', 'atlas-content-modeler' ), $field['name'], $field['numberType'] )
+			);
+
 			validate_number_min_max_step( $field_value, $field );
 		}
 	);
@@ -487,6 +486,42 @@ function validate_number( $value, string $message = '' ): void {
 
 	if ( ! \is_numeric( $value ) ) {
 		throw new Validation_Exception( $message );
+	}
+}
+
+/**
+ * Validates a number value for number field min and max.
+ *
+ * @param string $value String value of the text field.
+ * @param array  $field Array of values from the field.
+ * @return void
+ */
+function validate_number_min_max_step( $value, $field ) {
+	if ( \is_numeric( $field['minValue'] ?? '' ) ) {
+		validate_min(
+			$value,
+			$field['minValue'],
+			// translators: The field name and field minimum value.
+			\sprintf( \__( '%1$s must be at least %2$d', 'atlas-content-modeler' ), $field['name'], $field['minValue'] )
+		);
+	}
+
+	if ( \is_numeric( $field['maxValue'] ?? '' ) ) {
+		validate_max(
+			$value,
+			$field['maxValue'],
+			// translators: The field name and field maximum value.
+			\sprintf( \__( '%1$s cannot be greater than %2$d', 'atlas-content-modeler' ), $field['name'], $field['maxValue'] )
+		);
+	}
+
+	if ( \is_numeric( $field['step'] ?? '' ) ) {
+		validate_step(
+			$value,
+			$field['step'],
+			// translators: The field name and field step value.
+			\sprintf( \__( '%1$s step must be a multiple of %2$d', 'atlas-content-modeler' ), $field['name'], $field['step'] )
+		);
 	}
 }
 
