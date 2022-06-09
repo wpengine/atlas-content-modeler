@@ -49,7 +49,7 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertEquals( $data['repeatableNumberField'], get_post_meta( $model_id, 'repeatableNumberField', true ) );
 		$this->assertEquals( $data['dateField'], get_post_meta( $model_id, 'dateField', true ) );
 		$this->assertEquals( $data['repeatableDateField'], get_post_meta( $model_id, 'repeatableDateField', true ) );
-		$this->assertEquals( [ $data['singleMultipleChoiceField'] ], get_post_meta( $model_id, 'singleMultipleChoiceField', true ) );
+		$this->assertEquals( $data['singleMultipleChoiceField'], get_post_meta( $model_id, 'singleMultipleChoiceField', true ) );
 		$this->assertEquals( $data['multiMultipleChoiceField'], get_post_meta( $model_id, 'multiMultipleChoiceField', true ) );
 	}
 
@@ -120,6 +120,7 @@ class TestApiFunctions extends Integration_TestCase {
 
 		$updated_id = update_model_entry( $update_id, $update_data );
 
+		$this->assertNotInstanceOf( \WP_Error::class, $updated_id );
 		$this->assertTrue( is_int( $update_id ) );
 		$this->assertEquals( $update_data['textField'], get_post_meta( $updated_id, 'textField', true ) );
 		$this->assertEquals( $update_data['repeatableTextField'], get_post_meta( $updated_id, 'repeatableTextField', true ) );
@@ -129,7 +130,7 @@ class TestApiFunctions extends Integration_TestCase {
 		$this->assertEquals( $update_data['repeatableNumberField'], get_post_meta( $updated_id, 'repeatableNumberField', true ) );
 		$this->assertEquals( $update_data['dateField'], get_post_meta( $updated_id, 'dateField', true ) );
 		$this->assertEquals( $update_data['repeatableDateField'], get_post_meta( $updated_id, 'repeatableDateField', true ) );
-		$this->assertEquals( [ $update_data['singleMultipleChoiceField'] ], get_post_meta( $updated_id, 'singleMultipleChoiceField', true ) );
+		$this->assertEquals( $update_data['singleMultipleChoiceField'], get_post_meta( $updated_id, 'singleMultipleChoiceField', true ) );
 		$this->assertEquals( $update_data['multiMultipleChoiceField'], get_post_meta( $updated_id, 'multiMultipleChoiceField', true ) );
 	}
 
@@ -369,7 +370,7 @@ class TestApiFunctions extends Integration_TestCase {
 					'2022-02-22',
 					'2022-02-23',
 				],
-				'singleMultipleChoiceField' => 'choice2',
+				'singleMultipleChoiceField' => [ 'choice2' ],
 				'multiMultipleChoiceField'  => [ 'choice1', 'choice3' ],
 			],
 			$overrides
@@ -406,7 +407,7 @@ class TestApiFunctions extends Integration_TestCase {
 					'2022-02-23',
 					'2022-02-24',
 				],
-				'singleMultipleChoiceField' => 'choice3',
+				'singleMultipleChoiceField' => [ 'choice3' ],
 				'multiMultipleChoiceField'  => [ 'choice2' ],
 			],
 			$overrides

@@ -38,3 +38,24 @@ function array_remove_by_keys( array $array, array $keys ): array {
 		\array_flip( $keys )
 	);
 }
+
+/**
+ * Trims spaces if the value is a string.
+ *
+ * Recursively calls ifself if $value is an array.
+ *
+ * @param mixed $value The value to trim.
+ *
+ * @return mixed The trimmed value.
+ */
+function trim_space( $value ) {
+	if ( \is_array( $value ) ) {
+		$value = \array_map( __NAMESPACE__ . '\trim_space', $value );
+	}
+
+	if ( \is_string( $value ) ) {
+		$value = \trim( $value );
+	}
+
+	return $value;
+}
