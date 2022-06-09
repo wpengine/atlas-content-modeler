@@ -59,6 +59,7 @@ function atlas_content_modeler_loader(): void {
 		'api/utility-functions.php',
 		'class-validation-exception.php',
 		'class-wp-error.php',
+		'fields/block-editor/field-block-editor.php',
 	);
 
 	foreach ( $plugin_files as $file ) {
