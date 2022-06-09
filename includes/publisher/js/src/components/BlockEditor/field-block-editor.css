@@ -1,0 +1,4 @@
+.edit-post-header__settings button,
+.block-editor-post-preview__dropdown {
+	display: none !important;
+}

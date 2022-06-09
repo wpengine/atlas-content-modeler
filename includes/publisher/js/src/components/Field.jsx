@@ -8,6 +8,7 @@ import Number from "./Number";
 import Date from "./Date";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
+import { BlockEditor } from "./BlockEditor/BlockEditor";
 
 const defaultError = "This field is required";
 const integerRegex = /^[-+]?\d+/g;
@@ -279,6 +280,16 @@ function fieldMarkup(field, modelSlug, errors, validate) {
 		case "email":
 			return (
 				<Email
+					field={field}
+					modelSlug={modelSlug}
+					errors={errors}
+					validate={validate}
+					defaultError={defaultError}
+				/>
+			);
+		case "blockEditor":
+			return (
+				<BlockEditor
 					field={field}
 					modelSlug={modelSlug}
 					errors={errors}
