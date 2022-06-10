@@ -195,6 +195,39 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_graphql_query_resolves_relationship_field_with_different_model_singular_name_and_id(): void {
+		try {
+			$results = graphql(
+				[
+					'query' => '
+				{
+					customSlugs {
+						nodes {
+							databaseId
+							manytoManyRelationship {
+								edges {
+									node {
+										databaseId
+									}
+								}
+							}
+						}
+					}
+				}
+				',
+				]
+			);
+
+			self::assertArrayHasKey( 'databaseId', $results['data']['customSlugs']['nodes'][0] );
+
+			self::assertArrayHasKey( 'manytoManyRelationship', $results['data']['customSlugs']['nodes'][0] );
+			self::assertNotNull( $results['data']['customSlugs']['nodes'][0]['manytoManyRelationship']['edges'] );
+			self::assertEquals( $this->post_ids['custom_slug_1'], $results['data']['customSlugs']['nodes'][0]['manytoManyRelationship']['edges'][0]['node']['databaseId'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
+
 	public function test_graphql_create_mutations_accept_acm_fields_as_inputs(): void {
 		wp_set_current_user( 1 );
 		try {
