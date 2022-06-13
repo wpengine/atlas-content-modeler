@@ -12,6 +12,7 @@
 ### Fixed
 - Issue where adding a new repeating field to an existing model schema could break GraphQL queries under certain conditions.
 - Empty field values are no longer saved to the database.
+- Relationship fields no longer resolve as “null” in GraphQL results for models with different singular names and API identifiers.
 
 ### Added
 - Added email validation when using insert_model_entry() crud function.
