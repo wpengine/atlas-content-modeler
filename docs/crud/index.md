@@ -279,3 +279,47 @@ Will result in the following
 	'maxRepeatable'   => '',
 ]
 ```
+
+## replace_relationship()
+Replace relationships between content models.
+
+### Namespace
+```php
+WPE\AtlasContentModeler\API
+```
+
+### Description
+```
+replace_relationship( int $post_id, string $relationship_field_slug, array $relationship_ids )
+```
+`replace_relationship()` will add a relationship from one content model to another while removing existing relationships.
+
+### Parameters
+- **post_id** The post or content entry id.
+- **relationship_field_slug** The content model field slug.
+- **relationship_ids** Array of post or content entry ids.
+
+### Return
+`true` if the relationship could be made. `false` or `WP_Error` if an error occurred.
+
+### Examples
+
+Assume `Person` and `Car` models exists. The `Person` model has a `cars` field that is a one-to-many relation to `Cars`.
+
+#### Example
+```php
+use function WPE\AtlasContentModeler\API\replace_relationship;
+
+$person_id = 3;
+$car_1_id = 5;
+$car_2_id = 7;
+
+$success = replace_relationship( $person_id, 'cars', [ $car_1_id, $car_2_id ] );
+
+var_dump( $success );
+```
+
+Will result in the following
+```
+true
+```
