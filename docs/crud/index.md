@@ -323,3 +323,46 @@ Will result in the following
 ```
 true
 ```
+
+## add_relationship()
+Add a relationship between content models.
+
+### Namespace
+```php
+WPE\AtlasContentModeler\API
+```
+
+### Description
+```
+add_relationship( int $post_id, string $relationship_field_slug, int $relationship_id )
+```
+`add_relationship()` will add a relationship between two content model entries.
+
+### Parameters
+- **post_id** The post or content entry id.
+- **relationship_field_slug** The content model field slug.
+- **relationship_id** The content model entry id to associate.
+
+### Return
+`true` if the relationship could be made. `false` or `WP_Error` if an error occurred.
+
+### Examples
+
+Assume `Person` and `Car` models exists. The `Person` model has a `cars` field that is a one-to-many relation to `Cars`.
+
+#### Example
+```php
+use function WPE\AtlasContentModeler\API\replace_relationship;
+
+$person_id = 3;
+$car_id = 5;
+
+$success = add_relationship( $person_id, 'cars', $car_id );
+
+var_dump( $success );
+```
+
+Will result in the following
+```
+true
+```
