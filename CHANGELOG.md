@@ -8,6 +8,7 @@
 - Text field entries via CRUD are now validated for min and max characters.
 - Text field entries created via the PHP API are now validated for minRepeatable and maxRepeatable.
 - Extended timeout for `wp acm blueprint import` command from 5 seconds to 15 seconds.
+- Number field entries via CRUD are now validated for min, max, and step values as well as type.
 
 ### Fixed
 - Issue where adding a new repeating field to an existing model schema could break GraphQL queries under certain conditions.
