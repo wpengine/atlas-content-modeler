@@ -87,4 +87,85 @@ The `WP_Error` object will have errors for each field
 	],
 ]
 ```
+
+## update_model_entry()
+Update an existing content model.
+
+### Namespace
+```php
+WPE\AtlasContentModeler\API
+```
+
+### Description
+```
+update_model_entry( int $post_id, array $field_data, array $post_data = [] )
+```
+`update_model_entry()` will update an existing content model (post type). On success will return the `WP_Post` id or a `WP_Error` on failure.
+
+### Parameters
+**post_id** The content model ID.
+
+**field_data** An associative array of the model's field data. The key value should be the field's **API Identifier**.
+
+**post_data** An optional associative array of `WP_Post` data. See [wp_insert_post](https://developer.wordpress.org/reference/functions/wp_insert_post/)
+for possible post data.
+
+### Return
+The `WP_Post` id on success or `WP_Error` on failure.
+
+### Examples
+
+The following examples with use a Rabbit model with an existing ID of `3`. The Rabbit model has  the following three fields.
+- Name `name` (text, required)
+- Color `color` (text, required)
+- Speed `speed` (numeric, int)
+
+#### Example #1 Successful content model update.
+```php
+use function WPE\AtlasContentModeler\API\update_model_entry;
+
+$model_id = 3;
+$field_data = [
+	'name' => 'Peter',
+	'color' => 'White',
+	'speed' => 9,
+];
+
+$post_id = update_model_entry( $model_id, $field_data );
+
+var_dump( $post_id );
+```
+Will result in the following
+```
+int(139)
+```
+
+#### Example #2 Unsuccessful content model update.
+```php
+use function WPE\AtlasContentModeler\API\update_model_entry;
+
+$model_id = 3;
+$field_data = [
+	'color' => 123,
+	'speed' => 'not a number',
+];
+
+$post_id = update_model_entry( $model_id, $field_data );
+
+if ( is_wp_error( $post_id ) ) {
+	var_dump( $post_id->errors );
+}
+```
+The `WP_Error` object will have errors for each field
+```php
+[
+	'color' => [
+		'Color must be valid text',
+	],
+	'speed' => [
+		'Speed must be a valid number',
+	],
+]
+```
+
 ****
