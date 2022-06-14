@@ -173,7 +173,7 @@ WPE\AtlasContentModeler\API
 ```
 function get_model( string $model ): ?array
 ```
-`get_model()` will retreive a model schema as an associative array. If the model does not exist, `null` will be returned.
+`get_model()` will retreive a model schema as an associative array. If the model does not exist, then `null` will be returned.
 
 ### Parameters
 - **model** The content model slug.
@@ -187,7 +187,7 @@ The model schema as an `array` or `null`.
 ```php
 use function WPE\AtlasContentModeler\API\get_model;
 
-$schema = get_model( 'rabit' );
+$schema = get_model( 'rabbit' );
 
 var_dump( $schema );
 ```
@@ -223,5 +223,59 @@ Will result in the following
 			'maxRepeatable'   => '',
 		],
 	],
+]
+```
+
+## get_field()
+Get a model field schema.
+
+### Namespace
+```php
+WPE\AtlasContentModeler\API
+```
+
+### Description
+```
+get_field( string $model, string $field_slug ): ?array
+```
+`get_field()` will retreive a model field schema as an associative array. If the field does not exist, then `null` will be returned.
+
+### Parameters
+- **model** The content model slug.
+- **field_slug** The content model field slug.
+
+### Return
+The model field schema as an `array` or `null`.
+
+### Examples
+
+#### Example
+```php
+use function WPE\AtlasContentModeler\API\get_field;
+
+$field_schema = get_field( 'rabbit', 'name' );
+
+var_dump( $field_schema );
+```
+
+Will result in the following
+```
+[
+	'show_in_rest'    => true,
+	'show_in_graphql' => true,
+	'type'            => 'text',
+	'id'              => '1654892929464',
+	'position'        => '0',
+	'name'            => 'Name',
+	'slug'            => 'name',
+	'isRepeatable'    => false,
+	'isTitle'         => true,
+	'inputType'       => 'single',
+	'required'        => true,
+	'description'     => '',
+	'minChars'        => '',
+	'maxChars'        => '',
+	'minRepeatable'   => '',
+	'maxRepeatable'   => '',
 ]
 ```
