@@ -659,6 +659,8 @@ function register_relationship_connection( array $parent_model, array $reference
 		array(
 			'from_type'  => camelcase( $parent_model['singular'] ),
 			'to_type'    => camelcase( $reference_model['singular'] ),
+			'from_slug'  => $parent_model['slug'],
+			'to_slug'    => $reference_model['slug'],
 			'slug'       => $field['slug'],
 			'one_to_one' => ( $field['cardinality'] === 'one-to-one' || $field['cardinality'] === 'many-to-one' ),
 			'reference'  => $field['reference'],
@@ -670,6 +672,8 @@ function register_relationship_connection( array $parent_model, array $reference
 		$connections[] = array(
 			'from_type'  => camelcase( $reference_model['singular'] ),
 			'to_type'    => camelcase( $parent_model['singular'] ),
+			'from_slug'  => $reference_model['slug'],
+			'to_slug'    => $parent_model['slug'],
 			'slug'       => $field['reverseSlug'],
 			'one_to_one' => false,
 			'reference'  => $parent_model['slug'],
@@ -690,8 +694,8 @@ function register_relationship_connection( array $parent_model, array $reference
 					$registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
 
 					$relationship = $registry->get_post_to_post_relationship(
-						sanitize_key( $connection_args['to_type'] ),
-						sanitize_key( $connection_args['from_type'] ),
+						sanitize_key( $connection_args['to_slug'] ),
+						sanitize_key( $connection_args['from_slug'] ),
 						$connection_args['name']
 					);
 
