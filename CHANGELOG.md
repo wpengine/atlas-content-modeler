@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.18.0 - 2022-06-15
 ### Changed
 - Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
 - Field validation now returns translatable errors.
