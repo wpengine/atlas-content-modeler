@@ -54,7 +54,7 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 == Changelog ==
 
-= 0.18.0 - 2022-06-15 =
+= 0.18.0 - 2022-06-16 =
 
 * **Changed:** Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
 * **Changed:** Field validation now returns translatable errors.
