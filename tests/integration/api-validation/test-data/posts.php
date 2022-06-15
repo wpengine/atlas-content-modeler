@@ -1,4 +1,7 @@
 <?php
+
+use function WPE\AtlasContentModeler\API\add_relationship;
+
 /**
  * Saves mock post data for processing
  */
@@ -59,6 +62,27 @@ function create_test_posts( $test_class ) {
 			'post_status' => 'auto-draft',
 			'post_type'   => 'public-fields',
 		)
+	);
+
+	$ids['custom_slug_1'] = $test_class->factory->post->create(
+		array(
+			'post_status' => 'publish',
+			'post_type'   => 'different-slug',
+		)
+	);
+
+	$ids['custom_slug_2'] = $test_class->factory->post->create(
+		array(
+			'post_status' => 'publish',
+			'post_type'   => 'different-slug',
+		)
+	);
+
+	// Create a relationship between the two previous posts.
+	add_relationship(
+		$ids['custom_slug_1'],
+		'manytoManyRelationship', // The relationship field slug from models.php.
+		$ids['custom_slug_2']
 	);
 
 	return $ids;
