@@ -5,8 +5,22 @@
 		font-size: 60px;
 	}
 
-	.pointer {
-		cursor: pointer;
-		font-size: x-large;
+	a {
+		&.pointer {
+			cursor: pointer;
+			font-size: x-large;
+		}
+	}
+
+	button {
+		&.pointer {
+			cursor: pointer;
+		}
+	}
+
+	span {
+		&.badge-secondary {
+			background-color: #002838;
+		}
 	}
 }

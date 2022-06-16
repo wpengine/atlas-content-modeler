@@ -415,11 +415,7 @@ export default function Dashboard() {
 														<button
 															key={entry.model}
 															type="button"
-															style={{
-																cursor:
-																	"pointer",
-															}}
-															className="list-group-item list-group-item-action"
+															className="list-group-item list-group-item-action pointer pointer"
 															onClick={(e) =>
 																history.push(
 																	atlasContentModeler.appPath +
@@ -427,13 +423,7 @@ export default function Dashboard() {
 																)
 															}
 														>
-															<span
-																className="badge badge-secondary me-2"
-																style={{
-																	backgroundColor:
-																		"#002838",
-																}}
-															>
+															<span className="badge badge-secondary me-2">
 																{entry.count}
 															</span>{" "}
 															{entry.plural}
@@ -513,13 +503,7 @@ export default function Dashboard() {
 															)
 														}
 													>
-														<span
-															className="badge badge-secondary me-2"
-															style={{
-																backgroundColor:
-																	"#002838",
-															}}
-														>
+														<span className="badge badge-secondary me-2">
 															{entry.count}
 														</span>{" "}
 														{entry.name}
@@ -572,23 +556,13 @@ export default function Dashboard() {
 														<button
 															key={entry.id1}
 															type="button"
-															style={{
-																cursor:
-																	"pointer",
-															}}
-															className="list-group-item list-group-item-action"
+															className="list-group-item list-group-item-action pointer"
 															onClick={(e) =>
 																(window.location.href =
 																	entry.admin_link)
 															}
 														>
-															<span
-																className="badge badge-secondary me-2"
-																style={{
-																	backgroundColor:
-																		"#002838",
-																}}
-															>
+															<span className="badge badge-secondary me-2">
 																{
 																	entry.total_connections
 																}
