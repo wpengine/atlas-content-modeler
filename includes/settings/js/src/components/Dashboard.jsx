@@ -9,61 +9,21 @@ import { useHistory } from "react-router-dom";
 import { Card } from "../../../../shared-assets/js/components/card";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+
 const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Dashboard() {
+	const [usageTracking, setUsageTracking] = useState(
+		atlasContentModeler.usageTrackingEnabled
+	);
 	const fileUploaderRef = useRef(null);
 	let history = useHistory();
 	let chartData = buildChartData();
 
-	function buildChartData() {
-		let data = [];
-		atlasContentModeler.stats.modelsCounts.map((entry) => {
-			data.push({
-				name: entry.plural,
-				y: parseInt(entry.count),
-			});
-		});
-
-		return data;
-	}
-
-	function getTaxonomies() {
-		let entries = [];
-		let keys = Object.keys(atlasContentModeler.stats.taxonomies);
-
-		keys.map((entry) => {
-			entries.push({
-				name: entry,
-				count: parseInt(
-					atlasContentModeler.stats.taxonomies[entry].total_terms
-				),
-			});
-		});
-
-		entries.sort((a, b) => (a.count < b.count ? 1 : -1));
-		return entries;
-	}
-
-	function getPieColors() {
-		var colors = [],
-			base = "#7e5cef",
-			i;
-
-		for (i = 0; i < 10; i += 1) {
-			// Start out with a darkened base color (negative brighten), and end
-			// up with a much brighter color
-			colors.push(
-				Highcharts.color(base)
-					.brighten((i - 3) / 7)
-					.get()
-			);
-		}
-		return colors;
-	}
-
-	// highcharts
+	/**
+	 * Options for HighCharts charts
+	 */
 	const options = {
 		chart: {
 			plotBackgroundColor: null,
@@ -94,7 +54,6 @@ export default function Dashboard() {
 					enabled: true,
 					format: "<b>{point.name}</b>: {point.percentage:.1f} %",
 				},
-				colors: getPieColors(),
 			},
 		},
 		series: [
@@ -106,10 +65,45 @@ export default function Dashboard() {
 		],
 	};
 
-	const [usageTracking, setUsageTracking] = useState(
-		atlasContentModeler.usageTrackingEnabled
-	);
+	/**
+	 * Builds chart data for display in the dashboard
+	 */
+	function buildChartData() {
+		let data = [];
+		atlasContentModeler.stats.modelsCounts.map((entry) => {
+			data.push({
+				name: entry.plural,
+				y: parseInt(entry.count),
+			});
+		});
 
+		return data;
+	}
+
+	/**
+	 * Get taxonomies for display in the dashboard
+	 */
+	function getTaxonomies() {
+		let entries = [];
+		let keys = Object.keys(atlasContentModeler.stats.taxonomies);
+
+		keys.map((entry) => {
+			entries.push({
+				name: entry,
+				count: parseInt(
+					atlasContentModeler.stats.taxonomies[entry].total_terms
+				),
+			});
+		});
+
+		entries.sort((a, b) => (a.count < b.count ? 1 : -1));
+		return entries;
+	}
+
+	/**
+	 * Sets and saves tracking data for analytics
+	 * @param {*} event
+	 */
 	function saveUsageTrackingSetting(event) {
 		// @todo catch save errors
 		dispatch("core").saveSite({
@@ -224,6 +218,10 @@ export default function Dashboard() {
 		return errors;
 	}
 
+	/**
+	 * Displays model errors for import
+	 * @param {*} modelErrors
+	 */
 	function showImportErrors(modelErrors) {
 		let message = "";
 
