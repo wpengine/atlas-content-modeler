@@ -383,17 +383,13 @@ export default function Dashboard() {
 									.length || 0}
 							</h1>
 							<a
-								style={{
-									cursor: "pointer",
-									fontSize: "x-large",
-								}}
 								onClick={(e) =>
 									history.push(
 										atlasContentModeler.appPath +
 											"&view=models-list"
 									)
 								}
-								className="mb-2"
+								className="mb-2 pointer"
 							>
 								{__("Models ", "atlas-content-modeler")}
 								<span className="dashicons dashicons-admin-links"></span>
@@ -474,17 +470,13 @@ export default function Dashboard() {
 								).length || 0}
 							</h1>{" "}
 							<a
-								style={{
-									cursor: "pointer",
-									fontSize: "x-large",
-								}}
 								onClick={(e) =>
 									history.push(
 										atlasContentModeler.appPath +
 											"&view=taxonomies"
 									)
 								}
-								className="mb-2"
+								className="mb-2 pointer"
 							>
 								{__("Taxonomies ", "atlas-content-modeler")}
 								<span className="dashicons dashicons-admin-links"></span>
