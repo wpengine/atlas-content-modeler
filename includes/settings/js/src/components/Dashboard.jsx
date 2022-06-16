@@ -395,7 +395,7 @@ export default function Dashboard() {
 								}
 								className="mb-2"
 							>
-								Models{" "}
+								{__("Models ", "atlas-content-modeler")}
 								<span className="dashicons dashicons-admin-links"></span>
 							</a>{" "}
 							<a
@@ -406,7 +406,9 @@ export default function Dashboard() {
 							</a>
 							<hr />
 							<div className="flex-grow-1">
-								<h3>Top Five</h3>
+								<h3>
+									{__("Top Five", "atlas-content-modeler")}
+								</h3>
 								{atlasContentModeler.stats.modelsCounts.length >
 									0 && (
 									<div className="list-group list-group-flush">
@@ -451,9 +453,15 @@ export default function Dashboard() {
 								{!atlasContentModeler.stats.modelsCounts
 									.length > 0 && (
 									<p>
-										No data to display.{" "}
+										{__(
+											"No data to display. ",
+											"atlas-content-modeler"
+										)}
 										<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
-											Create your first Model!
+											{__(
+												"Create your first model!",
+												"atlas-content-modeler"
+											)}
 										</a>
 									</p>
 								)}
@@ -478,9 +486,9 @@ export default function Dashboard() {
 								}
 								className="mb-2"
 							>
-								Taxonomies{" "}
+								{__("Taxonomies ", "atlas-content-modeler")}
 								<span className="dashicons dashicons-admin-links"></span>
-							</a>{" "}
+							</a>
 							<a
 								style={{ textDecoration: "none" }}
 								href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies"
@@ -489,7 +497,9 @@ export default function Dashboard() {
 							</a>
 							<hr />
 							<div className="flex-grow-1">
-								<h3>Top Five</h3>
+								<h3>
+									{__("Top Five", "atlas-content-modeler")}
+								</h3>
 								{Object.keys(
 									atlasContentModeler.stats.taxonomies
 								).length > 0 && (
@@ -533,9 +543,15 @@ export default function Dashboard() {
 									atlasContentModeler.stats.taxonomies
 								).length > 0 && (
 									<p>
-										No data to display.{" "}
+										{__(
+											"No data to display. ",
+											"atlas-content-modeler"
+										)}
 										<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies">
-											Create your first Taxonomy!
+											{__(
+												"Create your first taxonomy!",
+												"atlas-content-modeler"
+											)}
 										</a>
 									</p>
 								)}
@@ -547,11 +563,13 @@ export default function Dashboard() {
 									.totalRelationshipConnections || 0}
 							</h1>
 							<span style={{ fontSize: "x-large" }}>
-								Relationships
+								{__("Relationships", "atlas-content-modeler")}
 							</span>{" "}
 							<hr />
 							<div className="flex-grow-1">
-								<h3>Top Five</h3>
+								<h3>
+									{__("Top Five", "atlas-content-modeler")}
+								</h3>
 								{atlasContentModeler.stats.relationships
 									.mostConnectedEntries.length > 0 && (
 									<div className="list-group list-group-flush">
@@ -595,12 +613,22 @@ export default function Dashboard() {
 
 								{!atlasContentModeler.stats.relationships
 									.mostConnectedEntries.length > 0 && (
-									<p>No data to display.</p>
+									<p>
+										{__(
+											"No data to display.",
+											"atlas-content-modeler"
+										)}
+									</p>
 								)}
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
-							<h3>Ten Latest Entries</h3>
+							<h3>
+								{__(
+									"Ten Latest Entries",
+									"atlas-content-modeler"
+								)}
+							</h3>
 							{atlasContentModeler.stats.recentModelEntries
 								?.length > 0 && (
 								<div className="list-group list-group-flush">
@@ -640,9 +668,15 @@ export default function Dashboard() {
 							{!atlasContentModeler.stats.recentModelEntries
 								.length > 0 && (
 								<p>
-									No data to display.{" "}
+									{__(
+										"No data to display. ",
+										"atlas-content-modeler"
+									)}
 									<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
-										Create your first Model!
+										{__(
+											"Create your first model!",
+											"atlas-content-modeler"
+										)}
 									</a>
 								</p>
 							)}
@@ -663,9 +697,15 @@ export default function Dashboard() {
 
 						{!atlasContentModeler.stats.modelsCounts.length > 0 && (
 							<p>
-								No chart data to display.{" "}
+								{__(
+									"No chart data to display. ",
+									"atlas-content-modeler"
+								)}
 								<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
-									Create your first Model!
+									{__(
+										"Create your first model!",
+										"atlas-content-modeler"
+									)}
 								</a>
 							</p>
 						)}
@@ -674,7 +714,12 @@ export default function Dashboard() {
 					<Card className="flex-grow-1">
 						<form>
 							<div className="row">
-								<h3>Quick Settings</h3>
+								<h3>
+									{__(
+										"Quick Settings",
+										"atlas-content-modeler"
+									)}
+								</h3>
 								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
 									<div className="row">
 										<div className="col-xs-12">
@@ -755,7 +800,9 @@ export default function Dashboard() {
 					<Card className="flex-grow-0">
 						<section className="card-content">
 							<div className="row">
-								<h3 className="mb-4">Tools</h3>
+								<h3 className="mb-4">
+									{__("Tools", "atlas-content-modeler")}
+								</h3>
 								<div className="col-xs-10 col-lg-4 order-1 order-lg-0">
 									<div className="d-flex">
 										<div className="me-4">
@@ -785,7 +832,9 @@ export default function Dashboard() {
 					<Card className="flex-grow-1">
 						<section className="card-content">
 							<div className="row">
-								<h3>Resources</h3>
+								<h3>
+									{__("Resources", "atlas-content-modeler")}
+								</h3>
 								<ul className="list">
 									<li
 										style={{
@@ -802,7 +851,10 @@ export default function Dashboard() {
 											}}
 											href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform"
 										>
-											ACM Feedback
+											{__(
+												"ACM Feedback",
+												"atlas-content-modeler"
+											)}
 										</a>
 									</li>
 									<li
@@ -817,7 +869,10 @@ export default function Dashboard() {
 											style={{ color: "#7e5cef" }}
 											href="https://wordpress.org/plugins/atlas-content-modeler/"
 										>
-											ACM Plugin Home
+											{__(
+												"ACM Plugin Home",
+												"atlas-content-modeler"
+											)}
 										</a>
 									</li>
 									<li
@@ -832,7 +887,10 @@ export default function Dashboard() {
 											style={{ color: "#7e5cef" }}
 											href="https://github.com/wpengine/atlas-content-modeler"
 										>
-											ACM Github
+											{__(
+												"ACM Github",
+												"atlas-content-modeler"
+											)}
 										</a>
 									</li>
 									<li
