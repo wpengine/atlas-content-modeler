@@ -877,6 +877,7 @@ export default function Dashboard() {
 													href="https://www.facebook.com/wpengine"
 													target="_blank"
 													rel="noreferrer"
+													className="text-decoration-none"
 												>
 													<span className="dashicons dashicons-facebook"></span>
 												</a>
@@ -892,6 +893,7 @@ export default function Dashboard() {
 													href="https://twitter.com/wpengine"
 													target="_blank"
 													rel="noreferrer"
+													className="text-decoration-none"
 												>
 													<span className="dashicons dashicons-twitter"></span>
 												</a>
@@ -907,6 +909,7 @@ export default function Dashboard() {
 													href="https://www.linkedin.com/company/wpengine"
 													target="_blank"
 													rel="noreferrer"
+													className="text-decoration-none"
 												>
 													<span className="dashicons dashicons-linkedin"></span>
 												</a>
@@ -922,6 +925,7 @@ export default function Dashboard() {
 													href="https://www.youtube.com/channel/UCJeAEAxX69v24CUBZ0WBYSg"
 													target="_blank"
 													rel="noreferrer"
+													className="text-decoration-none"
 												>
 													<span className="dashicons dashicons-youtube"></span>
 												</a>
@@ -937,6 +941,7 @@ export default function Dashboard() {
 													href="https://www.instagram.com/wpengine/"
 													target="_blank"
 													rel="noreferrer"
+													className="text-decoration-none"
 												>
 													<span className="dashicons dashicons-instagram"></span>
 												</a>
