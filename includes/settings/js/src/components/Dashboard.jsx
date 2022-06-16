@@ -388,7 +388,10 @@ export default function Dashboard() {
 									fontSize: "x-large",
 								}}
 								onClick={(e) =>
-									history.push(atlasContentModeler.appPath)
+									history.push(
+										atlasContentModeler.appPath +
+											"&view=models-list"
+									)
 								}
 								className="mb-2"
 							>
