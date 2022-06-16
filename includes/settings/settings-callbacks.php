@@ -33,8 +33,8 @@ function register_admin_menu_page(): void {
 
 	add_submenu_page(
 		'atlas-content-modeler',
-		esc_html__( 'Models', 'atlas-content-modeler' ),
-		esc_html__( 'Models', 'atlas-content-modeler' ),
+		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
 		'manage_options',
 		'atlas-content-modeler',
 		'__return_null'
@@ -42,10 +42,10 @@ function register_admin_menu_page(): void {
 
 	add_submenu_page(
 		'atlas-content-modeler',
-		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
-		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		esc_html__( 'Models', 'atlas-content-modeler' ),
+		esc_html__( 'Models', 'atlas-content-modeler' ),
 		'manage_options',
-		'atlas-content-modeler&amp;view=dashboard',
+		'atlas-content-modeler&amp;view=models-list',
 		'__return_null'
 	);
 
@@ -97,6 +97,10 @@ function maybe_override_submenu_file( $parent_file ) {
 
 	if ( $page === 'atlas-content-modeler' && $view === 'dashboard' ) {
 		$submenu_file = 'atlas-content-modeler&amp;view=dashboard'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	}
+
+	if ( $page === 'atlas-content-modeler' && $view === 'models-list' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=models-list'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
 	}
 
 	if ( $page === 'atlas-content-modeler' && $view === 'taxonomies' ) {
