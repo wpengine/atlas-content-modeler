@@ -358,8 +358,15 @@ export default function Dashboard() {
 	return (
 		<div>
 			<div className="alert alert-primary fade show" role="alert">
-				<strong>ACM Plugin Version:</strong>{" "}
-				{atlasContentModeler.acm_plugin_data.Version} by{" "}
+				<strong>
+					{sprintf(
+						__(
+							"ACM Plugin Version: %s by ",
+							"atlas-content-modeler"
+						),
+						atlasContentModeler.acm_plugin_data.Version
+					)}
+				</strong>
 				<span
 					dangerouslySetInnerHTML={{
 						__html: atlasContentModeler.acm_plugin_data.Author,
@@ -367,17 +374,11 @@ export default function Dashboard() {
 				></span>
 			</div>
 
-			<div className="container">
+			<div className="container acm-dashboard">
 				<div className="stats">
 					<div className="d-flex justify-content-between">
 						<Card className="flex-grow-1">
-							<h1
-								style={{
-									color: "#7e5cef",
-									fontWeight: "bold",
-									fontSize: "60px",
-								}}
-							>
+							<h1 className="purple-h1">
 								{Object.keys(atlasContentModeler.initialState)
 									.length || 0}
 							</h1>
@@ -456,13 +457,7 @@ export default function Dashboard() {
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
-							<h1
-								style={{
-									color: "#7e5cef",
-									fontWeight: "bold",
-									fontSize: "60px",
-								}}
-							>
+							<h1 className="purple-h1">
 								{Object.keys(
 									atlasContentModeler.stats.taxonomies
 								).length || 0}
@@ -544,13 +539,7 @@ export default function Dashboard() {
 							</div>
 						</Card>
 						<Card className="flex-grow-1">
-							<h1
-								style={{
-									color: "#7e5cef",
-									fontWeight: "bold",
-									fontSize: "60px",
-								}}
-							>
+							<h1 className="purple-h1">
 								{atlasContentModeler.stats.relationships
 									.totalRelationshipConnections || 0}
 							</h1>
