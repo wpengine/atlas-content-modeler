@@ -871,7 +871,6 @@ export default function Dashboard() {
 												style={{
 													borderLeft: "none",
 													boxShadow: "none",
-													border: "none",
 												}}
 											>
 												<a
