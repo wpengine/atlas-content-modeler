@@ -95,7 +95,7 @@ export default function ImportFileButton({
 			<DarkButton
 				data-testid="export-models-button"
 				onClick={(event) => importClickHandler(event)}
-				style={{ minWidth: "150px" }}
+				style={{ minWidth: "175px" }}
 				className={buttonClasses}
 			>
 				{buttonTitle || __("Select File", "atlas-content-modeler")}

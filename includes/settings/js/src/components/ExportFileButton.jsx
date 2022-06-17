@@ -92,7 +92,7 @@ export default function ExportFileButton({
 		<DarkButton
 			data-testid="export-models-button"
 			onClick={(event) => exportClickHandler(event)}
-			style={{ minWidth: "150px" }}
+			style={{ minWidth: "175px" }}
 			className={buttonClasses}
 		>
 			{__(buttonTitle || "Export", "atlas-content-modeler")}
