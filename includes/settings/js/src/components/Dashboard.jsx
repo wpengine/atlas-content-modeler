@@ -21,6 +21,9 @@ export default function Dashboard() {
 	let history = useHistory();
 	let chartData = buildChartData();
 
+	/**
+	 * Links
+	 */
 	const socialMediaLinks = [
 		{
 			icon: "dashicons dashicons-facebook",
@@ -181,7 +184,6 @@ export default function Dashboard() {
 			});
 		});
 
-		entries.sort((a, b) => (a.count < b.count ? 1 : -1));
 		return entries;
 	}
 
