@@ -21,6 +21,45 @@ export default function Dashboard() {
 	let history = useHistory();
 	let chartData = buildChartData();
 
+	const socialMediaLinks = [
+		{
+			icon: "dashicons dashicons-facebook",
+			url: "https://www.facebook.com/wpengine",
+		},
+		{
+			icon: "dashicons dashicons-twitter",
+			url: "https://twitter.com/wpengine",
+		},
+		{
+			icon: "dashicons dashicons-linkedin",
+			url: "https://www.linkedin.com/company/wpengine",
+		},
+		{
+			icon: "dashicons dashicons-youtube",
+			url: "https://www.youtube.com/channel/UCJeAEAxX69v24CUBZ0WBYSg",
+		},
+		{
+			icon: "dashicons dashicons-instagram",
+			url: "https://www.instagram.com/wpengine/",
+		},
+	];
+
+	const resourceLinks = [
+		{
+			title: "ACM Feedback",
+			url:
+				"https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform",
+		},
+		{
+			title: "ACM Plugin Home",
+			url: "https://wordpress.org/plugins/atlas-content-modeler/",
+		},
+		{
+			title: "ACM Github",
+			url: "https://github.com/wpengine/atlas-content-modeler",
+		},
+	];
+
 	/**
 	 * Options for HighCharts charts
 	 */
@@ -78,6 +117,52 @@ export default function Dashboard() {
 		});
 
 		return data;
+	}
+
+	/**
+	 * Build social media links
+	 */
+	function getSocialMediaLinks() {
+		return socialMediaLinks.map((link, index) => (
+			<li
+				key={index}
+				className="list-item me-2"
+				style={{
+					borderLeft: "none",
+					boxShadow: "none",
+				}}
+			>
+				<a
+					href={link.url}
+					target="_blank"
+					rel="noreferrer"
+					className="text-decoration-none"
+				>
+					<span className={link.icon}></span>
+				</a>
+			</li>
+		));
+	}
+
+	function getResourceLinks() {
+		return resourceLinks.map((link, index) => (
+			<li
+				key={index}
+				style={{
+					borderLeft: "none",
+					boxShadow: "none",
+				}}
+			>
+				<a
+					target="_blank"
+					rel="noreferrer"
+					style={{ color: "#7e5cef" }}
+					href={link.url}
+				>
+					{__(link.title, "atlas-content-modeler")}
+				</a>
+			</li>
+		));
 	}
 
 	/**
@@ -801,153 +886,9 @@ export default function Dashboard() {
 								<h3>
 									{__("Resources", "atlas-content-modeler")}
 								</h3>
-								<ul className="list">
-									<li
-										style={{
-											borderLeft: "none",
-											boxShadow: "none",
-										}}
-									>
-										<a
-											target="_blank"
-											rel="noreferrer"
-											style={{
-												color: "#7e5cef",
-												borderLeft: "0 !important",
-											}}
-											href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform"
-										>
-											{__(
-												"ACM Feedback",
-												"atlas-content-modeler"
-											)}
-										</a>
-									</li>
-									<li
-										style={{
-											borderLeft: "none",
-											boxShadow: "none",
-										}}
-									>
-										<a
-											target="_blank"
-											rel="noreferrer"
-											style={{ color: "#7e5cef" }}
-											href="https://wordpress.org/plugins/atlas-content-modeler/"
-										>
-											{__(
-												"ACM Plugin Home",
-												"atlas-content-modeler"
-											)}
-										</a>
-									</li>
-									<li
-										style={{
-											borderLeft: "none",
-											boxShadow: "none",
-										}}
-									>
-										<a
-											target="_blank"
-											rel="noreferrer"
-											style={{ color: "#7e5cef" }}
-											href="https://github.com/wpengine/atlas-content-modeler"
-										>
-											{__(
-												"ACM Github",
-												"atlas-content-modeler"
-											)}
-										</a>
-									</li>
-									<li
-										style={{
-											borderLeft: "none",
-											boxShadow: "none",
-										}}
-									>
-										<ul className="list list-unstyled d-flex justify-content-start">
-											<li
-												className="list-item me-2"
-												style={{
-													borderLeft: "none",
-													boxShadow: "none",
-												}}
-											>
-												<a
-													href="https://www.facebook.com/wpengine"
-													target="_blank"
-													rel="noreferrer"
-													className="text-decoration-none"
-												>
-													<span className="dashicons dashicons-facebook"></span>
-												</a>
-											</li>
-											<li
-												className="list-item me-2"
-												style={{
-													borderLeft: "none",
-													boxShadow: "none",
-												}}
-											>
-												<a
-													href="https://twitter.com/wpengine"
-													target="_blank"
-													rel="noreferrer"
-													className="text-decoration-none"
-												>
-													<span className="dashicons dashicons-twitter"></span>
-												</a>
-											</li>
-											<li
-												className="list-item me-2"
-												style={{
-													borderLeft: "none",
-													boxShadow: "none",
-												}}
-											>
-												<a
-													href="https://www.linkedin.com/company/wpengine"
-													target="_blank"
-													rel="noreferrer"
-													className="text-decoration-none"
-												>
-													<span className="dashicons dashicons-linkedin"></span>
-												</a>
-											</li>
-											<li
-												className="list-item me-2"
-												style={{
-													borderLeft: "none",
-													boxShadow: "none",
-												}}
-											>
-												<a
-													href="https://www.youtube.com/channel/UCJeAEAxX69v24CUBZ0WBYSg"
-													target="_blank"
-													rel="noreferrer"
-													className="text-decoration-none"
-												>
-													<span className="dashicons dashicons-youtube"></span>
-												</a>
-											</li>
-											<li
-												className="list-item me-2"
-												style={{
-													borderLeft: "none",
-													boxShadow: "none",
-												}}
-											>
-												<a
-													href="https://www.instagram.com/wpengine/"
-													target="_blank"
-													rel="noreferrer"
-													className="text-decoration-none"
-												>
-													<span className="dashicons dashicons-instagram"></span>
-												</a>
-											</li>
-										</ul>
-									</li>
+								<ul className="list">{getResourceLinks()}</ul>
+								<ul className="list list-unstyled d-flex justify-content-start">
+									{getSocialMediaLinks()}
 								</ul>
 							</div>
 						</section>
