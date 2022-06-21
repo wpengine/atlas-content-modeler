@@ -96,9 +96,9 @@ function get_remote_blueprint( string $url ) {
  * Saves the provided blueprint zip file to the uploads directory.
  *
  * @param string $blueprint The blueprint zip file or path to a local blueprint directory.
- * @param string $filename  The name of the file to be saved.
+ * @param string $filename  The name of the file or directory to be saved.
  *
- * @return string|WP_Error Local blueprint zip file destination path on success.
+ * @return string|WP_Error Local blueprint zip file or directory destination path on success.
  */
 function save_blueprint_to_upload_dir( string $blueprint, string $filename ) {
 	global $wp_filesystem;
