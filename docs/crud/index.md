@@ -96,7 +96,7 @@ WPE\AtlasContentModeler\API
 ```
 update_model_entry( int $post_id, array $field_data, array $post_data = [] )
 ```
-`update_model_entry()` will update an existing content model (post type). On success will return the `WP_Post` id or a `WP_Error` on failure.
+`update_model_entry()` will update an existing content model entry (single post). On success will return the `WP_Post` id or a `WP_Error` on failure.
 
 ### Parameters
 - **post_id** The content model ID.
