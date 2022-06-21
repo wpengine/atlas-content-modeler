@@ -33,7 +33,7 @@ function get_local_blueprint( string $path ) {
 	if ( ! is_readable( $path ) ) {
 		return new WP_Error(
 			'acm_blueprint_file_not_readable',
-			esc_html__( 'File not found or not readable.', 'atlas-content-modeler' )
+			esc_html__( 'File or directory not found or readable.', 'atlas-content-modeler' )
 		);
 	}
 
