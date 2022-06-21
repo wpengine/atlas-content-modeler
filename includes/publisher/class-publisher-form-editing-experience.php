@@ -72,7 +72,7 @@ final class FormEditingExperience {
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 		add_action( 'edit_form_after_title', [ $this, 'render_app_container' ] );
-		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
+		add_action( 'save_post', [ $this, 'save_post' ], 10, 3 );
 		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
@@ -313,8 +313,12 @@ final class FormEditingExperience {
 	 *
 	 * @param int     $post_id The post ID.
 	 * @param WP_Post $post    The post object being saved.
+	 * @param bool    $update  Whether this is an existing post being updated.
 	 */
-	public function save_post( int $post_id, WP_Post $post ): void {
+	 public function save_post( int $post_id, WP_Post $post, bool $update = false ): void {
+
+		if ( ! ( wp_is_post_revision( $post_id) || wp_is_post_autosave( $post_id ) ) ) {
+
 		if ( empty( $_POST['atlas-content-modeler'] ) || empty( $_POST['atlas-content-modeler'][ $post->post_type ] ) ) {
 			return;
 		}
@@ -402,6 +406,45 @@ final class FormEditingExperience {
 				}
 			}
 
+			if ( 'email' === $field_type ) {
+				global $wpdb;
+				$wpdb->show_errors( true );
+
+				$post_value_keys = array_keys( $posted_values );
+				$post_values = array_values( $posted_values );
+
+				$is_unique_results = array();
+				// foreach ( $post_value_keys as $value_key ) {
+					foreach ( $post_values as $value ) {
+						// skip repeaters for the time being
+						if ( is_array ( $value ) ) {
+							continue;
+						}
+
+						$results = $wpdb->get_row(
+							$wpdb->prepare(
+								'SELECT *
+								FROM wp_postmeta
+								WHERE post_id = %s
+								AND meta_key = %s
+								AND meta_value = %s',
+								$post_id,
+								$slug,
+								$value
+							)
+						);
+
+						if( isset( $results ) ) {
+							array_push( $is_unique_results, $results );
+						}
+					}
+				// }
+
+				if ( ! empty( $is_unique_results ) ) {
+					$this->error_save_post = sprintf( __( '%s must be unique.', 'atlas-content-modeler' ), $is_unique_results[0]->meta_key );
+				}
+			}
+
 			// Media field.
 			if ( 'media' === $field_type &&
 				is_field_featured_image(
@@ -457,6 +500,8 @@ final class FormEditingExperience {
 				$this->error_save_post = sprintf( __( 'There was an error updating the %s field data.', 'atlas-content-modeler' ), $key );
 			}
 		}
+	}
+
 	}
 
 	/**
