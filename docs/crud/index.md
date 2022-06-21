@@ -238,7 +238,7 @@ WPE\AtlasContentModeler\API
 ```
 get_field( string $model, string $field_slug ): ?array
 ```
-`get_field()` will retreive a model field schema as an associative array. If the field does not exist, then `null` will be returned.
+`get_field()` will retrieve a model field schema as an associative array. If the field does not exist, then `null` will be returned.
 
 ### Parameters
 - **model** The content model slug.
