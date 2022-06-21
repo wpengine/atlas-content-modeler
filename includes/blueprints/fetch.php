@@ -9,8 +9,6 @@ namespace WPE\AtlasContentModeler\Blueprint\Fetch;
 
 use WP_Error;
 
-use function WP_CLI\Utils\is_path_absolute;
-
 /**
  * Gets blueprint from either local or remote path.
  *
