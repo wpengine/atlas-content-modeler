@@ -115,9 +115,10 @@ function save_blueprint_to_upload_dir( string $blueprint, string $filename ) {
 	 * upload directory. Ensures media is accessible to WordPress, and will
 	 * stay accessible if the original blueprint path is moved or removed.
 	 */
+
 	if (
 		$is_absolute_path
-		&& is_dir( $blueprint )
+		&& pathinfo( $blueprint, PATHINFO_EXTENSION ) !== 'zip'
 	) {
 		$wp_filesystem->mkdir( $destination );
 
