@@ -95,7 +95,7 @@ function get_remote_blueprint( string $url ) {
 /**
  * Saves the provided blueprint zip file to the uploads directory.
  *
- * @param string $blueprint The blueprint zip file.
+ * @param string $blueprint The blueprint zip file or path to a local blueprint directory.
  * @param string $filename  The name of the file to be saved.
  *
  * @return string|WP_Error Local blueprint zip file destination path on success.
@@ -110,9 +110,30 @@ function save_blueprint_to_upload_dir( string $blueprint, string $filename ) {
 	$destination = trailingslashit( wp_upload_dir()['path'] ) . $filename;
 
 	/**
-	 * Save the blueprint to a temporary location
-	 * and check the MIME type before saving to the
-	 * final destination in the `wp_upload_dir()` path.
+	 * Copy blueprints given as a path to a local directory to the WordPress
+	 * upload directory. Ensures media is accessible to WordPress, and will
+	 * stay accessible if the original blueprint path is moved or removed.
+	 */
+	if ( is_dir( $blueprint ) ) {
+		$wp_filesystem->mkdir( $destination );
+
+		$copied = copy_dir( $blueprint, $destination );
+
+		if ( ! $copied ) {
+			return new WP_Error(
+				'acm_blueprint_save_error',
+				/* translators: %1$s: path to blueprint, %2$s: path to attempted copy destination. */
+				sprintf( esc_html__( 'Error copying directory from %1$s to %2$s', 'atlas-content-modeler' ), $blueprint, $destination )
+			);
+		}
+
+		return $destination;
+	}
+
+	/**
+	 * Assume now that the blueprint is a zip file and not a folder. Save it
+	 * to a temporary location and check the MIME type before moving it to the
+	 * final destination in the WordPress upload directory.
 	 */
 	$temp_destination = wp_tempnam( $destination );
 
