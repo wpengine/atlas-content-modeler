@@ -1,6 +1,6 @@
 # Atlas Content Modeler CRUD
 
-_description needed_
+Atlas Content Modeler provides a PHP API to create, read, update and delete content model entries (posts) including field data.
 
 ***
 
