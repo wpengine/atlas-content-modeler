@@ -5,7 +5,7 @@ _description needed_
 ***
 
 ## insert_model_entry()
-Insert a content model into the database.
+Insert a content model entry into the database.
 
 ### Namespace
 ```php
