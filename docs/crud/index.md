@@ -28,7 +28,7 @@ The `WP_Post` id on success or `WP_Error` on failure.
 
 ### Examples
 
-The following examples with use a Rabbit model with a slug of `rabbit`. The Rabbit model has  the following three fields.
+The following examples with use a Rabbit model with a slug of `rabbit`. The Rabbit model has the following three fields:
 - Name `name` (text, required)
 - Color `color` (text, required)
 - Speed `speed` (numeric, int)
