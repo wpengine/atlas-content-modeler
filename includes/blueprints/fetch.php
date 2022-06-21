@@ -9,6 +9,8 @@ namespace WPE\AtlasContentModeler\Blueprint\Fetch;
 
 use WP_Error;
 
+use function WP_CLI\Utils\is_path_absolute;
+
 /**
  * Gets blueprint from either local or remote path.
  *
@@ -107,14 +109,18 @@ function save_blueprint_to_upload_dir( string $blueprint, string $filename ) {
 		\WP_Filesystem();
 	}
 
-	$destination = trailingslashit( wp_upload_dir()['path'] ) . $filename;
+	$destination      = trailingslashit( wp_upload_dir()['path'] ) . $filename;
+	$is_absolute_path = '/' === $blueprint[0];
 
 	/**
 	 * Copy blueprints given as a path to a local directory to the WordPress
 	 * upload directory. Ensures media is accessible to WordPress, and will
 	 * stay accessible if the original blueprint path is moved or removed.
 	 */
-	if ( is_dir( $blueprint ) ) {
+	if (
+		$is_absolute_path
+		&& is_dir( $blueprint )
+	) {
 		$wp_filesystem->mkdir( $destination );
 
 		$copied = copy_dir( $blueprint, $destination );
