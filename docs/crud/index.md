@@ -16,7 +16,7 @@ WPE\AtlasContentModeler\API
 ```
 insert_model_entry( string $model_slug, array $field_data, array $post_data = [] )
 ```
-`insert_model_entry()` will insert a model (post type) into the database. On success will return a `WP_Post` id or a `WP_Error` on failure.
+`insert_model_entry()` will insert a model entry (single post) into the database. On success will return a `WP_Post` id or a `WP_Error` on failure.
 
 ### Parameters
 - **model_slug** The content model slug. This is known as the **Model ID** when creating a model.
