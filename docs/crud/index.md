@@ -173,7 +173,7 @@ WPE\AtlasContentModeler\API
 ```
 function get_model( string $model ): ?array
 ```
-`get_model()` will retreive a model schema as an associative array. If the model does not exist, then `null` will be returned.
+`get_model()` will retrieve a model schema as an associative array. If the model does not exist, then `null` will be returned.
 
 ### Parameters
 - **model** The content model slug.
