@@ -108,18 +108,25 @@ function save_blueprint_to_upload_dir( string $blueprint, string $filename ) {
 	}
 
 	$destination      = trailingslashit( wp_upload_dir()['path'] ) . $filename;
-	$is_absolute_path = '/' === $blueprint[0];
+	$is_absolute_path = $blueprint[0] === '/' ?? false;
 
 	/**
 	 * Copy blueprints given as a path to a local directory to the WordPress
 	 * upload directory. Ensures media is accessible to WordPress, and will
 	 * stay accessible if the original blueprint path is moved or removed.
 	 */
-
 	if (
-		$is_absolute_path
-		&& pathinfo( $blueprint, PATHINFO_EXTENSION ) !== 'zip'
+		$is_absolute_path &&
+		pathinfo( $blueprint, PATHINFO_EXTENSION ) === ''
 	) {
+		if ( ! $wp_filesystem->is_dir( $blueprint ) ) {
+			return new WP_Error(
+				'acm_blueprint_save_error',
+				/* translators: path to blueprint */
+				sprintf( esc_html__( 'Could not read directory at %s', 'atlas-content-modeler' ), $blueprint )
+			);
+		}
+
 		$wp_filesystem->mkdir( $destination );
 
 		$copied = copy_dir( $blueprint, $destination );

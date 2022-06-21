@@ -80,7 +80,7 @@ class Blueprint {
 	 */
 	public function import( $args, $assoc_args ) {
 		list( $path )      = $args;
-		$path_is_directory = is_dir( $path );
+		$path_is_directory = pathinfo( $path, PATHINFO_EXTENSION ) === '';
 
 		if ( $path_is_directory ) {
 			$blueprint_folder = save_blueprint_to_upload_dir( $path, basename( $path ) );
