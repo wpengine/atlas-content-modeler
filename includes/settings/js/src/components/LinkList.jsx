@@ -7,17 +7,30 @@ import React from "react";
  * @returns html
  */
 export default function LinkList({ classes, linkOptions }) {
+	const { options, links } = linkOptions;
+	const defaultOptions = {
+		liClasses: "",
+		aClasses: "",
+		liStyles: {},
+		aStyles: [],
+	};
+
+	options = { ...defaultOptions, ...options };
+
 	function getLinks() {
-		return linkOptions.links.map((link, index) => (
+		return links.map((link, index) => (
 			<li
 				key={link.index || index}
-				className={link.classNames}
+				styles={link.styles || options.liStyles}
+				className={link.classNames || options.liClasses}
 				style={{
 					borderLeft: "none",
 					boxShadow: "none",
 				}}
 			>
 				<a
+					styles={link.styles || options.aStyles}
+					className={link.classNames || options.aClasses}
 					title={link.title}
 					href={link.url}
 					target={link.target || "_blank"}
