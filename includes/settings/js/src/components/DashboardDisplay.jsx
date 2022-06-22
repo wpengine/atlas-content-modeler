@@ -28,6 +28,7 @@ export default function DashboardDisplay() {
 	const socialMediaLinkOptions = {
 		options: {
 			liStyles: { borderLeft: "none", boxShadow: "none" },
+			aStyles: { textDecoration: "none", marginRight: "10px" },
 		},
 		links: [
 			{
