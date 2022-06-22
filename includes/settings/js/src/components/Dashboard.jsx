@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import { sprintf, __ } from "@wordpress/i18n";
 import { dispatch } from "@wordpress/data";
-import ExportFileButton from "./ExportFileButton";
-import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
 import { insertSidebarMenuItem } from "../utils";
 import { useHistory } from "react-router-dom";
-import { Card } from "../../../../shared-assets/js/components/card";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import ExportFileButton from "./ExportFileButton";
+import ImportFileButton from "./ImportFileButton";
+import { Card } from "../../../../shared-assets/js/components/card";
 
 const { wp } = window;
 const { apiFetch } = wp;
@@ -20,6 +20,8 @@ export default function Dashboard() {
 	const fileUploaderRef = useRef(null);
 	let history = useHistory();
 	let chartData = buildChartData();
+
+	const RECENT_ENTRIES_COUNT = 10;
 
 	/**
 	 * Links
@@ -147,6 +149,9 @@ export default function Dashboard() {
 		));
 	}
 
+	/**
+	 * Build resource links
+	 */
 	function getResourceLinks() {
 		return resourceLinks.map((link, index) => (
 			<li
@@ -574,6 +579,7 @@ export default function Dashboard() {
 								).length > 0 && (
 									<div className="list-group list-group-flush">
 										{getTaxonomies().map((entry, index) => {
+											// show 5
 											if (index <= 4) {
 												return (
 													<button
@@ -638,6 +644,7 @@ export default function Dashboard() {
 									<div className="list-group list-group-flush">
 										{atlasContentModeler.stats.relationships.mostConnectedEntries.map(
 											(entry, index) => {
+												// show 5
 												if (index <= 4) {
 													return (
 														<button
@@ -687,6 +694,7 @@ export default function Dashboard() {
 								<div className="list-group list-group-flush">
 									{atlasContentModeler.stats.recentModelEntries.map(
 										(entry, index) => {
+											// show 10
 											if (index <= 9) {
 												return (
 													<button
