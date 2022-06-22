@@ -21,8 +21,6 @@ export default function Dashboard() {
 	let history = useHistory();
 	let chartData = buildChartData();
 
-	const RECENT_ENTRIES_COUNT = 10;
-
 	/**
 	 * Links
 	 */
