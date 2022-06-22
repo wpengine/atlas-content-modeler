@@ -25,7 +25,7 @@ wp acm blueprint import <path> [--skip-cleanup]
 ### Options
 
 `<path>`
-The URL or local path of the blueprint zip file, or local path to the blueprint folder containing the acm json manifest file. Local paths must be absolute.
+The URL or local path of the blueprint zip file, or local path to the blueprint folder containing the acm.json manifest file. Local paths must be absolute.
 
 `[--skip-cleanup]`
 Skips removal of the blueprint zip and manifest files after a
