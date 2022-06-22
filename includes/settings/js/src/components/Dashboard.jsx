@@ -472,24 +472,32 @@ export default function Dashboard() {
 								{Object.keys(atlasContentModeler.initialState)
 									.length || 0}
 							</h1>
-							<a
-								onClick={(e) =>
-									history.push(
-										atlasContentModeler.appPath +
-											"&view=models-list"
-									)
-								}
-								className="mb-2 pointer"
-							>
-								{__("Models ", "atlas-content-modeler")}
-								<span className="dashicons dashicons-admin-links"></span>
-							</a>{" "}
-							<a
-								style={{ textDecoration: "none" }}
-								href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
-							>
-								<span className="dashicons dashicons-plus"></span>
-							</a>
+							<div>
+								<a
+									title="edit models"
+									onClick={(e) =>
+										history.push(
+											atlasContentModeler.appPath +
+												"&view=models-list"
+										)
+									}
+									className="mb-2 pointer"
+								>
+									{__("Models ", "atlas-content-modeler")}
+									<span className="dashicons dashicons-edit"></span>
+								</a>
+							</div>
+							<div className="mt-3">
+								<a
+									title="add model"
+									style={{ textDecoration: "none" }}
+									href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
+								>
+									<span className="dashicons dashicons-plus"></span>
+									{__("Add Model", "atlas-content-modeler")}
+								</a>
+							</div>
+
 							<hr />
 							<div className="flex-grow-1">
 								<h3>
@@ -549,24 +557,34 @@ export default function Dashboard() {
 									atlasContentModeler.stats.taxonomies
 								).length || 0}
 							</h1>{" "}
-							<a
-								onClick={(e) =>
-									history.push(
-										atlasContentModeler.appPath +
-											"&view=taxonomies"
-									)
-								}
-								className="mb-2 pointer"
-							>
-								{__("Taxonomies ", "atlas-content-modeler")}
-								<span className="dashicons dashicons-admin-links"></span>
-							</a>
-							<a
-								style={{ textDecoration: "none" }}
-								href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies"
-							>
-								<span className="dashicons dashicons-plus"></span>
-							</a>
+							<div>
+								<a
+									title="edit taxonomies"
+									onClick={(e) =>
+										history.push(
+											atlasContentModeler.appPath +
+												"&view=taxonomies"
+										)
+									}
+									className="mb-2 pointer"
+								>
+									{__("Taxonomies ", "atlas-content-modeler")}
+									<span className="dashicons dashicons-edit"></span>
+								</a>
+							</div>
+							<div className="mt-3">
+								<a
+									style={{ textDecoration: "none" }}
+									href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies"
+									title="add taxonomy"
+								>
+									<span className="dashicons dashicons-plus"></span>{" "}
+									{__(
+										"Add Taxonomy",
+										"atlas-content-modeler"
+									)}
+								</a>
+							</div>
 							<hr />
 							<div className="flex-grow-1">
 								<h3>
