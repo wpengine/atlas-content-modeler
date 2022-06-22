@@ -21,7 +21,7 @@ export default function LinkList({ classes, linkOptions }) {
 		return links.map((link, index) => (
 			<li
 				key={link.index || index}
-				style={link.style || options.liStyles}
+				style={link.liStyle || options.liStyles}
 				className={link.liClassNames || options.liClasses}
 			>
 				<a
