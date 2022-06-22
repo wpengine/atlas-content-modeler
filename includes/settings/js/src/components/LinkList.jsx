@@ -12,7 +12,7 @@ export default function LinkList({ classes, linkOptions }) {
 		liClasses: "",
 		aClasses: "",
 		liStyles: {},
-		aStyles: [],
+		aStyles: {},
 	};
 
 	options = { ...defaultOptions, ...options };
@@ -21,15 +21,11 @@ export default function LinkList({ classes, linkOptions }) {
 		return links.map((link, index) => (
 			<li
 				key={link.index || index}
-				styles={link.styles || options.liStyles}
+				style={link.styles || options.liStyles}
 				className={link.classNames || options.liClasses}
-				style={{
-					borderLeft: "none",
-					boxShadow: "none",
-				}}
 			>
 				<a
-					styles={link.styles || options.aStyles}
+					style={link.styles || options.aStyles}
 					className={link.classNames || options.aClasses}
 					title={link.title}
 					href={link.url}

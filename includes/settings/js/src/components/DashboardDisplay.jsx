@@ -26,6 +26,9 @@ export default function DashboardDisplay() {
 	 * Links
 	 */
 	const socialMediaLinkOptions = {
+		options: {
+			liStyles: { borderLeft: "none", boxShadow: "none" },
+		},
 		links: [
 			{
 				icon: "dashicons dashicons-facebook",
@@ -61,6 +64,9 @@ export default function DashboardDisplay() {
 	};
 
 	const resourceLinkOptions = {
+		options: {
+			liStyles: { borderLeft: "none", boxShadow: "none" },
+		},
 		links: [
 			{
 				title: "ACM Feedback",
