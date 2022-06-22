@@ -21,12 +21,12 @@ export default function LinkList({ classes, linkOptions }) {
 		return links.map((link, index) => (
 			<li
 				key={link.index || index}
-				style={link.styles || options.liStyles}
-				className={link.classNames || options.liClasses}
+				style={link.style || options.liStyles}
+				className={link.liClassNames || options.liClasses}
 			>
 				<a
-					style={link.styles || options.aStyles}
-					className={link.classNames || options.aClasses}
+					style={link.aStyle || options.aStyles}
+					className={link.aClassNames || options.aClasses}
 					title={link.title}
 					href={link.url}
 					target={link.target || "_blank"}
