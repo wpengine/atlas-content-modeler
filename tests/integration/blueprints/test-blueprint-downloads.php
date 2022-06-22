@@ -115,7 +115,7 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 			define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords. This only takes effect during testing.
 		}
 
-		$blueprint_folder = '/app/tests/integration/blueprints/test-data/blueprint-good';
+		$blueprint_folder = __DIR__ . '/test-data/blueprint-good';
 		$destination      = save_blueprint_to_upload_dir( $blueprint_folder, 'blueprint-good' );
 		self::assertTrue( is_readable( $destination ) );
 		self::assertTrue( is_dir( $destination ) );
@@ -129,7 +129,7 @@ class TestBlueprintDownloadTestCases extends WP_UnitTestCase {
 			define( 'FS_METHOD', 'direct' ); // Allows direct filesystem copy operations without FTP/SSH passwords. This only takes effect during testing.
 		}
 
-		$non_existent_blueprint_folder = '/app/tests/integration/blueprints/test-data/this-blueprint-does-not-exist';
+		$non_existent_blueprint_folder = __DIR__ . '/test-data/this-blueprint-does-not-exist';
 		$destination                   = save_blueprint_to_upload_dir( $non_existent_blueprint_folder, 'this-blueprint-does-not-exist' );
 		$this->assertWPError( $destination );
 		self::assertSame( 'acm_blueprint_save_error', $destination->get_error_code() );
