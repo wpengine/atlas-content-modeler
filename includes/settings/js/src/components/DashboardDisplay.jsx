@@ -14,7 +14,7 @@ import LinkList from "./LinkList";
 const { wp } = window;
 const { apiFetch } = wp;
 
-export default function DashboardDisplay({ modelChartOptions }) {
+export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled
 	);
@@ -83,25 +83,6 @@ export default function DashboardDisplay({ modelChartOptions }) {
 			},
 		],
 	};
-
-	/**
-	 * Get taxonomies for display in the dashboard
-	 */
-	function getTaxonomies() {
-		let entries = [];
-		let keys = Object.keys(atlasContentModeler.stats.taxonomies);
-
-		keys.map((entry) => {
-			entries.push({
-				name: entry,
-				count: parseInt(
-					atlasContentModeler.stats.taxonomies[entry].total_terms
-				),
-			});
-		});
-
-		return entries;
-	}
 
 	/**
 	 * Sets and saves tracking data for analytics

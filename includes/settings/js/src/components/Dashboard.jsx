@@ -60,5 +60,29 @@ export default function Dashboard() {
 		return data;
 	}
 
-	return <DashboardDisplay modelChartOptions={modelChartOptions} />;
+	/**
+	 * Get taxonomies for display in the dashboard
+	 */
+	function getTaxonomies() {
+		let entries = [];
+		let keys = Object.keys(atlasContentModeler.stats.taxonomies);
+
+		keys.map((entry) => {
+			entries.push({
+				name: entry,
+				count: parseInt(
+					atlasContentModeler.stats.taxonomies[entry].total_terms
+				),
+			});
+		});
+
+		return entries;
+	}
+
+	return (
+		<DashboardDisplay
+			taxonomies={taxonomies}
+			modelChartOptions={modelChartOptions}
+		/>
+	);
 }
