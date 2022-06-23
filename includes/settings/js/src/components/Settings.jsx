@@ -1,19 +1,16 @@
 /* global atlasContentModeler */
 import React, { useState } from "react";
 import { __ } from "@wordpress/i18n";
-import { dispatch } from "@wordpress/data";
 import { Card } from "../../../../shared-assets/js/components/card";
+import { saveUsageTrackingSetting } from "../settings.service";
 
 export default function Settings() {
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled
 	);
 
-	function saveUsageTrackingSetting(event) {
-		// @todo catch save errors
-		dispatch("core").saveSite({
-			atlas_content_modeler_usage_tracking: event.target.value,
-		});
+	function saveTrackingSetting(event) {
+		saveUsageTrackingSetting(event);
 		setUsageTracking(event.target.value);
 	}
 
@@ -56,7 +53,7 @@ export default function Settings() {
 														!usageTracking
 													}
 													onChange={
-														saveUsageTrackingSetting
+														saveTrackingSetting
 													}
 												></input>
 												{__(
@@ -72,9 +69,7 @@ export default function Settings() {
 												name="atlas-content-modeler-settings[usageTracking]"
 												value="1"
 												checked={usageTracking === "1"}
-												onChange={
-													saveUsageTrackingSetting
-												}
+												onChange={saveTrackingSetting}
 											></input>
 											<label
 												className="radio"
