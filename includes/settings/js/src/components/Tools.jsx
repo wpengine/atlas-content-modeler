@@ -5,22 +5,13 @@ import ImportFileButton from "./ImportFileButton";
 import { showError, showSuccess } from "../toasts";
 import { insertSidebarMenuItem } from "../utils";
 import { Card } from "../../../../shared-assets/js/components/card";
+import * as toolService from "../tools.service";
+
 const { wp } = window;
 const { apiFetch } = wp;
 
 export default function Tools() {
 	const fileUploaderRef = useRef(null);
-
-	/**
-	 * Gets model export data via the REST API.
-	 */
-	async function getModels() {
-		return apiFetch({
-			path: `/wpe/atlas/content-models/`,
-			method: "GET",
-			_wpnonce: wpApiSettings.nonce,
-		});
-	}
 
 	/**
 	 * Checks that all field properties are valid based on the field type.

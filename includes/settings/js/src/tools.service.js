@@ -18,7 +18,7 @@ export function getModels() {
  * @param {object} field
  * @returns {array} Invalid properties or an empty array if no properties were invalid.
  */
-function validateField(field) {
+export function validateField(field) {
 	let invalidProperties = [];
 
 	const requiredFieldProperties = {
@@ -53,7 +53,7 @@ function validateField(field) {
  * @param {object} storedModelData Existing stored model data.
  * @return {object} Invalid model data, or empty object if no invalid data.
  */
-async function validateModel(model, storedModelData) {
+export async function validateModel(model, storedModelData) {
 	let errors = {};
 
 	const existingModels = Object.keys(storedModelData);
@@ -91,7 +91,7 @@ async function validateModel(model, storedModelData) {
  * @param {array} models The models in the import file to validate.
  * @return {object} Invalid models data, or empty object if no invalid data.
  */
-async function validateModels(models) {
+export async function validateModels(models) {
 	let errors = {};
 
 	let storedModelData = await getModels();
@@ -110,7 +110,7 @@ async function validateModels(models) {
  * Displays model errors for import
  * @param {*} modelErrors
  */
-function showImportErrors(modelErrors) {
+export function showImportErrors(modelErrors) {
 	let message = "";
 
 	Object.entries(modelErrors).forEach(([modelSlug, errors]) => {
@@ -193,7 +193,7 @@ function showImportErrors(modelErrors) {
 /**
  * Uploads the file data to the API.
  */
-async function createModels(formData) {
+export async function createModels(formData) {
 	const parsedData = JSON.parse(formData);
 	const modelData = Object.values(parsedData);
 	const modelErrors = await validateModels(modelData);

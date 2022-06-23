@@ -19,7 +19,7 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled
 	);
-	const fileUploaderRef = useRef(null);
+	let fileUploaderRef = useRef();
 	let history = useHistory();
 
 	/**
@@ -93,53 +93,6 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 		saveUsageTrackingSetting(event);
 		setUsageTracking(event.target.value);
 		showSuccess("Your setting was updated!");
-	}
-
-	/**
-	 * Checks that all field properties are valid based on the field type.
-	 *
-	 * @param {object} field
-	 * @returns {array} Invalid properties or an empty array if no properties were invalid.
-	 */
-	function validateField(field) {
-		toolService.validateField(field);
-	}
-
-	/**
-	 * Checks that a model is valid: it does not already exist, it has all
-	 * required model properties and its fields are valid.
-	 *
-	 * @param {object} model The new model data to validate before it is added.
-	 * @param {object} storedModelData Existing stored model data.
-	 * @return {object} Invalid model data, or empty object if no invalid data.
-	 */
-	async function validateModel(model, storedModelData) {
-		toolService.validateModel(model, storedModelData);
-	}
-
-	/**
-	 * Checks that all passed models are valid.
-	 *
-	 * @param {array} models The models in the import file to validate.
-	 * @return {object} Invalid models data, or empty object if no invalid data.
-	 */
-	async function validateModels(models) {
-		toolService.validateModels(models);
-	}
-
-	/**
-	 * Displays model errors for import
-	 * @param {*} modelErrors
-	 */
-	function showImportErrors(modelErrors) {
-		toolService.showImportErrors(modelErrors);
-	}
-
-	/**
-	 * Uploads the file data to the API.
-	 */
-	async function createModels(formData) {
-		toolService.createModels(formData);
 	}
 
 	/**
@@ -589,7 +542,9 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 											<ImportFileButton
 												buttonTitle="Import Models"
 												allowedMimeTypes=".json"
-												callbackFn={createModels}
+												callbackFn={
+													toolService.createModels
+												}
 												fileUploaderRef={
 													fileUploaderRef
 												}
@@ -600,7 +555,9 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 												buttonTitle="Export Models"
 												fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
 												fileType="json"
-												callbackFn={getModels}
+												callbackFn={
+													toolService.getModels
+												}
 											/>
 										</div>
 									</div>
