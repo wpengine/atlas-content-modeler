@@ -484,11 +484,9 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 								<h3>
 									{__("Top Five", "atlas-content-modeler")}
 								</h3>
-								{Object.keys(
-									atlasContentModeler.stats.taxonomies
-								).length > 0 && (
+								{taxonomies.length > 0 && (
 									<div className="list-group list-group-flush">
-										{getTaxonomies().map((entry, index) => {
+										{taxonomies.map((entry, index) => {
 											// show 5
 											if (index <= 4) {
 												return (

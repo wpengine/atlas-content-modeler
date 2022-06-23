@@ -81,7 +81,7 @@ export default function Dashboard() {
 
 	return (
 		<DashboardDisplay
-			taxonomies={taxonomies}
+			taxonomies={getTaxonomies()}
 			modelChartOptions={modelChartOptions}
 		/>
 	);
