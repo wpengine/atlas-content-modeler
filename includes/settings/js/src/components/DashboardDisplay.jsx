@@ -14,13 +14,12 @@ import LinkList from "./LinkList";
 const { wp } = window;
 const { apiFetch } = wp;
 
-export default function DashboardDisplay() {
+export default function DashboardDisplay({ modelChartOptions }) {
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled
 	);
 	const fileUploaderRef = useRef(null);
 	let history = useHistory();
-	let chartData = buildChartData();
 
 	/**
 	 * Links
@@ -84,114 +83,6 @@ export default function DashboardDisplay() {
 			},
 		],
 	};
-
-	/**
-	 * Options for HighCharts charts
-	 */
-	const options = {
-		chart: {
-			plotBackgroundColor: null,
-			plotBorderWidth: null,
-			plotShadow: false,
-			type: "pie",
-		},
-		title: {
-			text: "Models by Percent",
-			style: {
-				fontWeight: "bold",
-				fontSize: "21px",
-			},
-		},
-		tooltip: {
-			pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
-		},
-		accessibility: {
-			point: {
-				valueSuffix: "%",
-			},
-		},
-		plotOptions: {
-			pie: {
-				allowPointSelect: true,
-				cursor: "pointer",
-				dataLabels: {
-					enabled: true,
-					format: "<b>{point.name}</b>: {point.percentage:.1f} %",
-				},
-			},
-		},
-		series: [
-			{
-				name: "Models",
-				colorByPoint: true,
-				data: chartData,
-			},
-		],
-	};
-
-	/**
-	 * Builds chart data for display in the dashboard
-	 */
-	function buildChartData() {
-		let data = [];
-		atlasContentModeler.stats.modelsCounts.map((entry) => {
-			data.push({
-				name: entry.plural,
-				y: parseInt(entry.count),
-			});
-		});
-
-		return data;
-	}
-
-	/**
-	 * Build social media links
-	 */
-	function getSocialMediaLinks() {
-		return socialMediaLinks.map((link, index) => (
-			<li
-				key={index}
-				className="list-item me-2"
-				style={{
-					borderLeft: "none",
-					boxShadow: "none",
-				}}
-			>
-				<a
-					href={link.url}
-					target="_blank"
-					rel="noreferrer"
-					className="text-decoration-none"
-				>
-					<span className={link.icon}></span>
-				</a>
-			</li>
-		));
-	}
-
-	/**
-	 * Build resource links
-	 */
-	function getResourceLinks() {
-		return resourceLinks.map((link, index) => (
-			<li
-				key={index}
-				style={{
-					borderLeft: "none",
-					boxShadow: "none",
-				}}
-			>
-				<a
-					target="_blank"
-					rel="noreferrer"
-					style={{ color: "#7e5cef" }}
-					href={link.url}
-				>
-					{__(link.title, "atlas-content-modeler")}
-				</a>
-			</li>
-		));
-	}
 
 	/**
 	 * Get taxonomies for display in the dashboard
@@ -790,7 +681,7 @@ export default function DashboardDisplay() {
 						{atlasContentModeler.stats.modelsCounts.length > 0 && (
 							<HighchartsReact
 								highcharts={Highcharts}
-								options={options}
+								options={modelChartOptions}
 							/>
 						)}
 
