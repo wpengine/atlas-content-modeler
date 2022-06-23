@@ -539,8 +539,10 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 											<ImportFileButton
 												buttonTitle="Import Models"
 												allowedMimeTypes=".json"
-												callbackFn={
-													toolService.createModels
+												callbackFn={() =>
+													toolService.createModels(
+														fileUploaderRef
+													)
 												}
 												fileUploaderRef={
 													fileUploaderRef

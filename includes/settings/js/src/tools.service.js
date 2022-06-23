@@ -195,14 +195,14 @@ export function showImportErrors(modelErrors) {
 /**
  * Uploads the file data to the API.
  */
-export async function createModels(formData) {
+export async function createModels(formData, ref) {
 	const parsedData = JSON.parse(formData);
 	const modelData = Object.values(parsedData);
 	const modelErrors = await validateModels(modelData);
 
 	if (Object.keys(modelErrors).length !== 0) {
 		showImportErrors(modelErrors);
-		fileUploaderRef.current.value = null;
+		ref.current.value = null;
 		return;
 	}
 
@@ -222,7 +222,7 @@ export async function createModels(formData) {
 				);
 
 				modelData.forEach(insertSidebarMenuItem);
-				fileUploaderRef.current.value = null;
+				ref.current.value = null;
 			}
 		})
 		.catch((err) => {
@@ -233,6 +233,6 @@ export async function createModels(formData) {
 						"atlas-content-modeler"
 					)
 			);
-			fileUploaderRef.current.value = null;
+			ref.current.value = null;
 		});
 }
