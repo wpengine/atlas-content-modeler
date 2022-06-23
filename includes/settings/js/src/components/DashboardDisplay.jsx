@@ -12,9 +12,6 @@ import LinkList from "./LinkList";
 import { saveUsageTrackingSetting } from "../settings.service";
 import * as toolService from "../tools.service";
 
-const { wp } = window;
-const { apiFetch } = wp;
-
 export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled

@@ -1,5 +1,7 @@
 import { sprintf, __ } from "@wordpress/i18n";
 import { showError, showSuccess } from "../src/toasts";
+const { wp } = window;
+const { apiFetch } = wp;
 
 /**
  * Gets model export data via the REST API.
