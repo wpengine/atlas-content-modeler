@@ -83,6 +83,13 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 	};
 
 	/**
+	 * Uploads the file data to the API.
+	 */
+	async function createModels(formData) {
+		toolService.createModels(formData, fileUploaderRef);
+	}
+
+	/**
 	 * Sets and saves tracking data for analytics
 	 * @param {*} event
 	 */
@@ -539,9 +546,7 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 											<ImportFileButton
 												buttonTitle="Import Models"
 												allowedMimeTypes=".json"
-												callbackFn={
-													toolService.createModels
-												}
+												callbackFn={createModels}
 												fileUploaderRef={
 													fileUploaderRef
 												}
