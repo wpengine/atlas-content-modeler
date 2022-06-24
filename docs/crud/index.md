@@ -53,7 +53,37 @@ Will result in the following
 int(139)
 ```
 
-#### Example #2 Unsuccessful content model creation.
+### Examples
+
+The following examples with use a Rabbit model with a slug of `rabbit`. The Rabbit model has the following three fields:
+- Name `name` (text, required)
+- Color `color` (text, required)
+- Breed `breed` (relationship, reverse enabled)
+
+#### Example #2 Successful content model creation with relationship in forward direction.
+
+Inserting entries in a reverse relationship is currently unsupported in the reverse direction. If a reverse relationship entry is needed, it is advised to insert or update in the forward direction from the model that has the relationship field.
+
+```php
+use function WPE\AtlasContentModeler\API\insert_model_entry;
+
+$model_slug = 'rabbit';
+$field_data = [
+	'name' => 'Peter',
+	'color' => 'Brown',
+	'breed' => 138,
+];
+
+$post_id = insert_model_entry( $model_slug, $field_data );
+
+var_dump( $post_id );
+```
+Will result in the following
+```
+int(139)
+```
+
+#### Example #3 Unsuccessful content model creation.
 ```php
 use function WPE\AtlasContentModeler\API\insert_model_entry;
 
