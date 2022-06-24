@@ -79,7 +79,18 @@ class Blueprint {
 	 * @param array $assoc_args Optional flags passed to the command.
 	 */
 	public function import( $args, $assoc_args ) {
-		list( $path )      = $args;
+		list( $path ) = $args;
+
+		if ( $path === 'demo' ) {
+			\WP_CLI::runcommand(
+				'acm blueprint import ' . __DIR__ . '/demo',
+				[
+					'launch' => false, // Reuse current process.
+				]
+			);
+			return;
+		}
+
 		$path_is_directory = pathinfo( $path, PATHINFO_EXTENSION ) === '';
 
 		if ( $path_is_directory ) {
