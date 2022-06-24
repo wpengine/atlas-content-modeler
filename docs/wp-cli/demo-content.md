@@ -14,12 +14,16 @@ See the [ACM WP-CLI docs](https://github.com/wpengine/atlas-content-modeler/blob
 
 ## Updating demo content
 
-Run `wp acm blueprint import demo` on a clean WordPress site, make your changes in WordPress and then run:
+Developers working on ACM who want to update the demo blueprint stored locally within the plugin at `atlas-content-modeler/includes/wp-cli/demo` can follow these steps:
 
-```
-wp acm blueprint export --post-types=demotext,demorich,demonumber,demodate,demomedia,demoboolean,demorelationship,demomultiplechoice,demoemail --open
-```
+1. Run `wp acm blueprint import demo` on a clean WordPress site.
+
+2. Make your changes in WordPress and then run:
+
+    ```
+    wp acm blueprint export --post-types=demotext,demorich,demonumber,demodate,demomedia,demoboolean,demorelationship,demomultiplechoice,demoemail --open
+    ```
 
 You will need to adjust the `--post-types` value if you have created additional models.
 
-Overwrite the `acm.json` in the `atlas-content-modeler/includes/wp-cli/demo` directory with the newly exported `acm.json` file.
+3. Overwrite the `acm.json` in the `atlas-content-modeler/includes/wp-cli/demo` directory with the newly exported `acm.json` file.
