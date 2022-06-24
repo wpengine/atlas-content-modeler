@@ -6,7 +6,7 @@ const { apiFetch } = wp;
 /**
  * Gets model export data via the REST API.
  */
-export function getModels() {
+export async function getModels() {
 	return apiFetch({
 		path: `/wpe/atlas/content-models/`,
 		method: "GET",

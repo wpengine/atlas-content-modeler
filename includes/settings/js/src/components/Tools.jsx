@@ -14,42 +14,6 @@ export default function Tools() {
 	const fileUploaderRef = useRef(null);
 
 	/**
-	 * Checks that all field properties are valid based on the field type.
-	 *
-	 * @param {object} field
-	 * @returns {array} Invalid properties or an empty array if no properties were invalid.
-	 */
-	function validateField(field) {
-		toolService.validateField(field);
-	}
-
-	/**
-	 * Checks that a model is valid: it does not already exist, it has all
-	 * required model properties and its fields are valid.
-	 *
-	 * @param {object} model The new model data to validate before it is added.
-	 * @param {object} storedModelData Existing stored model data.
-	 * @return {object} Invalid model data, or empty object if no invalid data.
-	 */
-	async function validateModel(model, storedModelData) {
-		toolService.validateModel(model, storedModelData);
-	}
-
-	/**
-	 * Checks that all passed models are valid.
-	 *
-	 * @param {array} models The models in the import file to validate.
-	 * @return {object} Invalid models data, or empty object if no invalid data.
-	 */
-	async function validateModels(models) {
-		toolService.validateModels(models);
-	}
-
-	function showImportErrors(modelErrors) {
-		toolService.showImportErrors(modelErrors);
-	}
-
-	/**
 	 * Uploads the file data to the API.
 	 */
 	async function createModels(formData) {
@@ -108,7 +72,7 @@ export default function Tools() {
 								<ExportFileButton
 									fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
 									fileType="json"
-									callbackFn={getModels}
+									callbackFn={toolService.getModels}
 								/>
 							</div>
 						</div>
