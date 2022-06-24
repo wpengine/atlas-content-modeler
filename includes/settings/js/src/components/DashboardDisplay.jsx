@@ -97,7 +97,7 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 	 * @returns {string}
 	 */
 	function getFormattedDateTime() {
-		return new Date().toISOString().split(".")[0].replace(/[T:]/g, "-");
+		return toolService.getFormattedDateTime();
 	}
 
 	return (

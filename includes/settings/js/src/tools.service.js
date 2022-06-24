@@ -236,3 +236,11 @@ export async function createModels(formData, ref) {
 			ref.current.value = null;
 		});
 }
+
+/**
+ * Format filename for export
+ * @returns {string}
+ */
+export function getFormattedDateTime() {
+	return new Date().toISOString().split(".")[0].replace(/[T:]/g, "-");
+}
