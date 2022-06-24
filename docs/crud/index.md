@@ -62,7 +62,7 @@ The following examples with use a Rabbit model with a slug of `rabbit`. The Rabb
 
 #### Example #2 Successful content model creation with relationship in forward direction.
 
-Inserting enries in a reverse relationship is currently unsupported in the reverse direction. If a reverse relationship entry is needed, it is advised to insert or update in the forward direction from the model that has the relationship field.
+Inserting entries in a reverse relationship is currently unsupported in the reverse direction. If a reverse relationship entry is needed, it is advised to insert or update in the forward direction from the model that has the relationship field.
 
 ```php
 use function WPE\AtlasContentModeler\API\insert_model_entry;
