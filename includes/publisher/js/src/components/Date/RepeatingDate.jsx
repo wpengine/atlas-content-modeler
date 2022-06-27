@@ -96,8 +96,19 @@ const RepeatingDate = ({
 											border-bottom: solid 1px
 												${colors.border} !important;
 											padding: 10px;
+											align-items: center;
 										`}
 									>
+										<span
+											className="px-1 me-2 align-middle"
+											css={css`
+												font-family: "Open Sans",
+													sans-serif;
+												font-weight: bold;
+											`}
+										>
+											{index + 1}
+										</span>
 										<DateField
 											name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 											id={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
