@@ -1,5 +1,10 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Added
+- The `wp acm blueprint import` WP-CLI command can now take a path to a local directory containing an `acm.json` blueprint manifest.
+
+
 ## 0.18.0 - 2022-06-16
 ### Changed
 - Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
