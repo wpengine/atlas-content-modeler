@@ -127,6 +127,9 @@ export default function Text({
 																: "field"
 														} d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 													>
+														<span className="px-1 me-2">
+															{index + 1}
+														</span>
 														<div
 															className="me-lg-1 repeater-input-container flex-fill"
 															name="repeaters"
