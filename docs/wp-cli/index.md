@@ -40,6 +40,8 @@ wp acm blueprint import /local/path/to/blueprint.zip
 wp acm blueprint import /local/path/to/blueprint-folder/
 ```
 
+ACM also includes a bundled 'demo' blueprint for developers to use when exploring and testing ACM. Learn [how to import demo content](https://github.com/wpengine/atlas-content-modeler/blob/main/docs/wp-cli/demo-content.md).
+
 ## wp acm blueprint export
 
 Requires: ACM 0.14.0+.

@@ -82,6 +82,18 @@ class Blueprint {
 		list( $path )      = $args;
 		$path_is_directory = pathinfo( $path, PATHINFO_EXTENSION ) === '';
 
+		if ( $path === 'demo' ) {
+			\WP_CLI::runcommand(
+				'acm blueprint import ' . __DIR__ . '/demo',
+				[
+					'launch' => false, // Reuse current process.
+				]
+			);
+			return;
+		}
+
+		$path_is_directory = pathinfo( $path, PATHINFO_EXTENSION ) === '';
+
 		if ( $path_is_directory ) {
 			$blueprint_folder = save_blueprint_to_upload_dir( $path, basename( $path ) );
 			if ( is_wp_error( $blueprint_folder ) ) {
