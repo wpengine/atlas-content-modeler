@@ -1,3 +1,4 @@
+/* global atlasContentModelerFormEditingExperience */
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Icon from "acm-icons";
 import { maybeCloseDropdown } from "../../../../../settings/js/src/utils";
