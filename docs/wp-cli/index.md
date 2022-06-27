@@ -25,7 +25,7 @@ wp acm blueprint import <path> [--skip-cleanup]
 ### Options
 
 `<path>`
-The URL or File Path of the blueprint zip file.
+The URL or local path of the blueprint zip file, or local path to the blueprint folder containing the acm.json manifest file. Local paths must be absolute.
 
 `[--skip-cleanup]`
 Skips removal of the blueprint zip and manifest files after a
@@ -34,8 +34,13 @@ record of content and files that were installed.
 
 ### Examples
 
-`wp acm blueprint import https://example.com/path/to/blueprint.zip`
-`wp acm blueprint import /filesystem/path/to/blueprint.zip`
+```
+wp acm blueprint import https://example.com/path/to/blueprint.zip
+wp acm blueprint import /local/path/to/blueprint.zip
+wp acm blueprint import /local/path/to/blueprint-folder/
+```
+
+ACM also includes a bundled 'demo' blueprint for developers to use when exploring and testing ACM. Learn [how to import demo content](https://github.com/wpengine/atlas-content-modeler/blob/main/docs/wp-cli/demo-content.md).
 
 ## wp acm blueprint export
 
