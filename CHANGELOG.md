@@ -6,7 +6,7 @@
 - Developers working on the ACM plugin can now use the `wp acm blueprint import demo` WP-CLI command to import demo models with different field configurations.
 
 ### Fixed
-- Number fields no longer clear '0' values when saved.
+- Number fields with '0' values are now saved correctly.
 
 ## 0.18.0 - 2022-06-16
 ### Changed
