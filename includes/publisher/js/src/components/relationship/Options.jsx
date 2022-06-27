@@ -4,6 +4,8 @@ import { maybeCloseDropdown } from "../../../../../settings/js/src/utils";
 import { sprintf, __ } from "@wordpress/i18n";
 import { Dropdown } from "../../../../../shared-assets/js/components/Dropdown";
 
+const { adminUrl } = atlasContentModelerFormEditingExperience;
+
 const Options = ({ entry, setSelectedEntries }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const timer = useRef(null);
@@ -60,6 +62,26 @@ const Options = ({ entry, setSelectedEntries }) => {
 				<Icon type="options" />
 			</button>
 			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
+				<a
+					className="view"
+					href={`${adminUrl}post.php?post=${entry.id}&action=edit`}
+					target="_blank"
+					rel="noopener noreferrer"
+					onClick={() => {
+						setDropdownOpen(false);
+					}}
+					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
+					aria-label={sprintf(
+						/* translators: title of the entry to view. */
+						__(
+							"View the %s entry in a new tab.",
+							"atlas-content-modeler"
+						),
+						entry?.title?.rendered
+					)}
+				>
+					{__("View", "atlas-content-modeler")}
+				</a>
 				<a
 					className="delete"
 					href="#"
