@@ -340,6 +340,16 @@ export default function MediaUploader({ modelSlug, field, required }) {
 														<td
 															className={`field d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 														>
+															<span
+																className="px-1 me-2"
+																css={css`
+																	font-family: "Open Sans",
+																		sans-serif;
+																	font-weight: bold;
+																`}
+															>
+																{index + 1}
+															</span>
 															<div
 																className="me-lg-1 repeater-input-container"
 																name="repeaters"
