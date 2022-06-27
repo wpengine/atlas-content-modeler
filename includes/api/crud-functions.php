@@ -12,7 +12,6 @@ namespace WPE\AtlasContentModeler\API;
 use function WPE\AtlasContentModeler\get_field_from_slug;
 use function WPE\AtlasContentModeler\sanitize_fields;
 use function WPE\AtlasContentModeler\get_entry_title_field;
-use function WPE\AtlasContentModeler\get_fields_by_type;
 use function WPE\AtlasContentModeler\get_attributes_for_field_type;
 use function WPE\AtlasContentModeler\API\array_extract_by_keys;
 use function WPE\AtlasContentModeler\API\validation\validate_model_field_data;

@@ -79,7 +79,8 @@ class Blueprint {
 	 * @param array $assoc_args Optional flags passed to the command.
 	 */
 	public function import( $args, $assoc_args ) {
-		list( $path ) = $args;
+		list( $path )      = $args;
+		$path_is_directory = pathinfo( $path, PATHINFO_EXTENSION ) === '';
 
 		if ( $path === 'demo' ) {
 			\WP_CLI::runcommand(

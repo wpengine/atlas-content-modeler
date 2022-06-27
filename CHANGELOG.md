@@ -5,7 +5,6 @@
 - The `wp acm blueprint import` WP-CLI command can now take a path to a local directory containing an `acm.json` blueprint manifest.
 - Developers working on the ACM plugin can now use the `wp acm blueprint import demo` WP-CLI command to import demo models with different field configurations.
 
-
 ## 0.18.0 - 2022-06-16
 ### Changed
 - Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
@@ -28,6 +27,7 @@
 - Added validation for repeatable date fields for insert_model_entry() crud function.
 - Added validation for repeatable number fields for insert_model_entry() crud function.
 - Added validation for repeatable email fields for insert_model_entry() crud function.
+- Added documentation for crud functions.
 
 ## 0.17.0 - 2022-05-05
 ### Added
