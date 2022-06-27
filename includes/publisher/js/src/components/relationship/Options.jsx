@@ -81,6 +81,12 @@ const Options = ({ entry, setSelectedEntries }) => {
 					)}
 				>
 					{__("View", "atlas-content-modeler")}
+					<Icon
+						type="external-link"
+						width="13"
+						height="13"
+						color="#7e5cef"
+					/>
 				</a>
 				<a
 					className="delete"
