@@ -114,4 +114,32 @@ class CreateContentModelNumberFieldCest {
 		$i->seeElement( 'input[name="atlas-content-modeler[candy][positionxyz][0]"]:invalid' );
 	}
 
+	public function i_can_save_a_required_number_field_with_a_zero_value( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$content_model = $i->haveContentModel( 'Candy', 'Candies' );
+		$i->amOnWPEngineEditContentModelPage( $content_model['slug'] );
+
+		$i->click( 'Number', '.field-buttons' );
+		$i->wait( 1 );
+		$i->fillField( [ 'name' => 'name' ], 'stock' );
+
+		$i->click( '.is-required' );
+		$i->click( 'button[data-testid="edit-model-update-create-button"]' );
+		$i->wait( 1 );
+
+		// Create a new Candies entry.
+		$i->amOnPage( '/wp-admin/edit.php?post_type=candy' );
+		$i->click( 'Add New', '.wrap' );
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'atlas-content-modeler[candy][stock]' ], '0' );
+
+		$i->click( 'Publish', '#publishing-action' );
+		$i->wait( 2 );
+
+		$i->see( 'Post published.' );
+		$i->wait( 1 );
+		$i->seeInField( 'atlas-content-modeler[candy][stock]', '0' );
+	}
+
 }
