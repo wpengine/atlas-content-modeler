@@ -1,11 +1,8 @@
-/* global atlasContentModelerFormEditingExperience */
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Icon from "acm-icons";
 import { maybeCloseDropdown } from "../../../../../settings/js/src/utils";
 import { sprintf, __ } from "@wordpress/i18n";
 import { Dropdown } from "../../../../../shared-assets/js/components/Dropdown";
-
-const { adminUrl } = atlasContentModelerFormEditingExperience;
 
 const Options = ({ entry, setSelectedEntries }) => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -65,7 +62,7 @@ const Options = ({ entry, setSelectedEntries }) => {
 			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
 				<a
 					className="view"
-					href={`${adminUrl}post.php?post=${entry.id}&action=edit`}
+					href={`${atlasContentModelerFormEditingExperience?.adminUrl}post.php?post=${entry.id}&action=edit`}
 					target="_blank"
 					rel="noopener noreferrer"
 					onClick={() => {
