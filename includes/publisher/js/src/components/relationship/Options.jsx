@@ -65,7 +65,7 @@ const Options = ({ entry, setSelectedEntries }) => {
 			</button>
 			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
 				<a
-					className="view"
+					className="edit"
 					href={`${atlasContentModelerFormEditingExperience?.adminUrl}post.php?post=${entry.id}&action=edit`}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -74,9 +74,9 @@ const Options = ({ entry, setSelectedEntries }) => {
 					}}
 					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
 					aria-label={sprintf(
-						/* translators: title of the entry to view. */
+						/* translators: title of the entry to edit. */
 						__(
-							"View the %s entry in a new tab.",
+							"Edit the %s entry in a new tab.",
 							"atlas-content-modeler"
 						),
 						entry?.title?.rendered
@@ -84,7 +84,7 @@ const Options = ({ entry, setSelectedEntries }) => {
 				>
 					{sprintf(
 						/* translators: Custom post type singular name, such as Cat. */
-						__("View %s", "atlas-content-modeler"),
+						__("Edit %s", "atlas-content-modeler"),
 						relatedModelSingularTitle
 					)}
 					<Icon
