@@ -436,8 +436,8 @@ final class FormEditingExperience {
 		foreach ( $posted_values as $key => $value ) {
 			$key = sanitize_text_field( $key );
 
-			// Do not save empty values.
-			if ( empty( $value ) ) {
+			// Do not save empty values, but allow 0 values.
+			if ( empty( $value ) && $value !== '0' && $value !== 0 ) {
 				continue;
 			}
 
