@@ -10,6 +10,10 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\Settings;
 
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\Stats\stats_model_counts;
+use function WPE\AtlasContentModeler\Stats\stats_recent_model_entries;
+use function WPE\AtlasContentModeler\Stats\stats_relationships;
+use function WPE\AtlasContentModeler\Stats\stats_taxonomies;
 
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 /**
@@ -17,6 +21,7 @@ add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
  */
 function register_admin_menu_page(): void {
 	$icon = include __DIR__ . '/views/admin-menu-icon.php';
+
 	add_menu_page(
 		esc_html__( 'Content Modeler', 'atlas-content-modeler' ),
 		esc_html__( 'Content Modeler', 'atlas-content-modeler' ),
@@ -28,10 +33,19 @@ function register_admin_menu_page(): void {
 
 	add_submenu_page(
 		'atlas-content-modeler',
+		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		'manage_options',
+		'atlas-content-modeler',
+		'__return_null'
+	);
+
+	add_submenu_page(
+		'atlas-content-modeler',
 		esc_html__( 'Models', 'atlas-content-modeler' ),
 		esc_html__( 'Models', 'atlas-content-modeler' ),
 		'manage_options',
-		'atlas-content-modeler',
+		'atlas-content-modeler&amp;view=models-list',
 		'__return_null'
 	);
 
@@ -80,6 +94,14 @@ function maybe_override_submenu_file( $parent_file ) {
 
 	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 	$view = filter_input( INPUT_GET, 'view', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+	if ( $page === 'atlas-content-modeler' && $view === 'dashboard' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=dashboard'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	}
+
+	if ( $page === 'atlas-content-modeler' && $view === 'models-list' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=models-list'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	}
 
 	if ( $page === 'atlas-content-modeler' && $view === 'taxonomies' ) {
 		$submenu_file = 'atlas-content-modeler&amp;view=taxonomies'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
@@ -149,6 +171,13 @@ function enqueue_settings_assets( $hook ) {
 										? get_site_url() . '/' . get_graphql_setting( 'graphql_endpoint', 'graphql' )
 										: get_site_url() . '/graphql',
 			'usageTrackingEnabled' => acm_usage_tracking_enabled(),
+			'stats'                => [
+				'modelsCounts'       => stats_model_counts(),
+				'recentModelEntries' => stats_recent_model_entries(),
+				'relationships'      => stats_relationships(),
+				'taxonomies'         => stats_taxonomies(),
+			],
+			'acm_plugin_data'      => get_plugin_data( ATLAS_CONTENT_MODELER_FILE ),
 		)
 	);
 

@@ -8,6 +8,7 @@ import ViewContentModelsList from "./components/ViewContentModelsList";
 import EditContentModel from "./components/EditContentModel";
 import Taxonomies from "./components/Taxonomies";
 import Tools from "./components/Tools";
+import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import { useLocationSearch } from "./utils";
 import { ModelsContextProvider } from "./ModelsContext";
@@ -54,5 +55,9 @@ function ViewTemplate() {
 		return <Settings />;
 	}
 
-	return <ViewContentModelsList />;
+	if (view === "models-list") {
+		return <ViewContentModelsList />;
+	}
+
+	return <Dashboard />;
 }

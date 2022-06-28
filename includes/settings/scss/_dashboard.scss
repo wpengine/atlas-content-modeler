@@ -1,0 +1,26 @@
+.acm-dashboard {
+	.purple-h1 {
+		color: #7e5cef;
+		font-weight: bold;
+		font-size: 60px;
+	}
+
+	a {
+		&.pointer {
+			cursor: pointer;
+			font-size: x-large;
+		}
+	}
+
+	button {
+		&.pointer {
+			cursor: pointer;
+		}
+	}
+
+	span {
+		&.badge-secondary {
+			background-color: #002838;
+		}
+	}
+}
