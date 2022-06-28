@@ -42,6 +42,10 @@ const Options = ({ entry, setSelectedEntries }) => {
 		return () => clearTimeout(timer.current);
 	}, [timer]);
 
+	const relatedModelSingularTitle =
+		atlasContentModelerFormEditingExperience?.models[entry.type]
+			?.singular ?? __("Entry", "atlas-content-modeler");
+
 	return (
 		<Dropdown>
 			<button
@@ -78,7 +82,11 @@ const Options = ({ entry, setSelectedEntries }) => {
 						entry?.title?.rendered
 					)}
 				>
-					{__("View", "atlas-content-modeler")}
+					{sprintf(
+						/* translators: Custom post type singular name, such as Cat. */
+						__("View %s", "atlas-content-modeler"),
+						relatedModelSingularTitle
+					)}
 					<Icon
 						type="external-link"
 						width="13"
