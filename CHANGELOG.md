@@ -4,6 +4,7 @@
 ### Added
 - The `wp acm blueprint import` WP-CLI command can now take a path to a local directory containing an `acm.json` blueprint manifest.
 - Developers working on the ACM plugin can now use the `wp acm blueprint import demo` WP-CLI command to import demo models with different field configurations.
+- Added field indexes to repeatable fields.
 
 ### Fixed
 - Number fields with '0' values are now saved correctly.
