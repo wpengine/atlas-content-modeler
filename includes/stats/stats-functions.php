@@ -105,7 +105,7 @@ function stats_relationships(): array {
 		'mostConnectedEntries'         => $db->get_results( "SELECT p2p.id1, p2p.id2, COUNT(*) as total_connections, wp_posts.post_type, wp_posts.post_title FROM {$p2p_table_name} as p2p LEFT JOIN {$post_table_name} as wp_posts ON wp_posts.ID = p2p.id1 GROUP BY `id1` ORDER BY total_connections DESC", ARRAY_A ) ?? [],
 	];
 
-	foreach ( $results['mostConnectedEntries'] as $key => &$entry ) {
+	foreach ( $results['mostConnectedEntries'] as &$entry ) {
 		$entry['admin_link'] = esc_url_raw( admin_url( 'post.php?post=' . $entry['id1'] . '&action=edit' ) );
 	}
 
