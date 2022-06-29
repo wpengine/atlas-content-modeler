@@ -21,6 +21,9 @@ use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxo
  * }
  */
 function stats_model_counts(): array {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return [];
+	}
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'posts';
 	$models     = get_registered_content_types();
@@ -55,6 +58,10 @@ function stats_model_counts(): array {
  * @return array
  */
 function stats_recent_model_entries(): array {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return [];
+	}
+
 	$post_types = array_keys( get_registered_content_types() );
 	if ( empty( $post_types ) ) {
 		return [];
@@ -75,6 +82,10 @@ function stats_recent_model_entries(): array {
  * @return array
  */
 function stats_relationships(): array {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return [];
+	}
+
 	/**
 	 * Relationship table
 	 *
@@ -107,6 +118,10 @@ function stats_relationships(): array {
  * @return array
  */
 function stats_taxonomies(): array {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return [];
+	}
+
 	$stats = [];
 
 	foreach ( array_keys( get_acm_taxonomies() ) as $taxonomy ) {
