@@ -94,6 +94,9 @@ class StatsFunctionTests extends WP_UnitTestCase {
 			],
 			[
 				'post_status' => 'publish',
+				'tax_input'   => [
+					'skill' => [ 'coding', 'meeting', 'laughing' ],
+				],
 			]
 		);
 
