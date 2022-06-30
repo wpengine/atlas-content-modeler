@@ -629,11 +629,6 @@ exports[`App Renders a matching snapshot 1`] = `
         className="d-flex justify-content-between"
       >
         <div
-          className="css-1y92ofa-Card"
-        >
-          <div />
-        </div>
-        <div
           className="flex-grow-1 css-1y92ofa-Card"
         >
           <form>
