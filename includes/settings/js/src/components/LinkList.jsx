@@ -7,7 +7,8 @@ import React from "react";
  * @returns html
  */
 export default function LinkList({ classes, linkOptions }) {
-	const { options, links } = linkOptions;
+	const { links } = linkOptions;
+	let { options } = linkOptions;
 	const defaultOptions = {
 		liClasses: "",
 		aClasses: "",
