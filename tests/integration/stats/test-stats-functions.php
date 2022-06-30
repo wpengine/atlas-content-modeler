@@ -8,6 +8,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\update_registered_conte
 use function WPE\AtlasContentModeler\Stats\stats_model_counts;
 use function WPE\AtlasContentModeler\Stats\stats_recent_model_entries;
 use function WPE\AtlasContentModeler\Stats\stats_relationships;
+use function WPE\AtlasContentModeler\Stats\stats_taxonomies;
 
 /**
  * Class StatsFunctionTests
@@ -74,8 +75,15 @@ class StatsFunctionTests extends WP_UnitTestCase {
 
 	public function test_stats_taxonomies_returns_expected_results(): void {
 		$this->create_test_entries();
-		// TODO: finish this test.
-		self::assertSame( [], [] );
+		$stats = stats_taxonomies();
+		self::assertSame( '0', $stats['occupation']['total_terms'] );
+		self::assertSame( '3', $stats['skill']['total_terms'] );
+	}
+
+	public function test_stats_taxonomies_returns_empty_array_if_not_authenticated(): void {
+		$this->create_test_entries();
+		wp_set_current_user( null );
+		self::assertSame( [], stats_taxonomies() );
 	}
 
 	private function mock_models(): array {
@@ -100,8 +108,6 @@ class StatsFunctionTests extends WP_UnitTestCase {
 			]
 		);
 
-		wp_set_object_terms( $john_doe_id, [ 'coding', 'meeting', 'laughing' ], 'skills' );
-
 		$jane_doe_id = insert_model_entry(
 			'person',
 			[
@@ -111,7 +117,8 @@ class StatsFunctionTests extends WP_UnitTestCase {
 				'post_status' => 'publish',
 			]
 		);
-		$acme_inc_id = insert_model_entry(
+
+		insert_model_entry(
 			'company',
 			[
 				'companyName' => 'ACME, Inc.',
