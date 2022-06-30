@@ -155,7 +155,10 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 									style={{ textDecoration: "none" }}
 									href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
 								>
-									<span className="dashicons dashicons-plus"></span>
+									<span
+										style={{ marginTop: "2px" }}
+										className="dashicons dashicons-plus"
+									></span>{" "}
 									{__("Add Model", "atlas-content-modeler")}
 								</a>
 							</div>
@@ -240,7 +243,10 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 									href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies"
 									title="add taxonomy"
 								>
-									<span className="dashicons dashicons-plus"></span>{" "}
+									<span
+										style={{ marginTop: "2px" }}
+										className="dashicons dashicons-plus"
+									></span>{" "}
 									{__(
 										"Add Taxonomy",
 										"atlas-content-modeler"
