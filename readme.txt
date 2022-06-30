@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.18.0
+Stable tag: 0.19.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,6 +53,13 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+
+= 0.19.0 - 2022-06-29 =
+
+* **Added:** The `wp acm blueprint import` WP-CLI command can now take a path to a local directory containing an `acm.json` blueprint manifest.
+* **Added:** Developers working on the ACM plugin can now use the `wp acm blueprint import demo` WP-CLI command to import demo models with different field configurations.
+* **Added:** Added field indexes to repeatable fields.
+* **Fixed:** Number fields with '0' values are now saved correctly.
 
 = 0.18.0 - 2022-06-16 =
 

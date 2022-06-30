@@ -39,6 +39,15 @@ const RepeatingRichText = ({ modelSlug, field, values, setValues, uuid }) => {
 							${values.length > 1 && `padding-right: 0`}
 						`}
 					>
+						<span
+							className="px-1 me-2"
+							css={css`
+								font-family: "Open Sans", sans-serif;
+								font-weight: bold;
+							`}
+						>
+							{index + 1}
+						</span>
 						<textarea
 							name={`atlas-content-modeler[${modelSlug}][${field.slug}][${index}]`}
 							id={id}
