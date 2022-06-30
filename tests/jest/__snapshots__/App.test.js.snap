@@ -1,0 +1,1007 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Renders a matching snapshot 1`] = `
+<div
+  className="app atlas-content-modeler"
+>
+  <div
+    className="Toastify"
+  />
+  <div>
+    <div
+      className="alert alert-primary fade show"
+      role="alert"
+    >
+      <strong>
+        ACM Plugin Version: 0.18.0 by 
+      </strong>
+      <span
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "<a href=\\"https://wpengine.com/\\">WP Engine</a>",
+          }
+        }
+      />
+    </div>
+    <div
+      className="container acm-dashboard"
+    >
+      <div
+        className="stats"
+      >
+        <div
+          className="d-flex justify-content-between"
+        >
+          <div
+            className="flex-grow-1 css-1y92ofa-Card"
+          >
+            <h1
+              className="purple-h1"
+            >
+              10
+            </h1>
+            <div>
+              <a
+                className="mb-2 pointer"
+                onClick={[Function]}
+                title="edit models"
+              >
+                Models 
+                <span
+                  className="dashicons dashicons-edit"
+                />
+              </a>
+            </div>
+            <div
+              className="mt-3"
+            >
+              <a
+                href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
+                style={
+                  Object {
+                    "textDecoration": "none",
+                  }
+                }
+                title="add model"
+              >
+                <span
+                  className="dashicons dashicons-plus"
+                  style={
+                    Object {
+                      "marginTop": "2px",
+                    }
+                  }
+                />
+                 
+                Add Model
+              </a>
+            </div>
+            <hr />
+            <div
+              className="flex-grow-1"
+            >
+              <h3>
+                Top Five
+              </h3>
+              <div
+                className="list-group list-group-flush"
+              >
+                <button
+                  className="list-group-item list-group-item-action pointer pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    16
+                  </span>
+                   
+                  Rats
+                </button>
+                <button
+                  className="list-group-item list-group-item-action pointer pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    10
+                  </span>
+                   
+                  Villains
+                </button>
+                <button
+                  className="list-group-item list-group-item-action pointer pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    10
+                  </span>
+                   
+                  Pizzas
+                </button>
+                <button
+                  className="list-group-item list-group-item-action pointer pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    8
+                  </span>
+                   
+                  Turtles
+                </button>
+                <button
+                  className="list-group-item list-group-item-action pointer pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    6
+                  </span>
+                   
+                  People
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="flex-grow-1 css-1y92ofa-Card"
+          >
+            <h1
+              className="purple-h1"
+            >
+              6
+            </h1>
+             
+            <div>
+              <a
+                className="mb-2 pointer"
+                onClick={[Function]}
+                title="edit taxonomies"
+              >
+                Taxonomies 
+                <span
+                  className="dashicons dashicons-edit"
+                />
+              </a>
+            </div>
+            <div
+              className="mt-3"
+            >
+              <a
+                href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies"
+                style={
+                  Object {
+                    "textDecoration": "none",
+                  }
+                }
+                title="add taxonomy"
+              >
+                <span
+                  className="dashicons dashicons-plus"
+                  style={
+                    Object {
+                      "marginTop": "2px",
+                    }
+                  }
+                />
+                 
+                Add Taxonomy
+              </a>
+            </div>
+            <hr />
+            <div
+              className="flex-grow-1"
+            >
+              <h3>
+                Top Five
+              </h3>
+              <div
+                className="list-group list-group-flush"
+              >
+                <button
+                  className="list-group-item list-group-item-action"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "cursor": "pointer",
+                    }
+                  }
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    1
+                  </span>
+                   
+                  mutagen
+                </button>
+                <button
+                  className="list-group-item list-group-item-action"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "cursor": "pointer",
+                    }
+                  }
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    5
+                  </span>
+                   
+                  color
+                </button>
+                <button
+                  className="list-group-item list-group-item-action"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "cursor": "pointer",
+                    }
+                  }
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    0
+                  </span>
+                   
+                  actionfigure
+                </button>
+                <button
+                  className="list-group-item list-group-item-action"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "cursor": "pointer",
+                    }
+                  }
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    0
+                  </span>
+                   
+                  cartoon
+                </button>
+                <button
+                  className="list-group-item list-group-item-action"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "cursor": "pointer",
+                    }
+                  }
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    0
+                  </span>
+                   
+                  sewercover
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="flex-grow-1 css-1y92ofa-Card"
+          >
+            <h1
+              className="purple-h1"
+            >
+              48
+            </h1>
+            <span
+              style={
+                Object {
+                  "fontSize": "x-large",
+                }
+              }
+            >
+              Relationships
+            </span>
+             
+            <hr />
+            <div
+              className="flex-grow-1"
+            >
+              <h3>
+                Top Five
+              </h3>
+              <div
+                className="list-group list-group-flush"
+              >
+                <button
+                  className="list-group-item list-group-item-action pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    4
+                  </span>
+                   
+                  Splinter
+                </button>
+                <button
+                  className="list-group-item list-group-item-action pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    4
+                  </span>
+                   
+                  Splinter
+                </button>
+                <button
+                  className="list-group-item list-group-item-action pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    4
+                  </span>
+                   
+                  New York
+                </button>
+                <button
+                  className="list-group-item list-group-item-action pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    4
+                  </span>
+                   
+                  New York
+                </button>
+                <button
+                  className="list-group-item list-group-item-action pointer"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <span
+                    className="badge badge-secondary me-2"
+                  >
+                    3
+                  </span>
+                   
+                  Leonardo
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="flex-grow-1 css-1y92ofa-Card"
+          >
+            <h3>
+              Ten Latest Entries
+            </h3>
+            <div
+              className="list-group list-group-flush"
+            >
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="The Rat King"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                The Rat King
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="The Rat King"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                The Rat King
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="Bartholomew"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                Bartholomew
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="Bartholomew"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                Bartholomew
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="Susan"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                Susan
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="Susan"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                Susan
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="Bentley"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                Bentley
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="Bentley"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                Bentley
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="Juju"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                Juju
+              </button>
+              <button
+                className="list-group-item list-group-item-action"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "maxWidth": "200px",
+                    "overflow": "hidden",
+                    "textOverflow": "ellipsis",
+                    "whiteSpace": "nowrap",
+                  }
+                }
+                title="Juju"
+                type="button"
+              >
+                <span
+                  className="dashicons dashicons-admin-post me-2"
+                />
+                 
+                Juju
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="tools-view container"
+    >
+      <div
+        className="d-flex justify-content-between"
+      >
+        <div
+          className="css-1y92ofa-Card"
+        >
+          <div />
+        </div>
+        <div
+          className="flex-grow-1 css-1y92ofa-Card"
+        >
+          <form>
+            <div
+              className="row"
+            >
+              <h3>
+                Quick Settings
+              </h3>
+              <div
+                className="col-xs-10 col-lg-4 order-1 order-lg-0"
+              >
+                <div
+                  className="row"
+                >
+                  <div
+                    className="col-xs-12"
+                  >
+                    <h4>
+                      Analytics
+                    </h4>
+                    <p
+                      className="help"
+                    >
+                      Opt into anonymous usage tracking to help us make Atlas Content Modeler better.
+                    </p>
+                    <div
+                      className="row"
+                    >
+                      <div
+                        className="col-xs-12"
+                      >
+                        <label
+                          className="radio"
+                          htmlFor="atlas-content-modeler-settings[usageTrackingDisabled]"
+                        >
+                          <input
+                            checked={true}
+                            id="atlas-content-modeler-settings[usageTrackingDisabled]"
+                            name="atlas-content-modeler-settings[usageTracking]"
+                            onChange={[Function]}
+                            type="radio"
+                            value="0"
+                          />
+                          Disabled
+                        </label>
+                      </div>
+                      <div
+                        className="col-xs-12"
+                      >
+                        <input
+                          checked={false}
+                          id="atlas-content-modeler-settings[usageTrackingEnabled]"
+                          name="atlas-content-modeler-settings[usageTracking]"
+                          onChange={[Function]}
+                          type="radio"
+                          value="1"
+                        />
+                        <label
+                          className="radio"
+                          htmlFor="atlas-content-modeler-settings[usageTrackingEnabled]"
+                        >
+                          Enabled
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div
+      className="tools-view container"
+    >
+      <div
+        className="d-flex justify-content-between"
+      >
+        <div
+          className="flex-grow-0 css-1y92ofa-Card"
+        >
+          <section
+            className="card-content"
+          >
+            <div
+              className="row"
+            >
+              <h3
+                className="mb-4"
+              >
+                Tools
+              </h3>
+              <div
+                className="col-xs-10 col-lg-4 order-1 order-lg-0"
+              >
+                <div
+                  className="d-flex"
+                >
+                  <div
+                    className="me-4"
+                  >
+                    <input
+                      accept=".json"
+                      className="hidden"
+                      id="file"
+                      onChange={[Function]}
+                      type="file"
+                    />
+                    <button
+                      className="css-2t3jgm-DarkButton"
+                      data-testid="export-models-button"
+                      onClick={[Function]}
+                      style={
+                        Object {
+                          "minWidth": "175px",
+                        }
+                      }
+                    >
+                      Import Models
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      className="css-2t3jgm-DarkButton"
+                      data-testid="export-models-button"
+                      onClick={[Function]}
+                      style={
+                        Object {
+                          "minWidth": "175px",
+                        }
+                      }
+                    >
+                      Export Models
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div
+          className="flex-grow-1 css-1y92ofa-Card"
+        >
+          <section
+            className="card-content"
+          >
+            <div
+              className="row"
+            >
+              <h3>
+                Resources
+              </h3>
+              <ul
+                className="list"
+              >
+                <li
+                  className=""
+                  style={
+                    Object {
+                      "borderLeft": "none",
+                      "boxShadow": "none",
+                    }
+                  }
+                >
+                  <a
+                    className=""
+                    href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform"
+                    rel="noreferrer"
+                    style={Object {}}
+                    target="_blank"
+                    title="ACM Feedback"
+                  >
+                    <span>
+                      ACM Feedback
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  style={
+                    Object {
+                      "borderLeft": "none",
+                      "boxShadow": "none",
+                    }
+                  }
+                >
+                  <a
+                    className=""
+                    href="https://wordpress.org/plugins/atlas-content-modeler/"
+                    rel="noreferrer"
+                    style={Object {}}
+                    target="_blank"
+                    title="ACM Plugin Home"
+                  >
+                    <span>
+                      ACM Plugin Home
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  style={
+                    Object {
+                      "borderLeft": "none",
+                      "boxShadow": "none",
+                    }
+                  }
+                >
+                  <a
+                    className=""
+                    href="https://github.com/wpengine/atlas-content-modeler"
+                    rel="noreferrer"
+                    style={Object {}}
+                    target="_blank"
+                    title="ACM Github"
+                  >
+                    <span>
+                      ACM Github
+                    </span>
+                  </a>
+                </li>
+              </ul>
+              <ul
+                className="list list-unstyled d-flex justify-content-start"
+              >
+                <li
+                  className=""
+                  style={
+                    Object {
+                      "borderLeft": "none",
+                      "boxShadow": "none",
+                    }
+                  }
+                >
+                  <a
+                    className=""
+                    href="https://www.facebook.com/wpengine"
+                    rel="noreferrer"
+                    style={
+                      Object {
+                        "marginRight": "10px",
+                        "textDecoration": "none",
+                      }
+                    }
+                    target="_blank"
+                    title="Facebook"
+                  >
+                    <span
+                      className="dashicons dashicons-facebook"
+                    />
+                  </a>
+                </li>
+                <li
+                  className=""
+                  style={
+                    Object {
+                      "borderLeft": "none",
+                      "boxShadow": "none",
+                    }
+                  }
+                >
+                  <a
+                    className=""
+                    href="https://twitter.com/wpengine"
+                    rel="noreferrer"
+                    style={
+                      Object {
+                        "marginRight": "10px",
+                        "textDecoration": "none",
+                      }
+                    }
+                    target="_blank"
+                    title="Twitter"
+                  >
+                    <span
+                      className="dashicons dashicons-twitter"
+                    />
+                  </a>
+                </li>
+                <li
+                  className=""
+                  style={
+                    Object {
+                      "borderLeft": "none",
+                      "boxShadow": "none",
+                    }
+                  }
+                >
+                  <a
+                    className=""
+                    href="https://www.linkedin.com/company/wpengine"
+                    rel="noreferrer"
+                    style={
+                      Object {
+                        "marginRight": "10px",
+                        "textDecoration": "none",
+                      }
+                    }
+                    target="_blank"
+                    title="LinkedIn"
+                  >
+                    <span
+                      className="dashicons dashicons-linkedin"
+                    />
+                  </a>
+                </li>
+                <li
+                  className=""
+                  style={
+                    Object {
+                      "borderLeft": "none",
+                      "boxShadow": "none",
+                    }
+                  }
+                >
+                  <a
+                    className=""
+                    href="https://www.youtube.com/channel/UCJeAEAxX69v24CUBZ0WBYSg"
+                    rel="noreferrer"
+                    style={
+                      Object {
+                        "marginRight": "10px",
+                        "textDecoration": "none",
+                      }
+                    }
+                    target="_blank"
+                    title="YouTube"
+                  >
+                    <span
+                      className="dashicons dashicons-youtube"
+                    />
+                  </a>
+                </li>
+                <li
+                  className=""
+                  style={
+                    Object {
+                      "borderLeft": "none",
+                      "boxShadow": "none",
+                    }
+                  }
+                >
+                  <a
+                    className=""
+                    href="https://www.instagram.com/wpengine/"
+                    rel="noreferrer"
+                    style={
+                      Object {
+                        "marginRight": "10px",
+                        "textDecoration": "none",
+                      }
+                    }
+                    target="_blank"
+                    title="Instagram"
+                  >
+                    <span
+                      className="dashicons dashicons-instagram"
+                    />
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
