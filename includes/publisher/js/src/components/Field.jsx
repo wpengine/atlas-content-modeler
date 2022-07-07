@@ -9,6 +9,7 @@ import Date from "./Date";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
+const { apiFetch } = wp;
 const defaultError = "This field is required";
 const integerRegex = /^[-+]?\d+/g;
 const decimalRegex = /^\-?(\d+\.?\d*|\d*\.?\d+)$/g;
@@ -16,6 +17,25 @@ const decimalRegex = /^\-?(\d+\.?\d*|\d*\.?\d+)$/g;
 export default function Field(props) {
 	const { field, modelSlug, first } = props;
 	const [errors, setErrors] = useState({});
+
+	function apiCheckUniqueEmail(postId, slug, email) {
+		return apiFetch({
+			path: "/wpe/atlas/validate-unique-email",
+			method: "GET",
+			_wpnonce: wpApiSettings.nonce,
+			data: { post_id: postId, slug, email },
+		})
+			.then((res) => {
+				if (res.success) {
+					console.log("response data : ", res.data);
+				}
+
+				console.log("Bad Response -- Response : ", res);
+			})
+			.catch((error) => {
+				console.log("apiFetch Error : ", error);
+			});
+	}
 
 	/**
 	 * Adjusts the custom error feedback messages displayed below fields based
@@ -95,6 +115,14 @@ export default function Field(props) {
 				error = __(
 					"Email must end with an allowed domain.",
 					"atlas-content-modeler"
+				);
+			}
+
+			if (field?.isUnique) {
+				apiCheckUniqueEmail(
+					field.id,
+					modelSlug,
+					event.target.value.trim()
 				);
 			}
 		}
