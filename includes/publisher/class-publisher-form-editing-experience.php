@@ -437,8 +437,11 @@ final class FormEditingExperience {
 		foreach ( $posted_values as $key => $value ) {
 			$key = sanitize_text_field( $key );
 
-			// Do not save empty values for new posts, but allow 0 values.
-			if ( ! $update && empty( $value ) && $value !== '0' && $value !== 0 ) {
+			// Delete or ignore empty values, but allow 0 values.
+			if ( empty( $value ) && $value !== '0' && $value !== 0 ) {
+				if ( $update ) {
+					delete_post_meta( $post_id, $key );
+				}
 				continue;
 			}
 
