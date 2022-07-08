@@ -768,15 +768,6 @@ class TestValidationFunctions extends Integration_TestCase {
 		validate_number_min_max_step( $value, $field, $message );
 	}
 
-	/**
-	 * @testWith
-	 * [ 4.2, "integer", "Number Field must be of type integer" ]
-	 */
-	public function test_validate_number_field_type_is_integer( $value, $number_type, $message ) {
-		$this->expectExceptionMessage( $message );
-		validate_number_type( $value, $number_type, $message );
-	}
-
 	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {
 		$this->expectException( Validation_Exception::class );
 		$this->expectExceptionMessage( 'The post object was not found' );
