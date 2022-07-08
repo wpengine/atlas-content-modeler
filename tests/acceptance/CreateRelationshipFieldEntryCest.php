@@ -343,10 +343,12 @@ class CreateRelationshipFieldEntryCest {
 		$i->waitForElementVisible( 'div.relation-model-card' );
 		$i->see( 'No Title', 'div.relation-model-card' );
 
-		// Remove the linked entry from the “rights” side and update it.
+		// Confirm that a link to edit the linked “left” appears in the related entry options list with the correct label.
 		$i->waitForElementVisible( '.options' );
 		$i->click( '.options' );
-		$i->waitForElementVisible( '.dropdown-content .delete' );
+		$i->see( 'Edit Left', '.dropdown-content .edit' );
+
+		// Remove the linked entry from the “rights” side and update it.
 		$i->click( '.dropdown-content .delete' );
 		$i->waitForElementNotVisible( '.options' );
 		$i->dontSee( 'No Title', 'div.relation-model-card' ); // Linked entry was removed.

@@ -25,7 +25,7 @@ import FileIcon from "./FileIcon";
 import ImgIcon from "./ImgIcon";
 import AudioIcon from "./AudioIcon";
 
-export default function Icon({ type, size, noCircle }) {
+export default function Icon({ type, size, noCircle, width, height, color }) {
 	switch (type) {
 		case "add":
 			return <AddIcon noCircle={noCircle} size={size} />;
@@ -42,7 +42,9 @@ export default function Icon({ type, size, noCircle }) {
 		case "error":
 			return <ErrorIcon size={size} />;
 		case "external-link":
-			return <ExternalLinkIcon />;
+			return (
+				<ExternalLinkIcon width={width} height={height} color={color} />
+			);
 		case "info":
 			return <InfoIcon />;
 		case "link":

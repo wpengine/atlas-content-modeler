@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import RelationshipModal from "./modal";
 import { sprintf, __ } from "@wordpress/i18n";
 import Entries from "./Entries";
 import Loader from "./Loader";
 import LinkButton from "./LinkButton";
+import usePageVisibility from "../../../../../shared-assets/js/hooks/usePageVisibility";
 const { wp } = window;
 const { apiFetch } = wp;
 
@@ -17,6 +18,8 @@ export default function Relationship({ field, modelSlug }) {
 		field.value.split(",").filter(Boolean)
 	);
 	const { models } = atlasContentModelerFormEditingExperience;
+	const pageIsVisible = usePageVisibility();
+	const pageLostFocus = useRef(false);
 
 	/**
 	 * Retrieves related content information for display.
@@ -59,6 +62,28 @@ export default function Relationship({ field, modelSlug }) {
 			return response.json();
 		});
 	}
+
+	/**
+	 * Refetches entry data if the page loses and regains focus. The user may
+	 * edit or remove a related entry in another tab. Refetching ensures we
+	 * display updated titles or remove deleted entries when a user returns.
+	 */
+	useEffect(() => {
+		if (!pageIsVisible) {
+			pageLostFocus.current = true;
+		}
+
+		if (
+			pageLostFocus.current &&
+			pageIsVisible &&
+			!relationshipModalIsOpen
+		) {
+			pageLostFocus.current = false;
+			(async () => {
+				getEntries().then(setEntryInfo);
+			})();
+		}
+	}, [pageIsVisible, pageLostFocus, relationshipModalIsOpen]);
 
 	/**
 	 * Gets post information to display to the user outside of the modal.
