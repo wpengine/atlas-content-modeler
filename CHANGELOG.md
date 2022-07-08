@@ -1,5 +1,9 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Fixed
+- Fields will now save empty values when existing content is removed.
+
 ## 0.19.0 - 2022-06-29
 ### Added
 - The `wp acm blueprint import` WP-CLI command can now take a path to a local directory containing an `acm.json` blueprint manifest.

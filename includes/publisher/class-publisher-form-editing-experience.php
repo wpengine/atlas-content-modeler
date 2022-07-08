@@ -72,7 +72,7 @@ final class FormEditingExperience {
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 		add_action( 'edit_form_after_title', [ $this, 'render_app_container' ] );
-		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
+		add_action( 'save_post', [ $this, 'save_post' ], 10, 3 );
 		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
@@ -313,8 +313,9 @@ final class FormEditingExperience {
 	 *
 	 * @param int     $post_id The post ID.
 	 * @param WP_Post $post    The post object being saved.
+	 * @param bool    $update     True if the post is being updated (rather than created).
 	 */
-	public function save_post( int $post_id, WP_Post $post ): void {
+	public function save_post( int $post_id, WP_Post $post, bool $update ): void {
 		if ( empty( $_POST['atlas-content-modeler'] ) || empty( $_POST['atlas-content-modeler'][ $post->post_type ] ) ) {
 			return;
 		}
@@ -436,8 +437,11 @@ final class FormEditingExperience {
 		foreach ( $posted_values as $key => $value ) {
 			$key = sanitize_text_field( $key );
 
-			// Do not save empty values, but allow 0 values.
+			// Delete or ignore empty values, but allow 0 values.
 			if ( empty( $value ) && $value !== '0' && $value !== 0 ) {
+				if ( $update ) {
+					delete_post_meta( $post_id, $key );
+				}
 				continue;
 			}
 
