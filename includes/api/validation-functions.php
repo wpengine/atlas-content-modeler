@@ -462,11 +462,19 @@ function validate_email_field( $value, array $field ): void {
 function validate_number_type( $value, $number_type, string $message = '' ): void {
 	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
 
-	if ( $number_type === 'integer' && ! filter_var( $value, FILTER_VALIDATE_INT ) ) {
+	if (
+		$number_type === 'integer'
+		&& $value !== 0 // Accept 0 as a valid integer.
+		&& is_float( $value )
+	) {
 		throw new Validation_Exception( $message );
 	}
 
-	if ( $number_type === 'decimal' && floor( $value ) !== $value ) {
+	if (
+		$number_type === 'decimal'
+		&& $value !== 0 // Accept 0 as a valid decimal. Helps with JSON responses that don't strictly type 0 as 0.00.
+		&& ! is_float( $value )
+	) {
 		throw new Validation_Exception( $message );
 	}
 }
