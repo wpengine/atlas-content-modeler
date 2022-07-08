@@ -449,13 +449,18 @@ function validate_email_field( $value, array $field ): void {
 }
 
 /**
- * Validate for valid number type.
+ * Validate the number type.
+ *
+ * Will not throw for invalid numeric integer strings such as "test".
+ * Use `validate_number()` to validate a string as numeric.
+ *
+ * The zero values 0, 0.0, -0 and -0.0 are considered valid for all types.
  *
  * @param mixed  $value The value.
  * @param mixed  $number_type The number type.
  * @param string $message Optional. The error message.
  *
- * @throws Validation_Exception Exception when value is invalid.
+ * @throws Validation_Exception Exception when value is the invalid type.
  *
  * @return void
  */
