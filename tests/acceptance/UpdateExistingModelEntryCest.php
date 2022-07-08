@@ -2,7 +2,7 @@
 
 class UpdateExistingModelEntryCest {
 
-	public function i_can_update_an_existing_model_entry( AcceptanceTester $i ) {
+	public function _before( \AcceptanceTester $i ) {
 		$i->maximizeWindow();
 		$i->loginAsAdmin();
 		$content_model = $i->haveContentModel( 'goose', 'geese', [ 'description' => 'Geese go honk' ] );
@@ -65,7 +65,9 @@ class UpdateExistingModelEntryCest {
 
 		$i->click( 'Publish', '#publishing-action' );
 		$i->wait( 2 );
+	}
 
+	public function i_can_update_an_existing_model_entry( AcceptanceTester $i ) {
 		// Update the entry.
 		$i->fillField( [ 'name' => 'atlas-content-modeler[goose][color]' ], 'Green' );
 		$i->switchToIFrame( '#field-description iframe' );
@@ -92,5 +94,20 @@ class UpdateExistingModelEntryCest {
 		$i->click( 'Update', '#publishing-action' );
 		$i->wait( 2 );
 		$i->see( 'Nonce verification failed when saving your content. Please try again.' );
+	}
+
+	public function i_can_clear_fields_in_an_existing_model_entry( AcceptanceTester $i ) {
+			// Clear some fields.
+			$i->fillField( [ 'name' => 'atlas-content-modeler[goose][color]' ], '' );
+			$i->fillField( [ 'name' => 'atlas-content-modeler[goose][age]' ], '' );
+			$i->fillField( [ 'name' => 'atlas-content-modeler[goose][dateOfBirth]' ], '' );
+
+			$i->click( 'Update', '#publishing-action' );
+			$i->wait( 2 );
+
+			// Confirm fields are still cleared after updating.
+			$i->seeInField( [ 'name' => 'atlas-content-modeler[goose][color]' ], '' );
+			$i->seeInField( [ 'name' => 'atlas-content-modeler[goose][age]' ], '' );
+			$i->seeInField( [ 'name' => 'atlas-content-modeler[goose][dateOfBirth]' ], '' );
 	}
 }
