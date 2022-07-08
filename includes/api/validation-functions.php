@@ -449,24 +449,57 @@ function validate_email_field( $value, array $field ): void {
 }
 
 /**
- * Validate for valid number type.
+ * Validate the number type.
  *
- * @param mixed  $value The value.
+ * Type-checks numbers and numeric strings.
+ *
+ * Will not throw for strings such as "test" passed as integer types.
+ * Use `validate_number()` to validate a string as numeric.
+ *
+ * The zero values 0, 0.0, -0 and -0.0 and their string equivalents are
+ * considered valid for all types.
+ *
+ * @param mixed  $value The value as a number or string.
  * @param mixed  $number_type The number type.
  * @param string $message Optional. The error message.
  *
- * @throws Validation_Exception Exception when value is invalid.
+ * @throws Validation_Exception Exception when value is the invalid type.
  *
  * @return void
  */
 function validate_number_type( $value, $number_type, string $message = '' ): void {
-	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
+	$message           = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
+	$is_numeric_string = is_string( $value ) && is_numeric( $value );
 
-	if ( $number_type === 'integer' && ! filter_var( $value, FILTER_VALIDATE_INT ) ) {
+	/**
+	 * Accept zero values for integers and decimals. Helps with JSON responses
+	 * that do not encode 0 correctly as 0.00 or vice versa.
+	 */
+	if (
+		$value === 0
+		|| $value === 0.0
+		|| $is_numeric_string && (float) $value === 0.0
+	) {
+		return;
+	}
+
+	if (
+		$number_type === 'integer'
+		&& (
+			is_float( $value )
+			|| $is_numeric_string && str_contains( $value, '.' )
+		)
+	) {
 		throw new Validation_Exception( $message );
 	}
 
-	if ( $number_type === 'decimal' && floor( $value ) !== $value ) {
+	if (
+		$number_type === 'decimal'
+		&& (
+			! $is_numeric_string && ! is_float( $value )
+			|| $is_numeric_string && ! str_contains( $value, '.' )
+		)
+	) {
 		throw new Validation_Exception( $message );
 	}
 }
