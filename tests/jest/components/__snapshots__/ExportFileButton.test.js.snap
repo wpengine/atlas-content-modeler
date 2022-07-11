@@ -4,6 +4,11 @@ exports[`ExportFileButton tests Renders a matching snapshot 1`] = `
 <DarkButton
   data-testid="export-models-button"
   onClick={[Function]}
+  style={
+    Object {
+      "minWidth": "175px",
+    }
+  }
 >
   Export
 </DarkButton>
