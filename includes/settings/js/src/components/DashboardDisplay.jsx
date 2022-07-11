@@ -3,8 +3,6 @@ import { sprintf, __ } from "@wordpress/i18n";
 import { showError, showSuccess } from "../toasts";
 import { insertSidebarMenuItem } from "../utils";
 import { useHistory } from "react-router-dom";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
 import ExportFileButton from "./ExportFileButton";
 import ImportFileButton from "./ImportFileButton";
 import { Card } from "../../../../shared-assets/js/components/card";
@@ -12,7 +10,7 @@ import LinkList from "./LinkList";
 import { saveUsageTrackingSetting } from "../settings.service";
 import * as toolService from "../tools.service";
 
-export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
+export default function DashboardDisplay({ taxonomies }) {
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled
 	);
@@ -424,30 +422,6 @@ export default function DashboardDisplay({ modelChartOptions, taxonomies }) {
 
 			<div className="tools-view container">
 				<div className="d-flex justify-content-between">
-					<Card>
-						{atlasContentModeler.stats.modelsCounts.length > 0 && (
-							<HighchartsReact
-								highcharts={Highcharts}
-								options={modelChartOptions}
-							/>
-						)}
-
-						{!atlasContentModeler.stats.modelsCounts.length > 0 && (
-							<p>
-								{__(
-									"No chart data to display. ",
-									"atlas-content-modeler"
-								)}
-								<a href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model">
-									{__(
-										"Create your first model!",
-										"atlas-content-modeler"
-									)}
-								</a>
-							</p>
-						)}
-					</Card>
-
 					<Card className="flex-grow-1">
 						<form>
 							<div className="row">
