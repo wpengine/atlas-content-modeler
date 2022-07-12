@@ -509,12 +509,7 @@ export default function DashboardDisplay({ taxonomies }) {
 							</div>
 						</form>
 					</Card>
-				</div>
-			</div>
-
-			<div className="tools-view container">
-				<div className="d-flex justify-content-between">
-					<Card className="flex-grow-0">
+					<Card className="flex-grow-1">
 						<section className="card-content">
 							<div className="row">
 								<h3 className="mb-4">
@@ -524,7 +519,10 @@ export default function DashboardDisplay({ taxonomies }) {
 									<div className="d-flex">
 										<div className="me-4">
 											<ImportFileButton
-												buttonTitle="Import Models"
+												buttonTitle={__(
+													"Import Models",
+													"atlas-content-modeler"
+												)}
 												allowedMimeTypes=".json"
 												callbackFn={createModels}
 												fileUploaderRef={
@@ -534,7 +532,10 @@ export default function DashboardDisplay({ taxonomies }) {
 										</div>
 										<div>
 											<ExportFileButton
-												buttonTitle="Export Models"
+												buttonTitle={__(
+													"Export Models",
+													"atlas-content-modeler"
+												)}
 												fileTitle={`acm-models-export-${getFormattedDateTime()}.json`}
 												fileType="json"
 												callbackFn={
@@ -547,7 +548,6 @@ export default function DashboardDisplay({ taxonomies }) {
 							</div>
 						</section>
 					</Card>
-
 					<Card className="flex-grow-1">
 						<section className="card-content">
 							<div className="row">
