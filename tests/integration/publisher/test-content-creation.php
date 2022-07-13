@@ -34,7 +34,7 @@ class TestContentCreation extends WP_UnitTestCase {
 		update_registered_content_types( $this->models );
 
 		// @todo why is this not running automatically?
-		do_action( 'init' );
+		// do_action( 'init' );
 
 		$this->all_registered_post_types = get_post_types( [], 'objects' );
 
