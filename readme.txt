@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.19.0
+Stable tag: 0.19.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,6 +53,15 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+
+= 0.19.1 - 2022-07-13 =
+
+* **Added:** Related entries in relationship fields now have an “Edit” link to view or edit them in a new tab.
+* **Fixed:** Fields will now save empty values when existing content is removed.
+* **Fixed:** 0 can now be entered into number fields via the `insert_model_entry()` PHP function.
+* **Fixed:** Decimals can now be entered into number fields via the `insert_model_entry()` PHP function.
+* **Fixed:** You can now edit the case of model singular and plural names.
+
 
 = 0.19.0 - 2022-06-29 =
 
