@@ -103,6 +103,15 @@ function Field({
 									<div className="col-sm-3 col-12 text-center text-sm-start">
 										<div className="widest mb-2 mb-sm-0">
 											<strong>{data.name}</strong>
+											{"  "}
+											<span
+												title={__(
+													"API Identifier",
+													"atlas-content-modeler"
+												)}
+											>
+												({data.slug})
+											</span>
 										</div>
 									</div>
 									<div className="col-sm-6 col-12 text-center text-sm-end">
