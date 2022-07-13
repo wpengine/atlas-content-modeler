@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.19.1 - 2022-07-13
 ### Added
 - Related entries in relationship fields now have an “Edit” link to view or edit them in a new tab.
 
