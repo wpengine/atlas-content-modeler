@@ -8,6 +8,7 @@
 - Fields will now save empty values when existing content is removed.
 - 0 can now be entered into number fields via the `insert_model_entry()` PHP function.
 - Decimals can now be entered into number fields via the `insert_model_entry()` PHP function.
+- You can now edit the case of model singular and plural names.
 
 ## 0.19.0 - 2022-06-29
 ### Added
