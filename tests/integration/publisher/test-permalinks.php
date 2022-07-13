@@ -31,8 +31,6 @@ class TestPermalinks extends WP_UnitTestCase {
 
 		update_registered_content_types( $this->get_models() );
 
-		do_action( 'init' );
-
 		$this->post_ids = $this->get_post_ids();
 	}
 
