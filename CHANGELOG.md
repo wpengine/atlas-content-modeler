@@ -3,6 +3,7 @@
 ## Unreleased
 ### Added
 - Related entries in relationship fields now have an “Edit” link to view or edit them in a new tab.
+- Added model field API Identifier to model field list.
 
 ### Fixed
 - Fields will now save empty values when existing content is removed.
