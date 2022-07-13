@@ -100,8 +100,11 @@ function stats_relationships(): array {
 	global $wpdb;
 	$post_table_name = esc_sql( $wpdb->prefix . 'posts' );
 
+	$total_connections = $db->get_results( "SELECT COUNT(*) as total_connections FROM {$p2p_table_name}", ARRAY_A );
+	$total_connections = ! empty( $total_connections[0]['total_connections'] ) ? (int) $total_connections[0]['total_connections'] : 0;
+
 	$results = [
-		'totalRelationshipConnections' => (int) $db->get_results( "SELECT COUNT(*) as total_connections FROM {$p2p_table_name}", ARRAY_A )[0]['total_connections'] ?: 0,
+		'totalRelationshipConnections' => $total_connections,
 		'mostConnectedEntries'         => $db->get_results( "SELECT p2p.id1, p2p.id2, COUNT(*) as total_connections, wp_posts.post_type, wp_posts.post_title FROM {$p2p_table_name} as p2p LEFT JOIN {$post_table_name} as wp_posts ON wp_posts.ID = p2p.id1 GROUP BY `id1` ORDER BY total_connections DESC", ARRAY_A ) ?? [],
 	];
 
