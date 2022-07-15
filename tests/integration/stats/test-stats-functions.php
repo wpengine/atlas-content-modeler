@@ -17,15 +17,23 @@ class StatsFunctionTests extends WP_UnitTestCase {
 	public function set_up(): void {
 		parent::set_up();
 		wp_set_current_user( 1 );
+
+		global $wpdb;
+		$option_name = $wpdb->prefix . 'acm_post_to_post_schema_version';
+		delete_option( $option_name );
+
 		update_registered_content_types( $this->mock_models() );
 		update_option( 'atlas_content_modeler_taxonomies', $this->mock_taxonomies() );
+		WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register();
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 		do_action( 'init' );
 	}
 
 	public function tear_down(): void {
-		parent::tear_down();
-		update_registered_content_types( [] );
+		delete_option( 'atlas_content_modeler_post_types' );
+		delete_option( 'atlas_content_modeler_taxonomies' );
 		wp_set_current_user( null );
+		parent::tear_down();
 	}
 
 	public function test_stats_model_counts_returns_expected_counts(): void {
