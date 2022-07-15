@@ -701,16 +701,8 @@ exports[`App Renders a matching snapshot 1`] = `
             </div>
           </form>
         </div>
-      </div>
-    </div>
-    <div
-      className="tools-view container"
-    >
-      <div
-        className="d-flex justify-content-between"
-      >
         <div
-          className="flex-grow-0 css-1y92ofa-Card"
+          className="flex-grow-1 css-1y92ofa-Card"
         >
           <section
             className="card-content"
