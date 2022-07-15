@@ -37,25 +37,19 @@ class TestPublisherScriptDependencies extends WP_UnitTestCase {
 //		do_action( 'admin_enqueue_scripts', 'post.php' );
 	}
 
-//	public function tear_down() {
-//		parent::tear_down();
-//		wp_set_current_user( null );
-//		delete_option( 'atlas_content_modeler_post_types' );
-//	}
-//
-//	public function test_wp_i18n_script_is_enqueued_on_the_publisher_view(): void {
-//		self::assertTrue( wp_script_is( 'wp-i18n', 'enqueued' ) );
-//	}
-//
-//	public function test_wp_api_fetch_script_is_enqueued_on_the_publisher_view(): void {
-//		self::assertTrue( wp_script_is( 'wp-api-fetch', 'enqueued' ) );
-//	}
-//
-//	public function test_acm_feedback_banner_script_is_enqueued_on_the_publisher_view(): void {
-//		self::assertTrue( wp_script_is( 'atlas-content-modeler-feedback-banner', 'enqueued' ) );
-//	}
-//
-//	public function test_acm_pubex_script_is_enqueued(): void {
-//		self::assertTrue( wp_script_is( 'atlas-content-modeler-form-editing-experience', 'enqueued' ) );
-//	}
+	public function test_wp_i18n_script_is_enqueued_on_the_publisher_view(): void {
+		self::assertTrue( wp_script_is( 'wp-i18n', 'enqueued' ) );
+	}
+
+	public function test_wp_api_fetch_script_is_enqueued_on_the_publisher_view(): void {
+		self::assertTrue( wp_script_is( 'wp-api-fetch', 'enqueued' ) );
+	}
+
+	public function test_acm_feedback_banner_script_is_enqueued_on_the_publisher_view(): void {
+		self::assertTrue( wp_script_is( 'atlas-content-modeler-feedback-banner', 'enqueued' ) );
+	}
+
+	public function test_acm_pubex_script_is_enqueued(): void {
+		self::assertTrue( wp_script_is( 'atlas-content-modeler-form-editing-experience', 'enqueued' ) );
+	}
 }
