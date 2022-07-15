@@ -71,13 +71,13 @@ function atlas_content_modeler_loader(): void {
 		\WP_CLI::add_command( 'acm blueprint', 'WPE\AtlasContentModeler\WP_CLI\Blueprint' );
 	}
 
-	\WPE\AtlasContentModeler\VersionUpdater\update_plugin();
-
-	new \WPE\AtlasContentModeler\FormEditingExperience();
-
 	// Bootstrap relationships library.
 	acm_content_connect_autoloader();
 	\WPE\AtlasContentModeler\ContentConnect\Plugin::instance();
+
+	\WPE\AtlasContentModeler\VersionUpdater\update_plugin();
+
+	new \WPE\AtlasContentModeler\FormEditingExperience();
 }
 
 /**
