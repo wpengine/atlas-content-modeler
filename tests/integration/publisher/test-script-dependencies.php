@@ -22,19 +22,30 @@ class TestPublisherScriptDependencies extends WP_UnitTestCase {
 	];
 
 	public function set_up() {
-		wp_set_current_user( 1 );
-
 		parent::set_up();
+
+		wp_set_current_user( 1 );
 
 		update_registered_content_types( $this->models );
 
-		$pubex = new FormEditingExperience();
-		$pubex->bootstrap();
+		new FormEditingExperience();
 
 		set_current_screen( 'post.php' );
 		global $current_screen;
 		$current_screen->post_type = 'recipe';
-//		do_action( 'admin_enqueue_scripts', 'post.php' );
+
+		global $wpdb;
+		$option_name = $wpdb->prefix . 'acm_post_to_post_schema_version';
+		delete_option( $option_name );
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
+		do_action( 'init' );
+		do_action( 'admin_enqueue_scripts', 'post.php' );
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+		wp_set_current_user( null );
+		delete_option( 'atlas_content_modeler_post_types' );
 	}
 
 	public function test_wp_i18n_script_is_enqueued_on_the_publisher_view(): void {
