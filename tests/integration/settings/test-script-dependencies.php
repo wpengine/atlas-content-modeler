@@ -14,8 +14,13 @@ class TestSettingsScriptDependencies extends WP_UnitTestCase {
 
 		wp_set_current_user( 1 );
 
-		set_current_screen( 'admin.php' );
+		global $wpdb;
+		$option_name = $wpdb->prefix . 'acm_post_to_post_schema_version';
+		delete_option( $option_name );
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
+		set_current_screen( 'admin.php' );
+		do_action( 'init' );
 		do_action( 'admin_enqueue_scripts', 'toplevel_page_atlas-content-modeler' );
 	}
 
