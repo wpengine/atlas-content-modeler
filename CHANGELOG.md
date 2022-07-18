@@ -4,6 +4,7 @@
 ### Added
 - Related entries in relationship fields now have an “Edit” link to view or edit them in a new tab.
 - Added model field API Identifier to model field list.
+- Added ability to set email type as unique via the Advanced Settings.
 
 ### Fixed
 - Fields will now save empty values when existing content is removed.
