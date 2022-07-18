@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import MediaUploader from "./MediaUploader";
 import RichText from "./RichText";
 import Relationship from "./relationship";
@@ -10,30 +10,47 @@ import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
 const { apiFetch } = wp;
+const { debounce } = lodash;
+
 const defaultError = "This field is required";
 const integerRegex = /^[-+]?\d+/g;
 const decimalRegex = /^\-?(\d+\.?\d*|\d*\.?\d+)$/g;
+const debounceEmailUniqueDelay = 350;
 
 export default function Field(props) {
 	const { field, modelSlug, first } = props;
 	const [errors, setErrors] = useState({});
 
-	function apiCheckUniqueEmail(postId, slug, email) {
-		return apiFetch({
-			path: "/wpe/atlas/validate-unique-email",
-			method: "GET",
-			_wpnonce: wpApiSettings.nonce,
-			data: { post_id: postId, slug, email },
-		})
-			.then((res) => {
-				if (res.success) {
-					console.log("response data : ", res.data);
-				}
+	const debounceCheckUniqueEmail = useCallback(
+		debounce(apiCheckUniqueEmail, debounceEmailUniqueDelay),
+		[]
+	);
 
-				console.log("Bad Response -- Response : ", res);
+	function apiCheckUniqueEmail(slug, email, event) {
+		const postId = document.getElementById("post_ID").value;
+		const data = { post_id: postId, slug, email };
+
+		return apiFetch({
+			path: `/wpe/atlas/validate-unique-email`,
+			method: "POST",
+			_wpnonce: wpApiSettings.nonce,
+			data,
+		})
+			.then((response) => {
+				if (response?.data) {
+					event.target.setCustomValidity("");
+					return response.data;
+				}
 			})
 			.catch((error) => {
-				console.log("apiFetch Error : ", error);
+				if (
+					error?.code === "acm_invalid_unique_email" &&
+					error?.message
+				) {
+					const errorMessage = __("Field must be unique.");
+					event.target.setCustomValidity(errorMessage);
+					setErrors({ ...errors, [field.slug]: errorMessage });
+				}
 			});
 	}
 
@@ -118,12 +135,14 @@ export default function Field(props) {
 				);
 			}
 
-			if (field?.isUnique) {
-				apiCheckUniqueEmail(
-					field.id,
-					modelSlug,
-					event.target.value.trim()
+			if (field?.isUnique && event.target.validity.valid) {
+				debounceCheckUniqueEmail(
+					field.slug,
+					event.target.value.trim(),
+					event
 				);
+			} else {
+				event.target.setCustomValidity("");
 			}
 		}
 

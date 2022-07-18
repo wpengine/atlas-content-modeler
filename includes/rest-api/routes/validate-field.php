@@ -11,6 +11,7 @@ namespace WPE\AtlasContentModeler\REST_API\ValidateField;
 
 use WP_Error;
 use WP_REST_Request;
+use WP_REST_Server;
 
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_rest_routes' );
 
@@ -22,7 +23,7 @@ function register_rest_routes(): void {
 		'wpe',
 		'/atlas/validate-unique-email',
 		[
-			'methods'             => 'GET',
+			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => __NAMESPACE__ . '\dispatch_get_validate_unique_email',
 			'permission_callback' => static function () {
 				return current_user_can( 'manage_options' );
@@ -39,17 +40,13 @@ function register_rest_routes(): void {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_get_validate_unique_email( WP_REST_Request $request ) {
-	$params = $request->get_params();
+	$post_id = $request->get_param( 'post_id' );
+	$slug    = $request->get_param( 'slug' );
+	$email   = $request->get_param( 'email' );
 
-	if ( empty( $params['post_id'] ) || empty( $params['slug'] ) || empty( $params['email'] ) ) {
-		return new WP_Error(
-			'acm_missing_required_parameters',
-			__( 'Email, post_id, and slug are required parameters.', 'atlas-content-modeler' )
-		);
+	if ( null === $post_id && null === $slug && null === $email ) {
+		return new WP_Error( 'acm_missing_fields', __( 'post_id, slug, and email are required parameters.', 'atlas-content-modeler' ) );
 	}
-	$post_id = $params['post_id'];
-	$slug    = $params['slug'];
-	$email   = $params['email'];
 
 	global $wpdb;
 
@@ -71,17 +68,21 @@ function dispatch_get_validate_unique_email( WP_REST_Request $request ) {
 	// phpcs:enable
 
 	if ( $identical_emails > 0 ) {
-		return rest_ensure_response(
-			[
-				'data' => false,
-			]
-		);
-	} else {
-		return rest_ensure_response(
-			[
-				'data' => true,
-			]
+		return new WP_Error(
+			'acm_invalid_unique_email',
+			sprintf(
+				// translators: 1: field name 2: submitted email address value.
+				__( 'The email field %1$s must be unique. Another entry uses %2$s.', 'atlas-content-modeler' ),
+				$slug,
+				$email
+			)
 		);
 	}
+
+	return rest_ensure_response(
+		[
+			'data' => true,
+		]
+	);
 }
 
