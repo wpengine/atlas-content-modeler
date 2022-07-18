@@ -188,6 +188,7 @@ function register_plugin_settings(): void {
 		'atlas_content_modeler_usage_tracking',
 		[
 			'type'              => 'string',
+			'description'       => 'Opt into anonymous usage tracking to help us make Atlas Content Modeler better.',
 			'sanitize_callback' => 'sanitize_text_field',
 			'show_in_rest'      => true,
 			'default'           => '0',
