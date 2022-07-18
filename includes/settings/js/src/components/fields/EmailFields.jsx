@@ -36,7 +36,7 @@ const EmailFields = ({ register, data, editing, fieldId }) => {
 						onChange={() =>
 							setShowRepeatableEmail(!showRepeatableEmail)
 						}
-						disabled={editing || showTitle}
+						disabled={editing || showTitle || isUnique}
 					/>
 					<label
 						htmlFor={`is-repeatable-email-${fieldId}`}
@@ -81,6 +81,7 @@ const EmailFields = ({ register, data, editing, fieldId }) => {
 					ref={register}
 					onChange={() => setIsUnique(!isUnique)}
 					defaultChecked={data?.isUnique}
+					disabled={showRepeatableEmail}
 				/>
 				<label
 					htmlFor={`is-unique-${fieldId}`}
