@@ -67,7 +67,9 @@ function atlas_content_modeler_loader(): void {
 
 	if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . '/wp-cli/class-blueprint.php';
+		include_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . '/wp-cli/class-reset.php';
 		\WP_CLI::add_command( 'acm blueprint', 'WPE\AtlasContentModeler\WP_CLI\Blueprint' );
+		\WP_CLI::add_command( 'acm reset', new WPE\AtlasContentModeler\WP_CLI\Reset() );
 	}
 
 	\WPE\AtlasContentModeler\VersionUpdater\update_plugin();
