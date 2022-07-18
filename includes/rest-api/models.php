@@ -229,7 +229,7 @@ function update_model( string $post_type_slug, array $args ) {
 	}
 
 	if (
-		model_property_changed( $post_type_slug, 'singular', $args['singular'] )
+		model_property_changed( $post_type_slug, 'singular', $args['singular'], true )
 		&& root_type_exists( $args['singular'] )
 	) {
 		return new WP_Error(
@@ -240,7 +240,7 @@ function update_model( string $post_type_slug, array $args ) {
 	}
 
 	if (
-		model_property_changed( $post_type_slug, 'plural', $args['plural'] )
+		model_property_changed( $post_type_slug, 'plural', $args['plural'], true )
 		&& root_type_exists( $args['plural'] )
 	) {
 		return new WP_Error(
@@ -360,10 +360,21 @@ function delete_model( string $post_type_slug ) {
  * @param string $slug The model ID.
  * @param string $property The property to check.
  * @param mixed  $new_value The property's new value.
+ * @param bool   $ignore_case Optionally ignore case for string comparisons. Default false.
  * @return bool
  */
-function model_property_changed( string $slug, string $property, $new_value ): bool {
+function model_property_changed( string $slug, string $property, $new_value, bool $ignore_case = false ): bool {
 	$acm_models = get_registered_content_types();
+	$old_value  = $acm_models[ $slug ][ $property ] ?? null;
 
-	return ( $acm_models[ $slug ][ $property ] ?? null ) !== $new_value;
+	if (
+		$ignore_case
+		&& is_string( $new_value )
+		&& is_string( $old_value )
+		&& strtolower( $old_value ) === strtolower( $new_value )
+	) {
+		return false;
+	}
+
+	return $old_value !== $new_value;
 }

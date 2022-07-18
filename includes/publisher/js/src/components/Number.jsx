@@ -1,5 +1,7 @@
 /* global atlasContentModelerFormEditingExperience */
+/** @jsx jsx */
 import React, { useState, useRef } from "react";
+import { jsx, css } from "@emotion/react";
 import Icon from "../../../../components/icons";
 import { __ } from "@wordpress/i18n";
 import AddIcon from "../../../../components/icons/AddIcon";
@@ -137,6 +139,16 @@ export default function Number({
 																: "field"
 														} d-flex flex-row repeater-input mt-0 flex-fill d-lg-flex`}
 													>
+														<span
+															className="px-1 me-2"
+															css={css`
+																font-family: "Open Sans",
+																	sans-serif;
+																font-weight: bold;
+															`}
+														>
+															{index + 1}
+														</span>
 														<div className="me-lg-1 repeater-input-container flex-fill">
 															<input
 																ref={

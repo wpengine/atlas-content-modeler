@@ -1,6 +1,26 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.19.1 - 2022-07-13
+### Added
+- Related entries in relationship fields now have an “Edit” link to view or edit them in a new tab.
+- Added model field API Identifier to model field list.
+
+### Fixed
+- Fields will now save empty values when existing content is removed.
+- 0 can now be entered into number fields via the `insert_model_entry()` PHP function.
+- Decimals can now be entered into number fields via the `insert_model_entry()` PHP function.
+- You can now edit the case of model singular and plural names.
+
+## 0.19.0 - 2022-06-29
+### Added
+- The `wp acm blueprint import` WP-CLI command can now take a path to a local directory containing an `acm.json` blueprint manifest.
+- Developers working on the ACM plugin can now use the `wp acm blueprint import demo` WP-CLI command to import demo models with different field configurations.
+- Added field indexes to repeatable fields.
+
+### Fixed
+- Number fields with '0' values are now saved correctly.
+
+## 0.18.0 - 2022-06-16
 ### Changed
 - Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
 - Field validation now returns translatable errors.
@@ -8,10 +28,12 @@
 - Text field entries via CRUD are now validated for min and max characters.
 - Text field entries created via the PHP API are now validated for minRepeatable and maxRepeatable.
 - Extended timeout for `wp acm blueprint import` command from 5 seconds to 15 seconds.
+- Number field entries via CRUD are now validated for min, max, and step values as well as type.
 
 ### Fixed
 - Issue where adding a new repeating field to an existing model schema could break GraphQL queries under certain conditions.
 - Empty field values are no longer saved to the database.
+- Relationship fields no longer resolve as “null” in GraphQL results for models with different singular names and API identifiers.
 
 ### Added
 - Added email validation when using insert_model_entry() crud function.
@@ -20,6 +42,7 @@
 - Added validation for repeatable date fields for insert_model_entry() crud function.
 - Added validation for repeatable number fields for insert_model_entry() crud function.
 - Added validation for repeatable email fields for insert_model_entry() crud function.
+- Added documentation for crud functions.
 
 ## 0.17.0 - 2022-05-05
 ### Added

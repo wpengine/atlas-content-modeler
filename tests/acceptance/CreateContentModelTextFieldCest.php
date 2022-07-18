@@ -21,6 +21,7 @@ class CreateContentModelTextFieldCest {
 
 		$i->see( 'Text', '.field-list div.type' );
 		$i->see( 'Color', '.field-list div.widest' );
+		$i->see( 'color', '.field-list div.widest' );
 	}
 
 	/**

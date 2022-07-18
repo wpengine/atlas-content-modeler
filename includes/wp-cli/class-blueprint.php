@@ -58,39 +58,67 @@ class Blueprint {
 	 * ## OPTIONS
 	 *
 	 * <path>
-	 * : The URL or local path of the blueprint zip file.
+	 * : The URL or local path of the blueprint zip file, or local path to the
+	 * blueprint folder containing the acm.json manifest file. Local paths must
+	 * be absolute.
 	 *
 	 * [--skip-cleanup]
 	 * : Skips removal of the blueprint zip and manifest files after a
 	 * successful import. Useful when testing blueprints or to leave a
-	 * record of content and files that were installed.
+	 * record of content and files that were installed. Has no effect
+	 * if the `path` passed to `blueprint import` is a local directory
+	 * and not a zip file.
 	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp acm blueprint import https://example.com/path/to/blueprint.zip
+	 *     wp acm blueprint import /local/path/to/blueprint.zip
+	 *     wp acm blueprint import /local/path/to/blueprint-folder/
 	 *
 	 * @param array $args Options passed to the command.
 	 * @param array $assoc_args Optional flags passed to the command.
 	 */
 	public function import( $args, $assoc_args ) {
-		list( $path ) = $args;
+		list( $path )      = $args;
+		$path_is_directory = pathinfo( $path, PATHINFO_EXTENSION ) === '';
 
-		\WP_CLI::log( 'Fetching zip.' );
-		$zip_file = get_blueprint( $path );
-		if ( is_wp_error( $zip_file ) ) {
-			\WP_CLI::error( $zip_file->get_error_message() );
+		if ( $path === 'demo' ) {
+			\WP_CLI::runcommand(
+				'acm blueprint import ' . __DIR__ . '/demo',
+				[
+					'launch' => false, // Reuse current process.
+				]
+			);
+			return;
 		}
 
-		$valid_file = save_blueprint_to_upload_dir( $zip_file, basename( $path ) );
-		if ( is_wp_error( $valid_file ) ) {
-			\WP_CLI::error( $valid_file->get_error_message() );
+		$path_is_directory = pathinfo( $path, PATHINFO_EXTENSION ) === '';
+
+		if ( $path_is_directory ) {
+			$blueprint_folder = save_blueprint_to_upload_dir( $path, basename( $path ) );
+			if ( is_wp_error( $blueprint_folder ) ) {
+				\WP_CLI::error( $blueprint_folder->get_error_message() );
+			}
 		}
 
-		\WP_CLI::log( 'Unzipping.' );
-		$blueprint_folder = unzip_blueprint( $valid_file );
+		if ( ! $path_is_directory ) {
+			\WP_CLI::log( 'Fetching blueprint.' );
+			$zip_file = get_blueprint( $path );
+			if ( is_wp_error( $zip_file ) ) {
+				\WP_CLI::error( $zip_file->get_error_message() );
+			}
 
-		if ( is_wp_error( $blueprint_folder ) ) {
-			\WP_CLI::error( $blueprint_folder->get_error_message() );
+			$valid_file = save_blueprint_to_upload_dir( $zip_file, basename( $path ) );
+			if ( is_wp_error( $valid_file ) ) {
+				\WP_CLI::error( $valid_file->get_error_message() );
+			}
+
+			\WP_CLI::log( 'Unzipping.' );
+			$blueprint_folder = unzip_blueprint( $valid_file );
+
+			if ( is_wp_error( $blueprint_folder ) ) {
+				\WP_CLI::error( $blueprint_folder->get_error_message() );
+			}
 		}
 
 		\WP_CLI::log( 'Verifying ACM manifest.' );
@@ -199,7 +227,10 @@ class Blueprint {
 			import_options( $manifest['wp-options'] );
 		}
 
-		if ( ! ( $assoc_args['skip-cleanup'] ?? false ) ) {
+		if (
+			! ( $assoc_args['skip-cleanup'] ?? false )
+			&& ! $path_is_directory
+		) {
 			\WP_CLI::log( 'Deleting zip and manifest.' );
 			cleanup( $zip_file, $blueprint_folder );
 		}

@@ -19,6 +19,8 @@ use function WPE\AtlasContentModeler\API\validation\validate_post_is_attachment;
 use function WPE\AtlasContentModeler\API\validation\validate_attachment_file_type;
 use function WPE\AtlasContentModeler\API\validation\validate_row_count_within_repeatable_limits;
 use function WPE\AtlasContentModeler\API\validation\validate_array_of;
+use function WPE\AtlasContentModeler\API\validation\validate_number_min_max_step;
+use function WPE\AtlasContentModeler\API\validation\validate_number_type;
 use function WPE\AtlasContentModeler\API\validation\validate_text_min_max;
 
 class TestValidationFunctions extends Integration_TestCase {
@@ -48,7 +50,7 @@ class TestValidationFunctions extends Integration_TestCase {
 			'repeatableTextField'       => [ 'John', 'Doe' ],
 			'richTextField'             => '<p>This is a description</p>',
 			'repeatableRichTextField'   => [ '<p>This is excerpt one</p>', '<p>This is excerpt two</p>' ],
-			'numberField'               => '21',
+			'numberField'               => 21,
 			'repeatableNumberField'     => [ 1, 2, 3, 4, 5 ],
 			'dateField'                 => '2001-04-01',
 			'repeatableDateField'       => [ '2022-07-04', '2022-10-31' ],
@@ -169,7 +171,7 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Number Field is required' ], $valid->get_error_messages( 'numberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'numberField' => '' ] );
-		$this->assertEquals( [ 'Number Field is required' ], $valid->get_error_messages( 'numberField' ) );
+		$this->assertEquals( [ 'Number Field cannot be empty' ], $valid->get_error_messages( 'numberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'numberField' => 'not_a_number' ] );
 		$this->assertEquals( [ 'Number Field must be a valid number' ], $valid->get_error_messages( 'numberField' ) );
@@ -187,13 +189,13 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertEquals( [ 'Repeatable Number Field must be an array of number' ], $valid->get_error_messages( 'repeatableNumberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableNumberField' => [] ] );
-		$this->assertEquals( [ 'Repeatable Number Field must be an array of number' ], $valid->get_error_messages( 'repeatableNumberField' ) );
+		$this->assertEquals( [ 'Repeatable Number Field cannot be empty' ], $valid->get_error_messages( 'repeatableNumberField' ) );
 
 		$valid = validate_model_field_data( $model_schema, [ 'repeatableNumberField' => [ 3, 'not_a_number', 4, '' ] ] );
 		$this->assertEquals(
 			[
 				1 => 'Repeatable Number Field must be a valid number',
-				3 => 'Repeatable Number Field is required',
+				3 => 'Repeatable Number Field cannot be empty',
 			],
 			$valid->get_error_messages( 'repeatableNumberField' )
 		);
@@ -645,6 +647,125 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->assertNull(
 			validate_text_min_max( $value, $field )
 		);
+	}
+
+	/**
+	 * @testWith
+	 * [ 4, { } ]
+	 * [ -4, { } ]
+	 * [ 4, { "name": "Total", "minValue": 1 } ]
+	 * [ 4, { "name": "Total", "minValue": -1 } ]
+	 * [ 4, { "name": "Total", "minValue": 1, "maxValue": 5 } ]
+	 * [ -4, { "name": "Total", "minValue": -30, "maxValue": -1 } ]
+	 * [ 4, { "name": "Total", "maxValue": 100 } ]
+	 * [ 16, { "name": "Total", "maxValue": 100, "step": 8 } ]
+	 * [ 16, { "name": "Total", "step": 8 } ]
+	 */
+	public function test_validate_number_field_is_valid( $value, $field ) {
+		$this->assertNull(
+			validate_number_min_max_step( $value, $field )
+		);
+	}
+
+	/**
+	 * Checks that invalid numbers do not pass type validation.
+	 *
+	 * @testWith
+	 * [ -1, "decimal", "Must be a decimal" ]
+	 * [ 4, "decimal", "Must be a decimal" ]
+	 * [ 1000, "decimal", "Must be a decimal" ]
+	 * [ 0.00001, "integer", "Must be an integer" ]
+	 * [ "0.00001", "integer", "Must be an integer" ]
+	 * [ -1.1, "integer", "Must be an integer" ]
+	 * [ 4.0, "integer", "Must be an integer" ]
+	 * [ "4.0", "integer", "Must be an integer" ]
+	 * [ 1000.0, "integer", "Must be an integer" ]
+	 * [ "1000.0", "integer", "Must be an integer" ]
+	 * [ 10.1, "integer", "Must be an integer" ]
+	 * [ "10.1", "integer", "Must be an integer" ]
+	 */
+	public function test_validate_number_type_rejects_invalid_numbers( $value, $type, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_type( $value, $type, $message );
+	}
+
+	/**
+	 * Checks that valid numbers pass type validation.
+	 *
+	 * @testWith
+	 * [ -0, "integer", "Must be an integer" ]
+	 * [ "-0", "integer", "Must be an integer" ]
+	 * [ -0.0, "integer", "Must be an integer" ]
+	 * [ "-0.0", "integer", "Must be an integer" ]
+	 * [ 0, "integer", "Must be an integer" ]
+	 * [ "0", "integer", "Must be an integer" ]
+	 * [ 0.0, "integer", "Must be an integer" ]
+	 * [ "0.0", "integer", "Must be an integer" ]
+	 * [ -1, "integer", "Must be an integer" ]
+	 * [ "-1", "integer", "Must be an integer" ]
+	 * [ 1, "integer", "Must be an integer" ]
+	 * [ "1", "integer", "Must be an integer" ]
+	 * [ 33, "integer", "Must be an integer" ]
+	 * [ "33", "integer", "Must be an integer" ]
+	 * [ -0, "decimal", "Must be a decimal" ]
+	 * [ "-0", "decimal", "Must be a decimal" ]
+	 * [ -0.0, "decimal", "Must be a decimal" ]
+	 * [ "-0.0", "decimal", "Must be a decimal" ]
+	 * [ 0, "decimal", "Must be a decimal" ]
+	 * [ "0", "decimal", "Must be a decimal" ]
+	 * [ 0.0, "decimal", "Must be a decimal" ]
+	 * [ "0.0", "decimal", "Must be a decimal" ]
+	 * [ -1.0, "decimal", "Must be a decimal" ]
+	 * [ "-1.0", "decimal", "Must be a decimal" ]
+	 * [ -1.11, "decimal", "Must be a decimal" ]
+	 * [ "-1.11", "decimal", "Must be a decimal" ]
+	 * [ 3.1415926535, "decimal", "Must be a decimal" ]
+	 * [ "3.1415926535", "decimal", "Must be a decimal" ]
+	 * [ 4.0, "decimal", "Must be a decimal" ]
+	 * [ "4.0", "decimal", "Must be a decimal" ]
+	 * [ 4.1, "decimal", "Must be a decimal" ]
+	 * [ "4.1", "decimal", "Must be a decimal" ]
+	 * [ 44.1, "decimal", "Must be a decimal" ]
+	 * [ "44.1", "decimal", "Must be a decimal" ]
+	 */
+	public function test_validate_number_type_accepts_valid_numbers( $value, $type, $message ) {
+		$this->assertNull( validate_number_type( $value, $type, $message ) );
+	}
+
+	/**
+	 * @testWith
+	 * [ 1, { "name": "Total", "minValue": 5 }, "Total must be at least 5" ]
+	 */
+	public function test_validate_number_less_than_min( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field, $message );
+	}
+
+	/**
+	 * @testWith
+	 * [ -1, { "name": "Total", "minValue": 5 }, "Total must be at least 5" ]
+	 */
+	public function test_validate_neg_number_less_than_min( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field, $message );
+	}
+
+	/**
+	 * @testWith
+	 * [ 6, { "name": "Total", "maxValue": 5 }, "Total cannot be greater than 5" ]
+	 */
+	public function test_validate_number_more_than_max( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field, $message );
+	}
+
+	/**
+	 * @testWith
+	 * [ 4, { "name": "Total", "minValue": 1, "step": 9, "maxValue": 100 }, "Total step must be a multiple of 9" ]
+	 */
+	public function test_validate_number_multiple_of_step( $value, $field, $message ) {
+		$this->expectExceptionMessage( $message );
+		validate_number_min_max_step( $value, $field, $message );
 	}
 
 	public function test_validate_post_exists_will_throw_an_exception_if_post_does_not_exist() {

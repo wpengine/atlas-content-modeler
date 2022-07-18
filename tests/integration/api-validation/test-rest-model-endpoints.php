@@ -1,5 +1,6 @@
 <?php
 
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
@@ -189,6 +190,29 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 
 		self::assertSame( 200, $response->get_status() );
 		self::assertSame( $new_model['description'], $models['public']['description'] );
+	}
+
+	public function test_can_change_model_singular_and_plural_name_case(): void {
+		wp_set_current_user( 1 );
+		$model = 'public';
+
+		$request  = new WP_REST_Request( 'GET', $this->namespace . $this->route . '/' . $model );
+		$response = $this->server->dispatch( $request );
+
+		// Update the model's singular and plural names, but only change the case of both strings.
+		$new_model             = $this->test_models[ $model ];
+		$new_model['singular'] = 'public'; // Original is 'Public'.
+		$new_model['plural']   = 'publics'; // Original is 'Publics'.
+		$request               = new WP_REST_Request( 'PATCH', $this->namespace . $this->route . '/' . $model );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $new_model ) );
+
+		$response = $this->server->dispatch( $request );
+		$models   = get_registered_content_types();
+
+		self::assertSame( 200, $response->get_status() );
+		self::assertSame( $new_model['singular'], $models['public']['singular'] );
+		self::assertSame( $new_model['plural'], $models['public']['plural'] );
 	}
 
 	/**

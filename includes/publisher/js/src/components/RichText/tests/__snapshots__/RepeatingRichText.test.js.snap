@@ -16,6 +16,11 @@ Array [
     className="css-15q5af2-RepeatingRichText"
     data-testid="rich-text-repeater-row"
   >
+    <span
+      className="px-1 me-2 css-1we40ji-RepeatingRichText"
+    >
+      1
+    </span>
     <textarea
       defaultValue="<p>Kahn The Destroyer</p>"
       id="123"

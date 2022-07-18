@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.17.0
+Stable tag: 0.19.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,6 +53,41 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+
+= 0.19.1 - 2022-07-13 =
+
+* **Added:** Related entries in relationship fields now have an “Edit” link to view or edit them in a new tab.
+* **Fixed:** Fields will now save empty values when existing content is removed.
+* **Fixed:** 0 can now be entered into number fields via the `insert_model_entry()` PHP function.
+* **Fixed:** Decimals can now be entered into number fields via the `insert_model_entry()` PHP function.
+* **Fixed:** You can now edit the case of model singular and plural names.
+
+
+= 0.19.0 - 2022-06-29 =
+
+* **Added:** The `wp acm blueprint import` WP-CLI command can now take a path to a local directory containing an `acm.json` blueprint manifest.
+* **Added:** Developers working on the ACM plugin can now use the `wp acm blueprint import demo` WP-CLI command to import demo models with different field configurations.
+* **Added:** Added field indexes to repeatable fields.
+* **Fixed:** Number fields with '0' values are now saved correctly.
+
+= 0.18.0 - 2022-06-16 =
+
+* **Changed:** Text fields can now use “title” as their API identifier if “use this field as the entry title” is ticked.
+* **Changed:** Field validation now returns translatable errors.
+* **Changed:** Crud function insert_model_entry() will now append relationship ids.
+* **Changed:** Text field entries via CRUD are now validated for min and max characters.
+* **Changed:** Text field entries created via the PHP API are now validated for minRepeatable and maxRepeatable.
+* **Changed:** Extended timeout for `wp acm blueprint import` command from 5 seconds to 15 seconds.
+* **Changed:** Number field entries via CRUD are now validated for min, max, and step values as well as type.
+* **Fixed:** Issue where adding a new repeating field to an existing model schema could break GraphQL queries under certain conditions.
+* **Fixed:** Empty field values are no longer saved to the database.
+* **Fixed:** Relationship fields no longer resolve as “null” in GraphQL results for models with different singular names and API identifiers.
+* **Added:** Added email validation when using insert_model_entry() crud function.
+* **Added:** Added ability to add newly created models from the top admin menu dropdown right after creation without a refresh of the page.
+* **Added:** Added validation for repeatable text fields for insert_model_entry() crud function.
+* **Added:** Added validation for repeatable date fields for insert_model_entry() crud function.
+* **Added:** Added validation for repeatable number fields for insert_model_entry() crud function.
+* **Added:** Added validation for repeatable email fields for insert_model_entry() crud function.
 
 = 0.17.0 2022-05-05 =
 

@@ -42,6 +42,10 @@ const Options = ({ entry, setSelectedEntries }) => {
 		return () => clearTimeout(timer.current);
 	}, [timer]);
 
+	const relatedModelSingularTitle =
+		atlasContentModelerFormEditingExperience?.models[entry.type]
+			?.singular ?? __("Entry", "atlas-content-modeler");
+
 	return (
 		<Dropdown>
 			<button
@@ -60,6 +64,36 @@ const Options = ({ entry, setSelectedEntries }) => {
 				<Icon type="options" />
 			</button>
 			<div className={`dropdown-content ${dropdownOpen ? "" : "hidden"}`}>
+				<a
+					className="edit"
+					href={`${atlasContentModelerFormEditingExperience?.adminUrl}post.php?post=${entry.id}&action=edit`}
+					target="_blank"
+					rel="noopener noreferrer"
+					onClick={() => {
+						setDropdownOpen(false);
+					}}
+					onBlur={() => maybeCloseDropdown(setDropdownOpen, timer)}
+					aria-label={sprintf(
+						/* translators: title of the entry to edit. */
+						__(
+							"Edit the %s entry in a new tab.",
+							"atlas-content-modeler"
+						),
+						entry?.title?.rendered
+					)}
+				>
+					{sprintf(
+						/* translators: Custom post type singular name, such as Cat. */
+						__("Edit %s", "atlas-content-modeler"),
+						relatedModelSingularTitle
+					)}
+					<Icon
+						type="external-link"
+						width="13"
+						height="13"
+						color="#7e5cef"
+					/>
+				</a>
 				<a
 					className="delete"
 					href="#"

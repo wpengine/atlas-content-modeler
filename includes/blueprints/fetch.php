@@ -33,7 +33,7 @@ function get_local_blueprint( string $path ) {
 	if ( ! is_readable( $path ) ) {
 		return new WP_Error(
 			'acm_blueprint_file_not_readable',
-			esc_html__( 'File not found or not readable.', 'atlas-content-modeler' )
+			esc_html__( 'File or directory not found or readable.', 'atlas-content-modeler' )
 		);
 	}
 
@@ -95,10 +95,10 @@ function get_remote_blueprint( string $url ) {
 /**
  * Saves the provided blueprint zip file to the uploads directory.
  *
- * @param string $blueprint The blueprint zip file.
- * @param string $filename  The name of the file to be saved.
+ * @param string $blueprint The blueprint zip file or path to a local blueprint directory.
+ * @param string $filename  The name of the file or directory to be saved.
  *
- * @return string|WP_Error Local blueprint zip file destination path on success.
+ * @return string|WP_Error Local blueprint zip file or directory destination path on success.
  */
 function save_blueprint_to_upload_dir( string $blueprint, string $filename ) {
 	global $wp_filesystem;
@@ -107,12 +107,45 @@ function save_blueprint_to_upload_dir( string $blueprint, string $filename ) {
 		\WP_Filesystem();
 	}
 
-	$destination = trailingslashit( wp_upload_dir()['path'] ) . $filename;
+	$destination      = trailingslashit( wp_upload_dir()['path'] ) . $filename;
+	$is_absolute_path = $blueprint[0] === '/' ?? false;
 
 	/**
-	 * Save the blueprint to a temporary location
-	 * and check the MIME type before saving to the
-	 * final destination in the `wp_upload_dir()` path.
+	 * Copy blueprints given as a path to a local directory to the WordPress
+	 * upload directory. Ensures media is accessible to WordPress, and will
+	 * stay accessible if the original blueprint path is moved or removed.
+	 */
+	if (
+		$is_absolute_path &&
+		pathinfo( $blueprint, PATHINFO_EXTENSION ) === ''
+	) {
+		if ( ! $wp_filesystem->is_dir( $blueprint ) ) {
+			return new WP_Error(
+				'acm_blueprint_save_error',
+				/* translators: path to blueprint */
+				sprintf( esc_html__( 'Could not read directory at %s', 'atlas-content-modeler' ), $blueprint )
+			);
+		}
+
+		$wp_filesystem->mkdir( $destination );
+
+		$copied = copy_dir( $blueprint, $destination );
+
+		if ( ! $copied ) {
+			return new WP_Error(
+				'acm_blueprint_save_error',
+				/* translators: %1$s: path to blueprint, %2$s: path to attempted copy destination. */
+				sprintf( esc_html__( 'Error copying directory from %1$s to %2$s', 'atlas-content-modeler' ), $blueprint, $destination )
+			);
+		}
+
+		return $destination;
+	}
+
+	/**
+	 * Assume now that the blueprint is a zip file and not a folder. Save it
+	 * to a temporary location and check the MIME type before moving it to the
+	 * final destination in the WordPress upload directory.
 	 */
 	$temp_destination = wp_tempnam( $destination );
 
