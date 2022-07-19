@@ -152,7 +152,7 @@ class Reset {
 	private function delete_taxonomies() {
 		if ( delete_option( self::ACM_TAXONOMY_OPTION ) ) {
 			$this->stats['taxonomies'] = count( (array) $this->taxonomies );
-			$this->stats['taxonomies'] = [];
+			$this->taxonomies          = [];
 		}
 	}
 
@@ -245,7 +245,7 @@ class Reset {
 	private function delete_models() {
 		if ( delete_option( self::ACM_MODEL_OPTION ) ) {
 			$this->stats['models'] = count( (array) $this->models );
-			$this->stats['models'] = [];
+			$this->models          = [];
 		}
 	}
 
