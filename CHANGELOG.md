@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.19.2 - 2022-07-25
 ### Fixed
 - Prevent a fatal error during the blueprint import cleanup process.
 
