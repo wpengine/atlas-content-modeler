@@ -550,22 +550,3 @@ function import_options( array $options ): void {
 		update_option( $name, $value );
 	}
 }
-
-/**
- * Deletes the blueprint zip file and manifest file.
- *
- * Leaves media files in place because they are linked to imported media.
- *
- * @param string $blueprint_zip_path Path to the blueprint zip file.
- * @param string $blueprint_folder_path Path to the blueprint folder.
- * @return void
- */
-function cleanup( $blueprint_zip_path, $blueprint_folder_path ) {
-	if ( file_exists( $blueprint_zip_path ) ) {
-		wp_delete_file( $blueprint_zip_path );
-	}
-
-	if ( file_exists( $blueprint_folder_path . '/acm.json' ) ) {
-		wp_delete_file( $blueprint_folder_path . '/acm.json' );
-	}
-}
