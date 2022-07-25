@@ -54,6 +54,12 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 == Changelog ==
 
+== Changelog ==
+
+= 0.19.2 - 2022-07-25 =
+
+* **Fixed:** Prevent a fatal error during the blueprint import cleanup process.
+
 = 0.19.1 - 2022-07-13 =
 
 * **Added:** Related entries in relationship fields now have an “Edit” link to view or edit them in a new tab.
