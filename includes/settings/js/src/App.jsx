@@ -55,9 +55,9 @@ function ViewTemplate() {
 		return <Settings />;
 	}
 
-	if (view === "models-list") {
-		return <ViewContentModelsList />;
+	if (view === "dashboard") {
+		return <Dashboard />;
 	}
 
-	return <Dashboard />;
+	return <ViewContentModelsList />;
 }
