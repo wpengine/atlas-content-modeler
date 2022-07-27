@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.19.1
+Stable tag: 0.19.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,6 +53,12 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+
+== Changelog ==
+
+= 0.19.2 - 2022-07-25 =
+
+* **Fixed:** Prevent a fatal error during the blueprint import cleanup process.
 
 = 0.19.1 - 2022-07-13 =
 

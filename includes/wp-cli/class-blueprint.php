@@ -17,7 +17,6 @@ namespace WPE\AtlasContentModeler\WP_CLI;
 
 use function WPE\AtlasContentModeler\Blueprint\Import\{
 	check_versions,
-	cleanup,
 	get_manifest,
 	import_acm_relationships,
 	import_media,
@@ -61,13 +60,6 @@ class Blueprint {
 	 * : The URL or local path of the blueprint zip file, or local path to the
 	 * blueprint folder containing the acm.json manifest file. Local paths must
 	 * be absolute.
-	 *
-	 * [--skip-cleanup]
-	 * : Skips removal of the blueprint zip and manifest files after a
-	 * successful import. Useful when testing blueprints or to leave a
-	 * record of content and files that were installed. Has no effect
-	 * if the `path` passed to `blueprint import` is a local directory
-	 * and not a zip file.
 	 *
 	 * ## EXAMPLES
 	 *
@@ -225,14 +217,6 @@ class Blueprint {
 		if ( ! empty( $manifest['wp-options'] ?? [] ) ) {
 			\WP_CLI::log( 'Restoring WordPress options.' );
 			import_options( $manifest['wp-options'] );
-		}
-
-		if (
-			! ( $assoc_args['skip-cleanup'] ?? false )
-			&& ! $path_is_directory
-		) {
-			\WP_CLI::log( 'Deleting zip and manifest.' );
-			cleanup( $zip_file, $blueprint_folder );
 		}
 
 		\WP_CLI::success( 'Import complete.' );
