@@ -40,12 +40,13 @@ function register_rest_routes(): void {
  * @return WP_Error|\WP_HTTP_Response|\WP_REST_Response
  */
 function dispatch_get_validate_unique_email( WP_REST_Request $request ) {
-	$post_id = $request->get_param( 'post_id' );
-	$slug    = $request->get_param( 'slug' );
-	$email   = $request->get_param( 'email' );
+	$post_id   = $request->get_param( 'post_id' );
+	$post_type = $request->get_param( 'post_type' );
+	$slug      = $request->get_param( 'slug' );
+	$email     = $request->get_param( 'email' );
 
-	if ( null === $post_id && null === $slug && null === $email ) {
-		return new WP_Error( 'acm_missing_fields', __( 'post_id, slug, and email are required parameters.', 'atlas-content-modeler' ) );
+	if ( null === $post_id && null === $post_type && null === $slug && null === $email ) {
+		return new WP_Error( 'acm_missing_fields', __( 'post_id, post_type, slug, and email are required parameters.', 'atlas-content-modeler' ) );
 	}
 
 	global $wpdb;
@@ -56,9 +57,12 @@ function dispatch_get_validate_unique_email( WP_REST_Request $request ) {
 	$identical_email_query = $wpdb->prepare(
 		"SELECT COUNT(*)
 		FROM `{$wpdb->postmeta}`
-		WHERE post_id != %s
+		INNER JOIN wp_posts ON wp_postmeta.post_id = wp_posts.ID
+		WHERE wp_posts.post_type = %s
+		AND post_id != %s
 		AND meta_key = %s
 		AND meta_value = %s;",
+		$post_type,
 		$post_id,
 		$slug,
 		$email

@@ -28,7 +28,7 @@ export default function Field(props) {
 
 	function apiCheckUniqueEmail(slug, email, event) {
 		const postId = document.getElementById("post_ID").value;
-		const data = { post_id: postId, slug, email };
+		const data = { post_id: postId, post_type: modelSlug, slug, email };
 
 		return apiFetch({
 			path: `/wpe/atlas/validate-unique-email`,

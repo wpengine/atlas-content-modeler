@@ -2,25 +2,28 @@ import React from "react";
 import { __ } from "@wordpress/i18n";
 
 const ValidationHelperLabel = ({ field }) => {
-	if (field?.required && field?.isUnique) {
+	let validationHelperMessages = [];
+
+	if (field?.required) {
+		validationHelperMessages.push("Required");
+	}
+
+	if (field?.isUnique) {
+		validationHelperMessages.push("Unique");
+	}
+
+	if (validationHelperMessages.length > 0) {
+		const message = validationHelperMessages.join(", ");
 		return (
 			<>
 				<p className="required">
-					*{__("Required, Unique", "atlas-content-modeler")}
+					*{__(message, "atlas-content-modeler")}
 				</p>
 			</>
 		);
 	}
 
-	if (field?.required) {
-		return (
-			<>
-				<p className="required">
-					*{__("Required", "atlas-content-modeler")}
-				</p>
-			</>
-		);
-	}
+	return <></>;
 };
 
 const EmailHeader = ({ modelSlug, field }) => {
