@@ -10,7 +10,7 @@ import LinkList from "./LinkList";
 import { saveUsageTrackingSetting } from "../settings.service";
 import * as toolService from "../tools.service";
 
-export default function DashboardDisplay({ taxonomies }) {
+export default function StatsDisplay({ taxonomies }) {
 	const [usageTracking, setUsageTracking] = useState(
 		atlasContentModeler.usageTrackingEnabled
 	);
@@ -124,7 +124,7 @@ export default function DashboardDisplay({ taxonomies }) {
 				></span>
 			</div>
 
-			<div className="container acm-dashboard">
+			<div className="container acm-stats">
 				<div className="stats">
 					<div className="d-flex justify-content-between">
 						<Card className="flex-grow-1">

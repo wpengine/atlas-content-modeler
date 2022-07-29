@@ -1,7 +1,7 @@
 import React from "react";
-import DashboardDisplay from "./DashboardDisplay";
+import StatsDisplay from "./StatsDisplay";
 
-export default function Dashboard() {
+export default function Stats() {
 	/**
 	 * Get taxonomies for display in the dashboard
 	 */
@@ -21,5 +21,5 @@ export default function Dashboard() {
 		return entries;
 	}
 
-	return <DashboardDisplay taxonomies={getTaxonomies()} />;
+	return <StatsDisplay taxonomies={getTaxonomies()} />;
 }

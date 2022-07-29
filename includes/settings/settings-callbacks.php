@@ -51,10 +51,10 @@ function register_admin_menu_page(): void {
 
 	add_submenu_page(
 		'atlas-content-modeler',
-		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
-		esc_html__( 'Dashboard', 'atlas-content-modeler' ),
+		esc_html__( 'Stats', 'atlas-content-modeler' ),
+		esc_html__( 'Stats', 'atlas-content-modeler' ),
 		'manage_options',
-		'atlas-content-modeler&amp;view=dashboard',
+		'atlas-content-modeler&amp;view=stats',
 		'__return_null'
 	);
 
@@ -95,8 +95,8 @@ function maybe_override_submenu_file( $parent_file ) {
 	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 	$view = filter_input( INPUT_GET, 'view', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
-	if ( $page === 'atlas-content-modeler' && $view === 'dashboard' ) {
-		$submenu_file = 'atlas-content-modeler&amp;view=dashboard'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
+	if ( $page === 'atlas-content-modeler' && $view === 'stats' ) {
+		$submenu_file = 'atlas-content-modeler&amp;view=stats'; // phpcs:ignore -- global override needed to set current submenu page without JavaScript.
 	}
 
 	if ( $page === 'atlas-content-modeler' && $view === 'taxonomies' ) {
