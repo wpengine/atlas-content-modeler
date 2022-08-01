@@ -7,988 +7,1201 @@ exports[`App Renders a matching snapshot 1`] = `
   <div
     className="Toastify"
   />
-  <div>
-    <div
-      className="alert alert-primary fade show"
-      role="alert"
+  <div
+    className="css-1y92ofa-Card"
+  >
+    <section
+      className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row css-1pjtado-Header"
     >
-      <strong>
-        ACM Plugin Version: 0.18.0 by
-      </strong>
-      <span
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<a href=\\"https://wpengine.com/\\">WP Engine</a>",
-          }
-        }
-      />
-    </div>
-    <div
-      className="container acm-stats"
-    >
-      <div
-        className="stats"
+      <h2>
+        Content Models
+      </h2>
+      <button
+        className="css-1cfhljd-Button"
+        data-testid="new-model-button"
+        onClick={[Function]}
       >
-        <div
-          className="d-flex justify-content-between"
-        >
-          <div
-            className="flex-grow-1 css-1y92ofa-Card"
+        New Model
+      </button>
+    </section>
+    <section
+      className="card-content"
+    >
+      <ul
+        className="model-list"
+      >
+        <li>
+          <a
+            aria-label="Edit Turtles content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=turtle"
+            onClick={[Function]}
           >
-            <h1
-              className="purple-h1"
-            >
-              10
-            </h1>
-            <div>
-              <a
-                className="mb-2 pointer"
-                onClick={[Function]}
-                title="edit models"
-              >
-                Models
-                <span
-                  className="dashicons dashicons-edit"
-                />
-              </a>
-            </div>
-            <div
-              className="mt-3"
-            >
-              <a
-                href="/wp-admin/admin.php?page=atlas-content-modeler&view=create-model"
-                style={
-                  Object {
-                    "textDecoration": "none",
-                  }
-                }
-                title="add model"
-              >
-                <span
-                  className="dashicons dashicons-plus"
-                  style={
-                    Object {
-                      "marginTop": "2px",
-                    }
-                  }
-                />
-
-                Add Model
-              </a>
-            </div>
-            <hr />
-            <div
-              className="flex-grow-1"
-            >
-              <h3>
-                Top Five
-              </h3>
-              <div
-                className="list-group list-group-flush"
-              >
-                <button
-                  className="list-group-item list-group-item-action pointer pointer"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    16
-                  </span>
-
-                  Rats
-                </button>
-                <button
-                  className="list-group-item list-group-item-action pointer pointer"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    10
-                  </span>
-
-                  Villains
-                </button>
-                <button
-                  className="list-group-item list-group-item-action pointer pointer"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    10
-                  </span>
-
-                  Pizzas
-                </button>
-                <button
-                  className="list-group-item list-group-item-action pointer pointer"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    8
-                  </span>
-
-                  Turtles
-                </button>
-                <button
-                  className="list-group-item list-group-item-action pointer pointer"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    6
-                  </span>
-
-                  People
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            className="flex-grow-1 css-1y92ofa-Card"
-          >
-            <h1
-              className="purple-h1"
-            >
-              6
-            </h1>
-
-            <div>
-              <a
-                className="mb-2 pointer"
-                onClick={[Function]}
-                title="edit taxonomies"
-              >
-                Taxonomies
-                <span
-                  className="dashicons dashicons-edit"
-                />
-              </a>
-            </div>
-            <div
-              className="mt-3"
-            >
-              <a
-                href="/wp-admin/admin.php?page=atlas-content-modeler&view=taxonomies"
-                style={
-                  Object {
-                    "textDecoration": "none",
-                  }
-                }
-                title="add taxonomy"
-              >
-                <span
-                  className="dashicons dashicons-plus"
-                  style={
-                    Object {
-                      "marginTop": "2px",
-                    }
-                  }
-                />
-
-                Add Taxonomy
-              </a>
-            </div>
-            <hr />
-            <div
-              className="flex-grow-1"
-            >
-              <h3>
-                Top Five
-              </h3>
-              <div
-                className="list-group list-group-flush"
-              >
-                <button
-                  className="list-group-item list-group-item-action"
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "cursor": "pointer",
-                    }
-                  }
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    1
-                  </span>
-
-                  mutagen
-                </button>
-                <button
-                  className="list-group-item list-group-item-action"
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "cursor": "pointer",
-                    }
-                  }
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    5
-                  </span>
-
-                  color
-                </button>
-                <button
-                  className="list-group-item list-group-item-action"
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "cursor": "pointer",
-                    }
-                  }
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    0
-                  </span>
-
-                  actionfigure
-                </button>
-                <button
-                  className="list-group-item list-group-item-action"
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "cursor": "pointer",
-                    }
-                  }
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    0
-                  </span>
-
-                  cartoon
-                </button>
-                <button
-                  className="list-group-item list-group-item-action"
-                  onClick={[Function]}
-                  style={
-                    Object {
-                      "cursor": "pointer",
-                    }
-                  }
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    0
-                  </span>
-
-                  sewercover
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            className="flex-grow-1 css-1y92ofa-Card"
-          >
-            <h1
-              className="purple-h1"
-            >
-              48
-            </h1>
             <span
-              style={
-                Object {
-                  "fontSize": "x-large",
-                }
-              }
+              className="flex-item mb-3 mb-sm-0 pr-1"
             >
-              Relationships
+              <p
+                className="label"
+              >
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  Turtles
+                </strong>
+              </p>
             </span>
-
-            <hr />
-            <div
-              className="flex-grow-1"
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
             >
-              <h3>
-                Top Five
-              </h3>
-              <div
-                className="list-group list-group-flush"
+              <p
+                className="label"
               >
-                <button
-                  className="list-group-item list-group-item-action pointer"
-                  onClick={[Function]}
-                  type="button"
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                6
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for Turtles content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    4
-                  </span>
-
-                  Splinter
-                </button>
-                <button
-                  className="list-group-item list-group-item-action pointer"
-                  onClick={[Function]}
-                  type="button"
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
+              <div
+                className="dropdown-content hidden"
+              >
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=turtle"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    4
-                  </span>
-
-                  Splinter
-                </button>
-                <button
-                  className="list-group-item list-group-item-action pointer"
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
                   onClick={[Function]}
-                  type="button"
                 >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    4
-                  </span>
-
-                  New York
-                </button>
-                <button
-                  className="list-group-item list-group-item-action pointer"
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
                   onClick={[Function]}
-                  type="button"
                 >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    4
-                  </span>
-
-                  New York
-                </button>
-                <button
-                  className="list-group-item list-group-item-action pointer"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span
-                    className="badge badge-secondary me-2"
-                  >
-                    3
-                  </span>
-
-                  Leonardo
-                </button>
+                  Delete
+                </a>
               </div>
-            </div>
+            </span>
           </div>
-          <div
-            className="flex-grow-1 css-1y92ofa-Card"
+        </li>
+        <li>
+          <a
+            aria-label="Edit Rodents content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=rodent"
+            onClick={[Function]}
           >
-            <h3>
-              Ten Latest Entries
-            </h3>
-            <div
-              className="list-group list-group-flush"
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  Rodents
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                2
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
             >
               <button
-                className="list-group-item list-group-item-action"
+                aria-label="Options for Rodents content model"
+                className="options"
+                onBlur={[Function]}
                 onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="The Rat King"
-                type="button"
               >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                The Rat King
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
               </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="The Rat King"
-                type="button"
+              <div
+                className="dropdown-content hidden"
               >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                The Rat King
-              </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="Bartholomew"
-                type="button"
-              >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                Bartholomew
-              </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="Bartholomew"
-                type="button"
-              >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                Bartholomew
-              </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="Susan"
-                type="button"
-              >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                Susan
-              </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="Susan"
-                type="button"
-              >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                Susan
-              </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="Bentley"
-                type="button"
-              >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                Bentley
-              </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="Bentley"
-                type="button"
-              >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                Bentley
-              </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="Juju"
-                type="button"
-              >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                Juju
-              </button>
-              <button
-                className="list-group-item list-group-item-action"
-                onClick={[Function]}
-                style={
-                  Object {
-                    "cursor": "pointer",
-                    "maxWidth": "200px",
-                    "overflow": "hidden",
-                    "textOverflow": "ellipsis",
-                    "whiteSpace": "nowrap",
-                  }
-                }
-                title="Juju"
-                type="button"
-              >
-                <span
-                  className="dashicons dashicons-admin-post me-2"
-                />
-
-                Juju
-              </button>
-            </div>
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=rodent"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Delete
+                </a>
+              </div>
+            </span>
           </div>
-        </div>
-      </div>
-    </div>
-    <div
-      className="tools-view container"
-    >
-      <div
-        className="d-flex justify-content-between"
-      >
-        <div
-          className="flex-grow-1 css-1y92ofa-Card"
-        >
-          <form>
-            <div
-              className="row"
-            >
-              <h3>
-                Quick Settings
-              </h3>
-              <div
-                className="col-xs-10 col-lg-4 order-1 order-lg-0"
-              >
-                <div
-                  className="row"
-                >
-                  <div
-                    className="col-xs-12"
-                  >
-                    <h4>
-                      Analytics
-                    </h4>
-                    <p
-                      className="help"
-                    >
-                      Opt into anonymous usage tracking to help us make Atlas Content Modeler better.
-                    </p>
-                    <div
-                      className="row"
-                    >
-                      <div
-                        className="col-xs-12"
-                      >
-                        <label
-                          className="radio"
-                          htmlFor="atlas-content-modeler-settings[usageTrackingDisabled]"
-                        >
-                          <input
-                            checked={true}
-                            id="atlas-content-modeler-settings[usageTrackingDisabled]"
-                            name="atlas-content-modeler-settings[usageTracking]"
-                            onChange={[Function]}
-                            type="radio"
-                            value="0"
-                          />
-                          Disabled
-                        </label>
-                      </div>
-                      <div
-                        className="col-xs-12"
-                      >
-                        <input
-                          checked={false}
-                          id="atlas-content-modeler-settings[usageTrackingEnabled]"
-                          name="atlas-content-modeler-settings[usageTracking]"
-                          onChange={[Function]}
-                          type="radio"
-                          value="1"
-                        />
-                        <label
-                          className="radio"
-                          htmlFor="atlas-content-modeler-settings[usageTrackingEnabled]"
-                        >
-                          Enabled
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div
-          className="flex-grow-1 css-1y92ofa-Card"
-        >
-          <section
-            className="card-content"
+        </li>
+        <li>
+          <a
+            aria-label="Edit Foods content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=food"
+            onClick={[Function]}
           >
-            <div
-              className="row"
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
             >
-              <h3
-                className="mb-4"
+              <p
+                className="label"
               >
-                Tools
-              </h3>
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  Foods
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                1
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for Foods content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
               <div
-                className="col-xs-10 col-lg-4 order-1 order-lg-0"
+                className="dropdown-content hidden"
               >
-                <div
-                  className="d-flex"
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=food"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  <div
-                    className="me-4"
-                  >
-                    <input
-                      accept=".json"
-                      className="hidden"
-                      id="file"
-                      onChange={[Function]}
-                      type="file"
-                    />
-                    <button
-                      className="css-2t3jgm-DarkButton"
-                      data-testid="export-models-button"
-                      onClick={[Function]}
-                      style={
-                        Object {
-                          "minWidth": "175px",
-                        }
-                      }
-                    >
-                      Import Models
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      className="css-2t3jgm-DarkButton"
-                      data-testid="export-models-button"
-                      onClick={[Function]}
-                      style={
-                        Object {
-                          "minWidth": "175px",
-                        }
-                      }
-                    >
-                      Export Models
-                    </button>
-                  </div>
-                </div>
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Delete
+                </a>
               </div>
-            </div>
-          </section>
-        </div>
-        <div
-          className="flex-grow-1 css-1y92ofa-Card"
-        >
-          <section
-            className="card-content"
+            </span>
+          </div>
+        </li>
+        <li>
+          <a
+            aria-label="Edit Villains content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=villain"
+            onClick={[Function]}
           >
-            <div
-              className="row"
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
             >
-              <h3>
-                Resources
-              </h3>
-              <ul
-                className="list"
+              <p
+                className="label"
               >
-                <li
-                  className=""
-                  style={
-                    Object {
-                      "borderLeft": "none",
-                      "boxShadow": "none",
-                    }
-                  }
-                >
-                  <a
-                    className=""
-                    href="https://docs.google.com/forms/d/e/1FAIpQLScc2VN-GRSJMz8zVgJLL6kiX3VeV2jkSDnmU1gnuNElEHCEVQ/viewform"
-                    rel="noreferrer"
-                    style={Object {}}
-                    target="_blank"
-                    title="ACM Feedback"
-                  >
-                    <span>
-                      ACM Feedback
-                    </span>
-                  </a>
-                </li>
-                <li
-                  className=""
-                  style={
-                    Object {
-                      "borderLeft": "none",
-                      "boxShadow": "none",
-                    }
-                  }
-                >
-                  <a
-                    className=""
-                    href="https://wordpress.org/plugins/atlas-content-modeler/"
-                    rel="noreferrer"
-                    style={Object {}}
-                    target="_blank"
-                    title="ACM Plugin Home"
-                  >
-                    <span>
-                      ACM Plugin Home
-                    </span>
-                  </a>
-                </li>
-                <li
-                  className=""
-                  style={
-                    Object {
-                      "borderLeft": "none",
-                      "boxShadow": "none",
-                    }
-                  }
-                >
-                  <a
-                    className=""
-                    href="https://github.com/wpengine/atlas-content-modeler"
-                    rel="noreferrer"
-                    style={Object {}}
-                    target="_blank"
-                    title="ACM Github"
-                  >
-                    <span>
-                      ACM Github
-                    </span>
-                  </a>
-                </li>
-              </ul>
-              <ul
-                className="list list-unstyled d-flex justify-content-start"
+                Name
+              </p>
+              <p
+                className="value"
               >
-                <li
-                  className=""
-                  style={
-                    Object {
-                      "borderLeft": "none",
-                      "boxShadow": "none",
-                    }
-                  }
+                <strong>
+                  Villains
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                1
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for Villains content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <a
-                    className=""
-                    href="https://www.facebook.com/wpengine"
-                    rel="noreferrer"
-                    style={
-                      Object {
-                        "marginRight": "10px",
-                        "textDecoration": "none",
-                      }
-                    }
-                    target="_blank"
-                    title="Facebook"
-                  >
-                    <span
-                      className="dashicons dashicons-facebook"
-                    />
-                  </a>
-                </li>
-                <li
-                  className=""
-                  style={
-                    Object {
-                      "borderLeft": "none",
-                      "boxShadow": "none",
-                    }
-                  }
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
+              <div
+                className="dropdown-content hidden"
+              >
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=villain"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  <a
-                    className=""
-                    href="https://twitter.com/wpengine"
-                    rel="noreferrer"
-                    style={
-                      Object {
-                        "marginRight": "10px",
-                        "textDecoration": "none",
-                      }
-                    }
-                    target="_blank"
-                    title="Twitter"
-                  >
-                    <span
-                      className="dashicons dashicons-twitter"
-                    />
-                  </a>
-                </li>
-                <li
-                  className=""
-                  style={
-                    Object {
-                      "borderLeft": "none",
-                      "boxShadow": "none",
-                    }
-                  }
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
                 >
-                  <a
-                    className=""
-                    href="https://www.linkedin.com/company/wpengine"
-                    rel="noreferrer"
-                    style={
-                      Object {
-                        "marginRight": "10px",
-                        "textDecoration": "none",
-                      }
-                    }
-                    target="_blank"
-                    title="LinkedIn"
-                  >
-                    <span
-                      className="dashicons dashicons-linkedin"
-                    />
-                  </a>
-                </li>
-                <li
-                  className=""
-                  style={
-                    Object {
-                      "borderLeft": "none",
-                      "boxShadow": "none",
-                    }
-                  }
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
                 >
-                  <a
-                    className=""
-                    href="https://www.youtube.com/channel/UCJeAEAxX69v24CUBZ0WBYSg"
-                    rel="noreferrer"
-                    style={
-                      Object {
-                        "marginRight": "10px",
-                        "textDecoration": "none",
-                      }
-                    }
-                    target="_blank"
-                    title="YouTube"
-                  >
-                    <span
-                      className="dashicons dashicons-youtube"
-                    />
-                  </a>
-                </li>
-                <li
-                  className=""
-                  style={
-                    Object {
-                      "borderLeft": "none",
-                      "boxShadow": "none",
-                    }
-                  }
+                  Delete
+                </a>
+              </div>
+            </span>
+          </div>
+        </li>
+        <li>
+          <a
+            aria-label="Edit People content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=person"
+            onClick={[Function]}
+          >
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  People
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                2
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for People content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <a
-                    className=""
-                    href="https://www.instagram.com/wpengine/"
-                    rel="noreferrer"
-                    style={
-                      Object {
-                        "marginRight": "10px",
-                        "textDecoration": "none",
-                      }
-                    }
-                    target="_blank"
-                    title="Instagram"
-                  >
-                    <span
-                      className="dashicons dashicons-instagram"
-                    />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </section>
-        </div>
-      </div>
-    </div>
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
+              <div
+                className="dropdown-content hidden"
+              >
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=person"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Delete
+                </a>
+              </div>
+            </span>
+          </div>
+        </li>
+        <li>
+          <a
+            aria-label="Edit Pizzas content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=pizza"
+            onClick={[Function]}
+          >
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  Pizzas
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                1
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for Pizzas content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
+              <div
+                className="dropdown-content hidden"
+              >
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=pizza"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Delete
+                </a>
+              </div>
+            </span>
+          </div>
+        </li>
+        <li>
+          <a
+            aria-label="Edit Cities content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=city"
+            onClick={[Function]}
+          >
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  Cities
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                1
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for Cities content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
+              <div
+                className="dropdown-content hidden"
+              >
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=city"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Delete
+                </a>
+              </div>
+            </span>
+          </div>
+        </li>
+        <li>
+          <a
+            aria-label="Edit Rats content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=rat"
+            onClick={[Function]}
+          >
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  Rats
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                1
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for Rats content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
+              <div
+                className="dropdown-content hidden"
+              >
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=rat"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Delete
+                </a>
+              </div>
+            </span>
+          </div>
+        </li>
+        <li>
+          <a
+            aria-label="Edit Cheeses content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=cheese"
+            onClick={[Function]}
+          >
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  Cheeses
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                0
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for Cheeses content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
+              <div
+                className="dropdown-content hidden"
+              >
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=cheese"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Delete
+                </a>
+              </div>
+            </span>
+          </div>
+        </li>
+        <li>
+          <a
+            aria-label="Edit Poos content model"
+            className="flex-wrap d-flex flex-column d-sm-flex flex-sm-row"
+            href="/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=poo"
+            onClick={[Function]}
+          >
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Name
+              </p>
+              <p
+                className="value"
+              >
+                <strong>
+                  Poos
+                </strong>
+              </p>
+            </span>
+            <span
+              className="flex-item mb-3 mb-sm-0 pr-1"
+            >
+              <p
+                className="label"
+              >
+                Description
+              </p>
+              <p
+                className="value"
+              >
+                
+              </p>
+            </span>
+            <span
+              className="flex-item"
+            >
+              <p
+                className="label"
+              >
+                Fields
+              </p>
+              <p
+                className="value"
+              >
+                0
+              </p>
+            </span>
+          </a>
+          <div>
+            <span
+              className="css-yw6dxx-Dropdown"
+            >
+              <button
+                aria-label="Options for Poos content model"
+                className="options"
+                onBlur={[Function]}
+                onClick={[Function]}
+              >
+                <svg
+                  className="options"
+                  fill="none"
+                  height="4"
+                  viewBox="0 0 16 4"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.79995 1.99995C3.79995 2.99406 2.99406 3.79995 1.99995 3.79995C1.00584 3.79995 0.199951 2.99406 0.199951 1.99995C0.199951 1.00584 1.00584 0.199951 1.99995 0.199951C2.99406 0.199951 3.79995 1.00584 3.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M9.79995 1.99995C9.79995 2.99406 8.99406 3.79995 7.99995 3.79995C7.00584 3.79995 6.19995 2.99406 6.19995 1.99995C6.19995 1.00584 7.00584 0.199951 7.99995 0.199951C8.99406 0.199951 9.79995 1.00584 9.79995 1.99995Z"
+                    fill="#002838"
+                  />
+                  <path
+                    d="M14 3.79995C14.9941 3.79995 15.8 2.99406 15.8 1.99995C15.8 1.00584 14.9941 0.199951 14 0.199951C13.0058 0.199951 12.2 1.00584 12.2 1.99995C12.2 2.99406 13.0058 3.79995 14 3.79995Z"
+                    fill="#002838"
+                  />
+                </svg>
+              </button>
+              <div
+                className="dropdown-content hidden"
+              >
+                <a
+                  className="add-new-entry"
+                  href="/wp-admin/post-new.php?post_type=poo"
+                  onBlur={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add New Entry
+                </a>
+                <a
+                  className="edit"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Edit
+                </a>
+                
+                <a
+                  className="delete"
+                  href="#"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                >
+                  Delete
+                </a>
+              </div>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </section>
   </div>
 </div>
 `;

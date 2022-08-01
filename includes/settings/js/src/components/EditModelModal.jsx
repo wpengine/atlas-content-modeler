@@ -106,9 +106,6 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 		<Modal
 			isOpen={isOpen}
 			contentLabel={`Editing the ${model.plural} content model`}
-			parentSelector={() => {
-				return document.getElementById("root");
-			}}
 			portalClassName="atlas-content-modeler-edit-model-modal-container atlas-content-modeler"
 			onRequestClose={() => {
 				setIsOpen(false);
