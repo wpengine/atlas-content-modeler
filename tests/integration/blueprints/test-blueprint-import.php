@@ -7,7 +7,6 @@
 
 use function WPE\AtlasContentModeler\Blueprint\Import\{
 	check_versions,
-	cleanup,
 	get_manifest,
 	import_acm_relationships,
 	import_media,
@@ -303,17 +302,6 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 		self::assertStringEndsWith( 'acm-rabbits/', $unzipped_folder );
 		self::assertTrue( is_readable( $upload_dir . '/acm-rabbits/acm.json' ) );
-	}
-
-	public function test_cleanup() {
-		$this->copy_media_to_wp_uploads();
-
-		$upload_dir = wp_upload_dir()['path'];
-
-		cleanup( $upload_dir . '/acm-rabbits.zip', $upload_dir . '/blueprint-good/' );
-
-		self::assertFalse( is_readable( $upload_dir . '/acm-rabbits.zip' ) );
-		self::assertFalse( is_readable( $upload_dir . '/blueprint-good/acm.json' ) );
 	}
 
 	private function copy_media_to_wp_uploads() {
