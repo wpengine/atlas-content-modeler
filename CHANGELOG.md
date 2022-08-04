@@ -1,5 +1,9 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Added
+- `wp acm reset` WP-CLI command to remove ACM models, taxonomies, posts, and media.
+
 ## 0.19.2 - 2022-07-25
 ### Fixed
 - Prevent a fatal error during the blueprint import cleanup process.
