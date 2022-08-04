@@ -130,7 +130,7 @@ class Reset {
 	/**
 	 * Deletes taxonomy terms
 	 */
-	private function delete_taxonomy_terms() {
+	public function delete_taxonomy_terms() {
 		foreach ( $this->taxonomies as $taxonomy ) {
 			$terms = get_terms(
 				[
@@ -149,7 +149,7 @@ class Reset {
 	/**
 	 * Deletes ACM taxonomies.
 	 */
-	private function delete_taxonomies() {
+	public function delete_taxonomies() {
 		if ( delete_option( self::ACM_TAXONOMY_OPTION ) ) {
 			$this->stats['taxonomies'] = count( (array) $this->taxonomies );
 			$this->taxonomies          = [];
@@ -159,7 +159,7 @@ class Reset {
 	/**
 	 * Deletes all ACM relationship data.
 	 */
-	private function delete_relationships() {
+	public function delete_relationships() {
 		global $wpdb;
 
 		$table        = ContentConnect::instance()->get_table( 'p2p' );
@@ -178,7 +178,7 @@ class Reset {
 	 * @param bool $delete_all Pass true to also delete post types unrelated to
 	 *                         ACM, such as core posts and pages.
 	 */
-	private function delete_posts( $delete_all = false ) {
+	public function delete_posts( $delete_all = false ) {
 		if ( $delete_all ) {
 			$posts = new \WP_Query(
 				[
@@ -192,11 +192,9 @@ class Reset {
 					$this->stats['posts']++;
 				}
 			}
-
-			return;
 		}
 
-		// Otherwise, just delete ACM-specific posts.
+		// Delete ACM-specific posts.
 		foreach ( $this->posts as $post_ids ) {
 			foreach ( $post_ids as $post_id ) {
 				if ( (bool) wp_delete_post( $post_id, true ) ) {
@@ -212,7 +210,7 @@ class Reset {
 	 * @param bool $delete_all Pass true to delete all media including files
 	 *                         unrelated to ACM entries.
 	 */
-	private function delete_media( $delete_all = false ) {
+	public function delete_media( $delete_all = false ) {
 		if ( $delete_all ) {
 			$media = new \WP_Query(
 				[
@@ -242,7 +240,7 @@ class Reset {
 	/**
 	 * Deletes ACM model data.
 	 */
-	private function delete_models() {
+	public function delete_models() {
 		if ( delete_option( self::ACM_MODEL_OPTION ) ) {
 			$this->stats['models'] = count( (array) $this->models );
 			$this->models          = [];
@@ -259,7 +257,7 @@ class Reset {
 	 * Model IDs are preserved so that `get_media_ids()` can check for media
 	 * fields linked to that model and retrieve related media for each post.
 	 */
-	private function get_post_ids() : array {
+	public function get_post_ids() : array {
 		$posts = [];
 		foreach ( $this->models as $model_id => $model ) {
 			$post_ids = get_posts(
@@ -281,7 +279,7 @@ class Reset {
 	 *
 	 * Includes IDs stored in media fields as well as thumbnail_id.
 	 */
-	private function get_media_ids() : array {
+	public function get_media_ids() : array {
 		$media_ids = [];
 
 		foreach ( $this->posts as $model_id => $post_ids ) {
@@ -319,7 +317,7 @@ class Reset {
 	 * @param string $model_id The model ID.
 	 * @return array Media field slugs for the given model.
 	 */
-	private function get_media_fields( $model_id ) : array {
+	public function get_media_fields( $model_id ) : array {
 		$fields = $this->models[ $model_id ]['fields'] ?? [];
 
 		$media_fields = array_filter(
