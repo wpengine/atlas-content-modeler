@@ -78,3 +78,34 @@ Named wp_options keys to export, separated by commas. Empty by default.
 `[--open]`
 Open the folder containing the generated zip on success (macOS only,
 requires that `shell_exec()` has not been disabled).
+
+## wp acm reset
+
+Requires: ACM 0.20.0+.
+
+### Description
+
+Resets ACM by deleting models, taxonomies, taxonomy terms, posts, relationship data and media items relating to ACM models.
+
+### Synopsis
+
+```
+wp acm reset [--yes] [--all]
+```
+
+### OPTIONS
+
+`[--yes]`
+Skip prompt to confirm deletion.
+
+`[--all]`
+Delete all published posts, pages, custom posts and media, not just posts and media associated with ACM models.
+
+EXAMPLES
+
+```
+wp acm reset
+wp acm reset --yes
+wp acm reset --all
+wp acm reset --yes --all
+```
