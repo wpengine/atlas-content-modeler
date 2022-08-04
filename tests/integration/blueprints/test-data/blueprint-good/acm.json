@@ -227,11 +227,16 @@
       { "post_id": 82, "meta_key": "name", "meta_value": "Jessica" },
       { "post_id": 82, "meta_key": "photo", "meta_value": "83" },
       { "post_id": 82, "meta_key": "_thumbnail_id", "meta_value": "83" }
+    ],
+
+    "1457": [
+      { "post_id": 1457, "meta_key": "_thumbnail_id", "meta_value": "84" }
     ]
   },
   "media": {
     "80": "media/roger.jpg",
-    "83": "media/jessica.jpg"
+    "83": "media/jessica.jpg",
+    "84": "media/post.jpg"
   },
   "relationships": [
     {
