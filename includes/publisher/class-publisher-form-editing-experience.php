@@ -404,7 +404,7 @@ final class FormEditingExperience {
 				}
 			}
 
-			$is_field_unique = get_field_from_slug( $slug, $this->models, $post->post_type )['isUnique'];
+			$is_field_unique = get_field_from_slug( $slug, $this->models, $post->post_type )['isUnique'] ?? false;
 
 			if ( 'email' === $field_type && $is_field_unique ) {
 				global $wpdb;
