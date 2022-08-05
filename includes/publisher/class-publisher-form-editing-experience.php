@@ -313,9 +313,9 @@ final class FormEditingExperience {
 	 *
 	 * @param int     $post_id The post ID.
 	 * @param WP_Post $post    The post object being saved.
-	 * @param bool    $update     True if the post is being updated (rather than created).
+	 * @param bool    $update  Whether this is an existing post being updated.
 	 */
-	public function save_post( int $post_id, WP_Post $post, bool $update ): void {
+	public function save_post( int $post_id, WP_Post $post, bool $update = false ): void {
 		if ( empty( $_POST['atlas-content-modeler'] ) || empty( $_POST['atlas-content-modeler'][ $post->post_type ] ) ) {
 			return;
 		}
@@ -363,6 +363,7 @@ final class FormEditingExperience {
 			)
 		);
 
+		$unique_emails_to_skip_saving = [];
 		foreach ( $all_field_slugs as $slug ) {
 			$field_type = get_field_type_from_slug(
 				$slug,
@@ -399,6 +400,47 @@ final class FormEditingExperience {
 					if ( ! $deleted ) {
 						/* translators: %s: atlas content modeler field slug */
 						$this->error_save_post = sprintf( __( 'There was an error deleting the %s field data.', 'atlas-content-modeler' ), $slug );
+					}
+				}
+			}
+
+			$is_field_unique = get_field_from_slug( $slug, $this->models, $post->post_type )['isUnique'] ?? false;
+
+			if ( 'email' === $field_type && $is_field_unique ) {
+				global $wpdb;
+
+				$email_value = $posted_values[ $slug ];
+
+				// Only validate uniqueness of non-repeating email fields for now.
+				if ( ! is_array( $email_value ) ) {
+					// phpcs:disable
+					// A direct database call is the quickest way to query
+					// for unique emails.
+					$identical_emails_query = $wpdb->prepare(
+						"SELECT COUNT(*)
+						FROM `{$wpdb->postmeta}`
+						INNER JOIN {$wpdb->posts} ON {$wpdb->postmeta}.post_id = {$wpdb->posts}.ID
+						WHERE {$wpdb->posts}.post_type = %s
+						AND post_id != %s
+						AND meta_key = %s
+						AND meta_value = %s;",
+						$post->post_type,
+						$post_id,
+						$slug,
+						$email_value
+					);
+
+					$identical_emails = (int) $wpdb->get_var( $identical_emails_query );
+					// phpcs:enable
+
+					if ( $identical_emails > 0 ) {
+						array_push( $unique_emails_to_skip_saving, $slug );
+						$this->error_save_post = sprintf(
+							// translators: 1: field name 2: submitted email address value.
+							__( 'The email field %1$s must be unique and was not saved. Another entry uses %2$s.', 'atlas-content-modeler' ),
+							$slug,
+							$email_value
+						);
 					}
 				}
 			}
@@ -455,6 +497,9 @@ final class FormEditingExperience {
 				continue;
 			}
 
+			if ( in_array( $key, $unique_emails_to_skip_saving, true ) ) {
+				continue;
+			}
 			$updated = update_post_meta( $post_id, $key, $value );
 			if ( ! $updated ) {
 				/* translators: %s: atlas content modeler field slug */

@@ -15,6 +15,7 @@ const EmailFields = ({ register, data, editing, fieldId }) => {
 	const titleFieldId = getTitleFieldId(fields);
 	const showTitleField = !titleFieldId || titleFieldId === fieldId;
 	const [showTitle, setShowTitle] = useState(data?.isTitle);
+	const [isUnique, setIsUnique] = useState(data?.isUnique);
 	const [showRepeatableEmail, setShowRepeatableEmail] = useState(
 		data?.isRepeatableEmail
 	);
@@ -35,7 +36,7 @@ const EmailFields = ({ register, data, editing, fieldId }) => {
 						onChange={() =>
 							setShowRepeatableEmail(!showRepeatableEmail)
 						}
-						disabled={editing || showTitle}
+						disabled={editing || showTitle || isUnique}
 					/>
 					<label
 						htmlFor={`is-repeatable-email-${fieldId}`}
@@ -71,6 +72,24 @@ const EmailFields = ({ register, data, editing, fieldId }) => {
 					</label>
 				</div>
 			)}
+			<div className="field">
+				<legend>Unique Field</legend>
+				<input
+					id={`is-unique-${fieldId}`}
+					name="isUnique"
+					type="checkbox"
+					ref={register}
+					onChange={() => setIsUnique(!isUnique)}
+					defaultChecked={data?.isUnique}
+					disabled={showRepeatableEmail}
+				/>
+				<label
+					htmlFor={`is-unique-${fieldId}`}
+					className="checkbox is-unique"
+				>
+					{__("Make this field unique", "atlas-content-modeler")}
+				</label>
+			</div>
 		</>
 	);
 };

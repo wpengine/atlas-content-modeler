@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import MediaUploader from "./MediaUploader";
 import RichText from "./RichText";
 import Relationship from "./relationship";
@@ -9,13 +9,65 @@ import Date from "./Date";
 import Icon from "acm-icons";
 import { sprintf, __ } from "@wordpress/i18n";
 
+const { apiFetch } = wp;
+
 const defaultError = "This field is required";
 const integerRegex = /^[-+]?\d+/g;
 const decimalRegex = /^\-?(\d+\.?\d*|\d*\.?\d+)$/g;
+const debounceEmailUniqueDelay = 350;
+
+function debounce(func, wait, immediate) {
+	let timeout;
+	return function () {
+		let context = this,
+			args = arguments;
+		let later = function () {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		let callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+}
 
 export default function Field(props) {
 	const { field, modelSlug, first } = props;
 	const [errors, setErrors] = useState({});
+
+	const debounceCheckUniqueEmail = useCallback(
+		debounce(apiCheckUniqueEmail, debounceEmailUniqueDelay),
+		[]
+	);
+
+	function apiCheckUniqueEmail(slug, email, event) {
+		const postId = document.getElementById("post_ID").value;
+		const data = { post_id: postId, post_type: modelSlug, slug, email };
+
+		return apiFetch({
+			path: `/wpe/atlas/validate-unique-email`,
+			method: "POST",
+			_wpnonce: wpApiSettings.nonce,
+			data,
+		})
+			.then((response) => {
+				if (response?.data) {
+					event.target.setCustomValidity("");
+					return response.data;
+				}
+			})
+			.catch((error) => {
+				if (
+					error?.code === "acm_invalid_unique_email" &&
+					error?.message
+				) {
+					const errorMessage = __("Field must be unique.");
+					event.target.setCustomValidity(errorMessage);
+					setErrors({ ...errors, [field.slug]: errorMessage });
+				}
+			});
+	}
 
 	/**
 	 * Adjusts the custom error feedback messages displayed below fields based
@@ -96,6 +148,16 @@ export default function Field(props) {
 					"Email must end with an allowed domain.",
 					"atlas-content-modeler"
 				);
+			}
+
+			if (field?.isUnique && event.target.validity.valid) {
+				debounceCheckUniqueEmail(
+					field.slug,
+					event.target.value.trim(),
+					event
+				);
+			} else {
+				event.target.setCustomValidity("");
 			}
 		}
 

@@ -1,5 +1,9 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Added
+- The email field gains a “make this field unique” setting so that emails can not be used more than once.
+
 ## 0.19.2 - 2022-07-25
 ### Fixed
 - Prevent a fatal error during the blueprint import cleanup process.
