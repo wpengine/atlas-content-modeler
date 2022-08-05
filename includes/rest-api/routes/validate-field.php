@@ -26,7 +26,7 @@ function register_rest_routes(): void {
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => __NAMESPACE__ . '\dispatch_get_validate_unique_email',
 			'permission_callback' => static function () {
-				return current_user_can( 'manage_options' );
+				return current_user_can( 'edit_posts' );
 			},
 		]
 	);
