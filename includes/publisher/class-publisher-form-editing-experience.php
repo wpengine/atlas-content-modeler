@@ -419,8 +419,8 @@ final class FormEditingExperience {
 					$identical_emails_query = $wpdb->prepare(
 						"SELECT COUNT(*)
 						FROM `{$wpdb->postmeta}`
-						INNER JOIN wp_posts ON wp_postmeta.post_id = wp_posts.ID
-						WHERE wp_posts.post_type = %s
+						INNER JOIN {$wpdb->posts} ON {$wpdb->postmeta}.post_id = {$wpdb->posts}.ID
+						WHERE {$wpdb->posts}.post_type = %s
 						AND post_id != %s
 						AND meta_key = %s
 						AND meta_value = %s;",
