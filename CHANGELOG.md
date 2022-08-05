@@ -1,5 +1,9 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Added
+- The email field gains a “make this field unique” setting so that emails can not be used more than once.
+
 ## 0.19.2 - 2022-07-25
 ### Fixed
 - Prevent a fatal error during the blueprint import cleanup process.
@@ -8,7 +12,6 @@
 ### Added
 - Related entries in relationship fields now have an “Edit” link to view or edit them in a new tab.
 - Added model field API Identifier to model field list.
-- Added ability to set email type as unique via the Advanced Settings.
 
 ### Fixed
 - Fields will now save empty values when existing content is removed.
