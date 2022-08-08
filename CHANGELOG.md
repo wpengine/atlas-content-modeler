@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.20.0 - 2022-08-09
 ### Added
 - The email field gains a “make this field unique” setting so that emails can not be used more than once.
 - `wp acm reset` WP-CLI command to remove ACM models, taxonomies, posts, and media.

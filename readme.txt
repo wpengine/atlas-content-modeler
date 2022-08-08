@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.19.2
+Stable tag: 0.20.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -54,7 +54,10 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 == Changelog ==
 
-== Changelog ==
+= 0.20.0 - 2022-08-09 =
+
+* **Added:** The email field gains a “make this field unique” setting so that emails can not be used more than once.
+* **Added:** `wp acm reset` WP-CLI command to remove ACM models, taxonomies, posts, and media.
 
 = 0.19.2 - 2022-07-25 =
 
