@@ -1,6 +1,31 @@
 import React from "react";
 import { __ } from "@wordpress/i18n";
 
+const ValidationHelperLabel = ({ field }) => {
+	let validationHelperMessages = [];
+
+	if (field?.required) {
+		validationHelperMessages.push("Required");
+	}
+
+	if (field?.isUnique) {
+		validationHelperMessages.push("Unique");
+	}
+
+	if (validationHelperMessages.length > 0) {
+		const message = validationHelperMessages.join(", ");
+		return (
+			<>
+				<p className="required">
+					*{__(message, "atlas-content-modeler")}
+				</p>
+			</>
+		);
+	}
+
+	return <></>;
+};
+
 const EmailHeader = ({ modelSlug, field }) => {
 	return (
 		<>
@@ -9,11 +34,7 @@ const EmailHeader = ({ modelSlug, field }) => {
 			>
 				{field.name}
 			</label>
-			{field?.required && (
-				<p className="required">
-					*{__("Required", "atlas-content-modeler")}
-				</p>
-			)}
+			<ValidationHelperLabel field={field} />
 			{field?.description && (
 				<p className="help mb-0">{field.description}</p>
 			)}

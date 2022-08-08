@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Added
+- The email field gains a “make this field unique” setting so that emails can not be used more than once.
 - `wp acm reset` WP-CLI command to remove ACM models, taxonomies, posts, and media.
 
 ## 0.19.2 - 2022-07-25
