@@ -18,6 +18,7 @@ use function WPE\AtlasContentModeler\Blueprint\Import\{
 	tag_posts,
 	unzip_blueprint
 };
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\REST_API\Models\create_models;
 use \WPE\AtlasContentModeler\ContentConnect\Plugin as ContentConnect;
 
@@ -320,6 +321,15 @@ class BlueprintImportTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Unregisters post types to clean up scope between tests.
+	 */
+	protected function reset_registered_post_types() {
+		foreach ( get_registered_content_types() as $post_type ) {
+			unregister_post_type( $post_type['slug'] );
+		}
+	}
+
+	/**
 	 * Unregisters taxonomies to clean up scope between taxonomy tests.
 	 */
 	protected function reset_taxonomies() {
@@ -330,6 +340,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 
 	public function tearDown() {
 		$this->reset_taxonomies();
+		$this->reset_registered_post_types();
 
 		parent::tearDown();
 	}
