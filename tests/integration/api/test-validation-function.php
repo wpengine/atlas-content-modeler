@@ -690,7 +690,7 @@ class TestValidationFunctions extends Integration_TestCase {
 	}
 
 	/**
-	 * Checks that valid numbers pass type validation.
+	 * Checks that valid integer numbers pass validation.
 	 *
 	 * @testWith
 	 * [ -0, "integer", "Must be an integer" ]
@@ -707,6 +707,15 @@ class TestValidationFunctions extends Integration_TestCase {
 	 * [ "1", "integer", "Must be an integer" ]
 	 * [ 33, "integer", "Must be an integer" ]
 	 * [ "33", "integer", "Must be an integer" ]
+	 */
+	public function test_validate_number_type_accepts_valid_integer_numbers( $value, $type, $message ) {
+		$this->assertNull( validate_number_type( $value, $type, $message ) );
+	}
+
+	/**
+	 * Checks that valid decimal numbers pass validation.
+	 *
+	 * @testWith
 	 * [ -0, "decimal", "Must be a decimal" ]
 	 * [ "-0", "decimal", "Must be a decimal" ]
 	 * [ -0.0, "decimal", "Must be a decimal" ]
@@ -728,7 +737,7 @@ class TestValidationFunctions extends Integration_TestCase {
 	 * [ 44.1, "decimal", "Must be a decimal" ]
 	 * [ "44.1", "decimal", "Must be a decimal" ]
 	 */
-	public function test_validate_number_type_accepts_valid_numbers( $value, $type, $message ) {
+	public function test_validate_number_type_accepts_valid_decimal_numbers( $value, $type, $message ) {
 		$this->assertNull( validate_number_type( $value, $type, $message ) );
 	}
 
