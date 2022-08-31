@@ -510,14 +510,14 @@ class TestValidationFunctions extends Integration_TestCase {
 		$this->expectException( Validation_Exception::class );
 		$this->expectExceptionMessage( 'Value must be a valid number' );
 
-		validate_number( $value );
+		validate_decimal( $value );
 	}
 
 	public function test_validate_decimal_will_use_the_custom_message() {
 		$message = 'That value is not a number';
 		$this->expectExceptionMessage( $message );
 
-		validate_number( null, $message );
+		validate_decimal( null, $message );
 	}
 
 	public function test_validate_string_will_return_null_if_valid_string() {
