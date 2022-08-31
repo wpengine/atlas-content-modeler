@@ -505,6 +505,26 @@ function validate_number_type( $value, $number_type, string $message = '' ): voi
 }
 
 /**
+ * Validate a value for an integer.
+ *
+ * @param mixed  $value   The value to validate.
+ * @param string $message Optional error message.
+ *
+ * @throws Validation_Exception Exception when value is the invalid type.
+ *
+ * @return void
+ */
+function validate_integer( $value, string $message = '' ): void {
+	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
+
+	validate_number( $value, $message );
+
+	if ( false === \filter_var( (float) $value, FILTER_VALIDATE_INT ) ) {
+		throw new Validation_Exception( $message );
+	}
+}
+
+/**
  * Validate a value for a decimal.
  *
  * @param mixed  $value   The value to validate.
