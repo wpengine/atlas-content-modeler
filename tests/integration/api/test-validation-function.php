@@ -441,9 +441,15 @@ class TestValidationFunctions extends Integration_TestCase {
 	/**
 	 * @testWith
 	 * [ 0 ]
+	 * [ "0" ]
 	 * [ 0.1 ]
+	 * [ "0.1" ]
 	 * [ 1.0 ]
+	 * [ "1.0" ]
 	 * [ 1 ]
+	 * [ "1" ]
+	 * [ 1.1 ]
+	 * [ "1.1" ]
 	 */
 	public function test_validate_number_will_return_null_if_valid_number( $value ) {
 		$this->assertNull( validate_number( $value ) );
