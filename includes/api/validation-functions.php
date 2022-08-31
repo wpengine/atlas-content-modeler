@@ -515,7 +515,7 @@ function validate_number_type( $value, $number_type, string $message = '' ): voi
  * @return void
  */
 function validate_integer( $value, string $message = '' ): void {
-	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Value must be a valid integer', 'atlas-content-modeler' );
 
 	validate_number( $value, $message );
 
@@ -535,7 +535,7 @@ function validate_integer( $value, string $message = '' ): void {
  * @return void
  */
 function validate_decimal( $value, string $message = '' ): void {
-	$message = $message ?: \__( 'Value must be a valid number', 'atlas-content-modeler' );
+	$message = $message ?: \__( 'Value must be a valid decimal', 'atlas-content-modeler' );
 
 	validate_number( $value, $message );
 

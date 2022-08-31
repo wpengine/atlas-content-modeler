@@ -508,13 +508,13 @@ class TestValidationFunctions extends Integration_TestCase {
 	 */
 	public function test_validate_integer_will_throw_an_exception_on_error( $value ) {
 		$this->expectException( Validation_Exception::class );
-		$this->expectExceptionMessage( 'Value must be a valid number' );
+		$this->expectExceptionMessage( 'Value must be a valid integer' );
 
 		validate_integer( $value );
 	}
 
 	public function test_validate_integer_will_use_the_custom_message() {
-		$message = 'That value is not a number';
+		$message = 'That value is not an integer';
 		$this->expectExceptionMessage( $message );
 
 		validate_integer( null, $message );
@@ -551,13 +551,13 @@ class TestValidationFunctions extends Integration_TestCase {
 	 */
 	public function test_validate_decimal_will_throw_an_exception_on_error( $value ) {
 		$this->expectException( Validation_Exception::class );
-		$this->expectExceptionMessage( 'Value must be a valid number' );
+		$this->expectExceptionMessage( 'Value must be a valid decimal' );
 
 		validate_decimal( $value );
 	}
 
 	public function test_validate_decimal_will_use_the_custom_message() {
-		$message = 'That value is not a number';
+		$message = 'That value is not a decimal';
 		$this->expectExceptionMessage( $message );
 
 		validate_decimal( null, $message );
