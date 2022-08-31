@@ -1,5 +1,9 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Fixed
+- Decimal values ending in 0, such as 1.0, will now pass validation for validate_number_type() for integers.
+
 ## 0.20.0 - 2022-08-09
 ### Added
 - The email field gains a “make this field unique” setting so that emails can not be used more than once.
