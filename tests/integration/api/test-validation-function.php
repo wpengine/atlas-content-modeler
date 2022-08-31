@@ -9,6 +9,7 @@ use function WPE\AtlasContentModeler\API\validation\validate_in_array;
 use function WPE\AtlasContentModeler\API\validation\validate_array;
 use function WPE\AtlasContentModeler\API\validation\validate_string;
 use function WPE\AtlasContentModeler\API\validation\validate_number;
+use function WPE\AtlasContentModeler\API\validation\validate_decimal;
 use function WPE\AtlasContentModeler\API\validation\validate_date;
 use function WPE\AtlasContentModeler\API\validation\validate_min;
 use function WPE\AtlasContentModeler\API\validation\validate_max;
@@ -470,6 +471,49 @@ class TestValidationFunctions extends Integration_TestCase {
 	}
 
 	public function test_validate_number_will_use_the_custom_message() {
+		$message = 'That value is not a number';
+		$this->expectExceptionMessage( $message );
+
+		validate_number( null, $message );
+	}
+
+	/**
+	 * @testWith
+	 * [ -1 ]
+	 * [ "-1" ]
+	 * [ -1.0 ]
+	 * [ "-1.0" ]
+	 * [ 0 ]
+	 * [ "0" ]
+	 * [ 0.1 ]
+	 * [ "0.1" ]
+	 * [ 1 ]
+	 * [ "1" ]
+	 * [ 1.1 ]
+	 * [ "1.1" ]
+	 */
+	public function test_validate_decimal_will_return_null_on_success( $value ) {
+		$this->assertNull( validate_decimal( $value ) );
+	}
+
+	/**
+	 * @testWith
+	 * [ "" ]
+	 * [ "not_a_decimal" ]
+	 * [ [] ]
+	 * [ true ]
+	 * [ false ]
+	 * [ null ]
+	 * [ "1.1.1" ]
+	 */
+	public function test_validate_decimal_will_throw_an_exception_on_error( $value ) {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( 'Value must be a valid number' );
+
+		validate_number( $value );
+	}
+
+	public function test_validate_decimal_will_use_the_custom_message() {
 		$message = 'That value is not a number';
 		$this->expectExceptionMessage( $message );
 
