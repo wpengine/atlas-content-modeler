@@ -761,77 +761,93 @@ class TestValidationFunctions extends Integration_TestCase {
 	}
 
 	/**
-	 * Checks that invalid numbers do not pass type validation.
+	 * Checks that invalid numbers do not pass type validation for their type.
 	 *
 	 * @testWith
-	 * [ -1, "decimal", "Must be a decimal" ]
-	 * [ 4, "decimal", "Must be a decimal" ]
-	 * [ 1000, "decimal", "Must be a decimal" ]
-	 * [ 0.00001, "integer", "Must be an integer" ]
-	 * [ "0.00001", "integer", "Must be an integer" ]
-	 * [ -1.1, "integer", "Must be an integer" ]
-	 * [ 4.0, "integer", "Must be an integer" ]
-	 * [ "4.0", "integer", "Must be an integer" ]
-	 * [ 1000.0, "integer", "Must be an integer" ]
-	 * [ "1000.0", "integer", "Must be an integer" ]
-	 * [ 10.1, "integer", "Must be an integer" ]
-	 * [ "10.1", "integer", "Must be an integer" ]
+	 * [ "not_a_decimal", "decimal", "Value must be a valid decimal" ]
+	 * [ "not_an_integer", "integer", "Value must be a valid integer" ]
+	 * [ null, "decimal", "Value must be a valid decimal" ]
+	 * [ null, "integer", "Value must be a valid integer" ]
+	 * [ [], "decimal", "Value must be a valid decimal" ]
+	 * [ [], "integer", "Value must be a valid integer" ]
+	 * [ true, "decimal", "Value must be a valid decimal" ]
+	 * [ true, "integer", "Value must be a valid integer" ]
+	 * [ false, "decimal", "Value must be a valid decimal" ]
+	 * [ false, "integer", "Value must be a valid integer" ]
+	 * [ "", "decimal", "Value must be a valid decimal" ]
+	 * [ "", "integer", "Value must be a valid integer" ]
+	 * [ 0.00001, "integer", "Value must be a valid integer" ]
+	 * [ "0.00001", "integer", "Value must be a valid integer" ]
+	 * [ -1.1, "integer", "Value must be a valid integer" ]
+	 * [ 10.1, "integer", "Value must be a valid integer" ]
+	 * [ "10.1", "integer", "Value must be a valid integer" ]
 	 */
-	public function test_validate_number_type_rejects_invalid_numbers( $value, $type, $message ) {
+	public function test_validate_number_type_rejects_invalid_numbers( $value, $type, $expected_message ) {
+		$this->expectException( Validation_Exception::class );
+		$this->expectExceptionMessage( $expected_message );
+		validate_number_type( $value, $type );
+	}
+
+	/**
+	 * Checks that valid integers pass validation.
+	 *
+	 * @testWith
+	 * [ -1, "integer" ]
+	 * [ "-1", "integer" ]
+	 * [ -0, "integer" ]
+	 * [ "-0", "integer" ]
+	 * [ -0.0, "integer" ]
+	 * [ "-0.0", "integer" ]
+	 * [ 0, "integer" ]
+	 * [ "0", "integer" ]
+	 * [ 0.0, "integer" ]
+	 * [ "0.0", "integer" ]
+	 * [ 1, "integer" ]
+	 * [ "1", "integer" ]
+	 */
+	public function test_validate_number_type_accepts_valid_integer_numbers( $value, $type ) {
+		$this->assertNull( validate_number_type( $value, $type ) );
+	}
+
+	/**
+	 * Ensure the custom exception message is passed per type.
+	 *
+	 * @testWith
+	 * [ "not_numeric", "integer", "The value is not an integer" ]
+	 * [ "not_numeric", "decimal", "The value is not an decimal" ]
+	 */
+	public function test_validate_number_passes_the_custom_exception_message( $value, $type, $message ) {
 		$this->expectExceptionMessage( $message );
 		validate_number_type( $value, $type, $message );
 	}
 
 	/**
-	 * Checks that valid integer numbers pass validation.
+	 * Checks that valid decimals pass validation.
 	 *
 	 * @testWith
-	 * [ -0, "integer", "Must be an integer" ]
-	 * [ "-0", "integer", "Must be an integer" ]
-	 * [ -0.0, "integer", "Must be an integer" ]
-	 * [ "-0.0", "integer", "Must be an integer" ]
-	 * [ 0, "integer", "Must be an integer" ]
-	 * [ "0", "integer", "Must be an integer" ]
-	 * [ 0.0, "integer", "Must be an integer" ]
-	 * [ "0.0", "integer", "Must be an integer" ]
-	 * [ -1, "integer", "Must be an integer" ]
-	 * [ "-1", "integer", "Must be an integer" ]
-	 * [ 1, "integer", "Must be an integer" ]
-	 * [ "1", "integer", "Must be an integer" ]
-	 * [ 33, "integer", "Must be an integer" ]
-	 * [ "33", "integer", "Must be an integer" ]
+	 * [ -1.11, "decimal" ]
+	 * [ "-1.11", "decimal" ]
+	 * [ -1.0, "decimal" ]
+	 * [ "-1.0", "decimal" ]
+	 * [ -0, "decimal" ]
+	 * [ "-0", "decimal" ]
+	 * [ -0.0, "decimal" ]
+	 * [ "-0.0", "decimal" ]
+	 * [ 0, "decimal" ]
+	 * [ "0", "decimal" ]
+	 * [ 0.0, "decimal" ]
+	 * [ "0.0", "decimal" ]
+	 * [ 3.1415926535, "decimal" ]
+	 * [ "3.1415926535", "decimal" ]
+	 * [ 4.0, "decimal" ]
+	 * [ "4.0", "decimal" ]
+	 * [ 4.1, "decimal" ]
+	 * [ "4.1", "decimal" ]
+	 * [ 44.1, "decimal" ]
+	 * [ "44.1", "decimal" ]
 	 */
-	public function test_validate_number_type_accepts_valid_integer_numbers( $value, $type, $message ) {
-		$this->assertNull( validate_number_type( $value, $type, $message ) );
-	}
-
-	/**
-	 * Checks that valid decimal numbers pass validation.
-	 *
-	 * @testWith
-	 * [ -0, "decimal", "Must be a decimal" ]
-	 * [ "-0", "decimal", "Must be a decimal" ]
-	 * [ -0.0, "decimal", "Must be a decimal" ]
-	 * [ "-0.0", "decimal", "Must be a decimal" ]
-	 * [ 0, "decimal", "Must be a decimal" ]
-	 * [ "0", "decimal", "Must be a decimal" ]
-	 * [ 0.0, "decimal", "Must be a decimal" ]
-	 * [ "0.0", "decimal", "Must be a decimal" ]
-	 * [ -1.0, "decimal", "Must be a decimal" ]
-	 * [ "-1.0", "decimal", "Must be a decimal" ]
-	 * [ -1.11, "decimal", "Must be a decimal" ]
-	 * [ "-1.11", "decimal", "Must be a decimal" ]
-	 * [ 3.1415926535, "decimal", "Must be a decimal" ]
-	 * [ "3.1415926535", "decimal", "Must be a decimal" ]
-	 * [ 4.0, "decimal", "Must be a decimal" ]
-	 * [ "4.0", "decimal", "Must be a decimal" ]
-	 * [ 4.1, "decimal", "Must be a decimal" ]
-	 * [ "4.1", "decimal", "Must be a decimal" ]
-	 * [ 44.1, "decimal", "Must be a decimal" ]
-	 * [ "44.1", "decimal", "Must be a decimal" ]
-	 */
-	public function test_validate_number_type_accepts_valid_decimal_numbers( $value, $type, $message ) {
-		$this->assertNull( validate_number_type( $value, $type, $message ) );
+	public function test_validate_number_type_accepts_valid_decimal_numbers( $value, $type ) {
+		$this->assertNull( validate_number_type( $value, $type ) );
 	}
 
 	/**
