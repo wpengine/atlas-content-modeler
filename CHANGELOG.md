@@ -1,6 +1,9 @@
 # Atlas Content Modeler Changelog
 
 ## Unreleased
+### Added
+- Added `validate_integer()` and `validate_decimal()` functions.
+
 ### Fixed
 - Decimal values ending in 0, such as 1.0, will now pass validation for validate_number_type() for integers.
 
