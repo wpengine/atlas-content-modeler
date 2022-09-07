@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.21.0 - 2022-09-06
 ### Added
 - Added `validate_integer()` and `validate_decimal()` functions.
 
