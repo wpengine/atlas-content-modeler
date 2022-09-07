@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.20.0
+Stable tag: 0.21.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -54,7 +54,11 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 == Changelog ==
 
-= 0.21.0 - 2022-09-06 =
+= 0.21.1 - 2022-09-07 =
+
+* **Fixed:** No functional changes. Bumped version due to deploy issue.
+
+= 0.21.0 - 2022-09-07 =
 
 * **Added:** Added `validate_integer()` and `validate_decimal()` functions.
 * **Fixed:** Decimal values ending in 0, such as 1.0, will now pass validation for validate_number_type() for integers.
