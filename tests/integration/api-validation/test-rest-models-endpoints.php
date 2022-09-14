@@ -95,6 +95,32 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_model_exists', $response->data['code'] );
+	}
+
+	/**
+	 * Test that we cannot create a model where the slug conflicts with a reserved name.
+	 *
+	 * @return void
+	 */
+	public function test_cannot_create_model_when_slug_conflicts_with_reserved_name(): void {
+		wp_set_current_user( 1 );
+
+		$create_test_models = array(
+			array(
+				'slug'     => 'post',
+				'singular' => 'Post',
+				'plural'   => 'Posts',
+			),
+		);
+
+		$request = new WP_REST_Request( 'PUT', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $create_test_models ) );
+		$response = $this->server->dispatch( $request );
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_model_id_used', $response->data['code'] );
 	}
 
 	/**
