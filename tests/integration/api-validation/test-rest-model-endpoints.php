@@ -81,7 +81,7 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	 */
 	public function test_cannot_create_model_when_slug_conflicts_with_existing_acm_model_slug(): void {
 		wp_set_current_user( 1 );
-		$model = 'attachment'; // Exists as a model in `tests/integration/api-validation/test-data/models.php`.
+		$model = 'public'; // Exists as a model in `tests/integration/api-validation/test-data/models.php`.
 
 		// Attempt to create the model.
 		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );

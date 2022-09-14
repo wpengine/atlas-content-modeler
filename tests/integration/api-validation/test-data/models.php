@@ -52,12 +52,6 @@ return array(
 		'description'     => 'A private model with fields',
 		'fields'          => get_test_fields(),
 	),
-	'attachment'     => array(
-		'slug'     => 'attachment',
-		'singular' => 'Attachment',
-		'plural'   => 'Attachments',
-		'fields'   => array(),
-	),
 	'different-slug' => array(
 		'show_in_rest'    => true,
 		'show_in_graphql' => true,
