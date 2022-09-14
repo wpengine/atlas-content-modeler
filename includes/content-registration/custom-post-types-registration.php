@@ -67,21 +67,20 @@ function register_content_types(): void {
  * @return array
  */
 function reserved_post_types() {
-	global $wp_post_types;
-
-	$reserved_post_types = is_array( $wp_post_types ) ? array_keys( $wp_post_types ) : [];
+	$builtin_post_types = get_post_types(
+		[
+			'_builtin' => true,
+		]
+	);
 
 	/**
-	 * Additional types not in `$wp_post_types` known to cause issues if registered.
+	 * Additional non-builtin types known to cause issues if registered.
 	 * - https://developer.wordpress.org/reference/functions/register_post_type/#reserved-post-types.
 	 * - https://github.com/wpengine/atlas-content-modeler/issues/613
 	 */
 	$other_reserved_types = [ 'action', 'author', 'order', 'theme', 'type', 'types' ];
 
-	$all_reserved   = array_unique( array_merge( $reserved_post_types, $other_reserved_types ) );
-	$acm_post_types = array_keys( get_registered_content_types() );
-
-	return array_diff( $all_reserved, $acm_post_types ); // Conflicts with ACM post types checked separately, so exclude them.
+	return array_unique( array_merge( $builtin_post_types, $other_reserved_types ) );
 }
 
 /**
