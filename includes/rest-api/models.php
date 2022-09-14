@@ -31,7 +31,8 @@ function create_model( string $post_type_slug, array $args ) {
 		return $args;
 	}
 
-	$content_types = get_registered_content_types();
+	$existing_content_types = get_post_types();
+	$content_types          = get_registered_content_types();
 
 	if ( in_array( $args['slug'], reserved_post_types(), true ) ) {
 		return new WP_Error(
@@ -41,7 +42,10 @@ function create_model( string $post_type_slug, array $args ) {
 		);
 	}
 
-	if ( ! empty( $content_types[ $args['slug'] ] ) ) {
+	if (
+		! empty( $content_types[ $args['slug'] ] )
+		|| array_key_exists( $args['slug'], $existing_content_types )
+	) {
 		return new WP_Error(
 			'acm_model_exists',
 			esc_html__( 'A content model with this Model ID already exists.', 'atlas-content-modeler' ),
@@ -109,8 +113,9 @@ function create_model( string $post_type_slug, array $args ) {
  * @return array|WP_Error The newly created models on success or WP_Error.
  */
 function create_models( array $models ) {
-	$reserved_post_types = reserved_post_types();
-	$content_types       = get_registered_content_types();
+	$existing_content_types = get_post_types();
+	$reserved_post_types    = reserved_post_types();
+	$content_types          = get_registered_content_types();
 
 	foreach ( $models as $model ) {
 		if ( ! is_array( $model ) ) {
@@ -132,7 +137,10 @@ function create_models( array $models ) {
 			);
 		}
 
-		if ( ! empty( $content_types[ $args['slug'] ] ) ) {
+		if (
+			! empty( $content_types[ $args['slug'] ] )
+			|| array_key_exists( $args['slug'], $existing_content_types )
+		) {
 			return new WP_Error(
 				'acm_model_exists',
 				// translators: The name of the model.
