@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPE\AtlasContentModeler\Settings;
 
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\reserved_post_types;
 
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_menu_page' );
 /**
@@ -141,6 +142,7 @@ function enqueue_settings_assets( $hook ) {
 		array(
 			'appPath'              => $admin_path . 'admin.php?page=atlas-content-modeler',
 			'taxonomies'           => get_option( 'atlas_content_modeler_taxonomies', array() ),
+			'reservedPostTypes'    => reserved_post_types(),
 			'initialState'         => get_registered_content_types(),
 			'isWPGraphQLActive'    => is_plugin_active( 'wp-graphql/wp-graphql.php' ),
 			'isGraphiQLAvailable'  => function_exists( 'get_graphql_setting' )
