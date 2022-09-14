@@ -142,7 +142,7 @@ function enqueue_settings_assets( $hook ) {
 		array(
 			'appPath'              => $admin_path . 'admin.php?page=atlas-content-modeler',
 			'taxonomies'           => get_option( 'atlas_content_modeler_taxonomies', array() ),
-			'reservedPostTypes'    => reserved_post_types(),
+			'reservedPostTypes'    => array_values( reserved_post_types() ),
 			'initialState'         => get_registered_content_types(),
 			'isWPGraphQLActive'    => is_plugin_active( 'wp-graphql/wp-graphql.php' ),
 			'isGraphiQLAvailable'  => function_exists( 'get_graphql_setting' )
