@@ -41,6 +41,9 @@ export default function ViewContentModelsList() {
 	const { models } = useContext(ModelsContext);
 	const hasModels = Object.keys(models || {}).length > 0;
 	const history = useHistory();
+	const modelsWithIdConflicts = Object.keys(models)?.filter((modelId) =>
+		atlasContentModeler?.reservedPostTypes?.includes(modelId)
+	);
 
 	useEffect(() => {
 		sendEvent({
@@ -53,6 +56,28 @@ export default function ViewContentModelsList() {
 		<Card>
 			<Header showButtons={hasModels} />
 			<section className="card-content">
+				{hasModels && modelsWithIdConflicts?.length > 0 && (
+					<p>
+						{"⚠️ "}
+						{__(
+							"Some models are disabled due to ID conflicts.",
+							"atlas-content-modeler"
+						)}{" "}
+						<a
+							href="https://github.com/wpengine/atlas-content-modeler/blob/main/docs/help/model-id-conflicts.md"
+							aria-label={__(
+								"How to fix a model ID conflict.",
+								"atlas-content-modeler"
+							)}
+						>
+							{__(
+								"How to fix conflicts",
+								"atlas-content-modeler"
+							)}
+						</a>
+						.
+					</p>
+				)}
 				{hasModels ? (
 					<ul className="model-list">
 						<ContentModels models={models} />
@@ -85,8 +110,13 @@ export default function ViewContentModelsList() {
 function ContentModels({ models }) {
 	return Object.keys(models).map((slug) => {
 		const { plural, description, fields = {} } = models[slug];
+
+		const hasIdConflict = atlasContentModeler?.reservedPostTypes.includes(
+			slug
+		);
+
 		return (
-			<li key={slug}>
+			<li key={slug} className={hasIdConflict ? "has-conflict" : ""}>
 				<Link
 					to={`/wp-admin/admin.php?page=atlas-content-modeler&view=edit-model&id=${slug}`}
 					aria-label={`Edit ${plural} content model`}
@@ -102,9 +132,23 @@ function ContentModels({ models }) {
 					</span>
 					<span className="flex-item mb-3 mb-sm-0 pr-1">
 						<p className="label">
-							{__("Description", "atlas-content-modeler")}
+							{hasIdConflict
+								? __("Information", "atlas-content-modeler")
+								: __("Description", "atlas-content-modeler")}
 						</p>
-						<p className="value">{description}</p>
+						<p className="value">
+							{hasIdConflict ? (
+								<>
+									{"⚠️ "}
+									{__(
+										"Disabled due to a model ID conflict.",
+										"atlas-content-modeler"
+									)}
+								</>
+							) : (
+								description
+							)}
+						</p>
 					</span>
 					<span className="flex-item">
 						<p className="label">
