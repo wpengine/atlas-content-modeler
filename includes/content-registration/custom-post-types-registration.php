@@ -78,7 +78,10 @@ function reserved_post_types() {
 	 */
 	$other_reserved_types = [ 'action', 'author', 'order', 'theme', 'type', 'types' ];
 
-	return array_unique( array_merge( $reserved_post_types, $other_reserved_types ) );
+	$all_reserved   = array_unique( array_merge( $reserved_post_types, $other_reserved_types ) );
+	$acm_post_types = array_keys( get_registered_content_types() );
+
+	return array_diff( $all_reserved, $acm_post_types ); // Conflicts with ACM post types checked separately, so exclude them.
 }
 
 /**
