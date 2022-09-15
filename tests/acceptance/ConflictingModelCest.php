@@ -14,7 +14,7 @@ class ConflictingModelCest {
 		$i->haveContentModel( 'Type', 'Types' );
 
 		// Creates another model with an ID that WordPress is not likely to ever reserve.
-		$i->haveContentModel( 'Badger Shoe', 'Badger Shoes' );
+		$i->haveContentModel( 'BadgerShoe', 'BadgerShoes' );
 
 		$i->amOnWPEngineContentModelPage();
 		$i->waitForElement( '.model-list' );
