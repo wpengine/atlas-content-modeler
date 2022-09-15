@@ -82,4 +82,17 @@ class CreateContentModelCest {
 
 		$i->see( 'plural name is in use', '.card-content' );
 	}
+
+	public function i_see_a_warning_if_the_model_id_is_reserved( AcceptanceTester $i ) {
+		$i->loginAsAdmin();
+		$i->amOnWPEngineCreateContentModelPage();
+		$i->wait( 1 );
+
+		$i->fillField( [ 'name' => 'singular' ], 'Type' ); // Results in 'type' for model ID, which is reserved.
+		$i->fillField( [ 'name' => 'plural' ], 'Types' );
+		$i->click( 'button[data-testid="create-model-button"]' );
+		$i->wait( 1 );
+
+		$i->see( 'model ID reserved or in use', '.card-content' );
+	}
 }
