@@ -1,5 +1,11 @@
 # Atlas Content Modeler Changelog
 
+## Unreleased
+### Changed
+- Models can no longer be registered with IDs that match special WordPress Core names, such as ‘type’ and ‘theme’.
+- Existing models using reserved model IDs are disabled to prevent fatal errors and unexpected behavior from WordPress core.
+- Disabled models with reserved model IDs display a message on the model index page, with a link to docs explaining how to change the model ID: https://github.com/wpengine/atlas-content-modeler/blob/main/docs/help/model-id-conflicts.md.
+
 ## 0.21.1 - 2022-09-07
 ### Fixed
 - No functional changes. Bumped version due to deploy issue.
