@@ -86,6 +86,10 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		self::assertArrayHasKey( 'private-fields', $this->all_registered_post_types );
 	}
 
+	public function tests_post_types_with_reserved_slugs_are_not_registered() {
+		self::assertArrayNotHasKey( 'type', $this->all_registered_post_types );
+	}
+
 	public function test_relationships_are_registered(): void {
 		$registry = \WPE\AtlasContentModeler\ContentConnect\Helpers\get_registry();
 
