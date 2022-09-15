@@ -41,7 +41,7 @@ export default function ViewContentModelsList() {
 	const { models } = useContext(ModelsContext);
 	const hasModels = Object.keys(models || {}).length > 0;
 	const history = useHistory();
-	const modelsWithIdConflicts = Object.keys(models)?.filter((modelId) =>
+	const modelsWithIdConflicts = Object.keys(models || {})?.filter((modelId) =>
 		atlasContentModeler?.reservedPostTypes?.includes(modelId)
 	);
 
