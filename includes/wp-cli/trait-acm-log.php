@@ -23,9 +23,9 @@ trait ACM_Log {
 	/**
 	 * Logs output with WP_CLI if available.
 	 *
-	 * @param [type] $message Message to write to STDOUT.
+	 * @param string $message Message to write to STDOUT.
 	 */
-	public static function log( $message ) {
+	public static function log( string $message ) {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\WP_CLI::log( $message );
 		}
@@ -54,7 +54,7 @@ trait ACM_Log {
 	 *
 	 * @param string $message Message to write to STDOUT.
 	 */
-	public static function success( $message ) {
+	public static function success( string $message ) {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\WP_CLI::success( $message );
 		}
@@ -66,7 +66,7 @@ trait ACM_Log {
 	 * @param string $question Question to display before the prompt.
 	 * @param array  $args Skips prompt if 'yes' key exists and is `true`.
 	 */
-	public static function confirm( $question, $args ) {
+	public static function confirm( string $question, array $args ) {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\WP_CLI::confirm( $question, $args );
 		}
