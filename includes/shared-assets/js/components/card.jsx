@@ -59,6 +59,9 @@ export function Card(props) {
 			box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 			line-height: 20px;
 		}
+		.card-content li.has-conflict {
+			border-left: 5px solid #d21b46;
+		}
 		.card-content .subfield-list li {
 			border-left: 5px solid #cfdde9;
 		}

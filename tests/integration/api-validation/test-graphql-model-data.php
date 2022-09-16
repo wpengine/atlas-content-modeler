@@ -106,7 +106,9 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 							numberIntegerRepeat
 							email
 							emailRepeater
-							mediaRepeat
+							mediaRepeat {
+								databaseId
+							}
 							dateRequired
 							dateRepeatable
 							multiSingle

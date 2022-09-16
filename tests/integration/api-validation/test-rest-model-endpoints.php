@@ -79,9 +79,9 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_cannot_create_model_when_slug_conflicts_with_existing_post_type(): void {
+	public function test_cannot_create_model_when_slug_conflicts_with_existing_acm_model_slug(): void {
 		wp_set_current_user( 1 );
-		$model = 'attachment'; // already exists by default in WP.
+		$model = 'public'; // Exists as a model in `tests/integration/api-validation/test-data/models.php`.
 
 		// Attempt to create the model.
 		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
@@ -92,6 +92,29 @@ class RestModelEndpointTests extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		self::assertSame( 400, $response->get_status() );
 		self::assertSame( 'acm_model_exists', $response->data['code'] );
+	}
+
+	public function test_cannot_create_model_when_slug_conflicts_with_reserved_name(): void {
+		wp_set_current_user( 1 );
+
+		// Attempt to create the model.
+		$request = new WP_REST_Request( 'POST', $this->namespace . $this->route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body(
+			json_encode(
+				[
+					'slug'     => 'post', // Reserved name, registration attempt should fail.
+					'singular' => 'Post',
+					'plural'   => 'Posts',
+					'fields'   => [],
+				]
+			)
+		);
+		$this->server->dispatch( $request );
+
+		$response = $this->server->dispatch( $request );
+		self::assertSame( 400, $response->get_status() );
+		self::assertSame( 'acm_model_id_used', $response->data['code'] );
 	}
 
 	public function test_cannot_create_model_if_singular_name_is_reserved(): void {

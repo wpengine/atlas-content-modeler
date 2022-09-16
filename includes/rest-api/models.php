@@ -12,6 +12,7 @@ namespace WPE\AtlasContentModeler\REST_API\Models;
 use WP_Error;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\reserved_post_types;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\REST_API\GraphQL\root_type_exists;
 
@@ -32,6 +33,14 @@ function create_model( string $post_type_slug, array $args ) {
 
 	$existing_content_types = get_post_types();
 	$content_types          = get_registered_content_types();
+
+	if ( in_array( $args['slug'], reserved_post_types(), true ) ) {
+		return new WP_Error(
+			'acm_model_id_used',
+			esc_html__( 'Model ID reserved or in use.', 'atlas-content-modeler' ),
+			[ 'status' => 400 ]
+		);
+	}
 
 	if (
 		! empty( $content_types[ $args['slug'] ] )
@@ -105,6 +114,7 @@ function create_model( string $post_type_slug, array $args ) {
  */
 function create_models( array $models ) {
 	$existing_content_types = get_post_types();
+	$reserved_post_types    = reserved_post_types();
 	$content_types          = get_registered_content_types();
 
 	foreach ( $models as $model ) {
@@ -116,6 +126,15 @@ function create_models( array $models ) {
 
 		if ( is_wp_error( $args ) ) {
 			return $args;
+		}
+
+		if ( in_array( $args['slug'], $reserved_post_types, true ) ) {
+			return new WP_Error(
+				'acm_model_id_used',
+				// translators: The name of the model.
+				sprintf( esc_html__( 'The model ID ‘%s’ is reserved or in use.', 'atlas-content-modeler' ), $args['slug'] ),
+				[ 'status' => 400 ]
+			);
 		}
 
 		if (

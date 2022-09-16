@@ -52,12 +52,6 @@ return array(
 		'description'     => 'A private model with fields',
 		'fields'          => get_test_fields(),
 	),
-	'attachment'     => array(
-		'slug'     => 'attachment',
-		'singular' => 'Attachment',
-		'plural'   => 'Attachments',
-		'fields'   => array(),
-	),
 	'different-slug' => array(
 		'show_in_rest'    => true,
 		'show_in_graphql' => true,
@@ -85,5 +79,18 @@ return array(
 				'description'     => '',
 			],
 		],
+	),
+	/**
+	 * To confirm that ACM does not call `register_post_type()` on models with
+	 * reserved slugs. ACM should skip this model during registration because
+	 * CPTs with a slug of 'type' cause unexpected behavior in WP core.
+	 *
+	 * See https://github.com/wpengine/atlas-content-modeler/issues/613.
+	 */
+	'type'           => array(
+		'slug'     => 'type',
+		'singular' => 'Type',
+		'plural'   => 'Types',
+		'fields'   => array(),
 	),
 );

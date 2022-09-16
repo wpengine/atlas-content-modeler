@@ -28,6 +28,18 @@ function register_content_types(): void {
 	}
 
 	foreach ( $content_types as $slug => $args ) {
+		/**
+		 * Prevent accidental registration of reserved post types.
+		 *
+		 * ACM now prevents creation of models with a reserved post type slug.
+		 * But `$content_types` could still contain models with reserved slugs
+		 * from an earlier version of ACM, or if someone adds models in a way
+		 * that bypasses our collision detection (e.g. direct database edits).
+		 */
+		if ( in_array( $slug, reserved_post_types(), true ) ) {
+			continue;
+		}
+
 		$fields = $args['fields'] ?? false;
 		unset( $args['fields'] );
 
@@ -43,6 +55,32 @@ function register_content_types(): void {
 			register_meta_types( $slug, $fields );
 		}
 	}
+}
+
+/**
+ * Gives a list of reserved post types.
+ *
+ * Some post types are reserved by WordPress Core but will not throw errors
+ * if passed to `register_post_type()`. This list helps us avoid re-registering
+ * reserved types that would break core functionality.
+ *
+ * @return array
+ */
+function reserved_post_types() {
+	$builtin_post_types = get_post_types(
+		[
+			'_builtin' => true,
+		]
+	);
+
+	/**
+	 * Additional non-builtin types known to cause issues if registered.
+	 * - https://developer.wordpress.org/reference/functions/register_post_type/#reserved-post-types.
+	 * - https://github.com/wpengine/atlas-content-modeler/issues/613
+	 */
+	$other_reserved_types = [ 'action', 'author', 'order', 'theme', 'type', 'types' ];
+
+	return array_unique( array_merge( $builtin_post_types, $other_reserved_types ) );
 }
 
 /**
