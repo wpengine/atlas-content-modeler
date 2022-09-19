@@ -36,8 +36,6 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 	 */
 	private $post_count = 2;
 
-	private $relationships_registry;
-
 	private $term_id;
 
 	public function set_up() {
@@ -82,8 +80,7 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 		update_registered_content_types( $models );
 		save_taxonomy( $test_taxonomy, false );
 		register_acm_taxonomies();
-		$this->relationships_registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
-		register_relationships( $this->relationships_registry );
+		register_relationships( \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry() );
 
 		$this->term_id = $this->factory()->term->create(
 			[
