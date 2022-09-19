@@ -5,8 +5,11 @@
  * @package AtlasContentModeler
  */
 
+use function WPE\AtlasContentModeler\API\add_relationship;
+use function WPE\AtlasContentModeler\ContentConnect\Helpers\get_related_ids_by_name;
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\register_relationships;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
 use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register as register_acm_taxonomies;
 use function WPE\AtlasContentModeler\REST_API\Taxonomies\save_taxonomy;
@@ -33,10 +36,15 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 	 */
 	private $post_count = 2;
 
+	private $relationships_registry;
+
 	private $term_id;
 
 	public function set_up() {
 		parent::set_up();
+
+		// Start each test with a fresh relationships registry.
+		\WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->setup();
 
 		$models = [
 			'old-id' => [
@@ -74,6 +82,8 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 		update_registered_content_types( $models );
 		save_taxonomy( $test_taxonomy, false );
 		register_acm_taxonomies();
+		$this->relationships_registry = \WPE\AtlasContentModeler\ContentConnect\Plugin::instance()->get_registry();
+		register_relationships( $this->relationships_registry );
 
 		$this->term_id = $this->factory()->term->create(
 			[
@@ -81,16 +91,19 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 			]
 		);
 
-		$posts = $this->factory->post->create_many(
+		$this->posts = $this->factory->post->create_many(
 			$this->post_count,
 			[
 				'post_type' => 'old-id',
 			]
 		);
 
-		foreach ( $posts as $post_id ) {
+		foreach ( $this->posts as $post_id ) {
 			wp_set_post_terms( $post_id, [ $this->term_id ], 'demo' );
 		}
+
+		// Relate the posts to each other via the 'relationship' field.
+		add_relationship( $this->posts[0], 'relationship', $this->posts[1] );
 
 		$this->model = new \WPE\AtlasContentModeler\WP_CLI\Model();
 	}
@@ -198,6 +211,11 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 		// Reference for the relationship field should be updated in the new model record.
 		$models = get_registered_content_types();
 		$this->assertContains( 'new-id', $models['new-id']['fields']['123']['reference'] );
+
+		// Posts should still be connected.
+		$relationship_field_id = '123';
+		$related_posts         = get_related_ids_by_name( $this->posts[0], $relationship_field_id );
+		$this->assertEquals( [ $this->posts[1] ], $related_posts );
 	}
 
 	public function tear_down() {
