@@ -88,7 +88,7 @@ class Model {
 	 * @return bool True if ID change succeeded. Useful when running outside of the context of WP_CLI.
 	 * @throws \Exception Exception if ID change failed and function is run outside of the context of WP_CLI.
 	 */
-	public function change_id( $args, $assoc_args ) {
+	public function change_id( $args, $assoc_args = [] ) {
 		$old_id = $args[0];
 		$new_id = $args[1];
 
