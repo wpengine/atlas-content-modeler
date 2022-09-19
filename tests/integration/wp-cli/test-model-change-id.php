@@ -7,6 +7,9 @@
 
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
 use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\get_acm_taxonomies;
+use function WPE\AtlasContentModeler\ContentRegistration\Taxonomies\register as register_acm_taxonomies;
+use function WPE\AtlasContentModeler\REST_API\Taxonomies\save_taxonomy;
 
 require_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . '/wp-cli/class-model.php';
 
@@ -16,7 +19,21 @@ require_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . '/wp-cli/class-model.php';
  * @covers WPE\AtlasContentModeler\WP_CLI\Model
  */
 class ModelChangeIdTest extends WP_UnitTestCase {
+	/**
+	 * Model instance to access the change_id method.
+	 *
+	 * @var Model
+	 */
 	private $model;
+
+	/**
+	 * Number of posts to insert in the original post type.
+	 *
+	 * @var int
+	 */
+	private $post_count = 2;
+
+	private $term_id;
 
 	public function set_up() {
 		parent::set_up();
@@ -26,11 +43,54 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 				'slug'     => 'old-id',
 				'singular' => 'Old ID',
 				'plural'   => 'Old IDs',
-				'fields'   => [],
+				'fields'   => [
+					'123' => [
+						'show_in_rest'    => true,
+						'show_in_graphql' => true,
+						'type'            => 'relationship',
+						'id'              => '123',
+						'position'        => '10000',
+						'name'            => 'Relationship',
+						'slug'            => 'relationship',
+						'description'     => '',
+						'required'        => false,
+						'reference'       => 'old-id',
+						'cardinality'     => 'one-to-one',
+						'enableReverse'   => false,
+						'reverseName'     => 'Old IDs',
+						'reverseSlug'     => 'old-ids',
+					],
+				],
 			],
 		];
 
+		$test_taxonomy = [
+			'types'    => [ 'old-id' ],
+			'singular' => 'Demo',
+			'plural'   => 'Demos',
+			'slug'     => 'demo',
+		];
+
 		update_registered_content_types( $models );
+		save_taxonomy( $test_taxonomy, false );
+		register_acm_taxonomies();
+
+		$this->term_id = $this->factory()->term->create(
+			[
+				'taxonomy' => 'demo',
+			]
+		);
+
+		$posts = $this->factory->post->create_many(
+			$this->post_count,
+			[
+				'post_type' => 'old-id',
+			]
+		);
+
+		foreach ( $posts as $post_id ) {
+			wp_set_post_terms( $post_id, [ $this->term_id ], 'demo' );
+		}
 
 		$this->model = new \WPE\AtlasContentModeler\WP_CLI\Model();
 	}
@@ -98,25 +158,59 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 	}
 
 	public function test_posts_are_updated() {
-		$post_count = 2;
-		$this->factory->post->create_many(
-			$post_count,
-			[ 'post_type' => 'old-id' ]
-		);
-
 		$this->model->change_id( [ 'old-id', 'new-id' ] );
 
-		$old_posts = get_posts( [ 'post_type' => 'old-id' ] );
-		$new_posts = get_posts( [ 'post_type' => 'new-id' ] );
+		$old_posts = get_posts(
+			[
+				'post_type'              => 'old-id',
+				'cache_results'          => false,
+				'update_post_term_cache' => false,
+			]
+		);
+
+		$new_posts = get_posts(
+			[
+				'post_type'              => 'new-id',
+				'cache_results'          => false,
+				'update_post_term_cache' => false,
+			]
+		);
 
 		$this->assertCount( 0, $old_posts );
-		$this->assertCount( $post_count, $new_posts );
+		$this->assertCount( $this->post_count, $new_posts );
+	}
+
+	public function test_taxonomies_are_updated() {
+		$this->model->change_id( [ 'old-id', 'new-id' ] );
+
+		// Updated taxonomy data should have been written to the database.
+		$taxonomies = get_acm_taxonomies();
+		$this->assertContains( 'new-id', $taxonomies['demo']['types'] );
+
+		// There should still be the same number of posts with the assigned term.
+		$term = get_term( $this->term_id );
+		$this->assertEquals( $this->post_count, $term->count );
+	}
+
+	public function test_relationship_fields_are_updated() {
+		$this->model->change_id( [ 'old-id', 'new-id' ] );
+
+		// Reference for the relationship field should be updated in the new model record.
+		$models = get_registered_content_types();
+		$this->assertContains( 'new-id', $models['new-id']['fields']['123']['reference'] );
 	}
 
 	public function tear_down() {
 		global $wp_post_types;
 		$wp_post_types = null;
-		update_registered_content_types( [] );
+
+		delete_option( 'atlas_content_modeler_post_types' );
+		delete_option( 'atlas_content_modeler_taxonomies' );
+
+		// Prevents 'taxonomy exists' warnings during test set_up.
+		unregister_taxonomy( 'demo' );
+
+		register_acm_taxonomies();
 
 		parent::tear_down();
 	}
