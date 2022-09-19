@@ -6,6 +6,7 @@
  */
 
 use function WPE\AtlasContentModeler\ContentRegistration\update_registered_content_types;
+use function WPE\AtlasContentModeler\ContentRegistration\get_registered_content_types;
 
 require_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . '/wp-cli/class-model.php';
 
@@ -85,4 +86,39 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 
 		$this->model->change_id( [ 'old-id', 'custom-post-type' ] );
 	}
+
+	public function test_model_id_is_updated() {
+		$this->model->change_id( [ 'old-id', 'new-id' ] );
+
+		$models = get_registered_content_types();
+
+		$this->assertArrayHasKey( 'new-id', $models );
+		$this->assertArrayNotHasKey( 'old-id', $models );
+		$this->assertEquals( 'new-id', $models['new-id']['slug'] );
+	}
+
+	public function test_posts_are_updated() {
+		$post_count = 2;
+		$this->factory->post->create_many(
+			$post_count,
+			[ 'post_type' => 'old-id' ]
+		);
+
+		$this->model->change_id( [ 'old-id', 'new-id' ] );
+
+		$old_posts = get_posts( [ 'post_type' => 'old-id' ] );
+		$new_posts = get_posts( [ 'post_type' => 'new-id' ] );
+
+		$this->assertCount( 0, $old_posts );
+		$this->assertCount( $post_count, $new_posts );
+	}
+
+	public function tear_down() {
+		global $wp_post_types;
+		$wp_post_types = null;
+		update_registered_content_types( [] );
+
+		parent::tear_down();
+	}
+
 }
