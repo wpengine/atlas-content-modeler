@@ -11,6 +11,8 @@ const readFile = (fileName) => util.promisify(fs.readFile)(fileName, "utf8");
 async function buildReadme() {
 	let changelog = "";
 
+	const readmePath = path.join(__dirname, "../", "readme.txt");
+
 	changelog = await readFile(path.join(__dirname, "../", "CHANGELOG.md"));
 
 	changelog = changelog.replace(
@@ -56,13 +58,24 @@ async function buildReadme() {
 
 	changelog = processedLines.join("\n");
 
-	fs.appendFile(
-		path.join(__dirname, "../", "readme.txt"),
-		changelog,
-		function (err) {
-			if (err) throw err;
-		}
-	);
+	// Remove existing changelog if present and write new one to readme.txt.
+	fs.readFile(readmePath, "utf8", function (err, data) {
+		if (err) throw err;
+
+		const contentsWithoutChangelog = data.replace(
+			/== Changelog ==(.|\s)*$/gm, // Replace until end of file.
+			""
+		);
+
+		fs.writeFile(
+			readmePath,
+			contentsWithoutChangelog + changelog + "\n",
+			"utf8",
+			function (err) {
+				if (err) throw err;
+			}
+		);
+	});
 }
 
 buildReadme();
