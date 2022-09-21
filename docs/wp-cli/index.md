@@ -109,3 +109,32 @@ wp acm reset --yes
 wp acm reset --all
 wp acm reset --yes --all
 ```
+
+## wp acm model change-id
+
+Requires: ACM 0.22.0+.
+
+### Description
+
+Change a model's ID (post type slug), migrating posts and taxonomy data.
+
+### Synopsis
+
+`wp acm model change-id <oldid> <newid> [--yes]`
+
+### Options
+
+`<oldid>`
+The original ID of the model to change.
+
+`<newid>`
+The new ID of the model. 20 character max, lowercase alphanumeric, underscores and hyphens only.
+
+`[--yes]`
+Skip prompt to confirm model ID change.
+
+### Examples
+
+```
+wp acm model change-id oldid newid
+```

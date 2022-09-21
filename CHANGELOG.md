@@ -1,6 +1,9 @@
 # Atlas Content Modeler Changelog
 
 ## Unreleased
+### Added
+- New `wp acm model change-id` WP-CLI command to change a model's ID and migrate existing posts to the new ID.
+
 ### Changed
 - Models can no longer be registered with IDs that match special WordPress Core names, such as ‘type’ and ‘theme’.
 - Existing models using reserved model IDs are disabled to prevent fatal errors and unexpected behavior from WordPress Core.
