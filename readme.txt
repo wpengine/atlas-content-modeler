@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.21.1
+Stable tag: 0.22.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,6 +53,13 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+
+= 0.22.0 - 2022-09-22 =
+
+* **Added:** New `wp acm model change-id` WP-CLI command to change a model's ID and migrate existing posts to the new ID.
+* **Changed:** Models can no longer be registered with IDs that match special WordPress Core names, such as ‘type’ and ‘theme’.
+* **Changed:** Existing models using reserved model IDs are disabled to prevent fatal errors and unexpected behavior from WordPress Core.
+* **Changed:** Disabled models with reserved model IDs display a message on the model index page, with a link to docs explaining how to change the model ID: https://github.com/wpengine/atlas-content-modeler/blob/main/docs/help/model-id-conflicts.md.
 
 = 0.21.1 - 2022-09-07 =
 

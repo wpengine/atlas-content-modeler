@@ -1,6 +1,6 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.22.0 - 2022-09-22
 ### Added
 - New `wp acm model change-id` WP-CLI command to change a model's ID and migrate existing posts to the new ID.
 
