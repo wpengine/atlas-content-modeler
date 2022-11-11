@@ -388,7 +388,9 @@ function generate_custom_post_type_args( array $args ): array {
 		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
 		'rewrite'               => [
 			'with_front' => $args['with_front'] ?? true,
+			'slug'       => $args['slug'],
 		],
+		'has_archive'           => (bool) ( $args['has_archive'] ?? false ),
 	];
 
 	if ( ! empty( $args['api_visibility'] ) && 'private' === $args['api_visibility'] ) {
