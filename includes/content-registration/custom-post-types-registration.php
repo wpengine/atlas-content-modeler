@@ -589,13 +589,12 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 						if ( $is_repeatable_field ) {
 							return array_map(
 								function( $media_id ) use ( $context ) {
-									return DataSource::resolve_post_object( (int) $media_id, $context );
+									return $context->get_loader( 'post' )->load_deferred( (int) $media_id );
 								},
 								$value
 							);
 						}
-
-						return DataSource::resolve_post_object( (int) $value, $context );
+						return $context->get_loader( 'post' )->load_deferred( (int) $value );
 					}
 
 					// If the multiple choice field has no saved data, return an empty array.
