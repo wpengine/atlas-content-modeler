@@ -16,6 +16,8 @@ return array(
 		'api_visibility'  => 'public',
 		'model_icon'      => 'dashicons-admin-post',
 		'description'     => "A public model for testing\n",
+		'with_front'      => true,
+		'has_archive'     => true,
 		'fields'          => array(),
 	),
 	'private'        => array(
