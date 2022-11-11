@@ -2,7 +2,7 @@
 
 ## Unreleased
 ### Added
-- Added a “Post Type Archives” option on the edit model screen enable custom post type archives (The WordPress `has_archive` setting. false by default).
+- Added a “Post Type Archives” option on the edit model screen to control custom post type archives (The WordPress `has_archive` setting. false by default).
 
 ## 0.22.0 - 2022-09-22
 ### Added
