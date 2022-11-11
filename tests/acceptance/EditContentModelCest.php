@@ -25,6 +25,8 @@ class EditContentModelCest {
 		$i->fillField( [ 'name' => 'description' ], 'Cats are better than candy.' );
 		$i->see( '27/250', 'span.count' );
 		$i->uncheckOption( [ 'name' => 'with_front' ] );
+		$i->dontSeeCheckboxIsChecked( [ 'name' => 'has_archive' ] );
+		$i->checkOption( [ 'name' => 'has_archive' ] );
 
 		// Change the model's icon.
 		$i->click( '.dashicons-picker' );
@@ -55,6 +57,7 @@ class EditContentModelCest {
 		$i->click( '.model-list button.options' );
 		$i->click( '.dropdown-content a.edit' );
 		$i->dontSeeCheckboxIsChecked( [ 'name' => 'with_front' ] );
+		$i->seeCheckboxIsChecked( [ 'name' => 'has_archive' ] );
 		$i->seeInField( [ 'name' => 'singular' ], 'Cat' );
 		$i->seeInField( [ 'name' => 'plural' ], 'Cats' );
 	}
