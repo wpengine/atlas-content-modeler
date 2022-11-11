@@ -388,7 +388,7 @@ function generate_custom_post_type_args( array $args ): array {
 		'rest_controller_class' => __NAMESPACE__ . '\REST_Posts_Controller',
 		'rewrite'               => [
 			'with_front' => $args['with_front'] ?? true,
-			'slug'       => $args['slug'],
+			'slug'       => $args['slug'] ?? sanitize_key( $args['singular'] ),
 		],
 		'has_archive'           => (bool) ( $args['has_archive'] ?? false ),
 	];
