@@ -282,6 +282,10 @@ function update_model( string $post_type_slug, array $args ) {
 		$args['with_front'] = 0;
 	}
 
+	if ( empty( $args['has_archive'] ) ) {
+		$args['has_archive'] = 0;
+	}
+
 	$new_args = wp_parse_args( $args, $content_types[ $post_type_slug ] );
 
 	// Updating the slug is unsupported.

@@ -349,23 +349,33 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 				</div>
 
 				<div className="row">
-					<div className="field col-sm">
-						<label htmlFor="model_icon">
-							{__("Model Icon", "atlas-content-modeler")}
-						</label>
+					<div className="field form-check form-check-inline col-sm">
+						<label htmlFor="has_archive">Post Type Archive</label>
 						<p className="help">
 							{__(
-								"Choose an icon to represent your model.",
+								"Whether there should be a post type archive. (Sets “has_archive”.)",
 								"atlas-content-modeler"
 							)}
 						</p>
 
-						<IconPicker
-							setValue={setValue}
-							buttonClasses="primary first"
-							register={register}
-							modelIcon={model.model_icon}
+						<input
+							name="has_archive"
+							id="has_archive"
+							type="checkbox"
+							value="1"
+							ref={register}
+							defaultChecked={model?.has_archive ?? false}
 						/>
+
+						<label
+							htmlFor="has_archive"
+							className="form-check-label"
+						>
+							{__(
+								"Enable post type archive",
+								"atlas-content-modeler"
+							)}
+						</label>
 					</div>
 					<div
 						className={
@@ -400,6 +410,27 @@ export function EditModelModal({ model, isOpen, setIsOpen }) {
 								"atlas-content-modeler"
 							)}
 						</label>
+					</div>
+				</div>
+
+				<div className="row">
+					<div className="field col-sm">
+						<label htmlFor="model_icon">
+							{__("Model Icon", "atlas-content-modeler")}
+						</label>
+						<p className="help">
+							{__(
+								"Choose an icon to represent your model.",
+								"atlas-content-modeler"
+							)}
+						</p>
+
+						<IconPicker
+							setValue={setValue}
+							buttonClasses="primary first"
+							register={register}
+							modelIcon={model.model_icon}
+						/>
 					</div>
 				</div>
 
