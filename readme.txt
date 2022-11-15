@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 0.22.0
+Stable tag: 0.23.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -53,6 +53,10 @@ ACM is primarily intended for headless WordPress applications. For that reason, 
 You can submit feature requests and open bug reports in our [GitHub repo](https://github.com/wpengine/atlas-content-modeler).
 
 == Changelog ==
+
+= 0.23.0 - 2022-11-15 =
+
+* **Added:** Added a “Post Type Archives” option on the edit model screen to control custom post type archives (The WordPress `has_archive` setting. false by default).
 
 = 0.22.0 - 2022-09-22 =
 
