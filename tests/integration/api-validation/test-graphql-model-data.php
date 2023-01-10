@@ -179,13 +179,13 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			self::assertArrayHasKey( 'featuredImageDatabaseId', $results['data']['publicsFields']['nodes'][0] );
 
 			self::assertArrayHasKey( 'manytoManyRelationship', $results['data']['publicsFields']['nodes'][0] );
-			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationship'] );
+			self::assertNull( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationship'] );
 
 			self::assertArrayHasKey( 'manytoManyRelationshipReverse', $results['data']['publicsFields']['nodes'][0] );
-			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationshipReverse'] );
+			self::assertNull( $results['data']['publicsFields']['nodes'][0]['manytoManyRelationshipReverse'] );
 
 			self::assertArrayHasKey( 'manytoOneRelationship', $results['data']['publicsFields']['nodes'][0] );
-			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['manytoOneRelationship'] );
+			self::assertNull( $results['data']['publicsFields']['nodes'][0]['manytoOneRelationship'] );
 
 			self::assertArrayHasKey( 'multiSingle', $results['data']['publicsFields']['nodes'][0] );
 			self::assertIsArray( $results['data']['publicsFields']['nodes'][0]['multiSingle'] );
