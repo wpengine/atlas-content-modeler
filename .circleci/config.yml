@@ -298,16 +298,6 @@ jobs:
             php -S localhost:5501 -t /tmp/wordpress
           background: true
 
-#      - run:
-#          name: Install Chromedriver
-#          command: |
-#            mkdir bin
-#            CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-#            curl -O https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
-#            unzip chromedriver_linux64.zip
-#            rm chromedriver_linux64.zip
-#            mv chromedriver bin/
-
       - run:
           name: Start Chromedriver
           command: |
