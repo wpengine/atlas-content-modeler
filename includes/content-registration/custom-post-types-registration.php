@@ -745,7 +745,10 @@ function register_relationship_connection( array $parent_model, array $reference
 					$relationship_ids = $relationship->get_related_object_ids( $post->ID );
 
 					if ( empty( $relationship_ids ) ) {
-						return array();
+						return [
+							'edges' => [],
+							'nodes' => [],
+						];
 					}
 
 					$resolver = new PostObjectConnectionResolver(
