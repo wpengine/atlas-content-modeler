@@ -1,8 +1,9 @@
 # Atlas Content Modeler Changelog
 
-## Unreleased
+## 0.24.0 - 2023-02-23
 ### Fixed
 - Querying posts with optional relationships will no longer raise an error in WPGraphQL when connections do not exist. Addresses changes made in WPGraphQL 1.13.x.
+
 ## 0.23.0 - 2022-11-15
 ### Added
 - Added a “Post Type Archives” option on the edit model screen to control custom post type archives (The WordPress `has_archive` setting. false by default).
