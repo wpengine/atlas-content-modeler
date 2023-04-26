@@ -57,7 +57,7 @@
     "@babel/plugin-transform-runtime": "^7.13.7",
     "@babel/preset-env": "^7.13.5",
     "@babel/preset-react": "^7.12.13",
-    "@parcel/transformer-sass": "^2.3.1",
+    "@parcel/transformer-sass": "^2.8",
     "babel-jest": "^27.2.0",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
@@ -84,12 +84,8 @@
     "@wordpress/api-fetch": {
       "global": "wp.apiFetch"
     },
-    "acm-analytics": {
-      "fileName": "./includes/shared-assets/js/analytics.js"
-    },
-    "acm-icons": {
-      "fileName": "./includes/components/icons"
-    },
+    "acm-analytics": "./includes/shared-assets/js/analytics.js",
+    "acm-icons": "./includes/components/icons",
     "@wordpress/i18n": {
       "global": "wp.i18n"
     },
