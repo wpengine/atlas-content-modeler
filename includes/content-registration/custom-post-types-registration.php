@@ -605,7 +605,7 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 					// Fixes caption shortcode for GraphQL output.
 					if ( 'richtext' === $acm_field_type ) {
 						if ( $is_repeatable_field ) {
-							return array_map( 'do_shortcode', $value );
+							return array_map( 'do_shortcode', (array) $value );
 						}
 
 						return do_shortcode( $value );
