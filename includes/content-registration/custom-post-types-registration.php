@@ -573,6 +573,14 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 				if ( 'relationship' !== $acm_field_type ) {
 					$value = get_post_meta( $post->databaseId, $field['slug'], true );
 
+					if ( $is_repeatable_field && empty( $value ) ) {
+						$value = [];
+					}
+
+					if ( $is_repeatable_field && ! is_array( $value ) ) {
+						$value = (array) $value;
+					}
+
 					/**
 					 * If WPGraphQL expects a float and something else is returned instead
 					 * it causes a runaway PHP process and it eventually dies due to
@@ -613,14 +621,6 @@ function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
 
 					if ( $acm_field_type === 'boolean' ) {
 						return $value === 'on' ? true : false;
-					}
-
-					if ( $is_repeatable_field && empty( $value ) ) {
-						$value = [];
-					}
-
-					if ( $is_repeatable_field && ! is_array( $value ) ) {
-						$value = (array) $value;
 					}
 
 					return $value;

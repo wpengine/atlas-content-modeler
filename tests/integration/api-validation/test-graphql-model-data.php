@@ -497,4 +497,42 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
 	}
+
+	public function test_graphql_queries_work_with_repeating_rich_text_fields_that_have_no_data_saved(): void {
+		$new_field = array(
+			'show_in_rest'         => true,
+			'show_in_graphql'      => true,
+			'type'                 => 'richtext',
+			'id'                   => '1646070399',
+			'position'             => '350000',
+			'name'                 => 'RichTextRepeatableOptional',
+			'slug'                 => 'richTextRepeatableOptional',
+			'required'             => false,
+			'isRepeatableRichText' => 'true',
+		);
+
+		$this->test_models['public-fields']['fields']['1646070399'] = $new_field;
+		update_registered_content_types( $this->test_models );
+
+		try {
+			$results = graphql(
+				[
+					'query' => '
+				{
+					publicsFields {
+						nodes {
+							databaseId
+							richTextRepeatableOptional
+						}
+					}
+				}
+				',
+				]
+			);
+
+			self::assertSame( [], $results['data']['publicsFields']['nodes'][0]['richTextRepeatableOptional'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
 }
