@@ -92,5 +92,8 @@
     "@wordpress/data": {
       "global": "wp.data"
     }
+  },
+  "overrides": {
+    "optionator": "0.9.3"
   }
 }
