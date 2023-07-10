@@ -92,5 +92,8 @@
     "@wordpress/data": {
       "global": "wp.data"
     }
+  },
+  "overrides": {
+    "semver": "~7.5.2"
   }
 }
