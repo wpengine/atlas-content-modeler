@@ -121,6 +121,7 @@ jobs:
           at: .
       - node/install-packages:
           app-dir: <<parameters.slug>>
+          cache-version: v2
       - run:
           name: NPM build
           command: |
