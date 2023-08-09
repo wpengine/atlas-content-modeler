@@ -2,6 +2,9 @@
 
 # Atlas Content Modeler by WP Engine
 
+[!WARNING]
+Atlas Content Modeler is getting prepared for deprecation. The functionality is being moved to Advanced Custom Fields. Official dates and more information will be coming soon.
+
 A WordPress plugin to create custom post types and fields for headless WordPress sites.
 
 [Download the latest plugin zip file](https://downloads.wordpress.org/plugin/atlas-content-modeler.latest-stable.zip).
