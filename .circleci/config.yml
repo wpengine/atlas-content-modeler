@@ -388,8 +388,9 @@ jobs:
           MYSQL_PASSWORD: wp_pass
           MYSQL_ROOT_PASSWORD: password
     parameters:
-      slug:
+      wordpress-version:
         type: string
+        default: "latest"
     steps:
       - attach_workspace:
           at: .
@@ -401,13 +402,13 @@ jobs:
       - run:
           name: Setup WordPress testing framework
           command: |
-            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 6.0 true
-          working_directory: <<parameters.slug>>
+            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 <<parameters.wordpress-version>> true
+          working_directory: "atlas-content-modeler"
       - run:
           name: Run testing suite
           command: |
             composer test
-          working_directory: <<parameters.slug>>
+          working_directory: "atlas-content-modeler"
 
   plugin-test-content-connect:
     docker:
@@ -571,7 +572,9 @@ workflows:
             tags:
               only: /.*/
       - plugin-test-unit:
-          slug: atlas-content-modeler
+          matrix:
+            parameters:
+              wordpress-version: [ "nightly", "6.2" ]
           requires:
             - plugin-build-zip
             - plugin-build-composer
