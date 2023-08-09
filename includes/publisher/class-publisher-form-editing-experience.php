@@ -638,7 +638,7 @@ final class FormEditingExperience {
 	public function display_deprecation_notice(): void {
 		?>
 			<div class="notice notice-warning is-dismissible">
-				<p>We have worked hard to update ACF to be a more standardized and performant framework implementing the functionality that made Atlas Content Modeler special. We believe that ACF is already more stable and easier to maintain than ACF, and we recommend that all users currently on Atlas Content Modeler start planning their migration to ACF. We will continue to support Atlas Content Modeler to ensure it is secure and any customers who rely on it are supported to ensure time enough to migrate to ACF. While security updates will continue to be provided as long as required by our user base, no new feature development will happen on Atlas Content Modeler.</p>
+				<p>IMPORTANT: We have worked hard to update ACF to be a more standardized and performant framework implementing the functionality that made Atlas Content Modeler special. We believe that ACF is already more stable and easier to maintain than ACF, and we recommend that all users currently on Atlas Content Modeler start planning their migration to ACF. We will continue to support Atlas Content Modeler to ensure it is secure and any customers who rely on it are supported to ensure time enough to migrate to ACF. While security updates will continue to be provided as long as required by our user base, no new feature development will happen on Atlas Content Modeler.</p>
 			</div>
 		<?php
 	}
