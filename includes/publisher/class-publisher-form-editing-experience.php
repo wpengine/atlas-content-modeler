@@ -76,6 +76,7 @@ final class FormEditingExperience {
 		add_action( 'wp_insert_post', [ $this, 'set_post_attributes' ], 10, 3 );
 		add_filter( 'redirect_post_location', [ $this, 'append_error_to_location' ], 10, 2 );
 		add_action( 'admin_notices', [ $this, 'display_save_post_errors' ] );
+		add_action( 'admin_notices', [ $this, 'display_deprecation_notice' ] );
 		add_filter( 'the_title', [ $this, 'filter_post_titles' ], 10, 2 );
 		add_action( 'load-post.php', [ $this, 'feedback_notice_handler' ] );
 		add_action( 'load-post-new.php', [ $this, 'feedback_notice_handler' ] );
@@ -85,6 +86,7 @@ final class FormEditingExperience {
 		add_action( 'updated_postmeta', [ $this, 'sync_title_field_to_posts_table' ], 10, 4 );
 		add_action( 'added_post_meta', [ $this, 'sync_title_field_to_posts_table' ], 10, 4 );
 	}
+
 
 	/**
 	 * Removes unneeded post type features.
@@ -626,6 +628,19 @@ final class FormEditingExperience {
 				</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Displays deprecation notice
+	 * 
+	 * Runs on `admin_notices` hook
+	 */
+	public function display_deprecation_notice(): void {
+		?>
+			<div class="notice notice-warning is-dismissible">
+				<p>We have worked hard to update ACF to be a more standardized and performant framework implementing the functionality that made Atlas Content Modeler special. We believe that ACF is already more stable and easier to maintain than ACF, and we recommend that all users currently on Atlas Content Modeler start planning their migration to ACF. We will continue to support Atlas Content Modeler to ensure it is secure and any customers who rely on it are supported to ensure time enough to migrate to ACF. While security updates will continue to be provided as long as required by our user base, no new feature development will happen on Atlas Content Modeler.</p>
+			</div>
+		<?php
 	}
 
 	/**
