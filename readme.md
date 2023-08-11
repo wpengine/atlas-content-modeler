@@ -3,7 +3,7 @@
 # Atlas Content Modeler by WP Engine
 
 [!IMPORTANT]
-We have worked hard to update ACF to be a more standardized and performant framework implementing the functionality that made Atlas Content Modeler special. We believe that ACF is already more stable and easier to maintain than ACF, and we recommend that all users currently on Atlas Content Modeler start planning their migration to ACF. We will continue to support Atlas Content Modeler to ensure it is secure and any customers who rely on it are supported to ensure time enough to migrate to ACF. While security updates will continue to be provided as long as required by our user base, no new feature development will happen on Atlas Content Modeler.
+We have worked hard to update ACF to be a more standardized and performant framework implementing the functionality that made Atlas Content Modeler special. We believe that ACF is already more stable and easier to maintain than Atlas Content Modeler, and we recommend that all users currently on Atlas Content Modeler start planning their migration to ACF. We will continue to support Atlas Content Modeler to ensure it is secure and any customers who rely on it are supported to ensure time enough to migrate to ACF. While security updates will continue to be provided as long as required by our user base, no new feature development will happen on Atlas Content Modeler. 
 
 A WordPress plugin to create custom post types and fields for headless WordPress sites.
 
