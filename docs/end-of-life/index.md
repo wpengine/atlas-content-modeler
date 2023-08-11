@@ -1,6 +1,6 @@
 #  End of Life info for Atlas Content Modeler
 
-Atlas Content Modeler (ACM) is now in an end-of-life phase. During this phase, ACM will only receive updates for critical bugs and security issues. ACM will no longer receive updates or support as of September 15, 2024.
+Atlas Content Modeler (ACM) is now in an end-of-life phase. During this phase, ACM will only receive updates for critical bugs and security issues. ACM will no longer receive updates or support as of September 15, 2024. After this period, the GitHub repo and the listing on wordpress.org will be archived.
 
 ## Recommended replacement
 We recommend you move your site to Advanced Custom Fields (ACF) before ACM's final shutdown date. ACF supports the Custom Post Types, Field Groups, and Custom Taxonomies necessary to replace ACM's functionality.
@@ -8,7 +8,7 @@ We recommend you move your site to Advanced Custom Fields (ACF) before ACM's fin
 ## Moving from ACM to ACF
 Moving your site from ACM to ACF requires a few steps, and it will require changes on the WordPress side and in any software consuming ACM data via WPGraphQL or the REST API.
 
-There are numerous ways you can programmatically access your data in ACF. ACF has its own set up PHP APIs for CRUD operations, it integrates with the WordPress REST API, and there's a plugin that offers a GraphQL integration.
+There are numerous ways you can programmatically access your data in ACF. ACF has its own set of PHP APIs for CRUD operations, it integrates with the WordPress REST API, and there's a plugin that offers a GraphQL integration.
 
 You need to install, activate, and configure the following plugins:
 - [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/)
