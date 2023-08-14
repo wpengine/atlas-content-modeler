@@ -632,13 +632,23 @@ final class FormEditingExperience {
 
 	/**
 	 * Displays deprecation notice
-	 * 
+	 *
 	 * Runs on `admin_notices` hook
 	 */
 	public function display_deprecation_notice(): void {
+		$message = sprintf(
+			/* translators: %s: URL to documentation */
+			__(
+				'<p>IMPORTANT: Atlas Content Modeler is entering an end-of-life phase. During this phase, we will continue to support Atlas Content Modeler to ensure it is secure and functional, giving you time to move your site to our recommended replacement. While security and critical bug fixes will continue to be provided as long as required by our user base, no new feature development will happen in Atlas Content Modeler.</p>
+				<p>We recommend Advanced Custom Fields (ACF) as a replacement for Atlas Content Modeler. ACF is a mature and stable product, with a large community, and it has most of the features that Atlas Content Modeler has, and more!</p>
+				<p><a target="_blank" href="%s">Read more</a> about the transition from ACM to ACF.</p>',
+				'atlas-content-modeler'
+			),
+			'https://github.com/wpengine/atlas-content-modeler/blob/main/docs/end-of-life/index.md'
+		);
 		?>
-			<div class="notice notice-warning is-dismissible">
-				<p>IMPORTANT: We have worked hard to update ACF to be a more standardized and performant framework implementing the functionality that made Atlas Content Modeler special. We believe that ACF is already more stable and easier to maintain than Atlas Content Modeler, and we recommend that all users currently on Atlas Content Modeler start planning their migration to ACF. We will continue to support Atlas Content Modeler to ensure it is secure and any customers who rely on it are supported to ensure time enough to migrate to ACF. While security updates will continue to be provided as long as required by our user base, no new feature development will happen on Atlas Content Modeler.</p>
+			<div class="notice notice-error is-dismissible">
+				<?php echo wp_kses_post( $message ); ?>
 			</div>
 		<?php
 	}
