@@ -31,8 +31,6 @@ class TestPublisherScriptDependencies extends WP_UnitTestCase {
 		$pubex = new FormEditingExperience();
 		$pubex->bootstrap();
 
-		do_action( 'init' );
-
 		set_current_screen( 'post.php' );
 		global $current_screen;
 		$current_screen->post_type = 'recipe';
