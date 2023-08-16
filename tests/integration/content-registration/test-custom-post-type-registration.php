@@ -18,6 +18,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	private $models;
 	private $all_registered_post_types;
 	private $original_wp_rewrite;
+	public $factory;
 
 	public function set_up() {
 		global $wp_rewrite;

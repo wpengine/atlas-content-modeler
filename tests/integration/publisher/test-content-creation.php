@@ -15,6 +15,7 @@ class TestContentCreation extends WP_UnitTestCase {
 
 	private $models;
 	private $post_ids;
+	public $factory;
 
 	public function set_up() {
 		parent::set_up();

@@ -38,6 +38,8 @@ class ModelChangeIdTest extends WP_UnitTestCase {
 
 	private $term_id;
 
+	public $factory;
+
 	public function set_up() {
 		parent::set_up();
 

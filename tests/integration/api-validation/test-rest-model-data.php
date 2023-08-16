@@ -16,6 +16,8 @@ class RestModelDataTests extends WP_UnitTestCase {
 	private $private_route       = '/privates';
 	private $post_ids;
 
+	public $factory;
+
 	public function set_up(): void {
 		parent::set_up();
 
