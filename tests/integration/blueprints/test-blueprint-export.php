@@ -56,7 +56,7 @@ class BlueprintExportTest extends WP_UnitTestCase {
 		],
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		delete_option( 'atlas_content_modeler_post_types' );
 		delete_option( 'atlas_content_modeler_taxonomies' );
