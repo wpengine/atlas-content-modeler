@@ -638,3 +638,53 @@ workflows:
                # tag ex. 1.0.0
                only: /^\S+/
            context: wpe-wporg-svn-creds
+
+  nightly-testing:
+    when:
+      and:
+        - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        - equal: [ nightly_testing, << pipeline.schedule.name >> ]
+    jobs:
+      - plugin-checkout:
+          slug: atlas-content-modeler
+          filename: atlas-content-modeler.php
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-composer:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-checkout
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-npm:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-checkout
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-unit:
+          matrix:
+            parameters:
+              wordpress-version: [ "nightly" ]
+          requires:
+            - plugin-build-zip
+            - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-content-connect:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+            - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
