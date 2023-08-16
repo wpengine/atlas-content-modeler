@@ -34,9 +34,9 @@ services:
       - ./.docker/mysql:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", 'mysqladmin ping']
-      interval: 10s
+      interval: 2s
       timeout: 2s
-      retries: 10
+      retries: 15
 
 volumes:
   wordpress:
