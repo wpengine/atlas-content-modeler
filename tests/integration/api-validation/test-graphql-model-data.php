@@ -7,6 +7,8 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 
 	private $test_models;
 
+	public $factory;
+
 	private $create_mutation_query;
 
 	public function set_up(): void {

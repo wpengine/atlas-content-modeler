@@ -14,6 +14,8 @@ class RestFieldEndpointTests extends WP_UnitTestCase {
 	private $route     = '/atlas/content-model-field';
 	private $test_models;
 
+	public $factory;
+
 	public function set_up(): void {
 		parent::set_up();
 

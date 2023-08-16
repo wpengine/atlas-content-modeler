@@ -13,6 +13,7 @@ use function WPE\AtlasContentModeler\ContentRegistration\update_registered_conte
 class TestPermalinks extends WP_UnitTestCase {
 
 	private $post_ids;
+	public $factory;
 
 	public function set_up() {
 		parent::set_up();

@@ -36,7 +36,7 @@ class ResetTest extends WP_UnitTestCase {
 	private $blueprint_folder;
 	private $media_ids_old_new;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		delete_option( 'atlas_content_modeler_post_types' );
@@ -246,7 +246,7 @@ class ResetTest extends WP_UnitTestCase {
 		}
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->reset_taxonomies();
 		$this->reset_registered_post_types();
 		parent::tearDown();

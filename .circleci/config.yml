@@ -219,7 +219,7 @@ jobs:
   plugin-test-e2e:
     docker:
       - image: cimg/php:7.4-browsers
-      - image: cimg/mysql:5.7
+      - image: cimg/mysql:8.0
         environment:
           MYSQL_ROOT_PASSWORD: wordpress
           MYSQL_DATABASE: wordpress
@@ -381,15 +381,16 @@ jobs:
   plugin-test-unit:
     docker:
       - image: cimg/php:7.4
-      - image: cimg/mysql:5.7
+      - image: cimg/mysql:8.0
         environment:
           MYSQL_DATABASE: wp_database
           MYSQL_USER: wp_user
           MYSQL_PASSWORD: wp_pass
           MYSQL_ROOT_PASSWORD: password
     parameters:
-      slug:
+      wordpress-version:
         type: string
+        default: "latest"
     steps:
       - attach_workspace:
           at: .
@@ -401,18 +402,18 @@ jobs:
       - run:
           name: Setup WordPress testing framework
           command: |
-            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 6.0 true
-          working_directory: <<parameters.slug>>
+            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 <<parameters.wordpress-version>> true
+          working_directory: "atlas-content-modeler"
       - run:
           name: Run testing suite
           command: |
             composer test
-          working_directory: <<parameters.slug>>
+          working_directory: "atlas-content-modeler"
 
   plugin-test-content-connect:
     docker:
       - image: cimg/php:7.4
-      - image: cimg/mysql:5.7
+      - image: cimg/mysql:8.0
         environment:
           MYSQL_DATABASE: wp_database
           MYSQL_USER: wp_user
@@ -571,7 +572,9 @@ workflows:
             tags:
               only: /.*/
       - plugin-test-unit:
-          slug: atlas-content-modeler
+          matrix:
+            parameters:
+              wordpress-version: [ "nightly", "6.3" ]
           requires:
             - plugin-build-zip
             - plugin-build-composer
@@ -635,3 +638,53 @@ workflows:
                # tag ex. 1.0.0
                only: /^\S+/
            context: wpe-wporg-svn-creds
+
+  nightly-testing:
+    when:
+      and:
+        - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        - equal: [ nightly_testing, << pipeline.schedule.name >> ]
+    jobs:
+      - plugin-checkout:
+          slug: atlas-content-modeler
+          filename: atlas-content-modeler.php
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-composer:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-checkout
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-npm:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-checkout
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-unit:
+          matrix:
+            parameters:
+              wordpress-version: [ "nightly" ]
+          requires:
+            - plugin-build-zip
+            - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-content-connect:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+            - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/

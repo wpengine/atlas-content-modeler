@@ -33,7 +33,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 	private $upload_dir;
 	private $blueprint_folder;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		delete_option( 'atlas_content_modeler_post_types' );
 		delete_option( 'atlas_content_modeler_taxonomies' );
@@ -338,7 +338,7 @@ class BlueprintImportTest extends WP_UnitTestCase {
 		}
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		$this->reset_taxonomies();
 		$this->reset_registered_post_types();
 

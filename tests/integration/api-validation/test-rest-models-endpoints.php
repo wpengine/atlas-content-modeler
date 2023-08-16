@@ -18,6 +18,8 @@ class RestModelsEndpointTests extends WP_UnitTestCase {
 	private $route     = '/atlas/content-models';
 	private $test_models;
 
+	public $factory;
+
 	public function set_up(): void {
 		parent::set_up();
 

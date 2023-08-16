@@ -6,6 +6,7 @@ use PHPUnit\Runner\Exception as PHPUnitRunnerException;
 class GraphQLEndpointTests extends WP_UnitTestCase {
 
 	private $test_models;
+	public $factory;
 
 	public function set_up(): void {
 		parent::set_up();
