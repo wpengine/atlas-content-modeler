@@ -574,7 +574,7 @@ workflows:
       - plugin-test-unit:
           matrix:
             parameters:
-              wordpress-version: [ "nightly", "6.2" ]
+              wordpress-version: [ "nightly", "6.3" ]
           requires:
             - plugin-build-zip
             - plugin-build-composer
