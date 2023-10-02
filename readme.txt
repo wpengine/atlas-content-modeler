@@ -1,6 +1,6 @@
 === Atlas Content Modeler ===
 Requires at least: 5.7
-Tested up to: 6.0
+Tested up to: 6.3
 Requires PHP: 7.2
 Stable tag: 0.24.0
 License: GPLv2 or later
