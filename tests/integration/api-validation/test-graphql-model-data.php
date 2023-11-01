@@ -537,4 +537,46 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
 		}
 	}
+
+	public function test_graphql_queries_work_with_relationship_fields_that_have_no_connections(): void {
+		$new_field = array(
+			'show_in_rest'    => true,
+			'show_in_graphql' => true,
+			'type'            => 'relationship',
+			'id'              => '1646070400',
+			'position'        => '400000',
+			'name'            => 'RelationshipFieldOptional',
+			'slug'            => 'relationshipFieldOptional',
+			'required'        => false,
+			'reference'       => 'public',
+			'cardinality'     => 'many-to-many',
+		);
+
+		$this->test_models['public-fields']['fields']['1646070400'] = $new_field;
+		update_registered_content_types( $this->test_models );
+
+		try {
+			$results = graphql(
+				[
+					'query' => '
+				{
+					publicsFields {
+						nodes {
+							databaseId
+							relationshipFieldOptional {
+								nodes {
+									id
+								}
+							}
+						}
+					}
+				}
+				',
+				]
+			);
+			self::assertNull( $results['data']['publicsFields']['nodes'][0]['relationshipFieldOptional'] );
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
+	}
 }
