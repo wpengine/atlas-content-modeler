@@ -2,6 +2,7 @@
 ## Unreleased
 ### Fixed
 - GraphQL queries now work properly when repeating Rich Text fields are optional and have no values.
+- GraphQL queries now work properly when Relationship fields are optional and have no connections.
 
 ## 0.24.0 - 2023-02-23
 ### Fixed
