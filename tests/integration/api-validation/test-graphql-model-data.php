@@ -574,6 +574,7 @@ class GraphQLModelDataTests extends WP_UnitTestCase {
 				',
 				]
 			);
+			self::assertArrayHasKey( 'relationshipFieldOptional', $results['data']['publicsFields']['nodes'][0] );
 			self::assertNull( $results['data']['publicsFields']['nodes'][0]['relationshipFieldOptional'] );
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
