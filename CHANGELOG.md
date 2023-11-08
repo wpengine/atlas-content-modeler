@@ -1,5 +1,5 @@
 # Atlas Content Modeler Changelog
-## Unreleased
+## 0.25.0 - 2023-11-08
 ### Fixed
 - GraphQL queries now work properly when repeating Rich Text fields are optional and have no values.
 - GraphQL queries now work properly when Relationship fields are optional and have no connections.
