@@ -154,7 +154,7 @@ install_plugin_dependencies() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql ]; then
 		download https://downloads.wordpress.org/plugin/wp-graphql.latest-stable.zip $WP_CORE_DIR/wp-content/plugins/wp-graphql.latest-stable.zip
 		cd $WP_CORE_DIR/wp-content/plugins
-		unzip wp-graphql.latest-stable.zip
+		unzip wp-graphql*.zip
 	fi
 }
 
