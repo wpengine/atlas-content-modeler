@@ -91,3 +91,29 @@ function atlas_content_modeler_loader(): void {
 function acm_usage_tracking_enabled(): bool {
 	return (bool) get_option( 'atlas_content_modeler_usage_tracking', false );
 }
+
+add_action( 'admin_notices', 'acm_deprecation_notice' );
+/**
+ * Displays the ACM deprecation admin notice.
+ */
+function acm_deprecation_notice(): void {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	?>
+	<div class="notice notice-warning">
+		<p>
+			<?php
+			echo wp_kses_post(
+				sprintf(
+					/* translators: %1$s: The plugin name. %2$s URL to deprecation documentation. */
+					__( 'The <strong>%1$s</strong> plugin is entering an end-of-life phase. It will be maintained for compatibility and security purposes through 2024. Read more about the deprecation plan and our recommended replacement <a aria-label="ACM Deprecation Documentation - link opens in a new tab" href="%2$s" target="_blank">here</a>.', 'atlas-content-modeler' ),
+					'Atlas Content Modeler',
+					'https://github.com/wpengine/atlas-content-modeler/blob/main/docs/end-of-life/index.md'
+				)
+			);
+			?>
+		</p>
+	</div>
+	<?php
+}
