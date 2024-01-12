@@ -1,6 +1,6 @@
 #  End of Life info for Atlas Content Modeler
 
-Atlas Content Modeler (ACM) is now in an end-of-life phase. During this phase, ACM will only receive updates for critical bugs and security issues. ACM will no longer receive updates or support as of September 15, 2024. After this period, the GitHub repo and the listing on wordpress.org will be archived.
+Atlas Content Modeler is entering an end-of-life phase. During this phase, we will continue to support Atlas Content Modeler to ensure it is secure and functional, giving you time to move your site to our recommended replacement. While security and critical bug fixes will continue to be provided through 2024, no new feature development will happen in Atlas Content Modeler. ACM will be shutdown in early 2025.
 
 ## Recommended replacement
 We recommend you move your site to Advanced Custom Fields (ACF) before ACM's final shutdown date. ACF supports the Custom Post Types, Field Groups, and Custom Taxonomies necessary to replace ACM's functionality.

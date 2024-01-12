@@ -2,7 +2,14 @@
 
 # Atlas Content Modeler by WP Engine
 
-A WordPress plugin to create custom post types and fields for headless WordPress sites.
+**IMPORTANT:** Atlas Content Modeler is entering an end-of-life phase. During this phase, we will continue to support Atlas Content Modeler to ensure it is secure and functional, giving you time to move your site to our recommended replacement. While security and critical bug fixes will continue to be provided through 2024, no new feature development will happen in Atlas Content Modeler. The plugin will be shutdown in early 2025.
+
+We recommend Advanced Custom Fields (ACF) as a replacement for Atlas Content Modeler. ACF is a mature and stable product, with a large community, and it has most of the features that Atlas Content Modeler has, and more!
+
+Read more about ACM's deprecation and how to migrate your site to ACF [here](./docs/end-of-life/index.md).
+---
+
+Atlas Content Modeler is a WordPress plugin to create custom post types and fields for headless WordPress sites.
 
 [Download the latest plugin zip file](https://downloads.wordpress.org/plugin/atlas-content-modeler.latest-stable.zip).
 
