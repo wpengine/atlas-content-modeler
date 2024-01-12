@@ -19,7 +19,7 @@ WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress/}
 
 download() {
     if [ `which curl` ]; then
-        curl -s "$1" > "$2";
+        curl -L -s "$1" > "$2";
     elif [ `which wget` ]; then
         wget -nv -O "$2" "$1"
     fi
@@ -154,7 +154,7 @@ install_plugin_dependencies() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql ]; then
 		download https://downloads.wordpress.org/plugin/wp-graphql.latest-stable.zip $WP_CORE_DIR/wp-content/plugins/wp-graphql.latest-stable.zip
 		cd $WP_CORE_DIR/wp-content/plugins
-		unzip wp-graphql.latest-stable.zip
+		unzip wp-graphql*.zip
 	fi
 }
 
