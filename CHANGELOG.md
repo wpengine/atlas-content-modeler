@@ -1,4 +1,8 @@
 # Atlas Content Modeler Changelog
+## Unreleased
+### Added
+- Added an admin notice about the deprecation of Atlas Content Modeler. ACM will be maintained for security and compatibility through 2024. Read more about the plan and recommended replacement here: https://github.com/wpengine/atlas-content-modeler/blob/main/docs/end-of-life/index.md
+-
 ## 0.25.0 - 2023-11-08
 ### Fixed
 - GraphQL queries now work properly when repeating Rich Text fields are optional and have no values.
