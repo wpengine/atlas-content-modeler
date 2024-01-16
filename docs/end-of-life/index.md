@@ -44,7 +44,7 @@ fragment ProjectFields on Project {
 }
 ```
 
-Same example query using ACF. Note the only difference in this example is the `ProjectFields` fragment.
+Same example query using ACF. Note the only difference in this example is the `ProjectFields` fragment. Your code may be different and require additional changes.
 ```
 query Projects {
   projects(first: 10) {
