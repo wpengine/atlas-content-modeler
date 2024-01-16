@@ -11,6 +11,8 @@ Contributors: antpb, apmatthe, chriswiegman, jasonkonen, kevinwhoffman, markkeln
 A WordPress plugin to create custom post types, custom fields, and custom taxonomies for headless WordPress sites.
 
 == Description ==
+**IMPORTANT:** Atlas Content Modeler is entering an end-of-life phase. During this phase, we will continue to support Atlas Content Modeler to ensure it is secure and functional, giving you time to move your site to our recommended replacement. While security and critical bug fixes will continue to be provided through 2024, no new feature development will happen in Atlas Content Modeler. The plugin will be shutdown in early 2025.
+
 Atlas Content Modeler (ACM) is a content modeling solution for WordPress. Using an intuitive interface, you can create custom post types, as well as custom fields and taxonomies for those post types, with ease.
 
 ### For Developers
