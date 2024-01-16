@@ -63,7 +63,7 @@ fragment ProjectFields on Project {
 }
 ```
 
-See the official [documentation for WPGraphQL for ACF](https://github.com/wp-graphql/wpgraphql-acf/tree/main/docs).
+See the official [documentation for WPGraphQL for ACF](https://acf.wpgraphql.com).
 
 
 
