@@ -1,5 +1,5 @@
 # Atlas Content Modeler Changelog
-## Unreleased
+## 0.26.0 - 2024-01-16
 ### Added
 - Added an admin notice about the deprecation of Atlas Content Modeler. ACM will be maintained for security and compatibility through 2024. Read more about the plan and recommended replacement here: https://github.com/wpengine/atlas-content-modeler/blob/main/docs/end-of-life/index.md
 -

@@ -7,6 +7,7 @@
 We recommend Advanced Custom Fields (ACF) as a replacement for Atlas Content Modeler. ACF is a mature and stable product, with a large community, and it has most of the features that Atlas Content Modeler has, and more!
 
 Read more about ACM's deprecation and how to migrate your site to ACF [here](./docs/end-of-life/index.md).
+
 ---
 
 Atlas Content Modeler is a WordPress plugin to create custom post types and fields for headless WordPress sites.
