@@ -13,7 +13,7 @@ There are numerous ways you can programmatically access your data in ACF. ACF ha
 You need to install, activate, and configure the following plugins:
 - [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/)
 - [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) (Optional)
-- [WPGraphQL for ACF](https://github.com/wp-graphql/wpgraphql-acf) (Required for GraphQL integration)
+- [WPGraphQL for ACF](https://wordpress.org/plugins/wpgraphql-acf/) (Required for GraphQL integration)
 - [WP Engine Atlas Headless Extension](https://wp-product-info.wpesvc.net/v1/plugins/wpe-atlas-headless-extension?download) (Optional. Required for importing/exporting Atlas Blueprints.)
 
 ## Setting up your data models in ACF
