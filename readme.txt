@@ -56,6 +56,15 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 == Changelog ==
 
+= 0.26.1 - 2024-01-17 =
+
+* **Fixed:** Fixed issue where having empty repeater fields would show a list of entries when the browser tab loses and regains focus. GitHub issue #627.
+* **Added:** Added changelog for 0.26.0, which was accidentally omitted from the previous release. Please read the changes for 0.26.0 to learn more about the deprecation of ACM.
+
+= 0.26.0 - 2024-01-16 =
+
+* **Added:** Added an admin notice about the deprecation of Atlas Content Modeler. ACM will be maintained for security and compatibility through 2024. Read more about the plan and recommended replacement here: https://github.com/wpengine/atlas-content-modeler/blob/main/docs/end-of-life/index.md
+
 = 0.25.0 - 2023-11-08 =
 
 * **Fixed:** GraphQL queries now work properly when repeating Rich Text fields are optional and have no values.

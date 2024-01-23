@@ -76,6 +76,7 @@ export default function Relationship({ field, modelSlug }) {
 		if (
 			pageLostFocus.current &&
 			pageIsVisible &&
+			selectedEntries?.length > 0 &&
 			!relationshipModalIsOpen
 		) {
 			pageLostFocus.current = false;
