@@ -2,7 +2,7 @@
 Requires at least: 5.7
 Tested up to: 6.4
 Requires PHP: 7.2
-Stable tag: 0.26.0
+Stable tag: 0.26.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -56,7 +56,7 @@ You can submit feature requests and open bug reports in our [GitHub repo](https:
 
 == Changelog ==
 
-= 0.26.1 - 2024-01-17 =
+= 0.26.1 - 2024-01-23 =
 
 * **Fixed:** Fixed issue where having empty repeater fields would show a list of entries when the browser tab loses and regains focus. GitHub issue #627.
 * **Added:** Added changelog for 0.26.0, which was accidentally omitted from the previous release. Please read the changes for 0.26.0 to learn more about the deprecation of ACM.
