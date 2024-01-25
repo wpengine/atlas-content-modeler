@@ -1,5 +1,5 @@
 # Atlas Content Modeler Changelog
-## 0.26.1 - 2024-01-17
+## 0.26.1 - 2024-01-23
 ### Fixed
 - Fixed issue where having empty repeater fields would show a list of entries when the browser tab loses and regains focus. GitHub issue #627.
 ### Added
