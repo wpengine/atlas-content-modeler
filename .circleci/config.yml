@@ -218,7 +218,7 @@ jobs:
 
   plugin-test-e2e:
     docker:
-      - image: cimg/php:7.4-browsers
+      - image: cimg/php:8.2-browsers
       - image: cimg/mysql:8.0
         environment:
           MYSQL_ROOT_PASSWORD: wordpress
