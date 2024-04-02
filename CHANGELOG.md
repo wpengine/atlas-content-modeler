@@ -1,4 +1,9 @@
 # Atlas Content Modeler Changelog
+## 0.26.2 - 2024-04-02
+### Chores
+- Update project dependencies for security #688.
+- Tested the project for WordPress 6.5 compatibility.
+
 ## 0.26.1 - 2024-01-23
 ### Fixed
 - Fixed issue where having empty repeater fields would show a list of entries when the browser tab loses and regains focus. GitHub issue #627.
