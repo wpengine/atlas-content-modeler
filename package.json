@@ -48,7 +48,7 @@
     "react-ga4": "^1.0.5",
     "react-hook-form": "^6.15.4",
     "react-modal": "^3.12.1",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^6.26.2",
     "react-toastify": "^7.0.3",
     "uuid": "^8.3.2"
   },
