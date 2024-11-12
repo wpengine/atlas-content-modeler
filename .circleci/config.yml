@@ -4,6 +4,7 @@
 #
 version: 2.1
 orbs:
+  wp-product-orb: wpengine/wp-product-orb@1.3.0
   php: circleci/php@1.1.0
   node: circleci/node@4.9.0
   browser-tools: circleci/browser-tools@1.4.8
@@ -16,16 +17,71 @@ commands:
           command: |
             echo "export VERSION=$(grep 'Version:' ~/project/atlas-content-modeler/atlas-content-modeler.php | awk -F: '{print $2}' | sed 's/^\s//')" >> ${BASH_ENV}
 
+  svn_setup:
+    description: "Set up SVN"
+    steps:
+      - set_version_variable
+      - run: sudo apt-get update && sudo apt-get install subversion
+      - run: svn co https://plugins.svn.wordpress.org/atlas-content-modeler --depth=empty .
+      - run: svn up trunk
+      - run: svn up tags --depth=empty
+      - run: svn up assets
+      - run: find ./trunk -not -path "./trunk" -delete
+      - run: mkdir ~/project/unzip-temp
+      - run: unzip ~/project/build/atlas-content-modeler.${VERSION}.zip -d ~/project/unzip-temp
+      - run: cp -r ~/project/unzip-temp/atlas-content-modeler/. ./trunk
+      - run: cp -r ~/project/atlas-content-modeler/assets/wporg/* ./assets
+      - run: rm -rf node_modules/
+      - run: cp ~/project/atlas-content-modeler/.svnignore ./trunk
+      - run: svn propset svn:ignore -F ./trunk/.svnignore ./trunk
+      - run: svn propset svn:ignore -F ./trunk/.svnignore ./tags
+
+  svn_create_tag:
+    description: "Create an SVN tag"
+    steps:
+      - set_version_variable
+      - run: svn cp trunk tags/${VERSION}
+
+  svn_set_mimes:
+    description: "Set MIMES for SVN"
+    steps:
+      - run: svn propset svn:mime-type image/png ./assets/*.png
+      - run: svn propset svn:mime-type image/jpeg ./assets/*.jpg
+
+  svn_add_changes:
+    description: "Add changes to SVN"
+    steps:
+      - run: svn add --force .
+
+  svn_commit:
+    description: "Commit changes to SVN"
+    steps:
+      - set_version_variable
+      - run: svn ci -m "Tagging ${VERSION} from GitHub" --no-auth-cache --non-interactive --username "${SVN_USERNAME}" --password "${SVN_PASSWORD}"
+
 jobs:
   plugin-checkout:
-    docker:
-      - image: circleci/php:7.4
+    executor: wp-product-orb/default
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    parameters:
+      slug:
+        type: string
+      filename:
+        type: string
     steps:
-      - checkout
+      - checkout:
+          path: <<parameters.slug>>
       - run:
           name: Make artifacts build directory
           command: |
             [ ! -d "build" ] && mkdir build &>/dev/null
+      - wp-product-orb/get-version-from-php:
+          filename: <<parameters.slug>>/<<parameters.filename>>
+          return_var: BUILD_VERSION
+      - wp-product-orb/variable:
+          var: BUILD_VERSION
+          value: $BUILD_VERSION
       - persist_to_workspace:
           root: .
           paths:
@@ -33,12 +89,15 @@ jobs:
 
   plugin-build-composer:
     executor: php/default
+    parameters:
+      slug:
+        type: string
     steps:
       - attach_workspace:
           at: .
       - php/install-composer
       - php/install-packages:
-          app-dir: atlas-content-modeler
+          app-dir: <<parameters.slug>>
           install-flags: --no-interaction --prefer-dist --ignore-platform-reqs
       - run:
           name: Remove composer setup file
@@ -53,16 +112,20 @@ jobs:
     executor:
       name: node/default
       tag: '16.13.0'
+    parameters:
+      slug:
+        type: string
+    working_directory: .
     steps:
       - attach_workspace:
           at: .
       - node/install-packages:
-          app-dir: atlas-content-modeler
+          app-dir: <<parameters.slug>>
       - run:
           name: NPM build
           command: |
             npm run build
-          working_directory: atlas-content-modeler
+          working_directory: <<parameters.slug>>
       - persist_to_workspace:
           root: .
           paths:
@@ -72,6 +135,10 @@ jobs:
     executor:
       name: node/default
       tag: '16.13.0'
+    parameters:
+      slug:
+        type: string
+    working_directory: .
     steps:
       - attach_workspace:
           at: .
@@ -79,23 +146,28 @@ jobs:
           name: NPM build readme.txt
           command: |
             npm run build-readme
-          working_directory: atlas-content-modeler
+          working_directory: <<parameters.slug>>
       - persist_to_workspace:
           root: .
           paths:
              - atlas-content-modeler/readme.txt
 
   plugin-build-json:
-    executor:
-      name: node/default
-      tag: '16.13.0'
+    executor: wp-product-orb/parser
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    parameters:
+      slug:
+        type: string
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: Generate JSON metadata
-          command: |
-            echo "Generating JSON metadata for build..."
+      - wp-product-orb/variable-load
+      - wp-product-orb/parse-wp-readme:
+          infile: <<parameters.slug>>/readme.txt
+          outfile: build/<<parameters.slug>>.$BUILD_VERSION.json
+      - store_artifacts:
+          path: build
       - persist_to_workspace:
           root: .
           paths:
@@ -122,14 +194,21 @@ jobs:
               - atlas-content-modeler/languages
 
   plugin-build-zip:
-    executor: php/default
+    executor: wp-product-orb/default
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    parameters:
+      slug:
+        type: string
     steps:
       - attach_workspace:
           at: .
+      - wp-product-orb/variable-load
       - run:
           name: "Bundle plugin files into a zip"
           command: |
-            zip --verbose -x@atlas-content-modeler/.zipignore -x *.wpe/* */build/ -r "build/atlas-content-modeler.$BUILD_VERSION.zip" atlas-content-modeler
+            zip --verbose -x@<<parameters.slug>>/.zipignore -x *.wpe/* */build/ -r "build/<<parameters.slug>>.$BUILD_VERSION.zip" <<parameters.slug>>
+            echo "<<parameters.slug>>.$BUILD_VERSION.zip" >> build/file.txt
       - store_artifacts:
           path: build
       - persist_to_workspace:
@@ -249,36 +328,44 @@ jobs:
     executor:
       name: node/default
       tag: '16.13.0'
+    parameters:
+      slug:
+        type: string
+    working_directory: .
     steps:
       - attach_workspace:
           at: .
       - node/install-packages:
-          app-dir: atlas-content-modeler
+          app-dir: <<parameters.slug>>
       - run:
           name: Run Jest tests
           command: |
             npm run test-no-watch
-          working_directory: atlas-content-modeler
+          working_directory: <<parameters.slug>>
 
   plugin-test-lint-js:
     executor:
       name: node/default
       tag: '16.13.0'
+    parameters:
+      slug:
+        type: string
+    working_directory: .
     steps:
       - attach_workspace:
           at: .
       - node/install-packages:
-          app-dir: atlas-content-modeler
+          app-dir: <<parameters.slug>>
       - run:
           name: NPM style
           command: |
             npm run style
-          working_directory: atlas-content-modeler
+          working_directory: <<parameters.slug>>
       - run:
           name: NPM eslint
           command: |
             npm run lint
-          working_directory: atlas-content-modeler
+          working_directory: <<parameters.slug>>
 
   plugin-test-lint-php:
     working_directory: .
@@ -332,6 +419,9 @@ jobs:
           MYSQL_USER: wp_user
           MYSQL_PASSWORD: wp_pass
           MYSQL_ROOT_PASSWORD: password
+    parameters:
+      slug:
+        type: string
     steps:
       - attach_workspace:
           at: .
@@ -344,51 +434,131 @@ jobs:
           name: Setup WordPress testing framework
           command: |
             /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 6.0 true
-          working_directory: atlas-content-modeler
+          working_directory: <<parameters.slug>>
       - run:
           name: Run content connect testing suite
           command: |
             vendor/bin/phpunit --configuration phpunit.content-connect.xml
-          working_directory: atlas-content-modeler
+          working_directory: <<parameters.slug>>
+
+  plugin-deploy:
+    executor: wp-product-orb/authenticate
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    parameters:
+      auth_url:
+        type: string
+      upload_url:
+        type: string
+      slug:
+        type: string
+    steps:
+      - attach_workspace:
+          at: .
+      - wp-product-orb/variable-load
+      - wp-product-orb/authenticate:
+          user: WPE_LDAP_USER
+          pass: WPE_LDAP_PASS
+          url: <<parameters.auth_url>>
+      - wp-product-orb/post-zip:
+          url: <<parameters.upload_url>>/<<parameters.slug>>
+          zip: build/<<parameters.slug>>.$BUILD_VERSION.zip
+          json: build/<<parameters.slug>>.$BUILD_VERSION.json
+          version: $BUILD_VERSION
 
 workflows:
+  # Workflows defined for each package and plugin.
+  # tag example for deploying an update for atlas-content-modeler: 1.0.0
   plugin:
     jobs:
-      - plugin-checkout
+      - plugin-checkout:
+          slug: atlas-content-modeler
+          filename: atlas-content-modeler.php
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-build-composer:
+          slug: atlas-content-modeler
           requires:
             - plugin-checkout
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-build-npm:
+          slug: atlas-content-modeler
           requires:
             - plugin-checkout
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-build-readme:
+          slug: atlas-content-modeler
           requires:
             - plugin-build-npm
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-build-json:
+          slug: atlas-content-modeler
           requires:
             - plugin-build-readme
+          # Run this job on every commit/PR to make sure it's in working order prior to deploying
+          filters:
+            tags:
+              only: /.*/
       - plugin-build-pot:
           requires:
             - plugin-checkout
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
       - plugin-build-zip:
+          slug: atlas-content-modeler
           requires:
             - plugin-build-composer
             - plugin-build-npm
             - plugin-build-pot
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
       - plugin-test-e2e:
            requires:
              - plugin-build-zip
              - plugin-build-composer
+           # run this job for any build, any branch
+           filters:
+             tags:
+               only: /.*/
       - plugin-test-jest:
+          slug: atlas-content-modeler
           requires:
             - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-test-lint-js:
+          slug: atlas-content-modeler
           requires:
             - plugin-build-zip
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-test-lint-php:
           requires:
             - plugin-build-zip
             - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-test-unit:
           matrix:
             parameters:
@@ -396,7 +566,111 @@ workflows:
           requires:
             - plugin-build-zip
             - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
       - plugin-test-content-connect:
+          slug: atlas-content-modeler
           requires:
             - plugin-build-zip
             - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-deploy:
+           name: "plugin-deploy-staging"
+           slug: atlas-content-modeler
+           requires:
+             - plugin-build-zip
+             - plugin-build-json
+             - plugin-test-e2e
+             - plugin-test-lint-js
+             - plugin-test-lint-php
+             - plugin-test-jest
+             - plugin-test-unit
+             - plugin-test-content-connect
+           filters:
+             branches:
+               only:
+                 - main
+                 - canary
+             tags:
+               only: /.*/
+           context: wpe-ldap-creds
+           auth_url: https://auth-staging.wpengine.io/v1/tokens
+           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
+      - plugin-deploy:
+           name: "plugin-deploy-production"
+           slug: atlas-content-modeler
+           requires:
+             - "plugin-deploy-staging"
+           filters:
+             branches:
+               ignore: /.*/
+             tags:
+               # tag ex. 1.0.0
+               only: /^\S+/
+           context: wpe-ldap-creds
+           auth_url: https://auth.wpengine.io/v1/tokens
+           upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+
+  nightly-testing:
+    when:
+      and:
+        - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        - equal: [ nightly_testing, << pipeline.schedule.name >> ]
+    jobs:
+      - plugin-checkout:
+          slug: atlas-content-modeler
+          filename: atlas-content-modeler.php
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-composer:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-checkout
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-npm:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-checkout
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-build-zip:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-composer
+            - plugin-build-npm
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-unit:
+          matrix:
+            parameters:
+              wordpress-version: [ "nightly" ]
+          requires:
+            - plugin-build-zip
+            - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test-content-connect:
+          slug: atlas-content-modeler
+          requires:
+            - plugin-build-zip
+            - plugin-build-composer
+          # run this job for any build, any branch
+          filters:
+            tags:
+              only: /.*/
