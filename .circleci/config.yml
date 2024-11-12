@@ -229,8 +229,26 @@ jobs:
       - attach_workspace:
           at: .
 
+      # Install Chrome and ChromeDriver
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+      
+      # Start ChromeDriver in the background
+      - run:
+          name: Start ChromeDriver
+          command: chromedriver --url-base=/wd/hub --port=9515
+          background: true
+
+      # Wait for ChromeDriver to initialize
+      - run:
+          name: Wait for ChromeDriver to start
+          command: sleep 5
+
+      # Verify ChromeDriver is accessible
+      - run:
+          name: Verify ChromeDriver Status
+          command: curl http://localhost:9515/wd/hub/status
+
       - run:
           name: Install mysql_client
           command: |
