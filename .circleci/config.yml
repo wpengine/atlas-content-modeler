@@ -17,48 +17,6 @@ commands:
           command: |
             echo "export VERSION=$(grep 'Version:' ~/project/atlas-content-modeler/atlas-content-modeler.php | awk -F: '{print $2}' | sed 's/^\s//')" >> ${BASH_ENV}
 
-  svn_setup:
-    description: "Set up SVN"
-    steps:
-      - set_version_variable
-      - run: sudo apt-get update && sudo apt-get install subversion
-      - run: svn co https://plugins.svn.wordpress.org/atlas-content-modeler --depth=empty .
-      - run: svn up trunk
-      - run: svn up tags --depth=empty
-      - run: svn up assets
-      - run: find ./trunk -not -path "./trunk" -delete
-      - run: mkdir ~/project/unzip-temp
-      - run: unzip ~/project/build/atlas-content-modeler.${VERSION}.zip -d ~/project/unzip-temp
-      - run: cp -r ~/project/unzip-temp/atlas-content-modeler/. ./trunk
-      - run: cp -r ~/project/atlas-content-modeler/assets/wporg/* ./assets
-      - run: rm -rf node_modules/
-      - run: cp ~/project/atlas-content-modeler/.svnignore ./trunk
-      - run: svn propset svn:ignore -F ./trunk/.svnignore ./trunk
-      - run: svn propset svn:ignore -F ./trunk/.svnignore ./tags
-
-  svn_create_tag:
-    description: "Create an SVN tag"
-    steps:
-      - set_version_variable
-      - run: svn cp trunk tags/${VERSION}
-
-  svn_set_mimes:
-    description: "Set MIMES for SVN"
-    steps:
-      - run: svn propset svn:mime-type image/png ./assets/*.png
-      - run: svn propset svn:mime-type image/jpeg ./assets/*.jpg
-
-  svn_add_changes:
-    description: "Add changes to SVN"
-    steps:
-      - run: svn add --force .
-
-  svn_commit:
-    description: "Commit changes to SVN"
-    steps:
-      - set_version_variable
-      - run: svn ci -m "Tagging ${VERSION} from GitHub" --no-auth-cache --non-interactive --username "${SVN_USERNAME}" --password "${SVN_PASSWORD}"
-
 jobs:
   plugin-checkout:
     executor: wp-product-orb/default
@@ -229,8 +187,26 @@ jobs:
       - attach_workspace:
           at: .
 
+      # Install Chrome and ChromeDriver
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+      
+      # Start ChromeDriver in the background
+      - run:
+          name: Start ChromeDriver
+          command: chromedriver --url-base=/wd/hub --port=9515
+          background: true
+
+      # Wait for ChromeDriver to initialize
+      - run:
+          name: Wait for ChromeDriver to start
+          command: sleep 5
+
+      # Verify ChromeDriver is accessible
+      - run:
+          name: Verify ChromeDriver Status
+          command: curl http://localhost:9515/wd/hub/status
+
       - run:
           name: Install mysql_client
           command: |
@@ -441,43 +417,6 @@ jobs:
             vendor/bin/phpunit --configuration phpunit.content-connect.xml
           working_directory: <<parameters.slug>>
 
-  plugin-deploy:
-    executor: wp-product-orb/authenticate
-    environment:
-      WPE_SESSION_DIR: ./.wpe
-    parameters:
-      auth_url:
-        type: string
-      upload_url:
-        type: string
-      slug:
-        type: string
-    steps:
-      - attach_workspace:
-          at: .
-      - wp-product-orb/variable-load
-      - wp-product-orb/authenticate:
-          user: WPE_LDAP_USER
-          pass: WPE_LDAP_PASS
-          url: <<parameters.auth_url>>
-      - wp-product-orb/post-zip:
-          url: <<parameters.upload_url>>/<<parameters.slug>>
-          zip: build/<<parameters.slug>>.$BUILD_VERSION.zip
-          json: build/<<parameters.slug>>.$BUILD_VERSION.json
-          version: $BUILD_VERSION
-
-  plugin-deploy-wporg:
-    executor: php/default
-    working_directory: ~/project/svn_deploy
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - svn_setup
-      - svn_create_tag
-      - svn_add_changes
-      - svn_set_mimes
-      - svn_commit
-
 workflows:
   # Workflows defined for each package and plugin.
   # tag example for deploying an update for atlas-content-modeler: 1.0.0
@@ -591,53 +530,6 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-deploy:
-           name: "plugin-deploy-staging"
-           slug: atlas-content-modeler
-           requires:
-             - plugin-build-zip
-             - plugin-build-json
-             - plugin-test-e2e
-             - plugin-test-lint-js
-             - plugin-test-lint-php
-             - plugin-test-jest
-             - plugin-test-unit
-             - plugin-test-content-connect
-           filters:
-             branches:
-               only:
-                 - main
-                 - canary
-             tags:
-               only: /.*/
-           context: wpe-ldap-creds
-           auth_url: https://auth-staging.wpengine.io/v1/tokens
-           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
-      - plugin-deploy:
-           name: "plugin-deploy-production"
-           slug: atlas-content-modeler
-           requires:
-             - "plugin-deploy-staging"
-           filters:
-             branches:
-               ignore: /.*/
-             tags:
-               # tag ex. 1.0.0
-               only: /^\S+/
-           context: wpe-ldap-creds
-           auth_url: https://auth.wpengine.io/v1/tokens
-           upload_url: https://wp-product-info.wpesvc.net/v1/plugins
-      - plugin-deploy-wporg:
-           name: "plugin-deploy-wporg-production"
-           requires:
-             - "plugin-deploy-staging"
-           filters:
-             branches:
-               ignore: /.*/
-             tags:
-               # tag ex. 1.0.0
-               only: /^\S+/
-           context: wpe-wporg-svn-creds
 
   nightly-testing:
     when:

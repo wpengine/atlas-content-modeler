@@ -12,6 +12,7 @@
  * Requires PHP: 7.2
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Update URI: false 
  *
  * @package AtlasContentModeler
  */
@@ -117,3 +118,19 @@ function acm_deprecation_notice(): void {
 	</div>
 	<?php
 }
+
+/**
+ * Initialize the checking for plugin updates.
+ */
+function acm_check_for_updates() {
+    $properties = array(
+        // This must match the key in "https://wpe-plugin-updates.wpengine.com/plugins.json".
+        'plugin_slug'     => 'atlas-content-modeler',
+        // This must be the result of calling plugin_basename( __FILE__ ) IN YOUR MAIN PLUGIN's FILE.
+        'plugin_basename' => ATLAS_CONTENT_MODELER_PATH, 
+    );
+
+    require_once ATLAS_CONTENT_MODELER_INCLUDES_DIR . 'class-plugin-updater.php';
+    new \WPE\AtlasContentModeler\Updates\PluginUpdater( $properties );
+}
+add_action( 'admin_init', 'acm_check_for_updates' );
